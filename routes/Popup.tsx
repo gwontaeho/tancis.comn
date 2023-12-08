@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { PopupLayout } from "@/com/layouts/PopupLayout";
-import { SamplePopup } from "@/tancis/sample/SamplePopup";
+import { SamplePopup } from "@/com/sample/SamplePopup";
 
 export const Popup = () => {
     return (

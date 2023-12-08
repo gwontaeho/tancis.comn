@@ -1,3 +1,3 @@
-import { SampleRoutes } from "@/tancis/sample/SampleRoutes";
+import { SampleRoutes } from "@/com/sample/SampleRoutes";
 
 export const Routes = [...SampleRoutes];

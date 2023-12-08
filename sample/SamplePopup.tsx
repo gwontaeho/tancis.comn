@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import { PopupSearch } from "@/tancis/sample/pages/SampleList";
+import { PopupSearch } from "@/com/sample/pages/SampleList";
 
 export const SamplePopup = () => {
     return (

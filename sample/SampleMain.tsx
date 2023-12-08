@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 
-import { SampleForm } from "@/tancis/sample/pages/samp-Form";
-import { SampleTab } from "@/tancis/sample/pages/samp-Tab";
-import { SampleTree } from "@/tancis/sample/pages/samp-Tree";
-import { SampleTable } from "@/tancis/sample/pages/samp-Table";
-import { SampleWijmo } from "@/tancis/sample/pages/samp-Wijmo";
+import { SampleForm } from "@/com/sample/pages/samp-Form";
+import { SampleTab } from "@/com/sample/pages/samp-Tab";
+import { SampleTree } from "@/com/sample/pages/samp-Tree";
+import { SampleTable } from "@/com/sample/pages/samp-Table";
+import { SampleWijmo } from "@/com/sample/pages/samp-Wijmo";
 
-import { SampleList } from "@/tancis/sample/pages/SampleList";
-import { SampleDetail } from "@/tancis/sample/pages/SampleDetail";
-import { SampleRegist } from "@/tancis/sample/pages/SampleRegist";
-import { SampleUpdate } from "@/tancis/sample/pages/SampleUpdate";
+import { SampleList } from "@/com/sample/pages/SampleList";
+import { SampleDetail } from "@/com/sample/pages/SampleDetail";
+import { SampleRegist } from "@/com/sample/pages/SampleRegist";
+import { SampleUpdate } from "@/com/sample/pages/SampleUpdate";
 
 export const SampleMain = () => {
     return (
