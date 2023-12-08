@@ -89,6 +89,7 @@ type FormControlMainProps = FormControlEditModeProps & {
     control?: any;
     rules?: any;
     mainClassName?: string;
+    defaultValue?: string;
 };
 
 export type FormControlProps = FormControlMainProps;

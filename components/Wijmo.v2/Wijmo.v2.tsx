@@ -7,7 +7,7 @@ import lodash from "lodash";
 
 import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import { Selector } from "@grapecity/wijmo.grid.selector";
-import { Pagination, Button, Icon } from "@/com/components";
+import { Pagination, Button, Icon, FormControl } from "@/com/components";
 import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from "@/com/hooks";
 
 // type WijmoOptionType = {
@@ -50,7 +50,7 @@ export const Wijmo = (props: wijmoProps) => {
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true;
         if (schema.options?.checkbox) new Selector(gridRef.current.control);
         gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
-        gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
+        // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
@@ -96,6 +96,7 @@ export const Wijmo = (props: wijmoProps) => {
 
     const handleItemsSourceChanged = (c: any) => {
         if (schema.options?.pagination !== "in") return;
+        if (!c.collectionView) return;
         c.collectionView.collectionChanged.addHandler((cv: any) => {
             setTotalCount(cv.totalItemCount);
         });
@@ -144,7 +145,7 @@ export const Wijmo = (props: wijmoProps) => {
         <div className="space-y-4">
             {(schema.options?.add || schema.options?.remove) && (
                 <div className="flex space-x-2 justify-end">
-                    {schema.options?.add && (
+                    {!schema.options?.isReadOnly && schema.options?.add && (
                         <Button onClick={handleAdd}>
                             <Icon icon="plus" size="xs" />
                         </Button>
@@ -157,7 +158,39 @@ export const Wijmo = (props: wijmoProps) => {
                 </div>
             )}
 
-            <wjGrid.MultiRow ref={gridRef} />
+            <wjGrid.MultiRow ref={gridRef}>
+                {schema.body.map((props) => {
+                    const { colspan, cells } = props;
+                    return (
+                        <wjGrid.MultiRowCellGroup colspan={colspan}>
+                            {cells.map((cellProps) => {
+                                return (
+                                    <wjGrid.MultiRowCell colspan={cellProps.colspan} binding={cellProps.binding}>
+                                        <wjGrid.MultiRowCellTemplate
+                                            cellType="Cell"
+                                            template={(r: any) => {
+                                                return <div>{r.item[cellProps.binding]}</div>;
+                                            }}
+                                        />
+                                        <wjGrid.MultiRowCellTemplate
+                                            cellType="CellEdit"
+                                            template={(r: any) => {
+                                                console.log(r);
+                                                return (
+                                                    <FormControl
+                                                        defaultValue={r.value}
+                                                        onChange={(e) => (r.value = e.target.value)}
+                                                    />
+                                                );
+                                            }}
+                                        />
+                                    </wjGrid.MultiRowCell>
+                                );
+                            })}
+                        </wjGrid.MultiRowCellGroup>
+                    );
+                })}
+            </wjGrid.MultiRow>
 
             {schema.options?.pagination && (
                 <Pagination
