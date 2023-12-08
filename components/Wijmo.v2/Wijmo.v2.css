@@ -1,0 +1,14 @@
+/* .wj-cell {
+  min-height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.wj-flexgrid .cell-changed {
+  background-color: lightpink !important;
+}
+
+.wj-flexgrid .cell-new {
+  background-color: lightgreen !important;
+}

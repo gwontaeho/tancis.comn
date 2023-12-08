@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --tancis-text: #5e6e82;
+    --tancis-card: #ffffff;
+    --tancis-border: #9da9bb;
+    --tancis-header: #d8e2ef;
+    --tancis-background: #edf2f9;
+  }
+
+  :root[class~="dark"] {
+    --tancis-text: #b6c1d2;
+    --tancis-card: #121e2d;
+    --tancis-border: #344050;
+    --tancis-header: #232e3c;
+    --tancis-background: #0b1727;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply text-base bg-background text-text flex flex-col w-full;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-1.5 h-1.5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded bg-[#9ca3afaa];
+  }
+}
+
+@layer components {
+  .input {
+    @apply block min-h-[1.75rem] h-7 p-1 w-full transition bg-background border rounded outline-none focus:border-blue;
+  }
+  .button {
+    @apply block min-h-[1.75rem] h-7 px-2 transition bg-background border rounded;
+  }
+}
