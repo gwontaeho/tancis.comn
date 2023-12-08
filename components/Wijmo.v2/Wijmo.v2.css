@@ -6,9 +6,9 @@
 } */
 
 .wj-flexgrid .cell-changed {
-  background-color: lightpink !important;
+    background-color: lightpink !important;
 }
 
-.wj-flexgrid .cell-new {
-  background-color: lightgreen !important;
+.wj-flexgrid .cell-added {
+    background-color: lightgreen !important;
 }

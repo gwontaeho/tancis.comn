@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useWijmo, useToast } from "@/com/hooks";
-import { Group } from "@/com/components";
+import { Group, Page } from "@/com/components";
 import { Wijmo } from "@/com/components/Wijmo.v2/Wijmo.v2";
 
+import lodash from "lodash";
 import { v4 as uuid } from "uuid";
+import { utils } from "@/com/utils";
 
 const instance = axios.create({
     baseURL: "http://183.107.31.131:8000/template",
@@ -16,9 +18,31 @@ export const APIS = {
     createComponentGroup: (data: any) => instance.post("/com/componentGroups", data),
 };
 
-const schema = {
-    __grid__: "grid",
-    options: { checkbox: true, pagination: "inner", add: true, remove: true },
+const schema: any = {
+    id: "grid",
+    options: { checkbox: true, pagination: "in", add: true, remove: true },
+    head: [
+        { cells: [{ header: "aaa", binding: "id", colspan: 3 }, { header: "a" }, { header: "b" }, { header: "c" }] },
+        { cells: [{ header: "d", binding: "a" }] },
+        { cells: [{ header: "e", binding: "b" }] },
+    ],
+    body: [
+        {
+            colspan: 3,
+            cells: [{ binding: "id", colspan: 3 }],
+        },
+        {
+            cells: [{ binding: "a" }],
+        },
+        {
+            cells: [{ binding: "b" }],
+        },
+    ],
+};
+
+const schema2: any = {
+    id: "grid2",
+    options: { checkbox: true, pagination: "out", add: true, remove: true },
     head: [
         { cells: [{ header: "a", binding: "id", colspan: 3 }, { header: "a" }, { header: "b" }, { header: "c" }] },
         { cells: [{ header: "d", binding: "a" }] },
@@ -30,58 +54,51 @@ const schema = {
             cells: [{ binding: "id", colspan: 3 }],
         },
         {
-            cells: [{ header: "d", binding: "a" }],
+            cells: [{ binding: "a" }],
         },
         {
-            cells: [{ header: "e", binding: "b" }],
+            cells: [{ binding: "b" }],
         },
     ],
 };
 
-const getMockData = () => {
-    return {
-        page: 0,
-        size: 10,
-        totCnt: 43,
-        content: Array(43)
-            .fill(null)
-            .map((_) => ({
-                id: uuid(),
-                a: Math.random() * 1000,
-                b: Math.random() * 1000,
-            })),
-    };
-};
-
-const data = getMockData();
+const data = utils.getMockData({ totCnt: 34 });
 
 export const SampleWijmo = () => {
-    const { grid, getData, getChecked, getCheckedIndex, addRow, removeRow, removeChecked, page, size } = useWijmo({
+    const grid1 = useWijmo({
         defaultSchema: schema,
     });
+    const grid2 = useWijmo({
+        defaultSchema: schema2,
+    });
 
-    //   const { data, fetch } = useFetch({
-    // api: () => APIS.getComponentGroups(),
-    // api: () => APIS.getComponentGroups(page, size),
-    // enabled: true,
-    // key: [page, size],
-    //   });
-
-    //   console.log(getMockData());
+    const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
     return (
-        <Group>
-            <Wijmo {...grid} data={data} />
+        <Page>
+            <Group>
+                <Wijmo {...grid1.grid} data={data} />
+                <div className="space-x-2">
+                    <button onClick={() => console.log(grid1.getData())}>데이터 가져오기</button>
+                    <button onClick={() => console.log(grid1.getChecked())}>check 가져오기</button>
 
-            <div className="space-x-2">
-                <button onClick={() => console.log(getData())}>데이터 가져오기</button>
-                <button onClick={() => console.log(getChecked())}>check 가져오기</button>
-                <button onClick={() => console.log(getCheckedIndex())}>index 가져오기</button>
-                <button onClick={() => addRow()}>add</button>
-                <button onClick={() => removeRow()}>remove at</button>
-                <button onClick={() => removeChecked()}>checked 삭제</button>
-                {/* <button onClick={() => fetch()}>refetch</button> */}
-            </div>
-        </Group>
+                    <button onClick={() => grid1.resetData()}>reset data</button>
+                    <button onClick={() => console.log(grid1.getOrigin())}>get origin</button>
+                </div>
+            </Group>
+
+            <Group>
+                <Wijmo {...grid2.grid} data={grid2Data} />
+                {/* <div className="space-x-2">
+                    <button onClick={() => console.log(getData())}>데이터 가져오기</button>
+                    <button onClick={() => console.log(getChecked())}>check 가져오기</button>
+                    <button onClick={() => console.log(getCheckedIndex())}>index 가져오기</button>
+                    <button onClick={() => addRow()}>add</button>
+                    <button onClick={() => removeRow()}>remove at</button>
+                    <button onClick={() => removeChecked()}>checked 삭제</button>
+                    <button onClick={() => fetch()}>refetch</button>
+                </div> */}
+            </Group>
+        </Page>
     );
 };

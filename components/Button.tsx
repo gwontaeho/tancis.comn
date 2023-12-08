@@ -25,8 +25,6 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export const Button = (props: ButtonProps) => {
     const { children, type = "button", size = "fit", ...rest } = props;
 
-    console.log("a");
-
     return (
         <button {...rest} type={type} className={classNames("button", SIZES[size])}>
             {children}
