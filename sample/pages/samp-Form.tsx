@@ -34,6 +34,9 @@ const SCHEMA_SEARCH: FormSchemaType = {
                 },
             },
         },
+        file: {
+            type: "file",
+        },
     },
 };
 
@@ -105,6 +108,9 @@ export const SampleForm = () => {
                             <Group.Control {...schema.range} controlSize={10} />
                         </Group.Row>
                         <Group.Row>
+                            <Group.Control {...schema.file} />
+                        </Group.Row>
+                        <Group.Row>
                             <Group.Col>
                                 <Button type="submit">submit</Button>
                             </Group.Col>
@@ -112,6 +118,8 @@ export const SampleForm = () => {
                     </Group.Body>
                 </form>
             </Group>
+            <button onClick={(e) => console.log(getValues())}>asd</button>
+            <button onClick={(e) => console.log(setValue("date", new Date()))}>asd</button>
         </Layout>
     );
 };

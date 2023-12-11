@@ -18,10 +18,11 @@ import {
     InputDatetime,
     InputRange,
     InputRangeProps,
+    FormattedInputProps,
 } from "@/com/components/_";
 import dayjs from "dayjs";
 
-type FormControlType =
+export type FormControlType =
     | "text"
     | "number"
     | "password"
@@ -81,15 +82,23 @@ type FormControlEditModeProps = FormControlTextModeProps &
         onBlur?: () => void;
         disabled?: boolean;
         setValue?: any;
+        invalid?: string | boolean;
     };
 
 type FormControlMainProps = FormControlEditModeProps & {
     size?: keyof typeof SIZES;
-    invalid?: boolean;
     control?: any;
     rules?: any;
     mainClassName?: string;
-    defaultValue?: string;
+    defaultValue?: any;
+    onFocus?: (e: any) => void;
+    mask?: string;
+    message?: string;
+    maxLength?: number;
+    exact?: boolean;
+    decimalScale?: number;
+    thousandSeparator?: boolean;
+    letterCase?: "upper" | "lower";
 };
 
 export type FormControlProps = FormControlMainProps;
@@ -119,7 +128,7 @@ const FormControlTextMode = (props: FormControlTextModeProps) => {
 };
 
 const FormControlEditMode = React.forwardRef<any>((props: FormControlEditModeProps, ref) => {
-    const { edit = true, rightButton, leftButton, rightText, getValues, setValue, ...rest } = props;
+    const { edit = true, rightButton, leftButton, rightText, getValues, setValue, invalid, ...rest } = props;
 
     return (
         <div
@@ -192,7 +201,7 @@ const FormControlEditMode = React.forwardRef<any>((props: FormControlEditModePro
 });
 
 const FormControlMain = React.forwardRef((props: FormControlMainProps, ref) => {
-    const { edit = true, size = "full" } = props;
+    const { edit = true, size = "full", message } = props;
 
     return (
         <div className={classNames(SIZES[size], props.mainClassName)}>
@@ -200,6 +209,7 @@ const FormControlMain = React.forwardRef((props: FormControlMainProps, ref) => {
             <Tooltip enabled={Boolean(props.invalid)} size="full" text="invalid field">
                 <FormControlEditMode ref={ref} {...props} />
             </Tooltip>
+            {message && <div className="text-sm mt-1">{message}</div>}
             {props.invalid && <div className="text-invalid text-sm mt-1">invalid field</div>}
         </div>
     );

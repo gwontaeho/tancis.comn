@@ -59,7 +59,11 @@ const GroupBody = (props: { children?: React.ReactNode }) => {
 
 const GroupRow = (props: { children?: React.ReactNode }) => {
     const { children } = props;
-    return <div className="w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12">{children}</div>;
+    return (
+        <div className="w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12">
+            {children}
+        </div>
+    );
 };
 
 const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
@@ -72,7 +76,9 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
             )}
         >
             {props.type ? <FormControl ref={ref} {...rest} /> : label}
-            {required && <span className={classNames("text-invalid ml-0.5", { "absolute top-0 right-0.5": props.type })}>*</span>}
+            {required && (
+                <span className={classNames("text-invalid ml-0.5", { "absolute top-0 right-0.5": props.type })}>*</span>
+            )}
         </div>
     );
 });
@@ -81,7 +87,7 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
     const { required, labelSize, label, controlSize = 4, ...rest } = props;
     return (
         <>
-            {label && <GroupLabel required={required} label={label} labelSize={labelSize} />}
+            {label !== undefined && <GroupLabel required={required} label={label} labelSize={labelSize} />}
             <div className={classNames("p-1 flex items-center", SIZES[controlSize])}>
                 <FormControl ref={ref} {...rest} />
             </div>

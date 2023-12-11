@@ -17,6 +17,7 @@ export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & 
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(
     (props: FormattedInputProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
+            type,
             mask,
             exact = true,
             decimalScale,
@@ -27,6 +28,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             ...rest
         } = props;
 
+        const _type = decimalScale || thousandSeparator ? "number" : type;
         const SET_LETTER = ["a", "A", "0", "*"];
         const REG_NUMBER = /^[0-9]+$/;
 
@@ -34,6 +36,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             let v: ValuesType = { value: e.target.value, formattedValue: "" };
             handleLowerCase(e, v);
             handleUpperCase(e, v);
+            handleNumber(e);
             handleDecimalScale(e, v);
             handleThousandSeparator(e, v);
             handleMask(e, v);
@@ -55,10 +58,15 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
-        const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
-            if (decimalScale === undefined) return;
+        const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (_type !== "number") return;
             if (isNaN(Number(e.target.value.replaceAll(",", ""))))
                 e.target.value = e.target.value.replaceAll(/[\D]/g, "");
+        };
+
+        const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
+            if (decimalScale === undefined) return;
+
             const int = e.target.value.split(".")[0];
             const dec = e.target.value.split(".")[1]?.replaceAll(",", "").slice(0, decimalScale);
             e.target.value = int + (dec !== undefined ? "." + dec : "");
@@ -68,8 +76,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
 
         const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
             if (!thousandSeparator) return;
-            if (isNaN(Number(e.target.value.replaceAll(",", ""))))
-                e.target.value = e.target.value.replaceAll(/[\D]/g, "");
+
             const int = e.target.value.split(".")[0];
             const dec = e.target.value.split(".")[1]?.replaceAll(",", "");
             e.target.value = Number(int.replaceAll(",", "")).toLocaleString() + (dec !== undefined ? "." + dec : "");

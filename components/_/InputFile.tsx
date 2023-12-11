@@ -8,6 +8,7 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             <input
                 {...props}
                 ref={ref}
+                multiple={true}
                 type="file"
                 className="file h-7 border rounded w-full file:h-full file:outline-none file:bg-header file:border-none file:text-text cursor-pointer"
             />

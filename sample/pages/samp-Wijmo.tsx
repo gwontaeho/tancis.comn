@@ -6,6 +6,7 @@ import { Wijmo } from "@/com/components/Wijmo.v2/Wijmo.v2";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import { utils } from "@/com/utils";
+import { useEffect } from "react";
 
 const instance = axios.create({
     baseURL: "http://183.107.31.131:8000/template",
@@ -35,7 +36,7 @@ const schema: any = {
             cells: [{ binding: "a" }],
         },
         {
-            cells: [{ binding: "b" }],
+            cells: [{ binding: "d", type: "date" }],
         },
     ],
 };
@@ -73,6 +74,19 @@ export const SampleWijmo = () => {
     });
 
     const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
+
+    useEffect(() => {
+        test();
+    }, []);
+
+    const test = async () => {
+        try {
+            const a = await axios.get("http://localhost:4000/api/test");
+            console.log(a);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Page>

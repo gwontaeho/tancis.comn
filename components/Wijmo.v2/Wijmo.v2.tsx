@@ -7,8 +7,13 @@ import lodash from "lodash";
 
 import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import { Selector } from "@grapecity/wijmo.grid.selector";
-import { Pagination, Button, Icon, FormControl } from "@/com/components";
+import * as wjcXlsx from "@grapecity/wijmo.xlsx";
+import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
+import { Pagination, Button, Icon, FormControl, Tree } from "@/com/components";
+import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from "@grapecity/wijmo.input";
+
 import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from "@/com/hooks";
+import dayjs from "dayjs";
 
 // type WijmoOptionType = {
 //     checkbox?: boolean;
@@ -54,6 +59,12 @@ export const Wijmo = (props: wijmoProps) => {
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
+        // gridRef.current.control.cellEditEnding.addHandler((s: any, e: any) => {
+        //     console.log(e);
+        //     e.stayInEditMode = true;
+        // });
+        // gridRef.current.control.cellEditEnded.addHandler((e: any) => console.log(e.collectionView.editItem()));
+
         // console.log("init end");
     }, []);
 
@@ -141,8 +152,23 @@ export const Wijmo = (props: wijmoProps) => {
         return body;
     };
 
+    const handleExport = () => {
+        wjcGridXlsx.FlexGridXlsxConverter.saveAsync(
+            gridRef.current.control,
+            {
+                includeColumnHeaders: true,
+                includeStyles: true,
+                // formatItem: this.state.customContent ? this.exportFormatItem : null
+            },
+            "FlexGrid.xlsx"
+        );
+    };
+
     return (
         <div className="space-y-4">
+            <Button onClick={handleExport}>
+                <Icon icon="plus" size="xs" />
+            </Button>
             {(schema.options?.add || schema.options?.remove) && (
                 <div className="flex space-x-2 justify-end">
                     {!schema.options?.isReadOnly && schema.options?.add && (
@@ -159,31 +185,29 @@ export const Wijmo = (props: wijmoProps) => {
             )}
 
             <wjGrid.MultiRow ref={gridRef}>
-                {schema.body.map((props) => {
+                {schema.body.map((props, i) => {
                     const { colspan, cells } = props;
                     return (
-                        <wjGrid.MultiRowCellGroup colspan={colspan}>
-                            {cells.map((cellProps) => {
+                        <wjGrid.MultiRowCellGroup key={"wijmo." + schema.id + "." + i} colspan={colspan}>
+                            {cells.map((cellProps, ii) => {
                                 return (
-                                    <wjGrid.MultiRowCell colspan={cellProps.colspan} binding={cellProps.binding}>
-                                        <wjGrid.MultiRowCellTemplate
-                                            cellType="Cell"
-                                            template={(r: any) => {
-                                                return <div>{r.item[cellProps.binding]}</div>;
-                                            }}
-                                        />
-                                        <wjGrid.MultiRowCellTemplate
+                                    <wjGrid.MultiRowCell
+                                        key={"wijmo." + schema.id + "." + i + "." + ii}
+                                        colspan={cellProps.colspan}
+                                        binding={cellProps.binding}
+                                    >
+                                        {/* <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(r: any) => {
                                                 console.log(r);
                                                 return (
-                                                    <FormControl
-                                                        defaultValue={r.value}
-                                                        onChange={(e) => (r.value = e.target.value)}
-                                                    />
+                                                    <div
+                                                        id="asdff"
+                                                        className="h-9 px-1 flex items-center justify-center"
+                                                    ></div>
                                                 );
                                             }}
-                                        />
+                                        /> */}
                                     </wjGrid.MultiRowCell>
                                 );
                             })}

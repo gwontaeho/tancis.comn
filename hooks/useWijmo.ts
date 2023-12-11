@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import lodash from "lodash";
+import { FormControlType } from "../components";
 
 type WijmoOptionType = {
     checkbox?: boolean;
@@ -9,7 +10,10 @@ type WijmoOptionType = {
     isReadOnly?: boolean;
 };
 export type WijmoHeadType = { cells: { header: string; binding?: string; colspan?: number }[] }[];
-export type WijmoBodyType = { cells: { binding: string; colspan?: number }[]; colspan?: number }[];
+export type WijmoBodyType = {
+    cells: { binding: string; colspan?: number; type?: FormControlType }[];
+    colspan?: number;
+}[];
 export type WijmoSchemaType = {
     id: string;
     options: WijmoOptionType;

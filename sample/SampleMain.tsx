@@ -1,5 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 
+import { SampleFormControlText } from "@/com/sample/pages/samp-FormControlText";
+import { SampleFormControlNumber } from "@/com/sample/pages/samp-FormControlNumber";
+import { SampleFormControlPassword } from "@/com/sample/pages/samp-FormControlPassword";
+import { SampleFormControlSelect } from "@/com/sample/pages/samp-FormControlSelect";
+import { SampleFormControlRadio } from "@/com/sample/pages/samp-FormControlRadio";
+import { SampleFormControlCheckbox } from "@/com/sample/pages/samp-FormControlCheckbox";
+import { SampleFormControlTextarea } from "@/com/sample/pages/samp-FormControlTextarea";
+import { SampleFormControlDate } from "@/com/sample/pages/samp-FormControlDate";
+import { SampleFormControlTime } from "@/com/sample/pages/samp-FormControlTime";
+
 import { SampleForm } from "@/com/sample/pages/samp-Form";
 import { SampleTab } from "@/com/sample/pages/samp-Tab";
 import { SampleTree } from "@/com/sample/pages/samp-Tree";
@@ -14,6 +24,19 @@ import { SampleUpdate } from "@/com/sample/pages/SampleUpdate";
 export const SampleMain = () => {
     return (
         <Routes>
+            <Route path="/formcontroltext" element={<SampleFormControlText />} />
+            <Route path="/formcontrolnumber" element={<SampleFormControlNumber />} />
+            <Route path="/formcontrolpassword" element={<SampleFormControlPassword />} />
+            <Route path="/formcontrolselect" element={<SampleFormControlSelect />} />
+            <Route path="/formcontrolradio" element={<SampleFormControlRadio />} />
+            <Route path="/formcontrolcheckbox" element={<SampleFormControlCheckbox />} />
+            <Route path="/formcontroltextarea" element={<SampleFormControlTextarea />} />
+            <Route path="/formcontroldate" element={<SampleFormControlDate />} />
+            <Route path="/formcontroltime" element={<SampleFormControlTime />} />
+            <Route path="/formcontroldatetime" element={<SampleFormControlRadio />} />
+            <Route path="/formcontrolbetween" element={<SampleFormControlRadio />} />
+            <Route path="/formcontrolfile" element={<SampleFormControlRadio />} />
+
             <Route path="/form" element={<SampleForm />} />
             <Route path="/tab" element={<SampleTab />} />
             <Route path="/tree" element={<SampleTree />} />
