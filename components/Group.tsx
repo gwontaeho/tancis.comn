@@ -67,7 +67,7 @@ const GroupRow = (props: { children?: React.ReactNode }) => {
 };
 
 const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
-    const { required, label, labelSize = 2, ...rest } = props;
+    const { label, labelSize = 2, ...rest } = props;
     return (
         <div
             className={classNames(
@@ -76,7 +76,7 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
             )}
         >
             {props.type ? <FormControl ref={ref} {...rest} /> : label}
-            {required && (
+            {props.required && (
                 <span className={classNames("text-invalid ml-0.5", { "absolute top-0 right-0.5": props.type })}>*</span>
             )}
         </div>
@@ -84,10 +84,10 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 });
 
 const GroupControl = forwardRef((props: GroupControlProps, ref) => {
-    const { required, labelSize, label, controlSize = 4, ...rest } = props;
+    const { labelSize, label, controlSize = 4, ...rest } = props;
     return (
         <>
-            {label !== undefined && <GroupLabel required={required} label={label} labelSize={labelSize} />}
+            {label !== undefined && <GroupLabel required={props.required} label={label} labelSize={labelSize} />}
             <div className={classNames("p-1 flex items-center", SIZES[controlSize])}>
                 <FormControl ref={ref} {...rest} />
             </div>

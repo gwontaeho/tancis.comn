@@ -1,10 +1,10 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import React from "react";
-import { useController, Control } from "react-hook-form";
 import classNames from "classnames";
 import { Icon, IconsType, Tooltip } from "@/com/components";
 import {
+    ControllerWrapper,
     InputText,
     InputNumber,
     InputPassword,
@@ -16,11 +16,10 @@ import {
     InputDate,
     InputTime,
     InputDatetime,
-    InputRange,
-    InputRangeProps,
-    FormattedInputProps,
+    InputDaterangeProps,
+    InputDaterange,
+    InputTimerange,
 } from "@/com/components/_";
-import dayjs from "dayjs";
 
 export type FormControlType =
     | "text"
@@ -34,7 +33,9 @@ export type FormControlType =
     | "time"
     | "datetime"
     | "file"
-    | "range";
+    | "range"
+    | "daterange"
+    | "timerange";
 
 const SIZES = {
     1: "w-1/12",
@@ -55,33 +56,22 @@ const SIZES = {
 
 export type FormControlOptionsType = { label: string; value: string }[];
 
-type ControllerProps = {
-    children: React.ReactElement;
-    name: string;
-    control: Control;
-    rules: any;
-};
-
-type FormControlTextModeProps = {
+type FormControlEditModeProps = InputDaterangeProps & {
     type?: FormControlType;
     value?: any;
     getValues?: any;
+    edit?: boolean;
+    name?: string;
+    options?: FormControlOptionsType;
+    rightText?: string;
+    leftButton?: React.ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconsType };
+    rightButton?: React.ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconsType };
+    onChange?: (e: any) => void;
+    onBlur?: () => void;
+    disabled?: boolean;
+    setValue?: any;
+    invalid?: string | boolean;
 };
-
-type FormControlEditModeProps = FormControlTextModeProps &
-    InputRangeProps & {
-        edit?: boolean;
-        name?: string;
-        options?: FormControlOptionsType;
-        rightText?: string;
-        leftButton?: React.ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconsType };
-        rightButton?: React.ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconsType };
-        onChange?: (e: any) => void;
-        onBlur?: () => void;
-        disabled?: boolean;
-        setValue?: any;
-        invalid?: string | boolean;
-    };
 
 type FormControlMainProps = FormControlEditModeProps & {
     size?: keyof typeof SIZES;
@@ -97,36 +87,14 @@ type FormControlMainProps = FormControlEditModeProps & {
     decimalScale?: number;
     thousandSeparator?: boolean;
     letterCase?: "upper" | "lower";
+    start?: any;
+    end?: any;
 };
 
 export type FormControlProps = FormControlMainProps;
 
-const FormControlTextMode = (props: FormControlTextModeProps) => {
-    const { type, value } = props;
-
-    return (
-        <span className="break-all">
-            {(() => {
-                switch (type) {
-                    case "checkbox":
-                        return value && value.join(", ");
-                    case "date":
-                        return dayjs(value).format("YYYY-MM-DD");
-                    case "time":
-                        return dayjs(value).format("HH:mm");
-                    case "datetime":
-                        return dayjs(value).format("YYYY-MM-DD HH:mm");
-
-                    default:
-                        return value;
-                }
-            })()}
-        </span>
-    );
-};
-
-const FormControlEditMode = React.forwardRef<any>((props: FormControlEditModeProps, ref) => {
-    const { edit = true, rightButton, leftButton, rightText, getValues, setValue, invalid, ...rest } = props;
+const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
+    const { edit = true, rightButton, leftButton, rightText, getValues, setValue, invalid, value, ...rest } = props;
 
     return (
         <div
@@ -170,15 +138,10 @@ const FormControlEditMode = React.forwardRef<any>((props: FormControlEditModePro
                             return <InputTime {...rest} />;
                         case "datetime":
                             return <InputDatetime {...rest} />;
-                        case "range":
-                            return (
-                                <InputRange
-                                    {...rest}
-                                    setValue={setValue}
-                                    hasLeftButton={!!leftButton}
-                                    hasRightButton={!!rightButton}
-                                />
-                            );
+                        case "daterange":
+                            return <InputDaterange {...rest} />;
+                        case "timerange":
+                            return <InputTimerange {...rest} />;
                         default:
                             return <InputText {...rest} ref={ref} />;
                     }
@@ -198,12 +161,11 @@ const FormControlEditMode = React.forwardRef<any>((props: FormControlEditModePro
     );
 });
 
-const FormControlMain = React.forwardRef((props: FormControlMainProps, ref) => {
-    const { edit = true, size = "full", message } = props;
+export const FormControl = React.forwardRef((props: FormControlMainProps, ref) => {
+    const { size = "full", message } = props;
 
     return (
         <div className={classNames(SIZES[size], props.mainClassName)}>
-            {!edit && <FormControlTextMode type={props.type} value={props.value} getValues={props.getValues} />}
             <Tooltip enabled={Boolean(props.invalid)} size="full" text="invalid field">
                 <FormControlEditMode ref={ref} {...props} />
             </Tooltip>
@@ -211,21 +173,4 @@ const FormControlMain = React.forwardRef((props: FormControlMainProps, ref) => {
             {props.invalid && <div className="text-invalid text-sm mt-1">invalid field</div>}
         </div>
     );
-});
-
-const Controller = (props: ControllerProps) => {
-    const { children, name, control, rules } = props;
-    const { field } = useController({ name, control, rules });
-    return React.cloneElement(children, field);
-};
-
-export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
-    const { control, rules, ...rest } = props;
-    if (props.name && control)
-        return (
-            <Controller name={props.name} control={control} rules={rules}>
-                <FormControlMain ref={ref} {...rest} />
-            </Controller>
-        );
-    return <FormControlMain ref={ref} {...props} />;
 });

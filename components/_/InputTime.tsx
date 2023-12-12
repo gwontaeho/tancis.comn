@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Icon } from "@/com/components";
 
-type InputTimeProps = {
+export type InputTimeProps = {
     value?: Date | null;
     onChange?: (date?: Date | null) => void;
 };
@@ -29,7 +29,7 @@ export const InputTime = (props: InputTimeProps) => {
     };
 
     return (
-        <div className="w-full [&>div]:w-full">
+        <div className="relative w-full [&>div]:w-full">
             <Icon icon="clock" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
             <ReactDatePicker
                 selected={_value}

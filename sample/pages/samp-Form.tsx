@@ -21,21 +21,20 @@ const SCHEMA_SEARCH: FormSchemaType = {
         date: { type: "date", label: "date" },
         time: { type: "time", label: "time" },
         datetime: { type: "datetime", label: "datetime" },
-        range: {
-            type: "range",
-            label: "range",
-            rangebutton: 0,
-            schema: {
-                start: {
-                    type: "date",
-                },
-                end: {
-                    type: "date",
-                },
-            },
+        file: { type: "file" },
+        daterange: {
+            type: "daterange",
+            label: "daterange",
+            start: { name: "start" },
+            end: { name: "end" },
+            rangeButton: 0,
         },
-        file: {
-            type: "file",
+        timerange: {
+            type: "timerange",
+            label: "timerange",
+            start: { name: "start" },
+            end: { name: "end" },
+            rangeButton: 0,
         },
     },
 };
@@ -105,7 +104,10 @@ export const SampleForm = () => {
                             <Group.Control {...schema.datetime} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...schema.range} controlSize={10} />
+                            <Group.Control {...schema.daterange} controlSize={10} />
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...schema.timerange} controlSize={10} />
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...schema.file} />
@@ -120,6 +122,9 @@ export const SampleForm = () => {
             </Group>
             <button onClick={(e) => console.log(getValues())}>asd</button>
             <button onClick={(e) => console.log(setValue("date", new Date()))}>asd</button>
+            <button onClick={(e) => setSchema("text", { type: "select" })}>asd</button>
+            <button onClick={(e) => setEditable(true)}>asd</button>
+            <button onClick={(e) => setEditable(false)}>asd</button>
         </Layout>
     );
 };

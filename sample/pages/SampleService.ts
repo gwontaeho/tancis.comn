@@ -35,8 +35,7 @@ export const SCHEMA_FORM: FormSchemaType = {
         _con34: {
             type: "range",
             label: "검색조건 3",
-            rangebutton: 0,
-            schema: { con3: { type: "date", label: "검색조건 1" }, con4: { type: "date", label: "검색조건 2" } },
+            rangeButton: 0,
         },
     },
 };

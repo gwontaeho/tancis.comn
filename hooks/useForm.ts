@@ -11,12 +11,10 @@ export type FormRulesType = Partial<{
     pattern: RegExp;
     validate: (value: FormFieldValueType, formValues: FormValuesType) => void;
 }>;
-
 export type FormFieldNameType = string;
 export type FormFieldValueType = any;
 export type FormValuesType = Record<FormFieldNameType, FormFieldValueType>;
 export type FormSchemaType = { id: string; schema: FormControlSchemaType };
-
 type FormControlSchemaType = Record<string, GroupControlProps>;
 type UseFormProps = { defaultSchema: FormSchemaType; values?: object };
 
@@ -81,30 +79,25 @@ export const useForm = (props: UseFormProps) => {
         if (!s) return undefined;
         return Object.fromEntries(
             Object.entries(s).map(([key, value]: any) => {
-                const { schema, required, min, max, minLength, maxLength, pattern, validate, ...rest } = value;
-
-                const rules = {
-                    required,
-                    min,
-                    max,
-                    minLength,
-                    maxLength,
-                    pattern,
-                    validate,
-                };
-
                 return [
                     key,
-                    {
-                        ...rest,
-                        name: key,
-                        invalid: errors[key],
-                        schema: getSchema(schema),
-                        control,
-                        setValue,
-                        getValues,
-                        rules,
-                    },
+                    value.type === "date" ||
+                    value.type === "time" ||
+                    value.type === "datetime" ||
+                    value.type === "daterange" ||
+                    value.type === "timerange"
+                        ? {
+                              ...value,
+                              //   name: key,
+                              ...register(key),
+
+                              invalid: errors[key],
+                          }
+                        : {
+                              ...value,
+                              ...register(key),
+                              invalid: errors[key],
+                          },
                 ];
             })
         );

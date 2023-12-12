@@ -1,6 +1,6 @@
 import React from "react";
 
-type ValuesType = {
+type Values = {
     value?: string;
     formattedValue?: string;
 };
@@ -11,7 +11,7 @@ export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & 
     decimalScale?: number;
     thousandSeparator?: boolean;
     letterCase?: "upper" | "lower";
-    onValueChange?: (values?: ValuesType) => void;
+    onValueChange?: (values?: Values) => void;
 };
 
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(
@@ -33,7 +33,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const REG_NUMBER = /^[0-9]+$/;
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            let v: ValuesType = { value: e.target.value, formattedValue: "" };
+            let v: Values = { value: e.target.value, formattedValue: "" };
             handleLowerCase(e, v);
             handleUpperCase(e, v);
             handleNumber(e);
@@ -44,14 +44,14 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             if (onChange) onChange(e);
         };
 
-        const handleLowerCase = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
+        const handleLowerCase = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
             if (letterCase !== "lower") return;
             e.target.value = e.target.value.toLowerCase();
             v.value = e.target.value;
             v.formattedValue = e.target.value;
         };
 
-        const handleUpperCase = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
+        const handleUpperCase = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
             if (letterCase !== "upper") return;
             e.target.value = e.target.value.toUpperCase();
             v.value = e.target.value;
@@ -64,7 +64,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
                 e.target.value = e.target.value.replaceAll(/[\D]/g, "");
         };
 
-        const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
+        const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
             if (decimalScale === undefined) return;
 
             const int = e.target.value.split(".")[0];
@@ -74,7 +74,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
-        const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
+        const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
             if (!thousandSeparator) return;
 
             const int = e.target.value.split(".")[0];
@@ -84,7 +84,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
-        const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: ValuesType) => {
+        const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
             if (decimalScale !== undefined || thousandSeparator) return;
             if (mask === undefined) return;
             const oldValue = e.target.value;

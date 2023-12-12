@@ -14,26 +14,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckBoxProps>(
         return (
             <div className="flex flex-wrap w-fit">
                 {Array.isArray(options) &&
-                    options.map(({ label, value }, index) => {
+                    options.map(({ label, value }) => {
                         return (
                             <div key={props.name + "." + value} className="flex items-center h-7 space-x-1 mr-3">
-                                <input
-                                    {...rest}
-                                    ref={ref}
-                                    type="checkbox"
-                                    value={value}
-                                    onChange={(e) => {
-                                        if (onChange === undefined) return;
-                                        const valueCopy = [...(props.value || [])];
-
-                                        valueCopy[index] = e.target.checked ? e.target.value : null;
-
-                                        onChange(valueCopy);
-
-                                        console.log(e.target.checked);
-                                        console.log(e.target.value);
-                                    }}
-                                />
+                                <input {...rest} ref={ref} type="checkbox" value={value} />
                                 {label && <label>{label}</label>}
                             </div>
                         );

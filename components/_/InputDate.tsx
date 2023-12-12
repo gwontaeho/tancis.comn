@@ -4,12 +4,14 @@ import { Icon } from "@/com/components";
 
 export type InputDateProps = {
     value?: Date | null;
-    onChange?: (date?: Date | null) => void;
+    onChange?: (...args: any) => void;
 };
 
 export const InputDate = (props: InputDateProps) => {
     const { value, onChange } = props;
     const [_value, _setValue] = useState<Date | null | undefined>(value);
+
+    console.log(props.onChange);
 
     useEffect(() => {
         if (value?.getTime() === _value?.getTime()) return;
@@ -19,7 +21,7 @@ export const InputDate = (props: InputDateProps) => {
     useEffect(() => {
         if (!onChange) return;
         if (value?.getTime() === _value?.getTime()) return;
-        onChange(_value);
+        onChange({ target: { name: "date", value: _value } });
     }, [_value]);
 
     const _onChange = (date: Date) => {
