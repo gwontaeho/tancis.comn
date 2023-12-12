@@ -9,6 +9,9 @@ import { SampleFormControlCheckbox } from "@/com/sample/pages/samp-FormControlCh
 import { SampleFormControlTextarea } from "@/com/sample/pages/samp-FormControlTextarea";
 import { SampleFormControlDate } from "@/com/sample/pages/samp-FormControlDate";
 import { SampleFormControlTime } from "@/com/sample/pages/samp-FormControlTime";
+import { SampleFormControlDatetime } from "@/com/sample/pages/samp-FormControlDatetime";
+import { SampleFormControlRange } from "@/com/sample/pages/samp-FormControlRange";
+import { SampleFormControlFile } from "@/com/sample/pages/samp-FormControlFile";
 
 import { SampleForm } from "@/com/sample/pages/samp-Form";
 import { SampleTab } from "@/com/sample/pages/samp-Tab";
@@ -33,9 +36,9 @@ export const SampleMain = () => {
             <Route path="/formcontroltextarea" element={<SampleFormControlTextarea />} />
             <Route path="/formcontroldate" element={<SampleFormControlDate />} />
             <Route path="/formcontroltime" element={<SampleFormControlTime />} />
-            <Route path="/formcontroldatetime" element={<SampleFormControlRadio />} />
-            <Route path="/formcontrolbetween" element={<SampleFormControlRadio />} />
-            <Route path="/formcontrolfile" element={<SampleFormControlRadio />} />
+            <Route path="/formcontroldatetime" element={<SampleFormControlDatetime />} />
+            <Route path="/formcontrolrange" element={<SampleFormControlRange />} />
+            <Route path="/formcontrolfile" element={<SampleFormControlFile />} />
 
             <Route path="/form" element={<SampleForm />} />
             <Route path="/tab" element={<SampleTab />} />

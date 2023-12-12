@@ -47,15 +47,15 @@ export const SampleRoutes = [
                             },
                             {
                                 name: "Datetime",
-                                to: "/formcontrolradio",
+                                to: "/formcontroldatetime",
                             },
                             {
-                                name: "Between",
-                                to: "/formcontrolradio",
+                                name: "Range",
+                                to: "/formcontrolrange",
                             },
                             {
                                 name: "File",
-                                to: "/formcontrolradio",
+                                to: "/formcontrolfile",
                             },
                         ],
                     },

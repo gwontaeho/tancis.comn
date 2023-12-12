@@ -34,8 +34,6 @@ export type FormControlType =
     | "time"
     | "datetime"
     | "file"
-    | "daterange"
-    | "timerange"
     | "range";
 
 const SIZES = {

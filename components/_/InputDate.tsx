@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Icon } from "@/com/components";
 
 export type InputDateProps = {
     value?: Date | null;
-    onChange?: any;
+    onChange?: (date?: Date | null) => void;
 };
 
 export const InputDate = (props: InputDateProps) => {
     const { value, onChange } = props;
-
-    const [_value, _setValue] = React.useState<Date | null | undefined>();
+    const [_value, _setValue] = useState<Date | null | undefined>(value);
 
     useEffect(() => {
         if (value?.getTime() === _value?.getTime()) return;
@@ -26,7 +25,6 @@ export const InputDate = (props: InputDateProps) => {
     const _onChange = (date: Date) => {
         _setValue(date);
     };
-    console.log(value);
 
     return (
         <div className="relative w-full [&>div]:w-full">

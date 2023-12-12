@@ -1,8 +1,10 @@
 import React from "react";
 import { FormattedInput, FormattedInputProps } from "@/com/components/_";
 
-export const InputNumber = React.forwardRef<HTMLInputElement, FormattedInputProps>(
-    (props: FormattedInputProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+type InputNumberProps = FormattedInputProps;
+
+export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
+    (props: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         return (
             <FormattedInput
                 {...props}
