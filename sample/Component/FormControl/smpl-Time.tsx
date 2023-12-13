@@ -1,4 +1,4 @@
-import { Page, Group } from "@/com/components";
+import { Page, Group } from "@/comn/components";
 
 export const SampleFormControlTime = () => {
     return (

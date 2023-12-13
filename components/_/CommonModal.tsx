@@ -4,8 +4,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import classNames from "classnames";
 import { motion } from "framer-motion";
 import Draggable from "react-draggable";
-import { IconButton, Button } from "@/com/components";
-import { modalState } from "@/com/recoil";
+import { IconButton, Button } from "@/comn/components";
+import { modalState } from "@/comn/recoil";
 
 const MODAL_SIZES = {
     sm: "max-w-sm",

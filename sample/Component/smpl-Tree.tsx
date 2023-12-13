@@ -1,4 +1,4 @@
-import { Layout, Group, Tree } from "@/com/components";
+import { Layout, Group, Tree } from "@/comn/components";
 
 const treeviewItems = () => [
     {

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useWijmo, useFetch } from "@/com/hooks";
-import { Page, Wijmo, Group, Layout, Button, Tab } from "@/com/components";
+import { useWijmo, useFetch } from "@/comn/hooks";
+import { Page, Wijmo, Group, Layout, Button, Tab } from "@/comn/components";
 import { SCHEMA_GRID_COMPONENTS, APIS } from "./smpl-Service";
 
 /**

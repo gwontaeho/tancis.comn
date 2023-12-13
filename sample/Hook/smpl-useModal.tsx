@@ -1,5 +1,5 @@
-import { useModal } from "@/com/hooks";
-import { Button } from "@/com/components";
+import { useModal } from "@/comn/hooks";
+import { Button } from "@/comn/components";
 
 // export type ModalProps = {
 //     id?: string;

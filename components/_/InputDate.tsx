@@ -1,6 +1,6 @@
 import { useState, useEffect, forwardRef } from "react";
 import ReactDatePicker from "react-datepicker";
-import { Icon } from "@/com/components";
+import { Icon } from "@/comn/components";
 import { ControllerWrapper } from "./ControllerWrapper";
 import { Control } from "react-hook-form";
 

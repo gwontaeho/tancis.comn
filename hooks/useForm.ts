@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as rhf from "react-hook-form";
-import { GroupControlProps } from "@/com/components";
+import { GroupControlProps } from "@/comn/components";
 
 export type FormRulesType = Partial<{
     required: Boolean;

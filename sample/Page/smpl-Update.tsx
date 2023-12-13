@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Page, Wijmo, Group, Layout, Tab, Button } from "@/com/components";
-import { useForm, useWijmo, useFetch, useModal, useToast, FormValuesType } from "@/com/hooks";
+import { Page, Wijmo, Group, Layout, Tab, Button } from "@/comn/components";
+import { useForm, useWijmo, useFetch, useModal, useToast, FormValuesType } from "@/comn/hooks";
 import { SCHEMA_FORM_REGIST, SCHEMA_GRID_COMPONENTS_REGIST, APIS } from "./smpl-Service";
 
 const options1 = [

@@ -2,7 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { v4 as uuid } from "uuid";
-import { InputTime, InputTimeProps } from "@/com/components/_";
+import { InputTime, InputTimeProps } from "@/comn/components/_";
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
     [

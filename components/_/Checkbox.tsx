@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControlOptionsType } from "@/com/components";
+import { FormControlOptionsType } from "@/comn/components";
 
 type CheckBoxProps = React.InputHTMLAttributes<HTMLInputElement> & {
     options?: FormControlOptionsType;

@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
-import { Collapse, Icon } from "@/com/components";
-import { R } from "@/com";
+import { Collapse, Icon } from "@/comn/components";
+import { R } from "@/comn";
 
 type NavItemProps = {
     children?: any[];

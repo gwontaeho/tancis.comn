@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { PopupLayout } from "@/com/layouts/PopupLayout";
+import { PopupLayout } from "@/comn/layouts/PopupLayout";
 
 export const Popup = () => {
     return (

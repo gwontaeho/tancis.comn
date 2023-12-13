@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import { Base } from "@/com";
+import { Base } from "@/comn";
 import { Main } from "@/tancis/Main";
 import { Popup } from "@/tancis/Popup";
 

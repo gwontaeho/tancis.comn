@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { useSetRecoilState } from "recoil";
-import { toastState } from "@/com/recoil";
+import { toastState } from "@/comn/recoil";
 
 type toastProps = {
     content?: string;

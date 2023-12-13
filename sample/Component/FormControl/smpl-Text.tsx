@@ -1,4 +1,4 @@
-import { Page, Group, FormControl } from "@/com/components";
+import { Page, Group, FormControl } from "@/comn/components";
 
 export const SampleFormControlText = () => {
     return (

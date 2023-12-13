@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton } from "@/com/components/IconButton";
+import { IconButton } from "@/comn/components/IconButton";
 
 type InputPasswordProps = React.InputHTMLAttributes<HTMLInputElement>;
 

@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useForm, useFetch, useWijmo, useModal, useCondition, usePopup } from "@/com/hooks";
+import { useForm, useFetch, useWijmo, useModal, useCondition, usePopup } from "@/comn/hooks";
 import {
     Page,
     Group,
     Layout,
     //  Wijmo,
     Button,
-} from "@/com/components";
-import { Wijmo } from "@/com/components/Wijmo.v2/Wijmo.v2";
+} from "@/comn/components";
+import { Wijmo } from "@/comn/components/Wijmo.v2/Wijmo.v2";
 import { OPTIONS, SCHEMA_FORM, SCHEMA_GRID, APIS, SCHEMA_GRID_COMPONENTS } from "./smpl-Service";
-import { FormValuesType } from "@/com/hooks";
+import { FormValuesType } from "@/comn/hooks";
 
 export const PopupSearch = () => {
     const { postMessage } = usePopup();

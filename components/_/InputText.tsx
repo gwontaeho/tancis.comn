@@ -1,5 +1,5 @@
 import React from "react";
-import { FormattedInput, FormattedInputProps } from "@/com/components/_";
+import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
 
 type InputTextProps = FormattedInputProps;
 

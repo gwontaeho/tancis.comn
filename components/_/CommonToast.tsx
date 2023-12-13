@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { motion } from "framer-motion";
 
-import { toastState } from "@/com/recoil";
+import { toastState } from "@/comn/recoil";
 
 export type ToastProps = {
     id: string;

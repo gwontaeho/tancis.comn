@@ -1,7 +1,7 @@
 import React from "react";
 import { RecoilRoot, atom } from "recoil";
-import { ModalProps, ToastProps } from "@/com/components/_";
-import i18n from "@/com/locales/i18n";
+import { ModalProps, ToastProps } from "@/comn/components/_";
+import i18n from "@/comn/locales/i18n";
 
 const theme = {
     isDark:

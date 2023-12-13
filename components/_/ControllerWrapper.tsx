@@ -1,6 +1,6 @@
 import React from "react";
 import { useController, Control } from "react-hook-form";
-import { FormRulesType } from "@/com/hooks";
+import { FormRulesType } from "@/comn/hooks";
 
 export type ControllerWrapperProps = {
     children: React.ReactElement;

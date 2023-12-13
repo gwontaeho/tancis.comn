@@ -1,31 +1,31 @@
 import { Routes, Route } from "react-router-dom";
-import { MainLayout } from "@/com/layouts/MainLayout";
+import { MainLayout } from "@/comn/layouts/MainLayout";
 
-import { SampleFormControlText } from "@/com/sample/Component/FormControl/smpl-Text";
-import { SampleFormControlNumber } from "@/com/sample/Component/FormControl/smpl-Number";
-import { SampleFormControlPassword } from "@/com/sample/Component/FormControl/smpl-Password";
-import { SampleFormControlSelect } from "@/com/sample/Component/FormControl/smpl-Select";
-import { SampleFormControlRadio } from "@/com/sample/Component/FormControl/smpl-Radio";
-import { SampleFormControlCheckbox } from "@/com/sample/Component/FormControl/smpl-Checkbox";
-import { SampleFormControlTextarea } from "@/com/sample/Component/FormControl/smpl-Textarea";
-import { SampleFormControlDate } from "@/com/sample/Component/FormControl/smpl-Date";
-import { SampleFormControlTime } from "@/com/sample/Component/FormControl/smpl-Time";
-import { SampleFormControlDatetime } from "@/com/sample/Component/FormControl/smpl-Datetime";
-import { SampleFormControlRange } from "@/com/sample/Component/FormControl/smpl-Range";
-import { SampleFormControlFile } from "@/com/sample/Component/FormControl/smpl-File";
+import { SampleFormControlText } from "@/comn/sample/Component/FormControl/smpl-Text";
+import { SampleFormControlNumber } from "@/comn/sample/Component/FormControl/smpl-Number";
+import { SampleFormControlPassword } from "@/comn/sample/Component/FormControl/smpl-Password";
+import { SampleFormControlSelect } from "@/comn/sample/Component/FormControl/smpl-Select";
+import { SampleFormControlRadio } from "@/comn/sample/Component/FormControl/smpl-Radio";
+import { SampleFormControlCheckbox } from "@/comn/sample/Component/FormControl/smpl-Checkbox";
+import { SampleFormControlTextarea } from "@/comn/sample/Component/FormControl/smpl-Textarea";
+import { SampleFormControlDate } from "@/comn/sample/Component/FormControl/smpl-Date";
+import { SampleFormControlTime } from "@/comn/sample/Component/FormControl/smpl-Time";
+import { SampleFormControlDatetime } from "@/comn/sample/Component/FormControl/smpl-Datetime";
+import { SampleFormControlRange } from "@/comn/sample/Component/FormControl/smpl-Range";
+import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
 
-import { SampleForm } from "@/com/sample/Component/smpl-Form";
-import { SampleTab } from "@/com/sample/Component/smpl-Tab";
-import { SampleTree } from "@/com/sample/Component/smpl-Tree";
-import { SampleTable } from "@/com/sample/Component/smpl-Table";
-import { SampleWijmo } from "@/com/sample/Component/smpl-Wijmo";
+import { SampleForm } from "@/comn/sample/Component/smpl-Form";
+import { SampleTab } from "@/comn/sample/Component/smpl-Tab";
+import { SampleTree } from "@/comn/sample/Component/smpl-Tree";
+import { SampleTable } from "@/comn/sample/Component/smpl-Table";
+import { SampleWijmo } from "@/comn/sample/Component/smpl-Wijmo";
 
-import { SampleUseModal } from "@/com/sample/Hook/smpl-useModal";
+import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 
-import { SampleList } from "@/com/sample/Page/smpl-List";
-import { SampleDetail } from "@/com/sample/Page/smpl-Detail";
-import { SampleRegist } from "@/com/sample/Page/smpl-Regist";
-import { SampleUpdate } from "@/com/sample/Page/smpl-Update";
+import { SampleList } from "@/comn/sample/Page/smpl-List";
+import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
+import { SampleRegist } from "@/comn/sample/Page/smpl-Regist";
+import { SampleUpdate } from "@/comn/sample/Page/smpl-Update";
 
 export const SampleMain = () => {
     return (

@@ -1,4 +1,4 @@
-import { Layout, Tab } from "@/com/components";
+import { Layout, Tab } from "@/comn/components";
 import { SampleForm } from "./smpl-Form";
 import { SampleTree } from "./smpl-Tree";
 

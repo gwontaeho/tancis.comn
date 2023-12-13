@@ -1,6 +1,6 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
-import { Icon, FormControlOptionsType } from "@/com/components";
+import { Icon, FormControlOptionsType } from "@/comn/components";
 
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
     options?: FormControlOptionsType;

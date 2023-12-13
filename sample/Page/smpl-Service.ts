@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FormSchemaType } from "@/com/hooks";
+import { FormSchemaType } from "@/comn/hooks";
 
 const instance = axios.create({
     baseURL: "http://183.107.31.131:8000/template",

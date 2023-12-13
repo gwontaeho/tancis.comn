@@ -1,7 +1,7 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
-import { Icon } from "@/com/components";
+import { Icon } from "@/comn/components";
 
 type NodeType = { path?: string; label: string };
 

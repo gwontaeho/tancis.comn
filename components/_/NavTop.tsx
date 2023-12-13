@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { R } from "@/com";
-import { Icon } from "@/com/components/Icon";
+import { R } from "@/comn";
+import { Icon } from "@/comn/components/Icon";
 
 type NavItemProps = {
     children?: any[];

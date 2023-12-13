@@ -1,5 +1,5 @@
-import { Page, Group } from "@/com/components";
-import { utils } from "@/com/utils";
+import { Page, Group } from "@/comn/components";
+import { utils } from "@/comn/utils";
 
 export const SampleFormControlRadio = () => {
     return (

@@ -2,7 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { v4 as uuid } from "uuid";
-import { InputDate, InputDateProps } from "@/com/components/_";
+import { InputDate, InputDateProps } from "@/comn/components/_";
 import { Control } from "react-hook-form";
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "@/com/hooks";
-import { Icon, FormControl } from "@/com/components";
-import logo_tancis from "@/com/assets/imgs/logo_tancis.png";
+import { useTheme } from "@/comn/hooks";
+import { Icon, FormControl } from "@/comn/components";
+import logo_tancis from "@/comn/assets/imgs/logo_tancis.png";
 import { NavTop } from "./NavTop";
 
 const ModeControl = () => {

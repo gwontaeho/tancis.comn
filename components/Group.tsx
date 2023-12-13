@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import classNames from "classnames";
-import { FormControl, FormControlProps } from "@/com/components";
+import { FormControl, FormControlProps } from "@/comn/components";
 
 const SIZES = {
     1: "col-span-1",

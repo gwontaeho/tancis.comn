@@ -1,7 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 import React from "react";
 import classNames from "classnames";
-import { Icon, IconsType, Tooltip } from "@/com/components";
+import { Icon, IconsType, Tooltip } from "@/comn/components";
 import {
     InputText,
     InputNumber,
@@ -17,7 +17,7 @@ import {
     InputDaterangeProps,
     InputDaterange,
     InputTimerange,
-} from "@/com/components/_";
+} from "@/comn/components/_";
 
 export type FormControlType =
     | "text"

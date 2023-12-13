@@ -1,92 +1,93 @@
 import React, { useRef, useState } from "react";
 import classNames from "classnames";
 import { v4 as uuid } from "uuid";
-import { Collapse, Icon } from "@/com/components";
+import { Collapse, Icon } from "@/comn/components";
 
 type TreeItemProps = {
-  children?: React.ReactNode;
-  name: string;
-  parent: string[];
-  _key: string;
+    children?: React.ReactNode;
+    name: string;
+    parent: string[];
+    _key: string;
 };
 
 type TreeProps = {
-  data?: any;
+    data?: any;
 };
 
 const TreeItem = (props: TreeItemProps) => {
-  const { children, name, parent, _key } = props;
+    const { children, name, parent, _key } = props;
 
-  const childrenRef = useRef<HTMLUListElement>(null);
-  const [open, setOpen] = useState(false);
+    const childrenRef = useRef<HTMLUListElement>(null);
+    const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
-    setOpen((prev) => !prev);
-  };
+    const handleClick = () => {
+        setOpen((prev) => !prev);
+    };
 
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.checked) {
-      parent.forEach((_) => {
-        (document.getElementsByName(_)[0] as HTMLInputElement).indeterminate = true;
-      });
-    }
+    const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.checked) {
+            parent.forEach((_) => {
+                (document.getElementsByName(_)[0] as HTMLInputElement).indeterminate = true;
+            });
+        }
 
-    if (children) {
-      if (childrenRef.current === null) return;
-      Array.from(childrenRef.current.getElementsByTagName("input")).forEach((_) => {
-        _.checked = e.target.checked;
-        _.indeterminate = false;
-      });
-    }
-  };
+        if (children) {
+            if (childrenRef.current === null) return;
+            Array.from(childrenRef.current.getElementsByTagName("input")).forEach((_) => {
+                _.checked = e.target.checked;
+                _.indeterminate = false;
+            });
+        }
+    };
 
-  return (
-    <li className="font-mono">
-      <button
-        className={classNames("h-7 flex items-center space-x-1.5", { "ml-[1.125rem]": !children })}
-        onClick={handleClick}>
-        {children && <Icon icon="right" size="xs" className={classNames("transition")} />}
-        <input
-          name={_key}
-          type="checkbox"
-          className="w-3"
-          onClick={(e) => e.stopPropagation()}
-          onChange={handleCheck}
-        />
-        <p>{name}</p>
-      </button>
-      {Array.isArray(children) && (
-        <Collapse open={open}>
-          <ul ref={childrenRef} className="pl-[1.125rem]">
-            {children.map((child) => {
-              return <TreeItem _key={child.key} {...child} />;
-            })}
-          </ul>
-        </Collapse>
-      )}
-    </li>
-  );
+    return (
+        <li className="font-mono">
+            <button
+                className={classNames("h-7 flex items-center space-x-1.5", { "ml-[1.125rem]": !children })}
+                onClick={handleClick}
+            >
+                {children && <Icon icon="right" size="xs" className={classNames("transition")} />}
+                <input
+                    name={_key}
+                    type="checkbox"
+                    className="w-3"
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={handleCheck}
+                />
+                <p>{name}</p>
+            </button>
+            {Array.isArray(children) && (
+                <Collapse open={open}>
+                    <ul ref={childrenRef} className="pl-[1.125rem]">
+                        {children.map((child) => {
+                            return <TreeItem _key={child.key} {...child} />;
+                        })}
+                    </ul>
+                </Collapse>
+            )}
+        </li>
+    );
 };
 
 export const Tree = (props: TreeProps) => {
-  const { data } = props;
+    const { data } = props;
 
-  const dataWithKey = (data: any, parent: any = []) => {
-    return data.map((_: any) => {
-      let withKey = { ..._ };
-      const key = uuid();
-      withKey.key = key;
-      withKey.parent = parent;
-      if (_.children) withKey.children = dataWithKey(_.children, [...parent, key]);
-      return withKey;
-    });
-  };
+    const dataWithKey = (data: any, parent: any = []) => {
+        return data.map((_: any) => {
+            let withKey = { ..._ };
+            const key = uuid();
+            withKey.key = key;
+            withKey.parent = parent;
+            if (_.children) withKey.children = dataWithKey(_.children, [...parent, key]);
+            return withKey;
+        });
+    };
 
-  return (
-    <ul className="w-fit">
-      {dataWithKey(data)?.map((child: any) => {
-        return <TreeItem _key={child.key} {...child} />;
-      })}
-    </ul>
-  );
+    return (
+        <ul className="w-fit">
+            {dataWithKey(data)?.map((child: any) => {
+                return <TreeItem _key={child.key} {...child} />;
+            })}
+        </ul>
+    );
 };

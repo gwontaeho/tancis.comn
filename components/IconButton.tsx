@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
-import { Icon } from "@/com/components/Icon";
-import { IconProps } from "@/com/components";
+import { Icon } from "@/comn/components/Icon";
+import { IconProps } from "@/comn/components";
 
 type IconButtomProps = React.ButtonHTMLAttributes<HTMLButtonElement> & IconProps;
 

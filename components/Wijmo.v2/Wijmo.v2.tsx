@@ -9,10 +9,10 @@ import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import { Selector } from "@grapecity/wijmo.grid.selector";
 import * as wjcXlsx from "@grapecity/wijmo.xlsx";
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
-import { Pagination, Button, Icon, FormControl, Tree } from "@/com/components";
+import { Pagination, Button, Icon, FormControl, Tree } from "@/comn/components";
 import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from "@grapecity/wijmo.input";
 
-import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from "@/com/hooks";
+import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from "@/comn/hooks";
 import dayjs from "dayjs";
 
 // type WijmoOptionType = {

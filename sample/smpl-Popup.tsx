@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import { PopupLayout } from "@/com/layouts/PopupLayout";
+import { PopupLayout } from "@/comn/layouts/PopupLayout";
 
-import { PopupSearch } from "@/com/sample/Page/smpl-List";
+import { PopupSearch } from "@/comn/sample/Page/smpl-List";
 
 export const SamplePopup = () => {
     return (

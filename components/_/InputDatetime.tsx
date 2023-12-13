@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ReactDatePicker from "react-datepicker";
-import { Icon } from "@/com/components";
+import { Icon } from "@/comn/components";
 
 type InputDateTimeProps = {
     value?: Date | null;

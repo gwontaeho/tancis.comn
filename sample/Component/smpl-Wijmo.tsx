@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useWijmo, useToast } from "@/com/hooks";
-import { Group, Page } from "@/com/components";
-import { Wijmo } from "@/com/components/Wijmo.v2/Wijmo.v2";
+import { useWijmo, useToast } from "@/comn/hooks";
+import { Group, Page } from "@/comn/components";
+import { Wijmo } from "@/comn/components/Wijmo.v2/Wijmo.v2";
 
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
-import { utils } from "@/com/utils";
+import { utils } from "@/comn/utils";
 import { useEffect } from "react";
 
 const instance = axios.create({

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Group, Button, Layout, FormControl } from "@/com/components";
-import { FormSchemaType, FormValuesType } from "@/com/hooks";
-import { useForm } from "@/com/hooks";
+import { Group, Button, Layout, FormControl } from "@/comn/components";
+import { FormSchemaType, FormValuesType } from "@/comn/hooks";
+import { useForm } from "@/comn/hooks";
 
 const SCHEMA_SEARCH: FormSchemaType = {
     id: "search",

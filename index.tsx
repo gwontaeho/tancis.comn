@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
-import RecoilProvider from "@/com/recoil";
-import AuthProvider from "@/com/auth";
-import { SampleRoutes } from "@/com/sample/smpl-Routes";
+import RecoilProvider from "@/comn/recoil";
+import AuthProvider from "@/comn/auth";
+import { SampleRoutes } from "@/comn/sample/smpl-Routes";
 
-import { SampleMain } from "@/com/sample/smpl-Main";
-import { SamplePopup } from "@/com/sample/smpl-Popup";
-import { CommonPopup } from "@/com/popup/Popup";
+import { SampleMain } from "@/comn/sample/smpl-Main";
+import { SamplePopup } from "@/comn/sample/smpl-Popup";
+import { CommonPopup } from "@/comn/popup/Popup";
 
 import { TancisRoutes } from "@/tancis/Routes";
 
-import { CommonModal, CommonToast } from "@/com/components/_";
+import { CommonModal, CommonToast } from "@/comn/components/_";
 
 export const Base = ({ children }: { children?: React.ReactNode }) => {
     return (
