@@ -9,7 +9,7 @@ import { SampleMain } from "@/comn/sample/smpl-Main";
 import { SamplePopup } from "@/comn/sample/smpl-Popup";
 import { CommonPopup } from "@/comn/popup/Popup";
 
-import { TancisRoutes } from "@/tancis/Routes";
+import { TancisRoutes } from "@/tra/tancis/Routes";
 
 import { CommonModal, CommonToast } from "@/comn/components/_";
 
