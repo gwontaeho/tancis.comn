@@ -1,4 +1,4 @@
-import "./com/assets/styles/index.css";
+import "./comn/assets/styles/index.css";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
