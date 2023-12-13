@@ -11,11 +11,13 @@ export const SampleIcon = () => {
             {(Object.keys(icons) as IconsType[]).map((icon) => {
                 return (
                     <div
-                        className="cursor-copy border rounded p-4 flex flex-col items-center justify-center space-y-4"
+                        key={`smpl-icon-${icon}`}
+                        className="cursor-pointer border rounded p-2 flex flex-col items-center justify-center space-y-4"
                         onClick={() => handleClick(icon)}
                     >
                         <div>{icon}</div>
                         <Icon icon={icon} />
+                        <button>복사</button>
                     </div>
                 );
             })}
