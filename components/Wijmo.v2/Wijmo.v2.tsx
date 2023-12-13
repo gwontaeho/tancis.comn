@@ -10,11 +10,21 @@ import { Selector } from "@grapecity/wijmo.grid.selector";
 import * as wjcXlsx from "@grapecity/wijmo.xlsx";
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
 import { Pagination, Button, Icon, FormControl, Tree } from "@/comn/components";
-import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from "@grapecity/wijmo.input";
+import {
+    InputDate,
+    InputTime,
+    InputDateTime,
+    InputNumber,
+    InputMask,
+    ComboBox,
+} from "@grapecity/wijmo.input";
 
 import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from "@/comn/hooks";
 import dayjs from "dayjs";
-
+import { setLicenseKey } from "@grapecity/wijmo";
+setLicenseKey(
+    "singlewindow.info,725598597875341#B0JoIIyVmdiwSZzxWYmpjIyNHZisnOiwmbBJye0ICRiwiI34zZ7h5LFhFdKFUa6czTpd4SCFFb7YXZ8V4KDZGV9A7MRxWSllkaitiSjh4cCBlWSZENWdmNzNUeItEdtV5L6ZlcxN7M8hjb0R6V8czQyBFNSZXd6kkW62mR8FXN8tCT6hTSxxkeNFzNz3meLRkRDdHU6AnTu9WNZJkURVFMyoGSzUGT5k6VwATQw2SYwknQvJUMXxkMQtCZNZme8k6cWtSOuNEWzpXWBJFblxGT5Vma4IXOLdVW9F7U4cXdaVjTrQ7UJRUZIJVZzN7KxQjMzgkdCZGZlJHMpNlQt9WVOdzTpJXe9MUMCFTbmRjc9AFTzMlWCJWWOhXM6RmQjhFWvh5N6FDbIpkVaF5TEB5ZzVGcNFVRotGR9VldnFjc7QUO5l7NK56alJVdKpnSK3Wd0J4VDhTYTlDZu56KzdkZhVGdjV6RycjUMlWcrVzRiBDbS9GestSZENkI0IyUiwiI5QjMyIkMFFjI0ICSiwCMxgDNxAzMzEjM0IicfJye35XX3JSSwIjUiojIDJCLi86bpNnblRHeFBCI4VWZoNFelxmRg2Wbql6ViojIOJyes4nI5kkTRJiOiMkIsIibvl6cuVGd8VEIgIXZ7VWaWRncvBXZSBybtpWaXJiOi8kI1xSfis4N8gkI0IyQiwiIu3Waz9WZ4hXRgAydvJVa4xWdNBybtpWaXJiOi8kI1xSfiQjR6QkI0IyQiwiIu3Waz9WZ4hXRgACUBx4TgAybtpWaXJiOi8kI1xSfiMzQwIkI0IyQiwiIlJ7bDBybtpWaXJiOi8kI1xSfiUFO7EkI0IyQiwiIu3Waz9WZ4hXRgACdyFGaDxWYpNmbh9WaGBybtpWaXJiOi8kI1tlOiQmcQJCLiYjMzMjNwAyNyETMzIDMyIiOiQncDJCLi2mZulmL73GZul6dlx6Zul6ciojIz5GRiwiIMqZ1pWZ1weJ1BiJ14qJ1de004O10VCK1pWZ1FKK18SI1ASr0ACr0tWr0iojIh94QiwiIxQzM5cDO7kTN8kTN5IzNiojIklkIs4XXbpjInxmZiwiIxY7MJAYM"
+);
 // type WijmoOptionType = {
 //     checkbox?: boolean;
 //     pagination?: "in" | "out";
@@ -43,7 +53,8 @@ type wijmoProps = {
 };
 
 export const Wijmo = (props: wijmoProps) => {
-    const { gridRef, contentRef, schema, data, size, page, setSize, setPage } = props;
+    const { gridRef, contentRef, schema, data, size, page, setSize, setPage } =
+        props;
 
     const [totalCount, setTotalCount] = useState<number>();
     const [_page, _setPage] = useState<number>(0);
@@ -52,13 +63,18 @@ export const Wijmo = (props: wijmoProps) => {
     useEffect(() => {
         // console.log("init start");
         // 1. initialize
-        if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true;
+        if (schema.options?.isReadOnly)
+            gridRef.current.control.isReadOnly = true;
         if (schema.options?.checkbox) new Selector(gridRef.current.control);
-        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
+        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(
+            schema.head
+        );
         // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
-        gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
+        gridRef.current.control.itemsSourceChanged.addHandler(
+            handleItemsSourceChanged
+        );
         // gridRef.current.control.cellEditEnding.addHandler((s: any, e: any) => {
         //     console.log(e);
         //     e.stayInEditMode = true;
@@ -71,10 +87,16 @@ export const Wijmo = (props: wijmoProps) => {
     useEffect(() => {
         // console.log("data set start");
         // 2. data setting
-        const content = data.content.map((_, i) => ({ ..._, __type: "origin", __index: uuid() }));
+        const content = data.content.map((_, i) => ({
+            ..._,
+            __type: "origin",
+            __index: uuid(),
+        }));
         contentRef.current = lodash.cloneDeep(content);
         gridRef.current.control.itemsSource = lodash.cloneDeep(content);
-        setTotalCount(schema.options?.pagination === "in" ? content.length : data.totCnt);
+        setTotalCount(
+            schema.options?.pagination === "in" ? content.length : data.totCnt
+        );
         // console.log("data set end");
     }, [data]);
 
@@ -101,8 +123,11 @@ export const Wijmo = (props: wijmoProps) => {
         const cellBinding = e.getColumn().binding;
         const cellValue = e.getRow().dataItem[cellBinding];
         const cellIndex = e.getRow().dataItem["__index"];
-        const originValue = contentRef.current?.find((origin: any) => origin.__index === cellIndex)[cellBinding];
-        if (cellValue !== originValue) return e.cell.classList.add("cell-changed");
+        const originValue = contentRef.current?.find(
+            (origin: any) => origin.__index === cellIndex
+        )[cellBinding];
+        if (cellValue !== originValue)
+            return e.cell.classList.add("cell-changed");
     };
 
     const handleItemsSourceChanged = (c: any) => {
@@ -188,11 +213,21 @@ export const Wijmo = (props: wijmoProps) => {
                 {schema.body.map((props, i) => {
                     const { colspan, cells } = props;
                     return (
-                        <wjGrid.MultiRowCellGroup key={"wijmo." + schema.id + "." + i} colspan={colspan}>
+                        <wjGrid.MultiRowCellGroup
+                            key={"wijmo." + schema.id + "." + i}
+                            colspan={colspan}
+                        >
                             {cells.map((cellProps, ii) => {
                                 return (
                                     <wjGrid.MultiRowCell
-                                        key={"wijmo." + schema.id + "." + i + "." + ii}
+                                        key={
+                                            "wijmo." +
+                                            schema.id +
+                                            "." +
+                                            i +
+                                            "." +
+                                            ii
+                                        }
                                         colspan={cellProps.colspan}
                                         binding={cellProps.binding}
                                     >

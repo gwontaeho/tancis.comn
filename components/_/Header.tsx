@@ -2,16 +2,34 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/comn/hooks";
 import { Icon, FormControl } from "@/comn/components";
-import logo_tancis from "@/comn/assets/imgs/logo_tancis.png";
 import { NavTop } from "./NavTop";
 
 const ModeControl = () => {
     const { theme, setTheme } = useTheme();
 
     return (
-        <button onClick={() => setTheme((prev) => ({ ...prev, isDark: prev.isDark === "false" ? "true" : "false" }))}>
+        <button
+            onClick={() =>
+                setTheme((prev) => ({
+                    ...prev,
+                    isDark: prev.isDark === "false" ? "true" : "false",
+                }))
+            }
+        >
             <Icon icon={theme.isDark === "true" ? "sun" : "moon"} />
         </button>
+    );
+};
+
+export const Logo = () => {
+    const path = `/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`;
+
+    return (
+        <img
+            src={path}
+            alt={process.env.REACT_APP_SYSTEM_GROUP_NAME}
+            title={process.env.REACT_APP_SYSTEM_GROUP_NAME}
+        />
     );
 };
 
@@ -29,7 +47,7 @@ export const Header = () => {
                         <Icon icon="menu" />
                     </button>
                     <div className="flex-1">
-                        <img src={logo_tancis} />
+                        <Logo />
                     </div>
                 </div>
                 <div className="flex flex-1 p-4">
@@ -42,7 +60,12 @@ export const Header = () => {
                             type="select"
                             value={theme.lang}
                             size="fit"
-                            onChange={(e: any) => setTheme((prev) => ({ ...prev, lang: e.target.value }))}
+                            onChange={(e: any) =>
+                                setTheme((prev) => ({
+                                    ...prev,
+                                    lang: e.target.value,
+                                }))
+                            }
                             options={[
                                 { label: "한국어", value: "ko" },
                                 { label: "영어", value: "en" },
