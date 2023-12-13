@@ -9,77 +9,78 @@ export const SampleRoutes = [
                 children: [
                     {
                         name: "FormControl",
+                        base: "/FormControl",
                         children: [
                             {
                                 name: "Text",
-                                to: "/formcontroltext",
+                                to: "/Text",
                             },
                             {
                                 name: "Number",
-                                to: "/formcontrolnumber",
+                                to: "/Number",
                             },
                             {
                                 name: "Password",
-                                to: "/formcontrolpassword",
+                                to: "/Password",
                             },
                             {
                                 name: "Select",
-                                to: "/formcontrolselect",
+                                to: "/Select",
                             },
                             {
                                 name: "Radio",
-                                to: "/formcontrolradio",
+                                to: "/Radio",
                             },
                             {
                                 name: "Checkbox",
-                                to: "/formcontrolcheckbox",
+                                to: "/Checkbox",
                             },
                             {
                                 name: "Textarea",
-                                to: "/formcontroltextarea",
+                                to: "/Textarea",
                             },
                             {
                                 name: "Date",
-                                to: "/formcontroldate",
+                                to: "/Date",
                             },
                             {
                                 name: "Time",
-                                to: "/formcontroltime",
+                                to: "/Time",
                             },
                             {
                                 name: "Datetime",
-                                to: "/formcontroldatetime",
+                                to: "/Datetime",
                             },
                             {
                                 name: "Range",
-                                to: "/formcontrolrange",
+                                to: "/Range",
                             },
                             {
                                 name: "File",
-                                to: "/formcontrolfile",
+                                to: "/File",
                             },
                         ],
                     },
                     {
                         name: "Table",
-                        to: "/table",
+                        to: "/Table",
                     },
                     {
                         name: "Form",
-                        to: "/form",
+                        to: "/Form",
                     },
 
                     {
                         name: "Tab",
-                        to: "/tab",
+                        to: "/Tab",
                     },
                     {
                         name: "Tree",
-                        to: "/tree",
+                        to: "/Tree",
                     },
                     {
                         name: "Wijmo",
-                        to: "/wijmo",
+                        to: "/Wijmo",
                     },
                 ],
             },

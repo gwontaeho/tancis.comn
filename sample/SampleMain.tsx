@@ -29,24 +29,24 @@ import { SampleUpdate } from "@/com/sample/Page/samp-Update";
 export const SampleMain = () => {
     return (
         <Routes>
-            <Route path="/formcontroltext" element={<SampleFormControlText />} />
-            <Route path="/formcontrolnumber" element={<SampleFormControlNumber />} />
-            <Route path="/formcontrolpassword" element={<SampleFormControlPassword />} />
-            <Route path="/formcontrolselect" element={<SampleFormControlSelect />} />
-            <Route path="/formcontrolradio" element={<SampleFormControlRadio />} />
-            <Route path="/formcontrolcheckbox" element={<SampleFormControlCheckbox />} />
-            <Route path="/formcontroltextarea" element={<SampleFormControlTextarea />} />
-            <Route path="/formcontroldate" element={<SampleFormControlDate />} />
-            <Route path="/formcontroltime" element={<SampleFormControlTime />} />
-            <Route path="/formcontroldatetime" element={<SampleFormControlDatetime />} />
-            <Route path="/formcontrolrange" element={<SampleFormControlRange />} />
-            <Route path="/formcontrolfile" element={<SampleFormControlFile />} />
+            <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
+            <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
+            <Route path="/components/FormControl/Password" element={<SampleFormControlPassword />} />
+            <Route path="/components/FormControl/Select" element={<SampleFormControlSelect />} />
+            <Route path="/components/FormControl/Radio" element={<SampleFormControlRadio />} />
+            <Route path="/components/FormControl/Checkbox" element={<SampleFormControlCheckbox />} />
+            <Route path="/components/FormControl/Textarea" element={<SampleFormControlTextarea />} />
+            <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
+            <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
+            <Route path="/components/FormControl/Datetime" element={<SampleFormControlDatetime />} />
+            <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
+            <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
 
-            <Route path="/form" element={<SampleForm />} />
-            <Route path="/tab" element={<SampleTab />} />
-            <Route path="/tree" element={<SampleTree />} />
-            <Route path="/wijmo" element={<SampleWijmo />} />
-            <Route path="/table" element={<SampleTable />} />
+            <Route path="/components/form" element={<SampleForm />} />
+            <Route path="/components/tab" element={<SampleTab />} />
+            <Route path="/components/tree" element={<SampleTree />} />
+            <Route path="/components/wijmo" element={<SampleWijmo />} />
+            <Route path="/components/table" element={<SampleTable />} />
 
             <Route path="/hooks/useModal" element={<SampleUseModal />} />
 
