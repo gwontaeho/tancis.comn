@@ -79,25 +79,45 @@ export const useForm = (props: UseFormProps) => {
         if (!s) return undefined;
         return Object.fromEntries(
             Object.entries(s).map(([key, value]: any) => {
-                return [
-                    key,
+                const { min, max, minLength, pattern, validate } = value;
+
+                const rules = {} as any;
+                if (value.required) rules.required = value.required;
+                if (value.maxLength) rules.maxLength = value.maxLength;
+                if (min) rules.min = min;
+                if (max) rules.max = max;
+                if (minLength) rules.minLength = minLength;
+                if (pattern) rules.pattern = pattern;
+                if (validate) rules.validate = validate;
+
+                console.log(rules);
+
+                if (
                     value.type === "date" ||
                     value.type === "time" ||
                     value.type === "datetime" ||
                     value.type === "daterange" ||
                     value.type === "timerange"
-                        ? {
-                              ...value,
-                              //   name: key,
-                              ...register(key),
+                )
+                    return [
+                        key,
+                        {
+                            ...value,
+                            name: key,
+                            setValue,
+                            control,
+                            rules,
+                            invalid: errors[key],
+                        },
+                    ];
 
-                              invalid: errors[key],
-                          }
-                        : {
-                              ...value,
-                              ...register(key),
-                              invalid: errors[key],
-                          },
+                return [
+                    key,
+                    {
+                        ...value,
+                        ...register(key, rules),
+                        invalid: errors[key],
+                    },
                 ];
             })
         );

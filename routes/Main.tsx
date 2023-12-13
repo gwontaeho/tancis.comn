@@ -6,7 +6,7 @@ export const Main = () => {
     return (
         <MainLayout>
             <Routes>
-                <Route path="/sample/*" element={<SampleMain />} />
+                <Route path="/samples/*" element={<SampleMain />} />
             </Routes>
         </MainLayout>
     );

@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Icon } from "@/com/components";
+import { ControllerWrapper } from "./ControllerWrapper";
+import { Control } from "react-hook-form";
 
 export type InputDateProps = {
+    name?: string;
     value?: Date | null;
     onChange?: (...args: any) => void;
+    control?: Control;
 };
 
-export const InputDate = (props: InputDateProps) => {
+const InputDateMain = forwardRef((props: InputDateProps, ref) => {
     const { value, onChange } = props;
     const [_value, _setValue] = useState<Date | null | undefined>(value);
-
-    console.log(props.onChange);
 
     useEffect(() => {
         if (value?.getTime() === _value?.getTime()) return;
@@ -21,7 +23,7 @@ export const InputDate = (props: InputDateProps) => {
     useEffect(() => {
         if (!onChange) return;
         if (value?.getTime() === _value?.getTime()) return;
-        onChange({ target: { name: "date", value: _value } });
+        onChange(_value);
     }, [_value]);
 
     const _onChange = (date: Date) => {
@@ -41,4 +43,15 @@ export const InputDate = (props: InputDateProps) => {
             />
         </div>
     );
+});
+
+export const InputDate = (props: InputDateProps) => {
+    if (props.control && props.name)
+        return (
+            <ControllerWrapper {...props} control={props.control} name={props.name}>
+                <InputDateMain />
+            </ControllerWrapper>
+        );
+
+    return <InputDateMain {...props} />;
 };

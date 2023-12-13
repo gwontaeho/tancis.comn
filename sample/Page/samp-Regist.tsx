@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Page, Wijmo, Group, Layout, Tab, Button } from "@/com/components";
 import { useForm, useWijmo, useFetch, useModal, useToast, FormValuesType } from "@/com/hooks";
-import { SCHEMA_FORM_REGIST, SCHEMA_GRID_COMPONENTS_REGIST, APIS } from "./SampleService";
+import { SCHEMA_FORM_REGIST, SCHEMA_GRID_COMPONENTS_REGIST, APIS } from "./samp-Service";
 
 const options1 = [
     { label: "s1", value: "s1" },
@@ -16,43 +16,41 @@ const option2 = [
 ];
 
 /**
- * 샘플 수정 페이지
+ * 샘플 등록 페이지
  */
-export const SampleUpdate = () => {
-    // const { id } = useParams();
+export const SampleRegist = () => {
     // const navigate = useNavigate();
     // const { openModal } = useModal();
     // const { showToast } = useToast();
-    // const { schema, handleSubmit, clearValues, setValues } = useForm({ defaultSchema: SCHEMA_FORM_REGIST });
-    // const { grid } = useWijmo({ defaultSchema: SCHEMA_GRID_COMPONENTS_REGIST });
-    // const {
-    //     data: [group, components],
-    // } = useFetch({
-    //     api: [() => APIS.getComponentGroup(id), () => APIS.getComponents(id)],
-    //     enabled: !!id,
-    //     onSuccess: ([_]) => setValues(_),
-    // });
-    // const ccg = useFetch({ api: APIS.updateComponentGroup });
+    // const { schema, handleSubmit, clearValues } = useForm({ defaultSchema: SCHEMA_FORM_REGIST });
+    // const { grid, getData } = useWijmo({ defaultSchema: SCHEMA_GRID_COMPONENTS_REGIST });
+    // const ccg = useFetch({ api: APIS.createComponentGroup });
+    // const cgc = useFetch({ api: APIS.createGroupComponents });
     // const onSubmit = (data: FormValuesType) => {
-    //     console.log(data);
+    //     // submit handler
+    //     // validation 성공 시 modal
     //     openModal({
-    //         content: "그룹을 수정하시겠습니까",
+    //         content: "그룹을 등록하시겠습니까",
     //         onConfirm: () => handleConfirm(data),
     //     });
     // };
     // const handleConfirm = async (data: FormValuesType) => {
     //     try {
-    //         await ccg.fetch(id, data);
-    //         showToast({ content: "그룹이 수정되었습니다" });
-    //         navigate(-1);
+    //         // 1. group 생성
+    //         const { id } = await ccg.fetch(data);
+    //         // 2. group components 생성
+    //         const componentsData = { id, components: getData().map((_: any) => ({ ..._, grpId: id })) };
+    //         await cgc.fetch(componentsData);
+    //         // 3. 성공 toast
+    //         showToast({ content: "그룹이 등록되었습니다" });
     //     } catch (error) {
     //         console.log(error);
     //     }
     // };
     // return (
     //     <Page>
-    //         <Page.Navigation base="/page/sample" nodes={[{ path: "/", label: "List" }, { path: `/${id}`, label: "Detail" }, { label: "Update" }]} />
-    //         <Page.Header title="Sample Update" description={`${id}`} />
+    //         <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
+    //         <Page.Header title="Sample Regist" description="Sample Regist Description" />
     //         <form onSubmit={handleSubmit(onSubmit)}>
     //             <Group>
     //                 <Group.Body>
@@ -74,10 +72,10 @@ export const SampleUpdate = () => {
     //                 </Group.Body>
     //                 <Layout direction="row">
     //                     <Layout.Left>
+    //                         <Button onClick={() => navigate("/sample/pages")}>목록</Button>
     //                         <Button onClick={clearValues}>초기화</Button>
     //                     </Layout.Left>
     //                     <Layout.Right>
-    //                         <Button onClick={() => navigate(`/page/sample/${id}`)}>취소</Button>
     //                         <Button type="submit">저장</Button>
     //                     </Layout.Right>
     //                 </Layout>
@@ -85,7 +83,7 @@ export const SampleUpdate = () => {
     //         </form>
     //         <Group>
     //             <Tab tab={["첫번째"]}>
-    //                 <Tab.Panel>{/* <Wijmo {...grid} data={components} /> */}</Tab.Panel>
+    //                 <Tab.Panel>{/* <Wijmo {...grid} /> */}</Tab.Panel>
     //             </Tab>
     //         </Group>
     //     </Page>

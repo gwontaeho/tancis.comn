@@ -1,10 +1,8 @@
 import "react-datepicker/dist/react-datepicker.css";
-
 import React from "react";
 import classNames from "classnames";
 import { Icon, IconsType, Tooltip } from "@/com/components";
 import {
-    ControllerWrapper,
     InputText,
     InputNumber,
     InputPassword,
@@ -94,7 +92,7 @@ type FormControlMainProps = FormControlEditModeProps & {
 export type FormControlProps = FormControlMainProps;
 
 const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
-    const { edit = true, rightButton, leftButton, rightText, getValues, setValue, invalid, value, ...rest } = props;
+    const { edit = true, rightButton, leftButton, rightText, getValues, invalid, value, ...rest } = props;
 
     return (
         <div

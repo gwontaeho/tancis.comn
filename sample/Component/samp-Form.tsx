@@ -99,15 +99,15 @@ export const SampleForm = () => {
                             <Group.Control {...schema.radio} options={OPTION} />
                             <Group.Control {...schema.date} />
                         </Group.Row>
-                        <Group.Row>
+                        {/* <Group.Row>
                             <Group.Control {...schema.time} />
                             <Group.Control {...schema.datetime} />
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...schema.daterange} controlSize={10} />
-                        </Group.Row>
+                        </Group.Row> */}
                         <Group.Row>
-                            <Group.Control {...schema.timerange} controlSize={10} />
+                            <Group.Control {...schema.daterange} controlSize={10} />
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...schema.file} />
@@ -125,6 +125,7 @@ export const SampleForm = () => {
             <button onClick={(e) => setSchema("text", { type: "select" })}>asd</button>
             <button onClick={(e) => setEditable(true)}>asd</button>
             <button onClick={(e) => setEditable(false)}>asd</button>
+            <button onClick={(e) => setValue("date", new Date())}>sv</button>
         </Layout>
     );
 };

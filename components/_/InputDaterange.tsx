@@ -40,11 +40,14 @@ export type InputDaterangeProps = {
     end?: InputDateProps;
     rangeButton?: 0 | 1 | 2;
     control?: Control;
+    setValue?: any;
 };
 
 export const InputDaterange = (props: InputDaterangeProps) => {
     const [_startValue, _setStartValue] = React.useState<any>();
     const [_endValue, _setEndValue] = React.useState<any>();
+
+    console.log(props);
 
     React.useEffect(() => {
         if (!props.start?.onChange) return;
@@ -63,9 +66,17 @@ export const InputDaterange = (props: InputDaterangeProps) => {
         if (value > 0) {
             _setStartValue(today);
             _setEndValue(dayjs(today).add(value, unit).toDate());
+            if (props.setValue) {
+                if (props.start) props.setValue(props.start.name, today);
+                if (props.end) props.setValue(props.end.name, dayjs(today).add(value, unit).toDate());
+            }
         } else {
             _setStartValue(dayjs(today).add(value, unit).toDate());
             _setEndValue(today);
+            if (props.setValue) {
+                if (props.start) props.setValue(props.start.name, dayjs(today).add(value, unit).toDate());
+                if (props.end) props.setValue(props.end.name, today);
+            }
         }
     };
 
@@ -80,7 +91,12 @@ export const InputDaterange = (props: InputDaterangeProps) => {
     return (
         <div className="w-full flex">
             <div className="w-full [&_input]:rounded-r-none">
-                <InputDate value={_startValue} onChange={_onChangeStart} />
+                <InputDate
+                    control={props.control}
+                    name={props.start?.name}
+                    value={_startValue}
+                    onChange={_onChangeStart}
+                />
             </div>
             <div className="flex items-center justify-center min-w-[1.25rem] h-7 bg-header border-y">-</div>
             <div
@@ -88,7 +104,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
                     "[&_input]:rounded-r-none": props.rangeButton !== undefined,
                 })}
             >
-                <InputDate value={_endValue} onChange={_onChangeEnd} />
+                <InputDate control={props.control} name={props.end?.name} value={_endValue} onChange={_onChangeEnd} />
             </div>
             {props.rangeButton !== undefined && (
                 <div className="flex divide-x bg-header text-sm border-y border-r rounded-r">

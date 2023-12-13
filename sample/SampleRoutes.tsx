@@ -1,10 +1,11 @@
 export const SampleRoutes = [
     {
         name: "Sample",
-        base: "/sample",
+        base: "/samples",
         children: [
             {
                 name: "Sample Component",
+                base: "/components",
                 children: [
                     {
                         name: "FormControl",
@@ -83,8 +84,57 @@ export const SampleRoutes = [
                 ],
             },
             {
+                name: "Sample Hook",
+                base: "/hooks",
+                children: [
+                    {
+                        name: "useModal",
+                        to: "/useModal",
+                    },
+                    {
+                        name: "useFetch",
+                        to: "/useFetch",
+                    },
+                    {
+                        name: "usePopup",
+                        to: "/usePopup",
+                    },
+                    {
+                        name: "useAuth",
+                        to: "/useAuth",
+                    },
+                    {
+                        name: "useToast",
+                        to: "/useToast",
+                    },
+                    {
+                        name: "useWijmo",
+                        to: "/useWijmo",
+                    },
+                ],
+            },
+            {
                 name: "Sample Page",
-                to: "/pages",
+                base: "/pages",
+
+                children: [
+                    {
+                        name: "List",
+                        to: "/l",
+                    },
+                    {
+                        name: "Detail",
+                        to: "/d",
+                    },
+                    {
+                        name: "Update",
+                        to: "/u",
+                    },
+                    {
+                        name: "Regist",
+                        to: "/r",
+                    },
+                ],
             },
         ],
     },

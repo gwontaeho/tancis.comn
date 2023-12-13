@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useWijmo, useFetch } from "@/com/hooks";
 import { Page, Wijmo, Group, Layout, Button, Tab } from "@/com/components";
-import { SCHEMA_GRID_COMPONENTS, APIS } from "./SampleService";
+import { SCHEMA_GRID_COMPONENTS, APIS } from "./samp-Service";
 
 /**
  * 샘플 상세 페이지
