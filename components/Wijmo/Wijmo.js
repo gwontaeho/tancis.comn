@@ -6,7 +6,14 @@ import _ from "lodash";
 import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import { Selector } from "@grapecity/wijmo.grid.selector";
 import { CellMaker } from "@grapecity/wijmo.grid.cellmaker";
-import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from "@grapecity/wijmo.input";
+import {
+    InputDate,
+    InputTime,
+    InputDateTime,
+    InputNumber,
+    InputMask,
+    ComboBox,
+} from "@grapecity/wijmo.input";
 import { Pagination, Icon, Button } from "@/comn/components";
 
 const defaultSchema = {
@@ -42,17 +49,26 @@ export const Wijmo = (props = {}) => {
     useEffect(() => {
         // 1. initialize
         if (schema.options.checkbox) new Selector(gridRef.current.control);
-        if (schema.options.isReadOnly) gridRef.current.control.isReadOnly = true;
+        if (schema.options.isReadOnly)
+            gridRef.current.control.isReadOnly = true;
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.allowAddNew = true;
         gridRef.current.control.allowDelete = true;
-        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
-        gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
+        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(
+            schema.head
+        );
+        gridRef.current.control.layoutDefinition = layoutDefinition(
+            schema.body
+        );
         gridRef.current.control.rowAdded.addHandler(handleRowAdded);
         gridRef.current.control.deletedRow.addHandler(handleDeletedRow);
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
-        gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
-        gridRef.current.control.selectionChanged.addHandler(handleSelectionChanged);
+        gridRef.current.control.itemsSourceChanged.addHandler(
+            handleItemsSourceChanged
+        );
+        gridRef.current.control.selectionChanged.addHandler(
+            handleSelectionChanged
+        );
         gridRef.current.control.sortedColumn.addHandler(handleSortedColumn);
         setInitialize(true);
     }, []);
@@ -60,7 +76,10 @@ export const Wijmo = (props = {}) => {
     useEffect(() => {
         // 2. itemsSource setting
         console.log(data);
-        const content = data.content.map((_, i) => ({ ..._, _grid_content_index: i }));
+        const content = data.content.map((_, i) => ({
+            ..._,
+            _grid_content_index: i,
+        }));
         contentRef.current = _.cloneDeep(content);
         gridRef.current.control.itemsSource = _.cloneDeep(content);
         if (schema.options.pagination !== "inner") setTotalCount(data.totCnt);
@@ -95,16 +114,21 @@ export const Wijmo = (props = {}) => {
 
     const handleSortedColumn = (e, s) => {
         console.log(s);
-        const _view = e.collectionView._view.map(({ _grid_content_index }) => _grid_content_index);
+        const _view = e.collectionView._view.map(
+            ({ _grid_content_index }) => _grid_content_index
+        );
         contentRef.current = _view.map((_) =>
-            contentRef.current.find(({ _grid_content_index }) => _grid_content_index === _)
+            contentRef.current.find(
+                ({ _grid_content_index }) => _grid_content_index === _
+            )
         );
     };
 
     const handleItemsSourceChanged = (_) => {
         if (!_.collectionView) return;
         _.collectionView.collectionChanged.addHandler((__) => {
-            if (schema.options.pagination === "inner") setTotalCount(__.totalItemCount);
+            if (schema.options.pagination === "inner")
+                setTotalCount(__.totalItemCount);
         });
     };
 
@@ -113,12 +137,20 @@ export const Wijmo = (props = {}) => {
         if (s.collectionView.pageSize === 0) return;
         if (s.collectionView.itemCount <= e.row) return;
 
-        const chunkedContent = _.chunk(contentRef.current, s.collectionView.pageSize);
-        if (!chunkedContent?.[s.collectionView.pageIndex]?.[e.row]) return e.cell.classList.add("cell-new");
+        const chunkedContent = _.chunk(
+            contentRef.current,
+            s.collectionView.pageSize
+        );
+        if (!chunkedContent?.[s.collectionView.pageIndex]?.[e.row])
+            return e.cell.classList.add("cell-new");
 
-        const originalCellData = chunkedContent?.[s.collectionView.pageIndex]?.[e.row]?.[e.getColumn().binding];
+        const originalCellData =
+            chunkedContent?.[s.collectionView.pageIndex]?.[e.row]?.[
+                e.getColumn().binding
+            ];
         const currentCellData = e.getRow().dataItem?.[e.getColumn().binding];
-        if (originalCellData !== currentCellData) return e.cell.classList.add("cell-changed");
+        if (originalCellData !== currentCellData)
+            return e.cell.classList.add("cell-changed");
     };
 
     const handleSelectionChanged = (_) => {
@@ -131,7 +163,9 @@ export const Wijmo = (props = {}) => {
     const handleDeletedRow = (s, e) => {
         const pageIndex = s.collectionView.pageIndex;
         const rowIndex = e.row;
-        contentRef.current = contentRef.current.filter((_, i) => i !== pageIndex * size + rowIndex);
+        contentRef.current = contentRef.current.filter(
+            (_, i) => i !== pageIndex * size + rowIndex
+        );
     };
 
     const headerLayoutDefinition = (head) => {
@@ -150,46 +184,63 @@ export const Wijmo = (props = {}) => {
         return body.map((_) => {
             return {
                 ..._,
-                cells: _.cells.map(({ type, mask, options, link, ...__ }, i) => {
-                    const cells = { ...__ };
-                    const itemsSource = options;
-                    const displayMemberPath = "label";
+                cells: _.cells.map(
+                    ({ type, mask, options, link, ...__ }, i) => {
+                        const cells = { ...__ };
+                        const itemsSource = options;
+                        const displayMemberPath = "label";
 
-                    if (link) {
-                        cells.cellTemplate = CellMaker.makeLink({
-                            click: (e, ctx) => {
-                                navigate(`/sample/pages/${ctx.value}`);
-                            },
-                        });
-                    }
-
-                    switch (type) {
-                        case "number":
-                            cells.editor = new InputNumber(document.createElement("div"));
-                            break;
-                        case "inputmask":
-                            cells.editor = new InputMask(document.createElement("div"), { mask });
-                            break;
-                        case "select":
-                            cells.editor = new ComboBox(document.createElement("div"), {
-                                itemsSource,
-                                displayMemberPath,
+                        if (link) {
+                            cells.cellTemplate = CellMaker.makeLink({
+                                click: (e, ctx) => {
+                                    navigate(`/sample/pages/${ctx.value}`);
+                                },
                             });
-                            break;
-                        case "date":
-                            cells.editor = new InputDate(document.createElement("div"));
-                            break;
-                        case "time":
-                            cells.editor = new InputTime(document.createElement("div"), { step: 5 });
-                            cells.format = "h:mm tt";
-                            break;
-                        case "datetime":
-                            cells.editor = new InputDateTime(document.createElement("div"));
-                            cells.format = "g";
-                            break;
+                        }
+
+                        switch (type) {
+                            case "number":
+                                cells.editor = new InputNumber(
+                                    document.createElement("div")
+                                );
+                                break;
+                            case "inputmask":
+                                cells.editor = new InputMask(
+                                    document.createElement("div"),
+                                    { mask }
+                                );
+                                break;
+                            case "select":
+                                cells.editor = new ComboBox(
+                                    document.createElement("div"),
+                                    {
+                                        itemsSource,
+                                        displayMemberPath,
+                                    }
+                                );
+                                break;
+                            case "date":
+                                cells.editor = new InputDate(
+                                    document.createElement("div")
+                                );
+                                break;
+                            case "time":
+                                cells.editor = new InputTime(
+                                    document.createElement("div"),
+                                    { step: 5 }
+                                );
+                                cells.format = "h:mm tt";
+                                break;
+                            case "datetime":
+                                cells.editor = new InputDateTime(
+                                    document.createElement("div")
+                                );
+                                cells.format = "g";
+                                break;
+                        }
+                        return cells;
                     }
-                    return cells;
-                }),
+                ),
             };
         });
     };
