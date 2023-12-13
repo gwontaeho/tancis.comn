@@ -1,7 +1,7 @@
 export const SampleRoutes = [
     {
         name: "Sample",
-        base: "/samples",
+        base: "/comn/smpl",
         children: [
             {
                 name: "Sample Component",

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { Routes } from "@/com/routes/Routes";
+import { R } from "@/com";
 import { Icon } from "@/com/components/Icon";
 
 type NavItemProps = {
@@ -48,7 +48,7 @@ export const NavTop = () => {
     return (
         <nav className="hidden items-center lg:flex">
             <ul className="font-mono flex space-x-4">
-                {Routes.map((child) => {
+                {R.map((child) => {
                     return <NavItem key={uuid()} {...child} />;
                 })}
             </ul>

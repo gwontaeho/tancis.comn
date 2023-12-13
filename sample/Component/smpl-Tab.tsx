@@ -1,6 +1,6 @@
 import { Layout, Tab } from "@/com/components";
-import { SampleForm } from "./samp-Form";
-import { SampleTree } from "./samp-Tree";
+import { SampleForm } from "./smpl-Form";
+import { SampleTree } from "./smpl-Tree";
 
 export const SampleTab = () => {
     return (

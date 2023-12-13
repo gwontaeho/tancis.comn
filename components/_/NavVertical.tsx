@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
 import { Collapse, Icon } from "@/com/components";
-import { Routes } from "@/com/routes/Routes";
+import { R } from "@/com";
 
 type NavItemProps = {
     children?: any[];
@@ -61,7 +61,7 @@ const NavItem = (props: NavItemProps) => {
 export const NavVertical = () => {
     const location = useLocation();
 
-    const depth_1 = Routes.find(({ base }) => location.pathname.startsWith(base));
+    const depth_1 = R.find(({ base }) => location.pathname.startsWith(base));
     const depth_2 = depth_1?.children;
 
     return (

@@ -8,7 +8,7 @@ import {
     Button,
 } from "@/com/components";
 import { Wijmo } from "@/com/components/Wijmo.v2/Wijmo.v2";
-import { OPTIONS, SCHEMA_FORM, SCHEMA_GRID, APIS, SCHEMA_GRID_COMPONENTS } from "./samp-Service";
+import { OPTIONS, SCHEMA_FORM, SCHEMA_GRID, APIS, SCHEMA_GRID_COMPONENTS } from "./smpl-Service";
 import { FormValuesType } from "@/com/hooks";
 
 export const PopupSearch = () => {
