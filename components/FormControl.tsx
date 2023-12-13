@@ -92,7 +92,7 @@ type FormControlMainProps = FormControlEditModeProps & {
 export type FormControlProps = FormControlMainProps;
 
 const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
-    const { edit = true, rightButton, leftButton, rightText, getValues, invalid, value, ...rest } = props;
+    const { edit = true, rightButton, leftButton, rightText, getValues, invalid, ...rest } = props;
 
     return (
         <div

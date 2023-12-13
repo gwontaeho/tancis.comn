@@ -14,6 +14,7 @@ import { SampleFormControlDatetime } from "@/comn/sample/Component/FormControl/s
 import { SampleFormControlRange } from "@/comn/sample/Component/FormControl/smpl-Range";
 import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
 
+import { SampleIcon } from "@/comn/sample/Component/smpl-Icon";
 import { SampleForm } from "@/comn/sample/Component/smpl-Form";
 import { SampleTab } from "@/comn/sample/Component/smpl-Tab";
 import { SampleTree } from "@/comn/sample/Component/smpl-Tree";
@@ -21,6 +22,8 @@ import { SampleTable } from "@/comn/sample/Component/smpl-Table";
 import { SampleWijmo } from "@/comn/sample/Component/smpl-Wijmo";
 
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
+import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
+import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
 
 import { SampleList } from "@/comn/sample/Page/smpl-List";
 import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
@@ -44,6 +47,7 @@ export const SampleMain = () => {
                 <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
                 <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
 
+                <Route path="/components/icon" element={<SampleIcon />} />
                 <Route path="/components/form" element={<SampleForm />} />
                 <Route path="/components/tab" element={<SampleTab />} />
                 <Route path="/components/tree" element={<SampleTree />} />
@@ -51,6 +55,8 @@ export const SampleMain = () => {
                 <Route path="/components/table" element={<SampleTable />} />
 
                 <Route path="/hooks/useModal" element={<SampleUseModal />} />
+                <Route path="/hooks/useToast" element={<SampleUseToast />} />
+                <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
 
                 <Route path="/pages" element={<SampleList />} />
                 <Route path="/pages/:id" element={<SampleDetail />} />

@@ -49,14 +49,18 @@ const Modal = (props: ModalProps) => {
             {backdrop && (
                 <motion.div
                     className="fixed w-full h-full z-[1000]"
-                    initial={{ opacity: 0.5 }}
-                    animate={{ background: "#00000080", opacity: 1 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ background: "#00000080", opacity: 0.8 }}
+                    transition={{ duration: 0.1 }}
                     onClick={() => handleClose()}
                 />
             )}
             <Draggable nodeRef={ref} handle=".handle" positionOffset={{ x: "-50%", y: "-50%" }}>
                 <motion.div
                     ref={ref}
+                    initial={{ opacity: 0.5 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.1 }}
                     className={classNames(
                         "absolute top-1/2 left-1/2 w-full border rounded bg-background z-[1001]",
                         MODAL_SIZES[size]

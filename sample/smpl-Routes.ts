@@ -62,6 +62,10 @@ export const SampleRoutes = [
                         ],
                     },
                     {
+                        name: "Icon",
+                        to: "/Icon",
+                    },
+                    {
                         name: "Table",
                         to: "/Table",
                     },

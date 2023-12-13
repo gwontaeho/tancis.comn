@@ -10,6 +10,13 @@ import { Button } from "@/comn/components";
 //     onCancel?: () => void;
 // };
 
+// const MODAL_SIZES = {
+//     sm: "max-w-sm",
+//     md: "max-w-lg",
+//     lg: "max-w-[70vw]",
+//     xl: "max-w-[90vw]",
+// };
+
 export const SampleUseModal = () => {
     const modal = useModal();
 
@@ -29,12 +36,21 @@ export const SampleUseModal = () => {
         modal.openModal({ backdrop: false });
     };
 
-    const withSize = () => {
-        modal.openModal({ onCancel: () => alert("cancel") });
+    const withSizeSm = () => {
+        modal.openModal({ size: "sm" });
+    };
+    const withSizeMd = () => {
+        modal.openModal({ size: "md" });
+    };
+    const withSizeLg = () => {
+        modal.openModal({ size: "lg" });
+    };
+    const withSizeXl = () => {
+        modal.openModal({ size: "xl" });
     };
 
     const withComponent = () => {
-        modal.openModal({ content: <div>안녕</div> });
+        modal.openModal({ content: <div>안녕123!1!</div> });
     };
 
     return (
@@ -43,6 +59,10 @@ export const SampleUseModal = () => {
             <Button onClick={withOnConfirm}>onConfirm handler 추가</Button>
             <Button onClick={withOnCancel}>onCancel handler 추가</Button>
             <Button onClick={withoutBackdrop}>backdrop 제거</Button>
+            <Button onClick={withSizeSm}>size sm</Button>
+            <Button onClick={withSizeMd}>size md</Button>
+            <Button onClick={withSizeLg}>size lg</Button>
+            <Button onClick={withSizeXl}>size xl</Button>
             <Button onClick={withComponent}>컴포넌트 모달</Button>
         </div>
     );
