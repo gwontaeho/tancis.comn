@@ -1,7 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { Page, Wijmo, Group, Layout, Tab, Button } from "@/comn/components";
-import { useForm, useWijmo, useFetch, useModal, useToast, FormValuesType } from "@/comn/hooks";
-import { SCHEMA_FORM_REGIST, SCHEMA_GRID_COMPONENTS_REGIST, APIS } from "./smpl-Service";
+import {
+    useForm,
+    useWijmo,
+    useFetch,
+    useModal,
+    useToast,
+    FormValuesType,
+} from "@/comn/hooks";
+import {
+    SCHEMA_FORM_REGIST,
+    SCHEMA_GRID_COMPONENTS_REGIST,
+    APIS,
+} from "./smpl-Service";
 
 const options1 = [
     { label: "s1", value: "s1" },

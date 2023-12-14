@@ -9,6 +9,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     (props: SelectProps, ref: React.ForwardedRef<HTMLSelectElement>) => {
         const { options, ...rest } = props;
+
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
             <div className="relative flex w-full items-center">

@@ -15,7 +15,7 @@ import { CommonModal, CommonToast } from "@/comn/components/_";
 
 import axios from "axios";
 
-export const api = axios.create();
+export const api = axios.create({ baseURL: process.env.REACT_APP_API_COMN });
 
 const ApiConfig = () => {
     const { theme } = useTheme();
