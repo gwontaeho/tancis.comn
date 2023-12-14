@@ -139,6 +139,10 @@ export const SampleRoutes = [
                         name: "Regist",
                         to: "/r",
                     },
+                    {
+                        name: "Common Popup",
+                        to: "/comnPpup",
+                    },
                 ],
             },
         ],
