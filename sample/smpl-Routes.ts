@@ -145,7 +145,7 @@ export const SampleRoutes = [
                 children: [
                     {
                         name: "List",
-                        to: "/l",
+                        to: "/list",
                     },
                     {
                         name: "Detail",

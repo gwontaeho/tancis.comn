@@ -62,7 +62,7 @@ export const SampleMain = () => {
                 <Route path="/hooks/useToast" element={<SampleUseToast />} />
                 <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
 
-                <Route path="/pages" element={<SampleList />} />
+                <Route path="/pages/list" element={<SampleList />} />
                 <Route path="/pages/:id" element={<SampleDetail />} />
                 <Route path="/pages/:id/update" element={<SampleUpdate />} />
                 <Route path="/pages/regist" element={<SampleRegist />} />

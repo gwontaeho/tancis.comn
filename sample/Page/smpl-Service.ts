@@ -1,22 +1,21 @@
-import axios from "axios";
+import { api } from "@/comn";
 import { FormSchemaType } from "@/comn/hooks";
 
-const instance = axios.create({
-    baseURL: "http://183.107.31.131:8000/template",
-});
+const baseUrl = "http://183.107.31.131:8000/template";
 
 export const APIS = {
-    getComponentGroups: (page: number, size: number) => instance.get(`/com/componentGroups?page=${page}&size=${size}`),
+    getComponentGroups: (page: number, size: number) =>
+        api.get(`${baseUrl}/com/componentGroups?page=${page}&size=${size}`),
 
-    getComponentGroup: (id: any) => instance.get(`/com/componentGroups/${id}`),
-    createComponentGroup: (data: any) => instance.post("/com/componentGroups", data),
-    deleteComponentGroup: (id: any) => instance.delete(`/com/componentGroups/${id}`),
-    updateComponentGroup: (id: any, data: any) => instance.put(`/com/componentGroups/${id}`, { id, ...data }),
+    getComponentGroup: (id: any) => api.get(`${baseUrl}/com/componentGroups/${id}`),
+    createComponentGroup: (data: any) => api.post("${baseUrl}/com/componentGroups", data),
+    deleteComponentGroup: (id: any) => api.delete(`${baseUrl}/com/componentGroups/${id}`),
+    updateComponentGroup: (id: any, data: any) => api.put(`${baseUrl}/com/componentGroups/${id}`, { id, ...data }),
 
-    getComponents: (grpId: any) => instance.get(`/com/componentGroups/${grpId}/components`),
+    getComponents: (grpId: any) => api.get(`${baseUrl}/com/componentGroups/${grpId}/components`),
     createComponent: (grpId: any, data: any) =>
-        instance.post(`/com/componentGroups/${grpId}/components`, { grpId, ...data }),
-    createGroupComponents: (data: any) => instance.post("/com/groupComponents", data),
+        api.post(`${baseUrl}/com/componentGroups/${grpId}/components`, { grpId, ...data }),
+    createGroupComponents: (data: any) => api.post(`${baseUrl}/com/groupComponents`, data),
 };
 
 export const OPTIONS = [
