@@ -29,9 +29,9 @@ export const useForm = (props: UseFormProps) => {
         setFocus,
         handleSubmit,
         trigger,
-        reset,
         clearErrors,
         watch,
+        reset,
         formState: { errors, isSubmitted },
     } = rhf.useForm<FormValuesType>({ values });
 
@@ -44,7 +44,6 @@ export const useForm = (props: UseFormProps) => {
 
     const resetSchema = () => {
         _setSchema(schema);
-        reset();
     };
 
     const setEditable = <T>(arg: T, value?: boolean) => {
@@ -62,17 +61,21 @@ export const useForm = (props: UseFormProps) => {
         }
     };
 
-    const validate = (name: FormFieldValueType) => {
+    const validate = (name?: FormFieldValueType) => {
         if (name in _schema) trigger(name, { shouldFocus: true });
         else trigger();
     };
 
     const clearValues = () => {
-        reset();
+        Object.keys(_schema).forEach((name) => {
+            setValue(name, null);
+        });
     };
 
     const setValues = (values: FormValuesType) => {
-        reset(values);
+        Object.keys(_schema).forEach((name) => {
+            setValue(name, values[name]);
+        });
     };
 
     const getSchema = (s: FormControlSchemaType): any => {
@@ -84,13 +87,12 @@ export const useForm = (props: UseFormProps) => {
                 const rules = {} as any;
                 if (value.required) rules.required = value.required;
                 if (value.maxLength) rules.maxLength = value.maxLength;
+                if (value.disabled) rules.disabled = value.disabled;
                 if (min) rules.min = min;
                 if (max) rules.max = max;
                 if (minLength) rules.minLength = minLength;
                 if (pattern) rules.pattern = pattern;
                 if (validate) rules.validate = validate;
-
-                console.log(rules);
 
                 if (
                     value.type === "date" ||
@@ -131,7 +133,6 @@ export const useForm = (props: UseFormProps) => {
         getValues,
         setValue,
         setFocus,
-        register,
         handleSubmit,
         validate,
         clearValues,
@@ -140,5 +141,6 @@ export const useForm = (props: UseFormProps) => {
         setValues,
         errors,
         isSubmitted,
+        reset,
     };
 };

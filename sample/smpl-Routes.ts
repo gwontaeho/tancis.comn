@@ -59,6 +59,10 @@ export const SampleRoutes = [
                                 name: "File",
                                 to: "/File",
                             },
+                            {
+                                name: "Code",
+                                to: "/Code",
+                            },
                         ],
                     },
                     {
@@ -90,11 +94,6 @@ export const SampleRoutes = [
                         to: "/Table",
                     },
                     {
-                        name: "Form",
-                        to: "/Form",
-                    },
-
-                    {
                         name: "Tab",
                         to: "/Tab",
                     },
@@ -123,6 +122,10 @@ export const SampleRoutes = [
                     {
                         name: "usePopup",
                         to: "/usePopup",
+                    },
+                    {
+                        name: "useForm",
+                        to: "/useForm",
                     },
                     {
                         name: "useAuth",

@@ -9,14 +9,14 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     (props: SelectProps, ref: React.ForwardedRef<HTMLSelectElement>) => {
         const { options, ...rest } = props;
-
+        const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
             <div className="relative flex w-full items-center">
                 <select {...rest} ref={ref} className="input appearance-none pr-5">
                     {Array.isArray(options) &&
-                        options.map(({ label, value }) => {
+                        options.map(({ label, value }, i) => {
                             return (
-                                <option key={uuid()} value={value}>
+                                <option key={OPTIONS_ID_BASE + "." + i} value={value}>
                                     {label}
                                 </option>
                             );

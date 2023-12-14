@@ -13,16 +13,17 @@ import { SampleFormControlTime } from "@/comn/sample/Component/FormControl/smpl-
 import { SampleFormControlDatetime } from "@/comn/sample/Component/FormControl/smpl-Datetime";
 import { SampleFormControlRange } from "@/comn/sample/Component/FormControl/smpl-Range";
 import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
+import { SampleFormControlCode } from "@/comn/sample/Component/FormControl/smpl-Code";
 
 import { SampleIcon } from "@/comn/sample/Component/smpl-Icon";
 import { SampleTooltip } from "@/comn/sample/Component/smpl-Tooltip";
-import { SampleForm } from "@/comn/sample/Component/smpl-Form";
 import { SampleTab } from "@/comn/sample/Component/smpl-Tab";
 import { SampleTree } from "@/comn/sample/Component/smpl-Tree";
 import { SampleTable } from "@/comn/sample/Component/smpl-Table";
 import { SampleWijmo } from "@/comn/sample/Component/smpl-Wijmo";
 import { SampleIconButton } from "@/comn/sample/Component/smpl-IconButton";
 
+import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
 import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
@@ -48,16 +49,17 @@ export const SampleMain = () => {
                 <Route path="/components/FormControl/Datetime" element={<SampleFormControlDatetime />} />
                 <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
                 <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
+                <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 
                 <Route path="/components/Icon" element={<SampleIcon />} />
                 <Route path="/components/Tooltip" element={<SampleTooltip />} />
-                <Route path="/components/Form" element={<SampleForm />} />
                 <Route path="/components/Tab" element={<SampleTab />} />
                 <Route path="/components/Tree" element={<SampleTree />} />
                 <Route path="/components/Wijmo" element={<SampleWijmo />} />
                 <Route path="/components/Table" element={<SampleTable />} />
                 <Route path="/components/IconButton" element={<SampleIconButton />} />
 
+                <Route path="/hooks/useForm" element={<SampleUseForm />} />
                 <Route path="/hooks/useModal" element={<SampleUseModal />} />
                 <Route path="/hooks/useToast" element={<SampleUseToast />} />
                 <Route path="/hooks/usePopup" element={<SampleUsePopup />} />

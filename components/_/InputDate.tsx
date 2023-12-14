@@ -12,8 +12,9 @@ export type InputDateProps = {
 };
 
 const InputDateMain = forwardRef((props: InputDateProps, ref) => {
-    const { value, onChange } = props;
+    const { value, onChange, ...rest } = props;
     const [_value, _setValue] = useState<Date | null | undefined>(value);
+    console.log(rest);
 
     useEffect(() => {
         if (value?.getTime() === _value?.getTime()) return;
@@ -34,6 +35,7 @@ const InputDateMain = forwardRef((props: InputDateProps, ref) => {
         <div className="relative w-full [&>div]:w-full">
             <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
             <ReactDatePicker
+                {...rest}
                 selected={_value}
                 onChange={_onChange}
                 autoComplete="off"

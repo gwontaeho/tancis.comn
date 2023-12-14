@@ -52,6 +52,8 @@ export const Wijmo = (props: wijmoProps) => {
     const [_page, _setPage] = useState<number>(0);
     const [_size, _setSize] = useState<number>(10);
 
+    const [test, setTest] = useState<any>();
+
     useEffect(() => {
         // console.log("init start");
         // 1. initialize
@@ -62,11 +64,10 @@ export const Wijmo = (props: wijmoProps) => {
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
-        // gridRef.current.control.cellEditEnding.addHandler((s: any, e: any) => {
-        //     console.log(e);
-        //     e.stayInEditMode = true;
-        // });
-        // gridRef.current.control.cellEditEnded.addHandler((e: any) => console.log(e.collectionView.editItem()));
+
+        gridRef.current.control.cellEditEnded.addHandler((e: any) => {
+            console.log(e);
+        });
 
         // console.log("init end");
     }, []);
@@ -203,18 +204,27 @@ export const Wijmo = (props: wijmoProps) => {
                                         colspan={cellProps.colspan}
                                         binding={cellProps.binding}
                                     >
-                                        {/* <wjGrid.MultiRowCellTemplate
+                                        <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
-                                            template={(r: any) => {
-                                                console.log(r);
+                                            template={(ctx: any) => {
+                                                const { type } = cellProps;
+                                                const { item, value } = ctx;
+                                                console.log(ctx);
+
+                                                const handleChange = (e: any) => {
+                                                    ctx.value = e.target.value;
+                                                };
                                                 return (
-                                                    <div
-                                                        id="asdff"
-                                                        className="h-9 px-1 flex items-center justify-center"
-                                                    ></div>
+                                                    <div className="h-9 px-1 flex items-center justify-center">
+                                                        <div
+                                                            className="fixed w-screen h-screen bg-black/10 top-0 left-0 z-[9999]"
+                                                            onClick={() => console.log("a")}
+                                                        ></div>
+                                                        <FormControl type={type} onChange={handleChange} />
+                                                    </div>
                                                 );
                                             }}
-                                        /> */}
+                                        />
                                     </wjGrid.MultiRowCell>
                                 );
                             })}

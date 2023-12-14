@@ -8,7 +8,7 @@ export type InputTimeProps = {
 };
 
 export const InputTime = (props: InputTimeProps) => {
-    const { value, onChange } = props;
+    const { value, onChange, ...rest } = props;
     const dateFormat = "HH:mm";
 
     const [_value, _setValue] = useState<Date | null | undefined>(value);
@@ -32,6 +32,7 @@ export const InputTime = (props: InputTimeProps) => {
         <div className="relative w-full [&>div]:w-full">
             <Icon icon="clock" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
             <ReactDatePicker
+                {...rest}
                 selected={_value}
                 onChange={_onChange}
                 dateFormat={dateFormat}

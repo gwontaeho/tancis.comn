@@ -20,3 +20,4 @@ export * from "./InputRange";
 export * from "./InputDaterange";
 export * from "./InputTimerange";
 export * from "./ControllerWrapper";
+export * from "./InputCode";

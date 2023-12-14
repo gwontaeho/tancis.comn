@@ -1,6 +1,5 @@
 import React from "react";
 import { useController, Control } from "react-hook-form";
-import { FormRulesType } from "@/comn/hooks";
 
 export type ControllerWrapperProps = {
     children: React.ReactElement;
@@ -12,7 +11,9 @@ export type ControllerWrapperProps = {
 export const ControllerWrapper = (props: ControllerWrapperProps) => {
     const { children, control, name, rules, ...rest } = props;
 
-    const { field } = useController({ name, control, rules });
+    const {
+        field: { onChange, onBlur, value },
+    } = useController({ name, control, rules });
 
-    return React.cloneElement(children, { ...rest, ...field });
+    return React.cloneElement(children, { ...rest, onChange, onBlur, value });
 };
