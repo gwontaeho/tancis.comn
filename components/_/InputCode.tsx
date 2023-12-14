@@ -5,7 +5,6 @@ import { Icon } from "@/comn/components";
 
 type InputCodeProps = {
     keyword?: string;
-    comnCd?: string;
     value?: any;
     onChange?: (...args: any) => void;
 };
@@ -13,6 +12,7 @@ type InputCodeProps = {
 export const InputCode = (props: InputCodeProps) => {
     const comnCd = "COM_0015";
 
+    const keywordInput = React.useRef<HTMLInputElement>(null);
     const cdVldValNmInput = React.useRef<HTMLInputElement>(null);
     const [_keyword, _setKeyword] = React.useState<string>();
 
@@ -21,7 +21,15 @@ export const InputCode = (props: InputCodeProps) => {
         getComnCd(_keyword);
     }, [_keyword]);
 
+    React.useEffect(() => {
+        if (!props.value) return;
+        keywordInput.current?.setAttribute("value", props.value);
+        console.log(props.value);
+        _setKeyword(props.value);
+    }, [props.value]);
+
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("change");
         if (!e.target.value) return;
         _setKeyword(e.target.value);
     }, 500);
@@ -44,7 +52,7 @@ export const InputCode = (props: InputCodeProps) => {
 
     return (
         <div className="flex">
-            <input className="input rounded-r-none flex-1" onChange={handleChange} />
+            <input ref={keywordInput} className="input rounded-r-none flex-1" onChange={handleChange} />
             <button className="button border-x-0 rounded-none">
                 <Icon icon="search" size="xs" />
             </button>
