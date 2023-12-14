@@ -66,6 +66,26 @@ export const SampleRoutes = [
                         to: "/Icon",
                     },
                     {
+                        name: "Button",
+                        to: "/Button",
+                    },
+                    {
+                        name: "IconButton",
+                        to: "/IconButton",
+                    },
+                    {
+                        name: "Group",
+                        to: "/Group",
+                    },
+                    {
+                        name: "Layout",
+                        to: "/Layout",
+                    },
+                    {
+                        name: "Tooltip",
+                        to: "/Tooltip",
+                    },
+                    {
                         name: "Table",
                         to: "/Table",
                     },
@@ -125,7 +145,7 @@ export const SampleRoutes = [
                 children: [
                     {
                         name: "List",
-                        to: "/l",
+                        to: "/list",
                     },
                     {
                         name: "Detail",

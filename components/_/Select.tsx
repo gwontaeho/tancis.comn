@@ -9,7 +9,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     (props: SelectProps, ref: React.ForwardedRef<HTMLSelectElement>) => {
         const { options, ...rest } = props;
-        console.log(props);
+
         return (
             <div className="relative flex w-full items-center">
                 <select {...rest} ref={ref} className="input appearance-none pr-5">

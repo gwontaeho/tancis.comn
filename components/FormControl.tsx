@@ -164,7 +164,7 @@ export const FormControl = React.forwardRef((props: FormControlMainProps, ref) =
 
     return (
         <div className={classNames(SIZES[size], props.mainClassName)}>
-            <Tooltip enabled={Boolean(props.invalid)} size="full" text="invalid field">
+            <Tooltip enabled={Boolean(props.invalid)} size="full" content="invalid field">
                 <FormControlEditMode ref={ref} {...props} />
             </Tooltip>
             {message && <div className="text-sm mt-1">{message}</div>}
