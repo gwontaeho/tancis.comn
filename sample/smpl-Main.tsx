@@ -31,16 +31,13 @@ import { SampleList } from "@/comn/sample/Page/smpl-List";
 import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
 import { SampleRegist } from "@/comn/sample/Page/smpl-Regist";
 import { SampleUpdate } from "@/comn/sample/Page/smpl-Update";
-import { SampleCommonPopup } from "@/comn/sample/Page/smpl-ComnPopup";
+import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
 
 export const SampleMain = () => {
     return (
         <MainLayout>
             <Routes>
-                <Route
-                    path="/components/FormControl/Text"
-                    element={<SampleFormControlText />}
-                />
+                <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
                 <Route
                     path="/components/FormControl/Number"
                     element={<SampleFormControlNumber />}
@@ -53,10 +50,7 @@ export const SampleMain = () => {
                     path="/components/FormControl/Select"
                     element={<SampleFormControlSelect />}
                 />
-                <Route
-                    path="/components/FormControl/Radio"
-                    element={<SampleFormControlRadio />}
-                />
+                <Route path="/components/FormControl/Radio" element={<SampleFormControlRadio />} />
                 <Route
                     path="/components/FormControl/Checkbox"
                     element={<SampleFormControlCheckbox />}
@@ -65,26 +59,14 @@ export const SampleMain = () => {
                     path="/components/FormControl/Textarea"
                     element={<SampleFormControlTextarea />}
                 />
-                <Route
-                    path="/components/FormControl/Date"
-                    element={<SampleFormControlDate />}
-                />
-                <Route
-                    path="/components/FormControl/Time"
-                    element={<SampleFormControlTime />}
-                />
+                <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
+                <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
                 <Route
                     path="/components/FormControl/Datetime"
                     element={<SampleFormControlDatetime />}
                 />
-                <Route
-                    path="/components/FormControl/Range"
-                    element={<SampleFormControlRange />}
-                />
-                <Route
-                    path="/components/FormControl/File"
-                    element={<SampleFormControlFile />}
-                />
+                <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
+                <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
 
                 <Route path="/components/Icon" element={<SampleIcon />} />
                 <Route path="/components/Tooltip" element={<SampleTooltip />} />
@@ -103,10 +85,7 @@ export const SampleMain = () => {
                 <Route path="/pages/:id" element={<SampleDetail />} />
                 <Route path="/pages/:id/update" element={<SampleUpdate />} />
                 <Route path="/pages/regist" element={<SampleRegist />} />
-                <Route
-                    path="/pages/comnPpup"
-                    element={<SampleCommonPopup isPopup={true} />}
-                />
+                <Route path="/pages/comnPpup" element={<CommonCodeList isPopup={true} />} />
             </Routes>
         </MainLayout>
     );

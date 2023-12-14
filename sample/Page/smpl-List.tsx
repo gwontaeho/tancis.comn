@@ -23,7 +23,10 @@ export const PopupSearch = () => {
 
     return (
         <Page>
-            <Page.Header title="Sample Search Popup" description="Sample Search Popup Description" />
+            <Page.Header
+                title="Sample Search Popup"
+                description="Sample Search Popup Description"
+            />
             <form onSubmit={_form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>

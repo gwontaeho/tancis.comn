@@ -1,3 +1,11 @@
 {
-  "test": "한국어"
+    "L_KO": "한국어",
+    "L_EN": "영어",
+    "L_SW": "스와힐리어",
+    "B_SRCH": "검색",
+    "L_COMN_CD": "공통코드",
+    "L_CD_VLD_VAL": "코드 유효값",
+    "L_CD_VLD_VAL_NM": "코드 유효값 명",
+    "L_LANG_CD": "언어 코드",
+    "T_COMN_CD_LST": "공통코드 목록"
 }
