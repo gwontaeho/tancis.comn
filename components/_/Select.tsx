@@ -1,5 +1,6 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
+import { useTranslation } from "react-i18next";
 import { Icon, FormControlOptionsType } from "@/comn/components";
 
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
@@ -9,6 +10,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     (props: SelectProps, ref: React.ForwardedRef<HTMLSelectElement>) => {
         const { options, ...rest } = props;
+        const { t } = useTranslation();
 
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
@@ -18,7 +20,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
                         options.map(({ label, value }, i) => {
                             return (
                                 <option key={OPTIONS_ID_BASE + "." + i} value={value}>
-                                    {label}
+                                    {t(label)}
                                 </option>
                             );
                         })}
