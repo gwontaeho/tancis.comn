@@ -67,6 +67,7 @@ type FormControlEditModeProps = InputDaterangeProps & {
     onChange?: (e: any) => void;
     onBlur?: () => void;
     disabled?: boolean;
+    readOnly?: boolean;
     setValue?: any;
     invalid?: string | boolean;
 };
