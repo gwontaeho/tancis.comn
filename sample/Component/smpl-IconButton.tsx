@@ -1,9 +1,9 @@
-import { Icon, IconsType } from "@/comn/components";
+import { IconButton, IconsType } from "@/comn/components";
 import { icons } from "@/comn/assets/icons";
 
-export const SampleIcon = () => {
+export const SampleIconButton = () => {
     const handleClick = (icon: any) => {
-        navigator.clipboard.writeText(`<Icon icon="${icon}" />`);
+        navigator.clipboard.writeText(`<IconButton icon="${icon}" />`);
     };
 
     return (
@@ -16,7 +16,7 @@ export const SampleIcon = () => {
                         onClick={() => handleClick(icon)}
                     >
                         <div className="font-mono">{icon}</div>
-                        <Icon icon={icon} />
+                        <IconButton icon={icon} />
                         <button className="hover:bg-black/10 w-full font-mono py-2 rounded">copy</button>
                     </div>
                 );

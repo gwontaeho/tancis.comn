@@ -10,14 +10,7 @@ import { Selector } from "@grapecity/wijmo.grid.selector";
 import * as wjcXlsx from "@grapecity/wijmo.xlsx";
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
 import { Pagination, Button, Icon, FormControl, Tree } from "@/comn/components";
-import {
-    InputDate,
-    InputTime,
-    InputDateTime,
-    InputNumber,
-    InputMask,
-    ComboBox,
-} from "@grapecity/wijmo.input";
+import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from "@grapecity/wijmo.input";
 
 import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from "@/comn/hooks";
 import dayjs from "dayjs";
@@ -53,8 +46,7 @@ type wijmoProps = {
 };
 
 export const Wijmo = (props: wijmoProps) => {
-    const { gridRef, contentRef, schema, data, size, page, setSize, setPage } =
-        props;
+    const { gridRef, contentRef, schema, data, size, page, setSize, setPage } = props;
 
     const [totalCount, setTotalCount] = useState<number>();
     const [_page, _setPage] = useState<number>(0);
@@ -63,18 +55,13 @@ export const Wijmo = (props: wijmoProps) => {
     useEffect(() => {
         // console.log("init start");
         // 1. initialize
-        if (schema.options?.isReadOnly)
-            gridRef.current.control.isReadOnly = true;
+        if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true;
         if (schema.options?.checkbox) new Selector(gridRef.current.control);
-        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(
-            schema.head
-        );
+        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
         // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
-        gridRef.current.control.itemsSourceChanged.addHandler(
-            handleItemsSourceChanged
-        );
+        gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
         // gridRef.current.control.cellEditEnding.addHandler((s: any, e: any) => {
         //     console.log(e);
         //     e.stayInEditMode = true;
@@ -94,9 +81,7 @@ export const Wijmo = (props: wijmoProps) => {
         }));
         contentRef.current = lodash.cloneDeep(content);
         gridRef.current.control.itemsSource = lodash.cloneDeep(content);
-        setTotalCount(
-            schema.options?.pagination === "in" ? content.length : data.totCnt
-        );
+        setTotalCount(schema.options?.pagination === "in" ? content.length : data.totCnt);
         // console.log("data set end");
     }, [data]);
 
@@ -123,11 +108,8 @@ export const Wijmo = (props: wijmoProps) => {
         const cellBinding = e.getColumn().binding;
         const cellValue = e.getRow().dataItem[cellBinding];
         const cellIndex = e.getRow().dataItem["__index"];
-        const originValue = contentRef.current?.find(
-            (origin: any) => origin.__index === cellIndex
-        )[cellBinding];
-        if (cellValue !== originValue)
-            return e.cell.classList.add("cell-changed");
+        const originValue = contentRef.current?.find((origin: any) => origin.__index === cellIndex)[cellBinding];
+        if (cellValue !== originValue) return e.cell.classList.add("cell-changed");
     };
 
     const handleItemsSourceChanged = (c: any) => {
@@ -213,21 +195,11 @@ export const Wijmo = (props: wijmoProps) => {
                 {schema.body.map((props, i) => {
                     const { colspan, cells } = props;
                     return (
-                        <wjGrid.MultiRowCellGroup
-                            key={"wijmo." + schema.id + "." + i}
-                            colspan={colspan}
-                        >
+                        <wjGrid.MultiRowCellGroup key={"wijmo." + schema.id + "." + i} colspan={colspan}>
                             {cells.map((cellProps, ii) => {
                                 return (
                                     <wjGrid.MultiRowCell
-                                        key={
-                                            "wijmo." +
-                                            schema.id +
-                                            "." +
-                                            i +
-                                            "." +
-                                            ii
-                                        }
+                                        key={"wijmo." + schema.id + "." + i + "." + ii}
                                         colspan={cellProps.colspan}
                                         binding={cellProps.binding}
                                     >
