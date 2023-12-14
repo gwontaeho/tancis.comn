@@ -38,11 +38,7 @@ type GroupProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const Group = (props: GroupProps) => {
     const { children, className } = props;
-    return (
-        <div className={classNames("shadow rounded bg-card p-4 space-y-4 w-full", className)}>
-            {children}
-        </div>
-    );
+    return <div className={classNames("shadow rounded bg-card p-4 space-y-4 w-full", className)}>{children}</div>;
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {
@@ -81,13 +77,7 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
                 SIZES[labelSize]
             )}
         >
-            {props.type ? (
-                <FormControl ref={ref} {...rest} />
-            ) : typeof label === "string" ? (
-                t(label)
-            ) : (
-                label
-            )}
+            {props.type ? <FormControl ref={ref} {...rest} /> : typeof label === "string" ? t(label) : label}
             {props.required && (
                 <span
                     className={classNames("text-invalid ml-0.5", {
@@ -105,9 +95,7 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
     const { labelSize, label, controlSize = 4, ...rest } = props;
     return (
         <>
-            {label !== undefined && (
-                <GroupLabel required={props.required} label={label} labelSize={labelSize} />
-            )}
+            {label !== undefined && <GroupLabel required={props.required} label={label} labelSize={labelSize} />}
             <div className={classNames("p-1 flex items-center", SIZES[controlSize])}>
                 <FormControl ref={ref} {...rest} />
             </div>
@@ -120,9 +108,7 @@ const GroupCol = (props: GroupColProps) => {
     return (
         <>
             {label && <GroupLabel required={required} label={label} labelSize={labelSize} />}
-            <div className={classNames("p-1 flex items-center space-x-1", SIZES[colSize])}>
-                {children}
-            </div>
+            <div className={classNames("p-1 flex items-center space-x-1", SIZES[colSize])}>{children}</div>
         </>
     );
 };

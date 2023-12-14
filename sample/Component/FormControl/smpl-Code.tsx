@@ -5,7 +5,7 @@ export const SampleFormControlCode = () => {
     return (
         <Page>
             <Group>
-                <InputCode />
+                <InputCode onChange={(a) => console.log(a)} />
             </Group>
         </Page>
     );
