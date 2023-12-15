@@ -9,6 +9,7 @@ export const SampleFormControlCode = () => {
     const { field } = useController({ name: "test", control });
     const { field: field2 } = useController({ name: "test2", control });
     const { field: field3 } = useController({ name: "test3", control });
+    const { field: field4 } = useController({ name: "test4", control });
 
     return (
         <Page>
@@ -23,6 +24,7 @@ export const SampleFormControlCode = () => {
 
                 <InputCode area="cntyCd" maxLength={2} value={field2.value} onChange={field2.onChange} />
                 <InputCode area="currCd" maxLength={3} value={field3.value} onChange={field3.onChange} />
+                <InputCode area="bnkCd" maxLength={8} value={field4.value} onChange={field3.onChange} />
 
                 <button onClick={() => setValue("test", "a05")}>test</button>
                 <button onClick={() => console.log(getValues())}>getValues</button>

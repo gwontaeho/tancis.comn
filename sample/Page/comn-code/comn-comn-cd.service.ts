@@ -2,14 +2,30 @@ import { api } from "@/comn";
 import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
 
 export const APIS = {
-    getCommonCodeList: (data: any, page: number, size: number) => {
+    getComnCdLst: (data: any, page: number, size: number) => {
         return api.get(`/ptl-com/comn/comn-cds?page=${page}&size=${size}`, {
+            params: data,
+        });
+    },
+
+    getCntyCdLst: (data: any, page: number, size: number) => {
+        return api.get(`/ptl-com/comn/cnty-cds?page=${page}&size=${size}`, {
+            params: data,
+        });
+    },
+    getCurrCdLst: (data: any, page: number, size: number) => {
+        return api.get(`/ptl-com/comn/curr-cds?page=${page}&size=${size}`, {
+            params: data,
+        });
+    },
+    getBnkCdLst: (data: any, page: number, size: number) => {
+        return api.get(`/ptl-com/comn/comn-cds?comnCd=CO012&page=${page}&size=${size}`, {
             params: data,
         });
     },
 };
 
-export const SCHEMA_GRID = (clickEvent: any): WijmoSchemaType => {
+export const SCHEMA_GRID_COMN_CD = (clickEvent: any): WijmoSchemaType => {
     return {
         id: "grid",
         options: { pagination: "in", isReadOnly: true },
@@ -31,6 +47,84 @@ export const SCHEMA_GRID = (clickEvent: any): WijmoSchemaType => {
             },
             {
                 cells: [{ binding: "cdVldVal" }],
+            },
+            {
+                cells: [{ binding: "cdVldValNm" }],
+            },
+        ],
+    };
+};
+
+export const SCHEMA_GRID_CNTY_CD = (clickEvent: any): WijmoSchemaType => {
+    return {
+        id: "grid",
+        options: { pagination: "in", isReadOnly: true },
+        head: [
+            { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+            { cells: [{ header: "L_CNTY_NM", binding: "cntyNm" }] },
+        ],
+        body: [
+            {
+                cells: [
+                    {
+                        binding: "cntyCd",
+                        onClick: (ctx: any) => {
+                            clickEvent(ctx);
+                        },
+                    },
+                ],
+            },
+            {
+                cells: [{ binding: "cntyNm" }],
+            },
+        ],
+    };
+};
+
+export const SCHEMA_GRID_CURR_CD = (clickEvent: any): WijmoSchemaType => {
+    return {
+        id: "grid",
+        options: { pagination: "in", isReadOnly: true },
+        head: [
+            { cells: [{ header: "L_CURR_CD", binding: "currCd" }] },
+            { cells: [{ header: "L_CURR_NM", binding: "currNm" }] },
+        ],
+        body: [
+            {
+                cells: [
+                    {
+                        binding: "currCd",
+                        onClick: (ctx: any) => {
+                            clickEvent(ctx);
+                        },
+                    },
+                ],
+            },
+            {
+                cells: [{ binding: "currNm" }],
+            },
+        ],
+    };
+};
+
+export const SCHEMA_GRID_BNK_CD = (clickEvent: any): WijmoSchemaType => {
+    return {
+        id: "grid",
+        options: { pagination: "in", isReadOnly: true },
+        head: [
+            { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
+            { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
+        ],
+        body: [
+            {
+                cells: [
+                    {
+                        binding: "cdVldVal",
+                        onClick: (ctx: any) => {
+                            clickEvent(ctx);
+                        },
+                    },
+                ],
             },
             {
                 cells: [{ binding: "cdVldValNm" }],
@@ -63,5 +157,21 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
     schema: {
         cntyCd: { type: "text", label: "L_CNTY_CD" },
         cntyNm: { type: "text", label: "L_CNTY_NM" },
+    },
+};
+
+export const SCHEMA_FORM_CURR_CD: FormSchemaType = {
+    id: "form",
+    schema: {
+        currCd: { type: "text", label: "L_CURR_CD" },
+        currNm: { type: "text", label: "L_CURR_NM" },
+    },
+};
+
+export const SCHEMA_FORM_BNK_CD: FormSchemaType = {
+    id: "form",
+    schema: {
+        cdVldVal: { type: "text", label: "L_BNK_CD" },
+        cdVldValNm: { type: "text", label: "L_BNK_NM" },
     },
 };
