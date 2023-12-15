@@ -1,8 +1,8 @@
 import { utils } from "@/comn/utils";
-import { useWijmo } from "@/comn/hooks";
-import { Wijmo } from "@/comn/components";
+import { useWijmo, WijmoSchemaType } from "@/comn/hooks";
+import { Page, Group, Wijmo } from "@/comn/components";
 
-const defaultSchema: any = {
+const defaultSchema: WijmoSchemaType = {
     id: "grid",
     options: { checkbox: true, pagination: "in", add: true, remove: true },
     head: [
@@ -38,8 +38,10 @@ export const SampleUseWijmo = () => {
     const { grid } = useWijmo({ defaultSchema });
 
     return (
-        <div>
-            <Wijmo {...grid} data={data} />
-        </div>
+        <Page>
+            <Group>
+                <Wijmo {...grid} data={data} />
+            </Group>
+        </Page>
     );
 };
