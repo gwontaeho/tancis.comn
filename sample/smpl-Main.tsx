@@ -40,26 +40,14 @@ export const SampleMain = () => {
         <Routes>
             <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
             <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
-            <Route
-                path="/components/FormControl/Password"
-                element={<SampleFormControlPassword />}
-            />
+            <Route path="/components/FormControl/Password" element={<SampleFormControlPassword />} />
             <Route path="/components/FormControl/Select" element={<SampleFormControlSelect />} />
             <Route path="/components/FormControl/Radio" element={<SampleFormControlRadio />} />
-            <Route
-                path="/components/FormControl/Checkbox"
-                element={<SampleFormControlCheckbox />}
-            />
-            <Route
-                path="/components/FormControl/Textarea"
-                element={<SampleFormControlTextarea />}
-            />
+            <Route path="/components/FormControl/Checkbox" element={<SampleFormControlCheckbox />} />
+            <Route path="/components/FormControl/Textarea" element={<SampleFormControlTextarea />} />
             <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
             <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
-            <Route
-                path="/components/FormControl/Datetime"
-                element={<SampleFormControlDatetime />}
-            />
+            <Route path="/components/FormControl/Datetime" element={<SampleFormControlDatetime />} />
             <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
             <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
             <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />

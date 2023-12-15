@@ -50,6 +50,7 @@ export const Page = (props: PageProps) => {
 
 export const SimplePage = (props: PageProps) => {
     const { children } = props;
+
     return <div className="space-y-4">{children}</div>;
 };
 
