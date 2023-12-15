@@ -1,6 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css";
 import React from "react";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 import { Icon, IconsType, Tooltip } from "@/comn/components";
 import {
     InputText,
@@ -167,14 +168,15 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
 
 export const FormControl = React.forwardRef((props: FormControlMainProps, ref) => {
     const { size = "full", message } = props;
+    const { t } = useTranslation();
 
     return (
         <div className={classNames(SIZES[size], props.mainClassName)}>
-            <Tooltip enabled={Boolean(props.invalid)} size="full" content="invalid field">
+            <Tooltip enabled={Boolean(props.invalid)} size="full" content={t("msg.00001")}>
                 <FormControlEditMode ref={ref} {...props} />
             </Tooltip>
             {message && <div className="text-sm mt-1">{message}</div>}
-            {props.invalid && <div className="text-invalid text-sm mt-1">invalid field</div>}
+            {props.invalid && <div className="text-invalid text-sm mt-1">{t("msg.00001")}</div>}
         </div>
     );
 });
