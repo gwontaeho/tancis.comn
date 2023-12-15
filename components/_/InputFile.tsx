@@ -13,16 +13,13 @@ type File = {
 
 export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
     (props: InputFileProps, ref: React.ForwardedRef<HTMLInputElement>) => {
-        const [files, setFiles] = React.useState<any[]>([]);
+        const [_files, _setFiles] = React.useState<any[]>([]);
 
         const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             const _filelist = Array.prototype.slice
                 .call(event.target.files)
                 .map((file) => ({ file, key: uuid(), status: "loading" }));
-
-            setFiles((prev) => prev.concat(_filelist));
-
-            console.log(_filelist);
+            _setFiles((prev) => prev.concat(_filelist));
 
             _filelist.forEach((file) => {
                 _upload(file);
@@ -31,10 +28,10 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             event.target.value = "";
         };
 
-        const _upload = async (file: any) => {
+        const _upload = async (_file: any) => {
             try {
-                const response = await _dummy(file);
-                setFiles((prev) =>
+                const response = await _dummy(_file);
+                _setFiles((prev) =>
                     prev.map((_) => {
                         if (_.key !== response.data.key) return _;
                         return { ..._, status: response.result ? "success" : "failed" };
@@ -43,17 +40,32 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             } catch (error) {}
         };
 
-        // const _delete = () => {
-        //     return new Promise((resolve) => {
-        //         setTimeout(() => {
-        //             resolve({
-        //                 result: false,
-        //                 message: "message",
-        //                 data: [{ id: 1, index: 0, url: "", size: 100, result: false, message: "" }],
-        //             });
-        //         }, 2000);
-        //     });
-        // };
+        const _reupload = async (_file: any) => {
+            _setFiles((prev) =>
+                prev.map((_) => {
+                    if (_.key !== _file.key) return _;
+                    return { ..._, status: "loading" };
+                })
+            );
+            _upload(_file);
+        };
+
+        const _delete = async (_file: any) => {
+            _setFiles((prev) =>
+                prev.map((_) => {
+                    if (_.key !== _file.key) return _;
+                    return { ..._, status: "loading" };
+                })
+            );
+            try {
+                const response = await _dummy(_file);
+                _setFiles((prev) =>
+                    prev.filter((_) => {
+                        if (_.key !== response.data.key) return _;
+                    })
+                );
+            } catch (error) {}
+        };
 
         const _dummy = (file: any): any => {
             const result = Math.random() < 0.5;
@@ -76,7 +88,8 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                     <input onChange={onChange} hidden multiple={true} type="file" />
                 </label>
                 <div>
-                    {files.map(({ file, status, key }) => {
+                    {_files.map((_file) => {
+                        const { key, file, status } = _file;
                         return (
                             <div key={key} className="px-2 py-1 flex justify-between items-center">
                                 <span className="font-mono">{file.name}</span>
@@ -84,8 +97,12 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                                     {status === "loading" && (
                                         <IconButton icon="loading" className="animate-spin" size="xs" />
                                     )}
-                                    {status === "failed" && <IconButton icon="path" size="xs"></IconButton>}
-                                    {status !== "loading" && <IconButton icon="minus" size="xs"></IconButton>}
+                                    {status === "failed" && (
+                                        <IconButton icon="path" size="xs" onClick={() => _reupload(_file)}></IconButton>
+                                    )}
+                                    {status !== "loading" && (
+                                        <IconButton icon="minus" size="xs" onClick={() => _delete(_file)}></IconButton>
+                                    )}
                                 </div>
                             </div>
                         );
