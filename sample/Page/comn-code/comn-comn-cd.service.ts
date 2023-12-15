@@ -1,5 +1,5 @@
 import { api } from "@/comn";
-import { FormSchemaType } from "@/comn/hooks";
+import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
 
 export const APIS = {
     getCommonCodeList: (data: any, page: number, size: number) => {
@@ -9,29 +9,34 @@ export const APIS = {
     },
 };
 
-export const SCHEMA_GRID: any = {
-    id: "grid",
-    options: { pagination: "in", download: false },
-    head: [
-        { cells: [{ header: "L_COMN_CD", binding: "comnCd" }] },
-        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
-        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
-    ],
-    body: [
-        {
-            cells: [
-                {
-                    binding: "comnCd",
-                },
-            ],
-        },
-        {
-            cells: [{ binding: "cdVldVal" }],
-        },
-        {
-            cells: [{ binding: "cdVldValNm" }],
-        },
-    ],
+export const SCHEMA_GRID = (clickEvent: any): WijmoSchemaType => {
+    return {
+        id: "grid",
+        options: { pagination: "in", isReadOnly: true },
+        head: [
+            { cells: [{ header: "L_COMN_CD", binding: "comnCd" }] },
+            { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
+            { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
+        ],
+        body: [
+            {
+                cells: [
+                    {
+                        binding: "comnCd",
+                        onClick: (ctx: any) => {
+                            clickEvent(ctx);
+                        },
+                    },
+                ],
+            },
+            {
+                cells: [{ binding: "cdVldVal" }],
+            },
+            {
+                cells: [{ binding: "cdVldValNm" }],
+            },
+        ],
+    };
 };
 
 export const SCHEMA_FORM: FormSchemaType = {

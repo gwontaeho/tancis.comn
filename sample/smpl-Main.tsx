@@ -37,42 +37,52 @@ import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
 
 export const SampleMain = () => {
     return (
-        <MainLayout>
-            <Routes>
-                <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
-                <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
-                <Route path="/components/FormControl/Password" element={<SampleFormControlPassword />} />
-                <Route path="/components/FormControl/Select" element={<SampleFormControlSelect />} />
-                <Route path="/components/FormControl/Radio" element={<SampleFormControlRadio />} />
-                <Route path="/components/FormControl/Checkbox" element={<SampleFormControlCheckbox />} />
-                <Route path="/components/FormControl/Textarea" element={<SampleFormControlTextarea />} />
-                <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
-                <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
-                <Route path="/components/FormControl/Datetime" element={<SampleFormControlDatetime />} />
-                <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
-                <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
-                <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
+        <Routes>
+            <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
+            <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
+            <Route
+                path="/components/FormControl/Password"
+                element={<SampleFormControlPassword />}
+            />
+            <Route path="/components/FormControl/Select" element={<SampleFormControlSelect />} />
+            <Route path="/components/FormControl/Radio" element={<SampleFormControlRadio />} />
+            <Route
+                path="/components/FormControl/Checkbox"
+                element={<SampleFormControlCheckbox />}
+            />
+            <Route
+                path="/components/FormControl/Textarea"
+                element={<SampleFormControlTextarea />}
+            />
+            <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
+            <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
+            <Route
+                path="/components/FormControl/Datetime"
+                element={<SampleFormControlDatetime />}
+            />
+            <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
+            <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
+            <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 
-                <Route path="/components/Icon" element={<SampleIcon />} />
-                <Route path="/components/Tooltip" element={<SampleTooltip />} />
-                <Route path="/components/Tab" element={<SampleTab />} />
-                <Route path="/components/Tree" element={<SampleTree />} />
-                <Route path="/components/Wijmo" element={<SampleWijmo />} />
-                <Route path="/components/Table" element={<SampleTable />} />
-                <Route path="/components/IconButton" element={<SampleIconButton />} />
+            <Route path="/components/Icon" element={<SampleIcon />} />
+            <Route path="/components/Tooltip" element={<SampleTooltip />} />
+            <Route path="/components/Tab" element={<SampleTab />} />
+            <Route path="/components/Tree" element={<SampleTree />} />
+            <Route path="/components/Wijmo" element={<SampleWijmo />} />
+            <Route path="/components/Table" element={<SampleTable />} />
+            <Route path="/components/IconButton" element={<SampleIconButton />} />
 
-                <Route path="/hooks/useForm" element={<SampleUseForm />} />
-                <Route path="/hooks/useModal" element={<SampleUseModal />} />
-                <Route path="/hooks/useToast" element={<SampleUseToast />} />
-                <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
-                <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
+            <Route path="/hooks/useForm" element={<SampleUseForm />} />
+            <Route path="/hooks/useModal" element={<SampleUseModal />} />
+            <Route path="/hooks/useToast" element={<SampleUseToast />} />
+            <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
+            <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
 
-                <Route path="/pages/list" element={<SampleList />} />
-                <Route path="/pages/:id" element={<SampleDetail />} />
-                <Route path="/pages/:id/update" element={<SampleUpdate />} />
-                <Route path="/pages/regist" element={<SampleRegist />} />
-                <Route path="/pages/comnPpup" element={<CommonCodeList isPopup={true} />} />
-            </Routes>
-        </MainLayout>
+            <Route path="/pages/list" element={<SampleList />} />
+            <Route path="/pages/:id" element={<SampleDetail />} />
+            <Route path="/pages/:id/update" element={<SampleUpdate />} />
+            <Route path="/pages/regist" element={<SampleRegist />} />
+            <Route path="/pages/comnPpup" element={<CommonCodeList isPopup={true} />} />
+        </Routes>
     );
 };
