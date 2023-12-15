@@ -52,28 +52,24 @@ export const Wijmo = (props: wijmoProps) => {
     const [_page, _setPage] = useState<number>(0);
     const [_size, _setSize] = useState<number>(10);
 
-    const [test, setTest] = useState<any>();
-
     useEffect(() => {
-        // console.log("init start");
         // 1. initialize
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true;
         if (schema.options?.checkbox) new Selector(gridRef.current.control);
         gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
         // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
+
+        // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
+        //     const a = gridRef.current.control.hitTest(e);
+        //     console.log(a);
+        // });
+
         gridRef.current.control.selectionMode = "Row";
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
-
-        gridRef.current.control.cellEditEnded.addHandler((e: any) => {
-            console.log(e);
-        });
-
-        // console.log("init end");
     }, []);
 
     useEffect(() => {
-        // console.log("data set start");
         // 2. data setting
         const content = data.content.map((_, i) => ({
             ..._,
@@ -83,20 +79,15 @@ export const Wijmo = (props: wijmoProps) => {
         contentRef.current = lodash.cloneDeep(content);
         gridRef.current.control.itemsSource = lodash.cloneDeep(content);
         setTotalCount(schema.options?.pagination === "in" ? content.length : data.totCnt);
-        // console.log("data set end");
     }, [data]);
 
     useEffect(() => {
-        // console.log("paging start");
-        // paging - in
         if (!gridRef.current.control.collectionView) return;
         if (schema.options?.pagination !== "in") return;
         gridRef.current.control.collectionView.moveToPage(_page);
     }, [_page]);
 
     useEffect(() => {
-        // console.log("sizing start");
-        // sizing - in
         if (!gridRef.current.control?.collectionView) return;
         if (schema.options?.pagination !== "in") return;
         gridRef.current.control.collectionView.pageSize = _size;
@@ -156,9 +147,17 @@ export const Wijmo = (props: wijmoProps) => {
         return head;
     };
 
-    const layoutDefinition = (body: WijmoBodyType) => {
-        return body;
-    };
+    // const layoutDefinition = (body: WijmoBodyType) => {
+    //     return body.map((_) => {
+    //         return {
+    //             ..._,
+    //             cells: _.cells.map((__) => {
+    //                 const { type, onClick, ...___ } = __;
+    //                 return { ...___ };
+    //             }),
+    //         };
+    //     });
+    // };
 
     const handleExport = () => {
         wjcGridXlsx.FlexGridXlsxConverter.saveAsync(
@@ -205,6 +204,17 @@ export const Wijmo = (props: wijmoProps) => {
                                         binding={cellProps.binding}
                                     >
                                         <wjGrid.MultiRowCellTemplate
+                                            cellType="Cell"
+                                            template={(ctx: any) => {
+                                                const { __index, __type, ...data } = ctx.item;
+                                                return (
+                                                    <div className="h-7" onClick={() => cellProps.onClick?.(data)}>
+                                                        {ctx.item[cellProps.binding]}
+                                                    </div>
+                                                );
+                                            }}
+                                        />
+                                        {/* <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(ctx: any) => {
                                                 const { type } = cellProps;
@@ -224,7 +234,7 @@ export const Wijmo = (props: wijmoProps) => {
                                                     </div>
                                                 );
                                             }}
-                                        />
+                                        /> */}
                                     </wjGrid.MultiRowCell>
                                 );
                             })}

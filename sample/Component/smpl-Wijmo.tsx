@@ -30,7 +30,15 @@ const schema: any = {
     body: [
         {
             colspan: 3,
-            cells: [{ binding: "id", colspan: 3 }],
+            cells: [
+                {
+                    binding: "id",
+                    colspan: 3,
+                    onClick: (ctx: any) => {
+                        console.log(ctx);
+                    },
+                },
+            ],
         },
         {
             cells: [{ binding: "a" }],

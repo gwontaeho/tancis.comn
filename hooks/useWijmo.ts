@@ -11,7 +11,7 @@ type WijmoOptionType = {
 };
 export type WijmoHeadType = { cells: { header: string; binding?: string; colspan?: number }[] }[];
 export type WijmoBodyType = {
-    cells: { binding: string; colspan?: number; type?: FormControlType }[];
+    cells: { binding: string; colspan?: number; type?: FormControlType; onClick?: (data?: any) => void }[];
     colspan?: number;
 }[];
 export type WijmoSchemaType = {
