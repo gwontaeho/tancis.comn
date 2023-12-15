@@ -3,6 +3,7 @@ import lodash from "lodash";
 import { api } from "@/comn";
 import { Icon } from "@/comn/components";
 import { ControllerWrapper } from "@/comn/components/_";
+import { usePopup } from "@/comn/hooks";
 import { Control } from "react-hook-form";
 
 type InputCodeProps = {
@@ -16,9 +17,9 @@ type InputCodeProps = {
 };
 
 const InputCodeMain = (props: InputCodeProps) => {
+    const { openPopup, postMessage } = usePopup();
     const keywordInput = React.useRef<HTMLInputElement>(null);
     const cdVldValNmInput = React.useRef<HTMLInputElement>(null);
-    const _keyword = React.useRef<any>(null);
 
     React.useEffect(() => {
         if (!props.value) return;
@@ -42,7 +43,6 @@ const InputCodeMain = (props: InputCodeProps) => {
         }
 
         try {
-            _keyword.current = keyword;
             const {
                 data: { content },
             } = await api.get(getCodeUrl(keyword));
@@ -92,7 +92,9 @@ const InputCodeMain = (props: InputCodeProps) => {
         return "";
     };
 
-    const handleClickSearch = () => {};
+    const handleClickSearch = () => {
+        openPopup({ url: "/comn/smpl/pages/comnPpup" });
+    };
 
     return (
         <div className="flex">

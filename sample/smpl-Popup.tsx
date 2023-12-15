@@ -4,10 +4,8 @@ import { SampleUsePopupTarget } from "@/comn/sample/Hook/smpl-usePopup";
 
 export const SamplePopup = () => {
     return (
-        <PopupLayout>
-            <Routes>
-                <Route path="/usePopup" element={<SampleUsePopupTarget />} />
-            </Routes>
-        </PopupLayout>
+        <Routes>
+            <Route path="/usePopup" element={<SampleUsePopupTarget />} />
+        </Routes>
     );
 };

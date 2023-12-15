@@ -4,10 +4,8 @@ import { TestPopup } from "./TestPopup";
 
 export const CommonPopup = () => {
     return (
-        <PopupLayout>
-            <Routes>
-                <Route path="/test" element={<TestPopup />} />
-            </Routes>
-        </PopupLayout>
+        <Routes>
+            <Route path="/test" element={<TestPopup />} />
+        </Routes>
     );
 };
