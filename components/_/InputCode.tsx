@@ -17,7 +17,7 @@ type InputCodeProps = {
 };
 
 const InputCodeMain = (props: InputCodeProps) => {
-    const { openPopup, postMessage } = usePopup();
+    const { openPopup } = usePopup();
     const keywordInput = React.useRef<HTMLInputElement>(null);
     const cdVldValNmInput = React.useRef<HTMLInputElement>(null);
 
@@ -93,7 +93,17 @@ const InputCodeMain = (props: InputCodeProps) => {
     };
 
     const handleClickSearch = () => {
-        openPopup({ url: "/comn/smpl/pages/comnPpup" });
+        if (!props.area || props.area === "comnCd") {
+            openPopup({
+                url: `/comn/smpl/pages/comnPpup?popup=Y&comnCd=${props.comnCd}`,
+                exact: true,
+                callback: (data: any) => {
+                    console.log(data);
+                    if (cdVldValNmInput.current) cdVldValNmInput.current.value = data.label;
+                    if (keywordInput.current) keywordInput.current.value = data.code;
+                },
+            });
+        }
     };
 
     return (

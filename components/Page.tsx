@@ -23,7 +23,7 @@ type PageProps = {
 };
 
 export const Page = (props: PageProps) => {
-    const [params, setParams] = useSearchParams(); /* 화면 폼 제어 */
+    const [params] = useSearchParams(); /* 화면 폼 제어 */
     const { children } = props;
     const popup = params.get("popup");
     if (popup === "Y") {
