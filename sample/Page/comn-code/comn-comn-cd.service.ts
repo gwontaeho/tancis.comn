@@ -38,7 +38,7 @@ export const SCHEMA_FORM: FormSchemaType = {
     id: "form",
     schema: {
         comnCd: { type: "text", label: "L_COMN_CD", required: true, readOnly: true },
-        cdVldVal: { type: "text", label: "L_CD_VLD_VAL" },
+        cdVldVal: { type: "text", label: "L_CD_VLD_VAL", required: true },
         cdVldValNm: { type: "text", label: "L_CD_VLD_VAL_NM" },
         langCd: {
             type: "select",
