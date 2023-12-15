@@ -1,5 +1,5 @@
 import "@grapecity/wijmo.styles/wijmo.css";
-import "./Wijmo.v2.css";
+import "./Wijmo.css";
 
 import React, { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
@@ -208,7 +208,7 @@ export const Wijmo = (props: wijmoProps) => {
                                             template={(ctx: any) => {
                                                 const { __index, __type, ...data } = ctx.item;
                                                 return (
-                                                    <div className="h-7" onClick={() => cellProps.onClick?.(data)}>
+                                                    <div onClick={() => cellProps.onClick?.(data)}>
                                                         {ctx.item[cellProps.binding]}
                                                     </div>
                                                 );

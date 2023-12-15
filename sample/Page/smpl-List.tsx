@@ -7,7 +7,7 @@ import {
     //  Wijmo,
     Button,
 } from "@/comn/components";
-import { Wijmo } from "@/comn/components/Wijmo.v2/Wijmo.v2";
+import { Wijmo } from "@/comn/components";
 import { OPTIONS, SCHEMA_FORM, SCHEMA_GRID, APIS, SCHEMA_GRID_COMPONENTS } from "./smpl-Service";
 import { FormValuesType } from "@/comn/hooks";
 
@@ -23,10 +23,7 @@ export const PopupSearch = () => {
 
     return (
         <Page>
-            <Page.Header
-                title="Sample Search Popup"
-                description="Sample Search Popup Description"
-            />
+            <Page.Header title="Sample Search Popup" description="Sample Search Popup Description" />
             <form onSubmit={_form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>

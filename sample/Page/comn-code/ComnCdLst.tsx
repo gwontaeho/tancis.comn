@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Wijmo } from "@/comn/components/Wijmo.v2/Wijmo.v2";
+import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
 import { APIS, SCHEMA_FORM, SCHEMA_GRID } from "./comn-comn-cd.service";
@@ -43,10 +43,7 @@ export const CommonCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation
-                base="/sample/pages"
-                nodes={[{ path: "/", label: "List" }, { label: "Regist" }]}
-            />
+            <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
             <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
 
             <Group>
