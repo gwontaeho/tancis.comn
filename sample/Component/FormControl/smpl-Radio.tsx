@@ -11,6 +11,9 @@ export const SampleFormControlRadio = () => {
                             <Group.Control type="radio" label="기본" options={utils.getMockOptions()} />
                         </Group.Row>
                         <Group.Row>
+                            <Group.Control type="radio" label="code" area="currCd" />
+                        </Group.Row>
+                        <Group.Row>
                             <Group.Control type="radio" label="필수" required={true} options={utils.getMockOptions()} />
                             <Group.Col>
                                 <code>{`required={true}`}</code>

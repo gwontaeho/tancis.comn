@@ -74,6 +74,8 @@ type FormControlEditModeProps = InputDaterangeProps & {
     setValue?: any;
     invalid?: string | boolean;
     comnCd?: string;
+    area?: string;
+    keyword?: string;
 };
 
 type FormControlMainProps = FormControlEditModeProps & {

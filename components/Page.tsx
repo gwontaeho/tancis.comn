@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
 import { Icon } from "@/comn/components";
+import { MainLayout } from "@/comn/layouts/MainLayout";
 import { Header, NavVertical } from "@/comn/components/_";
 
 type NodeType = { path?: string; label: string };
@@ -34,16 +35,9 @@ export const Page = (props: PageProps) => {
         );
     } else {
         return (
-            <>
-                <Header />
-                <div className="flex h-full">
-                    <NavVertical />
-                    <main className="p-4 w-full mt-20 space-y-4 lg:ml-60 lg:w-[calc(100%-15rem)]">
-                        <div className="space-y-4">{children}</div>
-                    </main>
-                    <footer></footer>
-                </div>
-            </>
+            <MainLayout>
+                <div className="space-y-4">{children}</div>
+            </MainLayout>
         );
     }
 };

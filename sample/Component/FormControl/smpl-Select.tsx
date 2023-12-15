@@ -44,6 +44,12 @@ export const SampleFormControlSelect = () => {
                             </Group.Col>
                         </Group.Row>
                         <Group.Row>
+                            <Group.Control type="select" comnCd="COM_0015" area="comnCd" label="코드" />
+                            <Group.Col>
+                                <code>{`rightButton={{icon:"search"}}`}</code>
+                            </Group.Col>
+                        </Group.Row>
+                        <Group.Row>
                             <Group.Control type="select" label="에러" invalid={true} options={utils.getMockOptions()} />
                             <Group.Col>
                                 <code>{`invalid={true}`}</code>

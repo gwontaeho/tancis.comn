@@ -1,5 +1,6 @@
 import lodash from "lodash";
 import dayjs from "dayjs";
+import { api } from "@/comn";
 
 export const utils = {
     getMockData: ({ totCnt = 99 }) => {
@@ -24,5 +25,46 @@ export const utils = {
         return Array(count)
             .fill(null)
             .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }));
+    },
+    getCode: (arg: { comnCd?: string; keyword?: string; area?: string; page?: number; size?: number }) => {
+        const { comnCd, area, page = 0, size, keyword = "" } = arg;
+
+        let url = "";
+        switch (area) {
+            case "comnCd":
+                url = `/ptl-com/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`;
+                break;
+            case "cntyCd":
+                url = `/ptl-com/comn/cnty-cds?cntyCd=${keyword}`;
+                break;
+            case "currCd":
+                url = `/ptl-com/comn/curr-cds?currCd=${keyword}`;
+                break;
+        }
+
+        if (size) url += `&size=${size}`;
+        if (page) url += `&page=${size}`;
+
+        return api.get(url);
+    },
+    getCodeLabel: (area?: string, code?: any) => {
+        switch (area) {
+            case "comnCd":
+                return code.cdVldValNm;
+            case "cntyCd":
+                return code.cntyNm;
+            case "currCd":
+                return code.currNm;
+        }
+    },
+    getCodeValue: (area?: string, code?: any) => {
+        switch (area) {
+            case "comnCd":
+                return code.cdVldVal;
+            case "cntyCd":
+                return code.cntyCd;
+            case "currCd":
+                return code.currCd;
+        }
     },
 };

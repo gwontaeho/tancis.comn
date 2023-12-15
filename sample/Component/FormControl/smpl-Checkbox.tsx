@@ -22,6 +22,9 @@ export const SampleFormControlCheckbox = () => {
                             </Group.Col>
                         </Group.Row>
                         <Group.Row>
+                            <Group.Control type="checkbox" label="code" comnCd="COM_0015" area="comnCd" />
+                        </Group.Row>
+                        <Group.Row>
                             <Group.Control
                                 type="checkbox"
                                 label="에러"
