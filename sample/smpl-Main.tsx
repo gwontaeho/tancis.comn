@@ -27,6 +27,7 @@ import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
 import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
+import { SampleUseWijmo } from "@/comn/sample/Hook/smpl-useWijmo";
 
 import { SampleList } from "@/comn/sample/Page/smpl-List";
 import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
@@ -39,33 +40,15 @@ export const SampleMain = () => {
         <MainLayout>
             <Routes>
                 <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
-                <Route
-                    path="/components/FormControl/Number"
-                    element={<SampleFormControlNumber />}
-                />
-                <Route
-                    path="/components/FormControl/Password"
-                    element={<SampleFormControlPassword />}
-                />
-                <Route
-                    path="/components/FormControl/Select"
-                    element={<SampleFormControlSelect />}
-                />
+                <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
+                <Route path="/components/FormControl/Password" element={<SampleFormControlPassword />} />
+                <Route path="/components/FormControl/Select" element={<SampleFormControlSelect />} />
                 <Route path="/components/FormControl/Radio" element={<SampleFormControlRadio />} />
-                <Route
-                    path="/components/FormControl/Checkbox"
-                    element={<SampleFormControlCheckbox />}
-                />
-                <Route
-                    path="/components/FormControl/Textarea"
-                    element={<SampleFormControlTextarea />}
-                />
+                <Route path="/components/FormControl/Checkbox" element={<SampleFormControlCheckbox />} />
+                <Route path="/components/FormControl/Textarea" element={<SampleFormControlTextarea />} />
                 <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
                 <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
-                <Route
-                    path="/components/FormControl/Datetime"
-                    element={<SampleFormControlDatetime />}
-                />
+                <Route path="/components/FormControl/Datetime" element={<SampleFormControlDatetime />} />
                 <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
                 <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
                 <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
@@ -82,6 +65,7 @@ export const SampleMain = () => {
                 <Route path="/hooks/useModal" element={<SampleUseModal />} />
                 <Route path="/hooks/useToast" element={<SampleUseToast />} />
                 <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
+                <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
 
                 <Route path="/pages/list" element={<SampleList />} />
                 <Route path="/pages/:id" element={<SampleDetail />} />
