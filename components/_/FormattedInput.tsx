@@ -23,6 +23,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             decimalScale,
             thousandSeparator = false,
             letterCase,
+            required,
             onValueChange,
             onChange,
             ...rest

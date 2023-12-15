@@ -21,19 +21,8 @@ export const SampleFormControlCode = () => {
                     onChange={field.onChange}
                 />
 
-                <InputCode
-                    area="cntyCd"
-                    maxLength={2}
-                    value={field2.value}
-                    onChange={field2.onChange}
-                />
-
-                <InputCode
-                    area="currCd"
-                    maxLength={3}
-                    value={field3.value}
-                    onChange={field3.onChange}
-                />
+                <InputCode area="cntyCd" maxLength={2} value={field2.value} onChange={field2.onChange} />
+                <InputCode area="currCd" maxLength={3} value={field3.value} onChange={field3.onChange} />
 
                 <button onClick={() => setValue("test", "a05")}>test</button>
                 <button onClick={() => console.log(getValues())}>getValues</button>
