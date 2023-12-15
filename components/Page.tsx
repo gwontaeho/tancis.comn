@@ -2,7 +2,6 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
 import { Icon } from "@/comn/components";
 import { Header, NavVertical } from "@/comn/components/_";
 
