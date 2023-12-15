@@ -1,5 +1,11 @@
 {
+    "L_KO": "Korean",
+    "L_EN": "English",
+    "L_SW": "Kiswahili",
     "B_SRCH": "Search",
     "L_COMN_CD": "Common Code",
+    "L_CD_VLD_VAL": "Code Valid Value",
+    "L_CD_VLD_VAL_NM": "Code Valid Value Name",
+    "L_LANG_CD": "Language Code",
     "T_COMN_CD_LST": "Common Code List"
 }
