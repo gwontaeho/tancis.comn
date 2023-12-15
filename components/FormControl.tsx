@@ -17,6 +17,7 @@ import {
     InputDaterangeProps,
     InputDaterange,
     InputTimerange,
+    InputCode,
 } from "@/comn/components/_";
 
 export type FormControlType =
@@ -33,7 +34,8 @@ export type FormControlType =
     | "file"
     | "range"
     | "daterange"
-    | "timerange";
+    | "timerange"
+    | "code";
 
 const SIZES = {
     1: "w-1/12",
@@ -70,6 +72,7 @@ type FormControlEditModeProps = InputDaterangeProps & {
     readOnly?: boolean;
     setValue?: any;
     invalid?: string | boolean;
+    comnCd?: string;
 };
 
 type FormControlMainProps = FormControlEditModeProps & {
@@ -141,6 +144,8 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
                             return <InputDaterange {...rest} />;
                         case "timerange":
                             return <InputTimerange {...rest} />;
+                        case "code":
+                            return <InputCode {...rest} />;
                         default:
                             return <InputText {...rest} ref={ref} />;
                     }

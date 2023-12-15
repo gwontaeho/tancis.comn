@@ -14,7 +14,6 @@ export type InputDateProps = {
 const InputDateMain = forwardRef((props: InputDateProps, ref) => {
     const { value, onChange, ...rest } = props;
     const [_value, _setValue] = useState<Date | null | undefined>(value);
-    console.log(rest);
 
     useEffect(() => {
         if (value?.getTime() === _value?.getTime()) return;
