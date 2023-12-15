@@ -6,11 +6,14 @@
     "L_CD_VLD_VAL": "코드 유효값",
     "L_CD_VLD_VAL_NM": "코드 유효값 명",
     "L_LANG_CD": "언어 코드",
+    "L_CNTY_CD": "국가 코드",
+    "L_CNTY_NM": "국가 명",
     "L_AL": "전체",
     "L_SELT": "선택",
     "B_SRCH": "검색",
     "B_CLS": "닫기",
     "B_RESET": "초기화",
     "T_COMN_CD_LST": "공통코드 목록",
+    "T_CNTY_CD_LST": "국가코드 목록",
     "msg.00001": "해당 항목은 필수항목입니다."
 }

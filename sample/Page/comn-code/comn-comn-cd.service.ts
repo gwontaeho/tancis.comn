@@ -39,7 +39,7 @@ export const SCHEMA_GRID = (clickEvent: any): WijmoSchemaType => {
     };
 };
 
-export const SCHEMA_FORM: FormSchemaType = {
+export const SCHEMA_FORM_COMN_CD: FormSchemaType = {
     id: "form",
     schema: {
         comnCd: { type: "text", label: "L_COMN_CD", required: true },
@@ -55,5 +55,13 @@ export const SCHEMA_FORM: FormSchemaType = {
                 { label: "L_KO", value: "KO" },
             ],
         },
+    },
+};
+
+export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
+    id: "form",
+    schema: {
+        cntyCd: { type: "text", label: "L_CNTY_CD" },
+        cntyNm: { type: "text", label: "L_CNTY_NM" },
     },
 };

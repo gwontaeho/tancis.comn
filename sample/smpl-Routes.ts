@@ -163,8 +163,20 @@ export const SampleRoutes = [
                         to: "/r",
                     },
                     {
-                        name: "Common Popup",
-                        to: "/comnPpup",
+                        name: "Common Code Popup",
+                        to: "/comnCdPpup",
+                    },
+                    {
+                        name: "Country Code Popup",
+                        to: "/cntyCdPpup",
+                    },
+                    {
+                        name: "Currency Code Popup",
+                        to: "/currCdPpup",
+                    },
+                    {
+                        name: "Bank Code Popup",
+                        to: "/bnkCdPpup",
                     },
                 ],
             },
