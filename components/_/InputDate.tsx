@@ -32,7 +32,11 @@ const InputDateMain = forwardRef((props: InputDateProps, ref) => {
 
     return (
         <div className="relative w-full [&>div]:w-full">
-            <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
+            <Icon
+                icon="calendar"
+                size="xs"
+                className="absolute left-1 top-1/2 -translate-y-1/2 z-10"
+            />
             <ReactDatePicker
                 {...rest}
                 selected={_value}
