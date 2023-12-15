@@ -6,6 +6,8 @@
     "L_CD_VLD_VAL": "Code Valid Value",
     "L_CD_VLD_VAL_NM": "Code Valid Value Name",
     "L_LANG_CD": "Language Code",
+    "L_CNTY_CD": "Country Code",
+    "L_CNTY_NM": "Country Name",
     "L_AL": "All",
     "L_SELT": "Select",
     "B_SRCH": "Search",

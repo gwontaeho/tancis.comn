@@ -34,6 +34,7 @@ import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
 import { SampleRegist } from "@/comn/sample/Page/smpl-Regist";
 import { SampleUpdate } from "@/comn/sample/Page/smpl-Update";
 import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
+import { CountryCodeList } from "@/comn/sample/Page/comn-code/CntyCdLst";
 
 export const SampleMain = () => {
     return (
@@ -70,7 +71,8 @@ export const SampleMain = () => {
             <Route path="/pages/:id" element={<SampleDetail />} />
             <Route path="/pages/:id/update" element={<SampleUpdate />} />
             <Route path="/pages/regist" element={<SampleRegist />} />
-            <Route path="/pages/comnPpup" element={<CommonCodeList isPopup={true} />} />
+            <Route path="/pages/comnCdPpup" element={<CommonCodeList />} />
+            <Route path="/pages/cntyCdPpup" element={<CountryCodeList />} />
         </Routes>
     );
 };
