@@ -99,7 +99,8 @@ export const useForm = (props: UseFormProps) => {
                     value.type === "time" ||
                     value.type === "datetime" ||
                     value.type === "daterange" ||
-                    value.type === "timerange"
+                    value.type === "timerange" ||
+                    value.type === "code"
                 )
                     return [
                         key,

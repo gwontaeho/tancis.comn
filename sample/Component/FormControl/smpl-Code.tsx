@@ -8,11 +8,10 @@ export const SampleFormControlCode = () => {
 
     const { field } = useController({ name: "test", control });
 
-    console.log(field);
     return (
         <Page>
             <Group>
-                <InputCode value={field.value} onChange={field.onChange} />
+                <InputCode comnCd="COM_0015" minLength={2} value={field.value} onChange={field.onChange} />
                 <button onClick={() => setValue("test", "a05")}>test</button>
                 <button onClick={() => console.log(getValues())}>getValues</button>
             </Group>
