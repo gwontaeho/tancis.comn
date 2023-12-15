@@ -10,6 +10,7 @@
     "L_SELT": "Select",
     "B_SRCH": "Search",
     "B_CLS": "Close",
+    "B_RESET": "Reset",
     "T_COMN_CD_LST": "Common Code List",
     "msg.00001": "This field is mandatory"
 }

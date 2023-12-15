@@ -49,12 +49,14 @@ export const CommonCodeList = (props: any) => {
                             <Group.Control {...form.schema.langCd} select={true}></Group.Control>
                         </Group.Row>
                     </Group.Body>
-                    <Layout.Left>
-                        <Button type="reset">{t("B_SRCH")}</Button>
-                    </Layout.Left>
-                    <Layout.Right>
-                        <Button type="submit">{t("B_SRCH")}</Button>
-                    </Layout.Right>
+                    <Layout direction="row">
+                        <Layout.Left>
+                            <Button type="reset">{t("B_RESET")}</Button>
+                        </Layout.Left>
+                        <Layout.Right>
+                            <Button type="submit">{t("B_SRCH")}</Button>
+                        </Layout.Right>
+                    </Layout>
                 </Group>
             </form>
 
