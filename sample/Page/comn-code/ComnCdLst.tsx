@@ -6,15 +6,7 @@ import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
 import { APIS, SCHEMA_FORM, SCHEMA_GRID } from "./comn-comn-cd.service";
 
-/**
- * Common Code List
- * !==공통코드 목록==!
- *
- * Bae JeongYong (Ken)
- */
-
 export const CommonCodeList = (props: any) => {
-    /* 컴포넌트에서 사용하는 Hook 및 변수 선언  _ 사용 */
     const { t } = useTranslation(); /* 다국어 */
     const { condition } = useCondition(); /* 검색 조건 저장 */
     const form = useForm({ defaultSchema: SCHEMA_FORM, values: condition }); /* 화면 폼 제어 */
@@ -33,10 +25,7 @@ export const CommonCodeList = (props: any) => {
         api: () => APIS.getCommonCodeList(form.getValues(), 0, grid.size),
     });
 
-    const onSubmit = () => {};
-
-    const click_Srch = () => {
-        console.log(form.validate());
+    const onSubmit = () => {
         fetch_Srch.fetch();
     };
 
@@ -46,10 +35,7 @@ export const CommonCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation
-                base="/sample/pages"
-                nodes={[{ path: "/", label: "List" }, { label: "Regist" }]}
-            />
+            <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
             <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Group>
@@ -63,6 +49,9 @@ export const CommonCodeList = (props: any) => {
                             <Group.Control {...form.schema.langCd} select={true}></Group.Control>
                         </Group.Row>
                     </Group.Body>
+                    <Layout.Left>
+                        <Button type="reset">{t("B_SRCH")}</Button>
+                    </Layout.Left>
                     <Layout.Right>
                         <Button type="submit">{t("B_SRCH")}</Button>
                     </Layout.Right>
@@ -70,6 +59,9 @@ export const CommonCodeList = (props: any) => {
             </form>
 
             <Group>{fetch_Srch.data && <Wijmo {...grid.grid} data={fetch_Srch.data} />}</Group>
+            <Layout.Right>
+                <Button onClick={close}>{t("B_CLS")}</Button>
+            </Layout.Right>
         </Page>
     );
 };

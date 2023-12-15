@@ -8,7 +8,7 @@ type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     (props: RadioProps, ref: React.ForwardedRef<HTMLInputElement>) => {
-        const { options, ...rest } = props;
+        const { options, required, ...rest } = props;
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
             <div className="flex flex-wrap w-fit">

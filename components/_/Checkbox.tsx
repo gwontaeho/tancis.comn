@@ -10,7 +10,7 @@ type CheckBoxProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckBoxProps>(
     (props: CheckBoxProps, ref: React.ForwardedRef<HTMLInputElement>) => {
-        const { options, onChange, ...rest } = props;
+        const { options, onChange, required, ...rest } = props;
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
             <div className="flex flex-wrap w-fit">

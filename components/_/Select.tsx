@@ -11,7 +11,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     (props: SelectProps, ref: React.ForwardedRef<HTMLSelectElement>) => {
-        const { options, all, select, ...rest } = props;
+        const { options, all, select, required, ...rest } = props;
         const { t } = useTranslation();
 
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);

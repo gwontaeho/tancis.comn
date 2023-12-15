@@ -42,8 +42,8 @@ export const SCHEMA_GRID = (clickEvent: any): WijmoSchemaType => {
 export const SCHEMA_FORM: FormSchemaType = {
     id: "form",
     schema: {
-        comnCd: { type: "text", label: "L_COMN_CD", required: true, readOnly: true },
-        cdVldVal: { type: "text", label: "L_CD_VLD_VAL", required: true },
+        comnCd: { type: "text", label: "L_COMN_CD", required: true },
+        cdVldVal: { type: "text", label: "L_CD_VLD_VAL" },
         cdVldValNm: { type: "text", label: "L_CD_VLD_VAL_NM" },
         langCd: {
             type: "select",
