@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components/Wijmo.v2/Wijmo.v2";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useCondition } from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
 import { APIS, SCHEMA_FORM, SCHEMA_GRID } from "./comn-comn-cd.service";
 
 /**
@@ -19,7 +19,8 @@ export const CommonCodeList = (props: any) => {
     const { condition } = useCondition(); /* 검색 조건 저장 */
     const form = useForm({ defaultSchema: SCHEMA_FORM, values: condition }); /* 화면 폼 제어 */
     const [params, setParams] = useSearchParams(); /* 화면 폼 제어 */
-    const grid = useWijmo({ defaultSchema: SCHEMA_GRID }); /* Grid */
+    const { postMessage } = usePopup();
+    const { theme } = useTheme(); /* Theme */
     const fetch_Srch = useFetch({
         api: () => APIS.getCommonCodeList(form.getValues(), 0, grid.size),
     });
@@ -29,8 +30,15 @@ export const CommonCodeList = (props: any) => {
         fetch_Srch.fetch();
     };
 
+    const click_Grid_CdVldVal = (data: any) => {
+        console.log(data);
+        postMessage({ code: data.cdVldVal, label: data.cdVldValNm });
+    };
+
+    const grid = useWijmo({ defaultSchema: SCHEMA_GRID(click_Grid_CdVldVal) }); /* Grid */
+
     useEffect(() => {
-        form.setValues({ comnCd: "COM_0015" });
+        form.setValues({ comnCd: "COM_0015", langCd: theme.lang.toUpperCase() });
     }, []);
 
     return (
