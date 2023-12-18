@@ -1,8 +1,18 @@
 import React from 'react'
 import { v4 as uuid } from 'uuid'
+import { Upload } from 'tus-js-client'
 import { IconButton } from '@/comn/components'
 
 type InputFileProps = React.InputHTMLAttributes<HTMLInputElement>
+
+type FileType = {
+    file: File
+    key: string
+    status: 'success' | 'loading' | 'failed'
+    bytesSent: number
+    bytesTotal: number
+    percentage: number
+}
 
 export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
     (props: InputFileProps, ref: React.ForwardedRef<HTMLInputElement>) => {
@@ -12,7 +22,7 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
         const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             const _filelist = Array.prototype.slice
                 .call(event.target.files)
-                .map((file) => ({ file, key: uuid(), status: 'loading' }))
+                .map((file) => ({ file, key: uuid(), status: 'loading', percentage: 0 }))
 
             if (props.maxLength)
                 if (props.maxLength < available.length + _filelist.length)
@@ -28,15 +38,46 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
         }
 
         const _upload = async (_file: any) => {
+            console.log(_file)
             try {
-                const response = await _dummy(_file)
-                _setFiles((prev) =>
-                    prev.map((_) => {
-                        if (_.key !== _file.key) return _
-                        return { ..._, status: 'success' }
-                    })
-                )
+                const upload = new Upload(_file.file, {
+                    endpoint: 'http://localhost:1080/files/',
+                    retryDelays: [0, 3000, 5000, 10000, 20000],
+                    metadata: {
+                        filename: _file.file.name,
+                        filetype: _file.file.type,
+                    },
+                    onError: (error) => {},
+                    onProgress: (bytesSent, bytesTotal) => {
+                        const percentage = (bytesSent / bytesTotal) * 100
+                        console.log(percentage)
+                        _setFiles((prev) =>
+                            prev.map((_) => {
+                                if (_.key !== _file.key) return _
+                                return { ..._, bytesSent, bytesTotal, percentage }
+                            })
+                        )
+                    },
+                    onSuccess: () => {
+                        _setFiles((prev) =>
+                            prev.map((_) => {
+                                if (_.key !== _file.key) return _
+                                return { ..._, status: 'success' }
+                            })
+                        )
+                    },
+                })
+
+                upload.findPreviousUploads().then(function (previousUploads) {
+                    if (previousUploads.length) {
+                        upload.resumeFromPreviousUpload(previousUploads[0])
+                    }
+                    upload.start()
+                })
+
+                // const response = await _dummy(_file)
             } catch (error) {
+                console.log(error)
                 _setFiles((prev) =>
                     prev.map((_) => {
                         if (_.key !== _file.key) return _
@@ -65,21 +106,21 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             )
         }
 
-        const _dummy = (file: any): any => {
-            const result = Math.random() < 0.7
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (result) {
-                        resolve({
-                            message: 'message',
-                            data: { id: 1, index: 0, url: '', size: 100, message: '', key: file.key },
-                        })
-                    } else {
-                        reject(file)
-                    }
-                }, Math.random() * 3000)
-            })
-        }
+        // const _dummy = (file: any): any => {
+        //     const result = Math.random() < 0.7
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(() => {
+        //             if (result) {
+        //                 resolve({
+        //                     message: 'message',
+        //                     data: { id: 1, index: 0, url: '', size: 100, message: '', key: file.key },
+        //                 })
+        //             } else {
+        //                 reject(file)
+        //             }
+        //         }, Math.random() * 3000)
+        //     })
+        // }
 
         return (
             <div className="w-full">
@@ -91,13 +132,16 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                 </label>
                 <div>
                     {available.map((_file) => {
-                        const { key, file, status } = _file
+                        const { key, file, status, percentage } = _file
                         return (
                             <div key={key} className="px-2 py-1 flex justify-between items-center">
-                                <span className="font-mono">{file.name}</span>
+                                <span className="font-mono break-all">{file.name}</span>
                                 <div className="flex">
                                     {status === 'loading' && (
-                                        <IconButton icon="loading" className="animate-spin" size="xs" />
+                                        <div className="flex items-center">
+                                            <span>{percentage.toFixed(2)}</span>
+                                            <IconButton icon="loading" className="animate-spin" size="xs" />
+                                        </div>
                                     )}
                                     {status === 'failed' && (
                                         <IconButton icon="path" size="xs" onClick={() => _reupload(_file)}></IconButton>
