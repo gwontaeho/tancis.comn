@@ -30,6 +30,8 @@ const ApiConfig = () => {
 export const Base = ({ children }: { children?: React.ReactNode }) => {
     console.log('base')
 
+            console.log('a')
+
     return (
         <CookiesProvider>
             <RecoilProvider>
