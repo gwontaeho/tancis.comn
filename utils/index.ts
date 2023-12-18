@@ -51,6 +51,7 @@ export const utils = {
 
         return api.get(url)
     },
+
     getCodeLabel: (area?: string, code?: any) => {
         switch (area) {
             case 'comnCd':
