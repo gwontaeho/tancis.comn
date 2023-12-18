@@ -5,7 +5,7 @@ type PopupType = {
     id?: string;
     url: string;
     params?: any;
-    exact?: boolean;
+    layout?: "main" | "popup";
     callback?: (data: any) => void;
 };
 
@@ -33,11 +33,13 @@ export const usePopup = () => {
         popupRef.current[id].popup?.close();
     };
 
-    const openPopup = ({ id = "", url, exact, params, callback }: PopupType) => {
-        const encodedParams = params ? "?params=" + encodeURIComponent(JSON.stringify(params)) : "";
+    const openPopup = ({ id = "", layout = "popup", url, params, callback }: PopupType) => {
+        const layoutQuery = layout === "popup" ? "ppup=Y" : "";
+        const paramsQuery = params ? "params=" + encodeURIComponent(JSON.stringify(params)) : "";
         const features = "width=800,height=600";
         const name = id + "__" + uuid();
-        const fullUrl = (exact ? url : "/popup" + url) + encodedParams;
+
+        const fullUrl = url + "?" + layoutQuery + paramsQuery;
 
         if (popupRef.current[id]) popupRef.current[id].popup.close();
 

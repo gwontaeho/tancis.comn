@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import { MainLayout } from "@/comn/layouts/MainLayout";
 
 import { SampleFormControlText } from "@/comn/sample/Component/FormControl/smpl-Text";
 import { SampleFormControlNumber } from "@/comn/sample/Component/FormControl/smpl-Number";
@@ -27,6 +26,7 @@ import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
 import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
+import { SampleUsePopupTarget } from "@/comn/sample/Hook/smpl-usePopup";
 import { SampleUseWijmo } from "@/comn/sample/Hook/smpl-useWijmo";
 
 import { SampleList } from "@/comn/sample/Page/smpl-List";
@@ -65,6 +65,7 @@ export const SampleMain = () => {
             <Route path="/hooks/useModal" element={<SampleUseModal />} />
             <Route path="/hooks/useToast" element={<SampleUseToast />} />
             <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
+            <Route path="/hooks/usePopupTarget" element={<SampleUsePopupTarget />} />
             <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
 
             <Route path="/pages/list" element={<SampleList />} />

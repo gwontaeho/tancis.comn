@@ -1,10 +1,8 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { Link } from "react-router-dom";
+
 import { Icon } from "@/comn/components";
-import { MainLayout } from "@/comn/layouts/MainLayout";
-import { Header, NavVertical } from "@/comn/components/_";
 
 type NodeType = { path?: string; label: string };
 
@@ -24,22 +22,9 @@ type PageProps = {
 };
 
 export const Page = (props: PageProps) => {
-    const [params] = useSearchParams(); /* 화면 폼 제어 */
     const { children } = props;
-    const popup = params.get("popup");
-    if (popup === "Y") {
-        return (
-            <div className="p-4">
-                <div className="space-y-4">{children}</div>
-            </div>
-        );
-    } else {
-        return (
-            <MainLayout>
-                <div className="space-y-4">{children}</div>
-            </MainLayout>
-        );
-    }
+
+    return <div className="space-y-4">{children}</div>;
 };
 
 export const SimplePage = (props: PageProps) => {

@@ -64,7 +64,6 @@ const InputCodeMain = (props: InputCodeProps) => {
         if (!props.area || props.area === "comnCd") {
             openPopup({
                 url: `/comn/smpl/pages/comnPpup?popup=Y&comnCd=${props.comnCd}`,
-                exact: true,
                 callback: (data: any) => {
                     console.log(data);
                     if (cdVldValNmInput.current) cdVldValNmInput.current.value = data.label;

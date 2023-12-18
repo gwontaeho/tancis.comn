@@ -6,9 +6,10 @@ import AuthProvider from "@/comn/auth";
 import { SampleRoutes } from "@/comn/sample/smpl-Routes";
 
 import { SampleMain } from "@/comn/sample/smpl-Main";
-import { SamplePopup } from "@/comn/sample/smpl-Popup";
 import { CommonPopup } from "@/comn/popup/Popup";
 import { useTheme } from "@/comn/hooks";
+
+import { Layout } from "@/comn/layouts";
 
 import { TancisRoutes } from "@/tra/tancis/Routes";
 import { CommonModal, CommonToast } from "@/comn/components/_";
@@ -34,10 +35,11 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
                     <ApiConfig />
                     <BrowserRouter>
                         <Routes>
-                            <Route path="/comn/smpl/ppup/*" element={<SamplePopup />} />
-                            <Route path="/comn/smpl/*" element={<SampleMain />} />
-                            <Route path="/comn/ppup/*" element={<CommonPopup />} />
-                            {children}
+                            <Route element={<Layout />}>
+                                <Route path="/comn/smpl/*" element={<SampleMain />} />
+                                <Route path="/comn/ppup/*" element={<CommonPopup />} />
+                                {children}
+                            </Route>
                         </Routes>
                         <CommonModal />
                         <CommonToast />
