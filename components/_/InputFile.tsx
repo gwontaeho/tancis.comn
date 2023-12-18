@@ -68,7 +68,7 @@ export const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                     },
                 })
 
-                upload.findPreviousUploads().then(function (previousUploads) {
+                upload.findPreviousUploads().then((previousUploads) => {
                     if (previousUploads.length) {
                         upload.resumeFromPreviousUpload(previousUploads[0])
                     }

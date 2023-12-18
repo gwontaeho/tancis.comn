@@ -6,7 +6,6 @@ import AuthProvider from '@/comn/auth'
 import { SampleRoutes } from '@/comn/sample/smpl-Routes'
 
 import { SampleMain } from '@/comn/sample/smpl-Main'
-import { CommonPopup } from '@/comn/popup/Popup'
 import { useTheme } from '@/comn/hooks'
 
 import { Layout } from '@/comn/layouts'
@@ -38,7 +37,6 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
                         <Routes>
                             <Route element={<Layout />}>
                                 <Route path="/comn/smpl/*" element={<SampleMain />} />
-                                <Route path="/comn/ppup/*" element={<CommonPopup />} />
                                 {children}
                             </Route>
                         </Routes>
