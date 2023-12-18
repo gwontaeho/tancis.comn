@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
-import { APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID } from "./comn-comn-cd.service";
+import { APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID_CNTY_CD } from "./comn-comn-cd.service";
 
 export const CountryCodeList = (props: any) => {
     const { t } = useTranslation(); /* 다국어 */
@@ -14,15 +14,15 @@ export const CountryCodeList = (props: any) => {
     const { close, postMessage } = usePopup();
     const { theme } = useTheme(); /* Theme */
     const grid = useWijmo({
-        defaultSchema: SCHEMA_GRID((data: any) => {
-            postMessage({ code: data.cdVldVal, label: data.cdVldValNm });
+        defaultSchema: SCHEMA_GRID_CNTY_CD((data: any) => {
+            postMessage({ code: data.cntyCd, label: data.cntyNm });
             close();
         }),
     }); /* Grid */
 
     const comnCd = params.get("comnCd");
     const fetch_Srch = useFetch({
-        api: () => APIS.getCommonCodeList(form.getValues(), 0, grid.size),
+        api: () => APIS.getCntyCdLst(form.getValues(), 0, grid.size),
     });
 
     const onSubmit = () => {
@@ -36,7 +36,7 @@ export const CountryCodeList = (props: any) => {
     return (
         <Page>
             <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
-            <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
+            <Page.Header title={t("T_CNTY_CD_LST")} description={t("T_CNTY_CD_LST")} />
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>
@@ -47,7 +47,13 @@ export const CountryCodeList = (props: any) => {
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
-                            <Button type="reset">{t("B_RESET")}</Button>
+                            <Button
+                                onClick={() => {
+                                    form.reset();
+                                }}
+                            >
+                                {t("B_RESET")}
+                            </Button>
                         </Layout.Left>
                         <Layout.Right>
                             <Button type="submit">{t("B_SRCH")}</Button>

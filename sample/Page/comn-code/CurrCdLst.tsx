@@ -4,25 +4,25 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
-import { APIS, SCHEMA_FORM_COMN_CD, SCHEMA_GRID_COMN_CD } from "./comn-comn-cd.service";
+import { APIS, SCHEMA_FORM_CURR_CD, SCHEMA_GRID_CURR_CD } from "./comn-comn-cd.service";
 
-export const CommonCodeList = (props: any) => {
-    const { t } = useTranslation();
-    const { condition } = useCondition();
-    const form = useForm({ defaultSchema: SCHEMA_FORM_COMN_CD, values: condition });
-    const [params] = useSearchParams();
+export const CurrencyCodeList = (props: any) => {
+    const { t } = useTranslation(); /* 다국어 */
+    const { condition } = useCondition(); /* 검색 조건 저장 */
+    const form = useForm({ defaultSchema: SCHEMA_FORM_CURR_CD, values: condition }); /* 화면 폼 제어 */
+    const [params] = useSearchParams(); /* 화면 폼 제어 */
     const { close, postMessage } = usePopup();
-    const { theme } = useTheme();
+    const { theme } = useTheme(); /* Theme */
     const grid = useWijmo({
-        defaultSchema: SCHEMA_GRID_COMN_CD((data: any) => {
-            postMessage({ code: data.cdVldVal, label: data.cdVldValNm });
+        defaultSchema: SCHEMA_GRID_CURR_CD((data: any) => {
+            postMessage({ code: data.cntyCd, label: data.cntyNm });
             close();
         }),
-    });
+    }); /* Grid */
 
     const comnCd = params.get("comnCd");
     const fetch_Srch = useFetch({
-        api: () => APIS.getComnCdLst(form.getValues(), 0, grid.size),
+        api: () => APIS.getCurrCdLst(form.getValues(), 0, grid.size),
     });
 
     const onSubmit = () => {
@@ -36,17 +36,13 @@ export const CommonCodeList = (props: any) => {
     return (
         <Page>
             <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
-            <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
+            <Page.Header title={t("T_CURR_CD_LST")} description={t("T_CURR_CD_LST")} />
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.schema.comnCd}></Group.Control>
-                            <Group.Control {...form.schema.cdVldVal}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.schema.cdVldValNm}></Group.Control>
-                            <Group.Control {...form.schema.langCd} select={true}></Group.Control>
+                            <Group.Control {...form.schema.currCd}></Group.Control>
+                            <Group.Control {...form.schema.currNm}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">

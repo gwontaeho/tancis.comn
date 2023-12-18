@@ -40,6 +40,9 @@ export const utils = {
             case "currCd":
                 url = `/ptl-com/comn/curr-cds?currCd=${keyword}`;
                 break;
+            case "bnkCd":
+                url = `/ptl-com/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`;
+                break;
         }
 
         if (size) url += `&size=${size}`;
@@ -55,6 +58,8 @@ export const utils = {
                 return code.cntyNm;
             case "currCd":
                 return code.currNm;
+            case "bnkCd":
+                return code.cdVldValNm;
         }
     },
     getCodeValue: (area?: string, code?: any) => {
@@ -65,6 +70,8 @@ export const utils = {
                 return code.cntyCd;
             case "currCd":
                 return code.currCd;
+            case "bnkCd":
+                return code.cdVldVal;
         }
     },
 };
