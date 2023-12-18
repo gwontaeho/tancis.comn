@@ -31,6 +31,8 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
     console.log('base')
 
     console.log('a')
+    console.log('a')
+    console.log('a')
 
     return (
         <CookiesProvider>
