@@ -1,19 +1,19 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { Page, Wijmo, Group, Layout, Tab, Button } from "@/comn/components";
-import { useForm, useWijmo, useFetch, useModal, useToast, FormValuesType } from "@/comn/hooks";
-import { SCHEMA_FORM_REGIST, SCHEMA_GRID_COMPONENTS_REGIST, APIS } from "./smpl-Service";
+import { useNavigate, useParams } from 'react-router-dom'
+import { Page, Wijmo, Group, Layout, Tab, Button } from '@/comn/components'
+import { useForm, useWijmo, useFetch, useModal, useToast, FormValuesType } from '@/comn/hooks'
+import { SCHEMA_FORM_REGIST, SCHEMA_GRID_COMPONENTS_REGIST, APIS } from './smpl-Service'
 
 const options1 = [
-    { label: "s1", value: "s1" },
-    { label: "s2", value: "s2" },
-    { label: "s3", value: "s3" },
-];
+    { label: 's1', value: 's1' },
+    { label: 's2', value: 's2' },
+    { label: 's3', value: 's3' },
+]
 
 const option2 = [
-    { label: "r1", value: "r1" },
-    { label: "r2", value: "r2" },
-    { label: "r3", value: "r3" },
-];
+    { label: 'r1', value: 'r1' },
+    { label: 'r2', value: 'r2' },
+    { label: 'r3', value: 'r3' },
+]
 
 /**
  * 샘플 수정 페이지
@@ -91,5 +91,5 @@ export const SampleUpdate = () => {
     //     </Page>
     // );
 
-    return null;
-};
+    return null
+}

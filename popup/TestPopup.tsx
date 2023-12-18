@@ -1,3 +1,3 @@
 export const TestPopup = () => {
-    return <div>test</div>;
-};
+    return <div>test</div>
+}

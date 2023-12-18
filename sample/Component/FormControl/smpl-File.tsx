@@ -1,4 +1,4 @@
-import { Page, Group } from "@/comn/components";
+import { Page, Group } from '@/comn/components'
 
 export const SampleFormControlFile = () => {
     return (
@@ -31,5 +31,5 @@ export const SampleFormControlFile = () => {
                 </form>
             </Group>
         </Page>
-    );
-};
+    )
+}

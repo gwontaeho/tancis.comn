@@ -1,5 +1,5 @@
-import React from "react";
-import { Header, NavVertical } from "@/comn/components/_";
+import React from 'react'
+import { Header, NavVertical } from '@/comn/components/_'
 
 export const MainLayout = ({ children }: { children?: React.ReactNode }) => {
     return (
@@ -11,5 +11,5 @@ export const MainLayout = ({ children }: { children?: React.ReactNode }) => {
                 <footer></footer>
             </div>
         </>
-    );
-};
+    )
+}

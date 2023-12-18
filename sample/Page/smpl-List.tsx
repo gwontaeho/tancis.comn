@@ -1,25 +1,25 @@
-import { useNavigate } from "react-router-dom";
-import { useForm, useFetch, useWijmo, useModal, useCondition, usePopup } from "@/comn/hooks";
+import { useNavigate } from 'react-router-dom'
+import { useForm, useFetch, useWijmo, useModal, useCondition, usePopup } from '@/comn/hooks'
 import {
     Page,
     Group,
     Layout,
     //  Wijmo,
     Button,
-} from "@/comn/components";
-import { Wijmo } from "@/comn/components";
-import { OPTIONS, SCHEMA_FORM, SCHEMA_GRID, APIS, SCHEMA_GRID_COMPONENTS } from "./smpl-Service";
-import { FormValuesType } from "@/comn/hooks";
+} from '@/comn/components'
+import { Wijmo } from '@/comn/components'
+import { OPTIONS, SCHEMA_FORM, SCHEMA_GRID, APIS, SCHEMA_GRID_COMPONENTS } from './smpl-Service'
+import { FormValuesType } from '@/comn/hooks'
 
 export const PopupSearch = () => {
-    const { postMessage } = usePopup();
+    const { postMessage } = usePopup()
 
-    const { condition } = useCondition();
-    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition });
+    const { condition } = useCondition()
+    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition })
 
     const onSubmit = (data: FormValuesType) => {
-        postMessage(data);
-    };
+        postMessage(data)
+    }
 
     return (
         <Page>
@@ -41,16 +41,16 @@ export const PopupSearch = () => {
                 </Group>
             </form>
         </Page>
-    );
-};
+    )
+}
 
 const ModalSearch = () => {
-    const { condition, setCondition } = useCondition({ pathname: "/sample/pages" });
-    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition });
+    const { condition, setCondition } = useCondition({ pathname: '/sample/pages' })
+    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition })
 
     const onSubmit = (data: FormValuesType) => {
-        setCondition(data);
-    };
+        setCondition(data)
+    }
 
     return (
         <Layout>
@@ -71,14 +71,14 @@ const ModalSearch = () => {
                 </Group>
             </form>
         </Layout>
-    );
-};
+    )
+}
 
 export const SampleList = () => {
-    const navigate = useNavigate();
-    const { openModal } = useModal();
-    const { openPopup } = usePopup();
-    const { condition, setCondition } = useCondition();
+    const navigate = useNavigate()
+    const { openModal } = useModal()
+    const { openPopup } = usePopup()
+    const { condition, setCondition } = useCondition()
     // const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition });
     // const _wijmo = useWijmo({ defaultSchema: SCHEMA_GRID });
     // const _wijmo2 = useWijmo({ defaultSchema: SCHEMA_GRID_COMPONENTS });
@@ -89,9 +89,9 @@ export const SampleList = () => {
         api: () => APIS.getComponentGroups(0, 10),
         // key: [_wijmo.page, _wijmo.size],
         enabled: true,
-    });
+    })
 
-    console.log(gcgs.data);
+    console.log(gcgs.data)
     // const handleClickDelete = () => {
     //     if (!_wijmo.getChecked().length) return;
     //     openModal({
@@ -174,5 +174,5 @@ export const SampleList = () => {
                 </Group>
             )} */}
         </Page>
-    );
-};
+    )
+}

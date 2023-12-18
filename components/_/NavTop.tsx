@@ -1,18 +1,18 @@
-import { Link } from "react-router-dom";
-import { v4 as uuid } from "uuid";
-import { R } from "@/comn";
-import { Icon } from "@/comn/components/Icon";
+import { Link } from 'react-router-dom'
+import { v4 as uuid } from 'uuid'
+import { R } from '@/comn'
+import { Icon } from '@/comn/components/Icon'
 
 type NavItemProps = {
-    children?: any[];
-    name?: string;
-    path?: string;
-    base?: string;
-};
+    children?: any[]
+    name?: string
+    path?: string
+    base?: string
+}
 
 const NavItem = (props: NavItemProps) => {
-    const { name, children, path, base = "" } = props;
-    const depth_1 = path || base;
+    const { name, children, path, base = '' } = props
+    const depth_1 = path || base
 
     return (
         <li className="group">
@@ -28,30 +28,30 @@ const NavItem = (props: NavItemProps) => {
                         </Link>
                     </li>
                     {children?.map((child) => {
-                        const { name, path, base } = child;
-                        const depth_2 = path || base;
+                        const { name, path, base } = child
+                        const depth_2 = path || base
                         return (
                             <li key={uuid()}>
                                 <Link to={depth_1 + depth_2} className="block w-40 py-2 px-4">
                                     {name}
                                 </Link>
                             </li>
-                        );
+                        )
                     })}
                 </ul>
             </div>
         </li>
-    );
-};
+    )
+}
 
 export const NavTop = () => {
     return (
         <nav className="hidden items-center lg:flex">
             <ul className="font-mono flex space-x-4">
                 {R.map((child) => {
-                    return <NavItem key={uuid()} {...child} />;
+                    return <NavItem key={uuid()} {...child} />
                 })}
             </ul>
         </nav>
-    );
-};
+    )
+}

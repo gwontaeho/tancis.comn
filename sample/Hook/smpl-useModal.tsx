@@ -1,5 +1,5 @@
-import { useModal } from "@/comn/hooks";
-import { Button } from "@/comn/components";
+import { useModal } from '@/comn/hooks'
+import { Button } from '@/comn/components'
 
 // export type ModalProps = {
 //     id?: string;
@@ -18,40 +18,40 @@ import { Button } from "@/comn/components";
 // };
 
 export const SampleUseModal = () => {
-    const modal = useModal();
+    const modal = useModal()
 
     const withMessage = () => {
-        modal.openModal({ content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry" });
-    };
+        modal.openModal({ content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry' })
+    }
 
     const withOnConfirm = () => {
-        modal.openModal({ onConfirm: () => alert("confirm") });
-    };
+        modal.openModal({ onConfirm: () => alert('confirm') })
+    }
 
     const withOnCancel = () => {
-        modal.openModal({ onCancel: () => alert("cancel") });
-    };
+        modal.openModal({ onCancel: () => alert('cancel') })
+    }
 
     const withoutBackdrop = () => {
-        modal.openModal({ backdrop: false });
-    };
+        modal.openModal({ backdrop: false })
+    }
 
     const withSizeSm = () => {
-        modal.openModal({ size: "sm" });
-    };
+        modal.openModal({ size: 'sm' })
+    }
     const withSizeMd = () => {
-        modal.openModal({ size: "md" });
-    };
+        modal.openModal({ size: 'md' })
+    }
     const withSizeLg = () => {
-        modal.openModal({ size: "lg" });
-    };
+        modal.openModal({ size: 'lg' })
+    }
     const withSizeXl = () => {
-        modal.openModal({ size: "xl" });
-    };
+        modal.openModal({ size: 'xl' })
+    }
 
     const withComponent = () => {
-        modal.openModal({ content: <div>안녕123!1!</div> });
-    };
+        modal.openModal({ content: <div>안녕123!1!</div> })
+    }
 
     return (
         <div>
@@ -65,5 +65,5 @@ export const SampleUseModal = () => {
             <Button onClick={withSizeXl}>size xl</Button>
             <Button onClick={withComponent}>컴포넌트 모달</Button>
         </div>
-    );
-};
+    )
+}

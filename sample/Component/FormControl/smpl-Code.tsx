@@ -1,15 +1,15 @@
-import { Page, Group, FormControl } from "@/comn/components";
-import { InputCode } from "@/comn/components/_";
+import { Page, Group, FormControl } from '@/comn/components'
+import { InputCode } from '@/comn/components/_'
 
-import { useForm, useController } from "react-hook-form";
+import { useForm, useController } from 'react-hook-form'
 
 export const SampleFormControlCode = () => {
-    const { register, setValue, control, getValues } = useForm();
+    const { register, setValue, control, getValues } = useForm()
 
-    const { field } = useController({ name: "test", control });
-    const { field: field2 } = useController({ name: "test2", control });
-    const { field: field3 } = useController({ name: "test3", control });
-    const { field: field4 } = useController({ name: "test4", control });
+    const { field } = useController({ name: 'test', control })
+    const { field: field2 } = useController({ name: 'test2', control })
+    const { field: field3 } = useController({ name: 'test3', control })
+    const { field: field4 } = useController({ name: 'test4', control })
 
     return (
         <Page>
@@ -26,9 +26,9 @@ export const SampleFormControlCode = () => {
                 <InputCode area="currCd" maxLength={3} value={field3.value} onChange={field3.onChange} />
                 <InputCode area="bnkCd" maxLength={8} value={field4.value} onChange={field3.onChange} />
 
-                <button onClick={() => setValue("test", "a05")}>test</button>
+                <button onClick={() => setValue('test', 'a05')}>test</button>
                 <button onClick={() => console.log(getValues())}>getValues</button>
             </Group>
         </Page>
-    );
-};
+    )
+}

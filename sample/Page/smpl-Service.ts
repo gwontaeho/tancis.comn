@@ -1,14 +1,14 @@
-import { api } from "@/comn";
-import { FormSchemaType } from "@/comn/hooks";
+import { api } from '@/comn'
+import { FormSchemaType } from '@/comn/hooks'
 
-const baseUrl = "http://183.107.31.131:8000/template";
+const baseUrl = 'http://183.107.31.131:8000/template'
 
 export const APIS = {
     getComponentGroups: (page: number, size: number) =>
         api.get(`${baseUrl}/com/componentGroups?page=${page}&size=${size}`),
 
     getComponentGroup: (id: any) => api.get(`${baseUrl}/com/componentGroups/${id}`),
-    createComponentGroup: (data: any) => api.post("${baseUrl}/com/componentGroups", data),
+    createComponentGroup: (data: any) => api.post('${baseUrl}/com/componentGroups', data),
     deleteComponentGroup: (id: any) => api.delete(`${baseUrl}/com/componentGroups/${id}`),
     updateComponentGroup: (id: any, data: any) => api.put(`${baseUrl}/com/componentGroups/${id}`, { id, ...data }),
 
@@ -16,96 +16,96 @@ export const APIS = {
     createComponent: (grpId: any, data: any) =>
         api.post(`${baseUrl}/com/componentGroups/${grpId}/components`, { grpId, ...data }),
     createGroupComponents: (data: any) => api.post(`${baseUrl}/com/groupComponents`, data),
-};
+}
 
 export const OPTIONS = [
-    { label: "", value: "" },
-    { label: "a", value: "a" },
-    { label: "b", value: "b" },
-    { label: "c", value: "c" },
-    { label: "d", value: "d" },
-];
+    { label: '', value: '' },
+    { label: 'a', value: 'a' },
+    { label: 'b', value: 'b' },
+    { label: 'c', value: 'c' },
+    { label: 'd', value: 'd' },
+]
 
 export const SCHEMA_FORM: FormSchemaType = {
-    id: "form",
+    id: 'form',
     schema: {
-        con1: { type: "text", label: "검색조건 1" },
-        con2: { type: "select", label: "검색조건 2" },
+        con1: { type: 'text', label: '검색조건 1' },
+        con2: { type: 'select', label: '검색조건 2' },
         _con34: {
-            type: "range",
-            label: "검색조건 3",
+            type: 'range',
+            label: '검색조건 3',
             rangeButton: 0,
         },
     },
-};
+}
 
 export const SCHEMA_FORM_REGIST: FormSchemaType = {
-    id: "form",
+    id: 'form',
     schema: {
-        textField: { type: "text", label: "TEXT_FIELD", required: true },
-        passwordField: { type: "password", label: "PASSWORD_FIELD" },
-        integerField: { type: "number", label: "INTEGER_FIELD" },
-        selectField: { type: "select", label: "SELECT_FIELD" },
-        radioField: { type: "radio", label: "RADIO_FIELD" },
-        dateField: { type: "date", label: "DATE_FIELD" },
-        textareaField: { type: "textarea", label: "TEXTAREA_FIELD" },
+        textField: { type: 'text', label: 'TEXT_FIELD', required: true },
+        passwordField: { type: 'password', label: 'PASSWORD_FIELD' },
+        integerField: { type: 'number', label: 'INTEGER_FIELD' },
+        selectField: { type: 'select', label: 'SELECT_FIELD' },
+        radioField: { type: 'radio', label: 'RADIO_FIELD' },
+        dateField: { type: 'date', label: 'DATE_FIELD' },
+        textareaField: { type: 'textarea', label: 'TEXTAREA_FIELD' },
     },
-};
+}
 
 export const SCHEMA_GRID = {
-    __grid__: "grid",
+    __grid__: 'grid',
     options: { checkbox: true, pagination: true, isReadOnly: true },
-    head: [{ cells: [{ header: "id", binding: "id" }] }, { cells: [{ header: "textField", binding: "textField" }] }],
+    head: [{ cells: [{ header: 'id', binding: 'id' }] }, { cells: [{ header: 'textField', binding: 'textField' }] }],
     body: [
-        { cells: [{ binding: "id", link: (data: any) => console.log(data), width: "*" }] },
-        { cells: [{ binding: "textField" }] },
+        { cells: [{ binding: 'id', link: (data: any) => console.log(data), width: '*' }] },
+        { cells: [{ binding: 'textField' }] },
     ],
-};
+}
 
 export const SCHEMA_GRID_COMPONENTS = {
-    __grid__: "grid",
-    options: { pagination: "inner", isReadOnly: true },
+    __grid__: 'grid',
+    options: { pagination: 'inner', isReadOnly: true },
     head: [
-        { cells: [{ header: "textField" }] },
-        { cells: [{ header: "passwordField" }] },
-        { cells: [{ header: "integerField" }] },
-        { cells: [{ header: "selectField" }] },
-        { cells: [{ header: "doubleField" }] },
+        { cells: [{ header: 'textField' }] },
+        { cells: [{ header: 'passwordField' }] },
+        { cells: [{ header: 'integerField' }] },
+        { cells: [{ header: 'selectField' }] },
+        { cells: [{ header: 'doubleField' }] },
     ],
     body: [
         {
             colspan: 5,
             cells: [
-                { binding: "textField", width: "*" },
-                { binding: "passwordField", type: "password" },
-                { binding: "integerField", type: "number" },
-                { binding: "selectField", type: "select", options: [{ label: "a", value: "a" }] },
-                { binding: "doubleField", type: "number" },
+                { binding: 'textField', width: '*' },
+                { binding: 'passwordField', type: 'password' },
+                { binding: 'integerField', type: 'number' },
+                { binding: 'selectField', type: 'select', options: [{ label: 'a', value: 'a' }] },
+                { binding: 'doubleField', type: 'number' },
             ],
         },
     ],
-};
+}
 
 export const SCHEMA_GRID_COMPONENTS_REGIST = {
-    __grid__: "grid",
-    options: { checkbox: true, pagination: "inner", add: true, remove: true },
+    __grid__: 'grid',
+    options: { checkbox: true, pagination: 'inner', add: true, remove: true },
     head: [
-        { cells: [{ header: "textField" }] },
-        { cells: [{ header: "passwordField" }] },
-        { cells: [{ header: "integerField" }] },
-        { cells: [{ header: "selectField" }] },
-        { cells: [{ header: "doubleField" }] },
+        { cells: [{ header: 'textField' }] },
+        { cells: [{ header: 'passwordField' }] },
+        { cells: [{ header: 'integerField' }] },
+        { cells: [{ header: 'selectField' }] },
+        { cells: [{ header: 'doubleField' }] },
     ],
     body: [
         {
             colspan: 5,
             cells: [
-                { binding: "textField", width: "*" },
-                { binding: "passwordField", type: "password" },
-                { binding: "integerField", type: "number" },
-                { binding: "selectField", type: "select", options: [{ label: "a", value: "a" }] },
-                { binding: "doubleField", type: "number" },
+                { binding: 'textField', width: '*' },
+                { binding: 'passwordField', type: 'password' },
+                { binding: 'integerField', type: 'number' },
+                { binding: 'selectField', type: 'select', options: [{ label: 'a', value: 'a' }] },
+                { binding: 'doubleField', type: 'number' },
             ],
         },
     ],
-};
+}

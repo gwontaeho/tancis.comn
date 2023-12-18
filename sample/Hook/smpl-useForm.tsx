@@ -1,54 +1,54 @@
-import { useEffect } from "react";
-import { Page, Group, Button, Layout, Table } from "@/comn/components";
-import { FormSchemaType, FormValuesType } from "@/comn/hooks";
-import { useForm } from "@/comn/hooks";
+import { useEffect } from 'react'
+import { Page, Group, Button, Layout, Table } from '@/comn/components'
+import { FormSchemaType, FormValuesType } from '@/comn/hooks'
+import { useForm } from '@/comn/hooks'
 
 const SCHEMA_SEARCH: FormSchemaType = {
-    id: "search",
+    id: 'search',
     schema: {
-        text: { type: "text", label: "text", required: true },
-        number: { type: "number", label: "number", required: true },
-        password: { type: "password", label: "password" },
+        text: { type: 'text', label: 'text', required: true },
+        number: { type: 'number', label: 'number', required: true },
+        password: { type: 'password', label: 'password' },
         textarea: {
-            type: "textarea",
-            label: "textarea",
-            leftButton: { icon: "left", onClick: () => {} },
-            rightButton: { icon: "left", onClick: () => {} },
+            type: 'textarea',
+            label: 'textarea',
+            leftButton: { icon: 'left', onClick: () => {} },
+            rightButton: { icon: 'left', onClick: () => {} },
         },
-        select: { type: "select", label: "select" },
-        checkbox: { type: "checkbox", label: "checkbox" },
-        radio: { type: "radio", label: "radio" },
-        date: { type: "date", label: "date" },
-        time: { type: "time", label: "time" },
-        datetime: { type: "datetime", label: "datetime" },
-        file: { type: "file", label: "file" },
-        code: { type: "code", label: "code", comnCd: "COM_0015" },
+        select: { type: 'select', label: 'select' },
+        checkbox: { type: 'checkbox', label: 'checkbox' },
+        radio: { type: 'radio', label: 'radio' },
+        date: { type: 'date', label: 'date' },
+        time: { type: 'time', label: 'time' },
+        datetime: { type: 'datetime', label: 'datetime' },
+        file: { type: 'file', label: 'file' },
+        code: { type: 'code', label: 'code', comnCd: 'COM_0015' },
         daterange: {
-            type: "daterange",
-            label: "daterange",
-            start: { name: "startdate" },
-            end: { name: "enddate" },
+            type: 'daterange',
+            label: 'daterange',
+            start: { name: 'startdate' },
+            end: { name: 'enddate' },
             rangeButton: 0,
         },
         timerange: {
-            type: "timerange",
-            label: "timerange",
-            start: { name: "starttime" },
-            end: { name: "endtime" },
+            type: 'timerange',
+            label: 'timerange',
+            start: { name: 'starttime' },
+            end: { name: 'endtime' },
             rangeButton: 0,
         },
     },
-};
+}
 
 const OPTION = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-    { label: "4", value: "4" },
-    { label: "5", value: "5" },
-    { label: "6", value: "6" },
-    { label: "7", value: "7" },
-];
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+    { label: '5', value: '5' },
+    { label: '6', value: '6' },
+    { label: '7', value: '7' },
+]
 
 export const SampleUseForm = () => {
     const {
@@ -69,19 +69,19 @@ export const SampleUseForm = () => {
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
-    });
+    })
 
-    const text = watch(["text"]);
+    const text = watch(['text'])
 
     const onSubmit = (data: FormValuesType) => {
-        console.log(data);
-    };
+        console.log(data)
+    }
 
-    useEffect(() => {}, []);
+    useEffect(() => {}, [])
 
     const etr = (v: any) => {
-        setEditable(v);
-    };
+        setEditable(v)
+    }
 
     return (
         <Page>
@@ -128,8 +128,8 @@ export const SampleUseForm = () => {
                     <Table.Th width={300}>
                         <Button
                             onClick={() => {
-                                console.log(getValues());
-                                alert(JSON.stringify(getValues()));
+                                console.log(getValues())
+                                alert(JSON.stringify(getValues()))
                             }}
                         >
                             <code>getValues()</code>
@@ -141,7 +141,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("code", "a02");
+                                setValue('code', 'a02')
                             }}
                         >
                             <code>setValue()</code>
@@ -153,7 +153,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValues({ text: "text", number: "001" });
+                                setValues({ text: 'text', number: '001' })
                             }}
                         >
                             <code>{`setValues()`}</code>
@@ -165,7 +165,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                clearValues();
+                                clearValues()
                             }}
                         >
                             <code>{`clearValues()`}</code>
@@ -177,7 +177,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setEditable(true);
+                                setEditable(true)
                             }}
                         >
                             <code>setEditable(true)</code>
@@ -189,7 +189,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setEditable(false);
+                                setEditable(false)
                             }}
                         >
                             <code>setEditable(false)</code>
@@ -201,7 +201,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setSchema("datetime", { disabled: true });
+                                setSchema('datetime', { disabled: true })
                             }}
                         >
                             <code>{`setSchema("text", { disabled: true })`}</code>
@@ -213,7 +213,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                resetSchema();
+                                resetSchema()
                             }}
                         >
                             <code>{`resetSchema()`}</code>
@@ -226,7 +226,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                validate();
+                                validate()
                             }}
                         >
                             <code>{`validate()`}</code>
@@ -238,7 +238,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                validate("text");
+                                validate('text')
                             }}
                         >
                             <code>{`validate("text")`}</code>
@@ -250,7 +250,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                clearErrors();
+                                clearErrors()
                             }}
                         >
                             <code>{`clearErrors()`}</code>
@@ -262,7 +262,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                clearErrors("text");
+                                clearErrors('text')
                             }}
                         >
                             <code>{`clearErrors("text")`}</code>
@@ -300,8 +300,8 @@ export const SampleUseForm = () => {
                 </Table.Tr>
             </Table>
         </Page>
-    );
-};
+    )
+}
 
 // return {
 //     schema: getSchema(_schema),

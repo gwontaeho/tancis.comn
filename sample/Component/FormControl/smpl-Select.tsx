@@ -1,5 +1,5 @@
-import { Page, Group } from "@/comn/components";
-import { utils } from "@/comn/utils";
+import { Page, Group } from '@/comn/components'
+import { utils } from '@/comn/utils'
 
 export const SampleFormControlSelect = () => {
     return (
@@ -25,7 +25,7 @@ export const SampleFormControlSelect = () => {
                             <Group.Control
                                 type="select"
                                 label="왼쪽 버튼"
-                                leftButton={{ icon: "search", onClick: () => alert("click") }}
+                                leftButton={{ icon: 'search', onClick: () => alert('click') }}
                                 options={utils.getMockOptions()}
                             />
                             <Group.Col>
@@ -36,7 +36,7 @@ export const SampleFormControlSelect = () => {
                             <Group.Control
                                 type="select"
                                 label="오른쪽 버튼"
-                                rightButton={{ icon: "search", onClick: () => alert("click") }}
+                                rightButton={{ icon: 'search', onClick: () => alert('click') }}
                                 options={utils.getMockOptions()}
                             />
                             <Group.Col>
@@ -59,5 +59,5 @@ export const SampleFormControlSelect = () => {
                 </form>
             </Group>
         </Page>
-    );
-};
+    )
+}

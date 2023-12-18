@@ -1,3 +1,3 @@
 export const SampleGroup = () => {
-    return null;
-};
+    return null
+}

@@ -1,43 +1,39 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "@/comn/hooks";
-import { Icon, FormControl } from "@/comn/components";
-import { NavTop } from "./NavTop";
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '@/comn/hooks'
+import { Icon, FormControl } from '@/comn/components'
+import { NavTop } from './NavTop'
 
 const ModeControl = () => {
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme } = useTheme()
 
     return (
         <button
             onClick={() =>
                 setTheme((prev) => ({
                     ...prev,
-                    isDark: prev.isDark === "false" ? "true" : "false",
+                    isDark: prev.isDark === 'false' ? 'true' : 'false',
                 }))
             }
         >
-            <Icon icon={theme.isDark === "true" ? "sun" : "moon"} />
+            <Icon icon={theme.isDark === 'true' ? 'sun' : 'moon'} />
         </button>
-    );
-};
+    )
+}
 
 export const Logo = () => {
-    const path = `/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`;
+    const path = `/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`
 
     return (
-        <img
-            src={path}
-            alt={process.env.REACT_APP_SYSTEM_GROUP_NAME}
-            title={process.env.REACT_APP_SYSTEM_GROUP_NAME}
-        />
-    );
-};
+        <img src={path} alt={process.env.REACT_APP_SYSTEM_GROUP_NAME} title={process.env.REACT_APP_SYSTEM_GROUP_NAME} />
+    )
+}
 
 export const Header = () => {
-    const { theme, setTheme } = useTheme();
-    const { t } = useTranslation();
+    const { theme, setTheme } = useTheme()
+    const { t } = useTranslation()
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
 
     return (
         <header className="fixed w-full bg-background z-50">
@@ -53,7 +49,7 @@ export const Header = () => {
                 <div className="flex flex-1 p-4">
                     <NavTop />
                     <div className="flex flex-1 justify-end items-center space-x-4">
-                        <div>{t("test")}</div>
+                        <div>{t('test')}</div>
 
                         <ModeControl />
                         <FormControl
@@ -67,9 +63,9 @@ export const Header = () => {
                                 }))
                             }
                             options={[
-                                { label: "한국어", value: "ko" },
-                                { label: "영어", value: "en" },
-                                { label: "스와힐리어", value: "tz" },
+                                { label: '한국어', value: 'ko' },
+                                { label: '영어', value: 'en' },
+                                { label: '스와힐리어', value: 'tz' },
                             ]}
                         />
                     </div>
@@ -99,5 +95,5 @@ export const Header = () => {
                 </nav>
             )}
         </header>
-    );
-};
+    )
+}

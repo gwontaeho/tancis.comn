@@ -1,42 +1,42 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { Wijmo } from "@/comn/components";
-import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
-import { APIS, SCHEMA_FORM_COMN_CD, SCHEMA_GRID_COMN_CD } from "./comn-comn-cd.service";
+import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Wijmo } from '@/comn/components'
+import { Page, Group, Layout, Button } from '@/comn/components'
+import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
+import { APIS, SCHEMA_FORM_COMN_CD, SCHEMA_GRID_COMN_CD } from './comn-comn-cd.service'
 
 export const CommonCodeList = (props: any) => {
-    const { t } = useTranslation();
-    const { condition } = useCondition();
-    const form = useForm({ defaultSchema: SCHEMA_FORM_COMN_CD, values: condition });
-    const [params] = useSearchParams();
-    const { close, postMessage } = usePopup();
-    const { theme } = useTheme();
+    const { t } = useTranslation()
+    const { condition } = useCondition()
+    const form = useForm({ defaultSchema: SCHEMA_FORM_COMN_CD, values: condition })
+    const [params] = useSearchParams()
+    const { close, postMessage } = usePopup()
+    const { theme } = useTheme()
     const grid = useWijmo({
         defaultSchema: SCHEMA_GRID_COMN_CD((data: any) => {
-            postMessage({ code: data.cdVldVal, label: data.cdVldValNm });
-            close();
+            postMessage({ code: data.cdVldVal, label: data.cdVldValNm })
+            close()
         }),
-    });
+    })
 
-    const comnCd = params.get("comnCd");
+    const comnCd = params.get('comnCd')
     const fetch_Srch = useFetch({
         api: () => APIS.getComnCdLst(form.getValues(), 0, grid.size),
-    });
+    })
 
     const onSubmit = () => {
-        fetch_Srch.fetch();
-    };
+        fetch_Srch.fetch()
+    }
 
     useEffect(() => {
-        form.setValues({ comnCd: comnCd, langCd: theme.lang.toUpperCase() });
-    }, []);
+        form.setValues({ comnCd: comnCd, langCd: theme.lang.toUpperCase() })
+    }, [])
 
     return (
         <Page>
-            <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
-            <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
+            <Page.Navigation base="/sample/pages" nodes={[{ path: '/', label: 'List' }, { label: 'Regist' }]} />
+            <Page.Header title={t('T_COMN_CD_LST')} description={t('T_COMN_CD_LST')} />
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>
@@ -53,14 +53,14 @@ export const CommonCodeList = (props: any) => {
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.reset();
+                                    form.reset()
                                 }}
                             >
-                                {t("B_RESET")}
+                                {t('B_RESET')}
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="submit">{t("B_SRCH")}</Button>
+                            <Button type="submit">{t('B_SRCH')}</Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
@@ -68,8 +68,8 @@ export const CommonCodeList = (props: any) => {
 
             <Group>{fetch_Srch.data && <Wijmo {...grid.grid} data={fetch_Srch.data} />}</Group>
             <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
+                <Button onClick={close}>{t('B_CLS')}</Button>
             </Layout.Right>
         </Page>
-    );
-};
+    )
+}

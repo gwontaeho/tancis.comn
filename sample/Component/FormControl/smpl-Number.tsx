@@ -1,4 +1,4 @@
-import { Page, Group } from "@/comn/components";
+import { Page, Group } from '@/comn/components'
 
 export const SampleFormControlNumber = () => {
     return (
@@ -25,7 +25,7 @@ export const SampleFormControlNumber = () => {
                         <Group.Control
                             type="number"
                             label="왼쪽 버튼"
-                            leftButton={{ icon: "search", onClick: () => alert("click") }}
+                            leftButton={{ icon: 'search', onClick: () => alert('click') }}
                         />
                         <Group.Col>
                             <code>{`leftButton={{icon:"search"}}`}</code>
@@ -35,7 +35,7 @@ export const SampleFormControlNumber = () => {
                         <Group.Control
                             type="number"
                             label="오른쪽 버튼"
-                            rightButton={{ icon: "search", onClick: () => alert("click") }}
+                            rightButton={{ icon: 'search', onClick: () => alert('click') }}
                         />
                         <Group.Col>
                             <code>{`rightButton={{icon:"search"}}`}</code>
@@ -56,5 +56,5 @@ export const SampleFormControlNumber = () => {
                 </Group.Body>
             </Group>
         </Page>
-    );
-};
+    )
+}

@@ -1,3 +1,3 @@
 export const T = () => {
-    return null;
-};
+    return null
+}

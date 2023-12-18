@@ -1,4 +1,4 @@
-import { Page, Group, FormControl } from "@/comn/components";
+import { Page, Group, FormControl } from '@/comn/components'
 
 export const SampleFormControlDate = () => {
     return (
@@ -19,7 +19,7 @@ export const SampleFormControlDate = () => {
                             <Group.Control
                                 type="date"
                                 label="왼쪽 버튼"
-                                leftButton={{ icon: "search", onClick: () => alert("click") }}
+                                leftButton={{ icon: 'search', onClick: () => alert('click') }}
                             />
                             <Group.Col>
                                 <code>{`leftButton={{icon:"search"}}`}</code>
@@ -29,7 +29,7 @@ export const SampleFormControlDate = () => {
                             <Group.Control
                                 type="date"
                                 label="오른쪽 버튼"
-                                rightButton={{ icon: "search", onClick: () => alert("click") }}
+                                rightButton={{ icon: 'search', onClick: () => alert('click') }}
                             />
                             <Group.Col>
                                 <code>{`rightButton={{icon:"search"}}`}</code>
@@ -45,5 +45,5 @@ export const SampleFormControlDate = () => {
                 </form>
             </Group>
         </Page>
-    );
-};
+    )
+}

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Tooltip, Button } from "@/comn/components";
+import { useState } from 'react'
+import { Tooltip, Button } from '@/comn/components'
 
 export const SampleTooltip = () => {
-    const [enabled, setEnabled] = useState(true);
+    const [enabled, setEnabled] = useState(true)
 
     return (
         <div className="flex space-x-10">
@@ -17,5 +17,5 @@ export const SampleTooltip = () => {
                 <Button onClick={() => setEnabled((prev) => !prev)}>enabled={String(enabled)}</Button>
             </Tooltip>
         </div>
-    );
-};
+    )
+}

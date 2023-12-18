@@ -1,10 +1,10 @@
-import { Icon, IconsType } from "@/comn/components";
-import { icons } from "@/comn/assets/icons";
+import { Icon, IconsType } from '@/comn/components'
+import { icons } from '@/comn/assets/icons'
 
 export const SampleIcon = () => {
     const handleClick = (icon: any) => {
-        navigator.clipboard.writeText(`<Icon icon="${icon}" />`);
-    };
+        navigator.clipboard.writeText(`<Icon icon="${icon}" />`)
+    }
 
     return (
         <div className="grid grid-cols-12 gap-2">
@@ -19,8 +19,8 @@ export const SampleIcon = () => {
                         <Icon icon={icon} />
                         <button className="hover:bg-black/10 w-full font-mono py-2 rounded">copy</button>
                     </div>
-                );
+                )
             })}
         </div>
-    );
-};
+    )
+}

@@ -1,5 +1,5 @@
-import { Page, Group } from "@/comn/components";
-import { utils } from "@/comn/utils";
+import { Page, Group } from '@/comn/components'
+import { utils } from '@/comn/utils'
 
 export const SampleFormControlRadio = () => {
     return (
@@ -30,5 +30,5 @@ export const SampleFormControlRadio = () => {
                 </form>
             </Group>
         </Page>
-    );
-};
+    )
+}

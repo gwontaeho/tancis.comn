@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -9,15 +9,11 @@
         <script>
             try {
                 if (
-                    localStorage.isDark === "true" ||
-                    (!("isDark" in localStorage) &&
-                        window.matchMedia("(prefers-color-scheme: dark)")
-                            .matches)
+                    localStorage.isDark === 'true' ||
+                    (!('isDark' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
                 ) {
-                    document.documentElement.classList.add("dark");
-                    document
-                        .querySelector('meta[name="theme-color"]')
-                        .setAttribute("content", "#0B1120");
+                    document.documentElement.classList.add('dark')
+                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0B1120')
                 }
             } catch (error) {}
         </script>

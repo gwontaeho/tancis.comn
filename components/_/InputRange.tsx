@@ -1,3 +1,3 @@
 export const Aasdw = () => {
-    return null;
-};
+    return null
+}

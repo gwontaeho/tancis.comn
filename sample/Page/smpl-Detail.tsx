@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useWijmo, useFetch } from "@/comn/hooks";
-import { Page, Wijmo, Group, Layout, Button, Tab } from "@/comn/components";
-import { SCHEMA_GRID_COMPONENTS, APIS } from "./smpl-Service";
+import { useNavigate, useParams } from 'react-router-dom'
+import { useWijmo, useFetch } from '@/comn/hooks'
+import { Page, Wijmo, Group, Layout, Button, Tab } from '@/comn/components'
+import { SCHEMA_GRID_COMPONENTS, APIS } from './smpl-Service'
 
 /**
  * 샘플 상세 페이지
@@ -61,5 +61,5 @@ export const SampleDetail = () => {
     //     </Page>
     // );
 
-    return null;
-};
+    return null
+}
