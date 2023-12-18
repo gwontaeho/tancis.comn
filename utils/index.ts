@@ -18,7 +18,6 @@ export const utils = {
                 })),
         }
     },
-
     getMockDataWithPaging: ({ data = {}, page = 0, size = 10 }: { data: any; page: number; size: number }) => {
         return { ...data, content: lodash.chunk(data.content, size)[page] }
     },
