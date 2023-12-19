@@ -26,11 +26,9 @@
     body {
         @apply text-base bg-background text-text flex flex-col w-full;
     }
-
     ::-webkit-scrollbar {
         @apply w-1.5 h-1.5;
     }
-
     ::-webkit-scrollbar-thumb {
         @apply rounded bg-[#9ca3afaa];
     }

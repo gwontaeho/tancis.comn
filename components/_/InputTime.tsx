@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
 import ReactDatePicker from 'react-datepicker'
+import { ControllerWrapper } from './ControllerWrapper'
+import { Control } from 'react-hook-form'
 import { Icon } from '@/comn/components'
 
 export type InputTimeProps = {
+    name?: string
     value?: Date | null
-    onChange?: (date?: Date | null) => void
+    onChange?: (...args: any) => void
+    control?: Control
 }
 
-export const InputTime = (props: InputTimeProps) => {
+export const InputTimeMain = (props: InputTimeProps) => {
     const { value, onChange, ...rest } = props
     const dateFormat = 'HH:mm'
 
@@ -45,4 +49,15 @@ export const InputTime = (props: InputTimeProps) => {
             />
         </div>
     )
+}
+
+export const InputTime = (props: InputTimeProps) => {
+    if (props.control && props.name)
+        return (
+            <ControllerWrapper {...props} control={props.control} name={props.name}>
+                <InputTimeMain />
+            </ControllerWrapper>
+        )
+
+    return <InputTimeMain {...props} />
 }

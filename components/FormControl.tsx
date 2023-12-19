@@ -1,6 +1,7 @@
 import 'react-datepicker/dist/react-datepicker.css'
 import React from 'react'
 import classNames from 'classnames'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { Icon, IconsType, Tooltip } from '@/comn/components'
 import {
@@ -83,7 +84,6 @@ type FormControlMainProps = FormControlEditModeProps & {
     size?: keyof typeof SIZES
     control?: any
     rules?: any
-    mainClassName?: string
     defaultValue?: any
     onFocus?: (e: any) => void
     mask?: string
@@ -100,14 +100,13 @@ type FormControlMainProps = FormControlEditModeProps & {
 export type FormControlProps = FormControlMainProps
 
 const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
-    const { edit = true, rightButton, leftButton, rightText, getValues, invalid, ...rest } = props
+    const { edit, rightButton, leftButton, rightText, getValues, invalid, ...rest } = props
 
     return (
         <div
             className={classNames('flex w-full', {
                 '[&_.input]:rounded-r-none': rightButton,
                 '[&_.input]:rounded-l-none': leftButton,
-                hidden: !edit,
             })}
         >
             {leftButton && (
@@ -169,17 +168,61 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
     )
 })
 
+const FormControlTextMode = (props: FormControlMainProps) => {
+    return (
+        <div>
+            {(() => {
+                switch (props.type) {
+                    case 'checkbox':
+                        return (props.getValues(props.type) || []).join(', ')
+                    case 'date':
+                        return dayjs(props.getValues(props.type)).format('YYYY/MM/DD')
+                    case 'time':
+                        return dayjs(props.getValues(props.type)).format('HH:mm')
+                    case 'datetime':
+                        return dayjs(props.getValues(props.type)).format('YYYY/MM/DD HH:mm')
+                    case 'daterange':
+                        return (
+                            dayjs(props.getValues(props.start.name)).format('YYYY/MM/DD') +
+                            ' ~ ' +
+                            dayjs(props.getValues(props.end.name)).format('YYYY/MM/DD')
+                        )
+                    case 'timerange':
+                        return (
+                            dayjs(props.getValues(props.start.name)).format('HH:mm') +
+                            ' ~ ' +
+                            dayjs(props.getValues(props.end.name)).format('HH:mm')
+                        )
+
+                    case 'file':
+                        return (props.getValues(props.type) || []).length > 1
+                            ? `파일 ${(props.getValues(props.type) || []).length}개`
+                            : (props.getValues(props.type) || [])[0]?.name
+
+                    default:
+                        return props.getValues(props.type)
+                }
+            })()}
+        </div>
+    )
+}
+
 export const FormControl = React.forwardRef((props: FormControlMainProps, ref) => {
-    const { size = 'full', message } = props
+    const { size = 'full', edit = true, message } = props
     const { t } = useTranslation()
 
     return (
-        <div className={classNames(SIZES[size], props.mainClassName)}>
-            <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>
-                <FormControlEditMode ref={ref} {...props} />
-            </Tooltip>
-            {message && <div className="text-sm mt-1">{message}</div>}
-            {props.invalid && <div className="text-invalid text-sm mt-1">{t('msg.00001')}</div>}
+        <div className={classNames(SIZES[size])}>
+            {!edit && props.getValues && <FormControlTextMode {...props} />}
+
+            <div className={classNames({ hidden: !edit })}>
+                <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>
+                    <FormControlEditMode ref={ref} {...props} />
+                </Tooltip>
+
+                {message && <div className="text-sm mt-1">{message}</div>}
+                {props.invalid && <div className="text-invalid text-sm mt-1">{t('msg.00001')}</div>}
+            </div>
         </div>
     )
 })

@@ -99,7 +99,9 @@ export const useForm = (props: UseFormProps) => {
                     value.type === 'time' ||
                     value.type === 'datetime' ||
                     value.type === 'daterange' ||
-                    value.type === 'timerange'
+                    value.type === 'timerange' ||
+                    value.type === 'code' ||
+                    value.type === 'file'
                 )
                     return [
                         key,
@@ -107,6 +109,7 @@ export const useForm = (props: UseFormProps) => {
                             ...value,
                             name: key,
                             setValue,
+                            getValues,
                             control,
                             rules,
                             invalid: errors[key],
@@ -119,6 +122,7 @@ export const useForm = (props: UseFormProps) => {
                         ...value,
                         ...register(key, rules),
                         invalid: errors[key],
+                        getValues,
                     },
                 ]
             })

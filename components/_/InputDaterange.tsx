@@ -47,8 +47,6 @@ export const InputDaterange = (props: InputDaterangeProps) => {
     const [_startValue, _setStartValue] = React.useState<any>()
     const [_endValue, _setEndValue] = React.useState<any>()
 
-    console.log(props)
-
     React.useEffect(() => {
         if (!props.start?.onChange) return
         if (String(props.start.value) === String(_startValue)) return

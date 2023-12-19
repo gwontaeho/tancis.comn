@@ -65,7 +65,7 @@ export const NavVertical = () => {
     const depth_2 = depth_1?.children
 
     return (
-        <nav className="hidden fixed pt-20 top-0 w-60 h-full lg:block">
+        <nav className="hidden fixed pt-20 top-0 w-60 h-full lg:block overflow-y-auto">
             {!depth_2 && <span className="p-2">depth 1 미 선택</span>}
             {depth_2 && (
                 <ul className="p-2">

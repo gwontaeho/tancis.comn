@@ -9,6 +9,7 @@ import { SampleMain } from '@/comn/sample/smpl-Main'
 import { Layout } from '@/comn/layouts'
 import { TancisRoutes } from '@/tra/tancis/Routes'
 import { CommonModal, CommonToast } from '@/comn/components/_'
+import { Signin } from '@/comn/Signin'
 
 export const api = axios.create({ baseURL: process.env.REACT_APP_API_COMN })
 
@@ -35,11 +36,13 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
             <AuthProvider>
                 <BrowserRouter>
                     <Routes>
+                        <Route path="/signin" element={<Signin />} />
                         <Route element={<Layout />}>
                             <Route path="/comn/smpl/*" element={<SampleMain />} />
                             {children}
                         </Route>
                     </Routes>
+
                     <CommonModal />
                     <CommonToast />
                 </BrowserRouter>

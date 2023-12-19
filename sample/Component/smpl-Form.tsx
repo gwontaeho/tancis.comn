@@ -21,7 +21,7 @@ const SCHEMA_SEARCH: FormSchemaType = {
         date: { type: 'date', label: 'date' },
         time: { type: 'time', label: 'time' },
         datetime: { type: 'datetime', label: 'datetime' },
-        file: { type: 'file' },
+        file: { type: 'file', multiple: true },
         daterange: {
             type: 'daterange',
             label: 'daterange',

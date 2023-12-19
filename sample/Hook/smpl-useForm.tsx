@@ -21,8 +21,8 @@ const SCHEMA_SEARCH: FormSchemaType = {
         date: { type: 'date', label: 'date' },
         time: { type: 'time', label: 'time' },
         datetime: { type: 'datetime', label: 'datetime' },
-        file: { type: 'file', label: 'file' },
-        code: { type: 'code', label: 'code', comnCd: 'COM_0015' },
+        file: { type: 'file', label: 'file', multiple: true },
+        code: { type: 'code', label: 'code', comnCd: 'COM_0015', area: 'comnCd' },
         daterange: {
             type: 'daterange',
             label: 'daterange',
@@ -129,7 +129,7 @@ export const SampleUseForm = () => {
                         <Button
                             onClick={() => {
                                 console.log(getValues())
-                                alert(JSON.stringify(getValues()))
+                                // alert(JSON.stringify(getValues()))
                             }}
                         >
                             <code>getValues()</code>
