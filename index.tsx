@@ -42,7 +42,6 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
                             {children}
                         </Route>
                     </Routes>
-
                     <CommonModal />
                     <CommonToast />
                 </BrowserRouter>
