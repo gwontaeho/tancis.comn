@@ -19,7 +19,8 @@ const SIZES = {
     full: 'w-full',
 }
 
-type TooltipProps = React.PropsWithChildren & {
+type TooltipProps = {
+    children?: React.ReactNode
     content?: React.ReactNode
     enabled?: boolean
     mode?: 'default' | 'always'

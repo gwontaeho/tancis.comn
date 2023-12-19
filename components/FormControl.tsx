@@ -193,12 +193,10 @@ const FormControlTextMode = (props: FormControlMainProps) => {
                             ' ~ ' +
                             dayjs(props.getValues(props.end.name)).format('HH:mm')
                         )
-
                     case 'file':
                         return (props.getValues(props.type) || []).length > 1
                             ? `파일 ${(props.getValues(props.type) || []).length}개`
                             : (props.getValues(props.type) || [])[0]?.name
-
                     default:
                         return props.getValues(props.type)
                 }
@@ -219,7 +217,6 @@ export const FormControl = React.forwardRef((props: FormControlMainProps, ref) =
                 <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>
                     <FormControlEditMode ref={ref} {...props} />
                 </Tooltip>
-
                 {message && <div className="text-sm mt-1">{message}</div>}
                 {props.invalid && <div className="text-invalid text-sm mt-1">{t('msg.00001')}</div>}
             </div>

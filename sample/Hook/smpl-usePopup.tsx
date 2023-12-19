@@ -1,5 +1,6 @@
 import { usePopup } from '@/comn/hooks'
 import { Button } from '@/comn/components'
+import { makeDoc } from '@/comn/sample/makeDoc'
 
 export const SampleUsePopupTarget = () => {
     const popup = usePopup()
@@ -60,6 +61,34 @@ export const SampleUsePopup = () => {
             <Button onClick={closeAll}>팝업 전체 닫기</Button>
             <Button onClick={withId}>팝업 열기 id="test"</Button>
             <Button onClick={closeId}>팝업 닫기 id="test"</Button>
+
+            <div className="space-y-16">
+                <div className="text-[1.8rem]">usePopup</div>
+
+                {makeDoc('openPopup', 'openPopup(popupProps: PopupProps): void', openPopupParams)}
+                {makeDoc('closePopup', 'closePopup(id? string): void', closePopupParams)}
+                {makeDoc('getParams', 'getParams(): void')}
+                {makeDoc('postMessage', 'postMessage(data: any): void', postMessageParams)}
+                {makeDoc('close', 'close(): void')}
+            </div>
         </div>
     )
 }
+
+const openPopupParams = [
+    {
+        name: 'popupProps: object',
+        open: true,
+        children: [
+            { name: 'id?: string' },
+            { name: 'url?: string' },
+            { name: 'params?: any' },
+            { name: 'layout?: main | popup' },
+            { name: 'callback?: (data: any) => void' },
+        ],
+    },
+]
+const closePopupParams = [{ name: 'id?: string' }]
+const postMessageParams = [{ name: 'data: any' }]
+
+// return { openPopup, closePopup, getParams, postMessage, close }

@@ -8,6 +8,8 @@ type TreeItemProps = {
     name: string
     parent: string[]
     _key: string
+    open?: boolean
+    checkbox?: boolean
 }
 
 type TreeProps = {
@@ -15,13 +17,13 @@ type TreeProps = {
 }
 
 const TreeItem = (props: TreeItemProps) => {
-    const { children, name, parent, _key } = props
+    const { children, name, parent, _key, checkbox = false, open = false } = props
 
     const childrenRef = useRef<HTMLUListElement>(null)
-    const [open, setOpen] = useState(false)
+    const [_open, _setOpen] = useState<boolean>(open)
 
     const handleClick = () => {
-        setOpen((prev) => !prev)
+        _setOpen((prev) => !prev)
     }
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,17 +49,19 @@ const TreeItem = (props: TreeItemProps) => {
                 onClick={handleClick}
             >
                 {children && <Icon icon="right" size="xs" className={classNames('transition')} />}
-                <input
-                    name={_key}
-                    type="checkbox"
-                    className="w-3"
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={handleCheck}
-                />
+                {checkbox && (
+                    <input
+                        name={_key}
+                        type="checkbox"
+                        className="w-3"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={handleCheck}
+                    />
+                )}
                 <p>{name}</p>
             </button>
             {Array.isArray(children) && (
-                <Collapse open={open}>
+                <Collapse open={_open}>
                     <ul ref={childrenRef} className="pl-[1.125rem]">
                         {children.map((child) => {
                             return <TreeItem _key={child.key} {...child} />

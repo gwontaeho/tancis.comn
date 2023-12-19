@@ -1,4 +1,4 @@
-import { Layout, Group, Tree } from '@/comn/components'
+import { Layout, Group, Tree, Divider } from '@/comn/components'
 
 const treeviewItems = () => [
     {
@@ -132,6 +132,8 @@ export const SampleTree = () => {
                 <Group.Header title="asd" />
                 <Tree data={treeviewItems()} />
             </Group>
+            <Divider orientation="vertical" />
+
             <Group>
                 <Tree data={treeviewItems()} />
             </Group>
