@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
-
 import { Icon } from '@/comn/components'
 
 type NodeType = { path?: string; label: string }
@@ -23,13 +22,6 @@ type PageProps = {
 
 export const Page = (props: PageProps) => {
     const { children } = props
-
-    return <div className="space-y-4">{children}</div>
-}
-
-export const SimplePage = (props: PageProps) => {
-    const { children } = props
-
     return <div className="space-y-4">{children}</div>
 }
 
