@@ -71,9 +71,10 @@ export const SampleMain = () => {
             <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
 
             <Route path="/pages/list" element={<SampleList />} />
-            <Route path="/pages/:id" element={<SampleDetail />} />
-            <Route path="/pages/:id/update" element={<SampleUpdate />} />
+            <Route path="/pages/detail" element={<SampleDetail />} />
+            <Route path="/pages/update" element={<SampleUpdate />} />
             <Route path="/pages/regist" element={<SampleRegist />} />
+
             <Route path="/pages/comnCdPpup" element={<CommonCodeList />} />
             <Route path="/pages/cntyCdPpup" element={<CountryCodeList />} />
             <Route path="/pages/currCdPpup" element={<CurrencyCodeList />} />

@@ -156,15 +156,15 @@ export const SampleRoutes = [
                     },
                     {
                         name: 'Detail',
-                        to: '/d',
+                        to: '/detail',
                     },
                     {
                         name: 'Update',
-                        to: '/u',
+                        to: '/update',
                     },
                     {
                         name: 'Regist',
-                        to: '/r',
+                        to: '/regist',
                     },
                     {
                         name: 'Common Code Popup',
