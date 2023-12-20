@@ -143,6 +143,10 @@ export const SampleRoutes = [
                         name: 'useWijmo',
                         to: '/useWijmo',
                     },
+                    {
+                        name: 'useTab',
+                        to: '/useTab',
+                    },
                 ],
             },
             {

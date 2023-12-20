@@ -1,11 +1,12 @@
-import { Layout, Tab } from '@/comn/components'
+import { Sample } from '@/comn/components/_'
+import { Tab } from '@/comn/components'
 import { SampleForm } from './smpl-Form'
 import { SampleTree } from './smpl-Tree'
 
 export const SampleTab = () => {
     return (
-        <Layout>
-            <Tab tab={['tab1', 'tab2', 'tab3']}>
+        <Sample title="Tab">
+            {/* <Tab tab={['tab1', 'tab2', 'tab3']}>
                 <Tab.Panel>
                     <SampleForm />
                 </Tab.Panel>
@@ -15,7 +16,7 @@ export const SampleTab = () => {
                 <Tab.Panel>
                     <SampleTree />
                 </Tab.Panel>
-            </Tab>
-        </Layout>
+            </Tab> */}
+        </Sample>
     )
 }
