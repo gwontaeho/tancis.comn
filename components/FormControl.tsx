@@ -213,7 +213,6 @@ export const FormControl = React.forwardRef((props: FormControlMainProps, ref) =
     return (
         <div className={classNames(SIZES[size])}>
             {!edit && props.getValues && <FormControlTextMode {...props} />}
-
             <div className={classNames({ hidden: !edit })}>
                 <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>
                     <FormControlEditMode ref={ref} {...props} />

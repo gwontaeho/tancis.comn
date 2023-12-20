@@ -30,7 +30,8 @@ export const usePopup = () => {
                 if (popup.closed) return
                 popup.close()
             })
-        popupRef.current[id].popup?.close()
+
+        popupRef.current[id]?.popup.close()
     }
 
     const openPopup = ({ id = '', layout = 'popup', url, params, callback }: PopupType) => {

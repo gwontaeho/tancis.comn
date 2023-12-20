@@ -1,5 +1,5 @@
 import React from 'react'
-import { RecoilRoot, atom } from 'recoil'
+import { RecoilRoot, atom, useRecoilSnapshot } from 'recoil'
 import { ModalProps, ToastProps } from '@/comn/components/_'
 import i18n from '@/comn/locales/i18n'
 
@@ -58,6 +58,19 @@ export const conditionState = atom({
     key: 'conditionState',
     default: defaultValue.condition,
 })
+
+// const DebugObserver = () => {
+//     const snapshot = useRecoilSnapshot()
+
+//     React.useEffect(() => {
+//         console.debug('The following atoms were modified:')
+//         for (const node of snapshot.getNodes_UNSTABLE({ isModified: true })) {
+//             console.debug(node.key, snapshot.getLoadable(node))
+//         }
+//     }, [snapshot])
+
+//     return null
+// }
 
 const RecoilProvider = ({ children }: { children?: React.ReactNode }) => {
     return <RecoilRoot>{children}</RecoilRoot>
