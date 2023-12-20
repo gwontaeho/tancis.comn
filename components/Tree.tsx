@@ -48,7 +48,9 @@ const TreeItem = (props: TreeItemProps) => {
                 className={classNames('h-7 flex items-center space-x-1.5', { 'ml-[1.125rem]': !children })}
                 onClick={handleClick}
             >
-                {children && <Icon icon="right" size="xs" className={classNames('transition')} />}
+                {children && (
+                    <Icon icon="right" size="xs" className={classNames('transition', { 'rotate-90': _open })} />
+                )}
                 {checkbox && (
                     <input
                         name={_key}

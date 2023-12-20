@@ -32,7 +32,15 @@ type UseFetchProps = {
     onError?: (error?: any) => void
 }
 
-export const useFetch = (props: UseFetchProps) => {
+type UseFetchReturn = {
+    data: any
+    fetch: (...args: any) => void
+    isLoading: boolean
+    isSuccess: boolean
+    isError: boolean
+}
+
+export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     const { api, key = [], enabled, onSuccess, onError, notifyStatus } = props
 
     const isArray = Array.isArray(api)

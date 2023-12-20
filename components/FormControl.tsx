@@ -95,6 +95,7 @@ type FormControlMainProps = FormControlEditModeProps & {
     letterCase?: 'upper' | 'lower'
     start?: any
     end?: any
+    all?: boolean
 }
 
 export type FormControlProps = FormControlMainProps

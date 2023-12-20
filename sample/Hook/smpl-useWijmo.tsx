@@ -40,7 +40,7 @@ export const SampleUseWijmo = () => {
     return (
         <Page>
             <Group>
-                <Wijmo {...grid} data={data} />
+                <Wijmo {...grid} />
             </Group>
         </Page>
     )
