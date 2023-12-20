@@ -1,93 +1,127 @@
-import { Page, Group, FormControl } from '@/comn/components'
+import { Sample } from '@/comn/components/_'
+import { Table, FormControl } from '@/comn/components'
 
 export const SampleFormControlText = () => {
     return (
-        <Page>
-            <Group>
-                <Group.Body>
-                    <Group.Row>
-                        <Group.Control label="기본" />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="마스크" mask="TEST 000" />
-                        <Group.Col>
+        <Sample title="FormControl">
+            <Sample.Section>
+                <Table>
+                    <Table.Tr>
+                        <Table.Th width={200}>기본</Table.Th>
+                        <Table.Td width={200}>
+                            <FormControl />
+                        </Table.Td>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th rowSpan={4}>마스크</Table.Th>
+                        <Table.Td>
+                            <FormControl mask="TEST 000" />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`mask="TEST 000"`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="" mask="TEST AAA" />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Td>
+                            <FormControl mask="TEST AAA" />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`mask="TEST AAA"`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="" mask="TEST aaa" />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Td>
+                            <FormControl mask="TEST aaa" />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`mask="TEST aaa"`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="" mask="TEST " exact={false} />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Td>
+                            <FormControl mask="TEST " exact={false} />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`mask="TEST" exact={false}`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="필수" required={true} />
-                        <Group.Col>
-                            <code>{`required={true}`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="최대 길이" maxLength={5} />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>최대 길이</Table.Th>
+                        <Table.Td>
+                            <FormControl maxLength={5} />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`maxLength={5}`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="왼쪽 버튼"
-                            leftButton={{ icon: 'search', onClick: () => alert('click') }}
-                        />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>왼쪽 버튼</Table.Th>
+                        <Table.Td>
+                            <FormControl leftButton={{ icon: 'search', onClick: () => alert('click') }} />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`leftButton={{icon:"search"}}`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="오른쪽 버튼"
-                            rightButton={{ icon: 'search', onClick: () => alert('click') }}
-                        />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>오른쪽 버튼</Table.Th>
+                        <Table.Td>
+                            <FormControl rightButton={{ icon: 'search', onClick: () => alert('click') }} />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`rightButton={{icon:"search"}}`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="오른쪽 문자열" rightText="sample" />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>오른쪽 텍스트</Table.Th>
+                        <Table.Td>
+                            <FormControl rightText="sample" />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`rightText="sample"`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="대문자" letterCase="upper" defaultValue="UPPER" />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>영문 대문자</Table.Th>
+                        <Table.Td>
+                            <FormControl letterCase="upper" defaultValue="UPPER" />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`letterCase="upper"`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="소문자" letterCase="lower" defaultValue="lower" />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>영문 소문자</Table.Th>
+                        <Table.Td>
+                            <FormControl letterCase="lower" defaultValue="lower" />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`letterCase="lower"`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="에러" invalid={true} />
-                        <Group.Col>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>메시지</Table.Th>
+                        <Table.Td>
+                            <FormControl message="any message" />
+                        </Table.Td>
+                        <Table.Td>
+                            <code>{`message="any message"`}</code>
+                        </Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>에러</Table.Th>
+                        <Table.Td>
+                            <FormControl invalid={true} />
+                        </Table.Td>
+                        <Table.Td>
                             <code>{`invalid={true}`}</code>
-                        </Group.Col>
-                    </Group.Row>
-                </Group.Body>
-            </Group>
-        </Page>
+                        </Table.Td>
+                    </Table.Tr>
+                </Table>
+            </Sample.Section>
+
+            <Sample.Section></Sample.Section>
+        </Sample>
     )
 }
