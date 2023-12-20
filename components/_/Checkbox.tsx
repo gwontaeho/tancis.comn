@@ -23,7 +23,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckBoxProps>(
         const [_options, _setOptions] = React.useState<FormControlOptionsType | undefined>(options)
 
         React.useEffect(() => {
-            if (!area) return
+            if (!area && !comnCd) return
             ;(async () => {
                 try {
                     const {

@@ -34,11 +34,15 @@ export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof S
 
 type GroupColProps = GroupLabelProps & { children?: React.ReactNode; colSize?: keyof typeof SIZES }
 
-type GroupProps = React.HTMLAttributes<HTMLDivElement>
+type GroupProps = React.HTMLAttributes<HTMLDivElement> & { bgColor?: boolean }
 
 export const Group = (props: GroupProps) => {
-    const { children, className } = props
-    return <div className={classNames('shadow rounded bg-card p-4 space-y-4 w-full', className)}>{children}</div>
+    const { children, className, bgColor = true } = props
+    return (
+        <div className={classNames('rounded  p-4 space-y-4 w-full', bgColor && 'shadow bg-card', className)}>
+            {children}
+        </div>
+    )
 }
 
 const GroupHeader = (props: GroupHeaderProps) => {

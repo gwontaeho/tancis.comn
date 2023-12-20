@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { v4 as uuid } from 'uuid'
 import { Icon } from '@/comn/components'
 
@@ -13,6 +14,7 @@ type PageNavigationProps = {
 
 type PageHeaderProps = {
     title?: string
+    id?: string
     description?: string
 }
 
@@ -26,6 +28,7 @@ export const Page = (props: PageProps) => {
 }
 
 const PageNavigation = (props: PageNavigationProps) => {
+    const { t } = useTranslation()
     const [params] = useSearchParams() /* 화면 폼 제어 */
     const { base = '/', nodes = [], popup = false } = props
 
@@ -43,7 +46,7 @@ const PageNavigation = (props: PageNavigationProps) => {
                     return (
                         <li key={uuid()} className="space-x-2 text-lg">
                             <span>/</span>
-                            {path ? <Link to={base + path}>{label}</Link> : <span>{label}</span>}
+                            {path ? <Link to={base + path}>{t(label)}</Link> : <span>{t(label)}</span>}
                         </li>
                     )
                 })}
@@ -53,10 +56,15 @@ const PageNavigation = (props: PageNavigationProps) => {
 }
 
 const PageHeader = (props: PageHeaderProps) => {
-    const { title, description } = props
+    const { title, id, description } = props
     return (
         <div className="p-4 space-y-1 bg-card rounded shadow">
-            {title && <div className="text-xl font-semibold">{title}</div>}
+            {title && (
+                <div className="text-xl font-semibold">
+                    {title}
+                    {id && <>&nbsp;({id})</>}
+                </div>
+            )}
             {description && <p>{description}</p>}
         </div>
     )

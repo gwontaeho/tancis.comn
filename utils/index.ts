@@ -34,19 +34,24 @@ export const utils = {
     getCode: (arg: { comnCd?: string; keyword?: string; area?: string; page?: number; size?: number }) => {
         const { comnCd, area, page = 0, size, keyword = '' } = arg
 
+        console.log(area)
+
         let url = ''
         switch (area) {
             case 'comnCd':
-                url = `/ptl-com/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`
                 break
             case 'cntyCd':
-                url = `/ptl-com/comn/cnty-cds?cntyCd=${keyword}`
+                url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}`
                 break
             case 'currCd':
-                url = `/ptl-com/comn/curr-cds?currCd=${keyword}`
+                url = `/ptl-com/api/v1/comn/curr-cds?currCd=${keyword}`
                 break
             case 'bnkCd':
-                url = `/ptl-com/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                break
+            default:
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`
                 break
         }
 
@@ -65,6 +70,8 @@ export const utils = {
                 return code.currNm
             case 'bnkCd':
                 return code.cdVldValNm
+            default:
+                return code.cdVldValNm
         }
     },
     getCodeValue: (area?: string, code?: any) => {
@@ -76,6 +83,8 @@ export const utils = {
             case 'currCd':
                 return code.currCd
             case 'bnkCd':
+                return code.cdVldVal
+            default:
                 return code.cdVldVal
         }
     },
