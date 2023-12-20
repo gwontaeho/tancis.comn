@@ -2,6 +2,10 @@ import lodash from 'lodash'
 import dayjs from 'dayjs'
 import { api } from '@/comn'
 
+export const envs = {
+    base: `${process.env.REACT_APP_BASE}`,
+}
+
 export const utils = {
     getMockData: ({ totCnt = 99 }) => {
         return {
