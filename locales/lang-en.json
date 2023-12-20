@@ -83,5 +83,6 @@
     "T_CNTY_CD_LST": "Country Code List",
     "T_CURR_CD_LST": "Currency Code List",
     "T_BNK_CD_LST": "Bank Code List",
+    "T_RPCK_ITM_DCLR_LST": "Repacking BL (with Item) Declaration List",
     "msg.00001": "This field is mandatory"
 }
