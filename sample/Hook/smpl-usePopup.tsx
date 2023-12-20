@@ -27,6 +27,8 @@ export const SampleUsePopupTarget = () => {
 export const SampleUsePopup = () => {
     const popup = usePopup()
 
+    console.log(popup)
+
     const FOR_SAMPLE = { url: '/comn/smpl/hooks/usePopupTarget' }
 
     const open = () => {

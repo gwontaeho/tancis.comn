@@ -28,7 +28,9 @@ import { SampleUseToast } from '@/comn/sample/Hook/smpl-useToast'
 import { SampleUsePopup } from '@/comn/sample/Hook/smpl-usePopup'
 import { SampleUsePopupTarget } from '@/comn/sample/Hook/smpl-usePopup'
 import { SampleUseWijmo } from '@/comn/sample/Hook/smpl-useWijmo'
-import { SampleUseTab } from '@/comn/sample/Hook/smpl.useTab'
+import { SampleUseTab } from '@/comn/sample/Hook/smpl-useTab'
+import { SampleUseTree } from '@/comn/sample/Hook/smpl-useTree'
+import { SampleUseFetch } from '@/comn/sample/Hook/smpl-useFetch'
 
 import { SampleList } from '@/comn/sample/Page/smpl-List'
 import { SampleDetail } from '@/comn/sample/Page/smpl-Detail'
@@ -71,6 +73,8 @@ export const SampleMain = () => {
             <Route path="/hooks/usePopupTarget" element={<SampleUsePopupTarget />} />
             <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
             <Route path="/hooks/useTab" element={<SampleUseTab />} />
+            <Route path="/hooks/useTree" element={<SampleUseTree />} />
+            <Route path="/hooks/useFetch" element={<SampleUseFetch />} />
 
             <Route path="/pages/list" element={<SampleList />} />
             <Route path="/pages/detail" element={<SampleDetail />} />

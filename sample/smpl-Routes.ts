@@ -147,6 +147,10 @@ export const SampleRoutes = [
                         name: 'useTab',
                         to: '/useTab',
                     },
+                    {
+                        name: 'useTree',
+                        to: '/useTree',
+                    },
                 ],
             },
             {

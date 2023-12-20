@@ -34,7 +34,7 @@ type DataType = {
 }
 
 type wijmoProps = {
-    data: DataType
+    data?: DataType
     gridRef: any
     contentRef: any
     schema: WijmoSchemaType
@@ -70,6 +70,7 @@ export const Wijmo = (props: wijmoProps) => {
     }, [])
 
     useEffect(() => {
+        if (data === undefined) return
         // 2. data setting
         const content = data.content.map((_, i) => ({
             ..._,
