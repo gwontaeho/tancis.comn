@@ -101,7 +101,8 @@ export const useForm = (props: UseFormProps) => {
                     value.type === 'daterange' ||
                     value.type === 'timerange' ||
                     value.type === 'code' ||
-                    value.type === 'file'
+                    value.type === 'file' ||
+                    value.type === 'checkbox'
                 )
                     return [
                         key,

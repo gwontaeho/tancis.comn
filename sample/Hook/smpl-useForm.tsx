@@ -16,7 +16,7 @@ const SCHEMA_SEARCH: FormSchemaType = {
             rightButton: { icon: 'left', onClick: () => {} },
         },
         select: { type: 'select', label: 'select' },
-        checkbox: { type: 'checkbox', label: 'checkbox' },
+        checkbox: { type: 'checkbox', label: 'checkbox', all: true },
         radio: { type: 'radio', label: 'radio' },
         date: { type: 'date', label: 'date' },
         time: { type: 'time', label: 'time' },
@@ -70,6 +70,8 @@ export const SampleUseForm = () => {
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
     })
+
+    console.log(setValue)
 
     const text = watch(['text'])
 
@@ -141,7 +143,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue('code', 'a02')
+                                setValue('checkbox', ['1', '2'])
                             }}
                         >
                             <code>setValue()</code>

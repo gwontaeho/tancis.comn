@@ -43,10 +43,10 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                 {Array.isArray(_options) &&
                     _options.map(({ label, value }, i) => {
                         return (
-                            <div key={OPTIONS_ID_BASE + '.' + i} className="flex items-center h-7 space-x-1 mr-3">
+                            <label key={OPTIONS_ID_BASE + '.' + i} className="flex items-center h-7 space-x-1 mr-3">
                                 <input ref={ref} {...rest} type="radio" value={value} />
-                                {label && <label>{label}</label>}
-                            </div>
+                                {label && <div>{label}</div>}
+                            </label>
                         )
                     })}
             </div>
