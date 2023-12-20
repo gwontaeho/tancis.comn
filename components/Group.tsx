@@ -21,7 +21,7 @@ const SIZES = {
 type GroupHeaderProps = {
     title?: string
     description?: string
-    titleSize?: 'sm' | 'md' | 'lg'
+    titleSize?: 1 | 2 | 3
 }
 
 type GroupLabelProps = FormControlProps & {
@@ -46,13 +46,14 @@ export const Group = (props: GroupProps) => {
 }
 
 const GroupHeader = (props: GroupHeaderProps) => {
-    const { title, description, titleSize } = props
-    const sizes = { sm: 'text-lg', md: 'text-xl', lg: 'text-2xl' }
+    const { title, description, titleSize = 1 } = props
+    const { t } = useTranslation()
+    const sizes = { 3: 'text-lg', 2: 'text-xl', 1: 'text-2xl' }
 
     return (
         <div className="w-full">
-            {title && <div className="text-xl font-semibold">{title}</div>}
-            {description && <p>{description}</p>}
+            {title && <div className={sizes[titleSize] + ' font-semibold'}>{t(title)}</div>}
+            {description && <p>{t(description)}</p>}
         </div>
     )
 }

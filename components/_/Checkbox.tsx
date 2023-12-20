@@ -80,7 +80,7 @@ const CheckboxMain = React.forwardRef<HTMLInputElement, CheckBoxProps>(
                                     onChange={handleChange}
                                     checked={_value.some((_) => _ === value)}
                                 />
-                                {label && <div>{label}</div>}
+                                {label && <div>{t(label)}</div>}
                             </label>
                         )
                     })}
