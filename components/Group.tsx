@@ -30,7 +30,7 @@ type GroupLabelProps = FormControlProps & {
     required?: boolean
 }
 
-export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof SIZES; _GroupColChild?: any }
+export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof SIZES; 'data-parent'?: string }
 
 type GroupColProps = GroupLabelProps & { children?: React.ReactNode; colSize?: keyof typeof SIZES; combine?: boolean }
 
@@ -97,14 +97,16 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 })
 
 const GroupControl = forwardRef((props: GroupControlProps, ref) => {
-    const { labelSize, label, controlSize = 4, _GroupColChild, ...rest } = props
+    const { labelSize, label, controlSize = 4, ...rest } = props
+
+    console.log(props)
 
     return (
         <>
-            {!_GroupColChild && label !== undefined && (
+            {!props['data-parent'] && label !== undefined && (
                 <GroupLabel required={props.required} label={label} labelSize={labelSize} />
             )}
-            {_GroupColChild ? (
+            {props['data-parent'] === 'group_col' ? (
                 <FormControl ref={ref} {...rest} />
             ) : (
                 <div className={classNames('p-1 flex items-center', SIZES[controlSize])}>
@@ -127,7 +129,7 @@ const GroupCol = (props: GroupColProps) => {
                         {React.Children.map(children, (child: any) => {
                             return (
                                 <div className="[&_*]:border-none [&_*]:rounded-none">
-                                    {React.cloneElement(child, { _GroupColChild: true })}
+                                    {React.cloneElement(child, { 'data-parent': 'group_col' })}
                                 </div>
                             )
                         })}
@@ -136,7 +138,7 @@ const GroupCol = (props: GroupColProps) => {
             ) : (
                 <div className={classNames('p-1 flex items-center space-x-1', SIZES[colSize])}>
                     {React.Children.map(children, (child: any) => {
-                        return React.cloneElement(child, { _GroupColChild: true })
+                        return React.cloneElement(child, { 'data-parent': 'group_col' })
                     })}
                 </div>
             )}
