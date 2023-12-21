@@ -7,6 +7,9 @@ export const envs = {
 }
 
 export const utils = {
+    equals: (first: object, second: object) => {
+        return lodash.isEqual(first, second)
+    },
     getMockData: ({ totCnt = 99 }) => {
         return {
             totCnt,

@@ -42,6 +42,12 @@ export const useForm = (props: UseFormProps) => {
         _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }))
     }
 
+    const setSchemas = (names: string[], schemas: any) => {
+        names.forEach((name) => {
+            setSchema(name, schemas)
+        })
+    }
+
     const resetSchema = () => {
         _setSchema(schema)
     }
@@ -72,8 +78,9 @@ export const useForm = (props: UseFormProps) => {
         })
     }
 
-    const setValues = (values: FormValuesType) => {
+    const setValues = (values: FormValuesType, part?: boolean) => {
         Object.keys(_schema).forEach((name) => {
+            if (part === true && values[name] === undefined) return
             setValue(name, values[name])
         })
     }
@@ -133,6 +140,7 @@ export const useForm = (props: UseFormProps) => {
     return {
         schema: getSchema(_schema),
         setSchema,
+        setSchemas,
         resetSchema,
         setEditable,
         getValues,
