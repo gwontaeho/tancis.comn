@@ -20,6 +20,7 @@ import {
     InputDaterange,
     InputTimerange,
     InputCode,
+    FormattedInputProps,
 } from '@/comn/components/_'
 
 export type FormControlType =
@@ -56,9 +57,13 @@ const SIZES = {
     full: 'w-full',
 }
 
+type FormControlGroupProps = {
+    children?: React.ReactNode
+}
+
 export type FormControlOptionsType = { label: string; value: string }[]
 
-type FormControlEditModeProps = InputDaterangeProps & {
+export type FormControlProps = InputDaterangeProps & {
     type?: FormControlType
     value?: any
     getValues?: any
@@ -78,9 +83,6 @@ type FormControlEditModeProps = InputDaterangeProps & {
     area?: string
     keyword?: string
     multiple?: boolean
-}
-
-type FormControlMainProps = FormControlEditModeProps & {
     size?: keyof typeof SIZES
     control?: any
     rules?: any
@@ -97,8 +99,6 @@ type FormControlMainProps = FormControlEditModeProps & {
     end?: any
     all?: boolean
 }
-
-export type FormControlProps = FormControlMainProps
 
 const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
     const { edit, rightButton, leftButton, rightText, getValues, invalid, ...rest } = props
@@ -169,7 +169,7 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
     )
 })
 
-const FormControlTextMode = (props: FormControlMainProps) => {
+const FormControlTextMode = (props: FormControlProps) => {
     return (
         <div>
             {(() => {
@@ -206,20 +206,33 @@ const FormControlTextMode = (props: FormControlMainProps) => {
     )
 }
 
-export const FormControl = React.forwardRef((props: FormControlMainProps, ref) => {
-    const { size = 'full', edit = true, message } = props
-    const { t } = useTranslation()
-
+const FormControlGroup = (props: FormControlGroupProps) => {
     return (
-        <div className={classNames(SIZES[size])}>
-            {!edit && props.getValues && <FormControlTextMode {...props} />}
-            <div className={classNames({ hidden: !edit })}>
-                <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>
-                    <FormControlEditMode ref={ref} {...props} />
-                </Tooltip>
-                {message && <div className="text-sm mt-1">{message}</div>}
-                {props.invalid && <div className="text-invalid text-sm mt-1">{t('msg.00001')}</div>}
-            </div>
+        <div className="flex border rounded divide-x">
+            {React.Children.map(props.children, (child) => {
+                return <div className="[&_*]:border-none">{child}</div>
+            })}
         </div>
     )
-})
+}
+
+export const FormControl = Object.assign(
+    React.forwardRef((props: FormControlProps, ref) => {
+        const { size = 'full', edit = true, message } = props
+        const { t } = useTranslation()
+
+        return (
+            <div className={classNames(SIZES[size])}>
+                {!edit && props.getValues && <FormControlTextMode {...props} />}
+                <div className={classNames({ hidden: !edit })}>
+                    <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>
+                        <FormControlEditMode ref={ref} {...props} />
+                    </Tooltip>
+                    {message && <div className="text-sm mt-1">{message}</div>}
+                    {props.invalid && <div className="text-invalid text-sm mt-1">{t('msg.00001')}</div>}
+                </div>
+            </div>
+        )
+    }),
+    { Group: FormControlGroup }
+)

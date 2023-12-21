@@ -3,8 +3,8 @@ import { useController, Control } from 'react-hook-form'
 
 export type ControllerWrapperProps = {
     children: React.ReactElement
-    control: Control
-    name: string
+    control?: Control
+    name?: string
     rules?: any
 }
 
@@ -13,7 +13,7 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
 
     const {
         field: { onChange, onBlur, value },
-    } = useController({ name, control, rules })
+    } = useController({ name: name as string, control: control as Control, rules })
 
     return React.cloneElement(children, { ...rest, onChange, onBlur, value })
 }

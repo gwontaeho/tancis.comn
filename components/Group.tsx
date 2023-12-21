@@ -30,9 +30,9 @@ type GroupLabelProps = FormControlProps & {
     required?: boolean
 }
 
-export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof SIZES }
+export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof SIZES; _GroupColChild?: any }
 
-type GroupColProps = GroupLabelProps & { children?: React.ReactNode; colSize?: keyof typeof SIZES }
+type GroupColProps = GroupLabelProps & { children?: React.ReactNode; colSize?: keyof typeof SIZES; combine?: boolean }
 
 type GroupProps = React.HTMLAttributes<HTMLDivElement> & { bgColor?: boolean }
 
@@ -97,23 +97,49 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 })
 
 const GroupControl = forwardRef((props: GroupControlProps, ref) => {
-    const { labelSize, label, controlSize = 4, ...rest } = props
+    const { labelSize, label, controlSize = 4, _GroupColChild, ...rest } = props
+
     return (
         <>
-            {label !== undefined && <GroupLabel required={props.required} label={label} labelSize={labelSize} />}
-            <div className={classNames('p-1 flex items-center', SIZES[controlSize])}>
+            {!_GroupColChild && label !== undefined && (
+                <GroupLabel required={props.required} label={label} labelSize={labelSize} />
+            )}
+            {_GroupColChild ? (
                 <FormControl ref={ref} {...rest} />
-            </div>
+            ) : (
+                <div className={classNames('p-1 flex items-center', SIZES[controlSize])}>
+                    <FormControl ref={ref} {...rest} />
+                </div>
+            )}
         </>
     )
 })
 
 const GroupCol = (props: GroupColProps) => {
-    const { children, required, label, labelSize, colSize = 4 } = props
+    const { children, required, label, labelSize, combine = false, colSize = 4 } = props
     return (
         <>
             {label && <GroupLabel required={required} label={label} labelSize={labelSize} />}
-            <div className={classNames('p-1 flex items-center space-x-1', SIZES[colSize])}>{children}</div>
+
+            {combine ? (
+                <div className={classNames('p-1 flex items-center', SIZES[colSize])}>
+                    <div className="flex border rounded divide-x overflow-hidden">
+                        {React.Children.map(children, (child: any) => {
+                            return (
+                                <div className="[&_*]:border-none [&_*]:rounded-none">
+                                    {React.cloneElement(child, { _GroupColChild: true })}
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            ) : (
+                <div className={classNames('p-1 flex items-center space-x-1', SIZES[colSize])}>
+                    {React.Children.map(children, (child: any) => {
+                        return React.cloneElement(child, { _GroupColChild: true })
+                    })}
+                </div>
+            )}
         </>
     )
 }

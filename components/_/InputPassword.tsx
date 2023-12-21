@@ -1,10 +1,8 @@
 import React from 'react'
 import { IconButton } from '@/comn/components/IconButton'
 
-type InputPasswordProps = React.InputHTMLAttributes<HTMLInputElement>
-
-export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordProps>(
-    (props: InputPasswordProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+export const InputPassword = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+    (props: React.InputHTMLAttributes<HTMLInputElement>, ref: React.ForwardedRef<HTMLInputElement>) => {
         const [show, setShow] = React.useState(false)
         return (
             <div className="w-full relative flex items-center">
