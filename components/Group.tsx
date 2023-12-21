@@ -99,8 +99,6 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 const GroupControl = forwardRef((props: GroupControlProps, ref) => {
     const { labelSize, label, controlSize = 4, ...rest } = props
 
-    console.log(props)
-
     return (
         <>
             {!props['data-parent'] && label !== undefined && (
