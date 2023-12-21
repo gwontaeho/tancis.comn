@@ -1,6 +1,6 @@
 import { useModal } from '@/comn/hooks'
 import { Button, Table, Tree } from '@/comn/components'
-import { makeDoc } from '@/comn/sample/makeDoc'
+import { Sample } from '@/comn/components/_'
 
 // export type ModalProps = {
 //     id?: string;
@@ -55,47 +55,66 @@ export const SampleUseModal = () => {
     }
 
     return (
-        <div className="space-y-8">
-            <Table></Table>
-            <div>
-                <Button onClick={withMessage}>기본</Button>
-                <Button onClick={withOnConfirm}>onConfirm handler 추가</Button>
-                <Button onClick={withOnCancel}>onCancel handler 추가</Button>
-                <Button onClick={withoutBackdrop}>backdrop 제거</Button>
-                <Button onClick={withSizeSm}>size sm</Button>
-                <Button onClick={withSizeMd}>size md</Button>
-                <Button onClick={withSizeLg}>size lg</Button>
-                <Button onClick={withSizeXl}>size xl</Button>
-                <Button onClick={withComponent}>컴포넌트 모달</Button>
-            </div>
+        <Sample title="useModal">
+            <Sample.Section title="useModal(): UseModalReturn">
+                <Sample.Table
+                    data={[
+                        ['Return', 'Type', 'Description'],
+                        ['openModal', '', 'Description'],
+                        ['closeModal', '', 'Description'],
+                    ]}
+                />
+            </Sample.Section>
+            <Sample.Section title="openModal(props: ModalProps): void">
+                <Sample.Table
+                    data={[
+                        ['Arguments', 'Type', 'Default', 'Description'],
+                        ['props', 'ModalProps', '', ''],
+                        ['- id', 'string', '', ''],
+                        ['- content', 'string', '', ''],
+                        ['- backdrop', 'boolean', '', ''],
+                        ['- size', '', '', ''],
+                        ['- onConfirm', '() => void', '', ''],
+                        ['- onCancel', '() => void', '', ''],
+                    ]}
+                />
+                <Sample.Code
+                    exec={withMessage}
+                >{`openModal({ content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry' })`}</Sample.Code>
+                <Sample.Code exec={withOnConfirm}>{`openModal({ onConfirm: () => alert('confirm') })`}</Sample.Code>
+                <Sample.Code exec={withOnCancel}>{`openModal({ onCancel: () => alert('cancel') })`}</Sample.Code>
+                <Sample.Code exec={withoutBackdrop}>{`openModal({ backdrop: false })}`}</Sample.Code>
+                <Sample.Code exec={withSizeSm}>{`openModal({ onCancel: () => alert('cancel') })`}</Sample.Code>
+                <Sample.Code exec={withComponent}>{`openModal({ onCancel: () => alert('cancel') })`}</Sample.Code>
+            </Sample.Section>
 
-            <div className="text-[1.8rem]">useModal</div>
-
-            {makeDoc('openModal', 'openModal(modalProps: ModalProps): void', openModalParams)}
-        </div>
+            <Sample.Section title="closeModal(): void">
+                <Sample.Code exec={() => modal.closeModal()}>{`closeModal()`}</Sample.Code>
+            </Sample.Section>
+        </Sample>
     )
 }
 
-const openModalParams = [
-    {
-        name: 'modalProps: object',
-        open: true,
-        children: [
-            {
-                name: 'content?: ReactNode',
-            },
-            {
-                name: 'backdrop?: true | false',
-            },
-            {
-                name: 'size?: sm | md | lg | xl',
-            },
-            {
-                name: 'onConfirm?: () => void',
-            },
-            {
-                name: 'onCancel?: () => void',
-            },
-        ],
-    },
-]
+//     id?: string;
+//     content?: React.ReactNode;
+//     backdrop?: boolean;
+//     size?: keyof typeof MODAL_SIZES;
+//     onConfirm?: () => void;
+//     onCancel?: () => void;
+
+/* <div className="space-y-8">
+<Table></Table>
+<div>
+    <Button onClick={withMessage}>기본</Button>
+    <Button onClick={withOnConfirm}>onConfirm handler 추가</Button>
+    <Button onClick={withOnCancel}>onCancel handler 추가</Button>
+    <Button onClick={withoutBackdrop}>backdrop 제거</Button>
+    <Button onClick={withSizeSm}>size sm</Button>
+    <Button onClick={withSizeMd}>size md</Button>
+    <Button onClick={withSizeLg}>size lg</Button>
+    <Button onClick={withSizeXl}>size xl</Button>
+    <Button onClick={withComponent}>컴포넌트 모달</Button>
+</div>
+
+<div className="text-[1.8rem]">useModal</div>
+</div> */

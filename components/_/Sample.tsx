@@ -1,14 +1,21 @@
 import React from 'react'
-import { Tree } from '@/comn/components'
+import Prism from 'prismjs'
+import { v4 as uuid } from 'uuid'
+import { Table, Tree } from '@/comn/components'
+import 'prismjs/themes/prism.css'
+import 'prismjs/components/prism-jsx'
+import classNames from 'classnames'
 
 type SampleProps = {
     children?: React.ReactNode
     title?: String
+    description?: string
 }
 
 type SampleSectionProps = {
     children?: React.ReactNode
-    title?: String
+    title?: string
+    description?: string
 }
 type SampleDocProps = {
     name: string
@@ -16,26 +23,54 @@ type SampleDocProps = {
     param?: any
     result?: any
 }
+type SampleCodeProps = {
+    children?: string
+    exec?: () => void
+}
+type SampleTableProps = {
+    data?: any[]
+}
 
 export const Sample = (props: SampleProps) => {
-    const { children, title } = props
+    const { children, title, description } = props
 
     return (
         <div className="space-y-8">
-            {title && <div className="text-[1.8rem]">{title}</div>}
+            <div>
+                {title && <div className="text-[1.8rem]">{title}</div>}
+                {description && <div className="text-[1.4rem]">{description}</div>}
+            </div>
             {children}
         </div>
     )
 }
 
 const Section = (props: SampleSectionProps) => {
-    const { children, title } = props
+    const { children, title, description } = props
 
     return (
-        <div className="space-y-2">
-            {title && <div className="text-[1.4rem]">{title}</div>}
+        <div className="bg-card p-4 rounded">
+            {title && <div className="text-[1.2rem] mb-4">{title}</div>}
+            {description && <div className="text-[1rem] mb-4">{description}</div>}
             {children}
         </div>
+    )
+}
+
+const Code = (props: SampleCodeProps) => {
+    React.useEffect(() => {
+        Prism.highlightAll()
+    }, [props.children])
+
+    return (
+        <pre className="relative">
+            <code className={`language-jsx`}>{props.children}</code>
+            {props.exec && (
+                <button className="absolute top-2 right-2" onClick={props.exec}>
+                    exec
+                </button>
+            )}
+        </pre>
     )
 }
 
@@ -63,3 +98,29 @@ const Doc = (props: SampleDocProps) => {
 
 Sample.Section = Section
 Sample.Doc = Doc
+Sample.Code = Code
+
+Sample.Table = (props: SampleTableProps) => {
+    return (
+        <Table
+            className="[&_tr]:h-[2rem]"
+            before={
+                <colgroup>
+                    {props.data?.[0]?.map((_: any, i: number) => {
+                        return <col key={uuid()} className={classNames({ 'w-32': i !== props.data?.[0].length - 1 })} />
+                    })}
+                </colgroup>
+            }
+        >
+            {props.data?.map((row, i) => {
+                return (
+                    <Table.Tr key={uuid()} header={i === 0}>
+                        {row.map((_: any) => {
+                            return <Table.Td key={uuid()}>{_}</Table.Td>
+                        })}
+                    </Table.Tr>
+                )
+            })}
+        </Table>
+    )
+}

@@ -3,11 +3,14 @@ import classNames from 'classnames'
 
 type TableProps = {
     children?: React.ReactNode
+    before?: React.ReactNode
     border?: boolean
+    className?: string
 }
 
 type TrProps = {
     children?: React.ReactNode
+    header?: boolean
 }
 
 type TableCellProps = {
@@ -19,22 +22,27 @@ type TableCellProps = {
 }
 
 export const Table = (props: TableProps) => {
-    const { children, border = true } = props
+    const { children, className, border = true, before } = props
 
     return (
         <table
-            className={classNames('table-fixed w-full [&_th]:h-10 [&_th]:bg-header [&_td]:h-10 [&_td]:p-1 [&_th]:p-1', {
-                '[&_th]:border [&_td]:border [&_tr]:border': border,
-            })}
+            className={classNames(
+                'table-fixed w-full [&_th]:bg-header [&_tr]:h-10 [&_td]:p-1 [&_th]:p-1',
+                {
+                    '[&_th]:border [&_td]:border [&_tr]:border': border,
+                },
+                className
+            )}
         >
+            {before}
             <tbody>{children}</tbody>
         </table>
     )
 }
 
 const Tr = (props: TrProps) => {
-    const { children } = props
-    return <tr>{children}</tr>
+    const { children, header = false } = props
+    return <tr className={classNames({ 'bg-header': header })}>{children}</tr>
 }
 
 const Th = (props: TableCellProps) => {
