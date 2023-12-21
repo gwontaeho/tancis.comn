@@ -19,11 +19,13 @@ const SIZES = {
     full: 'w-full',
 }
 
+type TooltipMode = 'default' | 'always'
+
 type TooltipProps = {
     children?: React.ReactNode
     content?: React.ReactNode
     enabled?: boolean
-    mode?: 'default' | 'always'
+    mode?: TooltipMode
     size?: keyof typeof SIZES
 }
 

@@ -1,6 +1,5 @@
 import { useModal } from '@/comn/hooks'
 import { Button, Table, Tree } from '@/comn/components'
-import { makeDoc } from '@/comn/sample/makeDoc'
 
 // export type ModalProps = {
 //     id?: string;
@@ -70,32 +69,6 @@ export const SampleUseModal = () => {
             </div>
 
             <div className="text-[1.8rem]">useModal</div>
-
-            {makeDoc('openModal', 'openModal(modalProps: ModalProps): void', openModalParams)}
         </div>
     )
 }
-
-const openModalParams = [
-    {
-        name: 'modalProps: object',
-        open: true,
-        children: [
-            {
-                name: 'content?: ReactNode',
-            },
-            {
-                name: 'backdrop?: true | false',
-            },
-            {
-                name: 'size?: sm | md | lg | xl',
-            },
-            {
-                name: 'onConfirm?: () => void',
-            },
-            {
-                name: 'onCancel?: () => void',
-            },
-        ],
-    },
-]
