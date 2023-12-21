@@ -24,12 +24,12 @@ export const SampleUseFetch = () => {
     return (
         <Sample title="useFetch">
             <Sample.Section>
-                <Sample.Doc
+                {/* <Sample.Doc
                     name="useFetch"
                     code="useFetch(props: UseFetchProps): UseFetchReturn"
                     param={useFetchParams}
                     result={useFetchReturn}
-                />
+                /> */}
             </Sample.Section>
         </Sample>
     )

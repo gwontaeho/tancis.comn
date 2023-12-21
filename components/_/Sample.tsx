@@ -25,6 +25,7 @@ type SampleDocProps = {
 }
 type SampleCodeProps = {
     children?: string
+    exec?: () => void
 }
 type SampleTableProps = {
     data?: any[]
@@ -48,9 +49,9 @@ const Section = (props: SampleSectionProps) => {
     const { children, title, description } = props
 
     return (
-        <div className="space-y-4 bg-card p-4 rounded">
-            {title && <div className="text-[1.2rem]">{title}</div>}
-            {description && <div className="text-[1rem]">{description}</div>}
+        <div className="bg-card p-4 rounded">
+            {title && <div className="text-[1.2rem] mb-4">{title}</div>}
+            {description && <div className="text-[1rem] mb-4">{description}</div>}
             {children}
         </div>
     )
@@ -62,8 +63,13 @@ const Code = (props: SampleCodeProps) => {
     }, [props.children])
 
     return (
-        <pre>
+        <pre className="relative">
             <code className={`language-jsx`}>{props.children}</code>
+            {props.exec && (
+                <button className="absolute top-2 right-2" onClick={props.exec}>
+                    exec
+                </button>
+            )}
         </pre>
     )
 }

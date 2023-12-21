@@ -69,7 +69,7 @@ export const useForm = (props: UseFormProps) => {
 
     const validate = (name?: FormFieldValueType) => {
         if (name in _schema) trigger(name, { shouldFocus: true })
-        else trigger()
+        else trigger(undefined, { shouldFocus: true })
     }
 
     const clearValues = () => {

@@ -12,6 +12,7 @@ export const SamplePage = () => {
     <Page.Header id="sample" title="sample" description="sample" />
     <Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />
 </Page>`}</Sample.Code>
+
                 <Page>
                     <Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />
                     <Page.Header id="sample" title="sample" description="sample" />
@@ -30,6 +31,7 @@ export const SamplePage = () => {
                         ['popup?', 'boolean', 'default', ''],
                     ]}
                 />
+
                 <Sample.Code>{`<Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />`}</Sample.Code>
             </Sample.Section>
 
