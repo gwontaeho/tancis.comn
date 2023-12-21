@@ -98,6 +98,7 @@ export type FormControlProps = InputDaterangeProps & {
     start?: any
     end?: any
     all?: boolean
+    select?: boolean
 }
 
 const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
