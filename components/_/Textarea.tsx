@@ -1,9 +1,7 @@
 import React from 'react'
 
-type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>
-
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-    (props: TextAreaProps, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
+export const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
+    (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
         return <textarea {...props} ref={ref} className="input overflow-hidden" />
     }
 )

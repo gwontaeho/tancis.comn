@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Page, Group, Button, Layout, Table } from '@/comn/components'
+import { Page, Group, Button, Layout, Table, FormControl, IconButton } from '@/comn/components'
 import { FormSchemaType, FormValuesType } from '@/comn/hooks'
 import { useForm } from '@/comn/hooks'
 
@@ -120,6 +120,15 @@ export const SampleUseForm = () => {
                     <Group.Row>
                         <Group.Control {...schema.file} />
                         <Group.Control {...schema.code} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Label label="combine" />
+                        <Group.Col combine={true}>
+                            <Group.Control type="text" />
+                            <Group.Control type="text" />
+                            <Group.Control type="text" />
+                            <Button>combine</Button>
+                        </Group.Col>
                     </Group.Row>
                 </Group.Body>
                 {/* </form> */}

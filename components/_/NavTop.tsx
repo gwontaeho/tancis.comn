@@ -16,10 +16,12 @@ const NavItem = (props: NavItemProps) => {
 
     return (
         <li className="group">
-            <button className="flex items-center space-x-1">
-                <p>{name}</p>
-                <Icon icon="down" size="xs" className="transition group-hover:rotate-180" />
-            </button>
+            <Link to={depth_1}>
+                <button className="flex items-center space-x-1">
+                    <p>{name}</p>
+                    <Icon icon="down" size="xs" className="transition group-hover:rotate-180" />
+                </button>
+            </Link>
             <div className="pt-2 w-max absolute hidden group-hover:block">
                 <ul className="rounded bg-header p-4 grid grid-cols-2 gap-1 [&>li:hover]:underline">
                     <li className="col-span-2">
