@@ -6,13 +6,13 @@ import { Page, Group, Layout, Button } from '@/comn/components'
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
 import { APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID_CNTY_CD } from './ComnCdService'
 
-export const CountryCodeList = (props: any) => {
-    const { t } = useTranslation() /* 다국어 */
-    const { condition } = useCondition() /* 검색 조건 저장 */
-    const form = useForm({ defaultSchema: SCHEMA_FORM_CNTY_CD, values: condition }) /* 화면 폼 제어 */
-    const [params] = useSearchParams() /* 화면 폼 제어 */
+export const CityCodeList = (props: any) => {
+    const { t } = useTranslation()
+    const { condition } = useCondition()
+    const form = useForm({ defaultSchema: SCHEMA_FORM_CNTY_CD, values: condition })
+    const [params] = useSearchParams()
     const { close, postMessage } = usePopup()
-    const { theme } = useTheme() /* Theme */
+    const { theme } = useTheme()
     const grid = useWijmo({
         defaultSchema: SCHEMA_GRID_CNTY_CD((data: any) => {
             postMessage({ code: data.cntyCd, label: data.cntyNm })

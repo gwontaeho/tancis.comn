@@ -66,6 +66,7 @@ const InputCodeMain = (props: InputCodeProps) => {
                 params: { comnCd: props.comnCd },
                 url: `/comn/smpl/pages/comnCdPpup`,
                 callback: (data: any) => {
+                    console.log(data)
                     if (cdVldValNmInput.current) cdVldValNmInput.current.value = data.label
                     if (keywordInput.current) keywordInput.current.value = data.code
                 },
@@ -81,7 +82,7 @@ const InputCodeMain = (props: InputCodeProps) => {
                 onChange={handleChange}
                 maxLength={props.maxLength}
             />
-            <button className="button border-x-0 rounded-none" onClick={handleClickSearch}>
+            <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
                 <Icon icon="search" size="xs" />
             </button>
             <input ref={cdVldValNmInput} readOnly className="input rounded-l-none flex-[2]" />

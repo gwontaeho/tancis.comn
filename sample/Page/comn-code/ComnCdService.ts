@@ -3,11 +3,14 @@ import { utils } from '@/comn/utils'
 import { FormSchemaType, WijmoSchemaType } from '@/comn/hooks'
 
 export const APIS = {
-    getComnCdLst: (data: any, page: number, size: number, comnCd: string) => {
-        return utils.getCode({ comnCd: comnCd, area: 'comnCd', page: page, size: size })
-
-        return api.get(`/ptl-com/comn/comn-cds?page=${page}&size=${size}`, {
-            params: data,
+    getComnCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            comnCd: data.comnCd,
+            area: 'comnCd',
+            page: page,
+            size: size,
+            keyword: data.cdVldVal,
+            keywordName: data.cdVldValNm,
         })
     },
 
@@ -43,6 +46,7 @@ export const SCHEMA_GRID_COMN_CD = (clickEvent: any): WijmoSchemaType => {
                     {
                         binding: 'comnCd',
                         onClick: (ctx: any) => {
+                            console.log(ctx)
                             clickEvent(ctx)
                         },
                     },
@@ -59,6 +63,32 @@ export const SCHEMA_GRID_COMN_CD = (clickEvent: any): WijmoSchemaType => {
 }
 
 export const SCHEMA_GRID_CNTY_CD = (clickEvent: any): WijmoSchemaType => {
+    return {
+        id: 'grid',
+        options: { pagination: 'in', isReadOnly: true },
+        head: [
+            { cells: [{ header: 'L_CNTY_CD', binding: 'cntyCd' }] },
+            { cells: [{ header: 'L_CNTY_NM', binding: 'cntyNm' }] },
+        ],
+        body: [
+            {
+                cells: [
+                    {
+                        binding: 'cntyCd',
+                        onClick: (ctx: any) => {
+                            clickEvent(ctx)
+                        },
+                    },
+                ],
+            },
+            {
+                cells: [{ binding: 'cntyNm' }],
+            },
+        ],
+    }
+}
+
+export const SCHEMA_GRID_CITY_CD = (clickEvent: any): WijmoSchemaType => {
     return {
         id: 'grid',
         options: { pagination: 'in', isReadOnly: true },
@@ -160,6 +190,14 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
     schema: {
         cntyCd: { type: 'text', label: 'L_CNTY_CD' },
         cntyNm: { type: 'text', label: 'L_CNTY_NM' },
+    },
+}
+
+export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
+        cntyCd: { type: 'select', label: 'L_CNTY_CD' },
+        regnNm: { type: 'text', label: 'L_REGN_NM' },
     },
 }
 

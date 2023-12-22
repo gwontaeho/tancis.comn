@@ -10,6 +10,12 @@ type PopupType = {
     callback?: (data: any) => void
 }
 
+const PopupSize = {
+    sm: { width: 800, height: 600 },
+    md: { width: 1000, height: 700 },
+    lg: { width: 1200, height: 800 },
+}
+
 export const usePopup = () => {
     const popupRef = useRef<any>({})
 
@@ -38,7 +44,7 @@ export const usePopup = () => {
     const openPopup = ({ id = '', layout = 'popup', url, params, callback, size = 'sm' }: PopupType) => {
         const layoutQuery = layout === 'popup' ? 'ppup=Y&' : ''
         const paramsQuery = params ? 'params=' + encodeURIComponent(JSON.stringify(params)) : ''
-        const features = 'width=800,height=600'
+        const features = `width=${PopupSize[size].width},height=${PopupSize[size].height}`
         const name = id + '__' + uuid()
 
         const fullUrl = url + '?' + layoutQuery + paramsQuery
