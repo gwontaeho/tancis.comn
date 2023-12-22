@@ -18,13 +18,14 @@ export type ModalProps = {
     id?: string
     content?: React.ReactNode
     backdrop?: boolean
+    draggable?: boolean
     size?: keyof typeof MODAL_SIZES
     onConfirm?: () => void
     onCancel?: () => void
 }
 
 const Modal = (props: ModalProps) => {
-    const { id, onConfirm, onCancel, content, backdrop = true, size = 'sm' } = props
+    const { id, onConfirm, onCancel, content, draggable = false, backdrop = true, size = 'sm' } = props
 
     const ref = useRef<HTMLDivElement>(null)
 
@@ -55,7 +56,7 @@ const Modal = (props: ModalProps) => {
                     onClick={() => handleClose()}
                 />
             )}
-            <Draggable nodeRef={ref} handle=".handle" positionOffset={{ x: '-50%', y: '-50%' }}>
+            <Draggable nodeRef={ref} disabled={!draggable} handle=".handle" positionOffset={{ x: '-50%', y: '-50%' }}>
                 <motion.div
                     ref={ref}
                     initial={{ opacity: 0.5 }}
@@ -66,7 +67,11 @@ const Modal = (props: ModalProps) => {
                         MODAL_SIZES[size]
                     )}
                 >
-                    <div className="handle cursor-move flex items-center justify-between px-4 h-16">
+                    <div
+                        className={classNames('handle flex items-center justify-between px-4 h-16', {
+                            'cursor-move': draggable,
+                        })}
+                    >
                         <div className="text-lg">알림</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>

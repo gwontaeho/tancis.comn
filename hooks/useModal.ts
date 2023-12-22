@@ -3,13 +3,21 @@ import { useSetRecoilState } from 'recoil'
 import { ModalProps } from '@/comn/components/_'
 import { modalState } from '@/comn/recoil'
 
+type OpenModalArgs = Omit<ModalProps, 'id'>
+
 export const useModal = () => {
     const setModal = useSetRecoilState(modalState)
 
-    const openModal = (props: ModalProps) => {
+    /**
+     * open modal
+     */
+    const openModal = (props: OpenModalArgs) => {
         setModal((prev) => [...prev, { ...props, id: uuid() }])
     }
 
+    /**
+     * close all modal
+     */
     const closeModal = () => {
         setModal([])
     }

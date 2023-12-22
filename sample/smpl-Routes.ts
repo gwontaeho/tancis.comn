@@ -4,6 +4,10 @@ export const SampleRoutes = [
         base: '/comn/smpl',
         children: [
             {
+                name: 'temp',
+                to: '/temp',
+            },
+            {
                 name: 'Sample Component',
                 base: '/components',
                 children: [
@@ -116,7 +120,7 @@ export const SampleRoutes = [
                 base: '/hooks',
                 children: [
                     {
-                        name: 'useModal',
+                        name: 'useModal ·',
                         to: '/useModal',
                     },
                     {
