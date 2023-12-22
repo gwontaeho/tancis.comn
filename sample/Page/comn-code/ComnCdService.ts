@@ -3,7 +3,7 @@ import { utils } from '@/comn/utils'
 import { FormSchemaType, WijmoSchemaType } from '@/comn/hooks'
 
 export const APIS = {
-    getComnCdLst: (data: any, page: number, size: number, comnCd: string) => {
+    getComnCdLst: (data: any, page: number, size: number, comnCd?: string) => {
         return utils.getCode({ comnCd: comnCd, area: 'comnCd', page: page, size: size })
 
         return api.get(`/ptl-com/comn/comn-cds?page=${page}&size=${size}`, {

@@ -4,6 +4,7 @@ import './Wijmo.css'
 import React, { useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 import lodash from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 import * as wjGrid from '@grapecity/wijmo.react.grid.multirow'
 import { Selector } from '@grapecity/wijmo.grid.selector'
@@ -47,6 +48,8 @@ type wijmoProps = {
 
 export const Wijmo = (props: wijmoProps) => {
     const { gridRef, contentRef, schema, data, size, page, setSize, setPage } = props
+
+    const { t } = useTranslation()
 
     const [totalCount, setTotalCount] = useState<number>()
     const [_page, _setPage] = useState<number>(0)
@@ -145,7 +148,14 @@ export const Wijmo = (props: wijmoProps) => {
     }
 
     const headerLayoutDefinition = (head: WijmoHeadType) => {
-        return head
+        return head.map((_) => {
+            return {
+                ..._,
+                cells: _.cells.map((__) => {
+                    return { ...__, header: t(__.header) }
+                }),
+            }
+        })
     }
 
     // const layoutDefinition = (body: WijmoBodyType) => {
