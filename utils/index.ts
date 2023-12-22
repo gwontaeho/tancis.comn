@@ -37,20 +37,20 @@ export const utils = {
     getCode: (arg: {
         comnCd?: string
         keyword?: string
+        keywordName?: string
         area?: string
         page?: number
         size?: number
         langCd?: string
-        cdVldValNm?: string
     }) => {
-        const { comnCd, area, page = 0, size, keyword = '' } = arg
+        const { comnCd, area, page = 0, size, keyword = '', keywordName = '', langCd } = arg
 
-        console.log(area)
+        //console.log(area)
 
         let url = ''
         switch (area) {
             case 'comnCd':
-                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`
                 break
             case 'cntyCd':
                 url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}`
