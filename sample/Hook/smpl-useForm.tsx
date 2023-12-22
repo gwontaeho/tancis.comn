@@ -6,15 +6,19 @@ import { useForm } from '@/comn/hooks'
 const SCHEMA_SEARCH: FormSchemaType = {
     id: 'search',
     schema: {
-        text: { type: 'text', label: 'text', required: true },
-        number: { type: 'number', label: 'number', required: true },
+        text: {
+            type: 'text',
+            label: 'text',
+            validate: (value: any) => value === 'test' || 'test를 써주세요',
+        },
+        number: { type: 'number', label: 'number', min: 3 },
         password: { type: 'password', label: 'password', required: true },
         textarea: {
             type: 'textarea',
             label: 'textarea',
+            minLength: 3,
             leftButton: { icon: 'left', onClick: () => {} },
             rightButton: { icon: 'left', onClick: () => {} },
-            required: true,
         },
         select: { type: 'select', label: 'select', required: true },
         checkbox: { type: 'checkbox', label: 'checkbox', all: true, required: true },
