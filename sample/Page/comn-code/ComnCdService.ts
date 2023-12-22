@@ -214,7 +214,7 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
 export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
     id: 'form',
     schema: {
-        cntyCd: { type: 'select', label: 'L_CNTY_CD', area: 'cntyCd' },
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
         regnNm: { type: 'text', label: 'L_REGN_NM' },
     },
 }
