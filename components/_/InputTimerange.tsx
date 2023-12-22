@@ -2,7 +2,9 @@ import React from 'react'
 import dayjs from 'dayjs'
 import classNames from 'classnames'
 import { v4 as uuid } from 'uuid'
-import { InputTime, InputTimeProps } from '@/comn/components/_'
+import { InputTimeProps } from '@/comn/components/_'
+import { Control } from 'react-hook-form'
+import { FormControl } from '@/comn/components'
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
     [
@@ -16,12 +18,14 @@ const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
 ]
 
 type TimeUnitType = 'h'
-type RangeButtonOptionType = { unit: 'h'; label: string; value: number }
+type RangeButtonOptionType = { unit: TimeUnitType; label: string; value: number }
 
 export type InputTimerangeProps = {
     start?: InputTimeProps
     end?: InputTimeProps
-    rangeButton?: 0
+    rangeButton?: 0 | 1 | 2
+    control?: Control
+    setValue?: any
 }
 
 export const InputTimerange = (props: InputTimerangeProps) => {
@@ -45,9 +49,17 @@ export const InputTimerange = (props: InputTimerangeProps) => {
         if (value > 0) {
             _setStartValue(today)
             _setEndValue(dayjs(today).add(value, unit).toDate())
+            if (props.setValue) {
+                if (props.start) props.setValue(props.start.name, today)
+                if (props.end) props.setValue(props.end.name, dayjs(today).add(value, unit).toDate())
+            }
         } else {
             _setStartValue(dayjs(today).add(value, unit).toDate())
             _setEndValue(today)
+            if (props.setValue) {
+                if (props.start) props.setValue(props.start.name, dayjs(today).add(value, unit).toDate())
+                if (props.end) props.setValue(props.end.name, today)
+            }
         }
     }
 
@@ -62,7 +74,13 @@ export const InputTimerange = (props: InputTimerangeProps) => {
     return (
         <div className="w-full flex">
             <div className="w-full [&_input]:rounded-r-none">
-                <InputTime value={_startValue} onChange={_onChangeStart} />
+                <FormControl
+                    type="time"
+                    {...props.start}
+                    control={props.control}
+                    value={_startValue}
+                    onChange={_onChangeStart}
+                />
             </div>
             <div className="flex items-center justify-center min-w-[1.25rem] h-7 bg-header border-y">-</div>
             <div
@@ -70,10 +88,16 @@ export const InputTimerange = (props: InputTimerangeProps) => {
                     '[&_input]:rounded-r-none': props.rangeButton !== undefined,
                 })}
             >
-                <InputTime value={_endValue} onChange={_onChangeEnd} />
+                <FormControl
+                    type="time"
+                    {...props.end}
+                    control={props.control}
+                    value={_endValue}
+                    onChange={_onChangeEnd}
+                />
             </div>
             {props.rangeButton !== undefined && (
-                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r">
+                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
                     {RANGE_BUTTON_OPTIONS[props.rangeButton].map((props: RangeButtonOptionType) => {
                         const { unit, label, value } = props
                         return (

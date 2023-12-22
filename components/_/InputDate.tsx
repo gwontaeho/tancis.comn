@@ -47,6 +47,7 @@ const InputDateMain = (props: InputDateProps) => {
 }
 
 export const InputDate = (props: InputDateProps) => {
+    console.log(props)
     if (props.control && props.name)
         return (
             <ControllerWrapper {...props}>

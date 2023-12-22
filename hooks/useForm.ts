@@ -89,50 +89,70 @@ export const useForm = (props: UseFormProps) => {
         if (!s) return undefined
         return Object.fromEntries(
             Object.entries(s).map(([key, value]: any) => {
-                const { min, max, minLength, pattern, validate } = value
+                const getRules = (data: any) => {
+                    const { min, max, minLength, maxLength, pattern, validate, required } = data
+                    return { min, max, minLength, maxLength, pattern, validate, required }
+                }
 
-                const rules = {} as any
-                if (value.required) rules.required = value.required
-                if (value.maxLength) rules.maxLength = value.maxLength
-                if (value.disabled) rules.disabled = value.disabled
-                if (min) rules.min = min
-                if (max) rules.max = max
-                if (minLength) rules.minLength = minLength
-                if (pattern) rules.pattern = pattern
-                if (validate) rules.validate = validate
+                switch (value.type) {
+                    case 'daterange':
+                    case 'timerange':
+                        return [
+                            key,
+                            {
+                                ...value,
+                                invalid: errors[key],
+                                name: key,
+                                control,
+                                getValues,
+                                setValue,
+                                start: {
+                                    ...value.start,
+                                    invalid: errors[value.start.name],
+                                    rules: getRules(value.start),
+                                },
+                                end: { ...value.end, invalid: errors[value.end.name], rules: getRules(value.end) },
+                            },
+                        ]
 
-                if (
-                    value.type === 'date' ||
-                    value.type === 'time' ||
-                    value.type === 'datetime' ||
-                    value.type === 'daterange' ||
-                    value.type === 'timerange' ||
-                    value.type === 'code' ||
-                    value.type === 'file' ||
-                    value.type === 'checkbox'
-                )
-                    return [
-                        key,
-                        {
-                            ...value,
-                            name: key,
-                            setValue,
-                            getValues,
-                            control,
-                            rules,
-                            invalid: errors[key],
-                        },
-                    ]
+                    case 'date':
+                    case 'time':
+                    case 'datetime':
+                    case 'code':
+                    case 'file':
+                    case 'checkbox':
+                        return [
+                            key,
+                            {
+                                ...value,
+                                invalid: errors[key],
+                                name: key,
+                                control,
+                                getValues,
+                                setValue,
+                                rules: getRules(value),
+                            },
+                        ]
 
-                return [
-                    key,
-                    {
-                        ...value,
-                        ...register(key, rules),
-                        invalid: errors[key],
-                        getValues,
-                    },
-                ]
+                    default:
+                        /**
+                         * text
+                         * number
+                         * password
+                         * select
+                         * radio
+                         * textarea
+                         */
+                        return [
+                            key,
+                            {
+                                ...value,
+                                ...register(key, getRules(value)),
+                                invalid: errors[key],
+                                getValues,
+                            },
+                        ]
+                }
             })
         )
     }

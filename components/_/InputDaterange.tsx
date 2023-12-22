@@ -2,8 +2,9 @@ import React from 'react'
 import dayjs from 'dayjs'
 import classNames from 'classnames'
 import { v4 as uuid } from 'uuid'
-import { InputDate, InputDateProps } from '@/comn/components/_'
+import { InputDateProps } from '@/comn/components/_'
 import { Control } from 'react-hook-form'
+import { FormControl } from '@/comn/components'
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
     [
@@ -89,9 +90,10 @@ export const InputDaterange = (props: InputDaterangeProps) => {
     return (
         <div className="w-full flex">
             <div className="w-full [&_input]:rounded-r-none">
-                <InputDate
+                <FormControl
+                    type="date"
+                    {...props.start}
                     control={props.control}
-                    name={props.start?.name}
                     value={_startValue}
                     onChange={_onChangeStart}
                 />
@@ -102,10 +104,16 @@ export const InputDaterange = (props: InputDaterangeProps) => {
                     '[&_input]:rounded-r-none': props.rangeButton !== undefined,
                 })}
             >
-                <InputDate control={props.control} name={props.end?.name} value={_endValue} onChange={_onChangeEnd} />
+                <FormControl
+                    type="date"
+                    {...props.end}
+                    control={props.control}
+                    value={_endValue}
+                    onChange={_onChangeEnd}
+                />
             </div>
             {props.rangeButton !== undefined && (
-                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r">
+                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
                     {RANGE_BUTTON_OPTIONS[props.rangeButton].map((props: RangeButtonOptionType) => {
                         const { unit, label, value } = props
                         return (

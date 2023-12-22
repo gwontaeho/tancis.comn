@@ -59,21 +59,31 @@ export const conditionState = atom({
     default: defaultValue.condition,
 })
 
-// const DebugObserver = () => {
-//     const snapshot = useRecoilSnapshot()
+export const storeState = atom<Record<string, any>>({
+    key: 'storeState',
+    default: {},
+})
 
-//     React.useEffect(() => {
-//         console.debug('The following atoms were modified:')
-//         for (const node of snapshot.getNodes_UNSTABLE({ isModified: true })) {
-//             console.debug(node.key, snapshot.getLoadable(node))
-//         }
-//     }, [snapshot])
+const DebugObserver = () => {
+    const snapshot = useRecoilSnapshot()
 
-//     return null
-// }
+    React.useEffect(() => {
+        console.debug('The following atoms were modified:')
+        Array.from(snapshot.getNodes_UNSTABLE({ isModified: true })).forEach((node) => {
+            console.debug(node.key, snapshot.getLoadable(node))
+        })
+    }, [snapshot])
+
+    return null
+}
 
 const RecoilProvider = ({ children }: { children?: React.ReactNode }) => {
-    return <RecoilRoot>{children}</RecoilRoot>
+    return (
+        <RecoilRoot>
+            <DebugObserver />
+            {children}
+        </RecoilRoot>
+    )
 }
 
 export default RecoilProvider
