@@ -14,6 +14,16 @@ export const APIS = {
         })
     },
 
+    getCityCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'cityCd',
+            page: page,
+            size: size,
+            keyword: data.cntyCd,
+            keywordName: data.regnNm,
+        })
+    },
+
     getCntyCdLst: (data: any, page: number, size: number) => {
         return api.get(`/ptl-com/comn/cnty-cds?page=${page}&size=${size}`, {
             params: data,
@@ -93,14 +103,16 @@ export const SCHEMA_GRID_CITY_CD = (clickEvent: any): WijmoSchemaType => {
         id: 'grid',
         options: { pagination: 'in', isReadOnly: true },
         head: [
+            { cells: [{ header: 'L_REGN_CD', binding: 'regnCd' }] },
+            { cells: [{ header: 'L_REGN_NM', binding: 'regnNm' }] },
             { cells: [{ header: 'L_CNTY_CD', binding: 'cntyCd' }] },
-            { cells: [{ header: 'L_CNTY_NM', binding: 'cntyNm' }] },
+            { cells: [{ header: 'L_CITY_STAT_CD', binding: 'cityStatCd' }] },
         ],
         body: [
             {
                 cells: [
                     {
-                        binding: 'cntyCd',
+                        binding: 'regnCd',
                         onClick: (ctx: any) => {
                             clickEvent(ctx)
                         },
@@ -108,7 +120,13 @@ export const SCHEMA_GRID_CITY_CD = (clickEvent: any): WijmoSchemaType => {
                 ],
             },
             {
-                cells: [{ binding: 'cntyNm' }],
+                cells: [{ binding: 'regnNm' }],
+            },
+            {
+                cells: [{ binding: 'cntyCd' }],
+            },
+            {
+                cells: [{ binding: 'cityStatCd' }],
             },
         ],
     }
@@ -196,7 +214,7 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
 export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
     id: 'form',
     schema: {
-        cntyCd: { type: 'select', label: 'L_CNTY_CD' },
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
         regnNm: { type: 'text', label: 'L_REGN_NM' },
     },
 }

@@ -42,6 +42,7 @@ import { SampleRegist } from '@/comn/sample/Page/smpl-Regist'
 import { SampleUpdate } from '@/comn/sample/Page/smpl-Update'
 import { CommonCodeList } from '@/comn/sample/Page/comn-code/ComnCdLst'
 import { CountryCodeList } from '@/comn/sample/Page/comn-code/CntyCdLst'
+import { CityCodeList } from '@/comn/sample/Page/comn-code/CityCdLst'
 import { CurrencyCodeList } from '@/comn/sample/Page/comn-code/CurrCdLst'
 import { BankCodeList } from '@/comn/sample/Page/comn-code/BankCdLst'
 
@@ -91,6 +92,7 @@ export const SampleMain = () => {
 
             <Route path="/pages/comnCdPpup" element={<CommonCodeList />} />
             <Route path="/pages/cntyCdPpup" element={<CountryCodeList />} />
+            <Route path="/pages/cityCdPpup" element={<CityCodeList />} />
             <Route path="/pages/currCdPpup" element={<CurrencyCodeList />} />
             <Route path="/pages/bnkCdPpup" element={<BankCodeList />} />
         </Routes>
