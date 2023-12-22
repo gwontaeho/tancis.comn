@@ -4,6 +4,7 @@ import './Wijmo.css'
 import React, { useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 import lodash from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 import * as wjGrid from '@grapecity/wijmo.react.grid.multirow'
 import { Selector } from '@grapecity/wijmo.grid.selector'
@@ -12,7 +13,7 @@ import * as wjcGridXlsx from '@grapecity/wijmo.grid.xlsx'
 import { Pagination, Button, Icon, FormControl, Tree } from '@/comn/components'
 import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from '@grapecity/wijmo.input'
 
-import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from '@/comn/hooks'
+import { WijmoSchemaType, WijmoHeadType, WijmoBodyType, useTheme } from '@/comn/hooks'
 import dayjs from 'dayjs'
 import { setLicenseKey } from '@grapecity/wijmo'
 setLicenseKey(
@@ -48,6 +49,12 @@ type wijmoProps = {
 export const Wijmo = (props: wijmoProps) => {
     const { gridRef, contentRef, schema, data, size, page, setSize, setPage } = props
 
+    const {
+        theme: { lang },
+    } = useTheme()
+
+    const { t } = useTranslation()
+
     const [totalCount, setTotalCount] = useState<number>()
     const [_page, _setPage] = useState<number>(0)
     const [_size, _setSize] = useState<number>(10)
@@ -56,7 +63,6 @@ export const Wijmo = (props: wijmoProps) => {
         // 1. initialize
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true
         if (schema.options?.checkbox) new Selector(gridRef.current.control)
-        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head)
         // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
 
         // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
@@ -68,6 +74,10 @@ export const Wijmo = (props: wijmoProps) => {
         gridRef.current.control.formatItem.addHandler(handleFormatItem)
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged)
     }, [])
+
+    useEffect(() => {
+        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head)
+    }, [lang])
 
     useEffect(() => {
         if (data === undefined) return
@@ -145,7 +155,14 @@ export const Wijmo = (props: wijmoProps) => {
     }
 
     const headerLayoutDefinition = (head: WijmoHeadType) => {
-        return head
+        return head.map((_) => {
+            return {
+                ..._,
+                cells: _.cells.map((__) => {
+                    return { ...__, header: t(__.header) }
+                }),
+            }
+        })
     }
 
     // const layoutDefinition = (body: WijmoBodyType) => {
