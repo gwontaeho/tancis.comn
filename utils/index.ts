@@ -34,7 +34,15 @@ export const utils = {
             .fill(null)
             .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }))
     },
-    getCode: (arg: { comnCd?: string; keyword?: string; area?: string; page?: number; size?: number }) => {
+    getCode: (arg: {
+        comnCd?: string
+        keyword?: string
+        area?: string
+        page?: number
+        size?: number
+        langCd?: string
+        cdVldValNm?: string
+    }) => {
         const { comnCd, area, page = 0, size, keyword = '' } = arg
 
         console.log(area)

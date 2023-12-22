@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Wijmo } from '@/comn/components'
 import { Page, Group, Layout, Button } from '@/comn/components'
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
-import { APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID_CNTY_CD } from './comn-comn-cd.service'
+import { APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID_CNTY_CD } from './ComnCdService'
 
 export const CountryCodeList = (props: any) => {
     const { t } = useTranslation() /* 다국어 */
