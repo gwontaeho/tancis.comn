@@ -63,9 +63,9 @@ const InputCodeMain = (props: InputCodeProps) => {
     const handleClickSearch = () => {
         if (!props.area || props.area === 'comnCd') {
             openPopup({
-                url: `/comn/smpl/pages/comnPpup?popup=Y&comnCd=${props.comnCd}`,
+                params: { comnCd: props.comnCd },
+                url: `/comn/smpl/pages/comnCdPpup`,
                 callback: (data: any) => {
-                    console.log(data)
                     if (cdVldValNmInput.current) cdVldValNmInput.current.value = data.label
                     if (keywordInput.current) keywordInput.current.value = data.code
                 },

@@ -4,14 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { Wijmo } from '@/comn/components'
 import { Page, Group, Layout, Button } from '@/comn/components'
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
-import { APIS, SCHEMA_FORM_COMN_CD, SCHEMA_GRID_COMN_CD } from './comn-comn-cd.service'
+import { APIS, SCHEMA_FORM_COMN_CD, SCHEMA_GRID_COMN_CD } from './ComnCdService'
 
 export const CommonCodeList = (props: any) => {
     const { t } = useTranslation()
-    const { condition } = useCondition()
-    const form = useForm({ defaultSchema: SCHEMA_FORM_COMN_CD, values: condition })
-    const [params] = useSearchParams()
-    const { close, postMessage } = usePopup()
+    const { getParams, close, postMessage } = usePopup()
+    const params = getParams()
     const { theme } = useTheme()
     const grid = useWijmo({
         defaultSchema: SCHEMA_GRID_COMN_CD((data: any) => {
@@ -19,8 +17,11 @@ export const CommonCodeList = (props: any) => {
             close()
         }),
     })
+    const form = useForm({
+        defaultSchema: SCHEMA_FORM_COMN_CD,
+        values: { comnCd: params.comnCd, langCd: theme.lang.toUpperCase() },
+    })
 
-    const comnCd = params.get('comnCd')
     const fetch_Srch = useFetch({
         api: () => APIS.getComnCdLst(form.getValues(), 0, grid.size),
     })
@@ -30,7 +31,7 @@ export const CommonCodeList = (props: any) => {
     }
 
     useEffect(() => {
-        form.setValues({ comnCd: comnCd, langCd: theme.lang.toUpperCase() })
+        onSubmit()
     }, [])
 
     return (
