@@ -22,7 +22,9 @@ export const CityCodeList = (props: any) => {
 
     const comnCd = params.get('comnCd')
     const fetch_Srch = useFetch({
-        api: () => APIS.getCityCdLst(form.getValues(), 0, grid.size),
+        api: () => APIS.getCityCdLst(form.getValues(), grid.page, grid.size),
+        enabled: form.isSubmitted,
+        key: [grid.page, grid.size],
     })
 
     const onSubmit = () => {
