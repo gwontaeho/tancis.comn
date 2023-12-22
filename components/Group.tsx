@@ -27,7 +27,7 @@ type GroupHeaderProps = {
 type GroupLabelProps = FormControlProps & {
     label?: React.ReactNode
     labelSize?: keyof typeof SIZES
-    required?: boolean
+    required?: boolean | string
 }
 
 export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof SIZES; 'data-parent'?: string }

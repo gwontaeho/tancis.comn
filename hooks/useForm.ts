@@ -3,14 +3,15 @@ import * as rhf from 'react-hook-form'
 import { GroupControlProps } from '@/comn/components'
 
 export type FormRulesType = Partial<{
-    required: Boolean
-    min: number
-    max: number
-    maxLength: number
-    minLength: number
-    pattern: RegExp
-    validate: (value: FormFieldValueType, formValues: FormValuesType) => void
+    required: Boolean | string
+    min: any
+    max: any
+    maxLength: any
+    minLength: any
+    pattern: any
+    validate: any
 }>
+
 export type FormFieldNameType = string
 export type FormFieldValueType = any
 export type FormValuesType = Record<FormFieldNameType, FormFieldValueType>
@@ -89,6 +90,8 @@ export const useForm = (props: UseFormProps) => {
         if (!s) return undefined
         return Object.fromEntries(
             Object.entries(s).map(([key, value]: any) => {
+                const { min, max, minLength, pattern, validate, ...rest } = value
+
                 const getRules = (data: any) => {
                     const { min, max, minLength, maxLength, pattern, validate, required } = data
                     return { min, max, minLength, maxLength, pattern, validate, required }
@@ -100,7 +103,7 @@ export const useForm = (props: UseFormProps) => {
                         return [
                             key,
                             {
-                                ...value,
+                                ...rest,
                                 invalid: errors[key],
                                 name: key,
                                 control,
@@ -124,7 +127,7 @@ export const useForm = (props: UseFormProps) => {
                         return [
                             key,
                             {
-                                ...value,
+                                ...rest,
                                 invalid: errors[key],
                                 name: key,
                                 control,
@@ -143,6 +146,16 @@ export const useForm = (props: UseFormProps) => {
                          * radio
                          * textarea
                          */
+
+                        console.log([
+                            key,
+                            {
+                                ...rest,
+                                ...register(key, getRules(value)),
+                                invalid: errors[key],
+                                getValues,
+                            },
+                        ])
                         return [
                             key,
                             {

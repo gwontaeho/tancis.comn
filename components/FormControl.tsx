@@ -77,7 +77,7 @@ export type FormControlProps = InputDaterangeProps & {
     disabled?: boolean
     readOnly?: boolean
     setValue?: any
-    invalid?: string | boolean
+    invalid?: any
     comnCd?: string
     area?: string
     keyword?: string
@@ -98,6 +98,11 @@ export type FormControlProps = InputDaterangeProps & {
     end?: any
     all?: boolean
     select?: boolean
+    validate?: any
+    pattern?: any
+    min?: any
+    max?: any
+    minLength?: any
 }
 
 const FormControlGroup = (props: FormControlGroupProps) => {
@@ -220,6 +225,19 @@ export const FormControl = Object.assign(
         const { size = 'full', edit = true, message } = props
         const { t } = useTranslation()
 
+        console.log(props)
+
+        let validMessage = props.invalid?.message
+        if (!props.invalid?.message) {
+            switch (props.invalid?.type) {
+                case 'required':
+                    validMessage = 'msg.00001'
+                    break
+                default:
+                    validMessage = props.invalid?.message || ''
+            }
+        }
+
         return (
             <div className={SIZES[size]}>
                 {!edit && props.getValues && <FormControlTextMode {...props} />}
@@ -228,7 +246,7 @@ export const FormControl = Object.assign(
                         <FormControlEditMode ref={ref} {...props} />
                     </Tooltip>
                     {message && <div className="text-sm mt-1">{message}</div>}
-                    {props.invalid && <div className="text-invalid text-sm mt-1">{t('msg.00001')}</div>}
+                    {props.invalid && <div className="text-invalid text-sm mt-1">{t(validMessage)}</div>}
                 </div>
             </div>
         )

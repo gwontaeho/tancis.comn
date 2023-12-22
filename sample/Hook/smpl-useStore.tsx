@@ -2,11 +2,9 @@ import { useStore } from '@/comn/hooks'
 import { Sample } from '@/comn/components/_'
 
 export const SampleUseStore = () => {
-    const a = useStore()
+    const s = useStore({ pgeUid: 'sample' })
 
-    console.log(a)
-
-    // store: _store, pgeStore: props?.pgeUid && _store[props.pgeUid], getStore, setStore
+    console.log(s)
 
     return (
         <Sample title="useStore">
@@ -22,17 +20,19 @@ export const SampleUseStore = () => {
                 />
                 <Sample.Code>{`useStore()`}</Sample.Code>
             </Sample.Section>
-            <Sample.Section title="getStore(pgeUid?: string): StoreValue">
+            <Sample.Section title="getStore(pgeUid?: StoreKey): StoreValue | Record<StoreKey, StoreValue>">
                 <Sample.Table
                     data={[
                         ['Arguments', 'Type', 'Default', 'Description'],
                         ['pgeUid?', 'string', '', ''],
                     ]}
                 />
-                <Sample.Code>{`const store = getStore()`}</Sample.Code>
-                <Sample.Code>{`const store = getStore("sample")`}</Sample.Code>
+                <Sample.Code exec={() => console.log(s.getStore())}>{`const store = getStore()`}</Sample.Code>
+                <Sample.Code
+                    exec={() => console.log(s.getStore('sample'))}
+                >{`const store = getStore("sample")`}</Sample.Code>
             </Sample.Section>
-            <Sample.Section title="setStore(pageUid: string, value: any): void">
+            <Sample.Section title="setStore(pageUid: StoreKey, value: StoreValue): void">
                 <Sample.Table
                     data={[
                         ['Arguments', 'Type', 'Default', 'Description'],
@@ -40,7 +40,14 @@ export const SampleUseStore = () => {
                         ['value', 'any', '', ''],
                     ]}
                 />
-                <Sample.Code>{`useStore()`}</Sample.Code>
+                <Sample.Code exec={() => console.log(s.setStore('sample', new Date()))}>{`setStore()`}</Sample.Code>
+                <Sample.Code
+                    exec={() =>
+                        console.log(
+                            s.setStore('sample', (prev: any) => ({ ...prev, [new Date().getTime()]: new Date() }))
+                        )
+                    }
+                >{`setStore()`}</Sample.Code>
             </Sample.Section>
         </Sample>
     )
