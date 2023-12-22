@@ -151,6 +151,10 @@ export const SampleRoutes = [
                         name: 'useTree',
                         to: '/useTree',
                     },
+                    {
+                        name: 'useStore',
+                        to: '/useStore',
+                    },
                 ],
             },
             {
