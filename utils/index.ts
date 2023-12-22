@@ -52,6 +52,9 @@ export const utils = {
             case 'comnCd':
                 url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`
                 break
+            case 'cityCd':
+                url = `/ptl-com/api/v1/comn/city-cds?cntyCd=${keyword}&regnNm=${keywordName}`
+                break
             case 'cntyCd':
                 url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}`
                 break
@@ -75,6 +78,8 @@ export const utils = {
         switch (area) {
             case 'comnCd':
                 return code.cdVldValNm
+            case 'cntyCd':
+                return code.cntyNm
             case 'cntyCd':
                 return code.cntyNm
             case 'currCd':
