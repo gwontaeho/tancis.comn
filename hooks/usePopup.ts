@@ -28,7 +28,9 @@ export const usePopup = () => {
     const getParams = () => {
         const qs = window.location.search
         const params = new URLSearchParams(qs).get('params') || ''
-        return JSON.parse(decodeURIComponent(params))
+        try {
+            return JSON.parse(decodeURIComponent(params))
+        } catch (error) {}
     }
 
     const closePopup = (id?: string) => {

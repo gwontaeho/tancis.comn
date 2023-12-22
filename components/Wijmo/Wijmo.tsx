@@ -13,7 +13,7 @@ import * as wjcGridXlsx from '@grapecity/wijmo.grid.xlsx'
 import { Pagination, Button, Icon, FormControl, Tree } from '@/comn/components'
 import { InputDate, InputTime, InputDateTime, InputNumber, InputMask, ComboBox } from '@grapecity/wijmo.input'
 
-import { WijmoSchemaType, WijmoHeadType, WijmoBodyType } from '@/comn/hooks'
+import { WijmoSchemaType, WijmoHeadType, WijmoBodyType, useTheme } from '@/comn/hooks'
 import dayjs from 'dayjs'
 import { setLicenseKey } from '@grapecity/wijmo'
 setLicenseKey(
@@ -49,6 +49,10 @@ type wijmoProps = {
 export const Wijmo = (props: wijmoProps) => {
     const { gridRef, contentRef, schema, data, size, page, setSize, setPage } = props
 
+    const {
+        theme: { lang },
+    } = useTheme()
+
     const { t } = useTranslation()
 
     const [totalCount, setTotalCount] = useState<number>()
@@ -59,7 +63,6 @@ export const Wijmo = (props: wijmoProps) => {
         // 1. initialize
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true
         if (schema.options?.checkbox) new Selector(gridRef.current.control)
-        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head)
         // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
 
         // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
@@ -71,6 +74,10 @@ export const Wijmo = (props: wijmoProps) => {
         gridRef.current.control.formatItem.addHandler(handleFormatItem)
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged)
     }, [])
+
+    useEffect(() => {
+        gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head)
+    }, [lang])
 
     useEffect(() => {
         if (data === undefined) return
