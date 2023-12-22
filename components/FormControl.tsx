@@ -225,8 +225,6 @@ export const FormControl = Object.assign(
         const { size = 'full', edit = true, message } = props
         const { t } = useTranslation()
 
-        console.log(props)
-
         let validMessage = props.invalid?.message
         if (!props.invalid?.message) {
             switch (props.invalid?.type) {

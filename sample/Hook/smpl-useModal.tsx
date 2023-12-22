@@ -53,6 +53,9 @@ export const SampleUseModal = () => {
     const withComponent = () => {
         modal.openModal({ content: <div>안녕123!1!</div> })
     }
+    const widthDrag = () => {
+        modal.openModal({ content: <div>안녕123!1!</div>, draggable: true })
+    }
 
     return (
         <Sample title="useModal">
@@ -86,6 +89,7 @@ export const SampleUseModal = () => {
                 <Sample.Code exec={withoutBackdrop}>{`openModal({ backdrop: false })}`}</Sample.Code>
                 <Sample.Code exec={withSizeSm}>{`openModal({ onCancel: () => alert('cancel') })`}</Sample.Code>
                 <Sample.Code exec={withComponent}>{`openModal({ onCancel: () => alert('cancel') })`}</Sample.Code>
+                <Sample.Code exec={widthDrag}>{`openModal({ onCancel: () => alert('cancel') })`}</Sample.Code>
             </Sample.Section>
 
             <Sample.Section title="closeModal(): void">

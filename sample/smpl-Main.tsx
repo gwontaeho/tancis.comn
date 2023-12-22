@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 
+import { Temp } from './temp'
+
 import { SampleFormControlText } from '@/comn/sample/Component/FormControl/smpl-Text'
 import { SampleFormControlNumber } from '@/comn/sample/Component/FormControl/smpl-Number'
 import { SampleFormControlPassword } from '@/comn/sample/Component/FormControl/smpl-Password'
@@ -46,6 +48,8 @@ import { BankCodeList } from '@/comn/sample/Page/comn-code/BankCdLst'
 export const SampleMain = () => {
     return (
         <Routes>
+            <Route path="/temp" element={<Temp />} />
+
             <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
             <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
             <Route path="/components/FormControl/Password" element={<SampleFormControlPassword />} />
