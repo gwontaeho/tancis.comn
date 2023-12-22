@@ -35,7 +35,6 @@ export type FormControlType =
     | 'time'
     | 'datetime'
     | 'file'
-    | 'range'
     | 'daterange'
     | 'timerange'
     | 'code'
@@ -101,9 +100,55 @@ export type FormControlProps = InputDaterangeProps & {
     select?: boolean
 }
 
+const FormControlGroup = (props: FormControlGroupProps) => {
+    return (
+        <div className="flex border rounded divide-x">
+            {React.Children.map(props.children, (child) => {
+                return <div className="[&_*]:border-none">{child}</div>
+            })}
+        </div>
+    )
+}
+
+const FormControlTextMode = (props: FormControlProps) => {
+    return (
+        <div>
+            {(() => {
+                switch (props.type) {
+                    case 'checkbox':
+                        return (props.getValues(props.type) || []).join(', ')
+                    case 'date':
+                        return dayjs(props.getValues(props.type)).format('YYYY/MM/DD')
+                    case 'time':
+                        return dayjs(props.getValues(props.type)).format('HH:mm')
+                    case 'datetime':
+                        return dayjs(props.getValues(props.type)).format('YYYY/MM/DD HH:mm')
+                    case 'daterange':
+                        return (
+                            dayjs(props.getValues(props.start.name)).format('YYYY/MM/DD') +
+                            ' ~ ' +
+                            dayjs(props.getValues(props.end.name)).format('YYYY/MM/DD')
+                        )
+                    case 'timerange':
+                        return (
+                            dayjs(props.getValues(props.start.name)).format('HH:mm') +
+                            ' ~ ' +
+                            dayjs(props.getValues(props.end.name)).format('HH:mm')
+                        )
+                    case 'file':
+                        return (props.getValues(props.type) || []).length > 1
+                            ? `파일 ${(props.getValues(props.type) || []).length}개`
+                            : (props.getValues(props.type) || [])[0]?.name
+                    default:
+                        return props.getValues(props.type)
+                }
+            })()}
+        </div>
+    )
+}
+
 const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
     const { edit, rightButton, leftButton, rightText, getValues, invalid, ...rest } = props
-
     return (
         <div
             className={classNames('flex w-full', {
@@ -170,60 +215,13 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
     )
 })
 
-const FormControlTextMode = (props: FormControlProps) => {
-    return (
-        <div>
-            {(() => {
-                switch (props.type) {
-                    case 'checkbox':
-                        return (props.getValues(props.type) || []).join(', ')
-                    case 'date':
-                        return dayjs(props.getValues(props.type)).format('YYYY/MM/DD')
-                    case 'time':
-                        return dayjs(props.getValues(props.type)).format('HH:mm')
-                    case 'datetime':
-                        return dayjs(props.getValues(props.type)).format('YYYY/MM/DD HH:mm')
-                    case 'daterange':
-                        return (
-                            dayjs(props.getValues(props.start.name)).format('YYYY/MM/DD') +
-                            ' ~ ' +
-                            dayjs(props.getValues(props.end.name)).format('YYYY/MM/DD')
-                        )
-                    case 'timerange':
-                        return (
-                            dayjs(props.getValues(props.start.name)).format('HH:mm') +
-                            ' ~ ' +
-                            dayjs(props.getValues(props.end.name)).format('HH:mm')
-                        )
-                    case 'file':
-                        return (props.getValues(props.type) || []).length > 1
-                            ? `파일 ${(props.getValues(props.type) || []).length}개`
-                            : (props.getValues(props.type) || [])[0]?.name
-                    default:
-                        return props.getValues(props.type)
-                }
-            })()}
-        </div>
-    )
-}
-
-const FormControlGroup = (props: FormControlGroupProps) => {
-    return (
-        <div className="flex border rounded divide-x">
-            {React.Children.map(props.children, (child) => {
-                return <div className="[&_*]:border-none">{child}</div>
-            })}
-        </div>
-    )
-}
-
 export const FormControl = Object.assign(
     React.forwardRef((props: FormControlProps, ref) => {
         const { size = 'full', edit = true, message } = props
         const { t } = useTranslation()
 
         return (
-            <div className={classNames(SIZES[size])}>
+            <div className={SIZES[size]}>
                 {!edit && props.getValues && <FormControlTextMode {...props} />}
                 <div className={classNames({ hidden: !edit })}>
                     <Tooltip enabled={Boolean(props.invalid)} size="full" content={t('msg.00001')}>

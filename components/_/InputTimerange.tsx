@@ -3,6 +3,8 @@ import dayjs from 'dayjs'
 import classNames from 'classnames'
 import { v4 as uuid } from 'uuid'
 import { InputTime, InputTimeProps } from '@/comn/components/_'
+import { FormControl } from '@/comn/components'
+import { Control } from 'react-hook-form'
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
     [
@@ -21,6 +23,7 @@ type RangeButtonOptionType = { unit: 'h'; label: string; value: number }
 export type InputTimerangeProps = {
     start?: InputTimeProps
     end?: InputTimeProps
+    control?: Control
     rangeButton?: 0
 }
 
@@ -59,10 +62,18 @@ export const InputTimerange = (props: InputTimerangeProps) => {
         _setEndValue(v)
     }
 
+    console.log(props)
+
     return (
         <div className="w-full flex">
             <div className="w-full [&_input]:rounded-r-none">
-                <InputTime value={_startValue} onChange={_onChangeStart} />
+                <FormControl
+                    type="time"
+                    {...props.start}
+                    control={props.control}
+                    value={_startValue}
+                    onChange={_onChangeStart}
+                />
             </div>
             <div className="flex items-center justify-center min-w-[1.25rem] h-7 bg-header border-y">-</div>
             <div
@@ -70,7 +81,13 @@ export const InputTimerange = (props: InputTimerangeProps) => {
                     '[&_input]:rounded-r-none': props.rangeButton !== undefined,
                 })}
             >
-                <InputTime value={_endValue} onChange={_onChangeEnd} />
+                <FormControl
+                    type="time"
+                    {...props.end}
+                    control={props.control}
+                    value={_endValue}
+                    onChange={_onChangeEnd}
+                />
             </div>
             {props.rangeButton !== undefined && (
                 <div className="flex divide-x bg-header text-sm border-y border-r rounded-r">
