@@ -232,30 +232,29 @@ export const Wijmo = (props: wijmoProps) => {
                                                 )
                                             }}
                                         />
-                                        {/* <wjGrid.MultiRowCellTemplate
+                                        <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(ctx: any) => {
-                                                const { type } = cellProps;
-                                                const { item, value } = ctx;
-                                                console.log(ctx);
+                                                const { type } = cellProps
+                                                const { item, value } = ctx
+                                                console.log(ctx)
 
                                                 const handleChange = (e: any) => {
-                                                    ctx.value = e.target.value;
-                                                };
+                                                    ctx.value = e.target.value
+                                                }
                                                 return (
                                                     <div className="h-9 px-1 flex items-center justify-center">
-                                                        <div
-                                                            className="fixed w-screen h-screen bg-black/10 top-0 left-0 z-[9999]"
-                                                            onClick={() => console.log("a")}
-                                                        ></div>
                                                         <FormControl type={type} onChange={handleChange} />
                                                     </div>
-                                                );
+                                                )
                                             }}
-                                        /> */}
+                                        />
                                     </wjGrid.MultiRowCell>
                                 )
                             })}
+                            <wjGrid.MultiRowCell>
+                                <wjGrid.MultiRowCellTemplate cellType="Cell" />
+                            </wjGrid.MultiRowCell>
                         </wjGrid.MultiRowCellGroup>
                     )
                 })}
