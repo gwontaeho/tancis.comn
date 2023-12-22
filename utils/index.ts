@@ -55,6 +55,9 @@ export const utils = {
             case 'cityCd':
                 url = `/ptl-com/api/v1/comn/city-cds?cntyCd=${keyword}&regnNm=${keywordName}`
                 break
+            case 'portCd':
+                url = `/ptl-com/api/v1/comn/port-cds?regnNm=${keywordName}`
+                break
             case 'cntyCd':
                 url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}`
                 break
@@ -80,8 +83,10 @@ export const utils = {
                 return code.cdVldValNm
             case 'cntyCd':
                 return code.cntyNm
-            case 'cntyCd':
-                return code.cntyNm
+            case 'cityCd':
+                return code.regnNm
+            case 'portCd':
+                return code.regnNm
             case 'currCd':
                 return code.currNm
             case 'bnkCd':
@@ -96,6 +101,10 @@ export const utils = {
                 return code.cdVldVal
             case 'cntyCd':
                 return code.cntyCd
+            case 'cityCd':
+                return code.regnCd
+            case 'portCd':
+                return code.portAirptCd
             case 'currCd':
                 return code.currCd
             case 'bnkCd':

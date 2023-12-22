@@ -45,6 +45,7 @@ import { CountryCodeList } from '@/comn/sample/Page/comn-code/CntyCdLst'
 import { CityCodeList } from '@/comn/sample/Page/comn-code/CityCdLst'
 import { CurrencyCodeList } from '@/comn/sample/Page/comn-code/CurrCdLst'
 import { BankCodeList } from '@/comn/sample/Page/comn-code/BankCdLst'
+import { PortCodeList } from '@/comn/sample/Page/comn-code/PortCdLst'
 
 export const SampleMain = () => {
     return (
@@ -95,6 +96,7 @@ export const SampleMain = () => {
             <Route path="/pages/cityCdPpup" element={<CityCodeList />} />
             <Route path="/pages/currCdPpup" element={<CurrencyCodeList />} />
             <Route path="/pages/bnkCdPpup" element={<BankCodeList />} />
+            <Route path="/pages/portCdPpup" element={<PortCodeList />} />
         </Routes>
     )
 }
