@@ -48,8 +48,6 @@ export const InputDaterange = (props: InputDaterangeProps) => {
     const [_startValue, _setStartValue] = React.useState<any>()
     const [_endValue, _setEndValue] = React.useState<any>()
 
-    console.log(props)
-
     React.useEffect(() => {
         if (!props.start?.onChange) return
         if (String(props.start.value) === String(_startValue)) return
@@ -115,7 +113,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
                 />
             </div>
             {props.rangeButton !== undefined && (
-                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r">
+                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
                     {RANGE_BUTTON_OPTIONS[props.rangeButton].map((props: RangeButtonOptionType) => {
                         const { unit, label, value } = props
                         return (

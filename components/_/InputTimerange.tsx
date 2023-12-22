@@ -2,9 +2,9 @@ import React from 'react'
 import dayjs from 'dayjs'
 import classNames from 'classnames'
 import { v4 as uuid } from 'uuid'
-import { InputTime, InputTimeProps } from '@/comn/components/_'
-import { FormControl } from '@/comn/components'
+import { InputTimeProps } from '@/comn/components/_'
 import { Control } from 'react-hook-form'
+import { FormControl } from '@/comn/components'
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
     [
@@ -18,13 +18,14 @@ const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
 ]
 
 type TimeUnitType = 'h'
-type RangeButtonOptionType = { unit: 'h'; label: string; value: number }
+type RangeButtonOptionType = { unit: TimeUnitType; label: string; value: number }
 
 export type InputTimerangeProps = {
     start?: InputTimeProps
     end?: InputTimeProps
+    rangeButton?: 0 | 1 | 2
     control?: Control
-    rangeButton?: 0
+    setValue?: any
 }
 
 export const InputTimerange = (props: InputTimerangeProps) => {
@@ -48,9 +49,17 @@ export const InputTimerange = (props: InputTimerangeProps) => {
         if (value > 0) {
             _setStartValue(today)
             _setEndValue(dayjs(today).add(value, unit).toDate())
+            if (props.setValue) {
+                if (props.start) props.setValue(props.start.name, today)
+                if (props.end) props.setValue(props.end.name, dayjs(today).add(value, unit).toDate())
+            }
         } else {
             _setStartValue(dayjs(today).add(value, unit).toDate())
             _setEndValue(today)
+            if (props.setValue) {
+                if (props.start) props.setValue(props.start.name, dayjs(today).add(value, unit).toDate())
+                if (props.end) props.setValue(props.end.name, today)
+            }
         }
     }
 
@@ -61,8 +70,6 @@ export const InputTimerange = (props: InputTimerangeProps) => {
     const _onChangeEnd = (v: any) => {
         _setEndValue(v)
     }
-
-    console.log(props)
 
     return (
         <div className="w-full flex">
@@ -90,7 +97,7 @@ export const InputTimerange = (props: InputTimerangeProps) => {
                 />
             </div>
             {props.rangeButton !== undefined && (
-                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r">
+                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
                     {RANGE_BUTTON_OPTIONS[props.rangeButton].map((props: RangeButtonOptionType) => {
                         const { unit, label, value } = props
                         return (
