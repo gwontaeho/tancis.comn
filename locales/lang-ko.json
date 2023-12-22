@@ -97,6 +97,8 @@
     "L_SAME_AS_ABOVE": "위와 동일",
     "L_RPCK_ITM_LST": "재포장 품목 목록",
     "L_REGN_NM": "지역 명",
+    "L_REGN_CD": "지역 코드",
+    "L_CITY_STAT_CD": "도시 상태 코드",
     "B_LST": "목록",
     "B_SAVE": "저장",
     "B_SBMT": "제출",

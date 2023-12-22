@@ -101,7 +101,7 @@ export const SCHEMA_GRID_CNTY_CD = (clickEvent: any): WijmoSchemaType => {
 export const SCHEMA_GRID_CITY_CD = (clickEvent: any): WijmoSchemaType => {
     return {
         id: 'grid',
-        options: { pagination: 'in', isReadOnly: true },
+        options: { pagination: 'out', isReadOnly: true },
         head: [
             { cells: [{ header: 'L_REGN_CD', binding: 'regnCd' }] },
             { cells: [{ header: 'L_REGN_NM', binding: 'regnNm' }] },
