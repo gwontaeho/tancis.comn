@@ -28,6 +28,7 @@ export const CityCodeList = (props: any) => {
     })
 
     const onSubmit = () => {
+        console.log(form.getValues())
         fetch_Srch.fetch()
     }
 
@@ -43,7 +44,10 @@ export const CityCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Row>
                             <Group.Control {...form.schema.cntyCd}></Group.Control>
-                            <Group.Control {...form.schema.regnNm}></Group.Control>
+                            <Group.Control {...form.schema.regnCd}></Group.Control>
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form.schema.regnNm} controlSize={10}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
