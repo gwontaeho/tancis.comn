@@ -72,8 +72,6 @@ const InputCodeMain = (props: InputCodeProps) => {
             if (LabelInput.current) LabelInput.current.value = label
             if (keywordInput.current) keywordInput.current.value = code
 
-            console.log(props.onChange)
-
             if (!props.onChange) return
             props.onChange(code)
         } catch (error) {}

@@ -34,6 +34,7 @@ export const useForm = (props: UseFormProps) => {
         watch,
         reset,
         formState: { errors, isSubmitted },
+        setError,
     } = rhf.useForm<FormValuesType>({ values })
 
     const { id, schema } = defaultSchema
@@ -187,6 +188,7 @@ export const useForm = (props: UseFormProps) => {
         setValues,
         errors,
         isSubmitted,
+        setError,
         reset,
     }
 }

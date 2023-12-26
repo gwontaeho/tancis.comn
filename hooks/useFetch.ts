@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useRef } from 'react'
 import _ from 'lodash'
+import { useToast } from '@/comn/hooks'
 
 const initializerArg = (initialData: any) => {
     return {
@@ -30,6 +31,7 @@ type UseFetchProps = {
     notifyStatus?: boolean
     onSuccess?: (data?: any) => void
     onError?: (error?: any) => void
+    showToast?: boolean
 }
 
 type UseFetchReturn = {
@@ -41,7 +43,20 @@ type UseFetchReturn = {
 }
 
 export const useFetch = (props: UseFetchProps): UseFetchReturn => {
-    const { api, key = [], enabled, onSuccess, onError, notifyStatus } = props
+    const {
+        api,
+        key = [],
+        enabled,
+        showToast = false,
+        onSuccess = () => {
+            showToast === true && toast.showToast({ type: 'invalid', content: 'search success' })
+        },
+        onError = () => {
+            showToast === true && toast.showToast({ type: 'invalid', content: 'search error' })
+        },
+        notifyStatus,
+    } = props
+    const toast = useToast()
 
     const isArray = Array.isArray(api)
     const initialData = isArray ? Array(api.length).fill(undefined) : undefined

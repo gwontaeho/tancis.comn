@@ -4,13 +4,15 @@ import { useTranslation } from 'react-i18next'
 import { Wijmo } from '@/comn/components'
 import { utils } from '@/comn/utils'
 import { Page, Group, Layout, Button } from '@/comn/components'
-import { useForm, useFetch, useWijmo, useCondition, usePopup, FormValuesType } from '@/comn/hooks'
+import { useForm, useFetch, useWijmo, useCondition, usePopup, useModal, useToast } from '@/comn/hooks'
 import { APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from './ComnCdService'
 
 export const CityCodeList = (props: any) => {
     const { t } = useTranslation()
     const { condition } = useCondition()
-    const form = useForm({ defaultSchema: SCHEMA_FORM_CITY_CD, values: condition })
+    const modal = useModal()
+    const toast = useToast()
+    const form = useForm({ defaultSchema: SCHEMA_FORM_CITY_CD })
     const [params] = useSearchParams()
     const { close, postMessage, getParams } = usePopup()
     const grid = useWijmo({
@@ -22,14 +24,19 @@ export const CityCodeList = (props: any) => {
 
     const fetch_getCityCdLst = useFetch({
         api: () => APIS.getCityCdLst(form.getValues(), grid.page, grid.size),
-        enabled: form.isSubmitted,
         key: [grid.page, grid.size],
+        showToast: true,
     })
 
-    const onSubmit_CityCdSrch = () => {
-        //fetch_getCityCdLst.fetch()
-        console.log(form.isSubmitted)
+    const event_CityCdSrch = {
+        success: () => {
+            fetch_getCityCdLst.fetch()
+        },
+        error: () => {
+            toast.showToast({ type: 'invalid', content: 'invalid form' })
+        },
     }
+
     useEffect(() => {
         utils.setValuesFromParams(form, getParams())
     }, [])
@@ -37,7 +44,7 @@ export const CityCodeList = (props: any) => {
     return (
         <Page>
             <Page.Header title={t('T_CITY_CD_LST')} description={t('T_CITY_CD_LST')} />
-            <form onSubmit={() => false}>
+            <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
@@ -59,7 +66,14 @@ export const CityCodeList = (props: any) => {
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="button" onClick={form.handleSubmit(onSubmit_CityCdSrch)}>
+                            <Button onClick={form.handleSubmit(event_CityCdSrch.success, event_CityCdSrch.error)}>
+                                {t('B_SRCH')}
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    console.log(form.getValues())
+                                }}
+                            >
                                 {t('B_SRCH')}
                             </Button>
                         </Layout.Right>

@@ -34,6 +34,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const REG_NUMBER = /^[0-9]+$/
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            console.log(onChange)
             let v: Values = { value: e.target.value, formattedValue: '' }
             handleLowerCase(e, v)
             handleUpperCase(e, v)

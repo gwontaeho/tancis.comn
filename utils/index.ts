@@ -10,6 +10,9 @@ export const utils = {
     setValuesFromParams: (form: any, params: any) => {
         form.setValues(params, false)
     },
+    isEmpty: (obj: any) => {
+        return lodash.isEmpty(obj)
+    },
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second)
     },
