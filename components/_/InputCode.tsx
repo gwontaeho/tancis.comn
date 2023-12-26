@@ -23,6 +23,11 @@ const PopupUrls: { [id: string]: string } = {
     bankCd: `/comn/smpl/pages/bankCdPpup`,
     currCd: `/comn/smpl/pages/currCdPpup`,
     portCd: `/comn/smpl/pages/portCdPpup`,
+    portAirptCd: `/comn/smpl/pages/portAirptCdPpup`,
+    airptCd: `/comn/smpl/pages/airptCdPpup`,
+    coCd: `/comn/smpl/pages/coCdPpup`,
+    prcssStatCd: `/comn/smpl/pages/prcssStatPpup`,
+    orgCd: `/comn/smpl/pages/orgCdPpup`,
 }
 
 const InputCodeMain = (props: InputCodeProps) => {
@@ -61,11 +66,14 @@ const InputCodeMain = (props: InputCodeProps) => {
                 return
             }
 
-            if (LabelInput.current) LabelInput.current.value = utils.getCodeLabel(props.area, content[0])
-            if (keywordInput.current) keywordInput.current.value = utils.getCodeValue(props.area, content[0])
+            const label = utils.getCodeLabel(props.area, content[0])
+            const code = utils.getCodeValue(props.area, content[0])
+
+            if (LabelInput.current) LabelInput.current.value = label
+            if (keywordInput.current) keywordInput.current.value = code
 
             if (!props.onChange) return
-            props.onChange(content[0].cdVldVal)
+            props.onChange(code)
         } catch (error) {}
     }
 

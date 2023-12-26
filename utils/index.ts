@@ -69,6 +69,21 @@ export const utils = {
             case 'bnkCd':
                 url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
                 break
+            case 'portAirptCd':
+                url = `/ptl-com/api/v1/comn/port-airpt-cds?portAirptTpCd=AIRPT&regnNm=${keywordName}`
+                break
+            case 'airptCd':
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                break
+            case 'coCd':
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                break
+            case 'prcssStatCd':
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                break
+            case 'orgCd':
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                break
             default:
                 url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`
                 break
