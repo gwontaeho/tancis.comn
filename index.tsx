@@ -39,6 +39,7 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
                         <Route path="/signin" element={<Signin />} />
                         <Route element={<Layout />}>
                             <Route path="/comn/smpl/*" element={<SampleMain />} />
+                            <Route path="/comn/cds/*" element={<SampleMain />} />
                             {children}
                         </Route>
                     </Routes>

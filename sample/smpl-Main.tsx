@@ -97,6 +97,11 @@ export const SampleMain = () => {
             <Route path="/pages/currCdPpup" element={<CurrencyCodeList />} />
             <Route path="/pages/bnkCdPpup" element={<BankCodeList />} />
             <Route path="/pages/portCdPpup" element={<PortCodeList />} />
+            <Route path="/pages/portAirptCdPpup" element={<PortCodeList />} />
+            <Route path="/pages/airptCdPpup" element={<PortCodeList />} />
+            <Route path="/pages/coCdPpup" element={<PortCodeList />} />
+            <Route path="/pages/prcssStatPpup" element={<PortCodeList />} />
+            <Route path="/pages/orgCdPpup" element={<PortCodeList />} />
         </Routes>
     )
 }

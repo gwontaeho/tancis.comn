@@ -19,8 +19,9 @@ export const APIS = {
             area: 'cityCd',
             page: page,
             size: size,
-            keyword: data.cntyCd,
+            keyword: data.regnCd,
             keywordName: data.regnNm,
+            cntyCd: data.cntyCd,
         })
     },
 
@@ -29,23 +30,84 @@ export const APIS = {
             area: 'portCd',
             page: page,
             size: size,
+            keyword: data.portAirptCd,
             keywordName: data.regnNm,
+            cntyCd: data.cntyCd,
         })
     },
 
     getCntyCdLst: (data: any, page: number, size: number) => {
-        return api.get(`/ptl-com/comn/cnty-cds?page=${page}&size=${size}`, {
-            params: data,
+        return utils.getCode({
+            area: 'cntyCd',
+            page: page,
+            size: size,
+            keyword: data.cntyCd,
+            keywordName: data.cntyNm,
         })
     },
     getCurrCdLst: (data: any, page: number, size: number) => {
-        return api.get(`/ptl-com/comn/curr-cds?page=${page}&size=${size}`, {
-            params: data,
+        return utils.getCode({
+            area: 'currCd',
+            page: page,
+            size: size,
+            keyword: data.currCd,
+            keywordName: data.currNm,
         })
     },
     getBnkCdLst: (data: any, page: number, size: number) => {
-        return api.get(`/ptl-com/comn/comn-cds?comnCd=CO012&page=${page}&size=${size}`, {
-            params: data,
+        return utils.getCode({
+            area: 'bnkCd',
+            page: page,
+            size: size,
+            keyword: data.cdVldVal,
+            keywordName: data.cdVldValNm,
+        })
+    },
+    getPortAirptCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'portAirptCd',
+            page: page,
+            size: size,
+            keyword: data.portAirptCd,
+            keywordName: data.regnNm,
+            cntyCd: data.cntyCd,
+        })
+    },
+    getAirptCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'airptCd',
+            page: page,
+            size: size,
+            keyword: data.portAirptCd,
+            keywordName: data.regnNm,
+            cntyCd: data.cntyCd,
+        })
+    },
+    getCoCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'airptCd',
+            page: page,
+            size: size,
+            keyword: data.tin,
+            keywordName: data.coNm,
+        })
+    },
+    getPrcssStatCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'prcssStatCd',
+            page: page,
+            size: size,
+            keyword: data.item,
+            keywordName: data.prcssStatCdNm,
+        })
+    },
+    getOrgCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'orgCd',
+            page: page,
+            size: size,
+            keyword: data.orgCd,
+            keywordName: data.orgNm,
         })
     },
 }
@@ -253,15 +315,46 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
 export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
     id: 'form',
     schema: {
-        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd', required: true },
         regnNm: { type: 'text', label: 'L_REGN_NM' },
+        regnCd: { type: 'text', label: 'L_REGN_CD' },
     },
 }
 
 export const SCHEMA_FORM_PORT_CD: FormSchemaType = {
     id: 'form',
     schema: {
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd', required: true },
         regnNm: { type: 'text', label: 'L_REGN_NM' },
+        portAirptCd: { type: 'text', label: 'L_PORT_CD' },
+    },
+}
+
+export const SCHEMA_FORM_AIRPT_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
+        regnNm: { type: 'text', label: 'L_REGN_NM' },
+        portAirptCd: { type: 'text', label: 'L_PORT_CD' },
+    },
+}
+
+export const SCHEMA_FORM_PORT_AIRPT_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
+        portAirptTpCd: {
+            type: 'select',
+            label: 'L_PORT_AIRPT_TP',
+            required: true,
+            select: true,
+            options: [
+                { label: 'L_PORT', value: 'PORT' },
+                { label: 'L_AIRPT', value: 'AIRPT' },
+            ],
+        },
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
+        regnNm: { type: 'text', label: 'L_REGN_NM' },
+        portAirptCd: { type: 'text', label: 'L_PORT_AIRPT_CD' },
     },
 }
 
@@ -278,5 +371,39 @@ export const SCHEMA_FORM_BNK_CD: FormSchemaType = {
     schema: {
         cdVldVal: { type: 'text', label: 'L_BNK_CD' },
         cdVldValNm: { type: 'text', label: 'L_BNK_NM' },
+    },
+}
+
+export const SCHEMA_FORM_CO_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
+        tin: { type: 'text', label: 'L_TIN' },
+        coNm: { type: 'text', label: 'L_CO_NM' },
+        coTpCd: {
+            type: 'select',
+            label: 'L_CO_PT',
+            required: true,
+            select: true,
+            options: [
+                { label: 'L_CO', value: 'C' },
+                { label: 'L_PSN', value: 'P' },
+            ],
+        },
+    },
+}
+
+export const SCHEMA_FORM_PRCSS_STAT_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
+        item: { type: 'text', label: 'L_PRCSS_STAT_CD' },
+        prcssStatCdNm: { type: 'text', label: 'L_PRCSS_STAT' },
+    },
+}
+
+export const SCHEMA_FORM_ORG_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
+        orgCd: { type: 'text', label: 'L_ORG_CD' },
+        orgNm: { type: 'text', label: 'L_ORG_NM' },
     },
 }

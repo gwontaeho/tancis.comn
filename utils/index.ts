@@ -7,6 +7,9 @@ export const envs = {
 }
 
 export const utils = {
+    setValuesFromParams: (form: any, params: any) => {
+        form.setValues(params, false)
+    },
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second)
     },
@@ -44,10 +47,9 @@ export const utils = {
         page?: number
         size?: number
         langCd?: string
+        cntyCd?: string
     }) => {
-        const { comnCd, area, page = 0, size, keyword = '', keywordName = '', langCd } = arg
-
-        //console.log(area)
+        const { comnCd, area, page = 0, size, keyword = '', keywordName = '', langCd = '', cntyCd = '' } = arg
 
         let url = ''
         switch (area) {
@@ -55,22 +57,37 @@ export const utils = {
                 url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`
                 break
             case 'cityCd':
-                url = `/ptl-com/api/v1/comn/city-cds?cntyCd=${keyword}&regnNm=${keywordName}`
+                url = `/ptl-com/api/v1/comn/city-cds?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`
                 break
             case 'portCd':
-                url = `/ptl-com/api/v1/comn/port-cds?regnNm=${keywordName}`
+                url = `/ptl-com/api/v1/comn/port-cds?portAirptCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`
                 break
             case 'cntyCd':
-                url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}`
+                url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}&cntyNm=${keywordName}`
                 break
             case 'currCd':
-                url = `/ptl-com/api/v1/comn/curr-cds?currCd=${keyword}`
+                url = `/ptl-com/api/v1/comn/curr-cds?currCd=${keyword}&currNm=${keywordName}`
                 break
             case 'bnkCd':
-                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}`
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`
+                break
+            case 'portAirptCd':
+                url = `/ptl-com/api/v1/comn/port-airpt-cds?portAirptTpCd=AIRPT&portAirptCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`
+                break
+            case 'airptCd':
+                url = `/ptl-com/api/v1/comn/airpt-cds?portAirptCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`
+                break
+            case 'coCd':
+                url = `/ptl-com/api/v1/comn/cos?coTpCd=C&tin=${keyword}&coNm=${keywordName}`
+                break
+            case 'prcssStatCd':
+                url = `/ptl-com/api/v1/comn/prcss-stat-cds?bsopPrcssStatCd=COM_9000&item=${keyword}&prcssStatCdNm=${keywordName}`
+                break
+            case 'orgCd':
+                url = `/ptl-com/api/v1/comn/orgs?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`
                 break
             default:
-                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}`
+                url = `/ptl-com/api/v1/comn/comn-cds?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`
                 break
         }
 
@@ -93,6 +110,16 @@ export const utils = {
                 return code.currNm
             case 'bnkCd':
                 return code.cdVldValNm
+            case 'portAirptCd':
+                return code.regnNm
+            case 'airptCd':
+                return code.regnNm
+            case 'coCd':
+                return code.coNm
+            case 'prcssStatCd':
+                return code.itemNm
+            case 'orgCd':
+                return code.orgNm
             default:
                 return code.cdVldValNm
         }
@@ -111,6 +138,16 @@ export const utils = {
                 return code.currCd
             case 'bnkCd':
                 return code.cdVldVal
+            case 'portAirptCd':
+                return code.portAirptCd
+            case 'airptCd':
+                return code.portAirptCd
+            case 'coCd':
+                return code.tin
+            case 'prcssStatCd':
+                return code.item
+            case 'orgCd':
+                return code.orgCd
             default:
                 return code.cdVldVal
         }
