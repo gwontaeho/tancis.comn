@@ -1,112 +1,131 @@
-import axios from 'axios'
-import { useWijmo, useToast } from '@/comn/hooks'
-import { Group, Page } from '@/comn/components'
-import { Wijmo } from '@/comn/components'
+import axios from "axios";
+import { useWijmo, useToast } from "@/comn/hooks";
+import { Group, Page } from "@/comn/components";
+import { Wijmo } from "@/comn/components";
 
-import lodash from 'lodash'
-import { v4 as uuid } from 'uuid'
-import { utils } from '@/comn/utils'
-import { useEffect } from 'react'
+import lodash from "lodash";
+import { v4 as uuid } from "uuid";
+import { utils } from "@/comn/utils";
+import { useEffect } from "react";
 
 const instance = axios.create({
-    baseURL: 'http://183.107.31.131:8000/template',
-})
+    baseURL: "http://183.107.31.131:8000/template",
+});
 
 export const APIS = {
-    getComponentGroups: (page: any, size: any) => instance.get('/com/componentGroups', { params: { page, size } }),
+    getComponentGroups: (page: any, size: any) => instance.get("/com/componentGroups", { params: { page, size } }),
     getComponentGroup: (id: any) => instance.get(`/com/componentGroups/${id}`),
     getComponents: (grpId: any) => instance.get(`/com/componentGroups/${grpId}/components`),
-    createComponentGroup: (data: any) => instance.post('/com/componentGroups', data),
-}
+    createComponentGroup: (data: any) => instance.post("/com/componentGroups", data),
+};
 
 const schema: any = {
-    id: 'grid',
-    options: { checkbox: true, pagination: 'in', add: true, remove: true },
+    id: "grid",
+    options: { checkbox: true, pagination: "in", add: true, remove: true },
     head: [
         {
             cells: [
-                { header: 'id', binding: 'id', colspan: 3 },
-                { header: 'a', binding: 'a' },
-                { header: 'b', binding: 'b' },
-                { header: 'c', binding: 'c' },
+                { header: "id", binding: "id", colspan: 3 },
+                { header: "a", binding: "a" },
+                { header: "b", binding: "b" },
+                { header: "c", binding: "c" },
             ],
         },
-        { cells: [{ header: 'd', binding: 'd' }] },
-        { cells: [{ header: 'e', binding: 'e' }] },
+        { cells: [{ header: "d", binding: "d" }] },
+        { cells: [{ header: "e", binding: "e" }] },
     ],
     body: [
         {
             colspan: 3,
             cells: [
                 {
-                    binding: 'id',
+                    colspan: 3,
+                    binding: "id",
                 },
                 {
-                    binding: 'a',
+                    binding: "a",
+                    type: "select",
+                    area: "comnCd",
+                    comnCd: "CAG_0018",
+                    width: 200,
+                    isReadOnly: true,
+                    // render: (data: any) => {
+                    //     console.log(data);
+                    //     return <span>asd</span>;
+                    // },
+                    onClick: (data: any) => {
+                        console.log(data);
+                    },
                 },
                 {
-                    binding: 'b',
+                    binding: "b",
+                    type: "date",
+                    width: 200,
                 },
                 {
-                    binding: 'c',
+                    binding: "c",
+                    type: "radio",
+                    area: "comnCd",
+                    comnCd: "CAG_0018",
+                    width: 500,
                 },
             ],
         },
         {
-            cells: [{ binding: 'd' }],
+            cells: [{ binding: "d" }],
         },
         {
-            cells: [{ binding: 'e' }],
+            cells: [{ binding: "e" }],
         },
     ],
-}
-
+};
+// area: "comnCd", comnCd: "CAG_0018"
 const schema2: any = {
-    id: 'grid2',
-    options: { checkbox: true, pagination: 'out', add: true, remove: true },
+    id: "grid2",
+    options: { checkbox: true, pagination: "out", add: true, remove: true },
     head: [
-        { cells: [{ header: 'a', binding: 'id', colspan: 3 }, { header: 'a' }, { header: 'b' }, { header: 'c' }] },
-        { cells: [{ header: 'd', binding: 'a' }] },
-        { cells: [{ header: 'e', binding: 'b' }] },
+        { cells: [{ header: "a", binding: "id", colspan: 3 }, { header: "a" }, { header: "b" }, { header: "c" }] },
+        { cells: [{ header: "d", binding: "a" }] },
+        { cells: [{ header: "e", binding: "b" }] },
     ],
     body: [
         {
             colspan: 3,
-            cells: [{ binding: 'id', colspan: 3 }],
+            cells: [{ binding: "id", colspan: 3 }],
         },
         {
-            cells: [{ binding: 'a' }],
+            cells: [{ binding: "a" }],
         },
         {
-            cells: [{ binding: 'b' }],
+            cells: [{ binding: "b" }],
         },
     ],
-}
+};
 
-const data = utils.getMockData({ totCnt: 34 })
+const data = utils.getMockData({ totCnt: 34 });
 
 export const SampleWijmo = () => {
     const grid1 = useWijmo({
         defaultSchema: schema,
-    })
+    });
     const grid2 = useWijmo({
         defaultSchema: schema2,
-    })
+    });
 
-    const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size })
+    const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
     useEffect(() => {
-        test()
-    }, [])
+        // test();
+    }, []);
 
-    const test = async () => {
-        try {
-            const a = await axios.get('http://localhost:4000/api/test')
-            console.log(a)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const test = async () => {
+    //     try {
+    //         const a = await axios.get("http://localhost:4000/api/test");
+    //         console.log(a);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     return (
         <Page>
@@ -122,7 +141,7 @@ export const SampleWijmo = () => {
             </Group>
 
             <Group>
-                {/* <Wijmo {...grid2.grid} data={grid2Data} /> */}
+                <Wijmo {...grid2.grid} data={grid2Data} />
                 {/* <div className="space-x-2">
                     <button onClick={() => console.log(getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(getChecked())}>check 가져오기</button>
@@ -134,5 +153,5 @@ export const SampleWijmo = () => {
                 </div> */}
             </Group>
         </Page>
-    )
-}
+    );
+};

@@ -1,24 +1,76 @@
-.wj-flexgrid * {
+.wj-flexgrid,
+.wj-flexgrid *:not(.input) {
     border: 0;
+    color: var(--tancis-text);
 }
 
-.wj-flexgrid .cell-changed {
-    background-color: lightpink !important;
+.wj-flexgrid {
+    border-radius: 0;
+    border-top: 1px solid var(--tancis-border) !important;
+    border-left: 1px solid var(--tancis-border) !important;
 }
 
-.wj-flexgrid .cell-added {
-    background-color: lightgreen !important;
+/* checkbox section */
+.wj-topleft .wj-cell,
+.wj-rowheaders .wj-cell {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-right: 1px solid var(--tancis-border) !important;
+    border-bottom: 1px solid var(--tancis-border) !important;
+    background-color: var(--tancis-header);
 }
 
+/* checkbox */
+.wj-topleft .wj-cell *,
+.wj-rowheaders .wj-cell * {
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: scale(1) !important;
+}
+
+/* header * */
+.wj-colheaders * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* header cell */
+.wj-colheaders .wj-cell {
+    border-right: 1px solid var(--tancis-border) !important;
+    border-bottom: 1px solid var(--tancis-border) !important;
+    background-color: var(--tancis-header);
+}
+
+/* body cell */
 .wj-cells .wj-cell {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     padding: 0 4px 0 4px;
     min-height: 40px !important;
-    text-align: start;
+    border-right: 1px solid var(--tancis-border) !important;
+    border-bottom: 1px solid var(--tancis-border) !important;
+    background-color: var(--tancis-card);
 }
 
-.wj-cell > div {
-    display: block;
+/* body cell div */
+.wj-cells .wj-cell div {
+    display: flex !important;
     width: 100% !important;
+}
+
+/* changed cell */
+.wj-flexgrid .cell-changed {
+    background-color: lightgreen;
+}
+
+/* added cell */
+.wj-flexgrid .cell-added {
+    background-color: lightgreen;
+}
+
+/* marquee */
+.wj-flexgrid .wj-marquee {
+    transition: 0.3s;
 }

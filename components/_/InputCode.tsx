@@ -1,20 +1,20 @@
-import React from 'react'
-import lodash from 'lodash'
-import { Control } from 'react-hook-form'
-import { usePopup } from '@/comn/hooks'
-import { utils } from '@/comn/utils'
-import { Icon } from '@/comn/components'
-import { ControllerWrapper } from '@/comn/components/_'
+import React from "react";
+import lodash from "lodash";
+import { Control } from "react-hook-form";
+import { usePopup } from "@/comn/hooks";
+import { utils } from "@/comn/utils";
+import { Icon } from "@/comn/components";
+import { ControllerWrapper } from "@/comn/components/_";
 
 type InputCodeProps = {
-    name?: string
-    value?: any
-    comnCd?: string
-    area?: string
-    maxLength?: number
-    control?: Control
-    onChange?: (...args: any) => void
-}
+    name?: string;
+    value?: any;
+    comnCd?: string;
+    area?: string;
+    maxLength?: number;
+    control?: Control;
+    onChange?: (...args: any) => void;
+};
 
 const PopupUrls: { [id: string]: string } = {
     comnCd: `/comn/smpl/pages/comnCdPpup`,
@@ -28,67 +28,71 @@ const PopupUrls: { [id: string]: string } = {
     coCd: `/comn/smpl/pages/coCdPpup`,
     prcssStatCd: `/comn/smpl/pages/prcssStatPpup`,
     orgCd: `/comn/smpl/pages/orgCdPpup`,
-}
+};
 
 const InputCodeMain = (props: InputCodeProps) => {
-    const { openPopup } = usePopup()
-    const keywordInput = React.useRef<HTMLInputElement>(null)
-    const LabelInput = React.useRef<HTMLInputElement>(null)
+    const { openPopup } = usePopup();
+    const keywordInput = React.useRef<HTMLInputElement>(null);
+    const LabelInput = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
-        if (!props.value) return
-        if (keywordInput.current?.value === props.value) return
-        getComnCd(props.value)
-    }, [props.value])
+        if (!props.value) return;
+        if (keywordInput.current?.value === props.value) return;
+        getComnCd(props.value);
+    }, [props.value]);
 
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.value) {
-            if (LabelInput.current) LabelInput.current.value = ''
-            return
+            if (LabelInput.current) LabelInput.current.value = "";
+            return;
         }
-        getComnCd(e.target.value)
-    }, 500)
+        getComnCd(e.target.value);
+    }, 500);
 
     const getComnCd = async (keyword: string) => {
-        if (!props.area && !props.comnCd) return
+        if (!props.area && !props.comnCd) return;
         if (props.maxLength !== undefined && keyword.length < props.maxLength) {
-            if (LabelInput.current) LabelInput.current.value = ''
-            return
+            if (LabelInput.current) LabelInput.current.value = "";
+            return;
         }
 
         try {
             const {
                 data: { content },
-            } = await utils.getCode({ comnCd: props.comnCd, area: props.area, size: 1, keyword })
+            } = await utils.getCode({ comnCd: props.comnCd, area: props.area, size: 1, keyword });
 
             if (!content[0]) {
-                if (LabelInput.current) LabelInput.current.value = ''
-                return
+                if (LabelInput.current) LabelInput.current.value = "";
+                return;
             }
 
-            const label = utils.getCodeLabel(props.area, content[0])
-            const code = utils.getCodeValue(props.area, content[0])
+            const label = utils.getCodeLabel(props.area, content[0]);
+            const code = utils.getCodeValue(props.area, content[0]);
 
-            if (LabelInput.current) LabelInput.current.value = label
-            if (keywordInput.current) keywordInput.current.value = code
+            if (LabelInput.current) LabelInput.current.value = label;
+            if (keywordInput.current) keywordInput.current.value = code;
 
-            if (!props.onChange) return
-            props.onChange(code)
+            console.log(props.onChange);
+
+            console.log(content[0]);
+
+            if (!props.onChange) return;
+            props.onChange(code);
         } catch (error) {}
-    }
+    };
 
     const handleClickSearch = () => {
         openPopup({
             params: { comnCd: props.comnCd },
-            url: PopupUrls[props.area || 'comnCd'],
+            url: PopupUrls[props.area || "comnCd"],
             callback: (data: any) => {
-                if (LabelInput.current) LabelInput.current.value = data.label
-                if (keywordInput.current) keywordInput.current.value = data.code
-                if (!props.onChange) return
-                props.onChange(data.code)
+                if (LabelInput.current) LabelInput.current.value = data.label;
+                if (keywordInput.current) keywordInput.current.value = data.code;
+                if (!props.onChange) return;
+                props.onChange(data.code);
             },
-        })
-    }
+        });
+    };
 
     return (
         <div className="w-full flex">
@@ -103,8 +107,8 @@ const InputCodeMain = (props: InputCodeProps) => {
             </button>
             <input ref={LabelInput} readOnly className="input rounded-l-none flex-[2]" />
         </div>
-    )
-}
+    );
+};
 
 export const InputCode = (props: InputCodeProps) => {
     if (props.control && props.name)
@@ -112,7 +116,7 @@ export const InputCode = (props: InputCodeProps) => {
             <ControllerWrapper {...props} control={props.control} name={props.name}>
                 <InputCodeMain />
             </ControllerWrapper>
-        )
+        );
 
-    return <InputCodeMain {...props} />
-}
+    return <InputCodeMain {...props} />;
+};
