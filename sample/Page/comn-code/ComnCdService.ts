@@ -315,7 +315,7 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
 export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
     id: 'form',
     schema: {
-        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd', required: true },
         regnNm: { type: 'text', label: 'L_REGN_NM' },
         regnCd: { type: 'text', label: 'L_REGN_CD' },
     },
@@ -324,7 +324,7 @@ export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
 export const SCHEMA_FORM_PORT_CD: FormSchemaType = {
     id: 'form',
     schema: {
-        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
+        cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd', required: true },
         regnNm: { type: 'text', label: 'L_REGN_NM' },
         portAirptCd: { type: 'text', label: 'L_PORT_CD' },
     },

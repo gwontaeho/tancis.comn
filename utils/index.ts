@@ -7,6 +7,9 @@ export const envs = {
 }
 
 export const utils = {
+    setValuesFromParams: (form: any, params: any) => {
+        form.setValues(params, false)
+    },
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second)
     },
@@ -46,7 +49,7 @@ export const utils = {
         langCd?: string
         cntyCd?: string
     }) => {
-        const { comnCd, area, page = 0, size, keyword = '', keywordName = '', langCd, cntyCd } = arg
+        const { comnCd, area, page = 0, size, keyword = '', keywordName = '', langCd = '', cntyCd = '' } = arg
 
         let url = ''
         switch (area) {

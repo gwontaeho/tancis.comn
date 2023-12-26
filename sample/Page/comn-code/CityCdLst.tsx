@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Wijmo } from '@/comn/components'
+import { utils } from '@/comn/utils'
 import { Page, Group, Layout, Button } from '@/comn/components'
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
+import { useForm, useFetch, useWijmo, useCondition, usePopup, FormValuesType } from '@/comn/hooks'
 import { APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from './ComnCdService'
 
 export const CityCodeList = (props: any) => {
@@ -11,8 +12,7 @@ export const CityCodeList = (props: any) => {
     const { condition } = useCondition()
     const form = useForm({ defaultSchema: SCHEMA_FORM_CITY_CD, values: condition })
     const [params] = useSearchParams()
-    const { close, postMessage } = usePopup()
-    const { theme } = useTheme()
+    const { close, postMessage, getParams } = usePopup()
     const grid = useWijmo({
         defaultSchema: SCHEMA_GRID_CITY_CD((data: any) => {
             postMessage({ code: data.regnCd, label: data.regnNm })
@@ -20,26 +20,24 @@ export const CityCodeList = (props: any) => {
         }),
     })
 
-    const comnCd = params.get('comnCd')
-    const fetch_Srch = useFetch({
+    const fetch_getCityCdLst = useFetch({
         api: () => APIS.getCityCdLst(form.getValues(), grid.page, grid.size),
         enabled: form.isSubmitted,
         key: [grid.page, grid.size],
     })
 
-    const onSubmit = () => {
-        console.log(form.getValues())
-        fetch_Srch.fetch()
+    const onSubmit_CityCdSrch = () => {
+        //fetch_getCityCdLst.fetch()
+        console.log(form.isSubmitted)
     }
-
     useEffect(() => {
-        form.setValues({ comnCd: comnCd, langCd: theme.lang.toUpperCase() })
+        utils.setValuesFromParams(form, getParams())
     }, [])
 
     return (
         <Page>
             <Page.Header title={t('T_CITY_CD_LST')} description={t('T_CITY_CD_LST')} />
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={() => false}>
                 <Group>
                     <Group.Body>
                         <Group.Row>
@@ -61,13 +59,17 @@ export const CityCodeList = (props: any) => {
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="submit">{t('B_SRCH')}</Button>
+                            <Button type="button" onClick={form.handleSubmit(onSubmit_CityCdSrch)}>
+                                {t('B_SRCH')}
+                            </Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
 
-            <Group>{fetch_Srch.data && <Wijmo {...grid.grid} data={fetch_Srch.data} />}</Group>
+            <Group>
+                <Wijmo {...grid.grid} data={fetch_getCityCdLst.data} />
+            </Group>
             <Layout.Right>
                 <Button onClick={close}>{t('B_CLS')}</Button>
             </Layout.Right>
