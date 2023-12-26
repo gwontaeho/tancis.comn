@@ -11,7 +11,7 @@
         --tancis-background: #edf2f9;
     }
 
-    :root[class~='dark'] {
+    :root[class~="dark"] {
         --tancis-text: #b6c1d2;
         --tancis-card: #121e2d;
         --tancis-border: #344050;

@@ -64,6 +64,8 @@ const InputCodeMain = (props: InputCodeProps) => {
             if (LabelInput.current) LabelInput.current.value = utils.getCodeLabel(props.area, content[0])
             if (keywordInput.current) keywordInput.current.value = utils.getCodeValue(props.area, content[0])
 
+            console.log(content[0])
+
             if (!props.onChange) return
             props.onChange(content[0].cdVldVal)
         } catch (error) {}
