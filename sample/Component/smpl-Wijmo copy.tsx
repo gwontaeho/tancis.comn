@@ -23,26 +23,21 @@ const schema: any = {
     id: 'grid',
     options: { checkbox: true, pagination: 'in', add: true, remove: true },
     head: [
-        {
-            cells: [
-                { header: 'id', binding: 'id', colspan: 3 },
-                { header: 'a', binding: 'a' },
-                { header: 'b', binding: 'b' },
-                { header: 'c', binding: 'c' },
-            ],
-        },
-        { cells: [{ header: 'd', binding: 'd' }] },
-        { cells: [{ header: 'e', binding: 'e' }] },
+        { cells: [{ header: 'aaa', binding: 'id', colspan: 3 }, { header: 'a' }, { header: 'b' }, { header: 'c' }] },
+        { cells: [{ header: 'd', binding: 'a' }] },
+        { cells: [{ header: 'e', binding: 'b' }] },
     ],
     body: [
         {
             colspan: 3,
+
             cells: [
                 {
+                    colspan: 3,
                     binding: 'id',
                 },
                 {
-                    binding: 'a',
+                    binding: 'g',
                 },
                 {
                     binding: 'b',
@@ -53,10 +48,10 @@ const schema: any = {
             ],
         },
         {
-            cells: [{ binding: 'd' }],
+            cells: [{ binding: 'a' }],
         },
         {
-            cells: [{ binding: 'e' }],
+            cells: [{ binding: 'd', type: 'date' }],
         },
     ],
 }
@@ -122,7 +117,7 @@ export const SampleWijmo = () => {
             </Group>
 
             <Group>
-                {/* <Wijmo {...grid2.grid} data={grid2Data} /> */}
+                <Wijmo {...grid2.grid} data={grid2Data} />
                 {/* <div className="space-x-2">
                     <button onClick={() => console.log(getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(getChecked())}>check 가져오기</button>

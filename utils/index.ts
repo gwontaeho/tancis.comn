@@ -19,9 +19,11 @@ export const utils = {
                 .fill(null)
                 .map((_, i) => ({
                     id: new Date().getTime() + i,
-                    a: Math.random() * 1000,
-                    b: Math.random() * 1000,
-                    d: dayjs().format('YYYY-MM-DD'),
+                    a: 'a' + Math.random() * 1000,
+                    b: 'b' + Math.random() * 1000,
+                    c: 'c' + Math.random() * 1000,
+                    d: 'd' + Math.random() * 1000,
+                    e: 'e' + Math.random() * 1000,
                 })),
         }
     },

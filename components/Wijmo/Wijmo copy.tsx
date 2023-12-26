@@ -65,7 +65,7 @@ export const Wijmo = (props: wijmoProps) => {
         // 1. initialize
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true
         if (schema.options?.checkbox) new Selector(gridRef.current.control)
-        // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body)
+        // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
 
         // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
         //     const a = gridRef.current.control.hitTest(e);
@@ -114,16 +114,12 @@ export const Wijmo = (props: wijmoProps) => {
     }
 
     const handleFormatItem = (m: any, e: any) => {
-        if (!e.cell.getElementsByClassName('cell')[0]) return
-
+        if (m.cells !== e.panel) return
         const cellType = e.getRow().dataItem['__type']
         if (cellType === 'added') return e.cell.classList.add('cell-added')
         const cellBinding = e.getColumn().binding
         const cellValue = e.getRow().dataItem[cellBinding]
         const cellIndex = e.getRow().dataItem['__index']
-
-        // console.log(e.cell.getElementsByClassName('cell')[0])
-        console.log(e.cell.getElementsByClassName('cell')[0].dataset.binding)
         const originValue = contentRef.current?.find((origin: any) => origin.__index === cellIndex)[cellBinding]
         if (cellValue !== originValue) return e.cell.classList.add('cell-changed')
     }
@@ -179,17 +175,17 @@ export const Wijmo = (props: wijmoProps) => {
         })
     }
 
-    const layoutDefinition = (body: WijmoBodyType) => {
-        return body.map((_) => {
-            return {
-                ..._,
-                cells: _.cells.map((__) => {
-                    const { type, onClick, ...___ } = __
-                    return { ...___ }
-                }),
-            }
-        })
-    }
+    // const layoutDefinition = (body: WijmoBodyType) => {
+    //     return body.map((_) => {
+    //         return {
+    //             ..._,
+    //             cells: _.cells.map((__) => {
+    //                 const { type, onClick, ...___ } = __;
+    //                 return { ...___ };
+    //             }),
+    //         };
+    //     });
+    // };
 
     const handleExport = () => {
         wjcGridXlsx.FlexGridXlsxConverter.saveAsync(
@@ -240,13 +236,8 @@ export const Wijmo = (props: wijmoProps) => {
                                             cellType="Cell"
                                             template={(ctx: any) => {
                                                 const { __index, __type, ...data } = ctx.item
-
                                                 return (
-                                                    <div
-                                                        className="cell"
-                                                        data-binding={cellProps.binding}
-                                                        onClick={() => cellProps.onClick?.(data)}
-                                                    >
+                                                    <div onClick={() => cellProps.onClick?.(data)}>
                                                         {ctx.item[cellProps.binding]}
                                                     </div>
                                                 )
@@ -260,21 +251,13 @@ export const Wijmo = (props: wijmoProps) => {
                                                 const handleChange = (e: any) => {
                                                     ctx.value = e.target.value
                                                 }
-                                                console.log(ctx)
                                                 return (
-                                                    <div
-                                                        onMouseDown={(e) => {
-                                                            e.preventDefault()
-                                                            // e.stopPropagation()
-                                                        }}
-                                                    >
-                                                        <FormControl
-                                                            size="full"
-                                                            type={type}
-                                                            onChange={handleChange}
-                                                            defaultValue={value}
-                                                        />
-                                                    </div>
+                                                    <FormControl
+                                                        size="full"
+                                                        type={type}
+                                                        onChange={handleChange}
+                                                        defaultValue={value}
+                                                    />
                                                 )
                                             }}
                                         />
