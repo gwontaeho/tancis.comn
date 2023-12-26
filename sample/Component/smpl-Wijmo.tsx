@@ -64,7 +64,6 @@ const schema: any = {
                 },
                 {
                     binding: "c",
-
                     type: "radio",
                     area: "comnCd",
                     comnCd: "CAG_0018",

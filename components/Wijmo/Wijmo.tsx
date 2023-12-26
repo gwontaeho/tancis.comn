@@ -13,7 +13,7 @@ import { Selector } from "@grapecity/wijmo.grid.selector";
 import { setLicenseKey } from "@grapecity/wijmo";
 
 import { Pagination, Button, Icon, FormControl } from "@/comn/components";
-import { WijmoSchemaType, WijmoHeadType, WijmoBodyType, useTheme } from "@/comn/hooks";
+import { WijmoSchemaType, TWijmoHead, useTheme } from "@/comn/hooks";
 import dayjs from "dayjs";
 
 setLicenseKey(
@@ -82,6 +82,10 @@ export const Wijmo = (props: WijmoProps) => {
         // });
 
         _setInitialize(true);
+
+        return () => {
+            gridRef.current = undefined;
+        };
     }, []);
 
     useEffect(() => {
@@ -115,11 +119,8 @@ export const Wijmo = (props: WijmoProps) => {
 
     const handleFormatItem = (m: any, e: any) => {
         if (!e.cell.getElementsByClassName("cell")[0]) return;
-
         const cellType = e.getRow().dataItem["__type"];
-
         if (cellType === "added") return e.cell.classList.add("cell-added");
-
         const cellBinding = e.cell.getElementsByClassName("cell")[0].dataset.binding;
 
         const cellValue = e.getRow().dataItem[cellBinding];
@@ -159,16 +160,18 @@ export const Wijmo = (props: WijmoProps) => {
     };
 
     const handleRemove = () => {
-        const checked = gridRef.current.control.rows
-            .filter((r: any) => r.isSelected)
-            .map((r: any) => r.dataIndex)
+        const checked = (gridRef.current.control.rows as any[])
+            .filter((r) => r.isSelected)
+            .map((r) => r.dataIndex)
+            .filter((d, i, a) => a.indexOf(d) === i)
             .sort((a: number, b: number) => b - a);
+
         checked.forEach((index: number) => {
             gridRef.current.control.collectionView.removeAt(index);
         });
     };
 
-    const headerLayoutDefinition = (head: WijmoHeadType) => {
+    const headerLayoutDefinition = (head: TWijmoHead) => {
         return head.map((_) => {
             return {
                 ..._,
@@ -250,12 +253,6 @@ export const Wijmo = (props: WijmoProps) => {
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
-                                                const { binding, ...rest } = cellProps;
-                                                console.log(cellProps);
-                                                const { item, value } = cell;
-                                                const handleChange = (e: any) => {
-                                                    cell.value = e.target === undefined ? e : e.target.value;
-                                                };
                                                 return (
                                                     <div
                                                         className="w-full flex"
@@ -274,9 +271,17 @@ export const Wijmo = (props: WijmoProps) => {
                                                         <FormControl
                                                             size="full"
                                                             lang={lang}
-                                                            {...rest}
-                                                            onChange={handleChange}
-                                                            defaultValue={value}
+                                                            type={cellProps.type}
+                                                            name={cellProps.key}
+                                                            defaultValue={cell.value}
+                                                            area={cellProps.area}
+                                                            comnCd={cellProps.comnCd}
+                                                            onChange={(event) => {
+                                                                cell.value =
+                                                                    event.target === undefined
+                                                                        ? event
+                                                                        : event.target.value;
+                                                            }}
                                                         />
                                                     </div>
                                                 );
