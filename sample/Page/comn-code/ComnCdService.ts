@@ -24,6 +24,15 @@ export const APIS = {
         })
     },
 
+    getPortCdLst: (data: any, page: number, size: number) => {
+        return utils.getCode({
+            area: 'portCd',
+            page: page,
+            size: size,
+            keywordName: data.regnNm,
+        })
+    },
+
     getCntyCdLst: (data: any, page: number, size: number) => {
         return api.get(`/ptl-com/comn/cnty-cds?page=${page}&size=${size}`, {
             params: data,
@@ -132,6 +141,36 @@ export const SCHEMA_GRID_CITY_CD = (clickEvent: any): WijmoSchemaType => {
     }
 }
 
+export const SCHEMA_GRID_PORT_CD = (clickEvent: any): WijmoSchemaType => {
+    return {
+        id: 'grid',
+        options: { pagination: 'out', isReadOnly: true },
+        head: [
+            { cells: [{ header: 'L_PORT_CD', binding: 'portAirptCd' }] },
+            { cells: [{ header: 'L_REGN_NM', binding: 'regnNm' }] },
+            { cells: [{ header: 'L_CNTY_CD', binding: 'cntyCd' }] },
+        ],
+        body: [
+            {
+                cells: [
+                    {
+                        binding: 'portAirptCd',
+                        onClick: (ctx: any) => {
+                            clickEvent(ctx)
+                        },
+                    },
+                ],
+            },
+            {
+                cells: [{ binding: 'regnNm' }],
+            },
+            {
+                cells: [{ binding: 'cntyCd' }],
+            },
+        ],
+    }
+}
+
 export const SCHEMA_GRID_CURR_CD = (clickEvent: any): WijmoSchemaType => {
     return {
         id: 'grid',
@@ -215,6 +254,13 @@ export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
     id: 'form',
     schema: {
         cntyCd: { type: 'code', label: 'L_CNTY_CD', area: 'cntyCd' },
+        regnNm: { type: 'text', label: 'L_REGN_NM' },
+    },
+}
+
+export const SCHEMA_FORM_PORT_CD: FormSchemaType = {
+    id: 'form',
+    schema: {
         regnNm: { type: 'text', label: 'L_REGN_NM' },
     },
 }

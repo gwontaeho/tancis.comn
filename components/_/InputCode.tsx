@@ -22,6 +22,7 @@ const PopupUrls: { [id: string]: string } = {
     cntyCd: `/comn/smpl/pages/cntyCdPpup`,
     bankCd: `/comn/smpl/pages/bankCdPpup`,
     currCd: `/comn/smpl/pages/currCdPpup`,
+    portCd: `/comn/smpl/pages/portCdPpup`,
 }
 
 const InputCodeMain = (props: InputCodeProps) => {
@@ -80,7 +81,7 @@ const InputCodeMain = (props: InputCodeProps) => {
     }
 
     return (
-        <div className="flex">
+        <div className="w-full flex">
             <input
                 ref={keywordInput}
                 className="input rounded-r-none flex-1"
