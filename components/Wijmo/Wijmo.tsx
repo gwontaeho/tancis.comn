@@ -1,7 +1,7 @@
 import "@grapecity/wijmo.styles/wijmo.css";
 import "./Wijmo.css";
-import { flushSync } from "react-dom";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { v4 as uuid } from "uuid";
@@ -11,7 +11,6 @@ import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
 import { Selector } from "@grapecity/wijmo.grid.selector";
 import { setLicenseKey } from "@grapecity/wijmo";
-import { utils } from "@/comn/utils";
 
 import { Pagination, Button, Icon, FormControl } from "@/comn/components";
 import { WijmoSchemaType, TWijmoHead, useTheme } from "@/comn/hooks";
@@ -49,7 +48,6 @@ export const Wijmo = (props: WijmoProps) => {
     } = useTheme();
 
     const [_initialize, _setInitialize] = useState(false);
-    const [_codes, _setCodes] = useState<any[]>([]);
 
     const [_body] = useState(() =>
         schema.body.map((_) => {
@@ -62,31 +60,6 @@ export const Wijmo = (props: WijmoProps) => {
             };
         }),
     );
-
-    useEffect(() => {
-        const codes = _body
-            .flatMap(({ cells }) => cells)
-            .map(({ area, comnCd }) => ({ area, comnCd }))
-            .filter(({ area, comnCd }, i, a) => {
-                return area && a.findIndex((v) => v.area === area && v.comnCd === comnCd) === i;
-            });
-
-        (async () => {
-            try {
-                const responses = await Promise.all(codes.map((args) => utils.getCode(args)));
-                const newCodes = codes.map((_, i) => {
-                    return {
-                        ..._,
-                        status: responses[i].status,
-                        data: responses[i].data,
-                        options: utils.getCodeOptions(_.area, responses[i].data.content),
-                    };
-                });
-                console.log(newCodes);
-                _setCodes(newCodes);
-            } catch (error) {}
-        })();
-    }, []);
 
     const [totalCount, setTotalCount] = useState<number>();
     const [_page, _setPage] = useState<number>(0);
@@ -102,22 +75,24 @@ export const Wijmo = (props: WijmoProps) => {
         gridRef.current.control.columnHeaders.rows.defaultSize = 40;
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
-
+        console.log(gridRef.current.control);
         // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
         //     const a = gridRef.current.control.hitTest(e);
         //     console.log(a);
         // });
 
         _setInitialize(true);
+
+        return () => {
+            gridRef.current = undefined;
+        };
     }, []);
 
     useEffect(() => {
-        if (!gridRef.current?.control) return;
         gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
     }, [lang]);
 
     useEffect(() => {
-        if (!gridRef.current?.control) return;
         if (data === undefined) return;
         // 2. data setting
         const content = data.content.map((_, i) => ({
@@ -131,19 +106,18 @@ export const Wijmo = (props: WijmoProps) => {
     }, [data]);
 
     useEffect(() => {
-        if (!gridRef.current?.control?.collectionView) return;
+        if (!gridRef.current.control.collectionView) return;
         if (schema.options?.pagination !== "in") return;
         gridRef.current.control.collectionView.moveToPage(_page);
     }, [_page]);
 
     useEffect(() => {
-        if (!gridRef.current?.control?.collectionView) return;
+        if (!gridRef.current.control?.collectionView) return;
         if (schema.options?.pagination !== "in") return;
         gridRef.current.control.collectionView.pageSize = _size;
     }, [_size]);
 
     const handleFormatItem = (m: any, e: any) => {
-        if (!gridRef.current?.control) return;
         if (!e.cell.getElementsByClassName("cell")[0]) return;
         const cellType = e.getRow().dataItem["__type"];
         if (cellType === "added") return e.cell.classList.add("cell-added");
@@ -157,7 +131,6 @@ export const Wijmo = (props: WijmoProps) => {
     };
 
     const handleItemsSourceChanged = (c: any) => {
-        if (!gridRef.current?.control) return;
         if (schema.options?.pagination !== "in") return;
         if (!c.collectionView) return;
         c.collectionView.collectionChanged.addHandler((cv: any) => {
@@ -248,50 +221,39 @@ export const Wijmo = (props: WijmoProps) => {
                             {props.cells.map((cellProps) => {
                                 return (
                                     <wjGrid.MultiRowCell
-                                        key={cellProps.key}
                                         width={cellProps.width}
+                                        key={cellProps.key}
                                         colspan={cellProps.colspan}
                                         binding={cellProps.binding}
                                         isReadOnly={cellProps.isReadOnly}
                                     >
-                                        {/* <wjGrid.MultiRowCellTemplate
+                                        <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
-                                            template={(cell: any) => {
-                                                const cellData = {
-                                                    value: cell.item[cellProps.binding],
-                                                    rowValues: cell.item,
-                                                    binding: cellProps.binding,
-                                                };
+                                            template={
+                                                gridRef.current?.control?.customCell
+                                                    ? (cell: any) => {
+                                                          const cellData = {
+                                                              value: cell.item[cellProps.binding],
+                                                              rowValues: cell.item,
+                                                              binding: cellProps.binding,
+                                                          };
 
-                                                if (cellProps.render) return cellProps.render(cellData);
-                                                return (
-                                                    <div
-                                                        className={classNames("cell", {
-                                                            "cursor-pointer": cellProps.onClick,
-                                                        })}
-                                                        data-binding={cellProps.binding}
-                                                        onClick={() => cellProps.onClick?.(cellData)}
-                                                    >
-                                                        {(cellProps.type === "select" ||
-                                                            cellProps.type === "code" ||
-                                                            cellProps.type === "radio" ||
-                                                            cellProps.type === "checkbox") &&
-                                                        cellProps.area
-                                                            ? _codes
-                                                                  .find(
-                                                                      ({ area, comnCd }) =>
-                                                                          cellProps.area === area &&
-                                                                          cellProps.comnCd === comnCd,
-                                                                  )
-                                                                  .options.find(
-                                                                      ({ value }: any) =>
-                                                                          value === cell.item[cellProps.binding],
-                                                                  )?.label
-                                                            : cell.item[cellProps.binding]}
-                                                    </div>
-                                                );
-                                            }}
-                                        /> */}
+                                                          if (cellProps.render) return cellProps.render(cellData);
+                                                          return (
+                                                              <div
+                                                                  className={classNames("cell", {
+                                                                      "cursor-pointer": cellProps.onClick,
+                                                                  })}
+                                                                  data-binding={cellProps.binding}
+                                                                  onClick={() => cellProps.onClick?.(cellData)}
+                                                              >
+                                                                  {cell.item[cellProps.binding]}
+                                                              </div>
+                                                          );
+                                                      }
+                                                    : null
+                                            }
+                                        />
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
@@ -315,16 +277,9 @@ export const Wijmo = (props: WijmoProps) => {
                                                             lang={lang}
                                                             type={cellProps.type}
                                                             name={cellProps.key}
-                                                            options={
-                                                                cellProps.area
-                                                                    ? _codes.find(
-                                                                          ({ area, comnCd }) =>
-                                                                              cellProps.area === area &&
-                                                                              cellProps.comnCd === comnCd,
-                                                                      ).options
-                                                                    : cellProps.options
-                                                            }
                                                             defaultValue={cell.value}
+                                                            area={cellProps.area}
+                                                            comnCd={cellProps.comnCd}
                                                             onChange={(event) => {
                                                                 cell.value =
                                                                     event.target === undefined
