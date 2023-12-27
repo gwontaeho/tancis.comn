@@ -1,26 +1,26 @@
-import { useState } from 'react'
-import * as rhf from 'react-hook-form'
-import { GroupControlProps } from '@/comn/components'
+import { useState } from "react";
+import * as rhf from "react-hook-form";
+import { GroupControlProps } from "@/comn/components";
 
 export type FormRulesType = Partial<{
-    required: Boolean | string
-    min: any
-    max: any
-    maxLength: any
-    minLength: any
-    pattern: any
-    validate: any
-}>
+    required: Boolean | string;
+    min: any;
+    max: any;
+    maxLength: any;
+    minLength: any;
+    pattern: any;
+    validate: any;
+}>;
 
-export type FormFieldNameType = string
-export type FormFieldValueType = any
-export type FormValuesType = Record<FormFieldNameType, FormFieldValueType>
-export type FormSchemaType = { id: string; schema: FormControlSchemaType }
-type FormControlSchemaType = Record<string, GroupControlProps>
-type UseFormProps = { defaultSchema: FormSchemaType; values?: object }
+export type FormFieldNameType = string;
+export type FormFieldValueType = any;
+export type FormValuesType = Record<FormFieldNameType, FormFieldValueType>;
+export type FormSchemaType = { id: string; schema: FormControlSchemaType };
+type FormControlSchemaType = Record<string, GroupControlProps>;
+type UseFormProps = { defaultSchema: FormSchemaType; values?: object };
 
 export const useForm = (props: UseFormProps) => {
-    const { defaultSchema, values } = props
+    const { defaultSchema, values } = props;
 
     const {
         control,
@@ -35,72 +35,72 @@ export const useForm = (props: UseFormProps) => {
         reset,
         formState: { errors, isSubmitted },
         setError,
-    } = rhf.useForm<FormValuesType>({ values })
+    } = rhf.useForm<FormValuesType>({ values });
 
-    const { id, schema } = defaultSchema
-    const [_schema, _setSchema] = useState<FormControlSchemaType>(schema)
+    const { id, schema } = defaultSchema;
+    const [_schema, _setSchema] = useState<FormControlSchemaType>(schema);
 
     const setSchema = (name: string, value: any) => {
-        _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }))
-    }
+        _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }));
+    };
 
     const setSchemas = (names: string[], schemas: any) => {
         names.forEach((name) => {
-            setSchema(name, schemas)
-        })
-    }
+            setSchema(name, schemas);
+        });
+    };
 
     const resetSchema = () => {
-        _setSchema(schema)
-    }
+        _setSchema(schema);
+    };
 
     const setEditable = <T>(arg: T, value?: boolean) => {
         if (value === undefined)
             return _setSchema((prev) =>
                 Object.fromEntries(
                     Object.entries(prev).map((_) => {
-                        return [_[0], { ..._[1], edit: !!arg }]
-                    })
-                )
-            )
+                        return [_[0], { ..._[1], edit: !!arg }];
+                    }),
+                ),
+            );
 
-        if (typeof arg === 'string') {
-            _setSchema((prev) => ({ ...prev, [arg]: { ...prev[arg], edit: value } }))
+        if (typeof arg === "string") {
+            _setSchema((prev) => ({ ...prev, [arg]: { ...prev[arg], edit: value } }));
         }
-    }
+    };
 
     const validate = (name?: FormFieldValueType) => {
-        if (name in _schema) trigger(name, { shouldFocus: true })
-        else trigger(undefined, { shouldFocus: true })
-    }
+        if (name in _schema) trigger(name, { shouldFocus: true });
+        else trigger(undefined, { shouldFocus: true });
+    };
 
     const clearValues = () => {
         Object.keys(_schema).forEach((name) => {
-            setValue(name, null)
-        })
-    }
+            setValue(name, null);
+        });
+    };
 
     const setValues = (values: FormValuesType, part?: boolean) => {
         Object.keys(_schema).forEach((name) => {
-            if (part === true && values[name] === undefined) return
-            setValue(name, values[name])
-        })
-    }
+            if (part === true && values[name] === undefined) return;
+            setValue(name, values[name]);
+        });
+    };
 
     const getSchema = (s: FormControlSchemaType): any => {
-        if (!s) return undefined
+        if (!s) return undefined;
         return Object.fromEntries(
             Object.entries(s).map(([key, value]: any) => {
-                const { min, max, minLength, pattern, validate, ...rest } = value
+                const { min, max, minLength, pattern, validate, ...rest } = value;
 
                 const getRules = (data: any) => {
-                    const { min, max, minLength, maxLength, pattern, validate, required } = data
-                    return { min, max, minLength, maxLength, pattern, validate, required }
-                }
+                    const { min, max, minLength, maxLength, pattern, validate, required } = data;
+                    return { min, max, minLength, maxLength, pattern, validate, required };
+                };
 
                 switch (value.type) {
-                    case 'daterange':
-                    case 'timerange':
+                    case "daterange":
+                    case "timerange":
                         return [
                             key,
                             {
@@ -117,14 +117,14 @@ export const useForm = (props: UseFormProps) => {
                                 },
                                 end: { ...value.end, invalid: errors[value.end.name], rules: getRules(value.end) },
                             },
-                        ]
+                        ];
 
-                    case 'date':
-                    case 'time':
-                    case 'datetime':
-                    case 'code':
-                    case 'file':
-                    case 'checkbox':
+                    case "date":
+                    case "time":
+                    case "datetime":
+                    case "code":
+                    case "file":
+                    case "checkbox":
                         return [
                             key,
                             {
@@ -136,7 +136,7 @@ export const useForm = (props: UseFormProps) => {
                                 setValue,
                                 rules: getRules(value),
                             },
-                        ]
+                        ];
 
                     default:
                         /**
@@ -147,7 +147,7 @@ export const useForm = (props: UseFormProps) => {
                          * radio
                          * textarea
                          */
-
+                        /*
                         console.log([
                             key,
                             {
@@ -157,6 +157,7 @@ export const useForm = (props: UseFormProps) => {
                                 getValues,
                             },
                         ])
+                        */
                         return [
                             key,
                             {
@@ -165,11 +166,11 @@ export const useForm = (props: UseFormProps) => {
                                 invalid: errors[key],
                                 getValues,
                             },
-                        ]
+                        ];
                 }
-            })
-        )
-    }
+            }),
+        );
+    };
 
     return {
         schema: getSchema(_schema),
@@ -190,5 +191,5 @@ export const useForm = (props: UseFormProps) => {
         isSubmitted,
         setError,
         reset,
-    }
-}
+    };
+};
