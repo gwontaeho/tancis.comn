@@ -14,6 +14,8 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     (props: RadioProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const { options, required, comnCd, area, ...rest } = props;
 
+        console.log(props);
+
         const [_lang, _setLang] = React.useState(props.lang || localStorage.getItem("lang") || "ko");
         const [_options, _setOptions] = React.useState<TFormControlOptions | undefined>(options);
 
