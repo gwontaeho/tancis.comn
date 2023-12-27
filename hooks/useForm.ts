@@ -161,7 +161,7 @@ export const useForm = (props: UseFormProps) => {
                         return [
                             key,
                             {
-                                ...value,
+                                ...rest,
                                 ...register(key, getRules(value)),
                                 invalid: errors[key],
                                 getValues,

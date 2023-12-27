@@ -1,6 +1,6 @@
 import "@grapecity/wijmo.styles/wijmo.css";
 import "./Wijmo.css";
-
+import { flushSync } from "react-dom";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -92,7 +92,7 @@ export const Wijmo = (props: WijmoProps) => {
     const [_page, _setPage] = useState<number>(0);
     const [_size, _setSize] = useState<number>(10);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         // 1. initialize
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true;
         if (schema.options?.checkbox) new Selector(gridRef.current.control);
@@ -111,7 +111,7 @@ export const Wijmo = (props: WijmoProps) => {
         _setInitialize(true);
     }, []);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!gridRef.current?.control) return;
         gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
     }, [lang]);
@@ -254,7 +254,7 @@ export const Wijmo = (props: WijmoProps) => {
                                         binding={cellProps.binding}
                                         isReadOnly={cellProps.isReadOnly}
                                     >
-                                        <wjGrid.MultiRowCellTemplate
+                                        {/* <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
                                             template={(cell: any) => {
                                                 const cellData = {
@@ -291,7 +291,7 @@ export const Wijmo = (props: WijmoProps) => {
                                                     </div>
                                                 );
                                             }}
-                                        />
+                                        /> */}
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
