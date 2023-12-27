@@ -16,8 +16,6 @@ import { Pagination, Button, Icon, FormControl } from "@/comn/components";
 import { WijmoSchemaType, TWijmoHead, useTheme } from "@/comn/hooks";
 import dayjs from "dayjs";
 
-import * as wjcCore from "@grapecity/wijmo";
-
 setLicenseKey(
     "singlewindow.info,725598597875341#B0JoIIyVmdiwSZzxWYmpjIyNHZisnOiwmbBJye0ICRiwiI34zZ7h5LFhFdKFUa6czTpd4SCFFb7YXZ8V4KDZGV9A7MRxWSllkaitiSjh4cCBlWSZENWdmNzNUeItEdtV5L6ZlcxN7M8hjb0R6V8czQyBFNSZXd6kkW62mR8FXN8tCT6hTSxxkeNFzNz3meLRkRDdHU6AnTu9WNZJkURVFMyoGSzUGT5k6VwATQw2SYwknQvJUMXxkMQtCZNZme8k6cWtSOuNEWzpXWBJFblxGT5Vma4IXOLdVW9F7U4cXdaVjTrQ7UJRUZIJVZzN7KxQjMzgkdCZGZlJHMpNlQt9WVOdzTpJXe9MUMCFTbmRjc9AFTzMlWCJWWOhXM6RmQjhFWvh5N6FDbIpkVaF5TEB5ZzVGcNFVRotGR9VldnFjc7QUO5l7NK56alJVdKpnSK3Wd0J4VDhTYTlDZu56KzdkZhVGdjV6RycjUMlWcrVzRiBDbS9GestSZENkI0IyUiwiI5QjMyIkMFFjI0ICSiwCMxgDNxAzMzEjM0IicfJye35XX3JSSwIjUiojIDJCLi86bpNnblRHeFBCI4VWZoNFelxmRg2Wbql6ViojIOJyes4nI5kkTRJiOiMkIsIibvl6cuVGd8VEIgIXZ7VWaWRncvBXZSBybtpWaXJiOi8kI1xSfis4N8gkI0IyQiwiIu3Waz9WZ4hXRgAydvJVa4xWdNBybtpWaXJiOi8kI1xSfiQjR6QkI0IyQiwiIu3Waz9WZ4hXRgACUBx4TgAybtpWaXJiOi8kI1xSfiMzQwIkI0IyQiwiIlJ7bDBybtpWaXJiOi8kI1xSfiUFO7EkI0IyQiwiIu3Waz9WZ4hXRgACdyFGaDxWYpNmbh9WaGBybtpWaXJiOi8kI1tlOiQmcQJCLiYjMzMjNwAyNyETMzIDMyIiOiQncDJCLi2mZulmL73GZul6dlx6Zul6ciojIz5GRiwiIMqZ1pWZ1weJ1BiJ14qJ1de004O10VCK1pWZ1FKK18SI1ASr0ACr0tWr0iojIh94QiwiIxQzM5cDO7kTN8kTN5IzNiojIklkIs4XXbpjInxmZiwiIxY7MJAYM",
 );
@@ -69,9 +67,6 @@ export const Wijmo = (props: WijmoProps) => {
 
     useEffect(() => {
         // 1. initialize
-
-        if (!gridRef.current?.control) return;
-
         if (schema.options?.isReadOnly) gridRef.current.control.isReadOnly = true;
         if (schema.options?.checkbox) new Selector(gridRef.current.control);
         gridRef.current.control.deferResizing = true;
@@ -82,13 +77,16 @@ export const Wijmo = (props: WijmoProps) => {
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);
         console.log(gridRef.current.control);
         console.log(gridRef.current?.control?.customCell);
-
         // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
         //     const a = gridRef.current.control.hitTest(e);
         //     console.log(a);
         // });
 
         _setInitialize(true);
+
+        return () => {
+            gridRef.current = undefined;
+        };
     }, []);
 
     useEffect(() => {
@@ -96,7 +94,6 @@ export const Wijmo = (props: WijmoProps) => {
     }, [lang]);
 
     useEffect(() => {
-        if (!gridRef.current.control) return;
         if (data === undefined) return;
         // 2. data setting
         const content = data.content.map((_, i) => ({
@@ -106,7 +103,6 @@ export const Wijmo = (props: WijmoProps) => {
         }));
         contentRef.current = lodash.cloneDeep(content);
         gridRef.current.control.itemsSource = lodash.cloneDeep(content);
-
         setTotalCount(schema.options?.pagination === "in" ? content.length : data.totCnt);
     }, [data]);
 
@@ -234,29 +230,33 @@ export const Wijmo = (props: WijmoProps) => {
                                         binding={cellProps.binding}
                                         isReadOnly={cellProps.isReadOnly}
                                     >
-                                        {/* <wjGrid.MultiRowCellTemplate
+                                        <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
-                                            template={(cell: any) => {
-                                                const cellData = {
-                                                    value: cell.item[cellProps.binding],
-                                                    rowValues: cell.item,
-                                                    binding: cellProps.binding,
-                                                };
+                                            template={
+                                                gridRef.current?.control?.customCell
+                                                    ? (cell: any) => {
+                                                          const cellData = {
+                                                              value: cell.item[cellProps.binding],
+                                                              rowValues: cell.item,
+                                                              binding: cellProps.binding,
+                                                          };
 
-                                                if (cellProps.render) return cellProps.render(cellData);
-                                                return (
-                                                    <div
-                                                        className={classNames("cell", {
-                                                            "cursor-pointer": cellProps.onClick,
-                                                        })}
-                                                        data-binding={cellProps.binding}
-                                                        onClick={() => cellProps.onClick?.(cellData)}
-                                                    >
-                                                        {cell.item[cellProps.binding]}
-                                                    </div>
-                                                );
-                                            }}
-                                        /> */}
+                                                          if (cellProps.render) return cellProps.render(cellData);
+                                                          return (
+                                                              <div
+                                                                  className={classNames("cell", {
+                                                                      "cursor-pointer": cellProps.onClick,
+                                                                  })}
+                                                                  data-binding={cellProps.binding}
+                                                                  onClick={() => cellProps.onClick?.(cellData)}
+                                                              >
+                                                                  qweqwe
+                                                              </div>
+                                                          );
+                                                      }
+                                                    : () => <div>asd</div>
+                                            }
+                                        />
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
