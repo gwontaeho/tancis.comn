@@ -114,7 +114,7 @@ export const CityCodeList = (props: any) => {
                         <Button onClick={form_CityCdSrch.reset}>{t("B_RESET")}</Button>
                     </Layout.Left>
                     <Layout.Right>
-                        <Button onClick={handler.click_Srch}>{t("B_SRCH")}</Button>
+                        <Button onClick={handler.click_Btn_Srch}>{t("B_SRCH")}</Button>
                     </Layout.Right>
                 </Layout>
             </Group>
