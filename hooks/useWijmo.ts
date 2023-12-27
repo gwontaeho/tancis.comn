@@ -18,6 +18,7 @@ export type TWijmoBody = {
         binding: string;
         colspan?: number;
         isReadOnly?: boolean;
+        options?: any[];
         type?: FormControlType;
         render?: (data?: any) => React.ReactNode;
         onClick?: (data?: any) => void;

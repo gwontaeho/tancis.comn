@@ -11,7 +11,7 @@ export const utils = {
         form.setValues(params, false);
     },
     isEmpty: (obj: any) => {
-        return lodash.isEmpty(obj)
+        return lodash.isEmpty(obj);
     },
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second);
@@ -154,5 +154,10 @@ export const utils = {
             default:
                 return code.cdVldVal;
         }
+    },
+    getCodeOptions: (area?: string, codes?: any[]) => {
+        return codes?.map((code) => {
+            return { label: utils.getCodeLabel(area, code), value: utils.getCodeValue(area, code) };
+        });
     },
 };
