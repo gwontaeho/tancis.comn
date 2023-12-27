@@ -11,7 +11,11 @@ export const utils = {
         form.setValues(params, false);
     },
     isEmpty: (obj: any) => {
-        return lodash.isEmpty(obj)
+        return lodash.isEmpty(obj);
+    },
+    isPopup: () => {
+        const search = new URLSearchParams(window.location.search);
+        return search.get("ppup") === "Y" ? true : window.opener ? true : false;
     },
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second);

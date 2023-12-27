@@ -104,6 +104,7 @@ export type FormControlProps = InputDaterangeProps & {
     max?: any;
     minLength?: any;
     lang?: string;
+    popupSize?: "sm" | "md" | "lg";
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {

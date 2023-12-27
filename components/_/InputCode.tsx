@@ -13,6 +13,7 @@ type InputCodeProps = {
     area?: string;
     maxLength?: number;
     control?: Control;
+    popupSize?: "sm" | "md" | "lg";
     onChange?: (...args: any) => void;
 };
 
@@ -80,6 +81,7 @@ const InputCodeMain = (props: InputCodeProps) => {
         openPopup({
             params: { comnCd: props.comnCd },
             url: PopupUrls[props.area || "comnCd"],
+            size: props.popupSize || "sm",
             callback: (data: any) => {
                 if (LabelInput.current) LabelInput.current.value = data.label;
                 if (keywordInput.current) keywordInput.current.value = data.code;
