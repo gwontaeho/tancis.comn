@@ -7,7 +7,6 @@ import { useForm, useFetch, useWijmo, useStore, usePopup, useToast } from "@/com
 import { APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
 
 export const CityCodeList = (props: any) => {
-    console.log(props);
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: "cityCdLst" });
     const toast = useToast();
@@ -29,12 +28,14 @@ export const CityCodeList = (props: any) => {
      * grid_[그리드 데이터 명 메타 조합]
      * 예) 도시코드( grid_CityCd )
      */
-    const grid_CityCd = useWijmo({
+    const grid_CityCdLst = useWijmo({
         defaultSchema: SCHEMA_GRID_CITY_CD((data: any) => {
             if (!utils.isPopup()) return;
             postMessage({ code: data.value, label: data.rowValues.regnNm });
             close();
         }),
+        page: pgeStore?.page,
+        size: pgeStore?.size,
     });
 
     /*
@@ -51,20 +52,43 @@ export const CityCodeList = (props: any) => {
          * key : 변경되었을때 fetch 가 재실행되는 key
          * showToast : fetch 의 성공 실패 결과를 Toast 메세지로 표시 여부, default : false
          */
-        api: () => APIS.getCityCdLst(form_CityCdSrch.getValues(), grid_CityCd.page, grid_CityCd.size),
+        api: () => APIS.getCityCdLst(form_CityCdSrch.getValues(), grid_CityCdLst.page, grid_CityCdLst.size),
         enabled: utils.isEmpty(form_CityCdSrch.errors) && form_CityCdSrch.isSubmitted,
-        key: [grid_CityCd.page, grid_CityCd.size],
+        key: [grid_CityCdLst.page, grid_CityCdLst.size],
         showToast: true,
     });
+    /*
+     * 이벤트 핸들러
+     */
+    const handler = {
+        /*
+         * 이벤트 handler
+         * [이벤트 타입]_[이벤트 대상 타입(대상명)]_[대상명]
+         * 이벤트 타입 : click , change , blur , focus...
+         * 이벤트 대상 타입 : Btn(버튼) , Grid
+         * 이
+         */
+        click_Btn_Srch: () => {
+            form_CityCdSrch.handleSubmit(
+                () => {
+                    setStore("cityCdLst", {
+                        form: form_CityCdSrch.getValues(),
+                        page: grid_CityCdLst.page,
+                        size: grid_CityCdLst.size,
+                    });
+                    fetch_GetCityCdLst.fetch();
+                },
+                () => {
+                    toast.showToast({ type: "warning", content: "msg.00002" });
+                },
+            );
+        },
+        //click_Grid_CityCdLst: ( field : )=>{
 
-    const event_CityCdSrch = {
-        success: () => {
-            setStore("cityCdLst", { ...form_CityCdSrch.getValues(), page: grid_CityCd.page, size: grid_CityCd.size });
-            fetch_GetCityCdLst.fetch();
-        },
-        error: () => {
-            toast.showToast({ type: "invalid", content: "invalid form" });
-        },
+        /*
+         * check : 체크, 검사
+         *
+         */
     };
 
     useEffect(() => {
@@ -87,26 +111,16 @@ export const CityCodeList = (props: any) => {
                 </Group.Body>
                 <Layout direction="row">
                     <Layout.Left>
-                        <Button
-                            onClick={() => {
-                                form_CityCdSrch.reset();
-                            }}
-                        >
-                            {t("B_RESET")}
-                        </Button>
+                        <Button onClick={form_CityCdSrch.reset}>{t("B_RESET")}</Button>
                     </Layout.Left>
                     <Layout.Right>
-                        <Button
-                            onClick={form_CityCdSrch.handleSubmit(event_CityCdSrch.success, event_CityCdSrch.error)}
-                        >
-                            {t("B_SRCH")}
-                        </Button>
+                        <Button onClick={handler.click_Srch}>{t("B_SRCH")}</Button>
                     </Layout.Right>
                 </Layout>
             </Group>
 
             <Group>
-                <Wijmo {...grid_CityCd.grid} data={fetch_GetCityCdLst.data} />
+                <Wijmo {...grid_CityCdLst.grid} data={fetch_GetCityCdLst.data} />
             </Group>
             <Layout.Right>
                 <Button onClick={close}>{t("B_CLS")}</Button>

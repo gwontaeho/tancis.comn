@@ -33,18 +33,20 @@ export type WijmoSchemaType = {
 };
 type UseWijmoArgs = {
     defaultSchema: WijmoSchemaType;
+    page?: number;
+    size?: number;
 };
 
 export const useWijmo = (props: UseWijmoArgs) => {
-    const { defaultSchema } = props;
+    const { defaultSchema, page, size } = props;
 
     const gridRef = useRef<any>();
     const contentRef = useRef<Record<string, any>>();
 
     const schema = defaultSchema;
 
-    const [page, setPage] = useState(0);
-    const [size, setSize] = useState(10);
+    const [_page, setPage] = useState(page || 0);
+    const [_size, setSize] = useState(size || 10);
 
     const getOrigin = () => {
         if (!gridRef.current) return;
@@ -74,7 +76,7 @@ export const useWijmo = (props: UseWijmoArgs) => {
             .filter((d, i, a) => a.findIndex((v) => v["__index"] === d["__index"]) === i);
     };
 
-    const grid = { gridRef, contentRef, schema, page, setPage, size, setSize };
+    const grid = { gridRef, contentRef, schema, page: _page, setPage, size: _size, setSize };
 
     return {
         grid,
@@ -82,8 +84,8 @@ export const useWijmo = (props: UseWijmoArgs) => {
         getPageData,
         getChecked,
         resetData,
-        page,
-        size,
+        page: _page,
+        size: _size,
         setPage,
         setSize,
         getOrigin,
