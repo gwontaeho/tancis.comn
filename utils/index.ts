@@ -159,4 +159,9 @@ export const utils = {
                 return code.cdVldVal;
         }
     },
+    getCodeOptions: (area?: string, codes?: any[]) => {
+        return codes?.map((code) => {
+            return { label: utils.getCodeLabel(area, code), value: utils.getCodeValue(area, code) };
+        });
+    },
 };

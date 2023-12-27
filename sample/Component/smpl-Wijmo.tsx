@@ -48,7 +48,7 @@ const schema: any = {
                     area: "comnCd",
                     comnCd: "CAG_0018",
                     width: 200,
-                    isReadOnly: true,
+
                     // render: (data: any) => {
                     //     console.log(data);
                     //     return <span>asd</span>;
@@ -65,9 +65,9 @@ const schema: any = {
                 {
                     binding: "c",
                     type: "radio",
-                    area: "comnCd",
-                    comnCd: "CAG_0018",
-                    width: 500,
+                    area: "cntyCd",
+
+                    width: 300,
                 },
             ],
         },
@@ -141,7 +141,7 @@ export const SampleWijmo = () => {
             </Group>
 
             <Group>
-                <Wijmo {...grid2.grid} data={grid2Data} />
+                {/* <Wijmo {...grid2.grid} data={grid2Data} /> */}
                 {/* <div className="space-x-2">
                     <button onClick={() => console.log(getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(getChecked())}>check 가져오기</button>
