@@ -4,14 +4,16 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { motion } from "framer-motion";
 
 import { toastState } from "@/comn/recoil";
+import classNames from "classnames";
 
 export type ToastProps = {
     id: string;
+    type?: "success" | "info" | "error" | "warning";
     content?: React.ReactNode;
 };
 
 const Toast = (props: ToastProps) => {
-    const { id, content } = props;
+    const { id, content, type } = props;
 
     const setToast = useSetRecoilState(toastState);
 
@@ -31,7 +33,14 @@ const Toast = (props: ToastProps) => {
 
     return (
         <motion.div initial={{ translateX: 30, opacity: 0.5 }} animate={{ translateX: 0, opacity: 1 }}>
-            <div className="w-96 shadow border rounded bg-background">
+            <div
+                className={classNames("w-96 shadow border rounded bg-background", {
+                    "border-success": type === "success",
+                    "border-error": type === "error",
+                    "border-info": type === "info",
+                    "border-warning": type === "warning",
+                })}
+            >
                 <div className="p-4">{content}</div>
             </div>
         </motion.div>

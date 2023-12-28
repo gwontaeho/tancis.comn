@@ -244,7 +244,7 @@ export const Wijmo = (props: WijmoProps) => {
             )}
 
             <wjGrid.MultiRow ref={gridRef}>
-                {/* {_body.map((props) => {
+                {_body.map((props) => {
                     return (
                         <wjGrid.MultiRowCellGroup key={props.key} colspan={props.colspan}>
                             {props.cells.map((cellProps) => {
@@ -256,7 +256,7 @@ export const Wijmo = (props: WijmoProps) => {
                                         binding={cellProps.binding}
                                         isReadOnly={cellProps.isReadOnly}
                                     >
-                                        <wjGrid.MultiRowCellTemplate
+                                        {/* <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
                                             template={(cell: any) => {
                                                 const cellData = {
@@ -278,7 +278,7 @@ export const Wijmo = (props: WijmoProps) => {
                                                     </div>
                                                 );
                                             }}
-                                        />
+                                        /> */}
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
@@ -321,7 +321,7 @@ export const Wijmo = (props: WijmoProps) => {
                             })}
                         </wjGrid.MultiRowCellGroup>
                     );
-                })} */}
+                })}
             </wjGrid.MultiRow>
 
             {schema.options?.pagination && (
