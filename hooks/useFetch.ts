@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef } from "react";
-import _ from "lodash";
+import lodash from "lodash";
 import { useToast } from "@/comn/hooks";
 
 const initializerArg = (initialData: any) => {
@@ -57,7 +57,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
     useEffect(() => {
         if (enabled) {
-            if (_.isEqual(keyRef.current.key, key)) {
+            if (lodash.isEqual(keyRef.current.key, key)) {
                 if (new Date().getTime() - keyRef.current.t < 1000) return;
             }
             keyRef.current.key = key;

@@ -35,7 +35,7 @@ export const useForm = (props: UseFormProps) => {
         reset,
         formState: { errors, isSubmitted },
         setError,
-    } = rhf.useForm<FormValuesType>({ values });
+    } = rhf.useForm<FormValuesType>({ values, defaultValues: values });
 
     const { id, schema } = defaultSchema;
     const [_schema, _setSchema] = useState<FormControlSchemaType>(schema);
