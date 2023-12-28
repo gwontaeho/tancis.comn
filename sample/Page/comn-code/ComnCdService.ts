@@ -11,6 +11,7 @@ export const APIS = {
             size: size,
             keyword: data.cdVldVal,
             keywordName: data.cdVldValNm,
+            langCd: data.langCd,
         });
     },
 
@@ -112,35 +113,35 @@ export const APIS = {
     },
 };
 
-export const SCHEMA_GRID_COMN_CD = (clickEvent: any): WijmoSchemaType => {
-    return {
-        id: "grid",
-        options: { pagination: "in", isReadOnly: true },
-        head: [
-            { cells: [{ header: "L_COMN_CD", binding: "comnCd" }] },
-            { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
-            { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
-        ],
-        body: [
-            {
-                cells: [
-                    {
-                        binding: "comnCd",
-                        onClick: (ctx: any) => {
-                            console.log(ctx);
-                            clickEvent(ctx);
-                        },
-                    },
-                ],
-            },
-            {
-                cells: [{ binding: "cdVldVal" }],
-            },
-            {
-                cells: [{ binding: "cdVldValNm" }],
-            },
-        ],
-    };
+export const SCHEMA_GRID_COMN_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_COMN_CD", binding: "comnCd" }] },
+        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
+        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "comnCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [
+                {
+                    binding: "cdVldVal",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "cdVldValNm", width: "*" }],
+        },
+    ],
 };
 
 export const SCHEMA_GRID_CNTY_CD = (clickEvent: any): WijmoSchemaType => {
