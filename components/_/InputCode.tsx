@@ -14,8 +14,8 @@ type InputCodeProps = {
     maxLength?: number;
     control?: Control;
     popupSize?: "sm" | "md" | "lg";
-    onChange?: (...args: any) => void;
     popupParams?: any;
+    onChange?: (...args: any) => void;
 };
 
 const PopupUrls: { [id: string]: string } = {
@@ -35,7 +35,7 @@ const PopupUrls: { [id: string]: string } = {
 const InputCodeMain = (props: InputCodeProps) => {
     const { openPopup } = usePopup();
     const keywordInput = React.useRef<HTMLInputElement>(null);
-    const LabelInput = React.useRef<HTMLInputElement>(null);
+    const labelInput = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         if (!props.value) return;
@@ -45,19 +45,27 @@ const InputCodeMain = (props: InputCodeProps) => {
     }, [props.value]);
 
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!labelInput.current) return;
+        if (!keywordInput.current) return;
+
         if (!e.target.value) {
-            if (LabelInput.current) LabelInput.current.value = "";
+            labelInput.current.value = "";
             if (!props.onChange) return;
-            props.onChange(undefined);
+            props.onChange("");
             return;
         }
         getComnCd(e.target.value);
     }, 500);
 
     const getComnCd = async (keyword: string) => {
+        if (!labelInput.current) return;
+        if (!keywordInput.current) return;
         if (!props.area && !props.comnCd) return;
+
         if (props.maxLength !== undefined && keyword.length < props.maxLength) {
-            if (LabelInput.current) LabelInput.current.value = "";
+            labelInput.current.value = "";
+            if (!props.onChange) return;
+            props.onChange("");
             return;
         }
 
@@ -67,15 +75,17 @@ const InputCodeMain = (props: InputCodeProps) => {
             } = await utils.getCode({ comnCd: props.comnCd, area: props.area, size: 1, keyword });
 
             if (!content[0]) {
-                if (LabelInput.current) LabelInput.current.value = "";
+                labelInput.current.value = "";
+                if (!props.onChange) return;
+                props.onChange("");
                 return;
             }
 
             const label = utils.getCodeLabel(props.area, content[0]);
             const code = utils.getCodeValue(props.area, content[0]);
 
-            if (LabelInput.current) LabelInput.current.value = label;
-            if (keywordInput.current) keywordInput.current.value = code;
+            labelInput.current.value = label;
+            keywordInput.current.value = code;
             if (!props.onChange) return;
             props.onChange(code);
         } catch (error) {}
@@ -89,7 +99,7 @@ const InputCodeMain = (props: InputCodeProps) => {
             url: PopupUrls[props.area || "comnCd"],
             size: props.popupSize || "sm",
             callback: (data: any) => {
-                if (LabelInput.current) LabelInput.current.value = data.label;
+                if (labelInput.current) labelInput.current.value = data.label;
                 if (keywordInput.current) keywordInput.current.value = data.code;
                 if (!props.onChange) return;
                 props.onChange(data.code);
@@ -108,7 +118,7 @@ const InputCodeMain = (props: InputCodeProps) => {
             <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
                 <Icon icon="search" size="xs" />
             </button>
-            <input ref={LabelInput} readOnly className="input rounded-l-none flex-[2]" />
+            <input ref={labelInput} readOnly className="input rounded-l-none flex-[2]" />
         </div>
     );
 };

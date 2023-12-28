@@ -17,10 +17,10 @@ export type FormFieldValueType = any;
 export type FormValuesType = Record<FormFieldNameType, FormFieldValueType>;
 export type FormSchemaType = { id: string; schema: FormControlSchemaType };
 type FormControlSchemaType = Record<string, GroupControlProps>;
-type UseFormProps = { defaultSchema: FormSchemaType; values?: object };
+type UseFormProps = { defaultSchema: FormSchemaType; values?: any; defaultValues?: any };
 
 export const useForm = (props: UseFormProps) => {
-    const { defaultSchema, values } = props;
+    const { defaultSchema, values, defaultValues } = props;
 
     const {
         control,
@@ -33,9 +33,9 @@ export const useForm = (props: UseFormProps) => {
         clearErrors,
         watch,
         reset,
-        formState: { errors, isSubmitted },
         setError,
-    } = rhf.useForm<FormValuesType>({ values, defaultValues: values });
+        formState: { errors, isSubmitted },
+    } = rhf.useForm<FormValuesType>({ values, defaultValues });
 
     const { id, schema } = defaultSchema;
     const [_schema, _setSchema] = useState<FormControlSchemaType>(schema);
@@ -190,8 +190,6 @@ export const useForm = (props: UseFormProps) => {
         errors,
         isSubmitted,
         setError,
-        reset: () => {
-            setValues(values || {});
-        },
+        reset,
     };
 };

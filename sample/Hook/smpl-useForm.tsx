@@ -1,59 +1,59 @@
-import { useEffect } from 'react'
-import { Page, Group, Button, Layout, Table, FormControl, IconButton } from '@/comn/components'
-import { FormSchemaType, FormValuesType } from '@/comn/hooks'
-import { useForm } from '@/comn/hooks'
+import { useEffect } from "react";
+import { Page, Group, Button, Layout, Table, FormControl, IconButton } from "@/comn/components";
+import { FormSchemaType, FormValuesType } from "@/comn/hooks";
+import { useForm } from "@/comn/hooks";
 
 const SCHEMA_SEARCH: FormSchemaType = {
-    id: 'search',
+    id: "search",
     schema: {
         text: {
-            type: 'text',
-            label: 'text',
-            validate: (value: any) => value === 'test' || 'test를 써주세요',
+            type: "text",
+            label: "text",
+            validate: (value: any) => value === "test" || "test를 써주세요",
         },
-        number: { type: 'number', label: 'number', min: 3 },
-        password: { type: 'password', label: 'password', required: true },
+        number: { type: "number", label: "number", min: 3 },
+        password: { type: "password", label: "password", required: true },
         textarea: {
-            type: 'textarea',
-            label: 'textarea',
+            type: "textarea",
+            label: "textarea",
             minLength: 3,
-            leftButton: { icon: 'left', onClick: () => {} },
-            rightButton: { icon: 'left', onClick: () => {} },
+            leftButton: { icon: "left", onClick: () => {} },
+            rightButton: { icon: "left", onClick: () => {} },
         },
-        select: { type: 'select', label: 'select', required: true },
-        checkbox: { type: 'checkbox', label: 'checkbox', all: true, required: true },
-        radio: { type: 'radio', label: 'radio', required: true },
-        date: { type: 'date', label: 'date', required: true },
-        time: { type: 'time', label: 'time', required: true },
-        datetime: { type: 'datetime', label: 'datetime', required: true },
-        file: { type: 'file', label: 'file', multiple: true, required: true },
-        code: { type: 'code', label: 'code', comnCd: 'COM_0015', area: 'comnCd', required: true },
+        select: { type: "select", label: "select", required: true },
+        checkbox: { type: "checkbox", label: "checkbox", all: true, required: true },
+        radio: { type: "radio", label: "radio", required: true },
+        date: { type: "date", label: "date", required: true },
+        time: { type: "time", label: "time", required: true },
+        datetime: { type: "datetime", label: "datetime", required: true },
+        file: { type: "file", label: "file", multiple: true, required: true },
+        code: { type: "code", label: "code", comnCd: "COM_0015", area: "comnCd", required: true },
         daterange: {
-            type: 'daterange',
-            label: 'daterange',
-            start: { name: 'startdate', required: true },
-            end: { name: 'enddate', required: true },
+            type: "daterange",
+            label: "daterange",
+            start: { name: "startdate", required: true },
+            end: { name: "enddate", required: true },
             rangeButton: 0,
         },
         timerange: {
-            type: 'timerange',
-            label: 'timerange',
-            start: { name: 'starttime', required: true },
-            end: { name: 'endtime', required: true },
+            type: "timerange",
+            label: "timerange",
+            start: { name: "starttime", required: true },
+            end: { name: "endtime", required: true },
             rangeButton: 0,
         },
     },
-}
+};
 
 const OPTION = [
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
-    { label: '4', value: '4' },
-    { label: '5', value: '5' },
-    { label: '6', value: '6' },
-    { label: '7', value: '7' },
-]
+    { label: "1", value: "1" },
+    { label: "2", value: "2" },
+    { label: "3", value: "3" },
+    { label: "4", value: "4" },
+    { label: "5", value: "5" },
+    { label: "6", value: "6" },
+    { label: "7", value: "7" },
+];
 
 export const SampleUseForm = () => {
     const {
@@ -74,24 +74,25 @@ export const SampleUseForm = () => {
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
-    })
+        values: { code: "A05", radio: "1" },
+    });
 
-    const text = watch(['text'])
+    const text = watch(["text"]);
 
     const onSubmit = (data: FormValuesType) => {
-        console.log(data)
-        console.log('a')
-    }
+        console.log(data);
+        console.log("a");
+    };
     const onSubmit2 = (data: FormValuesType) => {
-        console.log(data)
-        console.log('b')
-    }
+        console.log(data);
+        console.log("b");
+    };
 
-    useEffect(() => {}, [])
+    useEffect(() => {}, []);
 
     const etr = (v: any) => {
-        setEditable(v)
-    }
+        setEditable(v);
+    };
 
     return (
         <Page>
@@ -149,7 +150,7 @@ export const SampleUseForm = () => {
                     <Table.Th width={300}>
                         <Button
                             onClick={() => {
-                                console.log(getValues())
+                                console.log(getValues());
                                 // alert(JSON.stringify(getValues()))
                             }}
                         >
@@ -162,7 +163,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue('checkbox', ['1', '2'])
+                                setValue("checkbox", ["1", "2"]);
                             }}
                         >
                             <code>setValue()</code>
@@ -174,7 +175,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValues({ text: 'text', number: '001' })
+                                setValues({ text: "text", number: "001" });
                             }}
                         >
                             <code>{`setValues()`}</code>
@@ -186,7 +187,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                clearValues()
+                                clearValues();
                             }}
                         >
                             <code>{`clearValues()`}</code>
@@ -198,7 +199,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setEditable(true)
+                                setEditable(true);
                             }}
                         >
                             <code>setEditable(true)</code>
@@ -210,7 +211,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setEditable(false)
+                                setEditable(false);
                             }}
                         >
                             <code>setEditable(false)</code>
@@ -222,7 +223,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setSchema('datetime', { disabled: true })
+                                setSchema("datetime", { disabled: true });
                             }}
                         >
                             <code>{`setSchema("text", { disabled: true })`}</code>
@@ -234,7 +235,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                resetSchema()
+                                resetSchema();
                             }}
                         >
                             <code>{`resetSchema()`}</code>
@@ -247,7 +248,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                validate()
+                                validate();
                             }}
                         >
                             <code>{`validate()`}</code>
@@ -259,7 +260,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                validate('text')
+                                validate("text");
                             }}
                         >
                             <code>{`validate("text")`}</code>
@@ -271,7 +272,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                clearErrors()
+                                clearErrors();
                             }}
                         >
                             <code>{`clearErrors()`}</code>
@@ -283,7 +284,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                clearErrors('text')
+                                clearErrors("text");
                             }}
                         >
                             <code>{`clearErrors("text")`}</code>
@@ -321,8 +322,8 @@ export const SampleUseForm = () => {
                 </Table.Tr>
             </Table>
         </Page>
-    )
-}
+    );
+};
 
 // return {
 //     schema: getSchema(_schema),
