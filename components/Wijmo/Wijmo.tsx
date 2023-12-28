@@ -36,13 +36,13 @@ type WijmoProps = {
     schema: WijmoSchemaType;
     size: number;
     page: number;
-    onClick?: (data: any) => void;
+    onCellClick?: { [name: string]: Function };
     setSize: React.Dispatch<React.SetStateAction<number>>;
     setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const Wijmo = (props: WijmoProps) => {
-    const { gridRef, contentRef, schema, data, size, page, onClick, setSize, setPage } = props;
+    const { gridRef, contentRef, schema, data, size, page, onCellClick, setSize, setPage } = props;
 
     const { t } = useTranslation();
     const {
@@ -93,7 +93,7 @@ export const Wijmo = (props: WijmoProps) => {
             const binding = h.panel.getCellElement(row, col).getElementsByClassName("cell")[0]?.dataset.binding;
             const value = gridRef.current.control.getCellData(row, col);
             if (!binding) return;
-            if (onClick) onClick({ binding, value, rowValues });
+            if (onCellClick && onCellClick[binding]) onCellClick[binding]({ binding, value, rowValues });
         });
 
         _setInitialize(true);

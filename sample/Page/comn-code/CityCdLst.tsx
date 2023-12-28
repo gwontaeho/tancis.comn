@@ -90,12 +90,13 @@ export const CityCodeList = (props: any) => {
                 },
             )();
         },
-        //click_Grid_CityCdLst: ( field : )=>{
-
-        /*
-         * check : 체크, 검사
-         *
-         */
+        click_Grid_CityCdLst: {
+            regnCd: (data: any) => {
+                if (!utils.isPopup()) return;
+                postMessage({ code: data.value, label: data.rowValues.regnNm });
+                close();
+            },
+        },
     };
 
     useEffect(() => {
@@ -128,7 +129,11 @@ export const CityCodeList = (props: any) => {
             </form>
 
             <Group>
-                <Wijmo {...grid.cityCdLst.grid} data={fetch.getCityCdLst.data} />
+                <Wijmo
+                    {...grid.cityCdLst.grid}
+                    data={fetch.getCityCdLst.data}
+                    onCellClick={handler.click_Grid_CityCdLst}
+                />
             </Group>
             <Layout.Right>
                 <Button onClick={close}>{t("B_CLS")}</Button>

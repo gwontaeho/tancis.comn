@@ -27,7 +27,7 @@ const Toast = (props: ToastProps) => {
     useEffect(() => {
         const sto = setTimeout(() => {
             handleClose();
-        }, 100000);
+        }, 2000);
 
         return () => {
             clearTimeout(sto);
@@ -54,7 +54,7 @@ export const CommonToast = () => {
     const toast = useRecoilValue(toastState);
 
     return createPortal(
-        <div className="fixed right-4 bottom-4 space-y-2">
+        <div className="fixed right-4 bottom-4 space-y-2 z-[999]">
             {toast.map((props) => {
                 return <Toast key={props.id} {...props} />;
             })}
