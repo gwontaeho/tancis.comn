@@ -106,14 +106,12 @@ export const SampleWijmo = () => {
 
     const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
-    const handleClick = (data: any) => {
-        console.log(data);
-    };
+    const handleClick = {};
 
     return (
         <Page>
             <Group>
-                <Wijmo {...grid1.grid} data={data} onClick={handleClick} />
+                <Wijmo {...grid1.grid} data={data} onCellClick={handleClick} />
                 <div className="space-x-2">
                     <button onClick={() => console.log(grid1.getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(grid1.getChecked())}>check 가져오기</button>
