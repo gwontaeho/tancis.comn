@@ -1,6 +1,11 @@
 import { api } from "@/comn";
-import { utils } from "@/comn/utils";
+import { utils, envs } from "@/comn/utils";
 import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
+
+export const BASE = {
+    path: `${envs.base}`,
+    nodes: [],
+};
 
 export const APIS = {
     getComnCdLst: (data: any, page: number, size: number) => {
@@ -170,39 +175,34 @@ export const SCHEMA_GRID_CNTY_CD = (clickEvent: any): WijmoSchemaType => {
     };
 };
 
-export const SCHEMA_GRID_CITY_CD = (clickEvent: any): WijmoSchemaType => {
-    return {
-        id: "grid",
-        options: { pagination: "out", isReadOnly: true },
-        head: [
-            { cells: [{ header: "L_REGN_CD", binding: "regnCd" }] },
-            { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
-            { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
-            { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd" }] },
-        ],
-        body: [
-            {
-                cells: [
-                    {
-                        binding: "regnCd",
-                        onClick: (ctx: any) => {
-                            clickEvent(ctx);
-                        },
-                        width: 150,
-                    },
-                ],
-            },
-            {
-                cells: [{ binding: "regnNm", width: 200 }],
-            },
-            {
-                cells: [{ binding: "cntyCd", width: 150 }],
-            },
-            {
-                cells: [{ binding: "cityStatCd", width: 150 }],
-            },
-        ],
-    };
+export const SCHEMA_GRID_CITY_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "out", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_REGN_CD", binding: "regnCd" }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+        { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "regnCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "regnNm", width: 200 }],
+        },
+        {
+            cells: [{ binding: "cntyCd", width: "*" }],
+        },
+        {
+            cells: [{ binding: "cityStatCd", width: 150 }],
+        },
+    ],
 };
 
 export const SCHEMA_GRID_PORT_CD = (clickEvent: any): WijmoSchemaType => {
@@ -317,7 +317,7 @@ export const SCHEMA_FORM_CNTY_CD: FormSchemaType = {
 export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
     id: "form",
     schema: {
-        cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd", required: true, popupSize: "sm" },
+        cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd", popupSize: "sm" },
         regnNm: { type: "text", label: "L_REGN_NM" },
         regnCd: {
             type: "text",

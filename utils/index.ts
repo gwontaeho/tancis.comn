@@ -7,6 +7,19 @@ export const envs = {
 };
 
 export const utils = {
+    toValues: (obj: any) => {
+        if (lodash.isEmpty(obj)) return obj;
+        const _obj = lodash.cloneDeep(obj);
+        Object.keys(obj).forEach((key) => {
+            if (typeof obj[key] === "function") {
+                _obj[key] = obj[key]();
+            } else {
+                _obj[key] = obj[key];
+            }
+        });
+
+        return _obj;
+    },
     setValuesFromParams: (form: any, params: any) => {
         form.setValues(params, false);
     },
