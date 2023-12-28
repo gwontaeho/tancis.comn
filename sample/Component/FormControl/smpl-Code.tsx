@@ -27,6 +27,11 @@ export const SampleFormControlCode = () => {
                 controlSize: 10,
                 popupSize: "md",
             },
+            field4: {
+                type: "text",
+                label: "Country Code",
+                controlSize: 10,
+            },
         },
     };
     const form = useForm({ defaultSchema: SCHEMA_FORM });
@@ -40,6 +45,7 @@ export const SampleFormControlCode = () => {
                             {...form.schema.field1}
                             popupParams={{
                                 cntyCd: () => form.getValues("field3"),
+                                regnCd: () => form.getValues("field1"),
                             }}
                         ></Group.Control>
                     </Group.Row>
@@ -48,6 +54,14 @@ export const SampleFormControlCode = () => {
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.field3}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.field4}
+                            onChange={(e) => {
+                                console.log(1);
+                            }}
+                        ></Group.Control>
                     </Group.Row>
                 </Group.Body>
             </Group>

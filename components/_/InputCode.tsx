@@ -41,6 +41,7 @@ const InputCodeMain = (props: InputCodeProps) => {
         if (!props.value) return;
         if (keywordInput.current?.value === props.value) return;
         getComnCd(props.value);
+        if (props.onChange) props.onChange();
     }, [props.value]);
 
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {

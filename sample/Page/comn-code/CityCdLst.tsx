@@ -21,7 +21,10 @@ export const CityCodeList = (props: any) => {
      * 예) 도시코드검색( form_CityCdSrch ) , 도시코드등록( form_CityCdRgsr )
      */
     const form = {
-        cityCdSrch: useForm({ defaultSchema: SCHEMA_FORM_CITY_CD, values: pgeStore?.form || {} }),
+        cityCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CITY_CD,
+            values: { ...pgeStore?.form, ...getParams() } || {},
+        }),
     };
 
     /*
@@ -96,9 +99,6 @@ export const CityCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        console.log(getParams());
-        utils.setValuesFromParams(form.cityCdSrch, getParams());
-        console.log(form.cityCdSrch.getValues());
         handler.click_Btn_Srch();
     }, []);
 
@@ -130,6 +130,7 @@ export const CityCodeList = (props: any) => {
                         <Layout.Right>
                             <Button
                                 onClick={() => {
+                                    console.log(form.cityCdSrch.getValues());
                                     handler.click_Btn_Srch();
                                 }}
                             >
