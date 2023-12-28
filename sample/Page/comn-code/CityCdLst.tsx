@@ -23,8 +23,7 @@ export const CityCodeList = (props: any) => {
     const form = {
         cityCdSrch: useForm({
             defaultSchema: SCHEMA_FORM_CITY_CD,
-            //values: { ...pgeStore?.form, ...getParams() } || {},
-            values: { cntyCd: "KR" },
+            defaultValues: { ...pgeStore?.form, ...getParams() } || {},
         }),
     };
 

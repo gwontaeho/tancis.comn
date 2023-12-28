@@ -1,68 +1,113 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID_CNTY_CD } from "./ComnCdService";
 
 export const CountryCodeList = (props: any) => {
-    const { t } = useTranslation(); /* 다국어 */
-    const { condition } = useCondition(); /* 검색 조건 저장 */
-    const form = useForm({ defaultSchema: SCHEMA_FORM_CNTY_CD, values: condition }); /* 화면 폼 제어 */
-    const [params] = useSearchParams(); /* 화면 폼 제어 */
+    const pgeUid = "comnCdLst";
+    const { t } = useTranslation();
+    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
+    const toast = useToast();
     const { close, postMessage } = usePopup();
-    const { theme } = useTheme(); /* Theme */
-    const grid = useWijmo({
-        defaultSchema: SCHEMA_GRID_CNTY_CD((data: any) => {
-            postMessage({ code: data.cntyCd, label: data.cntyNm });
-            close();
+
+    const form = {
+        cntyCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CNTY_CD,
+            defaultValues: { ...pgeStore?.form } || {},
         }),
-    });
+    };
 
-    const comnCd = params.get("comnCd");
-    const fetch_Srch = useFetch({
-        api: () => APIS.getCntyCdLst(form.getValues(), 0, grid.size),
-    });
+    const grid = {
+        cntyCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_CNTY_CD,
+            page: pgeStore?.page,
+            size: pgeStore?.size,
+        }),
+    };
 
-    const onSubmit = () => {
-        fetch_Srch.fetch();
+    const fetch = {
+        getCntyCdLst: useFetch({
+            api: () => APIS.getCntyCdLst(form.cntyCdSrch.getValues(), grid.cntyCdLst.page, grid.cntyCdLst.size),
+            enabled: utils.isEmpty(form.cntyCdSrch.errors) && form.cntyCdSrch.isSubmitted,
+            key: [grid.cntyCdLst.page, grid.cntyCdLst.size],
+            showToast: true,
+        }),
+    };
+
+    const handler = {
+        click_Btn_Srch: () => {
+            form.cntyCdSrch.handleSubmit(
+                () => {
+                    setStore(pgeUid, {
+                        form: form.cntyCdSrch.getValues(),
+                        page: grid.cntyCdLst.page,
+                        size: grid.cntyCdLst.size,
+                    });
+                    fetch.getCntyCdLst.fetch();
+                },
+                () => {
+                    toast.showToast({ type: "warning", content: "msg.00002" });
+                },
+            )();
+        },
+        click_Grid_CntyCdLst: {
+            cntyCd: (data: any) => {
+                if (!utils.isPopup()) return;
+                postMessage({ code: data.value, label: data.rowValues.cntyNm });
+                close();
+            },
+        },
     };
 
     useEffect(() => {
-        form.setValues({ comnCd: comnCd, langCd: theme.lang.toUpperCase() });
+        handler.click_Btn_Srch();
     }, []);
 
     return (
         <Page>
-            <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
+            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_CNTY_CD_LST" }]} />
             <Page.Header title={t("T_CNTY_CD_LST")} description={t("T_CNTY_CD_LST")} />
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.schema.cntyCd}></Group.Control>
-                            <Group.Control {...form.schema.cntyNm}></Group.Control>
+                            <Group.Control {...form.cntyCdSrch.schema.cntyCd}></Group.Control>
+                            <Group.Control {...form.cntyCdSrch.schema.cntyNm}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.reset();
+                                    form.cntyCdSrch.reset();
                                 }}
                             >
                                 {t("B_RESET")}
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="submit">{t("B_SRCH")}</Button>
+                            <Button
+                                onClick={() => {
+                                    handler.click_Btn_Srch();
+                                }}
+                            >
+                                {t("B_SRCH")}
+                            </Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
 
-            <Group>{fetch_Srch.data && <Wijmo {...grid.grid} data={fetch_Srch.data} />}</Group>
+            <Group>
+                <Wijmo
+                    {...grid.cntyCdLst.grid}
+                    data={fetch.getCntyCdLst.data}
+                    onCellClick={handler.click_Grid_CntyCdLst}
+                />
+            </Group>
             <Layout.Right>
                 <Button onClick={close}>{t("B_CLS")}</Button>
             </Layout.Right>

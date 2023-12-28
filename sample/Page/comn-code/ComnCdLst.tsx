@@ -18,7 +18,7 @@ export const CommonCodeList = (props: any) => {
     const form = {
         comnCdSrch: useForm({
             defaultSchema: SCHEMA_FORM_COMN_CD,
-            values: { ...pgeStore?.form, comnCd: params?.comnCd, langCd: theme.lang.toUpperCase() } || {},
+            defaultValues: { ...pgeStore?.form, comnCd: params?.comnCd, langCd: theme.lang.toUpperCase() } || {},
         }),
     };
 
@@ -65,8 +65,6 @@ export const CommonCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        console.log(getParams());
-        utils.setValuesFromParams(form.comnCdSrch, getParams());
         if (params?.comnCd) {
             form.comnCdSrch.setSchema("comnCd", { readOnly: true });
         }

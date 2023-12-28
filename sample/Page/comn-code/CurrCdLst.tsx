@@ -1,71 +1,118 @@
-import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Wijmo } from '@/comn/components'
-import { Page, Group, Layout, Button } from '@/comn/components'
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
-import { APIS, SCHEMA_FORM_CURR_CD, SCHEMA_GRID_CURR_CD } from './ComnCdService'
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { utils, envs } from "@/comn/utils";
+import { Wijmo } from "@/comn/components";
+import { Page, Group, Layout, Button } from "@/comn/components";
+import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { BASE, APIS, SCHEMA_FORM_CURR_CD, SCHEMA_GRID_CURR_CD } from "./ComnCdService";
 
 export const CurrencyCodeList = (props: any) => {
-    const { t } = useTranslation() /* 다국어 */
-    const { condition } = useCondition() /* 검색 조건 저장 */
-    const form = useForm({ defaultSchema: SCHEMA_FORM_CURR_CD, values: condition }) /* 화면 폼 제어 */
-    const [params] = useSearchParams() /* 화면 폼 제어 */
-    const { close, postMessage } = usePopup()
-    const { theme } = useTheme() /* Theme */
-    const grid = useWijmo({
-        defaultSchema: SCHEMA_GRID_CURR_CD((data: any) => {
-            postMessage({ code: data.cntyCd, label: data.cntyNm })
-            close()
+    const pgeUid = "comnCdLst";
+    const { t } = useTranslation();
+    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
+    const toast = useToast();
+    const { close, postMessage } = usePopup();
+
+    const form = {
+        currCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CURR_CD,
+            defaultValues: { ...pgeStore?.form } || {},
         }),
-    }) /* Grid */
+    };
 
-    const comnCd = params.get('comnCd')
-    const fetch_Srch = useFetch({
-        api: () => APIS.getCurrCdLst(form.getValues(), 0, grid.size),
-    })
+    const grid = {
+        currCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_CURR_CD,
+            page: pgeStore?.page,
+            size: pgeStore?.size,
+        }),
+    };
 
-    const onSubmit = () => {
-        fetch_Srch.fetch()
-    }
+    const fetch = {
+        getCurrCdLst: useFetch({
+            api: () => APIS.getCurrCdLst(form.currCdSrch.getValues(), grid.currCdLst.page, grid.currCdLst.size),
+            enabled: utils.isEmpty(form.currCdSrch.errors) && form.currCdSrch.isSubmitted,
+            key: [grid.currCdLst.page, grid.currCdLst.size],
+            showToast: true,
+        }),
+    };
+
+    const handler = {
+        click_Btn_Srch: () => {
+            form.currCdSrch.handleSubmit(
+                () => {
+                    setStore(pgeUid, {
+                        form: form.currCdSrch.getValues(),
+                        page: grid.currCdLst.page,
+                        size: grid.currCdLst.size,
+                    });
+                    fetch.getCurrCdLst.fetch();
+                },
+                () => {
+                    toast.showToast({ type: "warning", content: "msg.00002" });
+                },
+            )();
+        },
+        click_Grid_CurrCdLst: {
+            currCd: (data: any) => {
+                if (!utils.isPopup()) return;
+                postMessage({ code: data.value, label: data.rowValues.currNm });
+                close();
+            },
+        },
+    };
 
     useEffect(() => {
-        form.setValues({ comnCd: comnCd, langCd: theme.lang.toUpperCase() })
-    }, [])
+        handler.click_Btn_Srch();
+    }, []);
 
     return (
         <Page>
-            <Page.Navigation base="/sample/pages" nodes={[{ path: '/', label: 'List' }, { label: 'Regist' }]} />
-            <Page.Header title={t('T_CURR_CD_LST')} description={t('T_CURR_CD_LST')} />
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_CURR_CD_LST" }]} />
+            <Page.Header title={t("T_CURR_CD_LST")} description={t("T_CURR_CD_LST")} />
+            <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.schema.currCd}></Group.Control>
-                            <Group.Control {...form.schema.currNm}></Group.Control>
+                            <Group.Control {...form.currCdSrch.schema.currCd}></Group.Control>
+                            <Group.Control {...form.currCdSrch.schema.currNm}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.reset()
+                                    form.currCdSrch.reset();
                                 }}
                             >
-                                {t('B_RESET')}
+                                {t("B_RESET")}
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="submit">{t('B_SRCH')}</Button>
+                            <Button
+                                onClick={() => {
+                                    handler.click_Btn_Srch();
+                                }}
+                            >
+                                {t("B_SRCH")}
+                            </Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
 
-            <Group>{fetch_Srch.data && <Wijmo {...grid.grid} data={fetch_Srch.data} />}</Group>
-            <Layout.Right>
-                <Button onClick={close}>{t('B_CLS')}</Button>
-            </Layout.Right>
+            <Group>
+                <Wijmo
+                    {...grid.currCdLst.grid}
+                    data={fetch.getCurrCdLst.data}
+                    onCellClick={handler.click_Grid_CurrCdLst}
+                />
+            </Group>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
-    )
-}
+    );
+};

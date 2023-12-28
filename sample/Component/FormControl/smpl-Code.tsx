@@ -28,9 +28,18 @@ export const SampleFormControlCode = () => {
                 popupSize: "md",
             },
             field4: {
-                type: "text",
-                label: "Country Code",
+                type: "code",
+                area: "currCd",
+                label: "Currency Code",
                 controlSize: 10,
+                popupSize: "md",
+            },
+            field5: {
+                type: "code",
+                area: "bankCd",
+                label: "Bank Code",
+                controlSize: 10,
+                popupSize: "md",
             },
         },
     };
@@ -56,12 +65,10 @@ export const SampleFormControlCode = () => {
                         <Group.Control {...form.schema.field3}></Group.Control>
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control
-                            {...form.schema.field4}
-                            onChange={(e) => {
-                                console.log(1);
-                            }}
-                        ></Group.Control>
+                        <Group.Control {...form.schema.field4}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field5}></Group.Control>
                     </Group.Row>
                 </Group.Body>
             </Group>
@@ -72,7 +79,6 @@ export const SampleFormControlCode = () => {
                         <Button
                             onClick={() => {
                                 console.log(form.getValues());
-                                console.log(form.getValues("field3"));
                             }}
                         >
                             Value
