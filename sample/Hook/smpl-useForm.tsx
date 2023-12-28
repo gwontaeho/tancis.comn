@@ -56,6 +56,8 @@ const OPTION = [
 ];
 
 export const SampleUseForm = () => {
+    console.log("render");
+
     const {
         schema,
         setSchema,
@@ -74,7 +76,7 @@ export const SampleUseForm = () => {
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
-        values: { code: "A05", radio: "1" },
+        defaultValues: { code: "A05", radio: "1" },
     });
 
     const text = watch(["text"]);

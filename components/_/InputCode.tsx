@@ -34,6 +34,7 @@ const PopupUrls: { [id: string]: string } = {
 
 const InputCodeMain = (props: InputCodeProps) => {
     const { openPopup } = usePopup();
+
     const keywordInput = React.useRef<HTMLInputElement>(null);
     const labelInput = React.useRef<HTMLInputElement>(null);
 
@@ -50,10 +51,10 @@ const InputCodeMain = (props: InputCodeProps) => {
 
         if (!e.target.value) {
             labelInput.current.value = "";
-            if (!props.onChange) return;
-            props.onChange("");
+            if (props.onChange) props.onChange("");
             return;
         }
+
         getComnCd(e.target.value);
     }, 500);
 
