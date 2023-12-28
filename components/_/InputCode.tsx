@@ -15,6 +15,7 @@ type InputCodeProps = {
     control?: Control;
     popupSize?: "sm" | "md" | "lg";
     onChange?: (...args: any) => void;
+    popupParams?: any;
 };
 
 const PopupUrls: { [id: string]: string } = {
@@ -40,11 +41,14 @@ const InputCodeMain = (props: InputCodeProps) => {
         if (!props.value) return;
         if (keywordInput.current?.value === props.value) return;
         getComnCd(props.value);
+        if (props.onChange) props.onChange();
     }, [props.value]);
 
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.value) {
             if (LabelInput.current) LabelInput.current.value = "";
+            if (!props.onChange) return;
+            props.onChange(undefined);
             return;
         }
         getComnCd(e.target.value);
@@ -78,8 +82,10 @@ const InputCodeMain = (props: InputCodeProps) => {
     };
 
     const handleClickSearch = () => {
+        const popupParams = utils.toValues(props.popupParams) || null;
+        console.log(popupParams);
         openPopup({
-            params: { comnCd: props.comnCd },
+            params: { comnCd: props.comnCd, ...popupParams },
             url: PopupUrls[props.area || "comnCd"],
             size: props.popupSize || "sm",
             callback: (data: any) => {

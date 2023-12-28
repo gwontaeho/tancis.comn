@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
-import { utils } from "@/comn/utils";
+import { utils, envs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useStore, usePopup, useToast } from "@/comn/hooks";
-import { APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
 
 export const CityCodeList = (props: any) => {
     const pgeUid = "cityCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
+    const { close, postMessage, getParams } = usePopup();
     /*
      * 명명 규칙 (useForm)
      * prefix : "form_"
@@ -20,10 +21,12 @@ export const CityCodeList = (props: any) => {
      * 예) 도시코드검색( form_CityCdSrch ) , 도시코드등록( form_CityCdRgsr )
      */
     const form = {
-        cityCdSrch: useForm({ defaultSchema: SCHEMA_FORM_CITY_CD, values: pgeStore?.form || {} }),
+        cityCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CITY_CD,
+            values: { ...pgeStore?.form, ...getParams() } || {},
+        }),
     };
 
-    const { close, postMessage, getParams } = usePopup();
     /*
      * 명명 규칙 (useWijmo)
      * prefix : "grid_"
@@ -33,11 +36,7 @@ export const CityCodeList = (props: any) => {
      */
     const grid = {
         cityCdLst: useWijmo({
-            defaultSchema: SCHEMA_GRID_CITY_CD((data: any) => {
-                if (!utils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.regnNm });
-                close();
-            }),
+            defaultSchema: SCHEMA_GRID_CITY_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
@@ -100,11 +99,12 @@ export const CityCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        utils.setValuesFromParams(form.cityCdSrch, getParams());
+        handler.click_Btn_Srch();
     }, []);
 
     return (
         <Page>
+            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_CITY_CD_LST" }]} />
             <Page.Header title={t("T_CITY_CD_LST")} description={t("T_CITY_CD_LST")} />
             <form>
                 <Group>
@@ -119,10 +119,23 @@ export const CityCodeList = (props: any) => {
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
-                            <Button onClick={form.cityCdSrch.reset}>{t("B_RESET")}</Button>
+                            <Button
+                                onClick={() => {
+                                    form.cityCdSrch.reset();
+                                }}
+                            >
+                                {t("B_RESET")}
+                            </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button onClick={handler.click_Btn_Srch}>{t("B_SRCH")}</Button>
+                            <Button
+                                onClick={() => {
+                                    console.log(form.cityCdSrch.getValues());
+                                    handler.click_Btn_Srch();
+                                }}
+                            >
+                                {t("B_SRCH")}
+                            </Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
