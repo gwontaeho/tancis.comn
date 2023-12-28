@@ -46,7 +46,7 @@ export const utils = {
             .fill(null)
             .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }));
     },
-    getCode: (args: {
+    getCode: async (args: {
         comnCd?: string;
         keyword?: string;
         keywordName?: string;
@@ -162,6 +162,166 @@ export const utils = {
     getCodeOptions: (area?: string, codes?: any[]) => {
         return codes?.map((code) => {
             return { label: utils.getCodeLabel(area, code), value: utils.getCodeValue(area, code) };
+        });
+    },
+};
+
+type IdbReturn = { key: string; value: any; created: Date; updated: Date } | undefined;
+const idb = {
+    /**
+     * idb select
+     * @param dname database name
+     * @param sname store name
+     * @param key
+     * @returns
+     */
+    get: (dname: string, sname: string, key: string) => {
+        return new Promise<IdbReturn>(async (resolve, reject) => {
+            const dbs = await indexedDB.databases();
+            if (!dbs.find(({ name }) => name === dname)) {
+                resolve(undefined);
+                return;
+            }
+
+            const request = indexedDB.open(dname);
+
+            /**
+             * db connected
+             */
+            request.onsuccess = () => {
+                const db = request.result;
+
+                /**
+                 * store does not exist
+                 */
+                if (!db.objectStoreNames.contains(sname)) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const ts = db.transaction(sname, "readwrite");
+                const os = ts.objectStore(sname);
+
+                /**
+                 * request get record
+                 */
+                const getRecord = os.get(key);
+                getRecord.onsuccess = () => {
+                    if (getRecord.result) {
+                        resolve(getRecord.result);
+                        return;
+                    }
+                    resolve(undefined);
+                    return;
+                };
+            };
+        });
+    },
+    /**
+     * idb insert
+     * @param dname database name
+     * @param sname store name
+     * @param key
+     * @param value update value
+     * @returns
+     */
+    create: (dname: string, sname: string, key: string, value: any) => {
+        return new Promise<IdbReturn>((resolve, reject) => {
+            const request = indexedDB.open(dname);
+
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                db.createObjectStore(sname, { keyPath: "key" });
+            };
+
+            /**
+             * db connected
+             */
+            request.onsuccess = () => {
+                const db = request.result;
+
+                /**
+                 * store does not exist
+                 */
+                if (!db.objectStoreNames.contains(sname)) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const ts = db.transaction(sname, "readwrite");
+                const os = ts.objectStore(sname);
+
+                /**
+                 * request create record
+                 */
+                const current = new Date();
+                const record = { key, value, created: current, updated: current };
+                const createRecord = os.add(record);
+                createRecord.onsuccess = () => {
+                    resolve(record);
+                    return;
+                };
+                createRecord.onerror = () => {
+                    resolve(undefined);
+                    return;
+                };
+            };
+        });
+    },
+    /**
+     * idb update
+     * @param dname database name
+     * @param sname store name
+     * @param key
+     * @param value update value
+     * @returns
+     */
+    update: (dname: string, sname: string, key: string, value: any) => {
+        return new Promise<IdbReturn>(async (resolve, reject) => {
+            const dbs = await indexedDB.databases();
+            if (!dbs.find(({ name }) => name === dname)) {
+                resolve(undefined);
+                return;
+            }
+
+            const request = indexedDB.open(dname);
+
+            /**
+             * db connected
+             */
+            request.onsuccess = () => {
+                const db = request.result;
+
+                /**
+                 * store does not exist
+                 */
+                if (!db.objectStoreNames.contains(sname)) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const ts = db.transaction(sname, "readwrite");
+                const os = ts.objectStore(sname);
+
+                /**
+                 * request update record
+                 */
+                const getRecord = os.get(key);
+                getRecord.onsuccess = () => {
+                    if (!getRecord.result) {
+                        resolve(undefined);
+                        return;
+                    }
+                    const record = { ...getRecord.result, value, updated: new Date() };
+                    const updateRecord = os.put(record);
+                    updateRecord.onsuccess = () => {
+                        if (updateRecord.result) {
+                            resolve(record);
+                            return;
+                        }
+                    };
+                };
+            };
         });
     },
 };
