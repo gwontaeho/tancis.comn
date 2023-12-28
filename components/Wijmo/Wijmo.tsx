@@ -34,15 +34,15 @@ type WijmoProps = {
     gridRef: any;
     contentRef: any;
     schema: WijmoSchemaType;
-    onSelect?: Function;
     size: number;
     page: number;
+    onClick?: (data: any) => void;
     setSize: React.Dispatch<React.SetStateAction<number>>;
     setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const Wijmo = (props: WijmoProps) => {
-    const { gridRef, contentRef, schema, data, size, page, setSize, setPage } = props;
+    const { gridRef, contentRef, schema, data, size, page, onClick, setSize, setPage } = props;
 
     const { t } = useTranslation();
     const {
@@ -83,10 +83,18 @@ export const Wijmo = (props: WijmoProps) => {
         console.log(gridRef.current.control);
         console.log(gridRef.current?.control?.customCell);
 
-        // gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
-        //     const a = gridRef.current.control.hitTest(e);
-        //     console.log(a);
-        // });
+        gridRef.current.control.hostElement.addEventListener("click", (e: any) => {
+            const h = gridRef.current.control.hitTest(e);
+            if (h.cellType !== 1) return;
+
+            const col = h.col;
+            const row = h.row;
+            const rowValues = gridRef.current.control.rows[row].dataItem;
+            const binding = h.panel.getCellElement(row, col).getElementsByClassName("cell")[0].dataset.binding;
+            const value = gridRef.current.control.getCellData(row, col);
+
+            if (onClick) onClick({ binding, value, rowValues });
+        });
 
         _setInitialize(true);
     }, []);
@@ -197,11 +205,11 @@ export const Wijmo = (props: WijmoProps) => {
                     return {
                         ...rest,
                         cellTemplate: (e: any, s: any) => {
-                            if (onClick) {
-                                s.onclick = () => onClick({ value: e.value, rowValues: e.item, binding: __.binding });
-                            }
+                            // if (onClick) {
+                            //     s.onclick = () => onClick({ value: e.value, rowValues: e.item, binding: __.binding });
+                            // }
 
-                            return `<div>${e.value}</div>`;
+                            return `<div class="cell" data-binding=${__.binding}>${e.value}</div>`;
                         },
                     };
                 }),

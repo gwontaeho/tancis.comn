@@ -48,14 +48,6 @@ const schema: any = {
                     area: "comnCd",
                     comnCd: "CAG_0018",
                     width: 200,
-
-                    // render: (data: any) => {
-                    //     console.log(data);
-                    //     return <span>asd</span>;
-                    // },
-                    onClick: (data: any) => {
-                        console.log(data);
-                    },
                 },
                 {
                     binding: "b",
@@ -114,23 +106,14 @@ export const SampleWijmo = () => {
 
     const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
-    useEffect(() => {
-        // test();
-    }, []);
-
-    // const test = async () => {
-    //     try {
-    //         const a = await axios.get("http://localhost:4000/api/test");
-    //         console.log(a);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const handleClick = (data: any) => {
+        console.log(data);
+    };
 
     return (
         <Page>
             <Group>
-                <Wijmo {...grid1.grid} data={data} />
+                <Wijmo {...grid1.grid} data={data} onClick={handleClick} />
                 <div className="space-x-2">
                     <button onClick={() => console.log(grid1.getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(grid1.getChecked())}>check 가져오기</button>
