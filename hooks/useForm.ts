@@ -190,6 +190,8 @@ export const useForm = (props: UseFormProps) => {
         errors,
         isSubmitted,
         setError,
-        reset,
+        reset: () => {
+            setValues(values || {});
+        },
     };
 };

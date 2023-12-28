@@ -23,7 +23,8 @@ export const CityCodeList = (props: any) => {
     const form = {
         cityCdSrch: useForm({
             defaultSchema: SCHEMA_FORM_CITY_CD,
-            values: { ...pgeStore?.form, ...getParams() } || {},
+            //values: { ...pgeStore?.form, ...getParams() } || {},
+            values: { cntyCd: "KR" },
         }),
     };
 
@@ -130,7 +131,6 @@ export const CityCodeList = (props: any) => {
                         <Layout.Right>
                             <Button
                                 onClick={() => {
-                                    console.log(form.cityCdSrch.getValues());
                                     handler.click_Btn_Srch();
                                 }}
                             >
