@@ -36,7 +36,7 @@ export const APIS = {
             area: "portCd",
             page: page,
             size: size,
-            keyword: data.portAirptCd,
+            keyword: data.regnCd,
             keywordName: data.regnNm,
             cntyCd: data.cntyCd,
         });
@@ -77,6 +77,7 @@ export const APIS = {
             keyword: data.portAirptCd,
             keywordName: data.regnNm,
             cntyCd: data.cntyCd,
+            portAirptTpCd: data.portAirptTpCd,
         });
     },
     getAirptCdLst: (data: any, page: number, size: number) => {
@@ -91,11 +92,12 @@ export const APIS = {
     },
     getCoCdLst: (data: any, page: number, size: number) => {
         return utils.getCode({
-            area: "airptCd",
+            area: "coCd",
             page: page,
             size: size,
             keyword: data.tin,
             keywordName: data.coNm,
+            coTpCd: data.coTpCd,
         });
     },
     getPrcssStatCdLst: (data: any, page: number, size: number) => {
@@ -104,7 +106,7 @@ export const APIS = {
             page: page,
             size: size,
             keyword: data.item,
-            keywordName: data.prcssStatCdNm,
+            keywordName: data.itemNm,
         });
     },
     getOrgCdLst: (data: any, page: number, size: number) => {
@@ -201,34 +203,82 @@ export const SCHEMA_GRID_CITY_CD: WijmoSchemaType = {
     ],
 };
 
-export const SCHEMA_GRID_PORT_CD = (clickEvent: any): WijmoSchemaType => {
-    return {
-        id: "grid",
-        options: { pagination: "out", isReadOnly: true },
-        head: [
-            { cells: [{ header: "L_PORT_CD", binding: "portAirptCd" }] },
-            { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
-            { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
-        ],
-        body: [
-            {
-                cells: [
-                    {
-                        binding: "portAirptCd",
-                        onClick: (ctx: any) => {
-                            clickEvent(ctx);
-                        },
-                    },
-                ],
-            },
-            {
-                cells: [{ binding: "regnNm" }],
-            },
-            {
-                cells: [{ binding: "cntyCd" }],
-            },
-        ],
-    };
+export const SCHEMA_GRID_PORT_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "out", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_PORT_CD", binding: "regnCd" }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "regnCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "regnNm", width: "*" }],
+        },
+        {
+            cells: [{ binding: "cntyCd", width: 150 }],
+        },
+    ],
+};
+
+export const SCHEMA_GRID_AIRPT_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "out", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_AIRPT_CD", binding: "regnCd" }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "regnCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "regnNm", width: "*" }],
+        },
+        {
+            cells: [{ binding: "cntyCd", width: 150 }],
+        },
+    ],
+};
+
+export const SCHEMA_GRID_PORT_AIRPT_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "out", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_PORT_AIRPT_CD", binding: "regnCd" }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "regnCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "regnNm", width: "*" }],
+        },
+        {
+            cells: [{ binding: "cntyCd", width: 150 }],
+        },
+    ],
 };
 
 export const SCHEMA_GRID_CURR_CD: WijmoSchemaType = {
@@ -253,30 +303,112 @@ export const SCHEMA_GRID_CURR_CD: WijmoSchemaType = {
     ],
 };
 
-export const SCHEMA_GRID_BNK_CD = (clickEvent: any): WijmoSchemaType => {
-    return {
-        id: "grid",
-        options: { pagination: "in", isReadOnly: true },
-        head: [
-            { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
-            { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
-        ],
-        body: [
-            {
-                cells: [
-                    {
-                        binding: "cdVldVal",
-                        onClick: (ctx: any) => {
-                            clickEvent(ctx);
-                        },
-                    },
-                ],
-            },
-            {
-                cells: [{ binding: "cdVldValNm" }],
-            },
-        ],
-    };
+export const SCHEMA_GRID_BNK_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
+        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "cdVldVal",
+                    width: 200,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "cdVldValNm", width: "*" }],
+        },
+    ],
+};
+
+export const SCHEMA_GRID_CO_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_TIN", binding: "tin" }] },
+        { cells: [{ header: "L_CO_NM", binding: "coNm" }] },
+        { cells: [{ header: "L_CO_ADDR", binding: "coAddr" }] },
+        { cells: [{ header: "L_CO_STAT", binding: "coStatCdNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "tin",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "coNm", width: 150 }],
+        },
+        {
+            cells: [{ binding: "coAddr", width: "*" }],
+        },
+        {
+            cells: [{ binding: "coStatCdNm", width: 100 }],
+        },
+    ],
+};
+
+export const SCHEMA_GRID_PRCSS_STAT_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_BSOP_PRCSS_STAT", binding: "prcssStatCdNm" }] },
+        { cells: [{ header: "L_PRCSS_STAT_CD", binding: "item" }] },
+        { cells: [{ header: "L_PRCSS_STAT", binding: "itemNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "prcssStatCdNm",
+                    width: 250,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "item", width: 150 }],
+        },
+        {
+            cells: [{ binding: "itemNm", width: "*" }],
+        },
+    ],
+};
+
+export const SCHEMA_GRID_ORG_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_ORG_CD", binding: "orgCd" }] },
+        { cells: [{ header: "L_ORG_NM", binding: "orgNm" }] },
+        { cells: [{ header: "L_ORG_ADDR", binding: "orgAddr" }] },
+        { cells: [{ header: "L_RPRS_TLPN_NO", binding: "rprsTlphNo" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "orgCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "orgNm", width: 200 }],
+        },
+        {
+            cells: [{ binding: "orgAddr", width: "*" }],
+        },
+        {
+            cells: [{ binding: "rprsTlphNo", width: 200 }],
+        },
+    ],
 };
 
 export const SCHEMA_FORM_COMN_CD: FormSchemaType = {
@@ -321,9 +453,9 @@ export const SCHEMA_FORM_CITY_CD: FormSchemaType = {
 export const SCHEMA_FORM_PORT_CD: FormSchemaType = {
     id: "form",
     schema: {
-        cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd", required: true },
+        cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd" },
         regnNm: { type: "text", label: "L_REGN_NM" },
-        portAirptCd: { type: "text", label: "L_PORT_CD" },
+        regnCd: { type: "text", label: "L_PORT_CD" },
     },
 };
 
@@ -332,7 +464,7 @@ export const SCHEMA_FORM_AIRPT_CD: FormSchemaType = {
     schema: {
         cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd" },
         regnNm: { type: "text", label: "L_REGN_NM" },
-        portAirptCd: { type: "text", label: "L_PORT_CD" },
+        regnCd: { type: "text", label: "L_AIRPT_CD" },
     },
 };
 
@@ -343,7 +475,6 @@ export const SCHEMA_FORM_PORT_AIRPT_CD: FormSchemaType = {
             type: "select",
             label: "L_PORT_AIRPT_TP",
             required: true,
-            select: true,
             options: [
                 { label: "L_PORT", value: "PORT" },
                 { label: "L_AIRPT", value: "AIRPT" },
@@ -351,7 +482,7 @@ export const SCHEMA_FORM_PORT_AIRPT_CD: FormSchemaType = {
         },
         cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd" },
         regnNm: { type: "text", label: "L_REGN_NM" },
-        portAirptCd: { type: "text", label: "L_PORT_AIRPT_CD" },
+        regnCd: { type: "text", label: "L_PORT_AIRPT_CD" },
     },
 };
 
@@ -380,7 +511,6 @@ export const SCHEMA_FORM_CO_CD: FormSchemaType = {
             type: "select",
             label: "L_CO_PT",
             required: true,
-            select: true,
             options: [
                 { label: "L_CO", value: "C" },
                 { label: "L_PSN", value: "P" },
@@ -393,7 +523,7 @@ export const SCHEMA_FORM_PRCSS_STAT_CD: FormSchemaType = {
     id: "form",
     schema: {
         item: { type: "text", label: "L_PRCSS_STAT_CD" },
-        prcssStatCdNm: { type: "text", label: "L_PRCSS_STAT" },
+        itemNm: { type: "text", label: "L_PRCSS_STAT" },
     },
 };
 

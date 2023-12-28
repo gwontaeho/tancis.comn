@@ -1,64 +1,119 @@
-import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Wijmo } from '@/comn/components'
-import { Page, Group, Layout, Button } from '@/comn/components'
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from '@/comn/hooks'
-import { APIS, SCHEMA_FORM_PORT_CD, SCHEMA_GRID_PORT_CD } from './ComnCdService'
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { utils, envs } from "@/comn/utils";
+import { Wijmo } from "@/comn/components";
+import { Page, Group, Layout, Button } from "@/comn/components";
+import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { BASE, APIS, SCHEMA_FORM_PORT_CD, SCHEMA_GRID_PORT_CD } from "./ComnCdService";
 
 export const PortCodeList = (props: any) => {
-    const { t } = useTranslation()
-    const { condition } = useCondition()
-    const form = useForm({ defaultSchema: SCHEMA_FORM_PORT_CD, values: condition })
-    const { close, postMessage } = usePopup()
-    const grid = useWijmo({
-        defaultSchema: SCHEMA_GRID_PORT_CD((data: any) => {
-            postMessage({ code: data.portAirptCd, label: data.regnNm })
-            close()
+    const pgeUid = "comnCdLst";
+    const { t } = useTranslation();
+    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
+    const toast = useToast();
+    const { close, postMessage } = usePopup();
+
+    const form = {
+        portCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_PORT_CD,
+            defaultValues: { ...pgeStore?.form } || {},
         }),
-    })
+    };
 
-    const fetch_Srch = useFetch({
-        api: () => APIS.getPortCdLst(form.getValues(), grid.page, grid.size),
-        enabled: form.isSubmitted,
-        key: [grid.page, grid.size],
-    })
+    const grid = {
+        portCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_PORT_CD,
+            page: pgeStore?.page,
+            size: pgeStore?.size,
+        }),
+    };
 
-    const onSubmit = () => {
-        fetch_Srch.fetch()
-    }
+    const fetch = {
+        getPortCdLst: useFetch({
+            api: () => APIS.getPortCdLst(form.portCdSrch.getValues(), grid.portCdLst.page, grid.portCdLst.size),
+            enabled: utils.isEmpty(form.portCdSrch.errors) && form.portCdSrch.isSubmitted,
+            key: [grid.portCdLst.page, grid.portCdLst.size],
+            showToast: true,
+        }),
+    };
+
+    const handler = {
+        click_Btn_Srch: () => {
+            form.portCdSrch.handleSubmit(
+                () => {
+                    setStore(pgeUid, {
+                        form: form.portCdSrch.getValues(),
+                        page: grid.portCdLst.page,
+                        size: grid.portCdLst.size,
+                    });
+                    fetch.getPortCdLst.fetch();
+                },
+                () => {
+                    toast.showToast({ type: "warning", content: "msg.00002" });
+                },
+            )();
+        },
+        click_Grid_PortCdLst: {
+            regnCd: (data: any) => {
+                if (!utils.isPopup()) return;
+                postMessage({ code: data.value, label: data.rowValues.regnNm });
+                close();
+            },
+        },
+    };
+
+    useEffect(() => {
+        handler.click_Btn_Srch();
+    }, []);
 
     return (
         <Page>
-            <Page.Header title={t('T_PORT_CD_LST')} description={t('T_PORT_CD_LST')} />
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_PORT_CD_LST" }]} />
+            <Page.Header title={t("T_PORT_CD_LST")} description={t("T_PORT_CD_LST")} />
+            <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.schema.regnNm} controlSize={10}></Group.Control>
+                            <Group.Control {...form.portCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form.portCdSrch.schema.regnCd}></Group.Control>
+                            <Group.Control {...form.portCdSrch.schema.regnNm}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.reset()
+                                    form.portCdSrch.reset();
                                 }}
                             >
-                                {t('B_RESET')}
+                                {t("B_RESET")}
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="submit">{t('B_SRCH')}</Button>
+                            <Button
+                                onClick={() => {
+                                    handler.click_Btn_Srch();
+                                }}
+                            >
+                                {t("B_SRCH")}
+                            </Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
 
-            <Group>{fetch_Srch.data && <Wijmo {...grid.grid} data={fetch_Srch.data} />}</Group>
+            <Group>
+                <Wijmo
+                    {...grid.portCdLst.grid}
+                    data={fetch.getPortCdLst.data}
+                    onCellClick={handler.click_Grid_PortCdLst}
+                />
+            </Group>
             <Layout.Right>
-                <Button onClick={close}>{t('B_CLS')}</Button>
+                <Button onClick={close}>{t("B_CLS")}</Button>
             </Layout.Right>
         </Page>
-    )
-}
+    );
+};

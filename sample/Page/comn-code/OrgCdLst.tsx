@@ -4,59 +4,64 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_BNK_CD, SCHEMA_GRID_BNK_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_ORG_CD, SCHEMA_GRID_ORG_CD } from "./ComnCdService";
 
-export const BankCodeList = (props: any) => {
-    const pgeUid = "comnCdLst";
+export const OrganizationCodeList = (props: any) => {
+    const pgeUid = "orgCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
 
     const form = {
-        bnkCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_BNK_CD,
+        orgCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_ORG_CD,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        bnkCdLst: useWijmo({
-            defaultSchema: SCHEMA_GRID_BNK_CD,
+        orgCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_ORG_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getBnkCdLst: useFetch({
-            api: () => APIS.getBnkCdLst(form.bnkCdSrch.getValues(), grid.bnkCdLst.page, grid.bnkCdLst.size),
-            enabled: utils.isEmpty(form.bnkCdSrch.errors) && form.bnkCdSrch.isSubmitted,
-            key: [grid.bnkCdLst.page, grid.bnkCdLst.size],
+        getOrgCdLst: useFetch({
+            api: () => APIS.getOrgCdLst(form.orgCdSrch.getValues(), grid.orgCdLst.page, grid.orgCdLst.size),
+            enabled: utils.isEmpty(form.orgCdSrch.errors) && form.orgCdSrch.isSubmitted,
+            key: [grid.orgCdLst.page, grid.orgCdLst.size],
             showToast: true,
         }),
     };
 
     const handler = {
         click_Btn_Srch: () => {
-            form.bnkCdSrch.handleSubmit(
+            form.orgCdSrch.handleSubmit(
                 () => {
                     setStore(pgeUid, {
-                        form: form.bnkCdSrch.getValues(),
-                        page: grid.bnkCdLst.page,
-                        size: grid.bnkCdLst.size,
+                        form: form.orgCdSrch.getValues(),
+                        page: grid.orgCdLst.page,
+                        size: grid.orgCdLst.size,
                     });
-                    fetch.getBnkCdLst.fetch();
+                    fetch.getOrgCdLst.fetch();
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_BnkCdLst: {
-            cdVldVal: (data: any) => {
+        click_Grid_OrgCdLst: {
+            orgCd: (data: any) => {
                 if (!utils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
+                postMessage({
+                    code: data.value,
+                    label: data.rowValues.orgNm,
+                    orgAddr: data.rowValues.orgAddr,
+                    rprsTlphNo: data.rowValues.rprsTlphNo,
+                });
                 close();
             },
         },
@@ -68,21 +73,21 @@ export const BankCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_BNK_CD_LST" }]} />
-            <Page.Header title={t("T_BNK_CD_LST")} description={t("T_BNK_CD_LST")} />
+            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_ORG_CD_LST" }]} />
+            <Page.Header title={t("T_ORG_CD_LST")} description={t("T_ORG_CD_LST")} />
             <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.bnkCdSrch.schema.cdVldVal}></Group.Control>
-                            <Group.Control {...form.bnkCdSrch.schema.cdVldValNm}></Group.Control>
+                            <Group.Control {...form.orgCdSrch.schema.orgCd}></Group.Control>
+                            <Group.Control {...form.orgCdSrch.schema.orgNm}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.bnkCdSrch.reset();
+                                    form.orgCdSrch.reset();
                                 }}
                             >
                                 {t("B_RESET")}
@@ -103,9 +108,9 @@ export const BankCodeList = (props: any) => {
 
             <Group>
                 <Wijmo
-                    {...grid.bnkCdLst.grid}
-                    data={fetch.getBnkCdLst.data}
-                    onCellClick={handler.click_Grid_BnkCdLst}
+                    {...grid.orgCdLst.grid}
+                    data={fetch.getOrgCdLst.data}
+                    onCellClick={handler.click_Grid_OrgCdLst}
                 />
             </Group>
             <Layout.Right>

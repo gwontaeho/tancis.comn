@@ -36,8 +36,50 @@ export const SampleFormControlCode = () => {
             },
             field5: {
                 type: "code",
-                area: "bankCd",
+                area: "bnkCd",
                 label: "Bank Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
+            field6: {
+                type: "code",
+                area: "portCd",
+                label: "Port Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
+            field7: {
+                type: "code",
+                area: "airptCd",
+                label: "Airport Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
+            field8: {
+                type: "code",
+                area: "portAirptCd",
+                label: "Port/Airport Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
+            field9: {
+                type: "code",
+                area: "coCd",
+                label: "Company Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
+            field10: {
+                type: "code",
+                area: "prcssStatCd",
+                label: "Processing Status Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
+            field11: {
+                type: "code",
+                area: "orgCd",
+                label: "Organization Code",
                 controlSize: 10,
                 popupSize: "md",
             },
@@ -69,6 +111,24 @@ export const SampleFormControlCode = () => {
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.field5}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field6}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field7}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field8}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field9}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field10}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field11}></Group.Control>
                     </Group.Row>
                 </Group.Body>
             </Group>

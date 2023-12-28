@@ -22,7 +22,7 @@ const PopupUrls: { [id: string]: string } = {
     comnCd: `/comn/smpl/pages/comnCdPpup`,
     cityCd: `/comn/smpl/pages/cityCdPpup`,
     cntyCd: `/comn/smpl/pages/cntyCdPpup`,
-    bankCd: `/comn/smpl/pages/bankCdPpup`,
+    bnkCd: `/comn/smpl/pages/bnkCdPpup`,
     currCd: `/comn/smpl/pages/currCdPpup`,
     portCd: `/comn/smpl/pages/portCdPpup`,
     portAirptCd: `/comn/smpl/pages/portAirptCdPpup`,

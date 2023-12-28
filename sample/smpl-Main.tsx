@@ -46,6 +46,11 @@ import { CityCodeList } from "@/comn/sample/Page/comn-code/CityCdLst";
 import { CurrencyCodeList } from "@/comn/sample/Page/comn-code/CurrCdLst";
 import { BankCodeList } from "@/comn/sample/Page/comn-code/BnkCdLst";
 import { PortCodeList } from "@/comn/sample/Page/comn-code/PortCdLst";
+import { AirptCodeList } from "@/comn/sample/Page/comn-code/AirptCdLst";
+import { PortAirptCodeList } from "@/comn/sample/Page/comn-code/PortAirptCdLst";
+import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
+import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
+import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
 import { __Test } from "../components/__TEST";
 
 export const SampleMain = () => {
@@ -100,11 +105,11 @@ export const SampleMain = () => {
             <Route path="/pages/currCdPpup" element={<CurrencyCodeList />} />
             <Route path="/pages/bnkCdPpup" element={<BankCodeList />} />
             <Route path="/pages/portCdPpup" element={<PortCodeList />} />
-            <Route path="/pages/portAirptCdPpup" element={<PortCodeList />} />
-            <Route path="/pages/airptCdPpup" element={<PortCodeList />} />
-            <Route path="/pages/coCdPpup" element={<PortCodeList />} />
-            <Route path="/pages/prcssStatPpup" element={<PortCodeList />} />
-            <Route path="/pages/orgCdPpup" element={<PortCodeList />} />
+            <Route path="/pages/portAirptCdPpup" element={<PortAirptCodeList />} />
+            <Route path="/pages/airptCdPpup" element={<AirptCodeList />} />
+            <Route path="/pages/coCdPpup" element={<CompanyCodeList />} />
+            <Route path="/pages/prcssStatPpup" element={<ProcessingStatusCodeList />} />
+            <Route path="/pages/orgCdPpup" element={<OrganizationCodeList />} />
         </Routes>
     );
 };

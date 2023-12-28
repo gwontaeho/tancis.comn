@@ -4,59 +4,68 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_BNK_CD, SCHEMA_GRID_BNK_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_PORT_AIRPT_CD, SCHEMA_GRID_PORT_AIRPT_CD } from "./ComnCdService";
 
-export const BankCodeList = (props: any) => {
-    const pgeUid = "comnCdLst";
+export const PortAirptCodeList = (props: any) => {
+    const pgeUid = "portAirptCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
 
+    console.log(pgeStore);
+
     const form = {
-        bnkCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_BNK_CD,
+        portAirptCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_PORT_AIRPT_CD,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        bnkCdLst: useWijmo({
-            defaultSchema: SCHEMA_GRID_BNK_CD,
+        portAirptCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_PORT_AIRPT_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getBnkCdLst: useFetch({
-            api: () => APIS.getBnkCdLst(form.bnkCdSrch.getValues(), grid.bnkCdLst.page, grid.bnkCdLst.size),
-            enabled: utils.isEmpty(form.bnkCdSrch.errors) && form.bnkCdSrch.isSubmitted,
-            key: [grid.bnkCdLst.page, grid.bnkCdLst.size],
+        getPortAirptCdLst: useFetch({
+            api: () =>
+                APIS.getPortAirptCdLst(
+                    form.portAirptCdSrch.getValues(),
+                    grid.portAirptCdLst.page,
+                    grid.portAirptCdLst.size,
+                ),
+            enabled: utils.isEmpty(form.portAirptCdSrch.errors) && form.portAirptCdSrch.isSubmitted,
+            key: [grid.portAirptCdLst.grid.page, grid.portAirptCdLst.grid.size],
             showToast: true,
         }),
     };
 
     const handler = {
         click_Btn_Srch: () => {
-            form.bnkCdSrch.handleSubmit(
+            form.portAirptCdSrch.handleSubmit(
                 () => {
+                    grid.portAirptCdLst.page = 0;
+                    grid.portAirptCdLst.setPage(0);
+                    fetch.getPortAirptCdLst.fetch();
                     setStore(pgeUid, {
-                        form: form.bnkCdSrch.getValues(),
-                        page: grid.bnkCdLst.page,
-                        size: grid.bnkCdLst.size,
+                        form: form.portAirptCdSrch.getValues(),
+                        page: grid.portAirptCdLst.page,
+                        size: grid.portAirptCdLst.size,
                     });
-                    fetch.getBnkCdLst.fetch();
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_BnkCdLst: {
-            cdVldVal: (data: any) => {
+        click_Grid_PortAirptCdLst: {
+            regnCd: (data: any) => {
                 if (!utils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
+                postMessage({ code: data.value, label: data.rowValues.regnNm });
                 close();
             },
         },
@@ -68,21 +77,25 @@ export const BankCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_BNK_CD_LST" }]} />
-            <Page.Header title={t("T_BNK_CD_LST")} description={t("T_BNK_CD_LST")} />
+            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_PORT_AIRPT_CD_LST" }]} />
+            <Page.Header title={t("T_PORT_AIRPT_CD_LST")} description={t("T_PORT_AIRPT_CD_LST")} />
             <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.bnkCdSrch.schema.cdVldVal}></Group.Control>
-                            <Group.Control {...form.bnkCdSrch.schema.cdVldValNm}></Group.Control>
+                            <Group.Control {...form.portAirptCdSrch.schema.cntyCd}></Group.Control>
+                            <Group.Control {...form.portAirptCdSrch.schema.portAirptTpCd}></Group.Control>
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form.portAirptCdSrch.schema.regnCd}></Group.Control>
+                            <Group.Control {...form.portAirptCdSrch.schema.regnNm}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.bnkCdSrch.reset();
+                                    form.portAirptCdSrch.reset();
                                 }}
                             >
                                 {t("B_RESET")}
@@ -103,9 +116,9 @@ export const BankCodeList = (props: any) => {
 
             <Group>
                 <Wijmo
-                    {...grid.bnkCdLst.grid}
-                    data={fetch.getBnkCdLst.data}
-                    onCellClick={handler.click_Grid_BnkCdLst}
+                    {...grid.portAirptCdLst.grid}
+                    data={fetch.getPortAirptCdLst.data}
+                    onCellClick={handler.click_Grid_PortAirptCdLst}
                 />
             </Group>
             <Layout.Right>

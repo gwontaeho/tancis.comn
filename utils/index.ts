@@ -69,8 +69,21 @@ export const utils = {
         size?: number;
         langCd?: string;
         cntyCd?: string;
+        portAirptTpCd?: string;
+        coTpCd?: string;
     }) => {
-        const { comnCd, area, size, page = 0, keyword = "", keywordName = "", langCd = "", cntyCd = "" } = args;
+        const {
+            comnCd,
+            area,
+            size,
+            page = 0,
+            keyword = "",
+            keywordName = "",
+            langCd = "",
+            cntyCd = "",
+            portAirptTpCd = "",
+            coTpCd = "",
+        } = args;
 
         let url = "";
         switch (area) {
@@ -81,7 +94,7 @@ export const utils = {
                 url = `/ptl-com/api/v1/comn/city-cds?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "portCd":
-                url = `/ptl-com/api/v1/comn/port-cds?portAirptCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/ptl-com/api/v1/comn/port-cds?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "cntyCd":
                 url = `/ptl-com/api/v1/comn/cnty-cds?cntyCd=${keyword}&cntyNm=${keywordName}`;
@@ -93,16 +106,16 @@ export const utils = {
                 url = `/ptl-com/api/v1/comn/comn-cds?comnCd=CO012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`;
                 break;
             case "portAirptCd":
-                url = `/ptl-com/api/v1/comn/port-airpt-cds?portAirptTpCd=AIRPT&portAirptCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/ptl-com/api/v1/comn/port-airpt-cds?portAirptTpCd=${portAirptTpCd}&regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "airptCd":
-                url = `/ptl-com/api/v1/comn/airpt-cds?portAirptCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/ptl-com/api/v1/comn/airpt-cds?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "coCd":
-                url = `/ptl-com/api/v1/comn/cos?coTpCd=C&tin=${keyword}&coNm=${keywordName}`;
+                url = `/ptl-com/api/v1/comn/cos?coTpCd=${coTpCd}&tin=${keyword}&coNm=${keywordName}`;
                 break;
             case "prcssStatCd":
-                url = `/ptl-com/api/v1/comn/prcss-stat-cds?bsopPrcssStatCd=COM_9000&item=${keyword}&prcssStatCdNm=${keywordName}`;
+                url = `/ptl-com/api/v1/comn/prcss-stat-cds?bsopPrcssStatCd=COM_9000&item=${keyword}&itemNm=${keywordName}`;
                 break;
             case "orgCd":
                 url = `/ptl-com/api/v1/comn/orgs?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
@@ -113,7 +126,7 @@ export const utils = {
         }
 
         if (size) url += `&size=${size}`;
-        if (page) url += `&page=${size}`;
+        if (page) url += `&page=${page}`;
 
         return api.get(url);
     },
