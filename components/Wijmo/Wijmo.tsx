@@ -90,9 +90,9 @@ export const Wijmo = (props: WijmoProps) => {
             const col = h.col;
             const row = h.row;
             const rowValues = gridRef.current.control.rows[row].dataItem;
-            const binding = h.panel.getCellElement(row, col).getElementsByClassName("cell")[0].dataset.binding;
+            const binding = h.panel.getCellElement(row, col).getElementsByClassName("cell")[0]?.dataset.binding;
             const value = gridRef.current.control.getCellData(row, col);
-
+            if (!binding) return;
             if (onClick) onClick({ binding, value, rowValues });
         });
 
