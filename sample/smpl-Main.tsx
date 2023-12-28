@@ -1,56 +1,59 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
 
-import { Temp } from './temp'
+import { Temp } from "./temp";
 
-import { SampleFormControlText } from '@/comn/sample/Component/FormControl/smpl-Text'
-import { SampleFormControlNumber } from '@/comn/sample/Component/FormControl/smpl-Number'
-import { SampleFormControlPassword } from '@/comn/sample/Component/FormControl/smpl-Password'
-import { SampleFormControlSelect } from '@/comn/sample/Component/FormControl/smpl-Select'
-import { SampleFormControlRadio } from '@/comn/sample/Component/FormControl/smpl-Radio'
-import { SampleFormControlCheckbox } from '@/comn/sample/Component/FormControl/smpl-Checkbox'
-import { SampleFormControlTextarea } from '@/comn/sample/Component/FormControl/smpl-Textarea'
-import { SampleFormControlDate } from '@/comn/sample/Component/FormControl/smpl-Date'
-import { SampleFormControlTime } from '@/comn/sample/Component/FormControl/smpl-Time'
-import { SampleFormControlDatetime } from '@/comn/sample/Component/FormControl/smpl-Datetime'
-import { SampleFormControlRange } from '@/comn/sample/Component/FormControl/smpl-Range'
-import { SampleFormControlFile } from '@/comn/sample/Component/FormControl/smpl-File'
-import { SampleFormControlCode } from '@/comn/sample/Component/FormControl/smpl-Code'
+import { SampleFormControlText } from "@/comn/sample/Component/FormControl/smpl-Text";
+import { SampleFormControlNumber } from "@/comn/sample/Component/FormControl/smpl-Number";
+import { SampleFormControlPassword } from "@/comn/sample/Component/FormControl/smpl-Password";
+import { SampleFormControlSelect } from "@/comn/sample/Component/FormControl/smpl-Select";
+import { SampleFormControlRadio } from "@/comn/sample/Component/FormControl/smpl-Radio";
+import { SampleFormControlCheckbox } from "@/comn/sample/Component/FormControl/smpl-Checkbox";
+import { SampleFormControlTextarea } from "@/comn/sample/Component/FormControl/smpl-Textarea";
+import { SampleFormControlDate } from "@/comn/sample/Component/FormControl/smpl-Date";
+import { SampleFormControlTime } from "@/comn/sample/Component/FormControl/smpl-Time";
+import { SampleFormControlDatetime } from "@/comn/sample/Component/FormControl/smpl-Datetime";
+import { SampleFormControlRange } from "@/comn/sample/Component/FormControl/smpl-Range";
+import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
+import { SampleFormControlCode } from "@/comn/sample/Component/FormControl/smpl-Code";
 
-import { SamplePage } from '@/comn/sample/Component/smpl-Page'
-import { SampleIcon } from '@/comn/sample/Component/smpl-Icon'
-import { SampleTooltip } from '@/comn/sample/Component/smpl-Tooltip'
-import { SampleTab } from '@/comn/sample/Component/smpl-Tab'
-import { SampleTree } from '@/comn/sample/Component/smpl-Tree'
-import { SampleTable } from '@/comn/sample/Component/smpl-Table'
-import { SampleWijmo } from '@/comn/sample/Component/smpl-Wijmo'
-import { SampleIconButton } from '@/comn/sample/Component/smpl-IconButton'
+import { SamplePage } from "@/comn/sample/Component/smpl-Page";
+import { SampleIcon } from "@/comn/sample/Component/smpl-Icon";
+import { SampleTooltip } from "@/comn/sample/Component/smpl-Tooltip";
+import { SampleTab } from "@/comn/sample/Component/smpl-Tab";
+import { SampleTree } from "@/comn/sample/Component/smpl-Tree";
+import { SampleTable } from "@/comn/sample/Component/smpl-Table";
+import { SampleWijmo } from "@/comn/sample/Component/smpl-Wijmo";
+import { SampleIconButton } from "@/comn/sample/Component/smpl-IconButton";
 
-import { SampleUseForm } from '@/comn/sample/Hook/smpl-useForm'
-import { SampleUseModal } from '@/comn/sample/Hook/smpl-useModal'
-import { SampleUseToast } from '@/comn/sample/Hook/smpl-useToast'
-import { SampleUsePopup } from '@/comn/sample/Hook/smpl-usePopup'
-import { SampleUsePopupTarget } from '@/comn/sample/Hook/smpl-usePopup'
-import { SampleUseWijmo } from '@/comn/sample/Hook/smpl-useWijmo'
-import { SampleUseTab } from '@/comn/sample/Hook/smpl-useTab'
-import { SampleUseTree } from '@/comn/sample/Hook/smpl-useTree'
-import { SampleUseFetch } from '@/comn/sample/Hook/smpl-useFetch'
-import { SampleUseStore } from '@/comn/sample/Hook/smpl-useStore'
+import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
+import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
+import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
+import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
+import { SampleUsePopupTarget } from "@/comn/sample/Hook/smpl-usePopup";
+import { SampleUseWijmo } from "@/comn/sample/Hook/smpl-useWijmo";
+import { SampleUseTab } from "@/comn/sample/Hook/smpl-useTab";
+import { SampleUseTree } from "@/comn/sample/Hook/smpl-useTree";
+import { SampleUseFetch } from "@/comn/sample/Hook/smpl-useFetch";
+import { SampleUseStore } from "@/comn/sample/Hook/smpl-useStore";
 
-import { SampleList } from '@/comn/sample/Page/smpl-List'
-import { SampleDetail } from '@/comn/sample/Page/smpl-Detail'
-import { SampleRegist } from '@/comn/sample/Page/smpl-Regist'
-import { SampleUpdate } from '@/comn/sample/Page/smpl-Update'
-import { CommonCodeList } from '@/comn/sample/Page/comn-code/ComnCdLst'
-import { CountryCodeList } from '@/comn/sample/Page/comn-code/CntyCdLst'
-import { CityCodeList } from '@/comn/sample/Page/comn-code/CityCdLst'
-import { CurrencyCodeList } from '@/comn/sample/Page/comn-code/CurrCdLst'
-import { BankCodeList } from '@/comn/sample/Page/comn-code/BankCdLst'
-import { PortCodeList } from '@/comn/sample/Page/comn-code/PortCdLst'
+import { SampleList } from "@/comn/sample/Page/smpl-List";
+import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
+import { SampleRegist } from "@/comn/sample/Page/smpl-Regist";
+import { SampleUpdate } from "@/comn/sample/Page/smpl-Update";
+import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
+import { CountryCodeList } from "@/comn/sample/Page/comn-code/CntyCdLst";
+import { CityCodeList } from "@/comn/sample/Page/comn-code/CityCdLst";
+import { CurrencyCodeList } from "@/comn/sample/Page/comn-code/CurrCdLst";
+import { BankCodeList } from "@/comn/sample/Page/comn-code/BankCdLst";
+import { PortCodeList } from "@/comn/sample/Page/comn-code/PortCdLst";
+import { __Test } from "../components/__TEST";
 
 export const SampleMain = () => {
     return (
         <Routes>
             <Route path="/temp" element={<Temp />} />
+
+            <Route path="/test999" element={<__Test />} />
 
             <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
             <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
@@ -103,5 +106,5 @@ export const SampleMain = () => {
             <Route path="/pages/prcssStatPpup" element={<PortCodeList />} />
             <Route path="/pages/orgCdPpup" element={<PortCodeList />} />
         </Routes>
-    )
-}
+    );
+};

@@ -46,7 +46,7 @@ export const utils = {
             .fill(null)
             .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }));
     },
-    getCode: (arg: {
+    getCode: (args: {
         comnCd?: string;
         keyword?: string;
         keywordName?: string;
@@ -56,7 +56,7 @@ export const utils = {
         langCd?: string;
         cntyCd?: string;
     }) => {
-        const { comnCd, area, page = 0, size, keyword = "", keywordName = "", langCd = "", cntyCd = "" } = arg;
+        const { comnCd, area, size, page = 0, keyword = "", keywordName = "", langCd = "", cntyCd = "" } = args;
 
         let url = "";
         switch (area) {

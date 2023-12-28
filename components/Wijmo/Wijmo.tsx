@@ -13,7 +13,7 @@ import { Selector } from "@grapecity/wijmo.grid.selector";
 import { setLicenseKey } from "@grapecity/wijmo";
 
 import { Pagination, Button, Icon, FormControl } from "@/comn/components";
-import { WijmoSchemaType, TWijmoHead, useTheme } from "@/comn/hooks";
+import { WijmoSchemaType, TWijmoHead, useTheme, TWijmoBody } from "@/comn/hooks";
 import dayjs from "dayjs";
 
 import * as wjcCore from "@grapecity/wijmo";
@@ -93,6 +93,7 @@ export const Wijmo = (props: WijmoProps) => {
 
     useEffect(() => {
         gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
+        gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
     }, [lang]);
 
     useEffect(() => {
@@ -187,6 +188,27 @@ export const Wijmo = (props: WijmoProps) => {
         });
     };
 
+    const layoutDefinition = (body: TWijmoBody) => {
+        return body.map((_) => {
+            return {
+                ..._,
+                cells: _.cells.map((__) => {
+                    const { type, area, comnCd, onClick, ...rest } = __;
+                    return {
+                        ...rest,
+                        cellTemplate: (e: any, s: any) => {
+                            if (onClick) {
+                                s.onclick = () => onClick({ value: e.value, rowValues: e.item, binding: __.binding });
+                            }
+
+                            return `<div>${e.value}</div>`;
+                        },
+                    };
+                }),
+            };
+        });
+    };
+
     const handleExport = () => {
         wjcGridXlsx.FlexGridXlsxConverter.saveAsync(
             gridRef.current.control,
@@ -222,7 +244,7 @@ export const Wijmo = (props: WijmoProps) => {
             )}
 
             <wjGrid.MultiRow ref={gridRef}>
-                {_body.map((props) => {
+                {/* {_body.map((props) => {
                     return (
                         <wjGrid.MultiRowCellGroup key={props.key} colspan={props.colspan}>
                             {props.cells.map((cellProps) => {
@@ -234,7 +256,7 @@ export const Wijmo = (props: WijmoProps) => {
                                         binding={cellProps.binding}
                                         isReadOnly={cellProps.isReadOnly}
                                     >
-                                        {/* <wjGrid.MultiRowCellTemplate
+                                        <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
                                             template={(cell: any) => {
                                                 const cellData = {
@@ -256,7 +278,7 @@ export const Wijmo = (props: WijmoProps) => {
                                                     </div>
                                                 );
                                             }}
-                                        /> */}
+                                        />
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
@@ -299,7 +321,7 @@ export const Wijmo = (props: WijmoProps) => {
                             })}
                         </wjGrid.MultiRowCellGroup>
                     );
-                })}
+                })} */}
             </wjGrid.MultiRow>
 
             {schema.options?.pagination && (
