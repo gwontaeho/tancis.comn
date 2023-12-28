@@ -7,8 +7,9 @@ import { useForm, useFetch, useWijmo, useStore, usePopup, useToast } from "@/com
 import { APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
 
 export const CityCodeList = (props: any) => {
+    const pgeUid = "cityCdLst";
     const { t } = useTranslation();
-    const { pgeStore, setStore } = useStore({ pgeUid: "cityCdLst" });
+    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     /*
      * 명명 규칙 (useForm)
@@ -18,7 +19,9 @@ export const CityCodeList = (props: any) => {
      * form_[폼 데이터 메타 조합 + 폼 사용 특성]
      * 예) 도시코드검색( form_CityCdSrch ) , 도시코드등록( form_CityCdRgsr )
      */
-    const form_CityCdSrch = useForm({ defaultSchema: SCHEMA_FORM_CITY_CD, values: pgeStore?.form || {} });
+    const form = {
+        cityCdSrch: useForm({ defaultSchema: SCHEMA_FORM_CITY_CD, values: pgeStore?.form || {} }),
+    };
 
     const { close, postMessage, getParams } = usePopup();
     /*
@@ -28,15 +31,17 @@ export const CityCodeList = (props: any) => {
      * grid_[그리드 데이터 명 메타 조합]
      * 예) 도시코드( grid_CityCd )
      */
-    const grid_CityCdLst = useWijmo({
-        defaultSchema: SCHEMA_GRID_CITY_CD((data: any) => {
-            if (!utils.isPopup()) return;
-            postMessage({ code: data.value, label: data.rowValues.regnNm });
-            close();
+    const grid = {
+        cityCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_CITY_CD((data: any) => {
+                if (!utils.isPopup()) return;
+                postMessage({ code: data.value, label: data.rowValues.regnNm });
+                close();
+            }),
+            page: pgeStore?.page,
+            size: pgeStore?.size,
         }),
-        page: pgeStore?.page,
-        size: pgeStore?.size,
-    });
+    };
 
     /*
      * 명명 규칙 (useFetch)
@@ -45,18 +50,20 @@ export const CityCodeList = (props: any) => {
      * fetch_[백앤드 api 컨트롤러 메소드 명]
      * 예) 도시코드목록조회( fetch_GetCityCdLst )
      */
-    const fetch_GetCityCdLst = useFetch({
-        /*
-         * api : 해당 fetch 가 실제 실행하는 API, Service 에 정의 후 사용
-         * enabled : 해당 fetch 가 실행가능한 조건
-         * key : 변경되었을때 fetch 가 재실행되는 key
-         * showToast : fetch 의 성공 실패 결과를 Toast 메세지로 표시 여부, default : false
-         */
-        api: () => APIS.getCityCdLst(form_CityCdSrch.getValues(), grid_CityCdLst.page, grid_CityCdLst.size),
-        enabled: utils.isEmpty(form_CityCdSrch.errors) && form_CityCdSrch.isSubmitted,
-        key: [grid_CityCdLst.page, grid_CityCdLst.size],
-        showToast: true,
-    });
+    const fetch = {
+        getCityCdLst: useFetch({
+            /*
+             * api : 해당 fetch 가 실제 실행하는 API, Service 에 정의 후 사용
+             * enabled : 해당 fetch 가 실행가능한 조건
+             * key : 변경되었을때 fetch 가 재실행되는 key
+             * showToast : fetch 의 성공 실패 결과를 Toast 메세지로 표시 여부, default : false
+             */
+            api: () => APIS.getCityCdLst(form.cityCdSrch.getValues(), grid.cityCdLst.page, grid.cityCdLst.size),
+            enabled: utils.isEmpty(form.cityCdSrch.errors) && form.cityCdSrch.isSubmitted,
+            key: [grid.cityCdLst.page, grid.cityCdLst.size],
+            showToast: true,
+        }),
+    };
     /*
      * 이벤트 핸들러
      */
@@ -69,19 +76,19 @@ export const CityCodeList = (props: any) => {
          * 이
          */
         click_Btn_Srch: () => {
-            form_CityCdSrch.handleSubmit(
+            form.cityCdSrch.handleSubmit(
                 () => {
-                    setStore("cityCdLst", {
-                        form: form_CityCdSrch.getValues(),
-                        page: grid_CityCdLst.page,
-                        size: grid_CityCdLst.size,
+                    setStore(pgeUid, {
+                        form: form.cityCdSrch.getValues(),
+                        page: grid.cityCdLst.page,
+                        size: grid.cityCdLst.size,
                     });
-                    fetch_GetCityCdLst.fetch();
+                    fetch.getCityCdLst.fetch();
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
-            );
+            )();
         },
         //click_Grid_CityCdLst: ( field : )=>{
 
@@ -92,35 +99,36 @@ export const CityCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        utils.setValuesFromParams(form_CityCdSrch, getParams());
+        utils.setValuesFromParams(form.cityCdSrch, getParams());
     }, []);
 
     return (
         <Page>
             <Page.Header title={t("T_CITY_CD_LST")} description={t("T_CITY_CD_LST")} />
+            <form>
+                <Group>
+                    <Group.Body>
+                        <Group.Row>
+                            <Group.Control {...form.cityCdSrch.schema.cntyCd}></Group.Control>
+                            <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form.cityCdSrch.schema.regnNm} controlSize={10}></Group.Control>
+                        </Group.Row>
+                    </Group.Body>
+                    <Layout direction="row">
+                        <Layout.Left>
+                            <Button onClick={form.cityCdSrch.reset}>{t("B_RESET")}</Button>
+                        </Layout.Left>
+                        <Layout.Right>
+                            <Button onClick={handler.click_Btn_Srch}>{t("B_SRCH")}</Button>
+                        </Layout.Right>
+                    </Layout>
+                </Group>
+            </form>
 
             <Group>
-                <Group.Body>
-                    <Group.Row>
-                        <Group.Control {...form_CityCdSrch.schema.cntyCd}></Group.Control>
-                        <Group.Control {...form_CityCdSrch.schema.regnCd}></Group.Control>
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form_CityCdSrch.schema.regnNm} controlSize={10}></Group.Control>
-                    </Group.Row>
-                </Group.Body>
-                <Layout direction="row">
-                    <Layout.Left>
-                        <Button onClick={form_CityCdSrch.reset}>{t("B_RESET")}</Button>
-                    </Layout.Left>
-                    <Layout.Right>
-                        <Button onClick={handler.click_Btn_Srch}>{t("B_SRCH")}</Button>
-                    </Layout.Right>
-                </Layout>
-            </Group>
-
-            <Group>
-                <Wijmo {...grid_CityCdLst.grid} data={fetch_GetCityCdLst.data} />
+                <Wijmo {...grid.cityCdLst.grid} data={fetch.getCityCdLst.data} />
             </Group>
             <Layout.Right>
                 <Button onClick={close}>{t("B_CLS")}</Button>

@@ -12,10 +12,7 @@ export const CommonCodeList = (props: any) => {
     const params = getParams();
     const { theme } = useTheme();
     const grid = useWijmo({
-        defaultSchema: SCHEMA_GRID_COMN_CD((data: any) => {
-            postMessage({ code: data.cdVldVal, label: data.cdVldValNm });
-            close();
-        }),
+        defaultSchema: SCHEMA_GRID_COMN_CD,
     });
     const form = useForm({
         defaultSchema: SCHEMA_FORM_COMN_CD,

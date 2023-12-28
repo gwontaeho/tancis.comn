@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { motion } from "framer-motion";
 
@@ -14,8 +15,10 @@ export type ToastProps = {
 
 const Toast = (props: ToastProps) => {
     const { id, content, type } = props;
-
+    const { t } = useTranslation();
     const setToast = useSetRecoilState(toastState);
+
+    console.log(type);
 
     const handleClose = () => {
         setToast((prev) => prev.filter((v) => id !== v.id));
@@ -24,7 +27,7 @@ const Toast = (props: ToastProps) => {
     useEffect(() => {
         const sto = setTimeout(() => {
             handleClose();
-        }, 2000);
+        }, 100000);
 
         return () => {
             clearTimeout(sto);
@@ -41,7 +44,7 @@ const Toast = (props: ToastProps) => {
                     "border-warning": type === "warning",
                 })}
             >
-                <div className="p-4">{content}</div>
+                <div className="p-4">{typeof content === "string" ? t(content) : content}</div>
             </div>
         </motion.div>
     );
