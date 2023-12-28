@@ -44,7 +44,7 @@ import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
 import { CountryCodeList } from "@/comn/sample/Page/comn-code/CntyCdLst";
 import { CityCodeList } from "@/comn/sample/Page/comn-code/CityCdLst";
 import { CurrencyCodeList } from "@/comn/sample/Page/comn-code/CurrCdLst";
-import { BankCodeList } from "@/comn/sample/Page/comn-code/BankCdLst";
+import { BankCodeList } from "@/comn/sample/Page/comn-code/BnkCdLst";
 import { PortCodeList } from "@/comn/sample/Page/comn-code/PortCdLst";
 import { __Test } from "../components/__TEST";
 

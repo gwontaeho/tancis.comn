@@ -149,30 +149,26 @@ export const SCHEMA_GRID_COMN_CD: WijmoSchemaType = {
     ],
 };
 
-export const SCHEMA_GRID_CNTY_CD = (clickEvent: any): WijmoSchemaType => {
-    return {
-        id: "grid",
-        options: { pagination: "in", isReadOnly: true },
-        head: [
-            { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
-            { cells: [{ header: "L_CNTY_NM", binding: "cntyNm" }] },
-        ],
-        body: [
-            {
-                cells: [
-                    {
-                        binding: "cntyCd",
-                        onClick: (ctx: any) => {
-                            clickEvent(ctx);
-                        },
-                    },
-                ],
-            },
-            {
-                cells: [{ binding: "cntyNm" }],
-            },
-        ],
-    };
+export const SCHEMA_GRID_CNTY_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+        { cells: [{ header: "L_CNTY_NM", binding: "cntyNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "cntyCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "cntyNm", width: "*" }],
+        },
+    ],
 };
 
 export const SCHEMA_GRID_CITY_CD: WijmoSchemaType = {
@@ -235,30 +231,26 @@ export const SCHEMA_GRID_PORT_CD = (clickEvent: any): WijmoSchemaType => {
     };
 };
 
-export const SCHEMA_GRID_CURR_CD = (clickEvent: any): WijmoSchemaType => {
-    return {
-        id: "grid",
-        options: { pagination: "in", isReadOnly: true },
-        head: [
-            { cells: [{ header: "L_CURR_CD", binding: "currCd" }] },
-            { cells: [{ header: "L_CURR_NM", binding: "currNm" }] },
-        ],
-        body: [
-            {
-                cells: [
-                    {
-                        binding: "currCd",
-                        onClick: (ctx: any) => {
-                            clickEvent(ctx);
-                        },
-                    },
-                ],
-            },
-            {
-                cells: [{ binding: "currNm" }],
-            },
-        ],
-    };
+export const SCHEMA_GRID_CURR_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "in", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_CURR_CD", binding: "currCd" }] },
+        { cells: [{ header: "L_CURR_NM", binding: "currNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "currCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "currNm", width: "*" }],
+        },
+    ],
 };
 
 export const SCHEMA_GRID_BNK_CD = (clickEvent: any): WijmoSchemaType => {
