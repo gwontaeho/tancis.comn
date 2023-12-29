@@ -4,10 +4,10 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_PORT_CD, SCHEMA_GRID_PORT_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_PORT_CD_SRCH, SCHEMA_GRID_PORT_CD } from "./ComnCdService";
 
 export const PortCodeList = (props: any) => {
-    const pgeUid = "comnCdLst";
+    const pgeUid = "portCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
@@ -15,7 +15,7 @@ export const PortCodeList = (props: any) => {
 
     const form = {
         portCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_PORT_CD,
+            defaultSchema: SCHEMA_FORM_PORT_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -30,10 +30,18 @@ export const PortCodeList = (props: any) => {
 
     const fetch = {
         getPortCdLst: useFetch({
-            api: () => APIS.getPortCdLst(form.portCdSrch.getValues(), grid.portCdLst.page, grid.portCdLst.size),
+            api: (page = grid.portCdLst.page) => {
+                return APIS.getPortCdLst(form.portCdSrch.getValues(), page, grid.portCdLst.size);
+            },
             enabled: utils.isEmpty(form.portCdSrch.errors) && form.portCdSrch.isSubmitted,
             key: [grid.portCdLst.page, grid.portCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.portCdSrch.getValues(),
+                    page: grid.portCdLst.page,
+                    size: grid.portCdLst.size,
+                });
+            },
         }),
     };
 
@@ -41,12 +49,8 @@ export const PortCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.portCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.portCdSrch.getValues(),
-                        page: grid.portCdLst.page,
-                        size: grid.portCdLst.size,
-                    });
-                    fetch.getPortCdLst.fetch();
+                    grid.portCdLst.setPage(0);
+                    fetch.getPortCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -111,9 +115,11 @@ export const PortCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_PortCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

@@ -4,7 +4,7 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_ORG_CD, SCHEMA_GRID_ORG_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_ORG_CD_SRCH, SCHEMA_GRID_ORG_CD } from "./ComnCdService";
 
 export const OrganizationCodeList = (props: any) => {
     const pgeUid = "orgCdLst";
@@ -15,7 +15,7 @@ export const OrganizationCodeList = (props: any) => {
 
     const form = {
         orgCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_ORG_CD,
+            defaultSchema: SCHEMA_FORM_ORG_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -30,10 +30,18 @@ export const OrganizationCodeList = (props: any) => {
 
     const fetch = {
         getOrgCdLst: useFetch({
-            api: () => APIS.getOrgCdLst(form.orgCdSrch.getValues(), grid.orgCdLst.page, grid.orgCdLst.size),
+            api: (page = grid.orgCdLst.page) => {
+                return APIS.getOrgCdLst(form.orgCdSrch.getValues(), page, grid.orgCdLst.size);
+            },
             enabled: utils.isEmpty(form.orgCdSrch.errors) && form.orgCdSrch.isSubmitted,
             key: [grid.orgCdLst.page, grid.orgCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.orgCdSrch.getValues(),
+                    page: grid.orgCdLst.page,
+                    size: grid.orgCdLst.size,
+                });
+            },
         }),
     };
 
@@ -41,12 +49,8 @@ export const OrganizationCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.orgCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.orgCdSrch.getValues(),
-                        page: grid.orgCdLst.page,
-                        size: grid.orgCdLst.size,
-                    });
-                    fetch.getOrgCdLst.fetch();
+                    grid.orgCdLst.setPage(0);
+                    fetch.getOrgCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -113,9 +117,11 @@ export const OrganizationCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_OrgCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

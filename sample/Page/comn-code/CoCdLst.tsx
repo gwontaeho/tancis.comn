@@ -4,10 +4,10 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_CO_CD, SCHEMA_GRID_CO_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_CO_CD_SRCH, SCHEMA_GRID_CO_CD } from "./ComnCdService";
 
 export const CompanyCodeList = (props: any) => {
-    const pgeUid = "comnCdLst";
+    const pgeUid = "coCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
@@ -15,7 +15,7 @@ export const CompanyCodeList = (props: any) => {
 
     const form = {
         coCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_CO_CD,
+            defaultSchema: SCHEMA_FORM_CO_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -30,10 +30,18 @@ export const CompanyCodeList = (props: any) => {
 
     const fetch = {
         getCoCdLst: useFetch({
-            api: () => APIS.getCoCdLst(form.coCdSrch.getValues(), grid.coCdLst.page, grid.coCdLst.size),
+            api: (page = grid.coCdLst.page) => {
+                return APIS.getCoCdLst(form.coCdSrch.getValues(), page, grid.coCdLst.size);
+            },
             enabled: utils.isEmpty(form.coCdSrch.errors) && form.coCdSrch.isSubmitted,
             key: [grid.coCdLst.page, grid.coCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.coCdSrch.getValues(),
+                    page: grid.coCdLst.page,
+                    size: grid.coCdLst.size,
+                });
+            },
         }),
     };
 
@@ -41,12 +49,8 @@ export const CompanyCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.coCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.coCdSrch.getValues(),
-                        page: grid.coCdLst.page,
-                        size: grid.coCdLst.size,
-                    });
-                    fetch.getCoCdLst.fetch();
+                    grid.coCdLst.setPage(0);
+                    fetch.getCoCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -112,9 +116,11 @@ export const CompanyCodeList = (props: any) => {
             <Group>
                 <Wijmo {...grid.coCdLst.grid} data={fetch.getCoCdLst.data} onCellClick={handler.click_Grid_CoCdLst} />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

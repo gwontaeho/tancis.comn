@@ -4,7 +4,7 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_PORT_AIRPT_CD, SCHEMA_GRID_PORT_AIRPT_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_PORT_AIRPT_CD_SRCH, SCHEMA_GRID_PORT_AIRPT_CD } from "./ComnCdService";
 
 export const PortAirptCodeList = (props: any) => {
     const pgeUid = "portAirptCdLst";
@@ -13,11 +13,9 @@ export const PortAirptCodeList = (props: any) => {
     const toast = useToast();
     const { close, postMessage } = usePopup();
 
-    console.log(pgeStore);
-
     const form = {
         portAirptCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_PORT_AIRPT_CD,
+            defaultSchema: SCHEMA_FORM_PORT_AIRPT_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -32,15 +30,18 @@ export const PortAirptCodeList = (props: any) => {
 
     const fetch = {
         getPortAirptCdLst: useFetch({
-            api: () =>
-                APIS.getPortAirptCdLst(
-                    form.portAirptCdSrch.getValues(),
-                    grid.portAirptCdLst.page,
-                    grid.portAirptCdLst.size,
-                ),
+            api: (page = grid.portAirptCdLst.page) => {
+                return APIS.getPortAirptCdLst(form.portAirptCdSrch.getValues(), page, grid.portAirptCdLst.size);
+            },
             enabled: utils.isEmpty(form.portAirptCdSrch.errors) && form.portAirptCdSrch.isSubmitted,
-            key: [grid.portAirptCdLst.grid.page, grid.portAirptCdLst.grid.size],
-            showToast: true,
+            key: [grid.portAirptCdLst.page, grid.portAirptCdLst.size],
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.portAirptCdSrch.getValues(),
+                    page: grid.portAirptCdLst.page,
+                    size: grid.portAirptCdLst.size,
+                });
+            },
         }),
     };
 
@@ -48,14 +49,8 @@ export const PortAirptCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.portAirptCdSrch.handleSubmit(
                 () => {
-                    grid.portAirptCdLst.page = 0;
                     grid.portAirptCdLst.setPage(0);
-                    fetch.getPortAirptCdLst.fetch();
-                    setStore(pgeUid, {
-                        form: form.portAirptCdSrch.getValues(),
-                        page: grid.portAirptCdLst.page,
-                        size: grid.portAirptCdLst.size,
-                    });
+                    fetch.getPortAirptCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -121,9 +116,11 @@ export const PortAirptCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_PortAirptCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

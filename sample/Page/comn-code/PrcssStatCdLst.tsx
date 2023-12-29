@@ -4,7 +4,7 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_PRCSS_STAT_CD, SCHEMA_GRID_PRCSS_STAT_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_PRCSS_STAT_CD_SRCH, SCHEMA_GRID_PRCSS_STAT_CD } from "./ComnCdService";
 
 export const ProcessingStatusCodeList = (props: any) => {
     const pgeUid = "prcssStatCdLst";
@@ -15,7 +15,7 @@ export const ProcessingStatusCodeList = (props: any) => {
 
     const form = {
         prcssStatCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_PRCSS_STAT_CD,
+            defaultSchema: SCHEMA_FORM_PRCSS_STAT_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -30,15 +30,18 @@ export const ProcessingStatusCodeList = (props: any) => {
 
     const fetch = {
         getPrcssStatCdLst: useFetch({
-            api: () =>
-                APIS.getPrcssStatCdLst(
-                    form.prcssStatCdSrch.getValues(),
-                    grid.prcssStatCdLst.page,
-                    grid.prcssStatCdLst.size,
-                ),
+            api: (page = grid.prcssStatCdLst.page) => {
+                return APIS.getPortAirptCdLst(form.prcssStatCdSrch.getValues(), page, grid.prcssStatCdLst.size);
+            },
             enabled: utils.isEmpty(form.prcssStatCdSrch.errors) && form.prcssStatCdSrch.isSubmitted,
             key: [grid.prcssStatCdLst.page, grid.prcssStatCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.prcssStatCdSrch.getValues(),
+                    page: grid.prcssStatCdLst.page,
+                    size: grid.prcssStatCdLst.size,
+                });
+            },
         }),
     };
 
@@ -46,12 +49,8 @@ export const ProcessingStatusCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.prcssStatCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.prcssStatCdSrch.getValues(),
-                        page: grid.prcssStatCdLst.page,
-                        size: grid.prcssStatCdLst.size,
-                    });
-                    fetch.getPrcssStatCdLst.fetch();
+                    grid.prcssStatCdLst.setPage(0);
+                    fetch.getPrcssStatCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -113,9 +112,11 @@ export const ProcessingStatusCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_PrcssStatCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

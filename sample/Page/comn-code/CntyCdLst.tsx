@@ -4,10 +4,10 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_CNTY_CD, SCHEMA_GRID_CNTY_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_CNTY_CD_SRCH, SCHEMA_GRID_CNTY_CD } from "./ComnCdService";
 
 export const CountryCodeList = (props: any) => {
-    const pgeUid = "comnCdLst";
+    const pgeUid = "cntyCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
@@ -15,7 +15,7 @@ export const CountryCodeList = (props: any) => {
 
     const form = {
         cntyCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_CNTY_CD,
+            defaultSchema: SCHEMA_FORM_CNTY_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -30,10 +30,18 @@ export const CountryCodeList = (props: any) => {
 
     const fetch = {
         getCntyCdLst: useFetch({
-            api: () => APIS.getCntyCdLst(form.cntyCdSrch.getValues(), grid.cntyCdLst.page, grid.cntyCdLst.size),
+            api: (page = grid.cntyCdLst.page) => {
+                return APIS.getCntyCdLst(form.cntyCdSrch.getValues(), page, grid.cntyCdLst.size);
+            },
             enabled: utils.isEmpty(form.cntyCdSrch.errors) && form.cntyCdSrch.isSubmitted,
             key: [grid.cntyCdLst.page, grid.cntyCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.cntyCdSrch.getValues(),
+                    page: grid.cntyCdLst.page,
+                    size: grid.cntyCdLst.size,
+                });
+            },
         }),
     };
 
@@ -41,12 +49,8 @@ export const CountryCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.cntyCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.cntyCdSrch.getValues(),
-                        page: grid.cntyCdLst.page,
-                        size: grid.cntyCdLst.size,
-                    });
-                    fetch.getCntyCdLst.fetch();
+                    grid.cntyCdLst.setPage(0);
+                    fetch.getCntyCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -108,9 +112,11 @@ export const CountryCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_CntyCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

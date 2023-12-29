@@ -4,7 +4,7 @@ import { Wijmo } from "@/comn/components";
 import { utils, envs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useStore, usePopup, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_CITY_CD, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_CITY_CD_SRCH, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
 
 export const CityCodeList = (props: any) => {
     const pgeUid = "cityCdLst";
@@ -22,7 +22,7 @@ export const CityCodeList = (props: any) => {
      */
     const form = {
         cityCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_CITY_CD,
+            defaultSchema: SCHEMA_FORM_CITY_CD_SRCH,
             defaultValues: { ...pgeStore?.form, ...getParams() } || {},
         }),
     };
@@ -57,10 +57,18 @@ export const CityCodeList = (props: any) => {
              * key : 변경되었을때 fetch 가 재실행되는 key
              * showToast : fetch 의 성공 실패 결과를 Toast 메세지로 표시 여부, default : false
              */
-            api: () => APIS.getCityCdLst(form.cityCdSrch.getValues(), grid.cityCdLst.page, grid.cityCdLst.size),
+            api: (page = grid.cityCdLst.page) => {
+                return APIS.getCityCdLst(form.cityCdSrch.getValues(), page, grid.cityCdLst.size);
+            },
             enabled: utils.isEmpty(form.cityCdSrch.errors) && form.cityCdSrch.isSubmitted,
             key: [grid.cityCdLst.page, grid.cityCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.cityCdSrch.getValues(),
+                    page: grid.cityCdLst.page,
+                    size: grid.cityCdLst.size,
+                });
+            },
         }),
     };
     /*
@@ -77,12 +85,8 @@ export const CityCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.cityCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.cityCdSrch.getValues(),
-                        page: grid.cityCdLst.page,
-                        size: grid.cityCdLst.size,
-                    });
-                    fetch.getCityCdLst.fetch();
+                    grid.cityCdLst.setPage(0);
+                    fetch.getCityCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -147,9 +151,11 @@ export const CityCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_CityCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

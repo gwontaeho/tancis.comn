@@ -76,7 +76,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             const data = isArray ? res.map(({ data }: any) => data) : res.data;
             dispatch({ type: "success", payload: data });
             if (onSuccess) {
-                if (showToast) toast.showToast({ type: "success", content: "success" });
+                if (showToast) toast.showToast({ type: "success", content: "Processed successfully" });
                 onSuccess(data);
             }
             statusRef.current.isLoading = false;
@@ -85,7 +85,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         } catch (error) {
             if (notifyStatus) dispatch({ type: "error" });
             if (onError) {
-                if (showToast) toast.showToast({ type: "error", content: "error" });
+                if (showToast) toast.showToast({ type: "error", content: "An error occurred " });
                 onError(error);
             }
             statusRef.current.isLoading = false;

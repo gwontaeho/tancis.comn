@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useToast, usePopup, useTheme, useStore } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_COMN_CD, SCHEMA_GRID_COMN_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_COMN_CD_SRCH, SCHEMA_GRID_COMN_CD } from "./ComnCdService";
 
 export const CommonCodeList = (props: any) => {
     const pgeUid = "comnCdLst";
@@ -17,7 +17,7 @@ export const CommonCodeList = (props: any) => {
 
     const form = {
         comnCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_COMN_CD,
+            defaultSchema: SCHEMA_FORM_COMN_CD_SRCH,
             defaultValues: { ...pgeStore?.form, comnCd: params?.comnCd, langCd: theme.lang.toUpperCase() } || {},
         }),
     };
@@ -32,10 +32,18 @@ export const CommonCodeList = (props: any) => {
 
     const fetch = {
         getComnCdLst: useFetch({
-            api: () => APIS.getComnCdLst(form.comnCdSrch.getValues(), grid.comnCdLst.page, grid.comnCdLst.size),
+            api: (page = grid.comnCdLst.page) => {
+                return APIS.getComnCdLst(form.comnCdSrch.getValues(), page, grid.comnCdLst.size);
+            },
             enabled: utils.isEmpty(form.comnCdSrch.errors) && form.comnCdSrch.isSubmitted,
             key: [grid.comnCdLst.page, grid.comnCdLst.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.comnCdSrch.getValues(),
+                    page: grid.comnCdLst.page,
+                    size: grid.comnCdLst.size,
+                });
+            },
         }),
     };
 
@@ -43,12 +51,8 @@ export const CommonCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.comnCdSrch.handleSubmit(
                 () => {
-                    setStore(pgeUid, {
-                        form: form.comnCdSrch.getValues(),
-                        page: grid.comnCdLst.page,
-                        size: grid.comnCdLst.size,
-                    });
-                    fetch.getComnCdLst.fetch();
+                    grid.comnCdLst.setPage(0);
+                    fetch.getComnCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -117,9 +121,11 @@ export const CommonCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_ComnCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };

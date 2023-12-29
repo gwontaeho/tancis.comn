@@ -4,7 +4,7 @@ import { utils, envs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_AIRPT_CD, SCHEMA_GRID_AIRPT_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_AIRPT_CD_SRCH, SCHEMA_GRID_AIRPT_CD } from "./ComnCdService";
 
 export const AirptCodeList = (props: any) => {
     const pgeUid = "airptCdLst";
@@ -15,7 +15,7 @@ export const AirptCodeList = (props: any) => {
 
     const form = {
         airptCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_AIRPT_CD,
+            defaultSchema: SCHEMA_FORM_AIRPT_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
@@ -30,10 +30,18 @@ export const AirptCodeList = (props: any) => {
 
     const fetch = {
         getAirptCdLst: useFetch({
-            api: () => APIS.getAirptCdLst(form.airptCdSrch.getValues(), grid.airptCdLst.page, grid.airptCdLst.size),
+            api: (page = grid.airptCdLst.page) => {
+                return APIS.getAirptCdLst(form.airptCdSrch.getValues(), page, grid.airptCdLst.size);
+            },
             enabled: utils.isEmpty(form.airptCdSrch.errors) && form.airptCdSrch.isSubmitted,
             key: [grid.airptCdLst.grid.page, grid.airptCdLst.grid.size],
-            showToast: true,
+            onSuccess: () => {
+                setStore(pgeUid, {
+                    form: form.airptCdSrch.getValues(),
+                    page: grid.airptCdLst.page,
+                    size: grid.airptCdLst.size,
+                });
+            },
         }),
     };
 
@@ -41,14 +49,8 @@ export const AirptCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.airptCdSrch.handleSubmit(
                 () => {
-                    grid.airptCdLst.page = 0;
                     grid.airptCdLst.setPage(0);
-                    fetch.getAirptCdLst.fetch();
-                    setStore(pgeUid, {
-                        form: form.airptCdSrch.getValues(),
-                        page: grid.airptCdLst.page,
-                        size: grid.airptCdLst.size,
-                    });
+                    fetch.getAirptCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -113,9 +115,11 @@ export const AirptCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_AirptCdLst}
                 />
             </Group>
-            <Layout.Right>
-                <Button onClick={close}>{t("B_CLS")}</Button>
-            </Layout.Right>
+            {utils.isPopup() && (
+                <Layout.Right>
+                    <Button onClick={close}>{t("B_CLS")}</Button>
+                </Layout.Right>
+            )}
         </Page>
     );
 };
