@@ -147,7 +147,7 @@ const FormControlTextMode = (props: FormControlProps) => {
                             ? `File ${(props.getValues(props.type) || []).length}`
                             : (props.getValues(props.type) || [])[0]?.name;
                     default:
-                        return props.getValues(props.type);
+                        return props.getValues(props.name);
                 }
             })()}
         </div>
