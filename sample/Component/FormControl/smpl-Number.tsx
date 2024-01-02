@@ -37,8 +37,6 @@ export const SampleFormControlNumber = () => {
                         ["invalid?", "any", "", <>입력 필드(input field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>],
                         ["size?", "number", "", <>입력 필드(input field)의 너비를 문자수(in characters) 단위로 명시</>],
                         ["invalid?","any","",<>입력 필드(input field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,],
-                        ["multiple?", "boolean","", <>입력 필드(input field)에 사용자가 둘 이상의 값을 입력할 수 있음을 명시</>,],
-                        ["size?","keyof typeof SIZES", "",<>입력 필드(input field)의 너비를 문자수(in characters) 단위로 명시</>,],
                         ["defaultValue?", "any", "", <>입력 필드(input field)의 기본값을 설정</>],
                         ["onFocus?", "void", "", <>입력 필드(input field)의 포커스를 받은 경우 호출</>],
                         ["mask?", "string", "", <>입력 필드(input field)의 특정한 규칙을 설정</>],
