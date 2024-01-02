@@ -86,6 +86,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         };
 
         const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
+            
             if (decimalScale !== undefined || thousandSeparator) return;
             if (mask === undefined) return;
             const oldValue = e.target.value;
@@ -95,6 +96,8 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             let formattedValueArray = [];
             const maxFormattedLength = maskedValueArray.length;
             const maxLength = maskedValueArray.filter((_) => SET_LETTER.includes(_)).length;
+
+            
 
             for (let i = 0; i < oldValueArray.length; i++) {
                 let skip = 0;
@@ -119,6 +122,8 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
                 if (shouldLowerString) letter = letter.toLowerCase();
                 if (maskedValueArray[i] !== letter) newValueArray.push(letter);
                 formattedValueArray[i + skip] = letter;
+
+                
             }
 
             let value = newValueArray.join("");
