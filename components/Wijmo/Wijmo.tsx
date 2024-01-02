@@ -125,6 +125,8 @@ export const Wijmo = (props: WijmoProps) => {
         gridRef.current.control.itemsSource = lodash.cloneDeep(content);
 
         if (schema.options.pagination === "in") {
+            gridRef.current.control.collectionView.pageSize = _size;
+            gridRef.current.control.collectionView.moveToPage(_page);
             setTotalCount(content.length);
         } else {
             /**
@@ -144,18 +146,21 @@ export const Wijmo = (props: WijmoProps) => {
     }, [data]);
 
     useEffect(() => {
+        if (!_initialize) return;
         if (page === _page) return;
 
         _setPage(page);
     }, [page]);
 
     useEffect(() => {
+        if (!_initialize) return;
         if (size === _size) return;
 
         _setSize(size);
     }, [size]);
 
     useEffect(() => {
+        if (!_initialize) return;
         if (page === _page) return;
 
         if (onPageChange) onPageChange(_page);
@@ -170,6 +175,7 @@ export const Wijmo = (props: WijmoProps) => {
     }, [_page]);
 
     useEffect(() => {
+        if (!_initialize) return;
         if (size === _size) return;
 
         _setPage(0);

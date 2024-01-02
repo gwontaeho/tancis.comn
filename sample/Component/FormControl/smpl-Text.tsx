@@ -18,7 +18,7 @@ export const SampleFormControlText = () => {
                 title={`<FormControl type="text" />`}
                 description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
             >
-                <Sample.Table 
+                <Sample.Table
                     data={[
                         ["Properties", "Type", "Default", "Description"],
                         [
@@ -34,8 +34,13 @@ export const SampleFormControlText = () => {
                         ["value?", "any", "", <>입력 필드(input field)에 나타나는 초깃값을 설정</>],
                         ["edit?", "boolean", "", <>입력 필드(input field)의 텍스트 조회</>],
                         ["rightText?", "string", "", <>입력 필드(input field) 오른쪽의 텍스트 배치</>],
-                        ["leftButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "", <>입력 필드(input field) 왼쪽의 버튼 배치</>],
-                        ["rightButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "", <>입력 필드(input field) 오른쪽의 버튼 배치</>],
+                        ["leftButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "",<>입력 필드(input field) 왼쪽의 버튼 배치</>,],
+                        [
+                            "rightButton?",
+                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
+                            "",
+                            <>입력 필드(input field) 오른쪽의 버튼 배치</>,
+                        ],
                         ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
                         ["onBlur?", "void", "", <>포커스 된 입력 필드(input field)의 포커스가 사라졌을 때 호출</>],
                         ["disabled?", "boolean", "", <>입력 필드(input field)의 요소가 비활성화됨을 명시</>],
@@ -43,6 +48,24 @@ export const SampleFormControlText = () => {
                         ["invalid?", "any", "", <>입력 필드(input field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>],
                         ["multiple?", "boolean", "", <>입력 필드(input field)에 사용자가 둘 이상의 값을 입력할 수 있음을 명시</>],
                         ["size?", "number", "", <>입력 필드(input field)의 너비를 문자수(in characters) 단위로 명시</>],
+                        [
+                            "invalid?",
+                            "any",
+                            "",
+                            <>입력 필드(input field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,
+                        ],
+                        [
+                            "multiple?",
+                            "boolean",
+                            "",
+                            <>입력 필드(input field)에 사용자가 둘 이상의 값을 입력할 수 있음을 명시</>,
+                        ],
+                        [
+                            "size?",
+                            "keyof typeof SIZES",
+                            "",
+                            <>입력 필드(input field)의 너비를 문자수(in characters) 단위로 명시</>,
+                        ],
                         ["defaultValue?", "any", "", <>입력 필드(input field)의 기본값을 설정</>],
                         ["onFocus?", "void", "", <>입력 필드(input field)의 포커스를 받은 경우 호출</>],
                         ["mask?", "string", "", <>입력 필드(input field)의 특정한 규칙을 설정</>],
@@ -162,7 +185,6 @@ export const SampleFormControlText = () => {
                   <FormControl type="text" minLength={10} />
                 </Page>
             </Sample.Section>
-           
         </Sample>
     );
 };
