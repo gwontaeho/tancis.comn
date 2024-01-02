@@ -1,39 +1,39 @@
-import React from 'react'
-import Prism from 'prismjs'
-import { v4 as uuid } from 'uuid'
-import { Table, Tree } from '@/comn/components'
-import 'prismjs/themes/prism.css'
-import 'prismjs/components/prism-jsx'
+import React from "react";
+import Prism from "prismjs";
+import { v4 as uuid } from "uuid";
+import { Table, Tree } from "@/comn/components";
+import "prismjs/themes/prism.css";
+import "prismjs/components/prism-jsx";
 
-import classNames from 'classnames'
+import classNames from "classnames";
 
 type SampleProps = {
-    children?: React.ReactNode
-    title?: String
-    description?: string
-}
+    children?: React.ReactNode;
+    title?: String;
+    description?: string;
+};
 
 type SampleSectionProps = {
-    children?: React.ReactNode
-    title?: string
-    description?: string
-}
+    children?: React.ReactNode;
+    title?: string;
+    description?: string;
+};
 type SampleDocProps = {
-    name: string
-    code: string
-    param?: any
-    result?: any
-}
+    name: string;
+    code: string;
+    param?: any;
+    result?: any;
+};
 type SampleCodeProps = {
-    children?: string
-    exec?: () => void
-}
+    children?: string;
+    exec?: () => void;
+};
 type SampleTableProps = {
-    data?: any[]
-}
+    data?: any[];
+};
 
 export const Sample = (props: SampleProps) => {
-    const { children, title, description } = props
+    const { children, title, description } = props;
 
     return (
         <div className="space-y-8">
@@ -43,11 +43,11 @@ export const Sample = (props: SampleProps) => {
             </div>
             {children}
         </div>
-    )
-}
+    );
+};
 
 const Section = (props: SampleSectionProps) => {
-    const { children, title, description } = props
+    const { children, title, description } = props;
 
     return (
         <div className="bg-card p-4 rounded">
@@ -55,13 +55,13 @@ const Section = (props: SampleSectionProps) => {
             {description && <div className="text-[1rem] mb-4">{description}</div>}
             {children}
         </div>
-    )
-}
+    );
+};
 
 const Code = (props: SampleCodeProps) => {
     React.useEffect(() => {
-        Prism.highlightAll()
-    }, [props.children])
+        Prism.highlightAll();
+    }, [props.children]);
 
     return (
         <pre className="relative">
@@ -72,11 +72,11 @@ const Code = (props: SampleCodeProps) => {
                 </button>
             )}
         </pre>
-    )
-}
+    );
+};
 
 const Doc = (props: SampleDocProps) => {
-    const { name, code, param, result } = props
+    const { name, code, param, result } = props;
     return (
         <div className="space-y-4 bg-card p-4">
             <div className="text-[1.4rem]">{name}</div>
@@ -94,12 +94,12 @@ const Doc = (props: SampleDocProps) => {
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-Sample.Section = Section
-Sample.Doc = Doc
-Sample.Code = Code
+Sample.Section = Section;
+Sample.Doc = Doc;
+Sample.Code = Code;
 
 Sample.Table = (props: SampleTableProps) => {
     return (
@@ -108,7 +108,9 @@ Sample.Table = (props: SampleTableProps) => {
             before={
                 <colgroup>
                     {props.data?.[0]?.map((_: any, i: number) => {
-                        return <col key={uuid()} className={classNames({ 'w-32': i !== props.data?.[0].length - 1 })} />
+                        return (
+                            <col key={uuid()} className={classNames({ "w-40": i !== props.data?.[0].length - 1 })} />
+                        );
                     })}
                 </colgroup>
             }
@@ -117,11 +119,11 @@ Sample.Table = (props: SampleTableProps) => {
                 return (
                     <Table.Tr key={uuid()} header={i === 0}>
                         {row.map((_: any) => {
-                            return <Table.Td key={uuid()}>{_}</Table.Td>
+                            return <Table.Td key={uuid()}>{_}</Table.Td>;
                         })}
                     </Table.Tr>
-                )
+                );
             })}
         </Table>
-    )
-}
+    );
+};

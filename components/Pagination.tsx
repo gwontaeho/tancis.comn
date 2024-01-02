@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
-import _ from "lodash";
+import lodash from "lodash";
 import { Icon } from "@/comn/components";
 
 type PaginationProps = {
@@ -13,10 +13,18 @@ type PaginationProps = {
 };
 
 export const Pagination = (props: PaginationProps) => {
-    const { page = 0, size = 10, totalCount = 100, pageGroupSize = 10, onChangePage, onChangeSize } = props;
+    const { page = 0, size = 10, totalCount = 0, pageGroupSize = 10, onChangePage, onChangeSize } = props;
 
     const [_pageGroup, _setPageGroup] = useState(0);
-    const _pageGroups = _.chunk(Array.from(Array(Math.ceil(totalCount / size)).keys()), pageGroupSize);
+    const _pageGroups = lodash.chunk(Array.from(Array(Math.ceil(totalCount / size)).keys()), pageGroupSize);
+
+    useEffect(() => {
+        _setPageGroup(0);
+    }, [size]);
+
+    useEffect(() => {
+        _setPageGroup(Math.floor(page / pageGroupSize));
+    }, [page]);
 
     const handleChangePage = (nextPage: number) => {
         if (onChangePage) onChangePage(nextPage);

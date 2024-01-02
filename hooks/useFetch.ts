@@ -71,6 +71,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         try {
             statusRef.current.isLoading = true;
             if (notifyStatus) dispatch({ type: "loading" });
+
             const fn = () => (isArray ? Promise.all(api.map((_) => _(...variables))) : api(...variables));
             const res = await fn();
             const data = isArray ? res.map(({ data }: any) => data) : res.data;
@@ -79,10 +80,12 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
                 if (showToast) toast.showToast({ type: "success", content: "Processed successfully" });
                 onSuccess(data);
             }
+
             statusRef.current.isLoading = false;
             statusRef.current.isSuccess = true;
             return data;
         } catch (error) {
+            console.log(error);
             if (notifyStatus) dispatch({ type: "error" });
             if (onError) {
                 if (showToast) toast.showToast({ type: "error", content: "An error occurred " });
