@@ -10,7 +10,6 @@ const SCHEMA_SEARCH: FormSchemaType = {
             type: "text",
             label: "text",
             validate: (value: any) => value === "test" || "test를 써주세요",
-            mask: "aaa-000",
         },
         number: { type: "number", label: "number", min: 3 },
         password: { type: "password", label: "password", required: true },
