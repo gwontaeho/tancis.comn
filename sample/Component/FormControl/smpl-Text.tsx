@@ -6,9 +6,11 @@ import "prismjs/themes/prism.css";
 
 export const SampleFormControlText = () => {
     const br = <br />;
+
     React.useEffect(() => {
         Prism.highlightAll();
     }, []);
+
     return (
         <Sample title="Text">
             <Sample.Section

@@ -100,6 +100,8 @@ const data = utils.getMockData({ totCnt: 34 });
 export const SampleWijmo = () => {
     const grid1 = useWijmo({
         defaultSchema: schema,
+        page: 1,
+        size: 30,
     });
     const grid2 = useWijmo({
         defaultSchema: schema2,
@@ -108,7 +110,8 @@ export const SampleWijmo = () => {
     const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
     const test99 = useFetch({
-        api: () => api.get(`http://192.168.194.202:8080/api/v1/wrhs/rpck/rpck-itm-app?page=${grid2.page}`),
+        api: () =>
+            api.get(`http://192.168.194.202:8080/api/v1/wrhs/rpck/rpck-itm-app?page=${grid2.page}&size=${grid2.size}`),
         enabled: true,
         key: [grid2.page, grid2.size],
     });
@@ -120,7 +123,7 @@ export const SampleWijmo = () => {
     return (
         <Page>
             <Group>
-                <Wijmo {...grid1.grid} data={data} onCellClick={handleClick} />
+                {/* <Wijmo {...grid1.grid} data={data} onCellClick={handleClick} /> */}
                 <div className="space-x-2">
                     <button onClick={() => console.log(grid1.getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(grid1.getChecked())}>check 가져오기</button>
