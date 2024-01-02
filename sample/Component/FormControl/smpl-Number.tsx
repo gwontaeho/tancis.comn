@@ -27,6 +27,7 @@ export const SampleFormControlNumber = () => {
                             </>,
                         ],
                         ["value?", "any", "", <>입력 필드(input field)에 나타나는 초깃값을 설정</>],
+                        ["name?", "string", "", <>입력 필드(input field)의 name값 설정</>],
                         ["rightText?", "string", "", <>입력 필드(input field) 오른쪽의 텍스트 배치</>],
                         ["leftButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "",<>입력 필드(input field) 왼쪽의 버튼 배치</>,],
                         ["rightButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "",<>입력 필드(input field) 오른쪽의 버튼 배치</>,],
