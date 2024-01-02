@@ -18,6 +18,7 @@ export * from "./InputTime";
 export * from "./InputDatetime";
 export * from "./InputDaterange";
 export * from "./InputTimerange";
+export * from "./InputBoolean";
 export * from "./ControllerWrapper";
 export * from "./InputCode";
 export * from "./Sample";
