@@ -53,6 +53,7 @@
     "L_PCKG_NO": "포장 개수",
     "L_PCKG_UT_CD": "포장 단위 코드",
     "L_PCKG_UT": "포장 단위",
+    "L_GWGHT": "총중량",
     "L_BL_GWGHT": "BL 총중량",
     "L_GWGHT_UT_CD": "총중량 단위 코드",
     "L_GWGHT_UT": "총중량 단위",

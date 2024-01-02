@@ -53,6 +53,7 @@
     "L_PCKG_NO": "Package Number",
     "L_PCKG_UT_CD": "Package Unit Code",
     "L_PCKG_UT": "Package Unit",
+    "L_GWGHT": "Gross Weight",
     "L_BL_GWGHT": "B/L Gross Weight",
     "L_GWGHT_UT_CD": "Gross Weight Unit Code",
     "L_GWGHT_UT": "Gross Weight Unit",
