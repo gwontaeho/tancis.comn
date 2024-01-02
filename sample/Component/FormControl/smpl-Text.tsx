@@ -29,7 +29,6 @@ export const SampleFormControlText = () => {
                             </>,
                         ],
                         ["value?", "any", "", <>입력 필드(input field)에 나타나는 초깃값을 설정</>],
-                        ["edit?", "boolean", "", <>입력 필드(input field)의 텍스트 조회</>],
                         ["rightText?", "string", "", <>입력 필드(input field) 오른쪽의 텍스트 배치</>],
                         ["leftButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "",<>입력 필드(input field) 왼쪽의 버튼 배치</>,],
                         ["rightButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "",<>입력 필드(input field) 오른쪽의 버튼 배치</>,],
@@ -56,19 +55,19 @@ export const SampleFormControlText = () => {
                 />
 
                 
-                <Sample.Code>{`<FormControl type="text" value={'Text field 1'} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" value={'Text field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="text" value={'Text field 1'} />
+                    <FormControl type="text" value={'Text field'} />
                 </Page>
 
-                <Sample.Code>{` <FormControl type="text" name={'Text field 3'}/>`}</Sample.Code>
+                <Sample.Code>{` <FormControl type="text" name={'Text field'}/>`}</Sample.Code>
                 <Page>
-                    <FormControl type="text" name={'Text field 3'}/>
+                    <FormControl type="text" name={'Text field'}/>
                 </Page>
 
-                <Sample.Code>{`<FormControl type="text" rightText={'Text field 4'} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" rightText={'Text field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="text" rightText={'Text field 4'} />
+                    <FormControl type="text" rightText={'Text field'} />
                 </Page>
 
                 <Sample.Code>{`<FormControl type="text" leftButton={{ icon: 'search'}} />`}</Sample.Code>
@@ -86,19 +85,19 @@ export const SampleFormControlText = () => {
                     <FormControl type="text" onChange={(event) => { alert(event.target.value)}} />
                 </Page>
 
-                <Sample.Code>{`<FormControl type="text" onBlur={() => { alert('Text field 8')}} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" onBlur={() => { alert('Text field')}} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="text" onBlur={() => { alert('Text field 8')}} />
+                    <FormControl type="text" onBlur={() => { alert('Text field')}} />
                 </Page>
 
-                <Sample.Code>{`<FormControl type="text" disabled={true} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" disabled={true} defaultValue={'Text field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="text" disabled={true} />
+                    <FormControl type="text" disabled={true} defaultValue={'Text field'}/>
                 </Page>
 
-                <Sample.Code>{`<FormControl type="text" readOnly={true} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" readOnly={true} defaultValue={'Text field'} />`}</Sample.Code>
                 <Page>
-                   <FormControl type="text" readOnly={true} />
+                   <FormControl type="text" readOnly={true} defaultValue={'Text field'} />
                 </Page>
 
                 <Sample.Code>{`<FormControl type="text" invalid={{message:"invalid"}}/>`}</Sample.Code>
@@ -116,15 +115,15 @@ export const SampleFormControlText = () => {
                      <FormControl type="text" size={5} />
                 </Page>
 
-                <Sample.Code>{`<FormControl type="text" defaultValue={'Text field 14'} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" defaultValue={'Text field'} />`}</Sample.Code>
                 <Page>
-                  <FormControl type="text" defaultValue={'Text field 14'} />
+                  <FormControl type="text" defaultValue={'Text field'} />
                  </Page>
 
 
-                <Sample.Code>{`<FormControl type="text" onFocus={() => { console.log('Text field 15')}} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="text" onFocus={() => { console.log('Text field')}} />`}</Sample.Code>
                 <Page>
-                  <FormControl type="text" onFocus={() => { console.log('Text field 15')}} />
+                  <FormControl type="text" onFocus={() => { console.log('Text field')}} />
                 </Page>
 
                 <Sample.Code>{`<FormControl type="text" mask={'AAA-000-aaa'} />`}</Sample.Code>
