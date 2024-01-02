@@ -117,7 +117,7 @@ export const CommonCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.comnCdLst.grid}
-                    data={fetch.getComnCdLst.data}
+                    data={fetch.getComnCdLst.data?.comnCdList}
                     onCellClick={handler.click_Grid_ComnCdLst}
                 />
             </Group>
