@@ -27,7 +27,7 @@ export const Table = (props: TableProps) => {
     return (
         <table
             className={classNames(
-                "table-fixed w-full [&_th]:bg-header [&_tr]:h-10 [&_td]:p-1 [&_th]:p-1",
+                "table-fixed w-full [&_th]:bg-header [&_tr]:h-10 [&_td]:p-1 [&_th]:p-1 [&_th]:break-all [&_td]:break-all",
                 {
                     "[&_th]:border [&_td]:border [&_tr]:border": border,
                 },
@@ -42,7 +42,6 @@ export const Table = (props: TableProps) => {
 
 const Tr = (props: TrProps) => {
     const { children, header = false } = props;
-    console.log(classNames({ "bg-header": header }));
     return <tr className={classNames({ "bg-header": header })}>{children}</tr>;
 };
 

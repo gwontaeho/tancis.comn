@@ -1,5 +1,5 @@
-import { Page } from '@/comn/components'
-import { Sample } from '@/comn/components/_'
+import { Page } from "@/comn/components";
+import { Sample } from "@/comn/components/_";
 
 export const SamplePage = () => {
     return (
@@ -14,7 +14,7 @@ export const SamplePage = () => {
 </Page>`}</Sample.Code>
 
                 <Page>
-                    <Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />
+                    <Page.Navigation base="/" nodes={[{ path: "sample", label: "sample" }]} />
                     <Page.Header id="sample" title="sample" description="sample" />
                 </Page>
             </Sample.Section>
@@ -25,10 +25,10 @@ export const SamplePage = () => {
             >
                 <Sample.Table
                     data={[
-                        ['Properties', 'Type', 'Default', 'Description'],
-                        ['base?', 'string', '', ''],
-                        ['nodes?', 'NodeType[]', 'true', ''],
-                        ['popup?', 'boolean', 'default', ''],
+                        ["Properties", "Type", "Default", "Description"],
+                        ["base?", "string", "", ""],
+                        ["nodes?", "NodeType[]", "true", ""],
+                        ["popup?", "boolean", "default", ""],
                     ]}
                 />
 
@@ -41,14 +41,14 @@ export const SamplePage = () => {
             >
                 <Sample.Table
                     data={[
-                        ['Properties', 'Type', 'Default', 'Description'],
-                        ['id?', 'string', '', ''],
-                        ['title?', 'NodeType[]', 'true', ''],
-                        ['description?', 'boolean', 'default', ''],
+                        ["Properties", "Type", "Default", "Description"],
+                        ["id?", "string", "", ""],
+                        ["title?", "NodeType[]", "true", ""],
+                        ["description?", "boolean", "default", ""],
                     ]}
                 />
                 <Sample.Code>{`<Page.Header id="sample" title="sample" description="sample" />`}</Sample.Code>
             </Sample.Section>
         </Sample>
-    )
-}
+    );
+};

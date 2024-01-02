@@ -29,7 +29,7 @@ export const SampleFormControlText = () => {
                             </>,
                         ],
                         ["label?", "ReactNode", "", <>화면에 표시될 라벨(컴포넌트)</>],
-                        ["defaultValue?", "any", "", <>컴포넌트 초기 값</>],
+                        ["defaultValue?", "any", "", <>컴포넌트 초기 111</>],
                     ]}
                 />
 
