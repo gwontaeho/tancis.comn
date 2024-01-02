@@ -310,8 +310,19 @@ export const Wijmo = (props: WijmoProps) => {
                             {props.cells.map((cellProps) => {
                                 return (
                                     <wjGrid.MultiRowCell
+                                        dataType={(() => {
+                                            switch (cellProps.type) {
+                                                case "date":
+                                                case "time":
+                                                case "datetime":
+                                                    return "Date";
+                                                case "number":
+                                                    return "Number";
+                                                default:
+                                                    return "String";
+                                            }
+                                        })()}
                                         width={cellProps.width}
-                                        // dataType="String"
                                         key={cellProps.key}
                                         colspan={cellProps.colspan}
                                         binding={cellProps.binding}
@@ -363,8 +374,8 @@ export const Wijmo = (props: WijmoProps) => {
                                                             defaultValue={cell.value}
                                                             area={cellProps.area}
                                                             comnCd={cellProps.comnCd}
+                                                            thousandSeparator={cellProps.thousandSeparator}
                                                             onChange={(event) => {
-                                                                console.log(event);
                                                                 cell.value =
                                                                     event.target === undefined
                                                                         ? event

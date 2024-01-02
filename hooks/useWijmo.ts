@@ -16,6 +16,7 @@ export type TWijmoBody = {
         area?: string;
         comnCd?: string;
         binding: string;
+        thousandSeparator?: boolean;
         colspan?: number;
         isReadOnly?: boolean;
         options?: any[];
@@ -67,6 +68,7 @@ export const useWijmo = (props: UseWijmoArgs) => {
 
     const getData = () => {
         if (!gridRef.current) return;
+        console.log(gridRef.current.control.collectionView);
         return gridRef.current.control.collectionView.sourceCollection;
     };
 
