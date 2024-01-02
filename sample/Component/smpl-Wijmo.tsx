@@ -46,13 +46,8 @@ const schema: any = {
                 },
                 {
                     binding: "a",
-                    render: (cellData: any) => {
-                        return (
-                            <div>
-                                {cellData.rowValues.b} {cellData.rowValues.c}
-                            </div>
-                        );
-                    },
+                    type: "number",
+                    thousandSeparator: true,
                 },
                 {
                     binding: "b",
@@ -66,7 +61,7 @@ const schema: any = {
             cells: [{ binding: "d" }],
         },
         {
-            cells: [{ binding: "e" }],
+            cells: [{ binding: "e", type: "date" }],
         },
     ],
 };
@@ -112,8 +107,6 @@ export const SampleWijmo = () => {
         key: [grid2.page, grid2.size],
     });
 
-    console.log(test99);
-
     const handleClick = {
         a: (data: any) => {
             console.log(data);
@@ -127,7 +120,6 @@ export const SampleWijmo = () => {
                 <div className="space-x-2">
                     <button onClick={() => console.log(grid1.getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(grid1.getChecked())}>check 가져오기</button>
-
                     <button onClick={() => grid1.resetData()}>reset data</button>
                     <button onClick={() => console.log(grid1.getOrigin())}>get origin</button>
                     <button onClick={() => console.log(grid1.getDeleted())}>get deleted</button>
