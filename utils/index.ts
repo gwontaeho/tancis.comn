@@ -187,9 +187,11 @@ export const utils = {
         }
     },
     getCodeOptions: (area?: string, codes?: any[]) => {
-        return codes?.map((code) => {
-            return { label: utils.getCodeLabel(area, code), value: utils.getCodeValue(area, code) };
-        });
+        return (
+            codes?.map((code) => {
+                return { label: utils.getCodeLabel(area, code), value: utils.getCodeValue(area, code) };
+            }) || []
+        );
     },
 };
 

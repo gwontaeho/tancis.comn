@@ -56,14 +56,13 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     const [{ data, isLoading, isSuccess, isError }, dispatch] = useReducer(reducer, initializerArg(initialData));
 
     useEffect(() => {
-        if (enabled) {
-            if (lodash.isEqual(keyRef.current.key, key)) {
-                if (new Date().getTime() - keyRef.current.t < 1000) return;
-            }
-            keyRef.current.key = key;
-            keyRef.current.t = new Date().getTime();
-            fetch();
-        }
+        if (!enabled) return;
+
+        if (lodash.isEqual(keyRef.current.key, key)) return;
+
+        keyRef.current.key = key;
+        keyRef.current.t = new Date().getTime();
+        fetch();
     }, [enabled, ...key]);
 
     const fetch = async (...variables: any) => {

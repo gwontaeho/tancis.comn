@@ -123,13 +123,13 @@ const FormControlTextMode = (props: FormControlProps) => {
             {(() => {
                 switch (props.type) {
                     case "checkbox":
-                        return (props.getValues(props.name) || []).join(", ");
+                        return (props.getValues(props.type) || []).join(", ");
                     case "date":
-                        return dayjs(props.getValues(props.name)).format("YYYY/MM/DD");
+                        return dayjs(props.getValues(props.type)).format("YYYY/MM/DD");
                     case "time":
-                        return dayjs(props.getValues(props.name)).format("HH:mm");
+                        return dayjs(props.getValues(props.type)).format("HH:mm");
                     case "datetime":
-                        return dayjs(props.getValues(props.name)).format("YYYY/MM/DD HH:mm");
+                        return dayjs(props.getValues(props.type)).format("YYYY/MM/DD HH:mm");
                     case "daterange":
                         return (
                             dayjs(props.getValues(props.start.name)).format("YYYY/MM/DD") +
@@ -143,11 +143,11 @@ const FormControlTextMode = (props: FormControlProps) => {
                             dayjs(props.getValues(props.end.name)).format("HH:mm")
                         );
                     case "file":
-                        return (props.getValues(props.name) || []).length > 1
-                            ? `File ${(props.getValues(props.name) || []).length}`
-                            : (props.getValues(props.name) || [])[0]?.name;
+                        return (props.getValues(props.type) || []).length > 1
+                            ? `File ${(props.getValues(props.type) || []).length}`
+                            : (props.getValues(props.type) || [])[0]?.name;
                     default:
-                        return props.getValues(props.name);
+                        return props.getValues(props.type);
                 }
             })()}
         </div>

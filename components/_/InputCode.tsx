@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import lodash from "lodash";
 import { Control } from "react-hook-form";
-import { usePopup } from "@/comn/hooks";
+import { usePopup, useTheme } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
 import { ControllerWrapper } from "@/comn/components/_";
@@ -34,15 +34,23 @@ const PopupUrls: { [id: string]: string } = {
 
 const InputCodeMain = (props: InputCodeProps) => {
     const { openPopup } = usePopup();
+    const {
+        theme: { lang },
+    } = useTheme();
 
     const keywordInput = React.useRef<HTMLInputElement>(null);
     const labelInput = React.useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (!keywordInput.current?.value) return;
+        console.log("l chan");
+        getComnCd(keywordInput.current?.value);
+    }, [lang]);
 
     React.useEffect(() => {
         if (!props.value) return;
         if (keywordInput.current?.value === props.value) return;
         getComnCd(props.value);
-        if (props.onChange) props.onChange();
     }, [props.value]);
 
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +102,6 @@ const InputCodeMain = (props: InputCodeProps) => {
 
     const handleClickSearch = () => {
         const popupParams = utils.toValues(props.popupParams) || null;
-        console.log(popupParams);
         openPopup({
             params: { comnCd: props.comnCd, ...popupParams },
             url: PopupUrls[props.area || "comnCd"],

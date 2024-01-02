@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useWijmo, useToast } from "@/comn/hooks";
+import { useWijmo, useToast, useFetch } from "@/comn/hooks";
 import { Group, Page } from "@/comn/components";
 import { Wijmo } from "@/comn/components";
 
@@ -7,6 +7,7 @@ import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import { utils } from "@/comn/utils";
 import { useEffect } from "react";
+import { api } from "@/comn";
 
 const instance = axios.create({
     baseURL: "http://183.107.31.131:8000/template",
@@ -41,25 +42,23 @@ const schema: any = {
                 {
                     colspan: 3,
                     binding: "id",
+                    width: "*",
                 },
                 {
                     binding: "a",
-                    type: "select",
-                    area: "comnCd",
-                    comnCd: "CAG_0018",
-                    width: 200,
+                    render: (cellData: any) => {
+                        return (
+                            <div>
+                                {cellData.rowValues.b} {cellData.rowValues.c}
+                            </div>
+                        );
+                    },
                 },
                 {
                     binding: "b",
-                    type: "date",
-                    width: 200,
                 },
                 {
                     binding: "c",
-                    type: "radio",
-                    area: "cntyCd",
-
-                    width: 300,
                 },
             ],
         },
@@ -71,7 +70,7 @@ const schema: any = {
         },
     ],
 };
-// area: "comnCd", comnCd: "CAG_0018"
+
 const schema2: any = {
     id: "grid2",
     options: { checkbox: true, pagination: "out", add: true, remove: true },
@@ -83,7 +82,7 @@ const schema2: any = {
     body: [
         {
             colspan: 3,
-            cells: [{ binding: "id", colspan: 3 }],
+            cells: [{ binding: "frstRegstId", colspan: 3 }],
         },
         {
             cells: [{ binding: "a" }],
@@ -106,7 +105,20 @@ export const SampleWijmo = () => {
 
     const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
-    const handleClick = {};
+    const test99 = useFetch({
+        api: () =>
+            api.get(`http://192.168.194.202:8080/api/v1/wrhs/rpck/rpck-itm-app?page=${grid2.page}&size=${grid2.size}`),
+        enabled: true,
+        key: [grid2.page, grid2.size],
+    });
+
+    console.log(test99);
+
+    const handleClick = {
+        a: (data: any) => {
+            console.log(data);
+        },
+    };
 
     return (
         <Page>
@@ -118,11 +130,13 @@ export const SampleWijmo = () => {
 
                     <button onClick={() => grid1.resetData()}>reset data</button>
                     <button onClick={() => console.log(grid1.getOrigin())}>get origin</button>
+                    <button onClick={() => console.log(grid1.getDeleted())}>get deleted</button>
+                    <button onClick={() => console.log(grid1.getDataWithDeleted())}>get with deleted</button>
                 </div>
             </Group>
 
             <Group>
-                {/* <Wijmo {...grid2.grid} data={grid2Data} /> */}
+                {/* <Wijmo {...grid2.grid} data={test99.data?.rpckItmAppList} /> */}
                 {/* <div className="space-x-2">
                     <button onClick={() => console.log(getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(getChecked())}>check 가져오기</button>
