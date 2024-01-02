@@ -1,151 +1,94 @@
-import React from 'react'
-import { Sample } from '@/comn/components/_'
-import { Table, FormControl } from '@/comn/components'
-import Prism from 'prismjs'
-import 'prismjs/themes/prism.css'
+import React from "react";
+import { Sample } from "@/comn/components/_";
+import { Page, Group } from "@/comn/components";
+import Prism from "prismjs";
+import "prismjs/themes/prism.css";
 
 export const SampleFormControlText = () => {
+    const br = <br />;
     React.useEffect(() => {
-        Prism.highlightAll()
-    }, [])
+        Prism.highlightAll();
+    }, []);
     return (
-        <Sample title="FormControl">
-            <Sample.Section>
-                <Table>
-                    <Table.Tr>
-                        <Table.Th width={200}></Table.Th>
-                        <Table.Td>기본</Table.Td>
-                        <Table.Td>기본</Table.Td>
-                        <Table.Td>기본</Table.Td>
-                    </Table.Tr>
-                </Table>
+        <Sample title="Text">
+            <Sample.Section
+                title={`<Group.Control type="text" />`}
+                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
+            >
+                <Sample.Table
+                    data={[
+                        ["Properties", "Type", "Default", "Description"],
+                        [
+                            "type",
+                            "string",
+                            "text",
+                            <>
+                                text,
+                                <br /> number, password, select, radio, checkbox, textarea, datetime , file, daterange,
+                                timerange, code
+                            </>,
+                        ],
+                        ["label?", "ReactNode", "", <>화면에 표시될 라벨(컴포넌트)</>],
+                        ["defaultValue?", "any", "", <>컴포넌트 초기 111</>],
+                    ]}
+                />
+
+                <Sample.Code>{`<Group.Control type="text" label="Text field" required={true} />`}</Sample.Code>
+                <Page>
+                    <Group>
+                        <Group.Body>
+                            <Group.Row>
+                                <Group.Control type="text" label="Text field" required={true} />
+                            </Group.Row>
+                        </Group.Body>
+                    </Group>
+                </Page>
+            </Sample.Section>
+            <Sample.Section
+                title="<Page />"
+                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
+            >
+                <Sample.Code>{`<Page>
+    <Page.Header id="sample" title="sample" description="sample" />
+    <Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />
+</Page>`}</Sample.Code>
+
+                <Page>
+                    <Page.Navigation base="/" nodes={[{ path: "sample", label: "sample" }]} />
+                    <Page.Header id="sample" title="sample" description="sample" />
+                </Page>
+            </Sample.Section>
+
+            <Sample.Section
+                title="<Page.Navigation />"
+                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
+            >
+                <Sample.Table
+                    data={[
+                        ["Properties", "Type", "Default", "Description"],
+                        ["base?", "string", "", ""],
+                        ["nodes?", "NodeType[]", "true", ""],
+                        ["popup?", "boolean", "default", ""],
+                    ]}
+                />
+
+                <Sample.Code>{`<Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />`}</Sample.Code>
+            </Sample.Section>
+
+            <Sample.Section
+                title="<Page.Header />"
+                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
+            >
+                <Sample.Table
+                    data={[
+                        ["Properties", "Type", "Default", "Description"],
+                        ["id?", "string", "", ""],
+                        ["title?", "NodeType[]", "true", ""],
+                        ["description?", "boolean", "default", ""],
+                    ]}
+                />
+                <Sample.Code>{`<Page.Header id="sample" title="sample" description="sample" />`}</Sample.Code>
             </Sample.Section>
         </Sample>
-    )
-}
-
-const CodeDefault = `<FormControl  />`
-const CodeMask0 = `<FormControl mask="TEST 000"  />`
-// const CodeDefault = `<FormControl  />`
-// const CodeDefault = `<FormControl  />`
-// const CodeDefault = `<FormControl  />`
-// const CodeDefault = `<FormControl  />`
-
-{
-    /* <Sample.Section>
-<Table>
-    <Table.Tr>
-        <Table.Th width={200}>기본</Table.Th>
-        <Table.Td width={200}>
-            <FormControl />
-        </Table.Td>
-        <Table.Td></Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th rowSpan={4}>마스크</Table.Th>
-        <Table.Td>
-            <FormControl mask="TEST 000" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`mask="TEST 000"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Td>
-            <FormControl mask="TEST AAA" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`mask="TEST AAA"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Td>
-            <FormControl mask="TEST aaa" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`mask="TEST aaa"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Td>
-            <FormControl mask="TEST " exact={false} />
-        </Table.Td>
-        <Table.Td>
-            <code>{`mask="TEST" exact={false}`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>최대 길이</Table.Th>
-        <Table.Td>
-            <FormControl maxLength={5} />
-        </Table.Td>
-        <Table.Td>
-            <code>{`maxLength={5}`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>왼쪽 버튼</Table.Th>
-        <Table.Td>
-            <FormControl leftButton={{ icon: 'search', onClick: () => alert('click') }} />
-        </Table.Td>
-        <Table.Td>
-            <code>{`leftButton={{icon:"search"}}`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>오른쪽 버튼</Table.Th>
-        <Table.Td>
-            <FormControl rightButton={{ icon: 'search', onClick: () => alert('click') }} />
-        </Table.Td>
-        <Table.Td>
-            <code>{`rightButton={{icon:"search"}}`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>오른쪽 텍스트</Table.Th>
-        <Table.Td>
-            <FormControl rightText="sample" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`rightText="sample"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>영문 대문자</Table.Th>
-        <Table.Td>
-            <FormControl letterCase="upper" defaultValue="UPPER" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`letterCase="upper"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>영문 소문자</Table.Th>
-        <Table.Td>
-            <FormControl letterCase="lower" defaultValue="lower" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`letterCase="lower"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>메시지</Table.Th>
-        <Table.Td>
-            <FormControl message="any message" />
-        </Table.Td>
-        <Table.Td>
-            <code>{`message="any message"`}</code>
-        </Table.Td>
-    </Table.Tr>
-    <Table.Tr>
-        <Table.Th>에러</Table.Th>
-        <Table.Td>
-            <FormControl invalid={true} />
-        </Table.Td>
-        <Table.Td>
-            <code>{`invalid={true}`}</code>
-        </Table.Td>
-    </Table.Tr>
-</Table>
-</Sample.Section> */
-}
+    );
+};
