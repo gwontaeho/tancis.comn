@@ -18,7 +18,7 @@ export const AirptCodeList = () => {
     const form = {
         airptCdSrch: useForm({
             defaultSchema: SCHEMA_FORM_AIRPT_CD_SRCH,
-            defaultValues: pgeStore?.form || {},
+            defaultValues: pgeStore?.form === undefined ? { regnNm: "", regnCd: "", cntyCd: "" } : pgeStore?.form,
         }),
     };
 
@@ -28,8 +28,8 @@ export const AirptCodeList = () => {
     const grid = {
         airptCdLst: useWijmo({
             defaultSchema: SCHEMA_GRID_AIRPT_CD,
-            page: pgeStore?.page,
-            size: pgeStore?.size,
+            page: pgeStore?.page === undefined ? 0 : pgeStore?.page,
+            size: pgeStore?.size === undefined ? 10 : pgeStore?.size,
         }),
     };
 
@@ -38,22 +38,25 @@ export const AirptCodeList = () => {
      */
     const fetch = {
         getAirptCdLst: useFetch({
-            api: (page = grid.airptCdLst.page) => {
-                return APIS.getAirptCdLst(form.airptCdSrch.getValues(), page, grid.airptCdLst.size);
-            },
+            /**
+             * fetching 시 실행되는 api
+             */
+            api: (page = grid.airptCdLst.page) =>
+                APIS.getAirptCdLst(form.airptCdSrch.getValues(), page, grid.airptCdLst.size),
 
             /**
              * api가 참조하는 key
              */
-            key: [grid.airptCdLst.grid.page, grid.airptCdLst.grid.size],
+            key: [grid.airptCdLst.page, grid.airptCdLst.size],
 
             /**
-             * api가 key변화를 감지해 자동 실행되는 조건 (항상)
+             * api가 key변화를 감지해 자동 실행되는 조건
+             * enabled=true 항상
              */
             enabled: true,
 
             /**
-             * api 호출 성공 시 callback
+             * on success callback
              */
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -66,17 +69,29 @@ export const AirptCodeList = () => {
     };
 
     const handler = {
+        /**
+         * 검색 버튼 click event handler
+         */
         click_Btn_Srch: () => {
             form.airptCdSrch.handleSubmit(
+                /**
+                 * validation 성공 시
+                 */
                 () => {
-                    grid.airptCdLst.setPage(0);
                     fetch.getAirptCdLst.fetch(0);
+                    grid.airptCdLst.setPage(0);
                 },
+                /**
+                 * validation 실패 시
+                 */
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
+        /**
+         * 그리드 셀 click event handler object
+         */
         click_Grid_AirptCdLst: {
             regnCd: (data: any) => {
                 if (!utils.isPopup()) return;

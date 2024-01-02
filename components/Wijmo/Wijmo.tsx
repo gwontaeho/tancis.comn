@@ -46,10 +46,13 @@ type WijmoProps = {
     onCellClick?: { [name: string]: Function };
     setSize?: React.Dispatch<React.SetStateAction<number>>;
     setPage?: React.Dispatch<React.SetStateAction<number>>;
+    onPageChange?: (page: number) => void;
+    onSizeChange?: (size: number) => void;
 };
 
 export const Wijmo = (props: WijmoProps) => {
-    const { gridRef, contentRef, schema, data, size, page, onCellClick, setSize, setPage } = props;
+    const { gridRef, contentRef, schema, data, size, page, onCellClick, setSize, setPage, onPageChange, onSizeChange } =
+        props;
 
     const { t } = useTranslation();
     const {
@@ -141,14 +144,22 @@ export const Wijmo = (props: WijmoProps) => {
     }, [data]);
 
     useEffect(() => {
+        if (page === _page) return;
+
         _setPage(page);
     }, [page]);
 
     useEffect(() => {
+        if (size === _size) return;
+
         _setSize(size);
     }, [size]);
 
     useEffect(() => {
+        if (page === _page) return;
+
+        if (onPageChange) onPageChange(_page);
+
         if (setPage) {
             setPage(_page);
         }
@@ -159,7 +170,11 @@ export const Wijmo = (props: WijmoProps) => {
     }, [_page]);
 
     useEffect(() => {
+        if (size === _size) return;
+
         _setPage(0);
+
+        if (onSizeChange) onSizeChange(_size);
 
         if (setSize) {
             setSize(_size);
