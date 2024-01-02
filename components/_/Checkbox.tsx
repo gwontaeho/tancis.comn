@@ -65,8 +65,10 @@ const CheckboxMain = React.forwardRef<HTMLInputElement, CheckBoxProps>(
             <div className="flex flex-wrap w-fit">
                 {props.all && (
                     <div className="flex items-center h-7 space-x-1 mr-3">
-                        <input type="checkbox" onChange={handleChangeAll} />
-                        <label>{t(`전체`)}</label>
+                        <label className="flex items-center h-7 space-x-1">
+                            <input type="checkbox" onChange={handleChangeAll} />
+                            <div>{t(`L_AL`)}</div>
+                        </label>
                     </div>
                 )}
                 {Array.isArray(_options) &&
