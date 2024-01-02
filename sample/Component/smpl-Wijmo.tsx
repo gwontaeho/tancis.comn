@@ -42,25 +42,23 @@ const schema: any = {
                 {
                     colspan: 3,
                     binding: "id",
+                    width: "*",
                 },
                 {
                     binding: "a",
-                    type: "select",
-                    area: "comnCd",
-                    comnCd: "CAG_0018",
-                    width: 200,
+                    render: (cellData: any) => {
+                        return (
+                            <div>
+                                {cellData.rowValues.b} {cellData.rowValues.c}
+                            </div>
+                        );
+                    },
                 },
                 {
                     binding: "b",
-                    type: "date",
-                    width: 200,
                 },
                 {
                     binding: "c",
-                    type: "radio",
-                    area: "cntyCd",
-
-                    width: 300,
                 },
             ],
         },
@@ -72,7 +70,7 @@ const schema: any = {
         },
     ],
 };
-// area: "comnCd", comnCd: "CAG_0018"
+
 const schema2: any = {
     id: "grid2",
     options: { checkbox: true, pagination: "out", add: true, remove: true },
@@ -100,8 +98,6 @@ const data = utils.getMockData({ totCnt: 34 });
 export const SampleWijmo = () => {
     const grid1 = useWijmo({
         defaultSchema: schema,
-        page: 1,
-        size: 30,
     });
     const grid2 = useWijmo({
         defaultSchema: schema2,
@@ -118,23 +114,29 @@ export const SampleWijmo = () => {
 
     console.log(test99);
 
-    const handleClick = {};
+    const handleClick = {
+        a: (data: any) => {
+            console.log(data);
+        },
+    };
 
     return (
         <Page>
             <Group>
-                {/* <Wijmo {...grid1.grid} data={data} onCellClick={handleClick} /> */}
+                <Wijmo {...grid1.grid} data={data} onCellClick={handleClick} />
                 <div className="space-x-2">
                     <button onClick={() => console.log(grid1.getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(grid1.getChecked())}>check 가져오기</button>
 
                     <button onClick={() => grid1.resetData()}>reset data</button>
                     <button onClick={() => console.log(grid1.getOrigin())}>get origin</button>
+                    <button onClick={() => console.log(grid1.getDeleted())}>get deleted</button>
+                    <button onClick={() => console.log(grid1.getDataWithDeleted())}>get with deleted</button>
                 </div>
             </Group>
 
             <Group>
-                <Wijmo {...grid2.grid} data={test99.data?.rpckItmAppList} />
+                {/* <Wijmo {...grid2.grid} data={test99.data?.rpckItmAppList} /> */}
                 {/* <div className="space-x-2">
                     <button onClick={() => console.log(getData())}>데이터 가져오기</button>
                     <button onClick={() => console.log(getChecked())}>check 가져오기</button>

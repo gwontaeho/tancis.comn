@@ -40,7 +40,14 @@ type UseWijmoArgs = {
 export const useWijmo = (props: UseWijmoArgs) => {
     const { defaultSchema, page, size } = props;
 
+    /**
+     * multirow ref
+     */
     const gridRef = useRef<any>();
+
+    /**
+     * origin content
+     */
     const contentRef = useRef<Record<string, any>>();
 
     const schema = defaultSchema;
@@ -61,6 +68,24 @@ export const useWijmo = (props: UseWijmoArgs) => {
     const getData = () => {
         if (!gridRef.current) return;
         return gridRef.current.control.collectionView.sourceCollection;
+    };
+
+    const getDeleted = () => {
+        if (!gridRef.current) return;
+        return contentRef.current
+            ?.filter(({ __index }: any) => {
+                return !getData()
+                    .map(({ __index }: any) => __index)
+                    .includes(__index);
+            })
+            .map((_: any) => {
+                return { ..._, deleted: true };
+            });
+    };
+
+    const getDataWithDeleted = () => {
+        if (!gridRef.current) return;
+        return getData().concat(getDeleted());
     };
 
     const getPageData = () => {
@@ -89,5 +114,7 @@ export const useWijmo = (props: UseWijmoArgs) => {
         setPage,
         setSize,
         getOrigin,
+        getDeleted,
+        getDataWithDeleted,
     };
 };

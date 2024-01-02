@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import lodash from "lodash";
+import classNames from "classnames";
 
 import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
@@ -99,6 +100,7 @@ export const Wijmo = (props: WijmoProps) => {
             const row = h.row;
             const rowValues = gridRef.current.control.rows[row].dataItem;
             const binding = h.panel.getCellElement(row, col).getElementsByClassName("cell")[0]?.dataset.binding;
+
             const value = gridRef.current.control.getCellData(row, col);
             if (!binding) return;
             if (onCellClick && onCellClick[binding]) onCellClick[binding]({ binding, value, rowValues });
@@ -109,7 +111,7 @@ export const Wijmo = (props: WijmoProps) => {
 
     useEffect(() => {
         gridRef.current.control.headerLayoutDefinition = headerLayoutDefinition(schema.head);
-        gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
+        // gridRef.current.control.layoutDefinition = layoutDefinition(schema.body);
     }, [lang]);
 
     useEffect(() => {
@@ -248,26 +250,26 @@ export const Wijmo = (props: WijmoProps) => {
         });
     };
 
-    const layoutDefinition = (body: TWijmoBody) => {
-        return body.map((_) => {
-            return {
-                ..._,
-                cells: _.cells.map((__) => {
-                    const { type, area, comnCd, onClick, ...rest } = __;
-                    return {
-                        ...rest,
-                        cellTemplate: (e: any, s: any) => {
-                            // if (onClick) {
-                            //     s.onclick = () => onClick({ value: e.value, rowValues: e.item, binding: __.binding });
-                            // }
+    // const layoutDefinition = (body: TWijmoBody) => {
+    //     return body.map((_) => {
+    //         return {
+    //             ..._,
+    //             cells: _.cells.map((__) => {
+    //                 const { type, area, comnCd, onClick, ...rest } = __;
+    //                 return {
+    //                     ...rest,
+    //                     cellTemplate: (e: any, s: any) => {
+    //                         // if (onClick) {
+    //                         //     s.onclick = () => onClick({ value: e.value, rowValues: e.item, binding: __.binding });
+    //                         // }
 
-                            return `<div class="cell" data-binding=${__.binding}>${e.value}</div>`;
-                        },
-                    };
-                }),
-            };
-        });
-    };
+    //                         return `<div class="cell" data-binding=${__.binding}>${e.value}</div>`;
+    //                     },
+    //                 };
+    //             }),
+    //         };
+    //     });
+    // };
 
     const handleExport = () => {
         wjcGridXlsx.FlexGridXlsxConverter.saveAsync(
@@ -301,7 +303,7 @@ export const Wijmo = (props: WijmoProps) => {
                 </div>
             )}
 
-            <wjGrid.MultiRow ref={gridRef}>
+            <wjGrid.MultiRow ref={gridRef} multiRowGroupHeaders={false}>
                 {_body.map((props) => {
                     return (
                         <wjGrid.MultiRowCellGroup key={props.key} colspan={props.colspan}>
@@ -309,11 +311,32 @@ export const Wijmo = (props: WijmoProps) => {
                                 return (
                                     <wjGrid.MultiRowCell
                                         width={cellProps.width}
+                                        // dataType="String"
                                         key={cellProps.key}
                                         colspan={cellProps.colspan}
                                         binding={cellProps.binding}
                                         isReadOnly={cellProps.isReadOnly}
                                     >
+                                        {/* cell */}
+                                        <wjGrid.MultiRowCellTemplate
+                                            cellType="Cell"
+                                            template={(cell: any) => {
+                                                const cellData = {
+                                                    value: cell.item[cellProps.binding],
+                                                    rowValues: cell.item,
+                                                    binding: cellProps.binding,
+                                                };
+
+                                                return (
+                                                    <div className="cell" data-binding={cellProps.binding}>
+                                                        {cellProps.render
+                                                            ? cellProps.render(cellData)
+                                                            : cell.item[cellProps.binding]}
+                                                    </div>
+                                                );
+                                            }}
+                                        />
+                                        {/* edit cell */}
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
@@ -341,6 +364,7 @@ export const Wijmo = (props: WijmoProps) => {
                                                             area={cellProps.area}
                                                             comnCd={cellProps.comnCd}
                                                             onChange={(event) => {
+                                                                console.log(event);
                                                                 cell.value =
                                                                     event.target === undefined
                                                                         ? event
