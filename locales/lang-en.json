@@ -17,6 +17,7 @@
     "L_RPRT_NO": "Report No",
     "L_DCLT_TIN": "Declarant TIN",
     "L_DCLR_YY": "Declaration Year",
+    "L_DCLR_NO": "Declaration No",
     "L_PRCS_TP_CD": "Process Type Code",
     "L_DCLR_SRNO": "Declaration Serial Number",
     "L_PRCSS_STAT_CD": "Processing Status Code",
