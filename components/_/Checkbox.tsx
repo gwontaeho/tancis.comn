@@ -34,12 +34,8 @@ const CheckboxMain = React.forwardRef<HTMLInputElement, CheckBoxProps>(
                     const {
                         data: { content },
                     } = await utils.getCode({ comnCd: props.comnCd, area: props.area });
-                    _setOptions(
-                        content.map((code: any) => ({
-                            label: utils.getCodeLabel(props.area, code),
-                            value: utils.getCodeValue(props.area, code),
-                        })),
-                    );
+
+                    _setOptions(utils.getCodeOptions(props.area, content));
                 } catch (error) {}
             })();
         }, [props.comnCd, props.area, lang]);
