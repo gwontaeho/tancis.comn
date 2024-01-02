@@ -20,7 +20,7 @@ import {
     InputDaterange,
     InputTimerange,
     InputCode,
-    FormattedInputProps,
+    InputBoolean,
 } from "@/comn/components/_";
 
 export type FormControlType =
@@ -37,7 +37,8 @@ export type FormControlType =
     | "file"
     | "daterange"
     | "timerange"
-    | "code";
+    | "code"
+    | "boolean";
 
 const SIZES = {
     1: "w-1/12",
@@ -105,6 +106,7 @@ export type FormControlProps = InputDaterangeProps & {
     minLength?: any;
     lang?: string;
     popupSize?: "sm" | "md" | "lg";
+    inputLabel?: string;
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {
@@ -203,6 +205,8 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
                             return <InputTimerange {...rest} />;
                         case "code":
                             return <InputCode {...rest} />;
+                        case "boolean":
+                            return <InputBoolean {...rest} />;
                         default:
                             return <InputText {...rest} ref={ref} />;
                     }
