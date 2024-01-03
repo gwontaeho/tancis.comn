@@ -4,12 +4,12 @@ import { Page, Group , FormControl } from "@/comn/components";
 import Prism from "prismjs";
 import { useForm, FormSchemaType } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
-export const SampleFormControlPassword = () => {
-    
 
+export const SampleFormControlPassword = () => {
     React.useEffect(() => {
         Prism.highlightAll();
     }, []);
+
     return (
         <Sample title="Password">
             <Sample.Section
@@ -46,14 +46,14 @@ export const SampleFormControlPassword = () => {
                 />
 
                 
-                <Sample.Code>{`<FormControl type="password" value={'000000'} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="password" value={'Password field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="password" value={'000000'} />
+                    <FormControl type="password" value={'Password field'} />
                 </Page>
 
-                <Sample.Code>{` <FormControl type="password" name={'password'}/>`}</Sample.Code>
+                <Sample.Code>{` <FormControl type="password" name={'Password field'}/>`}</Sample.Code>
                 <Page>
-                    <FormControl type="password" name={'password'}/>
+                    <FormControl type="password" name={'Password field'}/>
                 </Page>
 
                 <Sample.Code>{`<FormControl type="password" rightText={'000000'} />`}</Sample.Code>

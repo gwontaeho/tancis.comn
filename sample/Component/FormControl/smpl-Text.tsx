@@ -18,41 +18,17 @@ export const SampleFormControlText = () => {
                 <Sample.Table
                     data={[
                         ["Properties", "Type", "Default", "Description"],
-                        [
-                            "type",
-                            "string",
-                            "text",
-                            <>
-                                text,
-                                <br /> number, password, select, radio, checkbox, textarea, datetime , file, daterange,
-                                timerange, code
-                            </>,
-                        ],
+                        ["type","string","text",<>    text,    <br /> number, password, select, radio, checkbox, textarea, datetime , file, daterange,    timerange, code</>,],
                         ["value?", "any", "", <>입력 필드(input field)에 나타나는 초깃값을 설정</>],
                         ["name?", "string", "", <>입력 필드(input field)의 name값 설정</>],
                         ["rightText?", "string", "", <>입력 필드(input field) 오른쪽의 텍스트 배치</>],
-                        [
-                            "leftButton?",
-                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
-                            "",
-                            <>입력 필드(input field) 왼쪽의 버튼 배치</>,
-                        ],
-                        [
-                            "rightButton?",
-                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
-                            "",
-                            <>입력 필드(input field) 오른쪽의 버튼 배치</>,
-                        ],
+                        ["leftButton?","React.ButtonHTMLAttributes<HTMLButtonElement>","",<>입력 필드(input field) 왼쪽의 버튼 배치</>,],
+                        ["rightButton?","React.ButtonHTMLAttributes<HTMLButtonElement>","",<>입력 필드(input field) 오른쪽의 버튼 배치</>,],
                         ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
                         ["onBlur?", "void", "", <>포커스 된 입력 필드(input field)의 포커스가 사라졌을 때 호출</>],
                         ["disabled?", "boolean", "", <>입력 필드(input field)의 요소가 비활성화됨을 명시</>],
                         ["readOnly?", "boolean", "", <>요소의 입력 필드(input field)가 읽기 전용임을 명시</>],
-                        [
-                            "invalid?",
-                            "any",
-                            "",
-                            <>입력 필드(input field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,
-                        ],
+                        ["invalid?","any","",<>입력 필드(input field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,],
                         ["size?", "number", "", <>입력 필드(input field)의 너비를 문자수(in characters) 단위로 명시</>],
                         ["defaultValue?", "any", "", <>입력 필드(input field)의 기본값을 설정</>],
                         ["onFocus?", "void", "", <>입력 필드(input field)의 포커스를 받은 경우 호출</>],
@@ -61,21 +37,15 @@ export const SampleFormControlText = () => {
                         ["maxLength?", "number", "", <>입력 필드(input field)에 입력할 수 있는 최대 문자수를 명시</>],
                         ["decimalScale?", "number", "", <>입력 필드(input field)의 허용되는 소수 자릿수를 제어</>],
                         ["thousandSeparator?", "boolean", "", <>입력 필드(input field)의 1000단위 콤마 설정</>],
-                        [
-                            "letterCase?",
-                            "string",
-                            "",
-                            <>입력 필드(input field)의 대문자 또는 소문자 설정 (대문자 : upper / 소문자 : lower)</>,
-                        ],
+                        ["letterCase?","string","",<>입력 필드(input field)의 대문자 또는 소문자 설정 (대문자 : upper / 소문자 : lower)</>,],
                         ["minLength?", "number", "", <>입력 필드(input field)에 입력해야하는 최소 문자수를 명시</>],
                     ]}
                 />
-                <Sample.Section>
-                    <Sample.Code>{`<FormControl type="text" value={'Text field'} />`}</Sample.Code>
-                </Sample.Section>
-                <Sample.Section>
+              
+                <Sample.Code>{`<FormControl type="text" value={'Text field'} />`}</Sample.Code>
+                <Page>
                     <FormControl type="text" value={"Text field"} />
-                </Sample.Section>
+                </Page>
 
                 <Sample.Code>{` <FormControl type="text" name={'Text field'}/>`}</Sample.Code>
                 <Page>
@@ -101,8 +71,7 @@ export const SampleFormControlText = () => {
                 <Page>
                     <FormControl
                         type="text"
-                        onChange={(event) => {
-                            alert(event.target.value);
+                        onChange={(event) => {alert(event.target.value);
                         }}
                     />
                 </Page>
@@ -111,8 +80,7 @@ export const SampleFormControlText = () => {
                 <Page>
                     <FormControl
                         type="text"
-                        onBlur={() => {
-                            alert("Text field");
+                        onBlur={() => {alert("Text field");
                         }}
                     />
                 </Page>
@@ -146,8 +114,7 @@ export const SampleFormControlText = () => {
                 <Page>
                     <FormControl
                         type="text"
-                        onFocus={() => {
-                            console.log("Text field");
+                        onFocus={() => {console.log("Text field");
                         }}
                     />
                 </Page>

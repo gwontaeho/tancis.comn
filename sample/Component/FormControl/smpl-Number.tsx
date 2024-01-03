@@ -4,12 +4,12 @@ import { Page, Group , FormControl } from "@/comn/components";
 import Prism from "prismjs";
 import { useForm, FormSchemaType } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
-export const SampleFormControlNumber = () => {
-    
 
+export const SampleFormControlNumber = () => {
     React.useEffect(() => {
         Prism.highlightAll();
     }, []);
+
     return (
         <Sample title="Number">
             <Sample.Section
@@ -49,14 +49,14 @@ export const SampleFormControlNumber = () => {
                 />
 
                 
-                <Sample.Code>{`<FormControl type="number" value={'000000'} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="number" value={'Number field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="number" value={'000000'} />
+                    <FormControl type="number" value={'Number field'} />
                 </Page>
 
-                <Sample.Code>{` <FormControl type="number" name={'number'}/>`}</Sample.Code>
+                <Sample.Code>{` <FormControl type="number" name={'Number field'}/>`}</Sample.Code>
                 <Page>
-                    <FormControl type="number" name={'number'}/>
+                    <FormControl type="number" name={'Number field'}/>
                 </Page>
 
                 <Sample.Code>{`<FormControl type="number" rightText={'000000'} />`}</Sample.Code>
