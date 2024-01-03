@@ -29,6 +29,7 @@ export const SampleFormControlCheckbox = () => {
                         ["defaultValue?", "any", "", <>체크 박스(checkbox)의 기본값을 설정</>],
                         ["onFocus?", "void", "", <>체크 박스(checkbox)의 포커스를 받은 경우 호출</>],
                         ["message?", "string", "", <>체크 박스(checkbox) 하단의 알림 메세지 설정</>],
+                        ["all?", "boolean", "", <>체크 박스(checkbox)의 전체 옵션 설정</>],
                         ["area?", "string", "", <>체크 박스(checkbox) 공통 코드를 설정</>],
                         ["comnCd?", "string", "", <>체크 박스(checkbox) 공통 코드를 호출</>],
                     ]}
@@ -82,6 +83,11 @@ export const SampleFormControlCheckbox = () => {
                 <Sample.Code>{`<FormControl type="checkbox" message={"error!!!"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
                 <Page>
                     <FormControl type="checkbox" message={"error!!!"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />
+                </Page>
+
+                <Sample.Code>{`<FormControl type="checkbox" all={true} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
+                <Page>
+                    <FormControl type="checkbox" all={true} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />
                 </Page>
 
                 <Sample.Code>{`<FormControl type="checkbox" area="currCd" />`}</Sample.Code>

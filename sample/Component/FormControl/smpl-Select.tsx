@@ -32,6 +32,7 @@ export const SampleFormControlSelect = () => {
                         ["defaultValue?", "any", "", <>콤보 박스(select box)의 기본값을 설정</>],
                         ["message?", "string", "", <>콤보 박스(select box) 하단의 알림 메세지 설정</>],
                         ["all?", "boolean", "", <>콤보 박스(select box)의 전체 옵션 설정</>],
+                        ["select?", "boolean", "", <>콤보 박스(select box)의 선택 옵션 설정</>],
                     ]}
                 />
 
@@ -131,6 +132,13 @@ export const SampleFormControlSelect = () => {
                 <Sample.Code>{`<FormControl type="select" all={true} options={[{ label: "Select field 1", value: "1" }, { label: "Select field 2", value: "2" },{ label: "Select field 3", value: "3" },]}/>`}</Sample.Code>
                 <Page>
                     <FormControl type="select" all={true} options={[{ label: "Select field 1", value: "1",},
+                                                                            { label: "Select field 2", value: "2" },
+                                                                            { label: "Select field 3", value: "3" },]}/>
+                </Page>
+
+                <Sample.Code>{`<FormControl type="select" select={true} options={[{ label: "Select field 1", value: "1" }, { label: "Select field 2", value: "2" },{ label: "Select field 3", value: "3" },]}/>`}</Sample.Code>
+                <Page>
+                    <FormControl type="select" select={true} options={[{ label: "Select field 1", value: "1",},
                                                                             { label: "Select field 2", value: "2" },
                                                                             { label: "Select field 3", value: "3" },]}/>
                 </Page>
