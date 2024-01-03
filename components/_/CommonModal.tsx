@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { motion } from "framer-motion";
 import Draggable from "react-draggable";
@@ -28,6 +29,7 @@ const Modal = (props: ModalProps) => {
     const { id, onConfirm, onCancel, content, draggable = false, backdrop = true, size = "sm" } = props;
 
     const ref = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation();
 
     const setModal = useSetRecoilState(modalState);
 
@@ -72,13 +74,13 @@ const Modal = (props: ModalProps) => {
                             "cursor-move": draggable,
                         })}
                     >
-                        <div className="text-lg">알림</div>
+                        <div className="text-lg">{t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
-                    <div className="p-4">{content}</div>
+                    <div className="p-4">{typeof content === "string" ? t(content) : content}</div>
                     <div className="p-4 flex space-x-2 justify-end">
-                        <Button onClick={() => handleCancel()}>닫기</Button>
-                        {onConfirm && <Button onClick={() => handleConfirm()}>확인</Button>}
+                        <Button onClick={() => handleCancel()}>{t("B_CLS")}</Button>
+                        {onConfirm && <Button onClick={() => handleConfirm()}>{t("B_OK")}</Button>}
                     </div>
                 </motion.div>
             </Draggable>
