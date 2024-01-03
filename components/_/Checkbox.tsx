@@ -26,11 +26,9 @@ type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
     all?: boolean;
     value?: any[];
     onChange?: (value: any[]) => void;
-
-    control?: Control;
 };
 
-const CheckboxMain = React.forwardRef<HTMLInputElement, CheckboxProps>(
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     (props: CheckboxProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
             comnCd,
@@ -123,14 +121,3 @@ const CheckboxMain = React.forwardRef<HTMLInputElement, CheckboxProps>(
         );
     },
 );
-
-export const Checkbox = (props: CheckboxProps) => {
-    if (props.control && props.name)
-        return (
-            <ControllerWrapper {...props} control={props.control} name={props.name}>
-                <CheckboxMain />
-            </ControllerWrapper>
-        );
-
-    return <CheckboxMain {...props} />;
-};

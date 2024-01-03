@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
@@ -35,7 +35,7 @@ export const CommonCodeList = (props: any) => {
             api: (page = grid.comnCdLst.page) => {
                 return APIS.getComnCdLst(form.comnCdSrch.getValues(), page, grid.comnCdLst.size);
             },
-            enabled: utils.isEmpty(form.comnCdSrch.errors) && form.comnCdSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.comnCdSrch.errors) && form.comnCdSrch.isSubmitted,
             key: [grid.comnCdLst.page, grid.comnCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -61,7 +61,7 @@ export const CommonCodeList = (props: any) => {
         },
         click_Grid_ComnCdLst: {
             cdVldVal: (data: any) => {
-                if (!utils.isPopup()) return;
+                if (!comnUtils.isPopup()) return;
                 postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
                 close();
             },
@@ -77,7 +77,7 @@ export const CommonCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_COMN_CD_LST" }]} />
+            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_COMN_CD_LST" }]} />
             <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
             <form>
                 <Group>
@@ -121,7 +121,7 @@ export const CommonCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_ComnCdLst}
                 />
             </Group>
-            {utils.isPopup() && (
+            {comnUtils.isPopup() && (
                 <Layout.Right>
                     <Button onClick={close}>{t("B_CLS")}</Button>
                 </Layout.Right>

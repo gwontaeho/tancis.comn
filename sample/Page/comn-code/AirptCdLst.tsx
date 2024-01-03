@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
@@ -94,7 +94,7 @@ export const AirptCodeList = () => {
          */
         click_Grid_AirptCdLst: {
             regnCd: (data: any) => {
-                if (!utils.isPopup()) return;
+                if (!comnUtils.isPopup()) return;
                 postMessage({ code: data.value, label: data.rowValues.regnNm });
                 close();
             },
@@ -103,7 +103,7 @@ export const AirptCodeList = () => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_AIRPT_CD_LST" }]} />
+            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_AIRPT_CD_LST" }]} />
             <Page.Header title={t("T_AIRPT_CD_LST")} description={t("T_AIRPT_CD_LST")} />
             <form>
                 <Group>
@@ -146,7 +146,7 @@ export const AirptCodeList = () => {
                     onCellClick={handler.click_Grid_AirptCdLst}
                 />
             </Group>
-            {utils.isPopup() && (
+            {comnUtils.isPopup() && (
                 <Layout.Right>
                     <Button onClick={close}>{t("B_CLS")}</Button>
                 </Layout.Right>
@@ -185,7 +185,7 @@ export const AirptCodeList = () => {
 //             api: (page = grid.airptCdLst.page) => {
 //                 return APIS.getAirptCdLst(form.airptCdSrch.getValues(), page, grid.airptCdLst.size);
 //             },
-//             enabled: utils.isEmpty(form.airptCdSrch.errors) && form.airptCdSrch.isSubmitted,
+//             enabled: comnUtils.isEmpty(form.airptCdSrch.errors) && form.airptCdSrch.isSubmitted,
 //             key: [grid.airptCdLst.grid.page, grid.airptCdLst.grid.size],
 //             onSuccess: () => {
 //                 setStore(pgeUid, {
@@ -213,7 +213,7 @@ export const AirptCodeList = () => {
 //         },
 //         click_Grid_AirptCdLst: {
 //             regnCd: (data: any) => {
-//                 if (!utils.isPopup()) return;
+//                 if (!comnUtils.isPopup()) return;
 //                 postMessage({ code: data.value, label: data.rowValues.regnNm });
 //                 close();
 //             },
@@ -226,7 +226,7 @@ export const AirptCodeList = () => {
 
 //     return (
 //         <Page>
-//             <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_AIRPT_CD_LST" }]} />
+//             <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_AIRPT_CD_LST" }]} />
 //             <Page.Header title={t("T_AIRPT_CD_LST")} description={t("T_AIRPT_CD_LST")} />
 //             <form>
 //                 <Group>
@@ -269,7 +269,7 @@ export const AirptCodeList = () => {
 //                     onCellClick={handler.click_Grid_AirptCdLst}
 //                 />
 //             </Group>
-//             {utils.isPopup() && (
+//             {comnUtils.isPopup() && (
 //                 <Layout.Right>
 //                     <Button onClick={close}>{t("B_CLS")}</Button>
 //                 </Layout.Right>

@@ -76,7 +76,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             const data = isArray ? res.map(({ data }: any) => data) : res.data;
             dispatch({ type: "success", payload: data });
             if (onSuccess) {
-                if (showToast) toast.showToast({ type: "success", content: "Processed successfully" });
+                if (showToast) toast.showToast({ type: "success", content: "msg.00003" });
                 onSuccess(data);
             }
 

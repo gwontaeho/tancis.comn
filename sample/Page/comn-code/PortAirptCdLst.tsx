@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
@@ -33,7 +33,7 @@ export const PortAirptCodeList = (props: any) => {
             api: (page = grid.portAirptCdLst.page) => {
                 return APIS.getPortAirptCdLst(form.portAirptCdSrch.getValues(), page, grid.portAirptCdLst.size);
             },
-            enabled: utils.isEmpty(form.portAirptCdSrch.errors) && form.portAirptCdSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.portAirptCdSrch.errors) && form.portAirptCdSrch.isSubmitted,
             key: [grid.portAirptCdLst.page, grid.portAirptCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -59,7 +59,7 @@ export const PortAirptCodeList = (props: any) => {
         },
         click_Grid_PortAirptCdLst: {
             regnCd: (data: any) => {
-                if (!utils.isPopup()) return;
+                if (!comnUtils.isPopup()) return;
                 postMessage({ code: data.value, label: data.rowValues.regnNm });
                 close();
             },
@@ -72,7 +72,7 @@ export const PortAirptCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_PORT_AIRPT_CD_LST" }]} />
+            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_PORT_AIRPT_CD_LST" }]} />
             <Page.Header title={t("T_PORT_AIRPT_CD_LST")} description={t("T_PORT_AIRPT_CD_LST")} />
             <form>
                 <Group>
@@ -116,7 +116,7 @@ export const PortAirptCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_PortAirptCdLst}
                 />
             </Group>
-            {utils.isPopup() && (
+            {comnUtils.isPopup() && (
                 <Layout.Right>
                     <Button onClick={close}>{t("B_CLS")}</Button>
                 </Layout.Right>

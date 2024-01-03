@@ -4,12 +4,17 @@ import { Page, Group, FormControl } from "@/comn/components";
 import Prism from "prismjs";
 import { useForm, TFormSchema } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
+<<<<<<< HEAD
+=======
+
+>>>>>>> f2f59c299c1dd5649c6eab54213236496397d868
 export const SampleFormControlNumber = () => {
     React.useEffect(() => {
         Prism.highlightAll();
     }, []);
+
     return (
-        <Sample title="Text">
+        <Sample title="Number">
             <Sample.Section
                 title={`<FormControl type="number" />`}
                 description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
@@ -64,14 +69,25 @@ export const SampleFormControlNumber = () => {
                     ]}
                 />
 
+<<<<<<< HEAD
                 <Sample.Code>{`<FormControl type="number" value={'000000'} />`}</Sample.Code>
                 <Page>
                     <FormControl type="number" value={"000000"} />
+=======
+                
+                <Sample.Code>{`<FormControl type="number" value={'Number field'} />`}</Sample.Code>
+                <Page>
+                    <FormControl type="number" value={'Number field'} />
+>>>>>>> f2f59c299c1dd5649c6eab54213236496397d868
                 </Page>
 
-                <Sample.Code>{` <FormControl type="number" name={'000000'}/>`}</Sample.Code>
+                <Sample.Code>{` <FormControl type="number" name={'Number field'}/>`}</Sample.Code>
                 <Page>
+<<<<<<< HEAD
                     <FormControl type="number" name={"000000"} />
+=======
+                    <FormControl type="number" name={'Number field'}/>
+>>>>>>> f2f59c299c1dd5649c6eab54213236496397d868
                 </Page>
 
                 <Sample.Code>{`<FormControl type="number" rightText={'000000'} />`}</Sample.Code>
