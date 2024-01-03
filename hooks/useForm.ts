@@ -116,7 +116,6 @@ export const useForm = (props: UseFormProps) => {
                                 return {
                                     ...rest,
                                     invalid: errors[key],
-                                    name: key,
                                     getValues,
                                     setValue,
                                     start: {

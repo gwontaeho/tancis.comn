@@ -164,7 +164,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("checkbox", ["1", "2"]);
+                                setValue("radio", "2");
                             }}
                         >
                             <code>setValue()</code>

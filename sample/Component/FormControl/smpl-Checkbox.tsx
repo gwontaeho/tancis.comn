@@ -95,8 +95,9 @@ export const SampleFormControlCheckbox = () => {
                 <Page>
                     <FormControl
                         type="checkbox"
+                        value={["1", "2"]}
                         onChange={(event) => {
-                            alert(event.target.value);
+                            console.log(event);
                         }}
                         options={[
                             { label: "radio 1", value: "1" },

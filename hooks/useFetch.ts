@@ -84,7 +84,6 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             statusRef.current.isSuccess = true;
             return data;
         } catch (error) {
-            console.log(error);
             if (notifyStatus) dispatch({ type: "error" });
             if (onError) {
                 if (showToast) toast.showToast({ type: "error", content: "An error occurred " });

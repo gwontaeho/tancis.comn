@@ -1,9 +1,7 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
-import { Control } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useOptions } from "@/comn/hooks";
-import { ControllerWrapper } from "@/comn/components/_";
 import { TFormControlOptions } from "@/comn/components";
 
 /**
@@ -54,13 +52,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         const [_value, _setValue] = React.useState<any[]>(value || []);
 
         React.useEffect(() => {
-            if (!onChange) return;
+            if (!Array.isArray(value)) return;
             if (String(value) === String(_value)) return;
-            onChange(_value);
-        }, [_value]);
-        React.useEffect(() => {
-            if (String(value) === String(_value)) return;
-            _setValue(value || []);
+            _setValue(value);
         }, [value]);
 
         const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,11 +62,17 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
                 ? [..._value, event.target.value]
                 : _value.filter((_) => _ !== event.target.value);
             _setValue(next);
+
+            if (!onChange) return;
+            onChange(next);
         };
 
         const handleChangeAll = (event: React.ChangeEvent<HTMLInputElement>) => {
             const next = event.target.checked ? o.options?.map(({ value }) => value) || [] : [];
             _setValue(next);
+
+            if (!onChange) return;
+            onChange(next);
         };
 
         const _props = Object.fromEntries(
@@ -102,18 +102,18 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
                         </label>
                     </div>
                 )}
-                {o.options?.map(({ label, value }, i) => {
+                {o.options?.map((option, i) => {
                     return (
                         <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
                             <input
                                 {..._props}
                                 ref={ref}
                                 type="checkbox"
-                                value={value}
+                                value={option.value}
                                 onChange={handleChange}
-                                checked={_value.some((_) => _ === value)}
+                                checked={_value.some((_) => _ === option.value)}
                             />
-                            {label && <div>{t(label)}</div>}
+                            {option.label && <div>{t(option.label)}</div>}
                         </label>
                     );
                 })}

@@ -20,14 +20,12 @@ export const InputDatetime = (props: InputDateimeProps) => {
         if (value?.getTime() === _value?.getTime()) return;
         _setValue(value);
     }, [value]);
-    React.useEffect(() => {
-        if (!onChange) return;
-        if (value?.getTime() === _value?.getTime()) return;
-        onChange(_value);
-    }, [_value]);
 
     const handleChange = (date: Date) => {
         _setValue(date);
+
+        if (!onChange) return;
+        onChange(date);
     };
 
     const _props = Object.fromEntries(
