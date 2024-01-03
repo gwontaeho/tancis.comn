@@ -1,15 +1,15 @@
 import { api } from "@/comn";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
-    path: `${envs.base}`,
+    path: `${comnEnvs.base}`,
     nodes: [],
 };
 
 export const APIS = {
     getComnCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             comnCd: data.comnCd,
             area: "comnCd",
             page: page,
@@ -21,7 +21,7 @@ export const APIS = {
     },
 
     getCityCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "cityCd",
             page: page,
             size: size,
@@ -32,7 +32,7 @@ export const APIS = {
     },
 
     getPortCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "portCd",
             page: page,
             size: size,
@@ -43,7 +43,7 @@ export const APIS = {
     },
 
     getCntyCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "cntyCd",
             page: page,
             size: size,
@@ -52,7 +52,7 @@ export const APIS = {
         });
     },
     getCurrCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "currCd",
             page: page,
             size: size,
@@ -61,7 +61,7 @@ export const APIS = {
         });
     },
     getBnkCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "bnkCd",
             page: page,
             size: size,
@@ -70,7 +70,7 @@ export const APIS = {
         });
     },
     getPortAirptCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "portAirptCd",
             page: page,
             size: size,
@@ -81,7 +81,7 @@ export const APIS = {
         });
     },
     getAirptCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "airptCd",
             page: page,
             size: size,
@@ -91,7 +91,7 @@ export const APIS = {
         });
     },
     getCoCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "coCd",
             page: page,
             size: size,
@@ -101,7 +101,7 @@ export const APIS = {
         });
     },
     getPrcssStatCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "prcssStatCd",
             page: page,
             size: size,
@@ -110,7 +110,7 @@ export const APIS = {
         });
     },
     getOrgCdLst: (data: any, page: number, size: number) => {
-        return utils.getCode({
+        return comnUtils.getCode({
             area: "orgCd",
             page: page,
             size: size,

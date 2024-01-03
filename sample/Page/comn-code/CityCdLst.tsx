@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useStore, usePopup, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CITY_CD_SRCH, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
@@ -60,7 +60,7 @@ export const CityCodeList = (props: any) => {
             api: (page = grid.cityCdLst.page) => {
                 return APIS.getCityCdLst(form.cityCdSrch.getValues(), page, grid.cityCdLst.size);
             },
-            enabled: utils.isEmpty(form.cityCdSrch.errors) && form.cityCdSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.cityCdSrch.errors) && form.cityCdSrch.isSubmitted,
             key: [grid.cityCdLst.page, grid.cityCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -95,7 +95,7 @@ export const CityCodeList = (props: any) => {
         },
         click_Grid_CityCdLst: {
             regnCd: (data: any) => {
-                if (!utils.isPopup()) return;
+                if (!comnUtils.isPopup()) return;
                 postMessage({ code: data.value, label: data.rowValues.regnNm });
                 close();
             },
@@ -108,7 +108,7 @@ export const CityCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_CITY_CD_LST" }]} />
+            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_CITY_CD_LST" }]} />
             <Page.Header title={t("T_CITY_CD_LST")} description={t("T_CITY_CD_LST")} />
             <form>
                 <Group>
@@ -151,7 +151,7 @@ export const CityCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_CityCdLst}
                 />
             </Group>
-            {utils.isPopup() && (
+            {comnUtils.isPopup() && (
                 <Layout.Right>
                     <Button onClick={close}>{t("B_CLS")}</Button>
                 </Layout.Right>

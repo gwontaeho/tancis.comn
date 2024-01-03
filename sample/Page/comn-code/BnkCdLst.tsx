@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
@@ -33,7 +33,7 @@ export const BankCodeList = (props: any) => {
             api: (page = grid.bnkCdLst.page) => {
                 return APIS.getBnkCdLst(form.bnkCdSrch.getValues(), page, grid.bnkCdLst.size);
             },
-            enabled: utils.isEmpty(form.bnkCdSrch.errors) && form.bnkCdSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.bnkCdSrch.errors) && form.bnkCdSrch.isSubmitted,
             key: [grid.bnkCdLst.page, grid.bnkCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -59,7 +59,7 @@ export const BankCodeList = (props: any) => {
         },
         click_Grid_BnkCdLst: {
             cdVldVal: (data: any) => {
-                if (!utils.isPopup()) return;
+                if (!comnUtils.isPopup()) return;
                 postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
                 close();
             },
@@ -72,7 +72,7 @@ export const BankCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_BNK_CD_LST" }]} />
+            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_BNK_CD_LST" }]} />
             <Page.Header title={t("T_BNK_CD_LST")} description={t("T_BNK_CD_LST")} />
             <form>
                 <Group>
@@ -112,7 +112,7 @@ export const BankCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_BnkCdLst}
                 />
             </Group>
-            {utils.isPopup() && (
+            {comnUtils.isPopup() && (
                 <Layout.Right>
                     <Button onClick={close}>{t("B_CLS")}</Button>
                 </Layout.Right>

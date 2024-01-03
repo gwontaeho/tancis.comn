@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
@@ -33,7 +33,7 @@ export const OrganizationCodeList = (props: any) => {
             api: (page = grid.orgCdLst.page) => {
                 return APIS.getOrgCdLst(form.orgCdSrch.getValues(), page, grid.orgCdLst.size);
             },
-            enabled: utils.isEmpty(form.orgCdSrch.errors) && form.orgCdSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.orgCdSrch.errors) && form.orgCdSrch.isSubmitted,
             key: [grid.orgCdLst.page, grid.orgCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -59,7 +59,7 @@ export const OrganizationCodeList = (props: any) => {
         },
         click_Grid_OrgCdLst: {
             orgCd: (data: any) => {
-                if (!utils.isPopup()) return;
+                if (!comnUtils.isPopup()) return;
                 postMessage({
                     code: data.value,
                     label: data.rowValues.orgNm,
@@ -77,7 +77,7 @@ export const OrganizationCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={envs.base} nodes={[...BASE.nodes, { label: "T_ORG_CD_LST" }]} />
+            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_ORG_CD_LST" }]} />
             <Page.Header title={t("T_ORG_CD_LST")} description={t("T_ORG_CD_LST")} />
             <form>
                 <Group>
@@ -117,7 +117,7 @@ export const OrganizationCodeList = (props: any) => {
                     onCellClick={handler.click_Grid_OrgCdLst}
                 />
             </Group>
-            {utils.isPopup() && (
+            {comnUtils.isPopup() && (
                 <Layout.Right>
                     <Button onClick={close}>{t("B_CLS")}</Button>
                 </Layout.Right>
