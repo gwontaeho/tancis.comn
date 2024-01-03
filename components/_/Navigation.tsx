@@ -61,7 +61,7 @@ const NavItem = (props: NavItemProps) => {
 const Menu = () => {
     const location = useLocation();
 
-    const depth_1 = R.find(({ base }) => location.pathname.startsWith(base));
+    const depth_1 = R.find(({ base }) => location.pathname.startsWith(base as string));
     const depth_2 = depth_1?.children;
 
     return (
