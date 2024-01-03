@@ -19,11 +19,12 @@ export const SampleFormControlSelect = () => {
                     data={[
                         ["Properties", "Type", "Default", "Description"],
                         ["type", "string", "text", <>     text,     <br /> number, password, select, radio, checkbox, textarea, datetime , file, daterange,     timerange, code </>,],
+                        ["options?", "TFormControlOptions", "", <>콤보 박스(select box)의 옵션 메뉴를 제공하는 드롭다운 리스트 </>],
                         ["value?", "any", "", <>콤보 박스(select box)에 나타나는 초깃값을 설정</>],
                         ["name?", "string", "", <>콤보 박스(select box)의 name값 설정</>],
                         ["rightText?", "string", "", <>콤보 박스(select box) 오른쪽의 텍스트 배치</>],
-                        [ "leftButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "", <>콤보 박스(select box) 왼쪽의 버튼 배치</>,],
-                        [ "rightButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "", <>콤보 박스(select box) 오른쪽의 버튼 배치</>,],
+                        ["leftButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "", <>콤보 박스(select box) 왼쪽의 버튼 배치</>,],
+                        ["rightButton?", "React.ButtonHTMLAttributes<HTMLButtonElement>", "", <>콤보 박스(select box) 오른쪽의 버튼 배치</>,],
                         ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
                         ["onBlur?", "void", "", <>포커스 된 콤보 박스(select box)의 포커스가 사라졌을 때 호출</>],
                         ["disabled?", "boolean", "", <>콤보 박스(select box)의 요소가 비활성화됨을 명시</>],
@@ -33,6 +34,13 @@ export const SampleFormControlSelect = () => {
                         ["all?", "boolean", "", <>콤보 박스(select box)의 전체 옵션 설정</>],
                     ]}
                 />
+
+                <Sample.Code>{`<FormControl type="select" options={[{ label: "Select field 1", value: "1" }, { label: "Select field 2", value: "2" },{ label: "Select field 3", value: "3" },]}/>`}</Sample.Code>
+                <Page>
+                    <FormControl type="select" options={[{ label: "Select field 1", value: "1" },
+                                                        { label: "Select field 2", value: "2" },
+                                                        { label: "Select field 3", value: "3" },]}/>
+                </Page>
              
                 <Sample.Code>{`<FormControl type="select" value={"Select field"} options={[{ label: "Select field 1", value: "1" }, { label: "Select field 2", value: "2" },{ label: "Select field 3", value: "3" },]}/>`}</Sample.Code>
                 <Page>

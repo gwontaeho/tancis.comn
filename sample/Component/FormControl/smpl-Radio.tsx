@@ -10,15 +10,17 @@ export const SampleFormControlRadio = () => {
         Prism.highlightAll();
     }, []);
     return (
-        <Sample title="Text">
+        <Sample title="Radio">
             <Sample.Section
-                title={`<FormControl type="text" />`}
+                title={`<FormControl type="radio" />`}
                 description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
             >
                 <Sample.Table
                     data={[
                         ["Properties", "Type", "Default", "Description"],
                         ["type","string","text",<>    text,    <br /> number, password, select, radio, checkbox, textarea, datetime , file, daterange,    timerange, code</>,],
+                        ["options?", "TFormControlOptions", "", <>라디오 버튼(radio button)의 옵션 메뉴를 제공하는 드롭다운 리스트 </>],
+                         ["value?", "any", "", <>라디오 버튼(radio button)에 나타나는 초깃값을 설정</>],
                         ["name?", "string", "", <>라디오 버튼(radio button)의 name값 설정</>],
                         ["rightText?", "string", "", <>라디오 버튼(radio button) 오른쪽의 텍스트 배치</>],
                         ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
@@ -28,10 +30,21 @@ export const SampleFormControlRadio = () => {
                         ["defaultValue?", "any", "", <>라디오 버튼(radio button)의 기본값을 설정</>],
                         ["onFocus?", "void", "", <>라디오 버튼(radio button)의 포커스를 받은 경우 호출</>],
                         ["message?", "string", "", <>라디오 버튼(radio button) 하단의 알림 메세지 설정</>],
+                        ["area?", "string", "", <>라디오 버튼(radio button) 공통 코드를 호출</>],
                     ]}
                 />
+
+                <Sample.Code>{`<FormControl type="radio" options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
+                <Page>
+                    <FormControl type="radio" options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />
+                </Page>
+
+                 <Sample.Code>{`<FormControl type="radio" value={"Select field"} options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
+                <Page>
+                    <FormControl type="radio" value={"Select field"} options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />
+                </Page>
               
-                <Sample.Code>{`<FormControl type="checkbox" name={"Radio field"} options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
+                <Sample.Code>{`<FormControl type="radio" name={"Radio field"} options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
                 <Page>
                     <FormControl type="radio" name={"Radio field"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />
                 </Page>
@@ -74,6 +87,11 @@ export const SampleFormControlRadio = () => {
                 <Sample.Code>{`<FormControl type="radio" message={"error!!!"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
                 <Page>
                     <FormControl type="radio" message={"error!!!"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />
+                </Page>
+
+                <Sample.Code>{`<FormControl type="radio" area="currCd" />`}</Sample.Code>
+                <Page>
+                    <FormControl type="radio" area="currCd" />
                 </Page>
 
 

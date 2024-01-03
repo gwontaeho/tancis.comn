@@ -153,6 +153,7 @@ export const SampleFormControlText = () => {
                 <Page>
                     <FormControl type="text" minLength={10} />
                 </Page>
+               
             </Sample.Section>
         </Sample>
     );
