@@ -32,7 +32,7 @@ const NavItem = (props: NavItemProps) => {
 
     return (
         <li>
-            <button className="h-8 px-2 text-lg flex w-full items-center justify-between" onClick={handleClick}>
+            <button className="p-2 text-lg flex w-full items-center justify-between" onClick={handleClick}>
                 <p className={classNames({ "text-blue": current })}>{name}</p>
                 {children && (
                     <Icon icon="down" size="xs" className={classNames("transition", { "rotate-180": open })} />
@@ -68,7 +68,7 @@ const Menu = () => {
         <nav className="p-2">
             {/* {!depth_2 && <span className="p-2">depth 1 미 선택</span>} */}
             {depth_2 && (
-                <ul className="p-2">
+                <ul className="p-2 space-y-2">
                     {depth_2.map((child) => {
                         return <NavItem key={depth_1.name + "." + child.name} depth_1={depth_1} {...child} />;
                     })}

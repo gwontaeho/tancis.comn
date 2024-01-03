@@ -88,7 +88,7 @@ export const Header = () => {
     return (
         <header className="fixed flex h-16 w-full bg-background z-50">
             {/*  */}
-            <div className="bg-white border-[#ECECEC] w-64 flex items-center justify-center border-b p-4 space-x-4">
+            <div className="bg-white border-uf-border w-64 flex items-center justify-center border-b p-4 space-x-4">
                 <img
                     className="block h-full"
                     src={`/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`}
@@ -101,7 +101,7 @@ export const Header = () => {
             </div>
 
             {/*  */}
-            <div className="bg-uf-header flex flex-1">
+            <div className="bg-uf-layout-header flex flex-1">
                 <NavTop />
 
                 <div className="flex flex-1 justify-end items-center space-x-4 px-8">
