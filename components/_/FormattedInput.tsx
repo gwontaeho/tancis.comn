@@ -1,8 +1,8 @@
 import React from "react";
 
-type Values = {
-    value?: string;
-    formattedValue?: string;
+export type TFormattedInputValues = {
+    value: string;
+    formattedValue: string;
 };
 
 export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -11,7 +11,7 @@ export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & 
     decimalScale?: number;
     thousandSeparator?: boolean;
     letterCase?: "upper" | "lower";
-    onValueChange?: (values?: Values) => void;
+    onValueChange?: (values: TFormattedInputValues) => void;
 };
 
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(
@@ -34,7 +34,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const REG_NUMBER = /^[0-9]+$/;
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            let v: Values = { value: e.target.value, formattedValue: "" };
+            let v: TFormattedInputValues = { value: e.target.value, formattedValue: "" };
             handleLowerCase(e, v);
             handleUpperCase(e, v);
             handleNumber(e);
@@ -45,14 +45,14 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             if (onChange) onChange(e);
         };
 
-        const handleLowerCase = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
+        const handleLowerCase = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (letterCase !== "lower") return;
             e.target.value = e.target.value.toLowerCase();
             v.value = e.target.value;
             v.formattedValue = e.target.value;
         };
 
-        const handleUpperCase = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
+        const handleUpperCase = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (letterCase !== "upper") return;
             e.target.value = e.target.value.toUpperCase();
             v.value = e.target.value;
@@ -65,7 +65,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
                 e.target.value = e.target.value.replaceAll(/[\D]/g, "");
         };
 
-        const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
+        const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (decimalScale === undefined) return;
 
             const int = e.target.value.split(".")[0];
@@ -75,7 +75,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
-        const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
+        const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (!thousandSeparator) return;
 
             const int = e.target.value.split(".")[0];
@@ -85,8 +85,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
-        const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: Values) => {
-            
+        const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (decimalScale !== undefined || thousandSeparator) return;
             if (mask === undefined) return;
             const oldValue = e.target.value;
@@ -96,8 +95,6 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             let formattedValueArray = [];
             const maxFormattedLength = maskedValueArray.length;
             const maxLength = maskedValueArray.filter((_) => SET_LETTER.includes(_)).length;
-
-            
 
             for (let i = 0; i < oldValueArray.length; i++) {
                 let skip = 0;
@@ -122,8 +119,6 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
                 if (shouldLowerString) letter = letter.toLowerCase();
                 if (maskedValueArray[i] !== letter) newValueArray.push(letter);
                 formattedValueArray[i + skip] = letter;
-
-                
             }
 
             let value = newValueArray.join("");

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Group, Button, Layout, FormControl } from "@/comn/components";
-import { FormSchemaType, FormValuesType } from "@/comn/hooks";
+import { TFormSchema, TFormValues } from "@/comn/hooks";
 import { useForm } from "@/comn/hooks";
 
-const SCHEMA_SEARCH: FormSchemaType = {
+const SCHEMA_SEARCH: TFormSchema = {
     id: "search",
     schema: {
         text: { type: "text", label: "text", required: true },
@@ -66,7 +66,7 @@ export const SampleForm = () => {
         defaultSchema: SCHEMA_SEARCH,
     });
 
-    const onSubmit = (data: FormValuesType) => {
+    const onSubmit = (data: TFormValues) => {
         console.log(data);
     };
 

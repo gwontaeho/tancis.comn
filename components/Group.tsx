@@ -18,10 +18,23 @@ const SIZES = {
     12: "col-span-12",
 };
 
+type GroupProps = {
+    children?: React.ReactNode;
+    bgColor?: boolean;
+};
+
 type GroupHeaderProps = {
     title?: string;
     description?: string;
     titleSize?: 1 | 2 | 3;
+};
+
+type GroupBodyProps = {
+    children?: React.ReactNode;
+};
+
+type GroupRowProps = {
+    children?: React.ReactNode;
 };
 
 type GroupLabelProps = FormControlProps & {
@@ -30,19 +43,34 @@ type GroupLabelProps = FormControlProps & {
     required?: boolean | string;
 };
 
-export type GroupControlProps = GroupLabelProps & { controlSize?: keyof typeof SIZES; "data-parent"?: string };
+export type GroupControlProps = GroupLabelProps & {
+    controlSize?: keyof typeof SIZES;
+    "data-parent"?: string;
+};
 
-type GroupColProps = GroupLabelProps & { children?: React.ReactNode; colSize?: keyof typeof SIZES; combine?: boolean };
+type GroupColProps = GroupLabelProps & {
+    children?: React.ReactNode;
+    colSize?: keyof typeof SIZES;
+    combine?: boolean;
+};
 
-type GroupProps = React.HTMLAttributes<HTMLDivElement> & { bgColor?: boolean };
+/**
+ *
+ *
+ * Group
+ * - Header
+ * - Body
+ * - Row
+ * - Label
+ * - Control
+ * - Col
+ *
+ *
+ */
 
 export const Group = (props: GroupProps) => {
-    const { children, className, bgColor = true } = props;
-    return (
-        <div className={classNames("rounded  p-4 space-y-4 w-full", bgColor && "shadow bg-card", className)}>
-            {children}
-        </div>
-    );
+    const { children, bgColor = true } = props;
+    return <div className={classNames("rounded p-4 space-y-4 w-full", bgColor && "shadow bg-card")}>{children}</div>;
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {
@@ -58,30 +86,22 @@ const GroupHeader = (props: GroupHeaderProps) => {
     );
 };
 
-const GroupBody = (props: { children?: React.ReactNode }) => {
+const GroupBody = (props: GroupBodyProps) => {
     const { children } = props;
     return <div className="w-full">{children}</div>;
 };
 
-const GroupRow = (props: { children?: React.ReactNode }) => {
+const GroupRow = (props: GroupRowProps) => {
     const { children } = props;
-    return (
-        <div className="w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12">
-            {children}
-        </div>
-    );
+    return <div className="uf-group-row">{children}</div>;
 };
 
 const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
     const { t } = useTranslation();
     const { label, labelSize = 2, ...rest } = props;
+
     return (
-        <div
-            className={classNames(
-                "font-semibold relative flex items-center p-1 break-all bg-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r",
-                SIZES[labelSize],
-            )}
-        >
+        <div className={classNames("uf-group-label", SIZES[labelSize])}>
             {props.type ? <FormControl ref={ref} {...rest} /> : typeof label === "string" ? t(label) : label}
             {props.required && (
                 <span

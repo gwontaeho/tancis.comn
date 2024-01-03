@@ -2,9 +2,8 @@ import React from "react";
 import { Sample } from "@/comn/components/_";
 import { Page, Group, FormControl } from "@/comn/components";
 import Prism from "prismjs";
-import { useForm, FormSchemaType } from "@/comn/hooks";
+import { useForm, TFormSchema } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
-
 export const SampleFormControlNumber = () => {
     React.useEffect(() => {
         Prism.highlightAll();
@@ -68,7 +67,7 @@ export const SampleFormControlNumber = () => {
 
                 <Sample.Code>{`<FormControl type="number" value={'Number field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="number" defaultValue={"0"} />
+                    <FormControl type="number" value={"Number field"} />
                 </Page>
 
                 <Sample.Code>{` <FormControl type="number" name={'Number field'}/>`}</Sample.Code>

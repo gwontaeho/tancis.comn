@@ -1,8 +1,8 @@
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, FormSchemaType } from "@/comn/hooks";
+import { useForm, TFormSchema } from "@/comn/hooks";
 
 export const SampleFormControlCode = () => {
-    const SCHEMA_FORM: FormSchemaType = {
+    const SCHEMA_FORM: TFormSchema = {
         id: "form",
         schema: {
             field1: {

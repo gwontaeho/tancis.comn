@@ -4,6 +4,7 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { Icon, IconsType, Tooltip } from "@/comn/components";
+
 import {
     InputText,
     InputNumber,
@@ -21,6 +22,7 @@ import {
     InputTimerange,
     InputCode,
     InputBoolean,
+    ControllerWrapper,
 } from "@/comn/components/_";
 
 export type FormControlType =
@@ -34,10 +36,10 @@ export type FormControlType =
     | "date"
     | "time"
     | "datetime"
-    | "file"
     | "daterange"
     | "timerange"
     | "code"
+    | "file"
     | "boolean";
 
 const SIZES = {
@@ -61,7 +63,10 @@ type FormControlGroupProps = {
     children?: React.ReactNode;
 };
 
-export type TFormControlOptions = { label: string; value: string }[];
+export type TFormControlOptions = {
+    label: string;
+    value: string;
+}[];
 
 export type FormControlProps = InputDaterangeProps & {
     type?: FormControlType;
@@ -119,45 +124,9 @@ const FormControlGroup = (props: FormControlGroupProps) => {
     );
 };
 
-const FormControlTextMode = (props: FormControlProps) => {
-    return (
-        <div>
-            {(() => {
-                switch (props.type) {
-                    case "checkbox":
-                        return (props.getValues(props.type) || []).join(", ");
-                    case "date":
-                        return dayjs(props.getValues(props.type)).format("YYYY/MM/DD");
-                    case "time":
-                        return dayjs(props.getValues(props.type)).format("HH:mm");
-                    case "datetime":
-                        return dayjs(props.getValues(props.type)).format("YYYY/MM/DD HH:mm");
-                    case "daterange":
-                        return (
-                            dayjs(props.getValues(props.start.name)).format("YYYY/MM/DD") +
-                            " ~ " +
-                            dayjs(props.getValues(props.end.name)).format("YYYY/MM/DD")
-                        );
-                    case "timerange":
-                        return (
-                            dayjs(props.getValues(props.start.name)).format("HH:mm") +
-                            " ~ " +
-                            dayjs(props.getValues(props.end.name)).format("HH:mm")
-                        );
-                    case "file":
-                        return (props.getValues(props.type) || []).length > 1
-                            ? `File ${(props.getValues(props.type) || []).length}`
-                            : (props.getValues(props.type) || [])[0]?.name;
-                    default:
-                        return props.getValues(props.type);
-                }
-            })()}
-        </div>
-    );
-};
+const FormControlEditMode = React.forwardRef((props: any, ref) => {
+    const { type, edit, rightButton, leftButton, rightText, getValues, ...rest } = props;
 
-const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
-    const { edit, rightButton, leftButton, rightText, getValues, invalid, ...rest } = props;
     return (
         <div
             className={classNames("flex w-full", {
@@ -176,7 +145,7 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
             )}
             <div className="w-full relative flex items-center">
                 {(() => {
-                    switch (props.type) {
+                    switch (type) {
                         case "text":
                             return <InputText {...rest} ref={ref} />;
                         case "number":
@@ -228,29 +197,70 @@ const FormControlEditMode = React.forwardRef<any>((props: any, ref) => {
 
 export const FormControl = Object.assign(
     React.forwardRef((props: FormControlProps, ref) => {
-        const { size = "full", edit = true, message } = props;
+        const { size = "full", edit = true, message, invalid, getValues, ...rest } = props;
         const { t } = useTranslation();
 
-        let validMessage = props.invalid?.message;
-        if (!props.invalid?.message) {
-            switch (props.invalid?.type) {
-                case "required":
-                    validMessage = "msg.00001";
-                    break;
+        const text = () => {
+            if (!props.getValues) return;
+            switch (props.type) {
+                case "checkbox":
+                    return (props.getValues(props.type) || []).join(", ");
+                case "date":
+                    return dayjs(props.getValues(props.type)).format("YYYY/MM/DD");
+                case "time":
+                    return dayjs(props.getValues(props.type)).format("HH:mm");
+                case "datetime":
+                    return dayjs(props.getValues(props.type)).format("YYYY/MM/DD HH:mm");
+                case "daterange":
+                    return (
+                        dayjs(props.getValues(props.start.name)).format("YYYY/MM/DD") +
+                        " ~ " +
+                        dayjs(props.getValues(props.end.name)).format("YYYY/MM/DD")
+                    );
+                case "timerange":
+                    return (
+                        dayjs(props.getValues(props.start.name)).format("HH:mm") +
+                        " ~ " +
+                        dayjs(props.getValues(props.end.name)).format("HH:mm")
+                    );
+                case "file":
+                    return (props.getValues(props.type) || []).length > 1
+                        ? `File ${(props.getValues(props.type) || []).length}`
+                        : (props.getValues(props.type) || [])[0]?.name;
                 default:
-                    validMessage = props.invalid?.message || "";
+                    return props.getValues(props.type);
             }
-        }
+        };
+
+        const invalidMessage = () => {
+            switch (invalid?.type) {
+                case "required":
+                    return t("msg.00001");
+                default:
+                    return t(invalid?.message);
+            }
+        };
 
         return (
             <div className={SIZES[size]}>
-                {!edit && props.getValues && <FormControlTextMode {...props} />}
+                {!edit && getValues && <div>{text()}</div>}
+
                 <div className={classNames("w-full", { hidden: !edit })}>
-                    <Tooltip enabled={Boolean(props.invalid)} size="full" content={t("msg.00001")}>
-                        <FormControlEditMode ref={ref} {...props} />
+                    <Tooltip enabled={Boolean(invalid)} size="full" content={invalidMessage()}>
+                        {props.control ? (
+                            <ControllerWrapper {...rest}>
+                                <FormControlEditMode />
+                            </ControllerWrapper>
+                        ) : (
+                            <FormControlEditMode ref={ref} {...rest} />
+                        )}
                     </Tooltip>
+
+                    {/* message */}
                     {message && <div className="text-sm mt-1">{message}</div>}
-                    {props.invalid && <div className="text-invalid text-sm mt-1">{t(validMessage)}</div>}
+
+                    {/* invalid message */}
+                    {invalid?.message && <div className="text-invalid text-sm mt-1">{invalidMessage()}</div>}
                 </div>
             </div>
         );
