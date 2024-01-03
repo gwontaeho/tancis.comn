@@ -11,7 +11,7 @@ export const SampleFormControlNumber = () => {
         Prism.highlightAll();
     }, []);
     return (
-        <Sample title="Text">
+        <Sample title="Number">
             <Sample.Section
                 title={`<FormControl type="number" />`}
                 description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
@@ -54,9 +54,9 @@ export const SampleFormControlNumber = () => {
                     <FormControl type="number" value={'000000'} />
                 </Page>
 
-                <Sample.Code>{` <FormControl type="number" name={'000000'}/>`}</Sample.Code>
+                <Sample.Code>{` <FormControl type="number" name={'number'}/>`}</Sample.Code>
                 <Page>
-                    <FormControl type="number" name={'000000'}/>
+                    <FormControl type="number" name={'number'}/>
                 </Page>
 
                 <Sample.Code>{`<FormControl type="number" rightText={'000000'} />`}</Sample.Code>
