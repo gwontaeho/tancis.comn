@@ -1,6 +1,6 @@
 import { api } from "@/comn";
 import { utils, envs } from "@/comn/utils";
-import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
+import { TFormSchema, WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
     path: `${envs.base}`,
@@ -411,7 +411,7 @@ export const SCHEMA_GRID_ORG_CD: WijmoSchemaType = {
     ],
 };
 
-export const SCHEMA_FORM_COMN_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_COMN_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         comnCd: { type: "text", label: "L_COMN_CD", required: true },
@@ -430,7 +430,7 @@ export const SCHEMA_FORM_COMN_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_CNTY_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_CNTY_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cntyCd: { type: "text", label: "L_CNTY_CD" },
@@ -438,7 +438,7 @@ export const SCHEMA_FORM_CNTY_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_CITY_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_CITY_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd", popupSize: "sm" },
@@ -450,7 +450,7 @@ export const SCHEMA_FORM_CITY_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_PORT_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_PORT_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd" },
@@ -459,7 +459,7 @@ export const SCHEMA_FORM_PORT_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_AIRPT_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_AIRPT_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd" },
@@ -468,7 +468,7 @@ export const SCHEMA_FORM_AIRPT_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_PORT_AIRPT_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_PORT_AIRPT_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         portAirptTpCd: {
@@ -486,7 +486,7 @@ export const SCHEMA_FORM_PORT_AIRPT_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_CURR_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_CURR_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         currCd: { type: "text", label: "L_CURR_CD" },
@@ -494,7 +494,7 @@ export const SCHEMA_FORM_CURR_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_BNK_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_BNK_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cdVldVal: { type: "text", label: "L_BNK_CD" },
@@ -502,7 +502,7 @@ export const SCHEMA_FORM_BNK_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_CO_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_CO_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         tin: { type: "text", label: "L_TIN" },
@@ -519,7 +519,7 @@ export const SCHEMA_FORM_CO_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_PRCSS_STAT_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_PRCSS_STAT_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         item: { type: "text", label: "L_PRCSS_STAT_CD" },
@@ -527,7 +527,7 @@ export const SCHEMA_FORM_PRCSS_STAT_CD_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_ORG_CD_SRCH: FormSchemaType = {
+export const SCHEMA_FORM_ORG_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         orgCd: { type: "text", label: "L_ORG_CD" },

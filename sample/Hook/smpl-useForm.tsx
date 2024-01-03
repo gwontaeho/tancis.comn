@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { Page, Group, Button, Layout, Table, FormControl, IconButton } from "@/comn/components";
-import { FormSchemaType, FormValuesType } from "@/comn/hooks";
+import { Page, Group, Button, Table } from "@/comn/components";
+import { TFormSchema, TFormValues } from "@/comn/hooks";
 import { useForm } from "@/comn/hooks";
 
-const SCHEMA_SEARCH: FormSchemaType = {
+const SCHEMA_SEARCH: TFormSchema = {
     id: "search",
     schema: {
         text: {
@@ -56,8 +56,6 @@ const OPTION = [
 ];
 
 export const SampleUseForm = () => {
-    console.log("render");
-
     const {
         schema,
         setSchema,
@@ -73,6 +71,7 @@ export const SampleUseForm = () => {
         reset,
         isSubmitted,
         setFocus,
+        errors,
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
@@ -81,11 +80,11 @@ export const SampleUseForm = () => {
 
     const text = watch(["text"]);
 
-    const onSubmit = (data: FormValuesType) => {
+    const onSubmit = (data: TFormValues) => {
         console.log(data);
         console.log("a");
     };
-    const onSubmit2 = (data: FormValuesType) => {
+    const onSubmit2 = (data: TFormValues) => {
         console.log(data);
         console.log("b");
     };

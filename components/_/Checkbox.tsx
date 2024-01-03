@@ -1,91 +1,130 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
-import { useTranslation } from "react-i18next";
 import { Control } from "react-hook-form";
-import { utils } from "@/comn/utils";
-import { useTheme } from "@/comn/hooks";
+import { useTranslation } from "react-i18next";
+import { useOptions } from "@/comn/hooks";
 import { ControllerWrapper } from "@/comn/components/_";
 import { TFormControlOptions } from "@/comn/components";
 
-type CheckBoxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+/**
+ * name
+ * value
+ * onClick
+ * onChange
+ * onBlur
+ * onFocus
+ * readOnly
+ * disabled
+ */
+
+/** */
+type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
     options?: TFormControlOptions;
-    value?: string[] | number[] | null[];
-    onChange?: (value?: any) => void;
     comnCd?: string;
     area?: string;
-    control?: Control;
+    lang?: string;
     all?: boolean;
+    value?: any[];
+    onChange?: (value: any[]) => void;
+
+    control?: Control;
 };
 
-const CheckboxMain = React.forwardRef<HTMLInputElement, CheckBoxProps>(
-    (props: CheckBoxProps, ref: React.ForwardedRef<HTMLInputElement>) => {
-        const { t } = useTranslation();
+const CheckboxMain = React.forwardRef<HTMLInputElement, CheckboxProps>(
+    (props: CheckboxProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
-            theme: { lang },
-        } = useTheme();
+            comnCd,
+            area,
+            lang,
+            options,
+            /** */
+            all,
+            /** */
+            name,
+            value,
+            onClick,
+            onChange,
+            onBlur,
+            onFocus,
+            readOnly,
+            disabled,
+        } = props;
 
-        const [_options, _setOptions] = React.useState<TFormControlOptions>(props.options || []);
-        const [_value, _setValue] = React.useState<any[]>(props.value || []);
+        const { t } = useTranslation();
+        const o = useOptions({ comnCd, area, lang, options });
+
+        const [_value, _setValue] = React.useState<any[]>(value || []);
 
         React.useEffect(() => {
-            if (!props.area) return;
-            (async () => {
-                try {
-                    const { data } = await utils.getCode({ comnCd: props.comnCd, area: props.area });
-                    const content = Object.values<any>(data)[0].content;
-                    _setOptions(utils.getCodeOptions(props.area, content || []));
-                } catch (error) {}
-            })();
-        }, [props.comnCd, props.area, lang]);
+            if (!onChange) return;
+            if (String(value) === String(_value)) return;
+            onChange(_value);
+        }, [_value]);
+        React.useEffect(() => {
+            if (String(value) === String(_value)) return;
+            _setValue(value || []);
+        }, [value]);
 
         const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             const next = event.target.checked
                 ? [..._value, event.target.value]
                 : _value.filter((_) => _ !== event.target.value);
-
             _setValue(next);
-            if (props.onChange) props.onChange(next);
         };
 
         const handleChangeAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-            const next = event.target.checked ? _options.map(({ value }) => value) : [];
-
+            const next = event.target.checked ? o.options?.map(({ value }) => value) || [] : [];
             _setValue(next);
-            if (props.onChange) props.onChange(next);
         };
+
+        const _props = Object.fromEntries(
+            Object.entries({
+                name,
+                value,
+                onClick,
+                onBlur,
+                onFocus,
+                readOnly,
+                disabled,
+            }).filter(([, value]) => value !== undefined),
+        );
+
+        /**
+         * readOnly 처리 해야함..
+         */
 
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
             <div className="flex flex-wrap w-fit">
-                {props.all && (
+                {all && (
                     <div className="flex items-center h-7 space-x-1 mr-3">
                         <label className="flex items-center h-7 space-x-1">
-                            <input type="checkbox" onChange={handleChangeAll} />
+                            <input type="checkbox" disabled={disabled} onChange={handleChangeAll} />
                             <div>{t(`L_AL`)}</div>
                         </label>
                     </div>
                 )}
-                {Array.isArray(_options) &&
-                    _options.map(({ label, value }, i) => {
-                        return (
-                            <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
-                                <input
-                                    ref={ref}
-                                    type="checkbox"
-                                    value={value}
-                                    onChange={handleChange}
-                                    checked={_value.some((_) => _ === value)}
-                                />
-                                {label && <div>{t(label)}</div>}
-                            </label>
-                        );
-                    })}
+                {o.options?.map(({ label, value }, i) => {
+                    return (
+                        <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
+                            <input
+                                {..._props}
+                                ref={ref}
+                                type="checkbox"
+                                value={value}
+                                onChange={handleChange}
+                                checked={_value.some((_) => _ === value)}
+                            />
+                            {label && <div>{t(label)}</div>}
+                        </label>
+                    );
+                })}
             </div>
         );
     },
 );
 
-export const Checkbox = (props: CheckBoxProps) => {
+export const Checkbox = (props: CheckboxProps) => {
     if (props.control && props.name)
         return (
             <ControllerWrapper {...props} control={props.control} name={props.name}>

@@ -2,7 +2,7 @@ import React from "react";
 import { Sample } from "@/comn/components/_";
 import { Page, Group, FormControl } from "@/comn/components";
 import Prism from "prismjs";
-import { useForm, FormSchemaType } from "@/comn/hooks";
+import { useForm, TFormSchema } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 
 export const SampleFormControlText = () => {

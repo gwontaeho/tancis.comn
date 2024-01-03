@@ -1,27 +1,27 @@
-import { useNavigate } from 'react-router-dom'
-import { Page, Wijmo, Group, Layout, Tab, Button } from '@/comn/components'
-import { useForm, useCondition, usePopup, FormValuesType, FormSchemaType } from '@/comn/hooks'
+import { useNavigate } from "react-router-dom";
+import { Page, Wijmo, Group, Layout, Tab, Button } from "@/comn/components";
+import { useForm, useCondition, usePopup, TFormValues, TFormSchema } from "@/comn/hooks";
 
-export const SCHEMA_FORM: FormSchemaType = {
-    id: 'form',
+export const SCHEMA_FORM: TFormSchema = {
+    id: "form",
     schema: {
-        con1: { type: 'text', label: '검색조건 1' },
+        con1: { type: "text", label: "검색조건 1" },
     },
-}
+};
 
 export const SampleCommonPopup = (props: any) => {
-    const { openPopup, postMessage } = usePopup()
+    const { openPopup, postMessage } = usePopup();
 
-    const { condition } = useCondition()
-    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition })
+    const { condition } = useCondition();
+    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition });
 
-    const onSubmit = (data: FormValuesType) => {
-        postMessage(data)
-    }
+    const onSubmit = (data: TFormValues) => {
+        postMessage(data);
+    };
 
     return (
         <Page>
-            <Page.Navigation base="/sample/pages" nodes={[{ path: '/', label: 'List' }, { label: 'Regist' }]} />
+            <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
             <Page.Header title="Common Code Popup Sample" description="Common Code Popup Sample" />
             <form onSubmit={_form.handleSubmit(onSubmit)}>
                 <Group>
@@ -30,9 +30,9 @@ export const SampleCommonPopup = (props: any) => {
                             <Group.Control
                                 {..._form.schema.con1}
                                 rightButton={{
-                                    icon: 'search',
+                                    icon: "search",
                                     onClick: () => {
-                                        openPopup({ url: '/' })
+                                        openPopup({ url: "/" });
                                     },
                                 }}
                             ></Group.Control>
@@ -44,5 +44,5 @@ export const SampleCommonPopup = (props: any) => {
                 </Group>
             </form>
         </Page>
-    )
-}
+    );
+};
