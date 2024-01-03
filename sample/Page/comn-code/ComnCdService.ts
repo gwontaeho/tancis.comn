@@ -1,11 +1,7 @@
 import { api } from "@/comn";
-<<<<<<< HEAD
-import { utils, envs } from "@/comn/utils";
-import { TFormSchema, WijmoSchemaType } from "@/comn/hooks";
-=======
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
->>>>>>> f2f59c299c1dd5649c6eab54213236496397d868
+import { WijmoSchemaType } from "@/comn/hooks";
+import { TFormSchema } from "@/comn/hooks";
 
 export const BASE = {
     path: `${comnEnvs.base}`,
