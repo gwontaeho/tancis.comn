@@ -1,78 +1,131 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useTheme } from '@/comn/hooks'
-import { Icon, FormControl } from '@/comn/components'
-import { NavTop } from './NavTop'
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@/comn/hooks";
+import { Icon, FormControl } from "@/comn/components";
+
+import { Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
+import { R } from "@/comn";
 
 const ModeControl = () => {
-    const { theme, setTheme } = useTheme()
+    const { theme, setTheme } = useTheme();
 
     return (
         <button
             onClick={() =>
                 setTheme((prev) => ({
                     ...prev,
-                    isDark: prev.isDark === 'false' ? 'true' : 'false',
+                    isDark: prev.isDark === "false" ? "true" : "false",
                 }))
             }
         >
-            <Icon icon={theme.isDark === 'true' ? 'sun' : 'moon'} />
+            <Icon icon={theme.isDark === "true" ? "sun" : "moon"} />
         </button>
-    )
-}
+    );
+};
 
-export const Logo = () => {
-    const path = `/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`
+type NavItemProps = {
+    children?: any[];
+    name?: string;
+    path?: string;
+    base?: string;
+};
+
+const NavItem = (props: NavItemProps) => {
+    const { name, children, path, base = "" } = props;
+    const depth_1 = path || base;
 
     return (
-        <img src={path} alt={process.env.REACT_APP_SYSTEM_GROUP_NAME} title={process.env.REACT_APP_SYSTEM_GROUP_NAME} />
-    )
-}
+        <li className="group">
+            <Link to={depth_1}>
+                <button className="flex items-center space-x-1">
+                    <p>{name}</p>
+                    <Icon icon="down" size="xs" className="transition group-hover:rotate-180" />
+                </button>
+            </Link>
+            <div className="pt-2 w-max absolute hidden group-hover:block">
+                <ul className="rounded bg-header p-4 grid grid-cols-2 gap-1 [&>li:hover]:underline">
+                    <li className="col-span-2">
+                        <Link to={depth_1} className="block p-2 font-semibold">
+                            {name}
+                        </Link>
+                    </li>
+                    {children?.map((child) => {
+                        const { name, path, base } = child;
+                        const depth_2 = path || base;
+                        return (
+                            <li key={uuid()}>
+                                <Link to={depth_1 + depth_2} className="block w-40 py-2 px-4">
+                                    {name}
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </li>
+    );
+};
+
+export const NavTop = () => {
+    return (
+        <nav className="hidden items-center lg:flex text-white px-8">
+            <ul className="flex space-x-4">
+                {R.map((child) => {
+                    return <NavItem key={uuid()} {...child} />;
+                })}
+            </ul>
+        </nav>
+    );
+};
 
 export const Header = () => {
-    const { theme, setTheme } = useTheme()
-    const { t } = useTranslation()
+    const { theme, setTheme } = useTheme();
+    const { t } = useTranslation();
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     return (
-        <header className="fixed w-full bg-background z-50">
-            <div className="flex h-20">
-                <div className="w-60 flex items-center p-4 space-x-8">
-                    <button onClick={() => setOpen((prev) => !prev)}>
-                        <Icon icon="menu" />
-                    </button>
-                    <div className="flex-1">
-                        <Logo />
-                    </div>
-                </div>
-                <div className="flex flex-1 p-4">
-                    <NavTop />
-                    <div className="flex flex-1 justify-end items-center space-x-4">
-                        <div>{t('test')}</div>
+        <header className="fixed flex h-16 w-full bg-background z-50">
+            {/*  */}
+            <div className="bg-white border-[#ECECEC] w-64 flex items-center justify-center border-b p-4 space-x-4">
+                <img
+                    className="block h-full"
+                    src={`/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`}
+                    alt={process.env.REACT_APP_SYSTEM_GROUP_NAME}
+                    title={process.env.REACT_APP_SYSTEM_GROUP_NAME}
+                />
+                <button onClick={() => setOpen((prev) => !prev)}>
+                    <Icon icon="menu" size="lg" />
+                </button>
+            </div>
 
-                        <ModeControl />
-                        <FormControl
-                            type="select"
-                            value={theme.lang}
-                            size="fit"
-                            onChange={(e: any) =>
-                                setTheme((prev) => ({
-                                    ...prev,
-                                    lang: e.target.value,
-                                }))
-                            }
-                            options={[
-                                { label: '한국어', value: 'ko' },
-                                { label: '영어', value: 'en' },
-                                { label: '스와힐리어', value: 'tz' },
-                            ]}
-                        />
-                    </div>
+            {/*  */}
+            <div className="bg-uf-header flex flex-1">
+                <NavTop />
+
+                <div className="flex flex-1 justify-end items-center space-x-4 px-8">
+                    {/* <ModeControl /> */}
+                    <FormControl
+                        type="select"
+                        value={theme.lang}
+                        size="fit"
+                        onChange={(e: any) =>
+                            setTheme((prev) => ({
+                                ...prev,
+                                lang: e.target.value,
+                            }))
+                        }
+                        options={[
+                            { label: "한국어", value: "ko" },
+                            { label: "영어", value: "en" },
+                            { label: "스와힐리어", value: "tz" },
+                        ]}
+                    />
                 </div>
             </div>
 
-            {open && (
+            {/* {open && (
                 <nav className="h-[calc(100vh-5rem)]">
                     <ul className="text-xl">
                         <li className="px-4 py-2 flex justify-between items-center">
@@ -93,7 +146,7 @@ export const Header = () => {
                         </li>
                     </ul>
                 </nav>
-            )}
+            )} */}
         </header>
-    )
-}
+    );
+};

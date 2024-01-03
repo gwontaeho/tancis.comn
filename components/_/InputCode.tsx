@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import lodash from "lodash";
-import { Control } from "react-hook-form";
 import { usePopup, useTheme } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
-import { ControllerWrapper } from "@/comn/components/_";
 
 type InputCodeProps = {
     name?: string;
@@ -12,7 +10,6 @@ type InputCodeProps = {
     comnCd?: string;
     area?: string;
     maxLength?: number;
-    control?: Control;
     popupSize?: "sm" | "md" | "lg";
     popupParams?: any;
     onChange?: (...args: any) => void;
@@ -32,7 +29,7 @@ const PopupUrls: { [id: string]: string } = {
     orgCd: `/comn/smpl/pages/orgCdPpup`,
 };
 
-const InputCodeMain = (props: InputCodeProps) => {
+export const InputCode = (props: InputCodeProps) => {
     const { openPopup } = usePopup();
     const {
         theme: { lang },
@@ -79,19 +76,19 @@ const InputCodeMain = (props: InputCodeProps) => {
         }
 
         try {
-            const {
-                data: { content },
-            } = await utils.getCode({ comnCd: props.comnCd, area: props.area, size: 1, keyword });
+            const { data } = await utils.getCode({ comnCd: props.comnCd, area: props.area, size: 1, keyword });
 
-            if (!content[0]) {
+            const c = Object.values<any>(data)[0].content[0];
+
+            if (!c) {
                 labelInput.current.value = "";
                 if (!props.onChange) return;
                 props.onChange("");
                 return;
             }
 
-            const label = utils.getCodeLabel(props.area, content[0]);
-            const code = utils.getCodeValue(props.area, content[0]);
+            const label = utils.getCodeLabel(props.area, c);
+            const code = utils.getCodeValue(props.area, c);
 
             labelInput.current.value = label;
             keywordInput.current.value = code;
@@ -129,15 +126,4 @@ const InputCodeMain = (props: InputCodeProps) => {
             <input ref={labelInput} readOnly className="input rounded-l-none flex-[2]" />
         </div>
     );
-};
-
-export const InputCode = (props: InputCodeProps) => {
-    if (props.control && props.name)
-        return (
-            <ControllerWrapper {...props} control={props.control} name={props.name}>
-                <InputCodeMain />
-            </ControllerWrapper>
-        );
-
-    return <InputCodeMain {...props} />;
 };

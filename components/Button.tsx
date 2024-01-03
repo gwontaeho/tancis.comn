@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
-const SIZES = {
+const WIDTHS = {
     1: "w-1/12",
     2: "w-2/12",
     3: "w-3/12",
@@ -19,30 +19,51 @@ const SIZES = {
     full: "w-full",
 };
 
+const HEIGHTS = {
+    sm: "h-7",
+    lg: "h-10",
+};
+
+const VARIANTS = {
+    contained: "uf-button",
+    outlined: "uf-button-outlined",
+    underlined: "uf-button-underlined",
+};
+
 const AS = {
-    save: { label: "B_SAVE", css: "bg-blue text-white border-none" },
-    list: { label: "B_LST", css: "" },
-    submit: { label: "B_SBMT", css: "bg-warning text-white border-none" },
-    search: { label: "B_SRCH", css: "bg-blue text-white border-none" },
-    close: { label: "B_CLS", css: "bg-invalid text-white border-none" },
-    delete: { label: "B_DEL", css: "bg-invalid text-white border-none" },
-    reset: { label: "B_RESET", css: "bg-warning text-white border-none" },
-    confirm: { label: "B_CFRM", css: "bg-success text-white border-none" },
-    ok: { label: "B_OK", css: "bg-success text-white border-none" },
-    link: { label: "", css: "" },
+    save: { label: "B_SAVE", color: "bg-info border-info" },
+    list: { label: "B_LST", color: "" },
+    submit: { label: "B_SBMT", color: "bg-warning border-warning" },
+    search: { label: "B_SRCH", color: "bg-info border-info" },
+    close: { label: "B_CLS", color: "bg-error border-error" },
+    delete: { label: "B_DEL", color: "bg-error border-error" },
+    reset: { label: "B_RESET", color: "bg-warning border-warning" },
+    confirm: { label: "B_CFRM", color: "bg-success border-success" },
+    ok: { label: "B_OK", color: "bg-success border-success" },
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    size?: keyof typeof SIZES;
+    width?: keyof typeof WIDTHS;
+    height?: keyof typeof HEIGHTS;
+    variant?: keyof typeof VARIANTS;
     as?: keyof typeof AS;
 };
 
 export const Button = (props: ButtonProps) => {
-    const { children, type = "button", size = "fit", as, ...rest } = props;
+    const { children, type = "button", variant = "contained", width, height, as, ...rest } = props;
     const { t } = useTranslation();
 
     return (
-        <button {...rest} type={type} className={classNames("button", SIZES[size], as && AS[as].css)}>
+        <button
+            {...rest}
+            type={type}
+            className={classNames(
+                VARIANTS[variant],
+                width && WIDTHS[width],
+                height && HEIGHTS[height],
+                as && AS[as].color,
+            )}
+        >
             {as ? (children && typeof children == "string" ? t(children) : t(AS[as].label)) : children}
         </button>
     );

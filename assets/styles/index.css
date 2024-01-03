@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Pretendard";
+    src: url("../fonts/PretendardVariable.woff2");
+}
+
 @layer base {
     :root {
         --tancis-text: #5e6e82;
@@ -9,6 +14,11 @@
         --tancis-border: #9da9bb;
         --tancis-header: #d8e2ef;
         --tancis-background: #edf2f9;
+
+        --uf-header: #004f96;
+        --uf-main: #0479ce;
+        --uf-sub: #edf1fb;
+        --uf-background: #f2f7fe;
     }
 
     :root[class~="dark"] {
@@ -23,8 +33,11 @@
         @apply border-border;
     }
 
+    html {
+        font-family: "Pretendard";
+    }
     body {
-        @apply text-base bg-background text-text flex flex-col w-full;
+        @apply text-base bg-uf-background flex flex-col w-full;
     }
     ::-webkit-scrollbar {
         @apply w-1.5 h-1.5;
@@ -40,6 +53,16 @@
     }
     .uf-group-label {
         @apply font-semibold relative flex items-center p-1 break-all bg-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
+    }
+
+    .uf-button {
+        @apply block px-4 w-fit h-7 transition border border-uf-main bg-uf-main text-white rounded;
+    }
+    .uf-button-outlined {
+        @apply block px-4 w-fit h-7 transition border border-uf-main text-uf-main rounded;
+    }
+    .uf-button-underlined {
+        @apply block w-fit h-7 transition text-uf-main underline rounded;
     }
 
     .input {

@@ -1,6 +1,5 @@
 export * from "./Header";
-export * from "./NavTop";
-export * from "./NavVertical";
+export * from "./Navigation";
 export * from "./CommonModal";
 export * from "./CommonToast";
 

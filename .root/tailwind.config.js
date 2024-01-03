@@ -3,6 +3,11 @@ module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
         colors: {
+            "uf-header": "var(--uf-header)",
+            "uf-main": "var(--uf-main)",
+            "uf-sub": "var(--uf-sub)",
+            "uf-background": "var(--uf-background)",
+
             transparent: "transparent",
             white: "#ffffff",
             black: "#000000",
@@ -16,10 +21,10 @@ module.exports = {
             header: "var(--tancis-header)",
             background: "var(--tancis-background)",
 
-            success: "#65E048",
-            error: "#e63757",
-            info: "#488FE0",
-            warning: "#E07E48",
+            success: "#00AD59",
+            error: "#F4645E",
+            info: "#0479CE",
+            warning: "#FFB100",
         },
         fontSize: {
             sm: "0.7rem",

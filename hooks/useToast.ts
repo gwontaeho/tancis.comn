@@ -9,7 +9,12 @@ type ShowToastArgs = {
     onCancel?: Function;
 };
 
-export const useToast = () => {
+type UseToastReturn = {
+    showToast: (args: ShowToastArgs) => void;
+    hideToast: () => void;
+};
+
+export const useToast = (): UseToastReturn => {
     const setToast = useSetRecoilState(toastState);
 
     const showToast = (args: ShowToastArgs) => {
