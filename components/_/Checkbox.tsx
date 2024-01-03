@@ -25,7 +25,9 @@ const CheckboxMain = React.forwardRef<HTMLInputElement, CheckBoxProps>(
         } = useTheme();
 
         const [_options, _setOptions] = React.useState<TFormControlOptions>(props.options || []);
-        const [_value, _setValue] = React.useState<any[]>(props.value || []);
+        const [_value, _setValue] = React.useState<any[]>(
+            (typeof props.value === "string" ? props.value.split(",") : props.value) || [],
+        );
 
         React.useEffect(() => {
             if (!props.area) return;
