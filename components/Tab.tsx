@@ -1,70 +1,75 @@
-import React, { useEffect } from 'react'
-import classNames from 'classnames'
-import { v4 as uuid } from 'uuid'
+import React, { useEffect } from "react";
+import classNames from "classnames";
+import { v4 as uuid } from "uuid";
 
 type TabProps = {
-    children?: React.ReactNode
-    schema: any[]
-    value?: number
-    onChange?: (index: number) => void
-}
+    children?: React.ReactNode;
+    schema: any[];
+    value?: number;
+    onChange?: (index: number) => void;
+};
 
 type TabPanelProps = {
-    children?: React.ReactNode
-    isActive?: Boolean
-}
+    children?: React.ReactNode;
+    isActive?: Boolean;
+};
 
 export const Tab = (props: TabProps) => {
-    const { children, schema, value, onChange } = props
+    const { children, schema, value, onChange } = props;
 
     const [_value, _setValue] = React.useState<number>(() => {
-        if (value !== undefined) return value
-        if (schema.some((_) => _.active)) return schema.findIndex((_) => _.active)
-        return 0
-    })
+        if (value !== undefined) return value;
+        if (schema.some((_) => _.active)) return schema.findIndex((_) => _.active);
+        return 0;
+    });
 
     useEffect(() => {
-        if (value === undefined) return
-        if (value === _value) return
-        _setValue(value)
-    }, [value])
+        if (value === undefined) return;
+        if (value === _value) return;
+        _setValue(value);
+    }, [value]);
 
     const handleClickTab = (i: number) => {
-        _setValue(i)
-        if (onChange) onChange(i)
-    }
+        _setValue(i);
+        if (onChange) onChange(i);
+    };
 
     return (
         <div className="space-y-4">
             <div className="border-b flex">
                 {schema.map(({ label, disabled, visible }, i) => {
-                    if (visible === false) return null
+                    if (visible === false) return null;
+                    const isActive = _value === i;
+
                     return (
                         <button
                             key={uuid()}
-                            className={classNames('truncate max-w-xs h-10 px-2 text-lg font-semibold', {
-                                'text-blue': _value === i,
-                                'text-disabled/40': disabled,
-                            })}
+                            className={classNames(
+                                "truncate rounded-t border-b-2 border-transparent max-w-xs h-8 px-4 text-lg",
+                                {
+                                    "bg-uf-main text-white border-uf-layout-header": isActive,
+                                    "text-disabled/40": disabled,
+                                },
+                            )}
                             onClick={() => !disabled && handleClickTab(i)}
                         >
                             {label}
                         </button>
-                    )
+                    );
                 })}
             </div>
             <div>
                 {React.Children.map(children, (child: any, i) => {
-                    return React.cloneElement(child, { isActive: _value === i })
+                    return React.cloneElement(child, { isActive: _value === i });
                 })}
             </div>
         </div>
-    )
-}
+    );
+};
 
 const TabPanel = (props: TabPanelProps) => {
-    const { children, isActive } = props
-    return <div hidden={!isActive}>{children}</div>
-}
+    const { children, isActive } = props;
+    return <div hidden={!isActive}>{children}</div>;
+};
 
-Tab.Panel = TabPanel
+Tab.Panel = TabPanel;
