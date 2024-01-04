@@ -5,8 +5,10 @@ const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         authenticate();
     }, []);
 
+    
+    const authenticate1 = () => {};
     const authenticate = () => {};
-
+console.log('test')
     return <>{children}</>;
 };
 
