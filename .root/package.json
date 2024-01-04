@@ -44,7 +44,7 @@
         "build": "craco build",
         "test": "craco test",
         "eject": "react-scripts eject",
-        "update": "start /D \"src/comn/.bat/\" update-comn.bat"
+        "update-comn": "start /D \"src/comn/.bat/\" update-comn.bat"
     },
     "eslintConfig": {
         "extends": [

@@ -1,12 +1,14 @@
 echo update submodule...
+cd ../../../
+git submodule foreach git restore .
 git submodule update --remote
 
 echo copy source to root folder...
-xcopy "..\.root" "..\..\..\" /E /Y
+xcopy "src\comn\.root" ".\" /E /Y
 
 echo copy source to src folder...
-xcopy "..\.src" "..\..\" /E /Y
+xcopy "src\comn\.src" ".\src" /E /Y
 
-echo node package manager install...
+echo node package install...
 npm install
 
