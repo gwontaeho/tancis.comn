@@ -5,7 +5,7 @@ const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         authenticate();
     }, []);
 
-    const authenticate = () => {};
+    
     const authenticate1 = () => {};
 
     return <>{children}</>;
