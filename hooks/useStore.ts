@@ -1,9 +1,9 @@
-import { useRecoilState } from 'recoil'
-import { storeState } from '@/comn/recoil'
+import { useRecoilState } from "recoil";
+import { storeState } from "@/comn/features/recoil";
 
 type UseStoreProps = {
-    pgeUid?: string
-}
+    pgeUid?: string;
+};
 
 /**
  *
@@ -11,7 +11,7 @@ type UseStoreProps = {
  * @returns
  */
 export const useStore = (props?: UseStoreProps) => {
-    const [_store, _setStore] = useRecoilState(storeState)
+    const [_store, _setStore] = useRecoilState(storeState);
 
     /**
      *
@@ -19,9 +19,9 @@ export const useStore = (props?: UseStoreProps) => {
      * @returns
      */
     const getStore = (pgeUid?: string) => {
-        if (!pgeUid) return _store
-        return _store[pgeUid]
-    }
+        if (!pgeUid) return _store;
+        return _store[pgeUid];
+    };
 
     /**
      *
@@ -30,11 +30,11 @@ export const useStore = (props?: UseStoreProps) => {
      * @returns
      */
     const setStore = (pgeUid?: string, value?: any) => {
-        if (!pgeUid) return
+        if (!pgeUid) return;
         _setStore((prev) => {
-            return { ...prev, [pgeUid]: typeof value === 'function' ? value(prev[pgeUid]) : value }
-        })
-    }
+            return { ...prev, [pgeUid]: typeof value === "function" ? value(prev[pgeUid]) : value };
+        });
+    };
 
-    return { store: _store, pgeStore: props?.pgeUid && _store[props.pgeUid], getStore, setStore }
-}
+    return { store: _store, pgeStore: props?.pgeUid && _store[props.pgeUid], getStore, setStore };
+};

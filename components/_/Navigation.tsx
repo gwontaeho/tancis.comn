@@ -80,26 +80,24 @@ const Menu = () => {
 
 const Auth = () => {
     return (
-        <div className="p-4">
-            <div className="bg-uf-sub p-4 rounded space-y-2">
-                <Button width="full" height="lg">
-                    login
-                </Button>
-                <Button variant="outlined" width="full" height="lg">
-                    regist
-                </Button>
-                <Button variant="underlined" width="full">
-                    Forgot your ID or Password?
-                </Button>
-            </div>
+        <div className="m-4 bg-uf-sub p-4 rounded space-y-2">
+            <Button width="full" height="lg">
+                login
+            </Button>
+            <Button variant="outlined" width="full" height="lg">
+                regist
+            </Button>
+            <Button variant="underlined" width="full">
+                Forgot your ID or Password?
+            </Button>
         </div>
     );
 };
 
 export const Navigation = () => {
     return (
-        <div className="bg-white hidden fixed pt-16 top-0 w-64 h-full lg:block overflow-y-auto overflow-x-hidden">
-            <div className="absolute w-64">
+        <div className="uf-navigation">
+            <div className="uf-navigation-container">
                 <Auth />
                 <Menu />
             </div>

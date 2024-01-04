@@ -84,12 +84,23 @@
         @apply border-border;
     }
 
-    html {
+    :root {
         font-family: "Pretendard";
+        width: 100%;
+        height: 100%;
     }
+
     body {
-        @apply text-base text-uf-black bg-uf-background flex flex-col w-full;
+        width: 100%;
+        height: 100%;
+        @apply text-base text-uf-black bg-uf-background;
     }
+
+    #root {
+        width: 100%;
+        height: 100%;
+    }
+
     ::-webkit-scrollbar {
         @apply w-1.5 h-1.5;
     }
@@ -99,6 +110,35 @@
 }
 
 @layer components {
+    .uf-header {
+        @apply fixed top-0 left-0 flex h-16 w-full bg-background z-50;
+        @layer {
+            .uf-logo {
+                @apply bg-white border-uf-border w-72 flex items-center justify-center border-b p-2;
+            }
+            .uf-top {
+                @apply bg-uf-layout-header flex flex-1 items-center;
+            }
+        }
+    }
+    .uf-navigation {
+        @apply bg-white hidden fixed pt-16 top-0 left-0 w-72 h-full lg:block overflow-y-auto overflow-x-hidden;
+        @layer {
+            .uf-navigation-container {
+                @apply absolute w-72;
+            }
+        }
+    }
+    .uf-container {
+        @apply flex flex-col w-full h-full pt-16 lg:pl-72;
+    }
+    .uf-main {
+        @apply flex-1 p-4;
+    }
+    .uf-footer {
+        @apply p-4 flex items-center justify-between;
+    }
+
     .uf-group-row {
         @apply w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12;
     }

@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { useSetRecoilState } from "recoil";
-import { modalState } from "@/comn/recoil";
+import { modalState } from "@/comn/features/recoil";
 import { ModalProps } from "@/comn/components/_";
 
 type OpenModalArgs = Omit<ModalProps, "id">;

@@ -67,7 +67,7 @@ const NavItem = (props: NavItemProps) => {
     );
 };
 
-export const NavTop = () => {
+const Menu = () => {
     return (
         <nav className="hidden items-center lg:flex text-white px-8">
             <ul className="flex space-x-4">
@@ -86,30 +86,30 @@ export const Header = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <header className="fixed flex h-16 w-full bg-background z-50">
+        <header className="uf-header">
             {/*  */}
-            <div className="bg-white border-uf-border w-64 flex items-center justify-center border-b p-4 space-x-4">
+            <div className="uf-logo">
                 <img
                     className="block h-full"
-                    src={`/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.png`}
+                    src={`/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.svg`}
                     alt={process.env.REACT_APP_SYSTEM_GROUP_NAME}
                     title={process.env.REACT_APP_SYSTEM_GROUP_NAME}
                 />
                 <button onClick={() => setOpen((prev) => !prev)}>
-                    <Icon icon="menu" size="lg" />
+                    <Icon icon="menu" size="xl" />
                 </button>
             </div>
 
             {/*  */}
-            <div className="bg-uf-layout-header flex flex-1 items-center">
-                <NavTop />
+            <div className="uf-top">
+                <Menu />
 
                 <div className="flex flex-1 justify-end items-center space-x-4 px-8">
                     {/* <ModeControl /> */}
 
                     {/* lang */}
                     <select
-                        className="w-20 bg-uf-layout-header text-white outline-none [&>option]:bg-uf-layout-header"
+                        className="w-20 bg-uf-layout-header text-white outline-none cursor-pointer [&>option]:bg-uf-layout-header"
                         value={theme.lang}
                         onChange={(e) => setTheme((prev) => ({ ...prev, lang: e.target.value }))}
                     >

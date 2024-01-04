@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { motion } from "framer-motion";
 
-import { toastState } from "@/comn/recoil";
+import { toastState } from "@/comn/features/recoil";
 import classNames from "classnames";
 
 export type ToastProps = {

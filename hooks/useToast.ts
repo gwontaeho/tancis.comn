@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { useSetRecoilState } from "recoil";
-import { toastState } from "@/comn/recoil";
+import { toastState } from "@/comn/features/recoil";
 
 type ShowToastArgs = {
     content?: string;
