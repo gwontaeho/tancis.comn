@@ -154,5 +154,6 @@
     "msg.00003": "Processed successfully.",
     "msg.00004": "No data has been selected.",
     "msg.00101": "Do you want to save ?",
-    "msg.00102": "Do you want to submit ?"
+    "msg.00102": "Do you want to submit ?",
+    "msg.00103": "Do you want to delete ?"
 }

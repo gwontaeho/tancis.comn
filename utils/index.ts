@@ -8,6 +8,20 @@ export const comnEnvs = {
 };
 
 export const comnUtils = {
+    toGetParams: (obj: any) => {
+        if (lodash.isEmpty(obj)) return obj;
+
+        const _obj = lodash.cloneDeep(obj);
+        Object.keys(obj).forEach((key) => {
+            if (lodash.isArray(obj[key])) {
+                _obj[key] = obj[key].join(",");
+            } else {
+                _obj[key] = obj[key];
+            }
+        });
+
+        return _obj;
+    },
     toValues: (obj: any) => {
         if (lodash.isEmpty(obj)) return obj;
         const _obj = lodash.cloneDeep(obj);
