@@ -1,32 +1,19 @@
 import React from "react";
 import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
+import Cookies from "js-cookie";
 import { ModalProps, ToastProps } from "@/comn/components/_";
 import i18n from "@/comn/features/locales/i18n";
 
-const theme = {
-    isDark:
-        localStorage.isDark === "true" ||
-        (!("isDark" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-            ? "true"
-            : "false",
-    lang: localStorage.getItem("lang") || "ko",
-};
-
-const defaultValue = {
-    theme,
-    modal: [],
-    toast: [],
-    condition: {},
-    auth: {
-        isSignedIn: false,
-        accessToken: "",
-        refreshToken: "",
-    },
-};
-
 export const themeState = atom({
     key: "themeState",
-    default: defaultValue.theme,
+    default: {
+        isDark:
+            localStorage.isDark === "true" ||
+            (!("isDark" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+                ? "true"
+                : "false",
+        lang: localStorage.getItem("lang") || "ko",
+    },
     effects: [
         ({ onSet }) => {
             onSet((n, o: any) => {
@@ -46,22 +33,25 @@ export const themeState = atom({
 
 export const modalState = atom<ModalProps[]>({
     key: "modalState",
-    default: defaultValue.modal,
+    default: [],
 });
 
 export const toastState = atom<ToastProps[]>({
     key: "toastState",
-    default: defaultValue.toast,
-});
-
-export const conditionState = atom({
-    key: "conditionState",
-    default: defaultValue.condition,
+    default: [],
 });
 
 export const storeState = atom<Record<string, any>>({
     key: "storeState",
     default: {},
+});
+
+export const authState = atom<Record<string, any>>({
+    key: "authState",
+    default: {
+        user: "",
+        isSignedIn: !!Cookies.get("accessToken"),
+    },
 });
 
 const DebugObserver = () => {

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RecoilProvider from "@/comn/features/recoil";
+import AuthProvider from "@/comn/features/auth";
 import { SampleRoutes } from "@/comn/sample/smpl-Routes";
 import { SampleMain } from "@/comn/sample/smpl-Main";
 import { Layout } from "@/comn/features/layouts";
@@ -11,6 +12,7 @@ export const Base = () => {
     return (
         <RecoilProvider>
             <BrowserRouter>
+                <AuthProvider />
                 <Routes>
                     <Route element={<Layout />}>
                         <Route path="/comn/smpl/*" element={<SampleMain />} />

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Page, Wijmo, Group, Layout, Tab, Button } from "@/comn/components";
-import { useForm, useCondition, usePopup, TFormValues, TFormSchema } from "@/comn/hooks";
+import { useForm, usePopup, TFormValues, TFormSchema } from "@/comn/hooks";
 
 export const SCHEMA_FORM: TFormSchema = {
     id: "form",
@@ -12,8 +12,7 @@ export const SCHEMA_FORM: TFormSchema = {
 export const SampleCommonPopup = (props: any) => {
     const { openPopup, postMessage } = usePopup();
 
-    const { condition } = useCondition();
-    const _form = useForm({ defaultSchema: SCHEMA_FORM, values: condition });
+    const _form = useForm({ defaultSchema: SCHEMA_FORM });
 
     const onSubmit = (data: TFormValues) => {
         postMessage(data);
