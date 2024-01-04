@@ -1,13 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
 const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     useEffect(() => {
-        authenticate()
-    }, [])
+        authenticate();
+    }, []);
 
-    const authenticate = () => {}
+    const authenticate = () => {};
+    const authenticate1 = () => {};
 
-    return <>{children}</>
-}
+    return <>{children}</>;
+};
 
-export default AuthProvider
+export default AuthProvider;
