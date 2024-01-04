@@ -4,6 +4,7 @@ import { PopupLayout } from "./PopupLayout";
 
 export const Layout = () => {
     const [searchParams] = useSearchParams();
+
     const ppup = searchParams.get("ppup");
 
     if (ppup === "Y")

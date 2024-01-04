@@ -8,6 +8,54 @@
 }
 
 @layer base {
+    :root[class~="tanesw"] {
+        --uf-layout-header: #004f96;
+        --uf-main: #0479ce;
+        --uf-sub: #edf1fb;
+        --uf-background: #f2f7fe;
+        --uf-header: #ebeffa;
+        --uf-black: #333a45;
+        --uf-border: #ececec;
+
+        --tancis-text: #5e6e82;
+        --tancis-card: #ffffff;
+        --tancis-border: #9da9bb;
+        --tancis-header: #d8e2ef;
+        --tancis-background: #edf2f9;
+    }
+
+    :root[class~="tancis"] {
+        --uf-layout-header: #007e41;
+        --uf-main: #00ad59;
+        --uf-sub: #e7f7e5;
+        --uf-background: #eef0f2;
+        --uf-header: #f8f8f8;
+        --uf-black: #333a45;
+        --uf-border: #ececec;
+
+        --tancis-text: #5e6e82;
+        --tancis-card: #ffffff;
+        --tancis-border: #9da9bb;
+        --tancis-header: #d8e2ef;
+        --tancis-background: #edf2f9;
+    }
+
+    :root[class~="tanoga"] {
+        --uf-layout-header: #f6ab00;
+        --uf-main: #ffb100;
+        --uf-sub: #fcf4e3;
+        --uf-background: #eef0f2;
+        --uf-header: #f8f8f8;
+        --uf-black: #333a45;
+        --uf-border: #ececec;
+
+        --tancis-text: #5e6e82;
+        --tancis-card: #ffffff;
+        --tancis-border: #9da9bb;
+        --tancis-header: #d8e2ef;
+        --tancis-background: #edf2f9;
+    }
+
     :root {
         --uf-layout-header: #004f96;
         --uf-main: #0479ce;
