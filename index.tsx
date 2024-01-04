@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -9,6 +8,7 @@ import { SampleMain } from "@/comn/sample/smpl-Main";
 import { Layout } from "@/comn/layouts";
 import { TancisRoutes } from "@/tra/tancis/Routes";
 import { CommonModal, CommonToast } from "@/comn/components/_";
+import { Main } from "@/tra/tancis/Main";
 import { Signin } from "@/comn/Signin";
 
 export const api = axios.create({ baseURL: process.env.REACT_APP_API_COMN });
@@ -30,7 +30,7 @@ api.interceptors.request.use(
     },
 );
 
-export const Base = ({ children }: { children?: React.ReactNode }) => {
+export const Base = () => {
     return (
         <RecoilProvider>
             <AuthProvider>
@@ -39,8 +39,7 @@ export const Base = ({ children }: { children?: React.ReactNode }) => {
                         <Route path="/signin" element={<Signin />} />
                         <Route element={<Layout />}>
                             <Route path="/comn/smpl/*" element={<SampleMain />} />
-                            <Route path="/comn/cds/*" element={<SampleMain />} />
-                            {children}
+                            <Route path="*" element={<Main />} />
                         </Route>
                     </Routes>
 
