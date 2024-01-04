@@ -62,6 +62,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
         keyRef.current.key = key;
         keyRef.current.t = new Date().getTime();
+        
         fetch();
     }, [enabled, ...key]);
 
@@ -74,7 +75,9 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             const fn = () => (isArray ? Promise.all(api.map((_) => _(...variables))) : api(...variables));
             const res = await fn();
             const data = isArray ? res.map(({ data }: any) => data) : res.data;
+            
             dispatch({ type: "success", payload: data });
+
             if (onSuccess) {
                 if (showToast) toast.showToast({ type: "success", content: "msg.00003" });
                 onSuccess(data);
@@ -82,13 +85,16 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
             statusRef.current.isLoading = false;
             statusRef.current.isSuccess = true;
+
             return data;
         } catch (error) {
             if (notifyStatus) dispatch({ type: "error" });
+
             if (onError) {
                 if (showToast) toast.showToast({ type: "error", content: "An error occurred " });
                 onError(error);
             }
+            
             statusRef.current.isLoading = false;
             statusRef.current.isError = true;
         }
