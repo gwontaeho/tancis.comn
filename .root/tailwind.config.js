@@ -3,10 +3,18 @@ module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
         colors: {
-            "uf-header": "var(--uf-header)",
+            success: "#00AD59",
+            error: "#F4645E",
+            info: "#0479CE",
+            warning: "#FFB100",
+
+            "uf-layout-header": "var(--uf-layout-header)",
             "uf-main": "var(--uf-main)",
             "uf-sub": "var(--uf-sub)",
             "uf-background": "var(--uf-background)",
+            "uf-header": "var(--uf-header)",
+            "uf-black": "var(--uf-black)",
+            "uf-border": "var(--uf-border)",
 
             transparent: "transparent",
             white: "#ffffff",
@@ -20,11 +28,6 @@ module.exports = {
             border: "var(--tancis-border)",
             header: "var(--tancis-header)",
             background: "var(--tancis-background)",
-
-            success: "#00AD59",
-            error: "#F4645E",
-            info: "#0479CE",
-            warning: "#FFB100",
         },
         fontSize: {
             sm: "0.7rem",

@@ -1,13 +1,7 @@
-import { Route } from 'react-router-dom'
-import { Base } from '@/comn'
-import { Main } from '@/tra/tancis/Main'
+import { Base } from "@/comn";
 
 function App() {
-    return (
-        <Base>
-            <Route path="*" element={<Main />} />
-        </Base>
-    )
+    return <Base />;
 }
 
-export default App
+export default App;
