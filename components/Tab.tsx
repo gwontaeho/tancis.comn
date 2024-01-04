@@ -17,6 +17,8 @@ type TabPanelProps = {
 export const Tab = (props: TabProps) => {
     const { children, schema, value, onChange } = props;
 
+    const [key] = React.useState(uuid());
+
     const [_value, _setValue] = React.useState<number>(() => {
         if (value !== undefined) return value;
         if (schema.some((_) => _.active)) return schema.findIndex((_) => _.active);
@@ -43,9 +45,9 @@ export const Tab = (props: TabProps) => {
 
                     return (
                         <button
-                            key={uuid()}
+                            key={key}
                             className={classNames(
-                                "truncate rounded-t border-b-2 border-transparent max-w-xs h-8 px-4 text-lg",
+                                "truncate transition rounded-t border-b-2 border-transparent max-w-xs h-8 px-4 text-lg",
                                 {
                                     "bg-uf-main text-white border-uf-layout-header": isActive,
                                     "text-disabled/40": disabled,
