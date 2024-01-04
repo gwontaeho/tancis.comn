@@ -9,11 +9,23 @@
         <script>
             try {
                 if (
-                    localStorage.isDark === 'true' ||
-                    (!('isDark' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    localStorage.isDark === "true" ||
+                    (!("isDark" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
                 ) {
-                    document.documentElement.classList.add('dark')
-                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0B1120')
+                    document.documentElement.classList.add("dark");
+                    document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0B1120");
+                }
+            } catch (error) {}
+
+            try {
+                if (window.location.search.includes("s=e")) {
+                    document.documentElement.classList.add("tanesw");
+                }
+                if (window.location.search.includes("s=o")) {
+                    document.documentElement.classList.add("tanoga");
+                }
+                if (window.location.search.includes("s=c")) {
+                    document.documentElement.classList.add("tancis");
                 }
             } catch (error) {}
         </script>

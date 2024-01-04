@@ -101,27 +101,22 @@ export const Header = () => {
             </div>
 
             {/*  */}
-            <div className="bg-uf-layout-header flex flex-1">
+            <div className="bg-uf-layout-header flex flex-1 items-center">
                 <NavTop />
 
                 <div className="flex flex-1 justify-end items-center space-x-4 px-8">
                     {/* <ModeControl /> */}
-                    <FormControl
-                        type="select"
+
+                    {/* lang */}
+                    <select
+                        className="w-20 bg-uf-layout-header text-white outline-none [&>option]:bg-uf-layout-header"
                         value={theme.lang}
-                        size="fit"
-                        onChange={(e: any) =>
-                            setTheme((prev) => ({
-                                ...prev,
-                                lang: e.target.value,
-                            }))
-                        }
-                        options={[
-                            { label: "한국어", value: "ko" },
-                            { label: "영어", value: "en" },
-                            { label: "스와힐리어", value: "tz" },
-                        ]}
-                    />
+                        onChange={(e) => setTheme((prev) => ({ ...prev, lang: e.target.value }))}
+                    >
+                        <option value="ko">{t("L_KO")}</option>
+                        <option value="en">{t("L_EN")}</option>
+                        <option value="tz">{t("L_SW")}</option>
+                    </select>
                 </div>
             </div>
 
