@@ -108,7 +108,7 @@ export const CurrencyCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.currCdLst.grid}
-                    data={fetch.getCurrCdLst.data}
+                    data={fetch.getCurrCdLst.data?.currCdList}
                     onCellClick={handler.click_Grid_CurrCdLst}
                 />
             </Group>

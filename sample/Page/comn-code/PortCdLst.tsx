@@ -111,7 +111,7 @@ export const PortCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.portCdLst.grid}
-                    data={fetch.getPortCdLst.data}
+                    data={fetch.getPortCdLst.data?.regnCdList}
                     onCellClick={handler.click_Grid_PortCdLst}
                 />
             </Group>

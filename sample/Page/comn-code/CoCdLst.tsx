@@ -114,7 +114,11 @@ export const CompanyCodeList = (props: any) => {
             </form>
 
             <Group>
-                <Wijmo {...grid.coCdLst.grid} data={fetch.getCoCdLst.data} onCellClick={handler.click_Grid_CoCdLst} />
+                <Wijmo
+                    {...grid.coCdLst.grid}
+                    data={fetch.getCoCdLst.data?.coList}
+                    onCellClick={handler.click_Grid_CoCdLst}
+                />
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>

@@ -142,7 +142,7 @@ export const AirptCodeList = () => {
             <Group>
                 <Wijmo
                     {...grid.airptCdLst.grid}
-                    data={fetch.getAirptCdLst.data}
+                    data={fetch.getAirptCdLst.data?.regnCdList}
                     onCellClick={handler.click_Grid_AirptCdLst}
                 />
             </Group>

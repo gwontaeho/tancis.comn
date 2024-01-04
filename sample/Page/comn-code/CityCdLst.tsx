@@ -147,7 +147,7 @@ export const CityCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.cityCdLst.grid}
-                    data={fetch.getCityCdLst.data}
+                    data={fetch.getCityCdLst.data?.regnCdList}
                     onCellClick={handler.click_Grid_CityCdLst}
                 />
             </Group>

@@ -113,7 +113,7 @@ export const OrganizationCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.orgCdLst.grid}
-                    data={fetch.getOrgCdLst.data}
+                    data={fetch.getOrgCdLst.data?.orgList}
                     onCellClick={handler.click_Grid_OrgCdLst}
                 />
             </Group>

@@ -31,7 +31,7 @@ export const ProcessingStatusCodeList = (props: any) => {
     const fetch = {
         getPrcssStatCdLst: useFetch({
             api: (page = grid.prcssStatCdLst.page) => {
-                return APIS.getPortAirptCdLst(form.prcssStatCdSrch.getValues(), page, grid.prcssStatCdLst.size);
+                return APIS.getPrcssStatCdLst(form.prcssStatCdSrch.getValues(), page, grid.prcssStatCdLst.size);
             },
             enabled: comnUtils.isEmpty(form.prcssStatCdSrch.errors) && form.prcssStatCdSrch.isSubmitted,
             key: [grid.prcssStatCdLst.page, grid.prcssStatCdLst.size],
@@ -108,7 +108,7 @@ export const ProcessingStatusCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.prcssStatCdLst.grid}
-                    data={fetch.getPrcssStatCdLst.data}
+                    data={fetch.getPrcssStatCdLst.data?.prcssStatCdList}
                     onCellClick={handler.click_Grid_PrcssStatCdLst}
                 />
             </Group>

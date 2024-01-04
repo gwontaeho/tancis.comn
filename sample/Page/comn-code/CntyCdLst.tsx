@@ -108,7 +108,7 @@ export const CountryCodeList = (props: any) => {
             <Group>
                 <Wijmo
                     {...grid.cntyCdLst.grid}
-                    data={fetch.getCntyCdLst.data}
+                    data={fetch.getCntyCdLst.data?.cntyCdList}
                     onCellClick={handler.click_Grid_CntyCdLst}
                 />
             </Group>
