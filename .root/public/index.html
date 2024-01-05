@@ -18,14 +18,17 @@
             } catch (error) {}
 
             try {
+            } catch (error) {}
+
+            try {
                 if (window.location.search.includes("s=e")) {
                     document.documentElement.classList.add("tanesw");
-                }
-                if (window.location.search.includes("s=o")) {
+                } else if (window.location.search.includes("s=o")) {
                     document.documentElement.classList.add("tanoga");
-                }
-                if (window.location.search.includes("s=c")) {
+                } else if (window.location.search.includes("s=c")) {
                     document.documentElement.classList.add("tancis");
+                } else {
+                    document.documentElement.classList.add("tanesw");
                 }
             } catch (error) {}
         </script>
