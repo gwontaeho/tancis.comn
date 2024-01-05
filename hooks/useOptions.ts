@@ -1,5 +1,6 @@
 import React from "react";
 import { utils } from "@/comn/utils";
+import { useTheme } from "@/comn/hooks";
 
 type UseOptionsProps = {
     lang?: string;
@@ -10,6 +11,8 @@ type UseOptionsProps = {
 
 export const useOptions = (props: UseOptionsProps) => {
     const { lang, comnCd, area, options } = props;
+
+    const theme = useTheme();
 
     const [_lang, _setLang] = React.useState(lang || localStorage.getItem("lang") || "ko");
     const [_options, _setOptions] = React.useState(options);
@@ -35,7 +38,7 @@ export const useOptions = (props: UseOptionsProps) => {
                 console.log(error);
             }
         })();
-    }, [comnCd, area, _lang]);
+    }, [comnCd, area, theme.theme.lang]);
 
     return { options: _options };
 };

@@ -8,6 +8,16 @@
 }
 
 @layer base {
+    :root {
+        --uf-blue: #0479ce;
+
+        --tancis-text: #5e6e82;
+        --tancis-card: #ffffff;
+        --tancis-border: #9da9bb;
+        --tancis-header: #d8e2ef;
+        --tancis-background: #edf2f9;
+    }
+
     :root[class~="tanesw"] {
         --uf-layout-header: #004f96;
         --uf-main: #0479ce;
@@ -16,12 +26,6 @@
         --uf-header: #ebeffa;
         --uf-black: #333a45;
         --uf-border: #ececec;
-
-        --tancis-text: #5e6e82;
-        --tancis-card: #ffffff;
-        --tancis-border: #9da9bb;
-        --tancis-header: #d8e2ef;
-        --tancis-background: #edf2f9;
     }
 
     :root[class~="tancis"] {
@@ -32,12 +36,6 @@
         --uf-header: #f8f8f8;
         --uf-black: #333a45;
         --uf-border: #ececec;
-
-        --tancis-text: #5e6e82;
-        --tancis-card: #ffffff;
-        --tancis-border: #9da9bb;
-        --tancis-header: #d8e2ef;
-        --tancis-background: #edf2f9;
     }
 
     :root[class~="tanoga"] {
@@ -48,37 +46,15 @@
         --uf-header: #f8f8f8;
         --uf-black: #333a45;
         --uf-border: #ececec;
-
-        --tancis-text: #5e6e82;
-        --tancis-card: #ffffff;
-        --tancis-border: #9da9bb;
-        --tancis-header: #d8e2ef;
-        --tancis-background: #edf2f9;
     }
 
-    :root {
-        --uf-layout-header: #004f96;
-        --uf-main: #0479ce;
-        --uf-sub: #edf1fb;
-        --uf-background: #f2f7fe;
-        --uf-header: #ebeffa;
-        --uf-black: #333a45;
-        --uf-border: #ececec;
-
-        --tancis-text: #5e6e82;
-        --tancis-card: #ffffff;
-        --tancis-border: #9da9bb;
-        --tancis-header: #d8e2ef;
-        --tancis-background: #edf2f9;
-    }
-
-    :root[class~="dark"] {
+    /* :root[class~="dark"] {
         --tancis-text: #b6c1d2;
         --tancis-card: #121e2d;
         --tancis-border: #344050;
         --tancis-header: #232e3c;
         --tancis-background: #0b1727;
-    }
+    } */
 
     * {
         @apply border-border;

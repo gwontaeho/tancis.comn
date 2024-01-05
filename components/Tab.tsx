@@ -47,7 +47,7 @@ export const Tab = (props: TabProps) => {
                         <button
                             key={key}
                             className={classNames(
-                                "truncate transition rounded-t border-b-2 border-transparent max-w-xs h-8 px-4 text-lg",
+                                "truncate transition rounded-t border-b border-transparent max-w-xs h-8 px-4 text-lg",
                                 {
                                     "bg-uf-main text-white border-uf-layout-header": isActive,
                                     "text-disabled/40": disabled,

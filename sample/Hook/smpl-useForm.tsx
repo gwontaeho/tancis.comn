@@ -98,7 +98,7 @@ export const SampleUseForm = () => {
     return (
         <Page>
             <Group>
-                <Group.Header title="Form" />
+                <Group.Title title="Form" />
                 <form>
                     <Group.Body>
                         <Group.Row>

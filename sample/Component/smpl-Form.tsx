@@ -79,7 +79,7 @@ export const SampleForm = () => {
     return (
         <Layout>
             <Group>
-                <Group.Header title="Form" />
+                <Group.Title title="Form" />
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Group.Body>
                         <Group.Row>

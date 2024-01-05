@@ -18,18 +18,46 @@ const SIZES = {
     12: "col-span-12",
 };
 
+const FLEXES = {
+    1: "flex-[1]",
+    2: "flex-[2]",
+    3: "flex-[3]",
+    4: "flex-[4]",
+    5: "flex-[5]",
+    6: "flex-[6]",
+    7: "flex-[7]",
+    8: "flex-[8]",
+    9: "flex-[9]",
+    10: "flex-[10]",
+    11: "flex-[11]",
+    12: "flex-[12]",
+};
+
 type GroupProps = {
     children?: React.ReactNode;
     bgColor?: boolean;
+    flex?: keyof typeof FLEXES;
 };
 
 type GroupHeaderProps = {
+    children?: React.ReactNode;
+};
+
+type GroupTitleProps = {
     title?: string;
     description?: string;
     titleSize?: 1 | 2 | 3;
 };
 
 type GroupBodyProps = {
+    children?: React.ReactNode;
+};
+
+type GroupSectionProps = {
+    children?: React.ReactNode;
+};
+
+type GroupFooterProps = {
     children?: React.ReactNode;
 };
 
@@ -59,6 +87,7 @@ type GroupColProps = GroupLabelProps & {
  *
  * Group
  * - Header
+ * - Title
  * - Body
  * - Row
  * - Label
@@ -69,11 +98,21 @@ type GroupColProps = GroupLabelProps & {
  */
 
 export const Group = (props: GroupProps) => {
-    const { children, bgColor = true } = props;
-    return <div className={classNames("rounded p-4 space-y-4 w-full", bgColor && "shadow bg-card")}>{children}</div>;
+    const { children, flex } = props;
+    return (
+        <div className={classNames("flex flex-col rounded bg-white shadow w-full", flex && FLEXES[flex])}>
+            {children}
+        </div>
+    );
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {
+    const { children } = props;
+
+    return <div className="p-4 rounded-t bg-uf-header">{children}</div>;
+};
+
+const GroupTitle = (props: GroupTitleProps) => {
     const { title, description, titleSize = 1 } = props;
     const { t } = useTranslation();
     const sizes = { 3: "text-lg", 2: "text-xl", 1: "text-2xl" };
@@ -88,7 +127,17 @@ const GroupHeader = (props: GroupHeaderProps) => {
 
 const GroupBody = (props: GroupBodyProps) => {
     const { children } = props;
+    return <div className="w-full flex-1 p-4">{children}</div>;
+};
+
+const GroupSection = (props: GroupSectionProps) => {
+    const { children } = props;
     return <div className="w-full">{children}</div>;
+};
+
+const GroupFooter = (props: GroupFooterProps) => {
+    const { children } = props;
+    return <div className="p-4 rounded-b bg-uf-header">{children}</div>;
 };
 
 const GroupRow = (props: GroupRowProps) => {
@@ -164,7 +213,10 @@ const GroupCol = (props: GroupColProps) => {
 };
 
 Group.Header = GroupHeader;
+Group.Footer = GroupFooter;
+Group.Title = GroupTitle;
 Group.Body = GroupBody;
+Group.Section = GroupSection;
 Group.Row = GroupRow;
 Group.Col = GroupCol;
 Group.Label = GroupLabel;

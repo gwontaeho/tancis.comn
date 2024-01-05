@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import { Temp } from "./temp";
+import { SampleHome } from "./smpl-Home";
 
 import { SampleFormControlText } from "@/comn/sample/Component/FormControl/smpl-Text";
 import { SampleFormControlNumber } from "@/comn/sample/Component/FormControl/smpl-Number";
@@ -56,6 +57,8 @@ import { __Test } from "../components/__TEST";
 export const SampleMain = () => {
     return (
         <Routes>
+            <Route path="/" element={<SampleHome />} />
+
             <Route path="/temp" element={<Temp />} />
 
             <Route path="/test999" element={<__Test />} />
