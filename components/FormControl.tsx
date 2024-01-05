@@ -232,21 +232,12 @@ export const FormControl = Object.assign(
             }
         };
 
-        const invalidMessage = () => {
-            switch (invalid?.type) {
-                case "required":
-                    return t("msg.00001");
-                default:
-                    return t(invalid?.message);
-            }
-        };
-
         return (
             <div className={SIZES[size]}>
                 {!edit && getValues && <div>{text()}</div>}
 
                 <div className={classNames("w-full", { hidden: !edit })}>
-                    <Tooltip enabled={Boolean(invalid)} size="full" content={invalidMessage()}>
+                    <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
                         {props.control ? (
                             <ControllerWrapper {...rest}>
                                 <FormControlEditMode />
@@ -260,7 +251,7 @@ export const FormControl = Object.assign(
                     {message && <div className="text-sm mt-1">{message}</div>}
 
                     {/* invalid message */}
-                    {invalid?.message && <div className="text-invalid text-sm mt-1">{invalidMessage()}</div>}
+                    {invalid?.message && <div className="text-invalid text-sm mt-1">{t(invalid?.message)}</div>}
                 </div>
             </div>
         );
