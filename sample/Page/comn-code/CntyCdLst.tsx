@@ -72,8 +72,8 @@ export const CountryCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_CNTY_CD_LST" }]} />
-            <Page.Header title={t("T_CNTY_CD_LST")} description={t("T_CNTY_CD_LST")} />
+            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_CNTY_CD_LST" }]} />
+            <Page.Header title={t("T_CNTY_CD_LST")} description={t("T_CNTY_CD_LST")} /> */}
             <form>
                 <Group>
                     <Group.Body>

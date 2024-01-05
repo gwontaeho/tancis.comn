@@ -77,8 +77,8 @@ export const CommonCodeList = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_COMN_CD_LST" }]} />
-            <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} />
+            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_COMN_CD_LST" }]} />
+            <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} /> */}
             <form>
                 <Group>
                     <Group.Body>

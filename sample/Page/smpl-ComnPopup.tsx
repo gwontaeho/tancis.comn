@@ -20,8 +20,6 @@ export const SampleCommonPopup = (props: any) => {
 
     return (
         <Page>
-            <Page.Navigation base="/sample/pages" nodes={[{ path: "/", label: "List" }, { label: "Regist" }]} />
-            <Page.Header title="Common Code Popup Sample" description="Common Code Popup Sample" />
             <form onSubmit={_form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>

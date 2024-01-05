@@ -12,19 +12,36 @@ type PageNavigationProps = {
     popup?: boolean;
 };
 
-type PageHeaderProps = {
-    title?: string;
+type PageProps = {
+    children?: React.ReactNode;
     id?: string;
+    navigation?: any;
+    title?: string;
     description?: string;
 };
 
-type PageProps = {
-    children?: React.ReactNode;
-};
-
 export const Page = (props: PageProps) => {
-    const { children } = props;
-    return <div className="space-y-4">{children}</div>;
+    const { children, id, title, description, navigation } = props;
+    return (
+        <div className="space-y-4">
+            {(title || description || navigation) && (
+                <div className="flex items-end justify-between flex-wrap-reverse">
+                    <div className="pr-8">
+                        {title && (
+                            <div className="text-2xl font-semibold">
+                                {title}
+                                {id && <>&nbsp;({id})</>}
+                            </div>
+                        )}
+                        {description && <p className="text-lg">{description}</p>}
+                    </div>
+                    {navigation && <PageNavigation base={navigation.base} nodes={navigation.nodes} />}
+                </div>
+            )}
+
+            {children}
+        </div>
+    );
 };
 
 const PageNavigation = (props: PageNavigationProps) => {
@@ -55,20 +72,4 @@ const PageNavigation = (props: PageNavigationProps) => {
     }
 };
 
-const PageHeader = (props: PageHeaderProps) => {
-    const { title, id, description } = props;
-    return (
-        <div className="space-y-1">
-            {title && (
-                <div className="text-xl font-semibold">
-                    {title}
-                    {id && <>&nbsp;({id})</>}
-                </div>
-            )}
-            {description && <p>{description}</p>}
-        </div>
-    );
-};
-
 Page.Navigation = PageNavigation;
-Page.Header = PageHeader;

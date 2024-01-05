@@ -13,10 +13,7 @@ export const SamplePage = () => {
     <Page.Navigation base="/" nodes={[{ path: 'sample', label: 'sample' }]} />
 </Page>`}</Sample.Code>
 
-                <Page>
-                    <Page.Navigation base="/" nodes={[{ path: "sample", label: "sample" }]} />
-                    <Page.Header id="sample" title="sample" description="sample" />
-                </Page>
+                <Page></Page>
             </Sample.Section>
 
             <Sample.Section

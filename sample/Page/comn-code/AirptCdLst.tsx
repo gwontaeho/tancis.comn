@@ -103,8 +103,8 @@ export const AirptCodeList = () => {
 
     return (
         <Page>
-            <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_AIRPT_CD_LST" }]} />
-            <Page.Header title={t("T_AIRPT_CD_LST")} description={t("T_AIRPT_CD_LST")} />
+            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_AIRPT_CD_LST" }]} />
+            <Page.Header title={t("T_AIRPT_CD_LST")} description={t("T_AIRPT_CD_LST")} /> */}
             <form>
                 <Group>
                     <Group.Body>
