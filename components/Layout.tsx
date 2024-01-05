@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-const gaps = {
+const GAPS = {
     1: {
         col: "space-y-1",
         row: "space-x-1",
@@ -27,7 +27,7 @@ const gaps = {
 type LayoutProps = {
     children?: React.ReactNode;
     direction?: "col" | "row";
-    gap?: keyof typeof gaps;
+    gap?: keyof typeof GAPS;
 };
 
 export const Layout = (props: LayoutProps) => {
@@ -35,7 +35,7 @@ export const Layout = (props: LayoutProps) => {
     const isRow = direction === "row";
     return (
         <div
-            className={classNames("flex", gap && gaps[gap][direction], {
+            className={classNames("flex", gap && GAPS[gap][direction], {
                 "flex-col": !isRow,
             })}
         >

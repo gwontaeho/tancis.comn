@@ -37,14 +37,19 @@ export const Pagination = (props: PaginationProps) => {
 
     return (
         <div className="flex justify-between">
-            <select className="input w-14" value={size} onChange={(e) => handleChangeSize(Number(e.target.value))}>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-
+            <div className="flex items-center space-x-2">
+                <p>
+                    Page : {page + 1} / {Math.ceil(totalCount / size)}
+                </p>
+                <select className="input w-14" value={size} onChange={(e) => handleChangeSize(Number(e.target.value))}>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <p>Total : {totalCount}</p>
+            </div>
             <ul className="flex space-x-1">
                 <button
                     disabled={_pageGroup < 1}

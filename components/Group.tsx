@@ -127,7 +127,7 @@ const GroupTitle = (props: GroupTitleProps) => {
 
 const GroupBody = (props: GroupBodyProps) => {
     const { children } = props;
-    return <div className="w-full flex-1 p-4">{children}</div>;
+    return <div className="w-full flex-1 p-4 space-y-4">{children}</div>;
 };
 
 const GroupSection = (props: GroupSectionProps) => {
