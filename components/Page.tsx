@@ -36,7 +36,7 @@ const PageNavigation = (props: PageNavigationProps) => {
         return null;
     } else {
         return (
-            <ul className="h-6 flex items-center space-x-2 text-blue">
+            <ul className="h-6 flex items-center space-x-2 text-uf-blue">
                 <li>
                     <Link to={base}>
                         <Icon icon="home" size="sm" />
@@ -44,7 +44,7 @@ const PageNavigation = (props: PageNavigationProps) => {
                 </li>
                 {nodes.map(({ path, label }: NodeType) => {
                     return (
-                        <li key={uuid()} className="space-x-2 text-lg">
+                        <li key={uuid()} className="space-x-2">
                             <span>/</span>
                             {path ? <Link to={base + path}>{t(label)}</Link> : <span>{t(label)}</span>}
                         </li>
@@ -58,7 +58,7 @@ const PageNavigation = (props: PageNavigationProps) => {
 const PageHeader = (props: PageHeaderProps) => {
     const { title, id, description } = props;
     return (
-        <div className="p-4 space-y-1 bg-card rounded shadow">
+        <div className="space-y-1">
             {title && (
                 <div className="text-xl font-semibold">
                     {title}

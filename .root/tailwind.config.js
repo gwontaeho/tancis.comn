@@ -15,6 +15,7 @@ module.exports = {
             "uf-header": "var(--uf-header)",
             "uf-black": "var(--uf-black)",
             "uf-border": "var(--uf-border)",
+            "uf-blue": "var(--uf-blue)",
 
             transparent: "transparent",
             white: "#ffffff",

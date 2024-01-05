@@ -101,45 +101,47 @@ export const SampleUseForm = () => {
                 <Group.Title title="Form" />
                 <form>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...schema.text} />
-                            <Group.Control {...schema.number} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.password} />
-                            <Group.Control {...schema.textarea} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.select} options={OPTION} />
-                            <Group.Control {...schema.checkbox} options={OPTION} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.radio} options={OPTION} />
-                            <Group.Control {...schema.date} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.time} />
-                            <Group.Control {...schema.datetime} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.daterange} controlSize={10} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.timerange} controlSize={10} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...schema.file} />
-                            <Group.Control {...schema.code} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Label label="combine" />
-                            <Group.Col combine={true}>
-                                <Group.Control type="text" />
-                                <Group.Control type="text" />
-                                <Group.Control type="text" />
-                                <Button>combine</Button>
-                            </Group.Col>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...schema.text} />
+                                <Group.Control {...schema.number} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.password} />
+                                <Group.Control {...schema.textarea} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.select} options={OPTION} />
+                                <Group.Control {...schema.checkbox} options={OPTION} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.radio} options={OPTION} />
+                                <Group.Control {...schema.date} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.time} />
+                                <Group.Control {...schema.datetime} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.daterange} controlSize={10} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.timerange} controlSize={10} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...schema.file} />
+                                <Group.Control {...schema.code} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Label label="combine" />
+                                <Group.Col combine={true}>
+                                    <Group.Control type="text" />
+                                    <Group.Control type="text" />
+                                    <Group.Control type="text" />
+                                    <Button>combine</Button>
+                                </Group.Col>
+                            </Group.Row>
+                        </Group.Section>
                     </Group.Body>
                     <button onClick={handleSubmit(onSubmit)}>asd</button>
                     <button onClick={handleSubmit(onSubmit2)}>asdadasd</button>
