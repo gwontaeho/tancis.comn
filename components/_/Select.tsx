@@ -54,9 +54,6 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
         const _props = Object.fromEntries(
             Object.entries({
-                all,
-                select,
-                /** */
                 name,
                 value,
                 onClick,
