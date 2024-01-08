@@ -18,10 +18,11 @@ type PageProps = {
     navigation?: any;
     title?: string;
     description?: string;
+    popup?: boolean;
 };
 
 export const Page = (props: PageProps) => {
-    const { children, id, title, description, navigation } = props;
+    const { children, id, title, description, navigation, popup } = props;
     return (
         <div className="space-y-4">
             {(title || description || navigation) && (
@@ -35,7 +36,7 @@ export const Page = (props: PageProps) => {
                         )}
                         {description && <p className="text-lg">{description}</p>}
                     </div>
-                    {navigation && <PageNavigation base={navigation.base} nodes={navigation.nodes} />}
+                    {navigation && <PageNavigation base={navigation.base} nodes={navigation.nodes} popup={popup} />}
                 </div>
             )}
 

@@ -76,50 +76,64 @@ export const CommonCodeList = (props: any) => {
     }, []);
 
     return (
-        <Page>
+        <Page
+            id={pgeUid}
+            title={t("T_COMN_CD_LST")}
+            description={t("T_COMN_CD_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { label: "T_COMN_CD_LST" }],
+            }}
+        >
             {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_COMN_CD_LST" }]} />
             <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} /> */}
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.comnCdSrch.schema.comnCd}></Group.Control>
-                            <Group.Control {...form.comnCdSrch.schema.cdVldVal}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.comnCdSrch.schema.cdVldValNm}></Group.Control>
-                            <Group.Control {...form.comnCdSrch.schema.langCd} select={true}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.comnCdSrch.schema.comnCd}></Group.Control>
+                                <Group.Control {...form.comnCdSrch.schema.cdVldVal}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.comnCdSrch.schema.cdVldValNm}></Group.Control>
+                                <Group.Control {...form.comnCdSrch.schema.langCd} select={true}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.comnCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.comnCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.comnCdLst.grid}
-                    data={fetch.getComnCdLst.data?.comnCdList}
-                    onCellClick={handler.click_Grid_ComnCdLst}
-                />
+                <Group.Body>
+                    <Group.Section>
+                        <Wijmo
+                            {...grid.comnCdLst.grid}
+                            data={fetch.getComnCdLst.data?.comnCdList}
+                            onCellClick={handler.click_Grid_ComnCdLst}
+                        />
+                    </Group.Section>
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
