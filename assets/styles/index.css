@@ -48,13 +48,9 @@
         --uf-border: #ececec;
     }
 
-    /* :root[class~="dark"] {
-        --tancis-text: #b6c1d2;
-        --tancis-card: #121e2d;
-        --tancis-border: #344050;
-        --tancis-header: #232e3c;
-        --tancis-background: #0b1727;
-    } */
+    :root[class~="dark"] {
+        /* --uf-background: #1d293a; */
+    }
 
     * {
         @apply border-border;

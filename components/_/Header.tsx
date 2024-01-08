@@ -1,28 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/comn/hooks";
-import { Icon, FormControl } from "@/comn/components";
+import { Icon, IconButton } from "@/comn/components";
 
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { R } from "@/comn";
-
-const ModeControl = () => {
-    const { theme, setTheme } = useTheme();
-
-    return (
-        <button
-            onClick={() =>
-                setTheme((prev) => ({
-                    ...prev,
-                    isDark: prev.isDark === "false" ? "true" : "false",
-                }))
-            }
-        >
-            <Icon icon={theme.isDark === "true" ? "sun" : "moon"} />
-        </button>
-    );
-};
 
 type NavItemProps = {
     children?: any[];
@@ -89,12 +72,13 @@ export const Header = () => {
         <header className="uf-header">
             {/*  */}
             <div className="uf-logo">
-                <img
-                    className="block h-full"
-                    src={`/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.svg`}
-                    alt={process.env.REACT_APP_SYSTEM_GROUP_NAME}
-                    title={process.env.REACT_APP_SYSTEM_GROUP_NAME}
-                />
+                <Link to="/">
+                    <img
+                        src={`/imgs/logo_${process.env.REACT_APP_SYSTEM_GROUP}.svg`}
+                        alt={process.env.REACT_APP_SYSTEM_GROUP_NAME}
+                        title={process.env.REACT_APP_SYSTEM_GROUP_NAME}
+                    />
+                </Link>
                 <button onClick={() => setOpen((prev) => !prev)}>
                     <Icon icon="menu" size="xl" />
                 </button>
@@ -105,7 +89,17 @@ export const Header = () => {
                 <Menu />
 
                 <div className="flex flex-1 justify-end items-center space-x-4 px-8">
-                    {/* <ModeControl /> */}
+                    {/* theme */}
+                    <IconButton
+                        className="text-white"
+                        icon={theme.isDark === "true" ? "sun" : "moon"}
+                        onClick={() =>
+                            setTheme((prev) => ({
+                                ...prev,
+                                isDark: prev.isDark === "true" ? "false" : "true",
+                            }))
+                        }
+                    />
 
                     {/* lang */}
                     <select

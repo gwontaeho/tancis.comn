@@ -1,18 +1,22 @@
 import React from "react";
-import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
 import Cookies from "js-cookie";
-import { ModalProps, ToastProps } from "@/comn/components/_";
+import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
 import i18n from "@/comn/features/locales/i18n";
+import { ModalProps, ToastProps } from "@/comn/components/_";
 
-export const themeState = atom({
+export const themeState = atom<{ isDark: "true" | "false"; lang: string }>({
     key: "themeState",
     default: {
-        isDark:
-            localStorage.isDark === "true" ||
-            (!("isDark" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-                ? "true"
-                : "false",
-        lang: localStorage.getItem("lang") || "ko",
+        isDark: (() => {
+            if (localStorage.getItem("isDark") === "true") return "true";
+            if (localStorage.getItem("isDark") === "false") return "false";
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "true";
+            return "false";
+        })(),
+
+        lang: (() => {
+            return localStorage.getItem("lang") ?? "ko";
+        })(),
     },
     effects: [
         ({ onSet }) => {
@@ -24,7 +28,7 @@ export const themeState = atom({
                 if (n.isDark !== o.isDark) {
                     localStorage.setItem("isDark", n.isDark);
                     if (n.isDark === "true") document.documentElement.classList.add("dark");
-                    if (n.isDark === "false") document.documentElement.removeAttribute("class");
+                    if (n.isDark === "false") document.documentElement.classList.remove("dark");
                 }
             });
         },
