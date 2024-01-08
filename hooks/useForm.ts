@@ -1,6 +1,7 @@
 import { useState } from "react";
 import * as rhf from "react-hook-form";
 import { GroupControlProps } from "@/comn/components";
+import { comnUtils } from "@/comn/utils";
 
 // export type TFormRules = Partial<{
 //     required: Boolean | string;
@@ -86,6 +87,40 @@ export const useForm = (props: UseFormProps) => {
             if (part === true && values[name] === undefined) return;
             setValue(name, values[name]);
         });
+    };
+
+    const getFormValues = (name?: string) => {
+        const _values = getValues();
+        const temp: { [key: string]: any } = {};
+
+        Object.keys(_schema).forEach((name) => {
+            switch (_schema[name].type) {
+                case "daterange":
+                case "timerange": {
+                    temp[_schema[name].start?.name] = comnUtils.dateToString(
+                        _values[_schema[name].start?.name],
+                        _schema[name].type === "daterange" ? "date" : "time",
+                    );
+                    temp[_schema[name].end?.name] = comnUtils.dateToString(
+                        _values[_schema[name].end?.name],
+                        _schema[name].type === "daterange" ? "date" : "time",
+                    );
+                    break;
+                }
+                case "date":
+                case "time":
+                case "datetime": {
+                    temp[name] = comnUtils.dateToString(_values[name], _schema[name].type);
+                    temp[name] = comnUtils.dateToString(_values[name], _schema[name].type);
+                    break;
+                }
+                default: {
+                    temp[name] = _values[name];
+                }
+            }
+        });
+
+        return temp;
     };
 
     /**
@@ -189,5 +224,6 @@ export const useForm = (props: UseFormProps) => {
         isSubmitted,
         setError,
         reset,
+        getFormValues,
     };
 };

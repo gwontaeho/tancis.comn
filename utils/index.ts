@@ -8,6 +8,11 @@ export const comnEnvs = {
 };
 
 export const comnUtils = {
+    dateToString: (date: Date, format?: any | "date" | "time" | "datetime") => {
+        return dayjs(date).format(
+            format === undefined || format === "date" ? "YYYY-MM-DD" : format === "time" ? "HH:mm" : "YYYY-MM-DD HH:mm",
+        );
+    },
     toGetParams: (obj: any) => {
         if (lodash.isEmpty(obj)) return obj;
 
