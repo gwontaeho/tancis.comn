@@ -1,26 +1,29 @@
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import HttpBackend from "i18next-http-backend";
 
-import langKo from './lang-ko.json'
-import langEn from './lang-en.json'
-import langTz from './lang-tz.json'
+i18n.use(HttpBackend)
+    .use(
+        new LanguageDetector(null, {
+            order: ["localStorage"],
+            lookupLocalStorage: "i18nextLng",
+            convertDetectedLanguage: (lng) => lng.toUpperCase(),
+        }),
+    )
+    .use(initReactI18next)
+    .init({
+        interpolation: {
+            escapeValue: false,
+        },
+        backend: {
+            loadPath: `${process.env.REACT_APP_API_PTLE}/api/v1/ptl/comn/comn/front/lang/{{lng}}`,
+            customHeaders: {
+                "Accept-Language": "EN",
+            },
+        },
+    });
 
-const resources = {
-    en: {
-        translation: langEn,
-    },
-    ko: {
-        translation: langKo,
-    },
-    tz: {
-        translation: langTz,
-    },
-}
+i18n.changeLanguage(localStorage.getItem("lang") || "ko");
 
-i18n.use(initReactI18next).init({
-    resources,
-    lng: localStorage.getItem('lang') || 'ko',
-    interpolation: { escapeValue: false },
-})
-
-export default i18n
+export default i18n;
