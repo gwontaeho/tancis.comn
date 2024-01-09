@@ -72,7 +72,7 @@
 
     :root[class~="dark"] {
         --uf-text: #ffffffe6;
-        --uf-border: #d8e0ea1a;
+        --uf-border: #3a4453;
         --uf-background: #1d293a;
         --uf-logo: #223043;
         --uf-navigation: #29384d;
@@ -81,8 +81,8 @@
         --uf-card-header: #2f394a;
         --uf-card-background: #242f40;
         --uf-input-background: #364151;
-        --uf-button-outlined-background: #2f394a;
-        --uf-button-outlined-border: #ffffff1a;
+        --uf-button-outlined-background: #475466;
+        --uf-button-outlined-border: #505d6e;
         --uf-button-outlined-color: #ffffffe6;
     }
 
