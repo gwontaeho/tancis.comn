@@ -1,13 +1,12 @@
 .wj-flexgrid,
 .wj-flexgrid *:not(.input) {
-    border: 0;
-    color: var(--tancis-text);
+    color: var(--uf-text);
 }
 
 .wj-flexgrid {
     border-radius: 0;
-    border-top: 1px solid var(--tancis-border) !important;
-    border-left: 1px solid var(--tancis-border) !important;
+    border-top: 1px solid var(--uf-border) !important;
+    border-left: 1px solid var(--uf-border) !important;
 }
 
 /* checkbox section */
@@ -16,9 +15,9 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-right: 1px solid var(--tancis-border) !important;
-    border-bottom: 1px solid var(--tancis-border) !important;
-    background-color: var(--tancis-header);
+    border-right: 1px solid var(--uf-border) !important;
+    border-bottom: 1px solid var(--uf-border) !important;
+    background-color: var(--uf-card-background);
 }
 
 /* checkbox */
@@ -38,9 +37,9 @@
 
 /* header cell */
 .wj-colheaders .wj-cell {
-    border-right: 1px solid var(--tancis-border) !important;
-    border-bottom: 1px solid var(--tancis-border) !important;
-    background-color: var(--tancis-header);
+    border-right: 1px solid var(--uf-border) !important;
+    border-bottom: 1px solid var(--uf-border) !important;
+    background-color: var(--uf-card-header);
 }
 
 /* body cell */
@@ -49,9 +48,9 @@
     align-items: center !important;
     padding: 0 4px 0 4px;
     min-height: 40px !important;
-    border-right: 1px solid var(--tancis-border) !important;
-    border-bottom: 1px solid var(--tancis-border) !important;
-    background-color: var(--tancis-card);
+    border-right: 1px solid var(--uf-border) !important;
+    border-bottom: 1px solid var(--uf-border) !important;
+    background-color: var(--uf-card-background);
 }
 
 /* body cell div */

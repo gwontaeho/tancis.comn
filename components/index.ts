@@ -14,3 +14,4 @@ export * from "./Tooltip";
 export * from "./Page";
 export * from "./Divider";
 export * from "./Text";
+export * from "./Badge";

@@ -63,7 +63,7 @@ export const Pagination = (props: PaginationProps) => {
                         <li key={uuid()}>
                             <button
                                 {...(page === _ && { "aria-current": "page" })}
-                                className="button min-w-[1.75rem] aria-[current=page]:text-blue"
+                                className="button min-w-[1.75rem] aria-[current=page]:text-uf-blue"
                                 onClick={() => handleChangePage(_)}
                             >
                                 {_ + 1}

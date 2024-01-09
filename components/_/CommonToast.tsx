@@ -37,7 +37,7 @@ const Toast = (props: ToastProps) => {
     return (
         <motion.div initial={{ translateX: 30, opacity: 0.5 }} animate={{ translateX: 0, opacity: 1 }}>
             <div
-                className={classNames("w-96 shadow border rounded bg-background", {
+                className={classNames("w-96 shadow border rounded bg-uf-background", {
                     "border-success": type === "success",
                     "border-error": type === "error",
                     "border-info": type === "info",

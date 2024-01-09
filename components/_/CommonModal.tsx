@@ -65,7 +65,7 @@ const Modal = (props: ModalProps) => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1 }}
                     className={classNames(
-                        "absolute top-1/2 left-1/2 w-full border rounded bg-background z-[1001]",
+                        "absolute top-1/2 left-1/2 w-full border rounded bg-uf-background z-[1001]",
                         MODAL_SIZES[size],
                     )}
                 >

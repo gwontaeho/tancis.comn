@@ -33,7 +33,7 @@ const NavItem = (props: NavItemProps) => {
     return (
         <li>
             <button className="p-2 text-lg flex w-full items-center justify-between" onClick={handleClick}>
-                <p className={classNames({ "text-blue": current })}>{name}</p>
+                <p className={classNames({ "text-uf-blue": current })}>{name}</p>
                 {children && (
                     <Icon icon="down" size="xs" className={classNames("transition", { "rotate-180": open })} />
                 )}
@@ -80,7 +80,7 @@ const Menu = () => {
 
 const Auth = () => {
     return (
-        <div className="m-4 bg-uf-sub p-4 rounded space-y-2">
+        <div className="bg-uf-auth m-4 p-4 rounded space-y-2">
             <Button width="full" height="lg">
                 login
             </Button>

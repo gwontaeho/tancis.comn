@@ -100,7 +100,7 @@ type GroupColProps = GroupLabelProps & {
 export const Group = (props: GroupProps) => {
     const { children, flex } = props;
     return (
-        <div className={classNames("flex flex-col rounded bg-white shadow w-full", flex && FLEXES[flex])}>
+        <div className={classNames("flex flex-col rounded bg-uf-card-background shadow w-full", flex && FLEXES[flex])}>
             {children}
         </div>
     );
@@ -109,7 +109,7 @@ export const Group = (props: GroupProps) => {
 const GroupHeader = (props: GroupHeaderProps) => {
     const { children } = props;
 
-    return <div className="p-4 rounded-t bg-uf-header">{children}</div>;
+    return <div className="uf-group-header">{children}</div>;
 };
 
 const GroupTitle = (props: GroupTitleProps) => {
@@ -127,17 +127,17 @@ const GroupTitle = (props: GroupTitleProps) => {
 
 const GroupBody = (props: GroupBodyProps) => {
     const { children } = props;
-    return <div className="w-full flex-1 p-4 space-y-4">{children}</div>;
+    return <div className="uf-group-body">{children}</div>;
 };
 
 const GroupSection = (props: GroupSectionProps) => {
     const { children } = props;
-    return <div className="w-full">{children}</div>;
+    return <div className="uf-group-section">{children}</div>;
 };
 
 const GroupFooter = (props: GroupFooterProps) => {
     const { children } = props;
-    return <div className="p-4 rounded-b bg-uf-header">{children}</div>;
+    return <div className="uf-group-footer">{children}</div>;
 };
 
 const GroupRow = (props: GroupRowProps) => {
@@ -154,7 +154,7 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
             {props.type ? <FormControl ref={ref} {...rest} /> : typeof label === "string" ? t(label) : label}
             {props.required && (
                 <span
-                    className={classNames("text-invalid ml-0.5", {
+                    className={classNames("text-error ml-0.5", {
                         "absolute top-0 right-0.5": props.type,
                     })}
                 >

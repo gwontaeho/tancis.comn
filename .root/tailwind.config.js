@@ -20,8 +20,6 @@ module.exports = {
             transparent: "transparent",
             white: "#ffffff",
             black: "#000000",
-            blue: "#2c7be5",
-            invalid: "#e63757",
             disabled: "#4d5969",
 
             text: "var(--tancis-text)",

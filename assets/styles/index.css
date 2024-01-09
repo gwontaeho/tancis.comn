@@ -9,51 +9,85 @@
 
 @layer base {
     :root {
+        --uf-black: #333a45;
+        --uf-white: #ffffffe6;
         --uf-blue: #0479ce;
 
-        --tancis-text: #5e6e82;
-        --tancis-card: #ffffff;
-        --tancis-border: #9da9bb;
-        --tancis-header: #d8e2ef;
-        --tancis-background: #edf2f9;
+        --uf-text: #333a45;
+        --uf-border: #d8e0ea;
+        --uf-logo: #ffffffe6;
+        --uf-navigation: #ffffffe6;
+        --uf-card-background: #ffffffe6;
+        --uf-input-background: #d8e0ea66;
+        --uf-button-outlined-background: #ffffffe6;
     }
 
-    :root[class~="tanesw"] {
+    :root {
         --uf-layout-header: #004f96;
-        --uf-main: #0479ce;
-        --uf-sub: #edf1fb;
         --uf-background: #f2f7fe;
         --uf-header: #ebeffa;
-        --uf-black: #333a45;
-        --uf-border: #ececec;
+        --uf-main: #0479ce;
+        --uf-sub: #edf1fb;
+        --uf-auth: #edf1fb;
+
+        --uf-card-header: #ebeffa;
+        --uf-button-outlined-border: #0479ce;
+        --uf-button-outlined-color: #0479ce;
+
+        --uf-sign-out-background: #196296;
+        --uf-sign-out-fill: #0f4f7e;
     }
 
     :root[class~="tancis"] {
         --uf-layout-header: #007e41;
-        --uf-main: #00ad59;
-        --uf-sub: #e7f7e5;
         --uf-background: #eef0f2;
         --uf-header: #f8f8f8;
-        --uf-black: #333a45;
-        --uf-border: #ececec;
+        --uf-main: #00ad59;
+        --uf-sub: #e7f7e5;
+        --uf-auth: #e7f7e5;
+
+        --uf-card-header: #f8f8f8;
+        --uf-button-outlined-border: #00ad59;
+        --uf-button-outlined-color: #00ad59;
+
+        --uf-sign-out-background: #0e6f35;
+        --uf-sign-out-fill: #005321;
     }
 
     :root[class~="tanoga"] {
         --uf-layout-header: #f6ab00;
-        --uf-main: #ffb100;
-        --uf-sub: #fcf4e3;
         --uf-background: #eef0f2;
         --uf-header: #f8f8f8;
-        --uf-black: #333a45;
-        --uf-border: #ececec;
+        --uf-main: #ffb100;
+        --uf-sub: #fcf4e3;
+        --uf-auth: #fcf4e3;
+
+        --uf-card-header: #f8f8f8;
+        --uf-button-outlined-border: #ffb100;
+        --uf-button-outlined-color: #ffb100;
+
+        --uf-sign-out-background: #f4a100;
+        --uf-sign-out-fill: #ed811e;
     }
 
     :root[class~="dark"] {
-        /* --uf-background: #1d293a; */
+        --uf-text: #ffffffe6;
+        --uf-border: #d8e0ea1a;
+        --uf-background: #1d293a;
+        --uf-logo: #223043;
+        --uf-navigation: #29384d;
+        --uf-auth: #3d4b5e;
+
+        --uf-card-header: #2f394a;
+        --uf-card-background: #242f40;
+        --uf-input-background: #364151;
+        --uf-button-outlined-background: #2f394a;
+        --uf-button-outlined-border: #ffffff1a;
+        --uf-button-outlined-color: #ffffffe6;
     }
 
     * {
-        @apply border-border;
+        @apply border-uf-border;
     }
 
     :root {
@@ -65,7 +99,7 @@
     body {
         width: 100%;
         height: 100%;
-        @apply text-base text-uf-black bg-uf-background;
+        @apply text-base text-uf-text bg-uf-background;
     }
 
     #root {
@@ -82,24 +116,21 @@
 }
 
 @layer components {
+    /* Layout */
     .uf-header {
-        @apply fixed top-0 left-0 flex h-16 w-full bg-background z-50;
-        @layer {
-            .uf-logo {
-                @apply bg-white border-uf-border w-72 flex items-center justify-center border-b p-2;
-            }
-            .uf-top {
-                @apply bg-uf-layout-header flex flex-1 items-center;
-            }
-        }
+        @apply fixed top-0 left-0 flex h-16 w-full z-50;
+    }
+    .uf-header-logo {
+        @apply bg-uf-logo w-72 flex items-center justify-center border-b p-2;
+    }
+    .uf-header-top {
+        @apply bg-uf-layout-header flex flex-1 items-center;
     }
     .uf-navigation {
-        @apply bg-white hidden fixed pt-16 top-0 left-0 w-72 h-full lg:block overflow-y-auto overflow-x-hidden;
-        @layer {
-            .uf-navigation-container {
-                @apply absolute w-72;
-            }
-        }
+        @apply bg-uf-navigation hidden fixed pt-16 top-0 left-0 w-72 h-full lg:block overflow-y-auto overflow-x-hidden;
+    }
+    .uf-navigation-container {
+        @apply absolute w-72;
     }
     .uf-container {
         @apply flex flex-col w-full h-full pt-16 lg:pl-72;
@@ -111,25 +142,42 @@
         @apply p-4 flex items-center justify-between;
     }
 
+    /* Group */
+    .uf-group {
+        @apply;
+    }
+    .uf-group-header {
+        @apply p-4 rounded-t bg-uf-card-header;
+    }
+    .uf-group-body {
+        @apply w-full flex-1 p-4 space-y-4;
+    }
+    .uf-group-footer {
+        @apply p-4 rounded-b bg-uf-card-header;
+    }
+    .uf-group-section {
+        @apply w-full;
+    }
     .uf-group-row {
         @apply w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12;
     }
     .uf-group-label {
-        @apply font-semibold relative flex items-center p-1 break-all bg-uf-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
+        @apply font-semibold relative flex items-center p-1 break-all bg-uf-card-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
     }
 
+    /* Button */
     .uf-button {
-        @apply block px-4 w-fit h-7 transition border border-uf-main bg-uf-main text-white rounded;
+        @apply block px-4 w-fit h-7 transition border border-uf-main bg-uf-main text-uf-white rounded;
     }
     .uf-button-outlined {
-        @apply block px-4 w-fit h-7 transition border border-uf-main bg-white text-uf-main rounded;
+        @apply block px-4 w-fit h-7 transition border border-uf-button-outlined-border bg-uf-button-outlined-background text-uf-button-outlined-color rounded;
     }
     .uf-button-underlined {
         @apply block w-fit h-7 transition text-uf-main underline rounded;
     }
 
     .input {
-        @apply block min-h-[1.75rem] h-7 p-1 w-full transition bg-uf-background border rounded outline-none focus:border-blue disabled:bg-black/10;
+        @apply block min-h-[1.75rem] h-7 p-1 w-full transition bg-uf-input-background border rounded outline-none focus:border-uf-main disabled:bg-black/10;
     }
     .button {
         @apply block min-h-[1.75rem] h-7 px-2 transition bg-uf-background border rounded;

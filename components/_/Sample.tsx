@@ -50,7 +50,7 @@ const Section = (props: SampleSectionProps) => {
     const { children, title, description } = props;
 
     return (
-        <div className="bg-card p-4 rounded">
+        <div className="bg-uf-card-background p-4 rounded">
             {title && <div className="text-[1.2rem] mb-4">{title}</div>}
             {description && <div className="text-[1rem] mb-4">{description}</div>}
             {children}
@@ -78,7 +78,7 @@ const Code = (props: SampleCodeProps) => {
 const Doc = (props: SampleDocProps) => {
     const { name, code, param, result } = props;
     return (
-        <div className="space-y-4 bg-card p-4">
+        <div className="space-y-4 bg-card-background p-4">
             <div className="text-[1.4rem]">{name}</div>
             <code className="block text-[1.2rem]">{code}</code>
             {param && (

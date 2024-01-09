@@ -27,7 +27,7 @@ export const Table = (props: TableProps) => {
     return (
         <table
             className={classNames(
-                "table-fixed w-full [&_th]:bg-header [&_tr]:h-10 [&_td]:p-1 [&_th]:p-1 [&_th]:break-all [&_td]:break-all",
+                "table-fixed w-full [&_th]:bg-uf-card-header [&_tr]:h-10 [&_td]:p-1 [&_th]:p-1 [&_th]:break-all [&_td]:break-all",
                 {
                     "[&_th]:border [&_td]:border [&_tr]:border": border,
                 },
@@ -42,7 +42,7 @@ export const Table = (props: TableProps) => {
 
 const Tr = (props: TrProps) => {
     const { children, header = false } = props;
-    return <tr className={classNames({ "bg-header": header })}>{children}</tr>;
+    return <tr className={classNames({ "bg-uf-card-header": header })}>{children}</tr>;
 };
 
 const Th = (props: TableCellProps) => {
@@ -52,7 +52,7 @@ const Th = (props: TableCellProps) => {
             {children}
             {required && (
                 <span
-                    className={classNames("text-invalid ml-0.5", {
+                    className={classNames("text-error ml-0.5", {
                         "absolute top-0 right-0.5": typeof children !== "string",
                     })}
                 >
@@ -70,7 +70,7 @@ const Td = (props: TableCellProps) => {
             {children}
             {required && (
                 <span
-                    className={classNames("text-invalid ml-0.5", {
+                    className={classNames("text-error ml-0.5", {
                         "absolute top-0 right-0.5": typeof children !== "string",
                     })}
                 >

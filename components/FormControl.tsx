@@ -251,7 +251,7 @@ export const FormControl = Object.assign(
                     {message && <div className="text-sm mt-1">{message}</div>}
 
                     {/* invalid message */}
-                    {invalid?.message && <div className="text-invalid text-sm mt-1">{t(invalid?.message)}</div>}
+                    {invalid?.message && <div className="text-error text-sm mt-1">{t(invalid?.message)}</div>}
                 </div>
             </div>
         );
