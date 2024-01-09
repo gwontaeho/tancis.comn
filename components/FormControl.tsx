@@ -214,9 +214,13 @@ export const FormControl = Object.assign(
                     return dayjs(props.getValues(props.name)).format("YYYY/MM/DD HH:mm");
                 case "daterange":
                     return (
-                        dayjs(props.getValues(props.start.name)).format("YYYY/MM/DD") +
+                        (!props.getValues(props.start.name)
+                            ? ""
+                            : dayjs(props.getValues(props.start.name)).format("YYYY/MM/DD")) +
                         " ~ " +
-                        dayjs(props.getValues(props.end.name)).format("YYYY/MM/DD")
+                        (!props.getValues(props.end.name)
+                            ? ""
+                            : dayjs(props.getValues(props.end.name)).format("YYYY/MM/DD"))
                     );
                 case "timerange":
                     return (
