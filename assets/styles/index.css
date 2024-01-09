@@ -129,7 +129,7 @@
     }
 
     .input {
-        @apply block min-h-[1.75rem] h-7 p-1 w-full transition bg-uf-background border rounded outline-none focus:border-blue disabled:bg-black/10;
+        @apply block min-h-[1.75rem] p-1 w-full transition bg-uf-background border rounded outline-none focus:border-blue disabled:bg-black/10;
     }
     .button {
         @apply block min-h-[1.75rem] h-7 px-2 transition bg-uf-background border rounded;

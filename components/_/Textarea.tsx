@@ -18,7 +18,8 @@ export type InputTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElemen
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps>(
     (props: InputTextareaProps, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
-        const { name, value, onClick, onChange, onBlur, onFocus, readOnly, disabled, maxLength, placeholder } = props;
+        const { name, value, onClick, onChange, onBlur, onFocus, readOnly, disabled, maxLength, placeholder, rows } =
+            props;
 
         const _props = Object.fromEntries(
             Object.entries({
@@ -32,6 +33,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
                 disabled,
                 maxLength,
                 placeholder,
+                rows,
             }).filter(([, value]) => value !== undefined),
         );
 

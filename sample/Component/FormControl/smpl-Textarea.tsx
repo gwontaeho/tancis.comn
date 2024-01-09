@@ -82,7 +82,7 @@ export const SampleFormControlTextarea = () => {
 
                 <Sample.Code>{`<FormControl type="textarea" value={'Textarea field'} />`}</Sample.Code>
                 <Page>
-                    <FormControl type="textarea" value={"Textarea field"} />
+                    <FormControl type="textarea" value={"Textarea field"} rows={10} />
                 </Page>
 
                 <Sample.Code>{` <FormControl type="textarea" name={'Textarea field'}/>`}</Sample.Code>
