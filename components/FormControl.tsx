@@ -112,6 +112,7 @@ export type FormControlProps = InputDaterangeProps & {
     lang?: string;
     popupSize?: "sm" | "md" | "lg";
     inputLabel?: string;
+    rows?: number;
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {
