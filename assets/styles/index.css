@@ -149,9 +149,29 @@
         @apply p-4 flex items-center justify-between;
     }
 
+    /* Page */
+    .uf-page {
+        @apply flex flex-col gap-4;
+    }
+    .uf-page-header {
+        @apply flex items-end justify-between flex-wrap-reverse;
+    }
+    .uf-page-info {
+        @apply pr-8;
+    }
+    .uf-page-title {
+        @apply text-2xl font-semibold;
+    }
+    .uf-page-description {
+        @apply text-lg;
+    }
+    .uf-page-navigation {
+        @apply flex items-center gap-2 h-6 text-uf-blue;
+    }
+
     /* Group */
     .uf-group {
-        @apply;
+        @apply flex flex-col rounded bg-uf-card-background shadow w-full;
     }
     .uf-group-header {
         @apply p-4 rounded-t bg-uf-card-header;
@@ -170,6 +190,17 @@
     }
     .uf-group-label {
         @apply font-semibold relative flex items-center p-1 break-all bg-uf-card-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
+    }
+
+    /* Layout */
+    .uf-layout {
+        @apply w-full flex;
+    }
+    .uf-layout-left {
+        @apply flex flex-wrap gap-1;
+    }
+    .uf-layout-right {
+        @apply flex flex-1 flex-wrap justify-end gap-1;
     }
 
     /* Button */

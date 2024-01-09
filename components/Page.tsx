@@ -24,17 +24,17 @@ type PageProps = {
 export const Page = (props: PageProps) => {
     const { children, id, title, description, navigation, popup } = props;
     return (
-        <div className="space-y-4">
+        <div className="uf-page">
             {(title || description || navigation) && (
-                <div className="flex items-end justify-between flex-wrap-reverse">
-                    <div className="pr-8">
+                <div className="uf-page-header">
+                    <div className="uf-page-info">
                         {title && (
-                            <div className="text-2xl font-semibold">
+                            <div className="uf-page-title">
                                 {title}
                                 {id && <>&nbsp;({id})</>}
                             </div>
                         )}
-                        {description && <p className="text-lg">{description}</p>}
+                        {description && <p className="uf-page-description">{description}</p>}
                     </div>
                     {navigation && <PageNavigation base={navigation.base} nodes={navigation.nodes} popup={popup} />}
                 </div>
@@ -54,7 +54,7 @@ const PageNavigation = (props: PageNavigationProps) => {
         return null;
     } else {
         return (
-            <ul className="h-6 flex items-center space-x-2 text-uf-blue">
+            <ul className="uf-page-navigation">
                 <li>
                     <Link to={base}>
                         <Icon icon="home" size="sm" />

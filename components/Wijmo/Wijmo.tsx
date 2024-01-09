@@ -6,7 +6,10 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import lodash from "lodash";
 import classNames from "classnames";
+import * as wjCore from "@grapecity/wijmo";
+import { CellType, CellRange } from "@grapecity/wijmo.grid";
 
+import { _MultiRowLayout } from "@grapecity/wijmo.grid.multirow";
 import * as wjGrid from "@grapecity/wijmo.react.grid.multirow";
 import * as wjcGridXlsx from "@grapecity/wijmo.grid.xlsx";
 import { Selector } from "@grapecity/wijmo.grid.selector";
@@ -193,6 +196,33 @@ export const Wijmo = (props: WijmoProps) => {
         }
     }, [_size]);
 
+    // _MultiRowLayout.prototype._getSingleRowGroupHeaderRange = function (e, t, o) {
+    //     var r = this._bindingGroups;
+    //     if (0 === r.length) return null;
+    //     var i = this._getGroupByColumn(o);
+    //     wjCore.assert(null != i, "Failed to get the group!");
+    //     var n = i._getCellRange(0, o - i._colstart),
+    //         l = new CellRange(t, i._colstart + n.col, t, i._colstart + n.col2);
+    //     if (0 != i.getBindingColumn(e, t, o).aggregate) return l;
+    //     for (var a = r[0]._colstart, s = o - 1; s >= a; s--) {
+    //         var u = this._getGroupByColumn(s);
+    //         wjCore.assert(null != u, "Failed to get the group!");
+    //         if (0 != u.getBindingColumn(e, t, s).aggregate) break;
+    //         n = u._getCellRange(0, s - u._colstart);
+    //         l.col = u._colstart + n.col;
+    //     }
+    //     var _ = r[r.length - 1],
+    //         c = _._colstart + _._colspanEff;
+    //     for (s = o + 1; s < c; s++) {
+    //         var w = this._getGroupByColumn(s);
+    //         wjCore.assert(null != w, "Failed to get the group!");
+    //         if (w.getBindingColumn(e, t, s) && 0 != w.getBindingColumn(e, t, s).aggregate) break;
+    //         n = w._getCellRange(0, s - w._colstart);
+    //         l.col2 = w._colstart + n.col2;
+    //     }
+    //     return l;
+    // };
+
     const handleFormatItem = (m: any, e: any) => {
         if (!e.cell.getElementsByClassName("cell")[0]) return;
         const cellType = e.getRow().dataItem["__type"];
@@ -329,7 +359,7 @@ export const Wijmo = (props: WijmoProps) => {
                                         isReadOnly={cellProps.isReadOnly}
                                     >
                                         {/* cell */}
-                                        <wjGrid.MultiRowCellTemplate
+                                        {/* <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
                                             template={(cell: any) => {
                                                 const cellData = {
@@ -346,7 +376,7 @@ export const Wijmo = (props: WijmoProps) => {
                                                     </div>
                                                 );
                                             }}
-                                        />
+                                        /> */}
                                         {/* edit cell */}
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
