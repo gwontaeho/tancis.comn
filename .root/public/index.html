@@ -1,26 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <link rel="icon" href="/imgs/favicon_%REACT_APP_SYSTEM_GROUP%.png" />
-        <title>React App</title>
+        <title>%REACT_APP_SYSTEM_TITLE%</title>
         <script>
             try {
-                if (
-                    localStorage.isDark === "true" ||
-                    (!("isDark" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-                ) {
+                if (localStorage.getItem("isDark") === "true") {
                     document.documentElement.classList.add("dark");
-                    document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0B1120");
+                    // document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0B1120");
+                } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    document.documentElement.classList.add("dark");
+                    // document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0B1120");
                 }
             } catch (error) {}
-
+        </script>
+        <script>
             try {
+                if (localStorage.getItem("lang")) {
+                    document.documentElement.lang = localStorage.getItem("lang");
+                }
             } catch (error) {}
-
+        </script>
+        <script>
             try {
+                // console.log("%REACT_APP_SYSTEM_GROUP%");
+
                 if (window.location.search.includes("s=e")) {
                     document.documentElement.classList.add("tanesw");
                 } else if (window.location.search.includes("s=o")) {
