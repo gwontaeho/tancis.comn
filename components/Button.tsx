@@ -31,15 +31,15 @@ const VARIANTS = {
 };
 
 const AS = {
-    save: { label: "B_SAVE", color: "bg-info border-info" },
+    save: { label: "B_SAVE", color: "bg-uf-info border-uf-info" },
     list: { label: "B_LST", color: "" },
-    submit: { label: "B_SBMT", color: "bg-warning border-warning" },
-    search: { label: "B_SRCH", color: "bg-info border-info" },
-    close: { label: "B_CLS", color: "bg-error border-error" },
-    delete: { label: "B_DEL", color: "bg-error border-error" },
-    reset: { label: "B_RESET", color: "bg-warning border-warning" },
-    confirm: { label: "B_CFRM", color: "bg-success border-success" },
-    ok: { label: "B_OK", color: "bg-success border-success" },
+    submit: { label: "B_SBMT", color: "bg-uf-warning border-uf-warning" },
+    search: { label: "B_SRCH", color: "bg-uf-info border-uf-info" },
+    close: { label: "B_CLS", color: "bg-uf-error border-uf-error" },
+    delete: { label: "B_DEL", color: "bg-uf-error border-uf-error" },
+    reset: { label: "B_RESET", color: "bg-uf-warning border-uf-warning" },
+    confirm: { label: "B_CFRM", color: "bg-uf-success border-uf-success" },
+    ok: { label: "B_OK", color: "bg-uf-success border-uf-success" },
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {

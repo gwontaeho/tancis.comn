@@ -11,7 +11,14 @@
     :root {
         --uf-black: #333a45;
         --uf-white: #ffffffe6;
+        --uf-darkgray: #484f5a;
+        --uf-gray: #6e757c;
+        --uf-lightgray: #c0c0c0;
         --uf-blue: #0479ce;
+        --uf-success: #00ad59;
+        --uf-error: #f4645e;
+        --uf-info: #0479ce;
+        --uf-warning: #ffb100;
 
         --uf-text: #333a45;
         --uf-border: #d8e0ea;

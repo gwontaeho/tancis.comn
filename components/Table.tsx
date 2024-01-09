@@ -52,7 +52,7 @@ const Th = (props: TableCellProps) => {
             {children}
             {required && (
                 <span
-                    className={classNames("text-error ml-0.5", {
+                    className={classNames("text-uf-error ml-0.5", {
                         "absolute top-0 right-0.5": typeof children !== "string",
                     })}
                 >
@@ -70,7 +70,7 @@ const Td = (props: TableCellProps) => {
             {children}
             {required && (
                 <span
-                    className={classNames("text-error ml-0.5", {
+                    className={classNames("text-uf-error ml-0.5", {
                         "absolute top-0 right-0.5": typeof children !== "string",
                     })}
                 >

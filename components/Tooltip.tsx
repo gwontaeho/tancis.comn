@@ -46,11 +46,11 @@ export const Tooltip = (props: TooltipProps) => {
             {children}
             {enabled && content && (
                 <motion.div
-                    className="z-[9999] absolute flex bottom-full left-1/2 -translate-x-1/2 -translate-y-2 px-2 py-1 bg-error rounded shadow justify-center"
+                    className="z-[9999] absolute flex bottom-full left-1/2 -translate-x-1/2 -translate-y-2 px-2 py-1 bg-uf-error rounded shadow justify-center"
                     initial={{ opacity: mode === "always" ? 1 : 0, pointerEvents: "none" }}
                     variants={{ hover: { opacity: 1, pointerEvents: "all" } }}
                 >
-                    <div className="absolute w-2 h-2 top-full -translate-y-1 rotate-45 bg-error" />
+                    <div className="absolute w-2 h-2 top-full -translate-y-1 rotate-45 bg-uf-error" />
                     <div className="min-w-max text-white">{content}</div>
                     <div className="absolute w-full top-full h-2 left-1/2 -translate-x-1/2" />
                 </motion.div>
