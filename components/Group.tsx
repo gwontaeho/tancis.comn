@@ -99,11 +99,7 @@ type GroupColProps = GroupLabelProps & {
 
 export const Group = (props: GroupProps) => {
     const { children, flex } = props;
-    return (
-        <div className={classNames("flex flex-col rounded bg-uf-card-background shadow w-full", flex && FLEXES[flex])}>
-            {children}
-        </div>
-    );
+    return <div className={classNames("uf-group", flex && FLEXES[flex])}>{children}</div>;
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {

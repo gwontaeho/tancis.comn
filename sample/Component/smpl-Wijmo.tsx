@@ -51,6 +51,7 @@ const schema: any = {
                 },
                 {
                     binding: "b",
+                    type: "code",
                 },
                 {
                     binding: "c",
