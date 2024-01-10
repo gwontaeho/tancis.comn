@@ -81,16 +81,18 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
             <div className="w-full">
                 {!edit && (
                     <div>
-                        {
-                            o.options?.find(({ value }) => {
+                        {o.options
+                            ?.filter(({ value }) => {
                                 return (
                                     value ===
                                     _ref.current.find((node) => {
                                         return node?.checked;
                                     })?.value
                                 );
-                            })?.label
-                        }
+                            })
+                            .map(({ value, label }) => {
+                                return `[${value}] ${label}`;
+                            })}
                     </div>
                 )}
                 <div className={classNames("flex flex-wrap w-fit", !edit && "hidden")}>

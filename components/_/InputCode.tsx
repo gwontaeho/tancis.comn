@@ -117,7 +117,7 @@ export const InputCode = (props: InputCodeProps) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{labelInput.current?.value}</div>}
+            {!edit && <div>{`[${keywordInput.current?.value}] ${labelInput.current?.value}`}</div>}
             <div hidden={!edit}>
                 <div className="w-full flex">
                     <input
