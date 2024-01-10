@@ -1,14 +1,6 @@
 import React from "react";
-import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
 
 /**
- * decimalScale
- * thousandSeparator
- * onValueChange
- * - mask
- * - exact
- * - letterCase
- *
  * edit=true
  *
  * name
@@ -24,18 +16,14 @@ import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
  */
 
 /** */
-export type InputNumberProps = Omit<FormattedInputProps, "mask" | "exact" | "letterCase"> & {
+export type InputTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
     edit?: boolean;
 };
 
-export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
-    (props: InputNumberProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps>(
+    (props: InputTextareaProps, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
         const {
             edit = true,
-            /** */
-            decimalScale,
-            thousandSeparator,
-            onValueChange,
             /** */
             name,
             value,
@@ -47,14 +35,11 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             disabled,
             maxLength,
             placeholder,
+            rows,
         } = props;
 
         const _props = Object.fromEntries(
             Object.entries({
-                decimalScale,
-                thousandSeparator,
-                onValueChange,
-                /** */
                 name,
                 value,
                 onClick,
@@ -65,16 +50,17 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
                 disabled,
                 maxLength,
                 placeholder,
+                rows,
             }).filter(([, value]) => value !== undefined),
         );
 
-        const _ref = React.useRef<HTMLInputElement | null>(null);
+        const _ref = React.useRef<HTMLTextAreaElement | null>(null);
 
         return (
             <div className="w-full">
                 {!edit && <div>{_ref.current?.value}</div>}
                 <div hidden={!edit}>
-                    <FormattedInput
+                    <textarea
                         {..._props}
                         ref={(node) => {
                             _ref.current = node;
@@ -85,10 +71,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
                                 ref.current = node;
                             }
                         }}
-                        type="number"
-                        inputMode="numeric"
-                        autoComplete="off"
-                        className="input"
+                        className="input overflow-hidden"
                     />
                 </div>
             </div>

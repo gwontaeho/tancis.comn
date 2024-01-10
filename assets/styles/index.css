@@ -214,6 +214,16 @@
         @apply block w-fit h-7 transition text-uf-main underline rounded;
     }
 
+    /* Input */
+    .uf-input {
+    }
+    .uf-input-message {
+        @apply text-sm mt-1;
+    }
+    .uf-input-error-message {
+        @apply text-sm mt-1 text-uf-error;
+    }
+
     .input {
         @apply block min-h-[1.75rem] p-1 w-full transition bg-uf-input-background border rounded outline-none focus:border-uf-main disabled:bg-black/10;
     }
