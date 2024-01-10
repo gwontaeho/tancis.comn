@@ -359,7 +359,7 @@ export const Wijmo = (props: WijmoProps) => {
                                         isReadOnly={cellProps.isReadOnly}
                                     >
                                         {/* cell */}
-                                        {/* <wjGrid.MultiRowCellTemplate
+                                        <wjGrid.MultiRowCellTemplate
                                             cellType="Cell"
                                             template={(cell: any) => {
                                                 const cellData = {
@@ -376,7 +376,7 @@ export const Wijmo = (props: WijmoProps) => {
                                                     </div>
                                                 );
                                             }}
-                                        /> */}
+                                        />
                                         {/* edit cell */}
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
