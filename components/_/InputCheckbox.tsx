@@ -57,6 +57,11 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         const [_value, _setValue] = React.useState<any[]>(value || []);
 
         React.useEffect(() => {
+            if (value === undefined || value === null) {
+                _setValue([]);
+                return;
+            }
+
             if (!Array.isArray(value)) return;
             if (String(value) === String(_value)) return;
             _setValue(value);
