@@ -109,8 +109,8 @@ export const Checkbox = (props: CheckboxProps) => {
                         ?.filter(({ value }) => {
                             return _value.includes(value);
                         })
-                        .map(({ label }) => {
-                            return label;
+                        .map(({ label, value }) => {
+                            return "[" + value + "] " + label;
                         })
                         .join(", ")}
                 </div>
