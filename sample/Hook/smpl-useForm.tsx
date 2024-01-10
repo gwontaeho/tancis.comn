@@ -30,6 +30,7 @@ const SCHEMA_SEARCH: TFormSchema = {
         file: { type: "file", label: "file", multiple: true, required: true },
         code: { type: "code", label: "code", comnCd: "COM_0015", area: "comnCd", required: true },
         daterange: {
+            required: true,
             type: "daterange",
             label: "daterange",
             start: { name: "startdate", required: true },
