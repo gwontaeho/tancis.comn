@@ -4,7 +4,7 @@ import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
 import i18n from "@/comn/features/locales/i18n";
 import { ModalProps, ToastProps } from "@/comn/components/_";
 
-export const themeState = atom<{ isDark: "true" | "false"; lang: string }>({
+export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "tz" }>({
     key: "themeState",
     default: {
         isDark: (() => {
@@ -15,7 +15,7 @@ export const themeState = atom<{ isDark: "true" | "false"; lang: string }>({
         })(),
 
         lang: (() => {
-            return localStorage.getItem("lang") ?? "ko";
+            return (localStorage.getItem("lang") as "en" | "ko" | "tz") ?? "ko";
         })(),
     },
     effects: [

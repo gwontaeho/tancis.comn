@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDatePicker from "react-datepicker";
 import dayjs from "dayjs";
+import constants from "@/comn/constants";
+import { useTheme } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
 
 export type InputDateProps = {
@@ -15,7 +17,9 @@ export type InputDateProps = {
 export const InputDate = (props: InputDateProps) => {
     const { edit = true, name, value, readOnly, disabled, onChange } = props;
 
-    console.log(name, value, onChange);
+    const { theme } = useTheme();
+
+    const dateFormat = constants.DATE_FORMAT_INPUT[theme.lang];
 
     const [_value, _setValue] = React.useState<Date | null | undefined>(value);
 
@@ -47,6 +51,7 @@ export const InputDate = (props: InputDateProps) => {
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
                     <ReactDatePicker
                         {..._props}
+                        dateFormat={dateFormat}
                         selected={_value}
                         onChange={handleChange}
                         autoComplete="off"
