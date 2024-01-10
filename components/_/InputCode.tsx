@@ -5,6 +5,7 @@ import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
 
 type InputCodeProps = {
+    edit?: boolean;
     name?: string;
     value?: any;
     comnCd?: string;
@@ -30,6 +31,8 @@ const PopupUrls: { [id: string]: string } = {
 };
 
 export const InputCode = (props: InputCodeProps) => {
+    const { edit = true } = props;
+
     const { openPopup } = usePopup();
     const {
         theme: { lang },
@@ -113,17 +116,22 @@ export const InputCode = (props: InputCodeProps) => {
     };
 
     return (
-        <div className="w-full flex">
-            <input
-                ref={keywordInput}
-                className="input rounded-r-none flex-1"
-                onChange={handleChange}
-                maxLength={props.maxLength}
-            />
-            <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
-                <Icon icon="search" size="xs" />
-            </button>
-            <input ref={labelInput} readOnly className="input rounded-l-none flex-[2]" />
+        <div className="w-full">
+            {!edit && <div>{labelInput.current?.value}</div>}
+            <div hidden={!edit}>
+                <div className="w-full flex">
+                    <input
+                        ref={keywordInput}
+                        className="input rounded-r-none flex-1"
+                        onChange={handleChange}
+                        maxLength={props.maxLength}
+                    />
+                    <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
+                        <Icon icon="search" size="xs" />
+                    </button>
+                    <input ref={labelInput} readOnly className="input rounded-l-none flex-[2]" />
+                </div>
+            </div>
         </div>
     );
 };

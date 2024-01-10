@@ -1,8 +1,10 @@
 import React from "react";
+import dayjs from "dayjs";
 import ReactDatePicker from "react-datepicker";
 import { Icon } from "@/comn/components";
 
 export type InputTimeProps = {
+    edit?: boolean;
     name?: string;
     value?: Date | null;
     readOnly?: boolean;
@@ -11,7 +13,7 @@ export type InputTimeProps = {
 };
 
 export const InputTime = (props: InputTimeProps) => {
-    const { name, value, readOnly, disabled, onChange } = props;
+    const { edit = true, name, value, readOnly, disabled, onChange } = props;
 
     const dateFormat = "HH:mm";
     const [_value, _setValue] = React.useState<Date | null | undefined>(value);
@@ -37,20 +39,25 @@ export const InputTime = (props: InputTimeProps) => {
     );
 
     return (
-        <div className="relative w-full [&>div]:w-full">
-            <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
-            <ReactDatePicker
-                {..._props}
-                selected={_value}
-                onChange={handleChange}
-                dateFormat={dateFormat}
-                showTimeSelect
-                showTimeSelectOnly
-                autoComplete="off"
-                timeIntervals={5}
-                className="input pl-5"
-                popperProps={{ strategy: "fixed" }}
-            />
+        <div className="w-full">
+            {!edit && <div>{dayjs(_value).format(dateFormat)}</div>}
+            <div hidden={!edit}>
+                <div className="relative w-full [&>div]:w-full">
+                    <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
+                    <ReactDatePicker
+                        {..._props}
+                        selected={_value}
+                        onChange={handleChange}
+                        dateFormat={dateFormat}
+                        showTimeSelect
+                        showTimeSelectOnly
+                        autoComplete="off"
+                        timeIntervals={5}
+                        className="input pl-5"
+                        popperProps={{ strategy: "fixed" }}
+                    />
+                </div>
+            </div>
         </div>
     );
 };

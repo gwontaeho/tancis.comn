@@ -5,6 +5,8 @@ import { useOptions } from "@/comn/hooks";
 import { Icon, TFormControlOptions } from "@/comn/components";
 
 /**
+ * edit=true
+ *
  * name
  * value
  * onClick
@@ -17,6 +19,7 @@ import { Icon, TFormControlOptions } from "@/comn/components";
 
 /** */
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
+    edit?: boolean;
     options?: TFormControlOptions;
     comnCd?: string;
     area?: string;
@@ -29,6 +32,8 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     (props: SelectProps, ref: React.ForwardedRef<HTMLSelectElement>) => {
         const {
+            edit = true,
+            /** */
             comnCd,
             area,
             lang,
@@ -69,24 +74,40 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
          * readOnly 처리 해야함..
          */
 
-        return (
-            <>
-                <div className="relative flex w-full items-center">
-                    <select {..._props} ref={ref} className="input appearance-none pr-5">
-                        {all && <option value="">{t("L_AL")}</option>}
-                        {select && <option value="">{t("L_SELT")}</option>}
-                        {o.options?.map(({ label, value }, i) => {
-                            return (
-                                <option key={OPTIONS_ID_BASE + "." + i} value={value}>
-                                    {t(label)}
-                                </option>
-                            );
-                        })}
-                    </select>
+        const _ref = React.useRef<HTMLSelectElement | null>(null);
 
-                    <Icon icon="down" size="xs" className="absolute right-1 pointer-events-none" />
+        return (
+            <div className="w-full">
+                {!edit && <div>{_ref.current?.value}</div>}
+                <div hidden={!edit}>
+                    <div className="relative flex w-full items-center">
+                        <select
+                            {..._props}
+                            ref={(node) => {
+                                _ref.current = node;
+                                if (!ref) return;
+                                if (typeof ref === "function") {
+                                    ref(node);
+                                } else {
+                                    ref.current = node;
+                                }
+                            }}
+                            className="input appearance-none pr-5"
+                        >
+                            {all && <option value="">{t("L_AL")}</option>}
+                            {select && <option value="">{t("L_SELT")}</option>}
+                            {o.options?.map(({ label, value }, i) => {
+                                return (
+                                    <option key={OPTIONS_ID_BASE + "." + i} value={value}>
+                                        {t(label)}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                        <Icon icon="down" size="xs" className="absolute right-1 pointer-events-none" />
+                    </div>
                 </div>
-            </>
+            </div>
         );
     },
 );

@@ -10,6 +10,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             type: "text",
             label: "text",
             validate: (value: any) => value === "test" || "test를 써주세요",
+            message: "asd",
         },
         number: { type: "number", label: "number", min: 3 },
         password: { type: "password", label: "password", required: true },
@@ -20,9 +21,9 @@ const SCHEMA_SEARCH: TFormSchema = {
             leftButton: { icon: "left", onClick: () => {} },
             rightButton: { icon: "left", onClick: () => {} },
         },
-        select: { type: "select", label: "select", required: true },
+        select: { type: "select", label: "select", required: true, comnCd: "COM_0015", area: "comnCd" },
         checkbox: { type: "checkbox", label: "checkbox", all: true, required: true },
-        radio: { type: "radio", label: "radio", required: true },
+        radio: { type: "radio", label: "radio", required: true, comnCd: "COM_0014", area: "comnCd" },
         date: { type: "date", label: "date", required: true },
         time: { type: "time", label: "time", required: true },
         datetime: { type: "datetime", label: "datetime", required: true },
@@ -46,13 +47,13 @@ const SCHEMA_SEARCH: TFormSchema = {
 };
 
 const OPTION = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-    { label: "4", value: "4" },
-    { label: "5", value: "5" },
-    { label: "6", value: "6" },
-    { label: "7", value: "7" },
+    { label: "aa1", value: "1" },
+    { label: "aa2", value: "2" },
+    { label: "aa3", value: "3" },
+    { label: "aa4", value: "4" },
+    { label: "aa5", value: "5" },
+    { label: "aa6", value: "6" },
+    { label: "aaa7", value: "7" },
 ];
 
 export const SampleUseForm = () => {
@@ -178,7 +179,19 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValues({ text: "text", number: "001" });
+                                setSchema("radio", { comnCd: "COM_0015" });
+                            }}
+                        >
+                            <code>wwdqw()</code>
+                        </Button>
+                    </Table.Th>
+                    <Table.Td></Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                    <Table.Th>
+                        <Button
+                            onClick={() => {
+                                setValues({ text: "text", number: "001", radio: "2" });
                             }}
                         >
                             <code>{`setValues()`}</code>

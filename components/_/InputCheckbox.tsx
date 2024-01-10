@@ -5,6 +5,8 @@ import { useOptions } from "@/comn/hooks";
 import { TFormControlOptions } from "@/comn/components";
 
 /**
+ * edit=true
+ *
  * name
  * value
  * onClick
@@ -17,6 +19,7 @@ import { TFormControlOptions } from "@/comn/components";
 
 /** */
 type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    edit?: boolean;
     options?: TFormControlOptions;
     comnCd?: string;
     area?: string;
@@ -29,6 +32,8 @@ type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     (props: CheckboxProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
+            edit = true,
+            /** */
             comnCd,
             area,
             lang,
@@ -93,30 +98,46 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
         return (
-            <div className="flex flex-wrap w-fit">
-                {all && (
-                    <div className="flex items-center h-7 space-x-1 mr-3">
-                        <label className="flex items-center h-7 space-x-1">
-                            <input type="checkbox" disabled={disabled} onChange={handleChangeAll} />
-                            <div>{t(`L_AL`)}</div>
-                        </label>
+            <div className="w-full">
+                {!edit && (
+                    <div>
+                        {o.options
+                            ?.filter(({ value }) => {
+                                return value in _value;
+                            })
+                            .map(({ label }) => {
+                                return label;
+                            })
+                            .join(", ")}
                     </div>
                 )}
-                {o.options?.map((option, i) => {
-                    return (
-                        <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
-                            <input
-                                {..._props}
-                                ref={ref}
-                                type="checkbox"
-                                value={option.value}
-                                onChange={handleChange}
-                                checked={_value.some((_) => _ === option.value)}
-                            />
-                            {option.label && <div>{t(option.label)}</div>}
-                        </label>
-                    );
-                })}
+                <div hidden={!edit}>
+                    <div className="flex flex-wrap w-fit">
+                        {all && (
+                            <div className="flex items-center h-7 space-x-1 mr-3">
+                                <label className="flex items-center h-7 space-x-1">
+                                    <input type="checkbox" disabled={disabled} onChange={handleChangeAll} />
+                                    <div>{t(`L_AL`)}</div>
+                                </label>
+                            </div>
+                        )}
+                        {o.options?.map((option, i) => {
+                            return (
+                                <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
+                                    <input
+                                        {..._props}
+                                        ref={ref}
+                                        type="checkbox"
+                                        value={option.value}
+                                        onChange={handleChange}
+                                        checked={_value.some((_) => _ === option.value)}
+                                    />
+                                    {option.label && <div>{t(option.label)}</div>}
+                                </label>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
         );
     },

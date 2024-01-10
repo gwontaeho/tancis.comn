@@ -2,6 +2,7 @@ import React from "react";
 import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
 
 /**
+ *
  * # FormattedInputProps
  * mask
  * exact
@@ -9,6 +10,8 @@ import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
  * onValueChange
  * - decimalScale
  * - thousandSeparator
+ *
+ * edit=true
  *
  * name
  * value
@@ -23,11 +26,15 @@ import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
  */
 
 /** */
-export type InputTextProps = Omit<FormattedInputProps, "decimalScale" | "thousandSeparator">;
+export type InputTextProps = Omit<FormattedInputProps, "decimalScale" | "thousandSeparator"> & {
+    edit?: boolean;
+};
 
-export const InputText = React.forwardRef<HTMLInputElement, FormattedInputProps>(
-    (props: FormattedInputProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
+    (props: InputTextProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
+            edit = true,
+            /** */
             mask,
             exact,
             letterCase,
@@ -65,6 +72,29 @@ export const InputText = React.forwardRef<HTMLInputElement, FormattedInputProps>
             }).filter(([, value]) => value !== undefined),
         );
 
-        return <FormattedInput {..._props} ref={ref} type="text" autoComplete="off" className="input" />;
+        const _ref = React.useRef<HTMLInputElement | null>(null);
+
+        return (
+            <div className="w-full">
+                {!edit && <div>{_ref.current?.value}</div>}
+                <div hidden={!edit}>
+                    <FormattedInput
+                        {..._props}
+                        ref={(node) => {
+                            _ref.current = node;
+                            if (!ref) return;
+                            if (typeof ref === "function") {
+                                ref(node);
+                            } else {
+                                ref.current = node;
+                            }
+                        }}
+                        type="text"
+                        autoComplete="off"
+                        className="input"
+                    />
+                </div>
+            </div>
+        );
     },
 );

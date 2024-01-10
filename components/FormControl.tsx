@@ -1,6 +1,5 @@
 import "react-datepicker/dist/react-datepicker.css";
 import React from "react";
-import dayjs from "dayjs";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Icon, IconsType, Tooltip } from "@/comn/components";
@@ -126,7 +125,7 @@ const FormControlGroup = (props: FormControlGroupProps) => {
 };
 
 const FormControlEditMode = React.forwardRef((props: any, ref) => {
-    const { type, edit, rightButton, leftButton, rightText, getValues, ...rest } = props;
+    const { type, rightButton, leftButton, rightText, getValues, ...rest } = props;
 
     return (
         <div
@@ -135,7 +134,7 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                 "[&_.input]:rounded-l-none": leftButton,
             })}
         >
-            {leftButton && (
+            {props.edit && leftButton && (
                 <button
                     type="button"
                     onClick={leftButton.onClick}
@@ -144,6 +143,7 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                     <Icon icon={leftButton.icon} size="xs" />
                 </button>
             )}
+
             <div className="w-full relative flex items-center">
                 {(() => {
                     switch (type) {
@@ -181,9 +181,10 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                             return <InputText {...rest} ref={ref} />;
                     }
                 })()}
-                {rightText && <span className="absolute right-0 px-1">{rightText}</span>}
+                {props.edit && rightText && <span className="absolute right-0 px-1">{rightText}</span>}
             </div>
-            {rightButton && (
+
+            {props.edit && rightButton && (
                 <button
                     type="button"
                     className="min-h-[1.75rem] px-2 border-y border-r rounded-r"
@@ -198,66 +199,26 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
 
 export const FormControl = Object.assign(
     React.forwardRef((props: FormControlProps, ref) => {
-        const { size = "full", edit = true, message, invalid, getValues, ...rest } = props;
+        const { size = "full", message, invalid, getValues, ...rest } = props;
         const { t } = useTranslation();
 
-        const text = () => {
-            if (!props.getValues) return;
-            switch (props.type) {
-                case "checkbox":
-                    return (props.getValues(props.name) || []).join(", ");
-                case "date":
-                    return dayjs(props.getValues(props.name)).format("YYYY/MM/DD");
-                case "time":
-                    return dayjs(props.getValues(props.name)).format("HH:mm");
-                case "datetime":
-                    return dayjs(props.getValues(props.name)).format("YYYY/MM/DD HH:mm");
-                case "daterange":
-                    return (
-                        (!props.getValues(props.start.name)
-                            ? ""
-                            : dayjs(props.getValues(props.start.name)).format("YYYY/MM/DD")) +
-                        " ~ " +
-                        (!props.getValues(props.end.name)
-                            ? ""
-                            : dayjs(props.getValues(props.end.name)).format("YYYY/MM/DD"))
-                    );
-                case "timerange":
-                    return (
-                        dayjs(props.getValues(props.start.name)).format("HH:mm") +
-                        " ~ " +
-                        dayjs(props.getValues(props.end.name)).format("HH:mm")
-                    );
-                case "file":
-                    return (props.getValues(props.name) || []).length > 1
-                        ? `File ${(props.getValues(props.name) || []).length}`
-                        : (props.getValues(props.name) || [])[0]?.name;
-                default:
-                    return props.getValues(props.name);
-            }
-        };
-
         return (
-            <div className={SIZES[size]}>
-                {!edit && getValues && <div>{text()}</div>}
+            <div className={classNames("w-full", SIZES[size])}>
+                <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
+                    {props.control ? (
+                        <ControllerWrapper {...rest}>
+                            <FormControlEditMode />
+                        </ControllerWrapper>
+                    ) : (
+                        <FormControlEditMode ref={ref} {...rest} />
+                    )}
+                </Tooltip>
 
-                <div className={classNames("w-full", { hidden: !edit })}>
-                    <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
-                        {props.control ? (
-                            <ControllerWrapper {...rest}>
-                                <FormControlEditMode />
-                            </ControllerWrapper>
-                        ) : (
-                            <FormControlEditMode ref={ref} {...rest} />
-                        )}
-                    </Tooltip>
+                {/* message */}
+                {message && <div className="uf-input-message">{message}</div>}
 
-                    {/* message */}
-                    {message && <div className="text-sm mt-1">{message}</div>}
-
-                    {/* invalid message */}
-                    {invalid?.message && <div className="text-uf-error text-sm mt-1">{t(invalid?.message)}</div>}
-                </div>
+                {/* invalid message */}
+                {invalid?.message && <div className="uf-input-error-message">{t(invalid?.message)}</div>}
             </div>
         );
     }),
