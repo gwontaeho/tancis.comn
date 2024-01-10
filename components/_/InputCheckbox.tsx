@@ -107,7 +107,7 @@ export const Checkbox = (props: CheckboxProps) => {
                 <div>
                     {o.options
                         ?.filter(({ value }) => {
-                            return value in _value;
+                            return _value.includes(value);
                         })
                         .map(({ label }) => {
                             return label;

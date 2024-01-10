@@ -64,8 +64,6 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         const { t } = useTranslation();
         const o = useOptions({ comnCd, area, lang, options });
 
-        console.log(o);
-
         const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
 
         const _ref = React.useRef<(HTMLInputElement | null)[]>([]);
