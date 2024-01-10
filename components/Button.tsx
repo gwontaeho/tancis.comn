@@ -24,47 +24,56 @@ const HEIGHTS = {
     lg: "h-10",
 };
 
-const VARIANTS = {
+const BUTTON_VARIANTS = {
     contained: "uf-button",
     outlined: "uf-button-outlined",
     underlined: "uf-button-underlined",
 };
 
-const AS = {
-    save: { label: "B_SAVE", color: "bg-uf-info border-uf-info" },
-    list: { label: "B_LST", color: "" },
-    submit: { label: "B_SBMT", color: "bg-uf-warning border-uf-warning" },
-    search: { label: "B_SRCH", color: "bg-uf-info border-uf-info" },
-    close: { label: "B_CLS", color: "bg-uf-error border-uf-error" },
-    delete: { label: "B_DEL", color: "bg-uf-error border-uf-error" },
-    reset: { label: "B_RESET", color: "bg-uf-warning border-uf-warning" },
-    confirm: { label: "B_CFRM", color: "bg-uf-success border-uf-success" },
-    ok: { label: "B_OK", color: "bg-uf-success border-uf-success" },
+const BUTTON_ROLES = {
+    save: { text: "B_SAVE", color: "info" },
+    list: { text: "B_LST", color: "" },
+    submit: { text: "B_SBMT", color: "warning" },
+    search: { text: "B_SRCH", color: "info" },
+    close: { text: "B_CLS", color: "error" },
+    delete: { text: "B_DEL", color: "error" },
+    reset: { text: "B_RESET", color: "warnging" },
+    confirm: { text: "B_CFRM", color: "success" },
+    ok: { text: "B_OK", color: "success" },
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     width?: keyof typeof WIDTHS;
     height?: keyof typeof HEIGHTS;
-    variant?: keyof typeof VARIANTS;
-    as?: keyof typeof AS;
+    variant?: keyof typeof BUTTON_VARIANTS;
+    color?: "black" | "white" | "darkgray" | "gray" | "lightgray" | "blue" | "success" | "error" | "info" | "warning";
+    role?: keyof typeof BUTTON_ROLES;
 };
 
 export const Button = (props: ButtonProps) => {
-    const { children, type = "button", variant = "contained", width, height, as, ...rest } = props;
+    let { children, type = "button", variant = "contained", color, width, height, role, ...rest } = props;
+
     const { t } = useTranslation();
+
+    const _color = color
+        ? { "data-color": color }
+        : role && BUTTON_ROLES[role].color
+          ? { "data-color": BUTTON_ROLES[role].color }
+          : {};
 
     return (
         <button
             {...rest}
+            {..._color}
             type={type}
             className={classNames(
-                VARIANTS[variant],
+                BUTTON_VARIANTS[variant],
+                role && BUTTON_ROLES[role].color,
                 width && WIDTHS[width],
                 height && HEIGHTS[height],
-                as && AS[as].color,
             )}
         >
-            {as ? (children && typeof children == "string" ? t(children) : t(AS[as].label)) : children}
+            {role ? t(BUTTON_ROLES[role].text) : typeof children === "string" ? t(children) : children}
         </button>
     );
 };

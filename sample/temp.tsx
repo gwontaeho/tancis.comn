@@ -17,11 +17,19 @@ export const Temp = () => {
             </Group>
             <Layout direction="row">
                 <Layout.Left>
-                    <Button as="close"></Button>
-                    <Button as="close"></Button>
+                    <Button role="close" variant="underlined" />
+                    <Button role="close"></Button>
                 </Layout.Left>
                 <Layout.Right>
-                    <Button as="close"></Button>
+                    <Button></Button>
+                    <Button color="gray">qwd</Button>
+                    <Button color="gray" variant="outlined">
+                        qwd
+                    </Button>
+                    <Button color="error" variant="outlined">
+                        qwdqwd
+                    </Button>
+                    <Button color="gray">qwd</Button>
                 </Layout.Right>
             </Layout>
         </Page>

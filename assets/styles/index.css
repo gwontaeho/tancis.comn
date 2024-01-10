@@ -191,6 +191,9 @@
     .uf-group-label {
         @apply font-semibold relative flex items-center p-1 break-all bg-uf-card-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
     }
+    .uf-group-col {
+        @apply flex items-center p-1;
+    }
 
     /* Layout */
     .uf-layout {
@@ -205,17 +208,18 @@
 
     /* Button */
     .uf-button {
-        @apply block px-4 w-fit h-7 transition border border-uf-main bg-uf-main text-uf-white rounded;
+        @apply block px-4 w-fit h-7 transition border border-uf-main bg-uf-main text-uf-white rounded hover:opacity-90 active:opacity-75 will-change-[opacity];
     }
     .uf-button-outlined {
-        @apply block px-4 w-fit h-7 transition border border-uf-button-outlined-border bg-uf-button-outlined-background text-uf-button-outlined-color rounded;
+        @apply block px-4 w-fit h-7 transition border border-uf-button-outlined-border bg-uf-button-outlined-background text-uf-button-outlined-color rounded hover:brightness-90 active:brightness-75 will-change-[filter];
     }
     .uf-button-underlined {
-        @apply block w-fit h-7 transition text-uf-main underline rounded;
+        @apply block px-4 w-fit h-7 transition text-uf-main underline hover:brightness-90 active:brightness-75 will-change-[filter];
     }
 
     /* Input */
     .uf-input {
+        @apply flex flex-col;
     }
     .uf-input-message {
         @apply text-sm mt-1;
@@ -223,12 +227,54 @@
     .uf-input-error-message {
         @apply text-sm mt-1 text-uf-error;
     }
+    .uf-input-left-button {
+        @apply min-h-[1.75rem] px-2 border-y border-l rounded-l;
+    }
+    .uf-input-right-button {
+        @apply min-h-[1.75rem] px-2 border-y border-r rounded-r;
+    }
+
+    /* Tootip */
+    .uf-tooltip {
+        @apply relative;
+    }
 
     .input {
         @apply block min-h-[1.75rem] p-1 w-full transition bg-uf-input-background border rounded outline-none focus:border-uf-main disabled:bg-black/10;
     }
     .button {
         @apply block min-h-[1.75rem] h-7 px-2 transition bg-uf-background border rounded;
+    }
+
+    *[data-color="black"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-black [&:not(.uf-button)]:text-uf-black border-uf-black;
+    }
+    *[data-color="white"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-white [&:not(.uf-button)]:text-uf-white border-uf-white;
+    }
+    *[data-color="darkgray"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-darkgray [&:not(.uf-button)]:text-uf-darkgray border-uf-darkgray;
+    }
+    *[data-color="gray"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-gray [&:not(.uf-button)]:text-uf-gray border-uf-gray;
+    }
+    *[data-color="lightgray"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-lightgray [&:not(.uf-button)]:text-uf-lightgray border-uf-lightgray;
+    }
+    *[data-color="blue"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-blue [&:not(.uf-button)]:text-uf-blue border-uf-blue;
+    }
+    *[data-color="success"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-success [&:not(.uf-button)]:text-uf-success border-uf-success;
+    }
+    *[data-color="error"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-error [&:not(.uf-button)]:text-uf-error border-uf-error;
+    }
+    *[data-color="info"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-info [&:not(.uf-button)]:text-uf-info border-uf-info;
+    }
+    *[data-color="warning"] {
+        @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-warning [&:not(.uf-button)]:text-uf-warning border-uf-warning;
     }
 }
 

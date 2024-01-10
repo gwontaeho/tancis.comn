@@ -42,7 +42,7 @@ export const Tooltip = (props: TooltipProps) => {
     const { children, content, color, mode = "default", enabled = true, size = "fit" } = props;
 
     return (
-        <motion.div className={classNames("relative w-fit", WIDTHS[size])} whileHover="hover">
+        <motion.div className={classNames("uf-tooltip", WIDTHS[size])} whileHover="hover">
             {children}
             {enabled && content && (
                 <motion.div

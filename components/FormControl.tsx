@@ -134,12 +134,8 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                 "[&_.input]:rounded-l-none": leftButton,
             })}
         >
-            {props.edit && leftButton && (
-                <button
-                    type="button"
-                    onClick={leftButton.onClick}
-                    className="min-h-[1.75rem] px-2 border-y border-l rounded-l"
-                >
+            {props.edit !== false && leftButton && (
+                <button type="button" onClick={leftButton.onClick} className="uf-input-left-button">
                     <Icon icon={leftButton.icon} size="xs" />
                 </button>
             )}
@@ -157,12 +153,12 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                             return <Select {...rest} ref={ref} />;
                         case "radio":
                             return <Radio {...rest} ref={ref} />;
-                        case "checkbox":
-                            return <Checkbox {...rest} ref={ref} />;
                         case "textarea":
                             return <Textarea {...rest} ref={ref} />;
                         case "file":
-                            return <InputFile {...rest} ref={ref} />;
+                            return <InputFile {...rest} />;
+                        case "checkbox":
+                            return <Checkbox {...rest} />;
                         case "date":
                             return <InputDate {...rest} />;
                         case "time":
@@ -181,15 +177,11 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                             return <InputText {...rest} ref={ref} />;
                     }
                 })()}
-                {props.edit && rightText && <span className="absolute right-0 px-1">{rightText}</span>}
+                {props.edit !== false && rightText && <span className="absolute right-0 px-1">{rightText}</span>}
             </div>
 
-            {props.edit && rightButton && (
-                <button
-                    type="button"
-                    className="min-h-[1.75rem] px-2 border-y border-r rounded-r"
-                    onClick={rightButton.onClick}
-                >
+            {props.edit !== false && rightButton && (
+                <button type="button" className="uf-input-right-button" onClick={rightButton.onClick}>
                     <Icon icon={rightButton.icon} size="xs" />
                 </button>
             )}
@@ -203,7 +195,7 @@ export const FormControl = Object.assign(
         const { t } = useTranslation();
 
         return (
-            <div className={classNames("w-full", SIZES[size])}>
+            <div className={classNames("uf-input", SIZES[size])}>
                 <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
                     {props.control ? (
                         <ControllerWrapper {...rest}>

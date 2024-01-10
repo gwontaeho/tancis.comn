@@ -79,8 +79,8 @@ const Modal = (props: ModalProps) => {
                     </div>
                     <div className="p-4">{typeof content === "string" ? t(content) : content}</div>
                     <div className="p-4 flex space-x-2 justify-end">
-                        <Button onClick={() => handleCancel()} as="close"></Button>
-                        {onConfirm && <Button onClick={() => handleConfirm()} as="ok"></Button>}
+                        <Button onClick={() => handleCancel()} role="close"></Button>
+                        {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
                     </div>
                 </motion.div>
             </Draggable>

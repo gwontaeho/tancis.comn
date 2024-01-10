@@ -78,7 +78,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
         return (
             <div className="w-full">
-                {!edit && <div>{_ref.current?.value}</div>}
+                {!edit && <div>{o.options?.find(({ value }) => value === _ref.current?.value)?.label}</div>}
                 <div hidden={!edit}>
                     <div className="relative flex w-full items-center">
                         <select

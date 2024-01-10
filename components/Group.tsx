@@ -171,7 +171,7 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
             {props["data-parent"] === "group_col" ? (
                 <FormControl ref={ref} {...rest} />
             ) : (
-                <div className={classNames("p-1 flex items-center", SIZES[controlSize])}>
+                <div className={classNames("uf-group-col", SIZES[controlSize])}>
                     <FormControl ref={ref} {...rest} />
                 </div>
             )}
@@ -186,7 +186,7 @@ const GroupCol = (props: GroupColProps) => {
             {label && <GroupLabel required={required} label={label} labelSize={labelSize} />}
 
             {combine ? (
-                <div className={classNames("p-1 flex items-center", SIZES[colSize])}>
+                <div className={classNames("uf-group-col", SIZES[colSize])}>
                     <div className="flex border rounded divide-x overflow-hidden">
                         {React.Children.map(children, (child: any) => {
                             return (
@@ -209,10 +209,10 @@ const GroupCol = (props: GroupColProps) => {
 };
 
 Group.Header = GroupHeader;
-Group.Footer = GroupFooter;
-Group.Title = GroupTitle;
 Group.Body = GroupBody;
+Group.Footer = GroupFooter;
 Group.Section = GroupSection;
+Group.Title = GroupTitle;
 Group.Row = GroupRow;
 Group.Col = GroupCol;
 Group.Label = GroupLabel;
