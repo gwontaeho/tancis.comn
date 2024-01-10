@@ -92,7 +92,13 @@ export const InputDaterange = (props: InputDaterangeProps) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{dayjs(_startValue).format(dateFormat) + " ~ " + dayjs(_endValue).format(dateFormat)}</div>}
+            {!edit && (
+                <div>
+                    {(_startValue ? dayjs(_startValue).format(dateFormat) : "") +
+                        " ~ " +
+                        (_endValue ? dayjs(_endValue).format(dateFormat) : "")}
+                </div>
+            )}
 
             <div hidden={!edit}>
                 <div className="flex">
