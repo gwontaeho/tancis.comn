@@ -15,6 +15,8 @@ export type InputDateProps = {
 export const InputDate = (props: InputDateProps) => {
     const { edit = true, name, value, readOnly, disabled, onChange } = props;
 
+    console.log(name, value, onChange);
+
     const [_value, _setValue] = React.useState<Date | null | undefined>(value);
 
     React.useEffect(() => {
