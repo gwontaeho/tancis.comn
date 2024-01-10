@@ -13,6 +13,7 @@ i18n.use(HttpBackend)
     )
     .use(initReactI18next)
     .init({
+        lng: localStorage.getItem("lang") || "ko",
         interpolation: {
             escapeValue: false,
         },

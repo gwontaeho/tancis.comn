@@ -23,6 +23,7 @@ export const themeState = atom<{ isDark: "true" | "false"; lang: string }>({
             onSet((n, o: any) => {
                 if (n.lang !== o.lang) {
                     localStorage.setItem("lang", n.lang);
+                    console.log(n.lang);
                     i18n.changeLanguage(n.lang);
                 }
                 if (n.isDark !== o.isDark) {

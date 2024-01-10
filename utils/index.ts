@@ -9,6 +9,7 @@ export const comnEnvs = {
 
 export const comnUtils = {
     dateToString: (date: Date, format?: any | "date" | "time" | "datetime") => {
+        if (date === undefined || date === null) return date;
         return dayjs(date).format(
             format === undefined || format === "date" ? "YYYY-MM-DD" : format === "time" ? "HH:mm" : "YYYY-MM-DD HH:mm",
         );

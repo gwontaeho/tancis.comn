@@ -91,7 +91,9 @@ export const useForm = (props: UseFormProps) => {
 
     const getFormValues = (name?: string) => {
         const _values = getValues();
-        const temp: { [key: string]: any } = {};
+        const temp: { [key: string]: any } = _values;
+
+        console.log(temp);
 
         Object.keys(_schema).forEach((name) => {
             switch (_schema[name].type) {
