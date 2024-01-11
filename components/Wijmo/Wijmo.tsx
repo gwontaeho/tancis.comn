@@ -55,8 +55,19 @@ type WijmoProps = {
 };
 
 export const Wijmo = (props: WijmoProps) => {
-    const { gridRef, contentRef, schema, data, size, page, onCellClick, setSize, setPage, onPageChange, onSizeChange } =
-        props;
+    const {
+        gridRef,
+        contentRef,
+        schema,
+        data = { content: [] },
+        size,
+        page,
+        onCellClick,
+        setSize,
+        setPage,
+        onPageChange,
+        onSizeChange,
+    } = props;
 
     const { t } = useTranslation();
     const {
@@ -91,6 +102,7 @@ export const Wijmo = (props: WijmoProps) => {
         gridRef.current.control.deferResizing = true;
         gridRef.current.control.showMarquee = true;
         gridRef.current.control.rows.defaultSize = 40;
+
         gridRef.current.control.columnHeaders.rows.defaultSize = 40;
         gridRef.current.control.formatItem.addHandler(handleFormatItem);
         gridRef.current.control.itemsSourceChanged.addHandler(handleItemsSourceChanged);

@@ -12,8 +12,9 @@ const SCHEMA_SEARCH: TFormSchema = {
             validate: (value: any) => value === "test" || "test를 써주세요",
             message: "asd",
             rightButton: { icon: "bell", onClick: () => console.log("a") },
+            mask: "weqd AA",
         },
-        number: { type: "number", label: "number", min: 3 },
+        number: { type: "number", label: "number", min: 3, thousandSeparator: true, decimalScale: 4 },
         password: { type: "password", label: "password", required: true },
         textarea: {
             type: "textarea",
@@ -169,7 +170,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("radio", "2");
+                                setValue("number", 77777);
                             }}
                         >
                             <code>setValue()</code>
