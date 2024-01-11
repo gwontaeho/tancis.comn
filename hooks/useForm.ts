@@ -135,7 +135,6 @@ export const useForm = (props: UseFormProps) => {
                 case "time":
                 case "datetime": {
                     temp[name] = comnUtils.dateToString(_values[name], _schema[name].type);
-                    temp[name] = comnUtils.dateToString(_values[name], _schema[name].type);
                     break;
                 }
                 default: {
