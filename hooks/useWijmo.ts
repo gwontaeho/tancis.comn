@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import lodash from "lodash";
+import { v4 as uuid } from "uuid";
 import { FormControlType } from "../components";
 
 type TWijmoOptions = {
@@ -103,6 +104,23 @@ export const useWijmo = (props: UseWijmoArgs) => {
             .filter((d, i, a) => a.findIndex((v) => v["__index"] === d["__index"]) === i);
     };
 
+    const addRow = () => {
+        const item = { __index: uuid(), __type: "added" };
+        gridRef.current.control.collectionView.addNew(item);
+    };
+
+    const deleteRow = () => {
+        const checked = (gridRef.current.control.rows as any[])
+            .filter((r) => r.isSelected)
+            .map((r) => r.dataIndex)
+            .filter((d, i, a) => a.indexOf(d) === i)
+            .sort((a: number, b: number) => b - a);
+
+        checked.forEach((index: number) => {
+            gridRef.current.control.collectionView.removeAt(index);
+        });
+    };
+
     const grid = { gridRef, contentRef, schema, page: _page, setPage, size: _size, setSize };
 
     return {
@@ -118,5 +136,7 @@ export const useWijmo = (props: UseWijmoArgs) => {
         getOrigin,
         getDeleted,
         getDataWithDeleted,
+        addRow,
+        deleteRow,
     };
 };
