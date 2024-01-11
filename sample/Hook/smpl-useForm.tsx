@@ -14,7 +14,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             rightButton: { icon: "bell", onClick: () => console.log("a") },
             mask: "weqd AA",
         },
-        number: { type: "number", label: "number", min: 3, thousandSeparator: true, decimalScale: 4 },
+        number: { type: "number", label: "number", min: 3, thousandSeparator: true },
         password: { type: "password", label: "password", required: true },
         textarea: {
             type: "textarea",

@@ -92,6 +92,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
 
             const int = e.target.value.split(".")[0];
             const dec = e.target.value.split(".")[1]?.replaceAll(",", "");
+
             e.target.value = Number(int.replaceAll(",", "")).toLocaleString() + (dec !== undefined ? "." + dec : "");
             v.value = e.target.value.replaceAll(",", "");
             v.formattedValue = e.target.value;

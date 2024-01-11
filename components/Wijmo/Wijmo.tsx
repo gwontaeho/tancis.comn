@@ -59,7 +59,7 @@ export const Wijmo = (props: WijmoProps) => {
         gridRef,
         contentRef,
         schema,
-        data = { content: [] },
+        data = { content: [], page: { number: 0, size: 0, totalElements: 0, totalPages: 0 } },
         size,
         page,
         onCellClick,
