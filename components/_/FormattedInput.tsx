@@ -78,9 +78,9 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             if (decimalScale === undefined) return;
 
             const a = e.target.value.split(".");
-
             const int = a[0];
             const dec = a[1]?.replaceAll(",", "").slice(0, decimalScale);
+
             e.target.value = int + (dec !== undefined ? "." + dec : "");
             v.value = e.target.value.replaceAll(",", "");
             v.formattedValue = e.target.value;

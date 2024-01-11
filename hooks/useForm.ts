@@ -42,6 +42,28 @@ export const useForm = (props: UseFormProps) => {
     const { id, schema } = defaultSchema;
     const [_schema, _setSchema] = useState<TFormControlSchema>(schema);
 
+    const _setValue = (name: any, value: any) => {
+        const s = _schema[name] || {};
+
+        switch (s.type) {
+            case "number":
+                const converted = Number(String(value).replaceAll(",", ""));
+                if (isNaN(converted)) {
+                    setValue(name, undefined);
+                    return;
+                }
+                if (s.thousandSeparator) {
+                    setValue(name, converted.toLocaleString("ko-KR"));
+                    return;
+                }
+                setValue(name, converted);
+                return;
+            default:
+                setValue(name, value);
+                return;
+        }
+    };
+
     const setSchema = (name: string, value: any) => {
         _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }));
     };
@@ -92,8 +114,6 @@ export const useForm = (props: UseFormProps) => {
     const getFormValues = (name?: string) => {
         const _values = getValues();
         const temp: { [key: string]: any } = _values;
-
-        console.log(temp);
 
         Object.keys(_schema).forEach((name) => {
             switch (_schema[name].type) {
@@ -197,7 +217,9 @@ export const useForm = (props: UseFormProps) => {
                                     ...rest,
                                     ...register(key, {
                                         ...getRules(value),
-                                        setValueAs: (v) => Number(v.replaceAll(",", "")),
+                                        setValueAs: (v) => {
+                                            return Number(String(v).replaceAll(",", ""));
+                                        },
                                     }),
                                     invalid: errors[key],
                                     getValues,
@@ -228,7 +250,7 @@ export const useForm = (props: UseFormProps) => {
         resetSchema,
         setEditable,
         getValues,
-        setValue,
+        setValue: _setValue,
         setFocus,
         handleSubmit,
         validate,
