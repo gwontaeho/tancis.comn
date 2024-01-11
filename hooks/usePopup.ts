@@ -63,6 +63,8 @@ export const usePopup = (): UsePopupReturn => {
         const features = `width=${PopupSize[size].width},height=${PopupSize[size].height}`;
         const name = id + "__" + uuid();
 
+        console.log(features);
+
         const fullUrl = url + "?" + layoutQuery + paramsQuery;
 
         if (popupRef.current[id]) popupRef.current[id].popup.close();

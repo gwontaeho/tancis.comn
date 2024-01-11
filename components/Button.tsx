@@ -37,9 +37,10 @@ const BUTTON_ROLES = {
     search: { text: "B_SRCH", color: "info" },
     close: { text: "B_CLS", color: "error" },
     delete: { text: "B_DEL", color: "error" },
-    reset: { text: "B_RESET", color: "warnging" },
+    reset: { text: "B_RESET", color: "warning" },
     confirm: { text: "B_CFRM", color: "success" },
     ok: { text: "B_OK", color: "success" },
+    apply: { text: "B_APPD", color: "blue" },
     gridAdd: { text: "B_ADD", color: "blue" },
     gridDelete: { text: "B_DELETE", color: "error" },
 };
