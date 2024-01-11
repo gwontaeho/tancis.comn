@@ -65,6 +65,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
          */
         const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
             if (_type !== "number") return;
+            if (e.target.value === ".") e.target.value = "0.";
             if (isNaN(Number(e.target.value.replaceAll(",", ""))))
                 e.target.value = e.target.value.replaceAll(/[\D]/g, "");
         };
@@ -76,8 +77,10 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (decimalScale === undefined) return;
 
-            const int = e.target.value.split(".")[0];
-            const dec = e.target.value.split(".")[1]?.replaceAll(",", "").slice(0, decimalScale);
+            const a = e.target.value.split(".");
+
+            const int = a[0];
+            const dec = a[1]?.replaceAll(",", "").slice(0, decimalScale);
             e.target.value = int + (dec !== undefined ? "." + dec : "");
             v.value = e.target.value.replaceAll(",", "");
             v.formattedValue = e.target.value;
@@ -90,10 +93,11 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (!thousandSeparator) return;
 
-            const int = e.target.value.split(".")[0];
-            const dec = e.target.value.split(".")[1]?.replaceAll(",", "");
+            const a = e.target.value.replaceAll(",", "").split(".");
+            const int = a[0];
+            const dec = a[1];
 
-            e.target.value = Number(int.replaceAll(",", "")).toLocaleString() + (dec !== undefined ? "." + dec : "");
+            e.target.value = (int ? Number(int).toLocaleString("ko-KR") : "") + (dec !== undefined ? "." + dec : "");
             v.value = e.target.value.replaceAll(",", "");
             v.formattedValue = e.target.value;
         };

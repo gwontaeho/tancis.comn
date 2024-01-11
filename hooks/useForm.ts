@@ -197,7 +197,7 @@ export const useForm = (props: UseFormProps) => {
                                     ...rest,
                                     ...register(key, {
                                         ...getRules(value),
-                                        // setValueAs: (v) => Number(v.replaceAll(",", "")),
+                                        setValueAs: (v) => Number(v.replaceAll(",", "")),
                                     }),
                                     invalid: errors[key],
                                     getValues,
