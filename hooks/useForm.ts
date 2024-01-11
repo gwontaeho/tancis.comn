@@ -48,6 +48,8 @@ export const useForm = (props: UseFormProps) => {
         switch (s.type) {
             case "number":
                 const converted = Number(String(value).replaceAll(",", ""));
+
+                console.log(converted);
                 if (isNaN(converted)) {
                     setValue(name, undefined);
                     return;
@@ -107,7 +109,7 @@ export const useForm = (props: UseFormProps) => {
     const setValues = (values: TFormValues, part?: boolean) => {
         Object.keys(_schema).forEach((name) => {
             if (part === true && values[name] === undefined) return;
-            setValue(name, values[name]);
+            _setValue(name, values[name]);
         });
     };
 
