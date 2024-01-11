@@ -19,14 +19,14 @@ const NavItem = (props: NavItemProps) => {
     const depth_1 = base || to;
 
     return (
-        <li className="group">
+        <li className="group flex relative items-center">
             <Link to={depth_1}>
                 <button className="flex text-uf-white items-center space-x-1">
                     <p>{name}</p>
                     <Icon icon="down" size="xs" className="transition group-hover:rotate-180" />
                 </button>
             </Link>
-            <div className="pt-2 w-max absolute hidden group-hover:block">
+            <div className="pt-2 w-max absolute hidden top-full left-0 group-hover:block">
                 <ul className="rounded border shadow bg-uf-auth p-4 grid grid-cols-2 gap-1 [&>li:hover]:underline">
                     <li className="col-span-2">
                         <Link to={depth_1} className="block p-2 font-semibold">
@@ -47,18 +47,6 @@ const NavItem = (props: NavItemProps) => {
                 </ul>
             </div>
         </li>
-    );
-};
-
-const Nav = () => {
-    return (
-        <nav className="hidden items-center lg:flex px-8">
-            <ul className="flex space-x-4">
-                {R.map((child) => {
-                    return <NavItem key={uuid()} {...child} />;
-                })}
-            </ul>
-        </nav>
     );
 };
 
@@ -109,11 +97,17 @@ export const Header = () => {
             </div>
 
             {/*  */}
-            <div className="uf-header-top">
-                <Nav />
+            <div className="uf-header-main">
+                <nav className="uf-header-navigation">
+                    <ul className="flex gap-8">
+                        {R.map((child) => {
+                            return <NavItem key={uuid()} {...child} />;
+                        })}
+                    </ul>
+                </nav>
 
-                <div className="flex flex-1 justify-end items-center space-x-4 px-4">
-                    <div className="flex space-x-2">
+                <div className="uf-header-control">
+                    <div className="flex gap-2">
                         {/* list */}
                         <Badge number={3}>
                             <IconButton className="text-uf-white" icon="list" />
@@ -155,7 +149,7 @@ export const Header = () => {
                 </div>
 
                 {/* signout */}
-                <div className="bg-uf-sign-out-background w-16 h-full flex items-center justify-center">
+                <div className="uf-header-sign-out">
                     <div className="bg-uf-sign-out-fill rounded-full w-8 h-8 flex items-center justify-center">
                         <IconButton icon="out" className="text-uf-white rotate-90" size="sm" />
                     </div>

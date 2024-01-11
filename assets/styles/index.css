@@ -128,10 +128,24 @@
         @apply fixed top-0 left-0 flex h-16 w-full z-50;
     }
     .uf-header-logo {
-        @apply bg-uf-logo w-72 flex items-center justify-center border-b p-2;
+        /* width 18rem */
+        @apply bg-uf-logo min-w-[18rem] flex items-center justify-center border-b p-2;
     }
-    .uf-header-top {
-        @apply bg-uf-layout-header flex flex-1 items-center;
+    .uf-header-main {
+        /* width 100%-18rem */
+        @apply bg-uf-layout-header flex items-center w-[calc(100%-18rem)];
+    }
+    .uf-header-navigation {
+        /* width 100%-28rem */
+        @apply hidden h-full items-center lg:flex px-8 w-[calc(100%-28rem)];
+    }
+    .uf-header-control {
+        /* width 24rem */
+        @apply flex justify-end flex-1 items-center space-x-4 px-4 min-w-[24rem] lg:flex-[0];
+    }
+    .uf-header-sign-out {
+        /* width 4rem */
+        @apply bg-uf-sign-out-background w-16 h-full flex items-center justify-center;
     }
     .uf-navigation {
         @apply bg-uf-navigation hidden fixed pt-16 top-0 left-0 w-72 h-full lg:block overflow-y-auto overflow-x-hidden;
