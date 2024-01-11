@@ -104,8 +104,9 @@ export const useWijmo = (props: UseWijmoArgs) => {
             .filter((d, i, a) => a.findIndex((v) => v["__index"] === d["__index"]) === i);
     };
 
-    const addRow = () => {
-        const item = { __index: uuid(), __type: "added" };
+    const addRow = (data: any) => {
+        const item = { ...data, __index: uuid(), __type: "added" };
+        console.log(item);
         gridRef.current.control.collectionView.addNew(item);
     };
 

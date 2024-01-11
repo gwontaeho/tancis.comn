@@ -125,6 +125,7 @@ export const SampleWijmo = () => {
                     <button onClick={() => console.log(grid1.getOrigin())}>get origin</button>
                     <button onClick={() => console.log(grid1.getDeleted())}>get deleted</button>
                     <button onClick={() => console.log(grid1.getDataWithDeleted())}>get with deleted</button>
+                    <button onClick={() => grid1.addRow({ id: "qwd" })}>test</button>
                 </div>
             </Group>
 
