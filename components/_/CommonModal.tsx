@@ -47,6 +47,8 @@ const Modal = (props: ModalProps) => {
         handleClose();
     };
 
+    console.log(content);
+
     return createPortal(
         <Fragment key={id}>
             {backdrop && (

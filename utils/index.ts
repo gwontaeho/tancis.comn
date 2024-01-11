@@ -9,6 +9,9 @@ export const comnEnvs = {
 };
 
 export const comnUtils = {
+    findIndex: (array: Array<any>, obj: any) => {
+        return lodash.findIndex(array, obj);
+    },
     dateToString: (date: Date, format?: any | "date" | "time" | "datetime") => {
         if (date === undefined || date === null) return date;
         return dayjs(date).format(
@@ -115,7 +118,7 @@ export const comnUtils = {
                 url = `/api/v1/intptl/comnppup/regn/city-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "portCd":
-                url = `/api/v1/intptl/comnppup/port-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/intptl/comnppup/regn/port-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "cntyCd":
                 url = `/api/v1/intptl/comnppup/cnty-cd?cntyCd=${keyword}&cntyNm=${keywordName}`;
@@ -188,7 +191,7 @@ export const comnUtils = {
             case "cityCd":
                 return code.regnCd;
             case "portCd":
-                return code.portAirptCd;
+                return code.regnCd;
             case "currCd":
                 return code.currCd;
             case "bnkCd":
