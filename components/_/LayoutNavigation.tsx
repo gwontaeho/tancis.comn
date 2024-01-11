@@ -8,6 +8,7 @@ import { R } from "@/comn";
 type NavItemProps = {
     children?: any[];
     depth_1?: any;
+    depth_2?: any;
     _base?: string;
     base?: string;
     name?: string;
@@ -15,20 +16,22 @@ type NavItemProps = {
 };
 
 const NavItem = (props: NavItemProps) => {
-    const { children, depth_1, _base = "", base = "", to = "", name } = props;
+    const { children, depth_1, depth_2, _base = "", base = "", to = "", name } = props;
     const __base = _base + base;
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [open, setOpen] = useState(Array.isArray(children) && location.pathname.startsWith(depth_1.base + __base));
+    const [open, setOpen] = useState(
+        Array.isArray(children) && location.pathname.startsWith(depth_1.base + depth_2.base + __base),
+    );
 
     const handleClick = () => {
         if (children) return setOpen((prev) => !prev);
-        navigate(depth_1.base + __base + to);
+        navigate(depth_1.base + depth_2.base + __base + to);
     };
 
-    const current = !Array.isArray(children) && location.pathname === depth_1.base + __base + to;
+    const current = !Array.isArray(children) && location.pathname === depth_1.base + depth_2.base + __base + to;
 
     return (
         <li>
@@ -44,8 +47,9 @@ const NavItem = (props: NavItemProps) => {
                         {children.map((child) => {
                             return (
                                 <NavItem
-                                    key={depth_1.base + __base + to + (child.base || child.to)}
+                                    key={depth_1.base + depth_2.base + __base + to + (child.base || child.to)}
                                     depth_1={depth_1}
+                                    depth_2={depth_2}
                                     _base={__base}
                                     {...child}
                                 />
@@ -60,17 +64,26 @@ const NavItem = (props: NavItemProps) => {
 
 const Menu = () => {
     const location = useLocation();
+    const pathname = location.pathname;
 
-    const depth_1 = R.find(({ base }) => location.pathname.startsWith(base as string));
-    const depth_2 = depth_1?.children;
+    const depth_1 = R.find(({ base }) => pathname.startsWith(base || ""));
+    const depth_1_base = depth_1?.base || "";
+
+    const depth_2 = depth_1?.children?.find(({ base }) => pathname.startsWith(depth_1_base + (base || "")));
 
     return (
         <nav className="p-2">
-            {/* {!depth_2 && <span className="p-2">depth 1 미 선택</span>} */}
-            {depth_2 && (
+            {depth_1 && depth_2 && (
                 <ul className="p-2 space-y-2">
-                    {depth_2.map((child) => {
-                        return <NavItem key={depth_1.name + "." + child.name} depth_1={depth_1} {...child} />;
+                    {depth_2?.children?.map((child) => {
+                        return (
+                            <NavItem
+                                key={depth_1.name + "." + child.name}
+                                depth_1={depth_1}
+                                depth_2={depth_2}
+                                {...child}
+                            />
+                        );
                     })}
                 </ul>
             )}

@@ -10,13 +10,13 @@ import { R } from "@/comn";
 type NavItemProps = {
     children?: any[];
     name?: string;
-    path?: string;
     base?: string;
+    to?: string;
 };
 
 const NavItem = (props: NavItemProps) => {
-    const { name, children, path, base = "" } = props;
-    const depth_1 = path || base;
+    const { name, children, base = "", to = "" } = props;
+    const depth_1 = base || to;
 
     return (
         <li className="group">
@@ -34,8 +34,8 @@ const NavItem = (props: NavItemProps) => {
                         </Link>
                     </li>
                     {children?.map((child) => {
-                        const { name, path, base } = child;
-                        const depth_2 = path || base;
+                        const { name, base } = child;
+                        const depth_2 = base;
                         return (
                             <li key={uuid()}>
                                 <Link to={depth_1 + depth_2} className="block w-40 py-2 px-4">

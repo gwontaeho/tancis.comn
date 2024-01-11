@@ -8,6 +8,9 @@ import { TancisRoutes } from "@/tra/tancis/Routes";
 import { CommonModal, CommonToast } from "@/comn/components/_";
 import { Main } from "@/tra/tancis/Main";
 
+type TRoute = { name: string; base?: string; to?: string; children?: TRoute[] };
+type TRoutes = TRoute[];
+
 export const Base = () => {
     return (
         <RecoilProvider>
@@ -27,4 +30,4 @@ export const Base = () => {
 };
 
 export { default as api } from "@/comn/features/apis";
-export const R = [...SampleRoutes, ...TancisRoutes];
+export const R: TRoutes = [...SampleRoutes, ...TancisRoutes];

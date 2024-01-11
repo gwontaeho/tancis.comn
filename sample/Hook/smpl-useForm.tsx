@@ -14,7 +14,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             rightButton: { icon: "bell", onClick: () => console.log("a") },
             mask: "[VS] AA",
         },
-        number: { type: "number", label: "number", min: 3, thousandSeparator: false },
+        number: { type: "number", label: "number", min: 3, thousandSeparator: true },
         password: { type: "password", label: "password", required: true },
         textarea: {
             type: "textarea",
@@ -170,7 +170,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("number", "12312321");
+                                setValue("number", "123123,12312312,3,12");
                             }}
                         >
                             <code>setValue()</code>
@@ -206,7 +206,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValues({ text: "text", number: "001", radio: "2" });
+                                setValues({ text: "text", number: "1231231,23123", radio: "2" });
                             }}
                         >
                             <code>{`setValues()`}</code>
