@@ -5,6 +5,7 @@ import { api } from "@/comn";
 
 export const comnEnvs = {
     base: `${process.env.REACT_APP_BASE}`,
+    base_comn: `${process.env.REACT_APP_BASE_COMN}`,
 };
 
 export const comnUtils = {
@@ -111,7 +112,7 @@ export const comnUtils = {
                 url = `/api/v1/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
             case "cityCd":
-                url = `/api/v1/intptl/comnppup/city-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/intptl/comnppup/regn/city-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "portCd":
                 url = `/api/v1/intptl/comnppup/port-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;

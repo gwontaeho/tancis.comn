@@ -40,6 +40,8 @@ const BUTTON_ROLES = {
     reset: { text: "B_RESET", color: "warnging" },
     confirm: { text: "B_CFRM", color: "success" },
     ok: { text: "B_OK", color: "success" },
+    gridAdd: { text: "B_ADD", color: "blue" },
+    gridDelete: { text: "B_DELETE", color: "error" },
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
