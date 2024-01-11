@@ -190,12 +190,26 @@ export const useForm = (props: UseFormProps) => {
                                 };
                             }
 
+                            case "number": {
+                                const { min, max, minLength, pattern, validate, ...rest } = value;
+
+                                return {
+                                    ...rest,
+                                    ...register(key, {
+                                        ...getRules(value),
+                                        setValueAs: (v) => Number(v.replaceAll(",", "")),
+                                    }),
+                                    invalid: errors[key],
+                                    getValues,
+                                };
+                            }
+
                             default: {
                                 const { min, max, minLength, pattern, validate, ...rest } = value;
 
                                 return {
                                     ...rest,
-                                    ...register(key, getRules(value)),
+                                    ...register(key, { ...getRules(value) }),
                                     invalid: errors[key],
                                     getValues,
                                 };

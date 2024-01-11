@@ -3,6 +3,7 @@ import React from "react";
 export type TFormattedInputValues = {
     value: string;
     formattedValue: string;
+    event: any;
 };
 
 export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -34,7 +35,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const REG_NUMBER = /^[0-9]+$/;
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            let v: TFormattedInputValues = { value: e.target.value, formattedValue: "" };
+            let v: TFormattedInputValues = { value: e.target.value, formattedValue: "", event: e };
             handleLowerCase(e, v);
             handleUpperCase(e, v);
             handleNumber(e);
@@ -59,12 +60,19 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
+        /**
+         * Number
+         */
         const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
             if (_type !== "number") return;
             if (isNaN(Number(e.target.value.replaceAll(",", ""))))
                 e.target.value = e.target.value.replaceAll(/[\D]/g, "");
         };
 
+        /**
+         * Number
+         * Decimal Scale
+         */
         const handleDecimalScale = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (decimalScale === undefined) return;
 
@@ -75,6 +83,10 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
+        /**
+         * Number
+         * Thousand Separator
+         */
         const handleThousandSeparator = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (!thousandSeparator) return;
 
@@ -85,6 +97,9 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             v.formattedValue = e.target.value;
         };
 
+        /**
+         * Mask
+         */
         const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (decimalScale !== undefined || thousandSeparator) return;
             if (mask === undefined) return;
