@@ -71,49 +71,57 @@ export const PortCodeList = (props: any) => {
     }, []);
 
     return (
-        <Page>
-            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_PORT_CD_LST" }]} />
-            <Page.Header title={t("T_PORT_CD_LST")} description={t("T_PORT_CD_LST")} /> */}
+        <Page
+            id={pgeUid}
+            title={t("T_PORT_CD_LST")}
+            description={t("T_PORT_CD_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { label: "T_PORT_CD_LST" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.portCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.portCdSrch.schema.regnCd}></Group.Control>
-                            <Group.Control {...form.portCdSrch.schema.regnNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.portCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.portCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.portCdSrch.schema.regnNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    role="reset"
+                                    onClick={() => {
+                                        form.portCdSrch.reset();
+                                    }}
+                                ></Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    role="search"
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.portCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.portCdLst.grid}
-                    data={fetch.getPortCdLst.data?.regnCdList}
-                    onCellClick={handler.click_Grid_PortCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.portCdLst.grid}
+                        data={fetch.getPortCdLst.data?.regnCdList}
+                        onCellClick={handler.click_Grid_PortCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
