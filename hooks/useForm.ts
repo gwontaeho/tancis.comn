@@ -93,8 +93,6 @@ export const useForm = (props: UseFormProps) => {
         const _values = getValues();
         const temp: { [key: string]: any } = _values;
 
-        console.log(temp);
-
         Object.keys(_schema).forEach((name) => {
             switch (_schema[name].type) {
                 case "daterange":
