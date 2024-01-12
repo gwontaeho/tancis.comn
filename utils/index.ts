@@ -8,6 +8,28 @@ export const comnEnvs = {
 };
 
 export const comnUtils = {
+    getDate: (
+        args: string | { date?: Date; y?: number; m?: number; d?: number } = {
+            date: new Date(),
+            y: 0,
+            m: 0,
+            d: 0,
+        },
+    ): Date => {
+        if (args === undefined || args === null) return new Date();
+
+        if (typeof args === "string") {
+            return dayjs(args).toDate();
+        } else {
+            const { date, y, m, d } = args;
+            let temp = dayjs(date);
+            temp = temp
+                .set("y", temp.get("y") + (y || 0))
+                .set("M", temp.get("M") + (m || 0))
+                .set("D", temp.get("D") + (d || 0));
+            return temp.toDate();
+        }
+    },
     findIndex: (array: Array<any>, obj: any) => {
         return lodash.findIndex(array, obj);
     },

@@ -90,8 +90,6 @@ export const InputDaterange = (props: InputDaterangeProps) => {
         _setEndValue(v);
     };
 
-    console.log(_startValue, _endValue);
-
     return (
         <div className="w-full">
             {!edit && (
