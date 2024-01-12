@@ -13,10 +13,15 @@ type NavItemProps = {
     base?: string;
     name?: string;
     to?: string;
+    depth?: number;
 };
 
 const NavItem = (props: NavItemProps) => {
-    const { children, depth_1, depth_2, _base = "", base = "", to = "", name } = props;
+    const { children, depth = 1, depth_1, depth_2, _base = "", base = "", to = "", name } = props;
+
+    const _depth = depth + 1;
+    console.log(_depth);
+
     const __base = _base + base;
 
     const navigate = useNavigate();
@@ -43,11 +48,12 @@ const NavItem = (props: NavItemProps) => {
             </button>
             {Array.isArray(children) && (
                 <Collapse open={open}>
-                    <ul className="pl-4">
+                    <ul className="pl-4 text-dark-gray">
                         {children.map((child) => {
                             return (
                                 <NavItem
                                     key={depth_1.base + depth_2.base + __base + to + (child.base || child.to)}
+                                    depth={_depth}
                                     depth_1={depth_1}
                                     depth_2={depth_2}
                                     _base={__base}
@@ -74,7 +80,7 @@ const Menu = () => {
     return (
         <nav className="p-2">
             {depth_1 && depth_2 && (
-                <ul className="p-2 space-y-2">
+                <ul className="p-2">
                     {depth_2?.children?.map((child) => {
                         return (
                             <NavItem

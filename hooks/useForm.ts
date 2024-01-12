@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as rhf from "react-hook-form";
+import dayjs from "dayjs";
 import { GroupControlProps } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
 
@@ -22,7 +23,8 @@ type TFormControlSchema = Record<string, GroupControlProps>;
 type UseFormProps = { defaultSchema: TFormSchema; values?: any; defaultValues?: any };
 
 export const useForm = (props: UseFormProps) => {
-    const { defaultSchema, values, defaultValues } = props;
+    const { defaultSchema, defaultValues } = props;
+    const { id, schema } = defaultSchema;
 
     const {
         control,
@@ -37,11 +39,41 @@ export const useForm = (props: UseFormProps) => {
         reset,
         setError,
         formState: { errors, isSubmitted },
-    } = rhf.useForm<TFormValues>({ values, defaultValues });
+    } = rhf.useForm<TFormValues>({ defaultValues });
 
-    const { id, schema } = defaultSchema;
+    /**
+     * 스키마
+     */
     const [_schema, _setSchema] = useState<TFormControlSchema>(schema);
 
+    /**
+     * 스키마에 등록된
+     * field-type object
+     */
+    const _formFields = Object.fromEntries(
+        Object.entries(_schema).reduce<any>((prev, curr) => {
+            switch (curr[1].type) {
+                case "daterange":
+                    return [
+                        ...prev, //
+                        [curr[1]["start"]["name"], "date"],
+                        [curr[1]["end"]["name"], "date"],
+                    ];
+                case "timerange":
+                    return [
+                        ...prev, //
+                        [curr[1]["start"]["name"], "time"],
+                        [curr[1]["end"]["name"], "time"],
+                    ];
+                default:
+                    return [...prev, [curr[0], curr[1]["type"]]];
+            }
+        }, []),
+    );
+
+    /**
+     * set value
+     */
     const _setValue = (name: any, value: any) => {
         const s = _schema[name] || {};
 
@@ -49,7 +81,6 @@ export const useForm = (props: UseFormProps) => {
             case "number":
                 const converted = Number(String(value).replaceAll(",", ""));
 
-                console.log(converted);
                 if (isNaN(converted)) {
                     setValue(name, undefined);
                     return;
@@ -68,6 +99,40 @@ export const useForm = (props: UseFormProps) => {
 
     const setSchema = (name: string, value: any) => {
         _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }));
+    };
+
+    const _getValues = (arg?: any) => {
+        return Object.fromEntries(
+            Object.entries<any>(getValues(arg))
+                .map(([key, value]) => [
+                    key,
+                    comnUtils.isUndefined(value) || //
+                    comnUtils.isEmptyString(value) ||
+                    comnUtils.isEmptyArray(value)
+                        ? null
+                        : value,
+                ])
+                .map(([key, value]) => {
+                    return [
+                        key,
+                        (() => {
+                            switch (_formFields[key]) {
+                                case "date":
+                                    if (!dayjs(value).isValid()) return null;
+                                    return dayjs(value).format("YYYY-MM-DD");
+                                case "time":
+                                    if (!dayjs(value).isValid()) return null;
+                                    return dayjs(value).format("HH:mm:ss");
+                                case "datetime":
+                                    if (!dayjs(value).isValid()) return null;
+                                    return dayjs(value).format("YYYY-MM-DD HH:mm:ss");
+                                default:
+                                    return value;
+                            }
+                        })(),
+                    ];
+                }),
+        );
     };
 
     const setSchemas = (names: string[], schemas: any) => {
@@ -107,6 +172,19 @@ export const useForm = (props: UseFormProps) => {
         Object.keys(_schema).forEach((name) => {
             setValue(name, null);
         });
+    };
+
+    const _handleSubmit = (onValid?: (data: any) => void, onInvalid?: (data: any) => void) => {
+        return handleSubmit(
+            () => {
+                if (!onValid) return;
+                onValid(_getValues());
+            },
+            (error) => {
+                if (!onInvalid) return;
+                onInvalid(error);
+            },
+        );
     };
 
     const setValues = (values: TFormValues, part?: boolean) => {
@@ -178,7 +256,6 @@ export const useForm = (props: UseFormProps) => {
                                 return {
                                     ...rest,
                                     invalid: errors[key],
-                                    getValues,
                                     setValue,
                                     start: {
                                         ...value.start,
@@ -210,7 +287,6 @@ export const useForm = (props: UseFormProps) => {
                                     invalid: errors[key],
                                     name: key,
                                     control,
-                                    getValues,
                                     setValue,
                                     rules: getRules(value),
                                 };
@@ -224,11 +300,11 @@ export const useForm = (props: UseFormProps) => {
                                     ...register(key, {
                                         ...getRules(value),
                                         setValueAs: (v) => {
+                                            if (comnUtils.isEmptyString(v) || comnUtils.isUndefined(v)) return null;
                                             return Number(String(v).replaceAll(",", ""));
                                         },
                                     }),
                                     invalid: errors[key],
-                                    getValues,
                                 };
                             }
 
@@ -239,7 +315,6 @@ export const useForm = (props: UseFormProps) => {
                                     ...rest,
                                     ...register(key, { ...getRules(value) }),
                                     invalid: errors[key],
-                                    getValues,
                                 };
                             }
                         }
@@ -251,14 +326,14 @@ export const useForm = (props: UseFormProps) => {
 
     return {
         schema: getSchema(_schema),
+        handleSubmit: _handleSubmit,
+        getValues: _getValues,
+        setValue: _setValue,
         setSchema,
         setSchemas,
         resetSchema,
         setEditable,
-        getValues,
-        setValue: _setValue,
         setFocus,
-        handleSubmit,
         validate,
         clearValues,
         clearErrors,
