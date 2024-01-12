@@ -9,7 +9,6 @@ const SCHEMA_SEARCH: TFormSchema = {
         text: {
             type: "text",
             label: "text",
-            validate: (value: any) => value === "test" || "test를 써주세요",
             message: "asd",
             rightButton: { icon: "bell", onClick: () => console.log("a") },
             mask: "[VS] AA",

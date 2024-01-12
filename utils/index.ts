@@ -8,6 +8,21 @@ export const comnEnvs = {
 };
 
 export const comnUtils = {
+    isUndefined: (arg: any) => {
+        return arg === undefined;
+    },
+    isNull: (arg: any) => {
+        return arg === null;
+    },
+    isEmptyString: (arg: any) => {
+        return arg === "";
+    },
+    isEmptyArray: (arg: any) => {
+        return Array.isArray(arg) && arg.length === 0;
+    },
+    isEmptyObject: (arg: any) => {
+        return lodash.isEmpty(arg);
+    },
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number } = {
             date: new Date(),

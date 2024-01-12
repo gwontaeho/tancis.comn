@@ -22,16 +22,16 @@ const reducer = (state: any, action: any) => {
     }
 };
 
-type ApiType = (...variables: any) => any;
+type TApi = (...variables: any) => any;
 
 type UseFetchProps = {
-    api: ApiType | ApiType[];
+    api: TApi | TApi[];
     key?: any[];
     enabled?: boolean;
     notifyStatus?: boolean;
+    showToast?: boolean;
     onSuccess?: (data?: any) => void;
     onError?: (error?: any) => void;
-    showToast?: boolean;
 };
 
 type UseFetchReturn = {
@@ -62,7 +62,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
         keyRef.current.key = key;
         keyRef.current.t = new Date().getTime();
-        
+
         fetch();
     }, [enabled, ...key]);
 
@@ -75,7 +75,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             const fn = () => (isArray ? Promise.all(api.map((_) => _(...variables))) : api(...variables));
             const res = await fn();
             const data = isArray ? res.map(({ data }: any) => data) : res.data;
-            
+
             dispatch({ type: "success", payload: data });
 
             if (onSuccess) {
@@ -94,7 +94,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
                 if (showToast) toast.showToast({ type: "error", content: "An error occurred " });
                 onError(error);
             }
-            
+
             statusRef.current.isLoading = false;
             statusRef.current.isError = true;
         }
