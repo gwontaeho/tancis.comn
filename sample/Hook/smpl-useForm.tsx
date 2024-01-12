@@ -122,7 +122,7 @@ export const SampleUseForm = () => {
                                 <Group.Control {...schema.textarea} />
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...schema.select} options={OPTION} />
+                                <Group.Control {...schema.select} options={OPTION} defaultValue="A05" />
                                 <Group.Control {...schema.checkbox} options={OPTION} />
                             </Group.Row>
                             <Group.Row>
