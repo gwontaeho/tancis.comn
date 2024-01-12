@@ -7,14 +7,16 @@ export type ControllerWrapperProps = {
     control?: Control;
     name?: string;
     rules?: any;
+    defaultValue?: any;
 };
 
 export const ControllerWrapper = (props: ControllerWrapperProps) => {
-    const { children, control, name, rules, onChange, ...rest } = props;
+    const { children, control, name, rules, onChange, defaultValue, ...rest } = props;
 
     const { field } = useController({
         name: name as string,
         control: control as Control,
+        defaultValue,
         rules: {
             ...rules,
             onChange: (event) => {
