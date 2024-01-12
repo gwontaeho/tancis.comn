@@ -58,13 +58,14 @@ export const CompanyCodeList = (props: any) => {
             )();
         },
         click_Grid_CoCdLst: {
-            tin: (data: any) => {
+            coTin: (data: any) => {
                 if (!comnUtils.isPopup()) return;
                 postMessage({
                     code: data.value,
                     label: data.rowValues.coNm,
                     addr: data.rowValues.coAddr,
                     status: data.rowValues.coStatCd,
+                    data: data.rowValues,
                 });
                 close();
             },
@@ -72,6 +73,7 @@ export const CompanyCodeList = (props: any) => {
     };
 
     useEffect(() => {
+        form.coCdSrch.setValue("coTpCd", "C");
         handler.click_Btn_Srch();
     }, []);
 
@@ -90,7 +92,7 @@ export const CompanyCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.coCdSrch.schema.tin}></Group.Control>
+                                <Group.Control {...form.coCdSrch.schema.coTin}></Group.Control>
                                 <Group.Control {...form.coCdSrch.schema.coTpCd}></Group.Control>
                             </Group.Row>
                             <Group.Row>

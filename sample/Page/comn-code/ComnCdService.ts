@@ -330,7 +330,7 @@ export const SCHEMA_GRID_CO_CD: WijmoSchemaType = {
     id: "grid",
     options: { pagination: "out", isReadOnly: true },
     head: [
-        { cells: [{ header: "L_TIN", binding: "tin" }] },
+        { cells: [{ header: "L_TIN", binding: "coTin" }] },
         { cells: [{ header: "L_CO_NM", binding: "coNm" }] },
         { cells: [{ header: "L_CO_ADDR", binding: "coAddr" }] },
         { cells: [{ header: "L_CO_STAT", binding: "coStatCdNm" }] },
@@ -339,7 +339,7 @@ export const SCHEMA_GRID_CO_CD: WijmoSchemaType = {
         {
             cells: [
                 {
-                    binding: "tin",
+                    binding: "coTin",
                     width: 150,
                 },
             ],
@@ -506,7 +506,7 @@ export const SCHEMA_FORM_BNK_CD_SRCH: TFormSchema = {
 export const SCHEMA_FORM_CO_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
-        tin: { type: "text", label: "L_TIN" },
+        coTin: { type: "text", label: "L_TIN" },
         coNm: { type: "text", label: "L_CO_NM" },
         coTpCd: {
             type: "select",
