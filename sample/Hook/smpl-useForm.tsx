@@ -86,7 +86,7 @@ export const SampleUseForm = () => {
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
-        defaultValues: { code: "A01", radio: "1" },
+        defaultValues: { radio: "1" },
     });
 
     const text = watch(["text"]);
@@ -189,7 +189,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("checkbox", ["E", "S"]);
+                                setValue("code", "d");
                             }}
                         >
                             <code>setValue() sdad</code>

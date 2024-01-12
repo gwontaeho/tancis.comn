@@ -16,7 +16,7 @@ type InputCodeProps = {
     onChange?: (...args: any) => void;
 };
 
-const PopupUrls: { [id: string]: string } = {
+const POPUP_URLS: { [id: string]: string } = {
     comnCd: `/comn/smpl/pages/comnCdPpup`,
     cityCd: `/comn/smpl/pages/cityCdPpup`,
     cntyCd: `/comn/smpl/pages/cntyCdPpup`,
@@ -31,110 +31,126 @@ const PopupUrls: { [id: string]: string } = {
 };
 
 export const InputCode = (props: InputCodeProps) => {
-    const { edit = true } = props;
+    const { edit = true, area, comnCd, value, maxLength, popupParams, popupSize = "sm", onChange } = props;
+
+    const initialized = React.useRef(false);
 
     const { openPopup } = usePopup();
     const {
         theme: { lang },
     } = useTheme();
 
-    const keywordInput = React.useRef<HTMLInputElement>(null);
-    const labelInput = React.useRef<HTMLInputElement>(null);
+    const [_vl, _setVl] = React.useState<{ value: string; label: string }>({ value: "", label: "" });
 
+    const keywordInput = React.useRef<HTMLInputElement>(null);
+
+    /**
+     * # on lang changed
+     * lang이 바뀔 시 value가 있으면 getComnCd 호출
+     */
     useEffect(() => {
-        if (!keywordInput.current?.value) return;
-        console.log("l chan");
-        getComnCd(keywordInput.current?.value);
+        if (!_vl.value) return;
+        getComnCd(_vl.value);
     }, [lang]);
 
+    /**
+     * # on props.value changed
+     * props.value 와 value의 값이 다르고,
+     * 두 값 모두 비어있지 않을 시 getComnCd 호출
+     */
     React.useEffect(() => {
-        if (!props.value) return;
-        if (keywordInput.current?.value === props.value) return;
+        if (!value && !_vl.value) return;
+        if (value === _vl.value) return;
         getComnCd(props.value);
-    }, [props.value]);
+    }, [value]);
 
-    const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!labelInput.current) return;
+    /**
+     * # on value changed
+     * 컴포넌트 초기화 이후 value가 바뀔 시(after getComnCd()) keyword input value change
+     */
+    React.useEffect(() => {
+        if (initialized.current === false) {
+            initialized.current = true;
+            return;
+        }
+
         if (!keywordInput.current) return;
+        keywordInput.current.value = _vl.value;
+        if (!!value === !!_vl.value) return;
+        if (!onChange) return;
+        onChange(_vl.value);
+    }, [_vl]);
 
+    /**
+     * # keyword input change event handler
+     * keyword input value 빈 값일 때 value 초기화
+     */
+    const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.value) {
-            labelInput.current.value = "";
-            if (props.onChange) props.onChange("");
+            _setVl({ value: "", label: "" });
             return;
         }
 
         getComnCd(e.target.value);
     }, 500);
 
+    /**
+     * getComnCd fetching api
+     * 검색 조건에 충족되지 않으면 value 초기화
+     *
+     * # on api success
+     * set value
+     */
     const getComnCd = async (keyword: string) => {
-        if (!labelInput.current) return;
-        if (!keywordInput.current) return;
-        if (!props.area && !props.comnCd) return;
+        if (!area && !comnCd) return;
 
         if (props.maxLength !== undefined && keyword.length < props.maxLength) {
-            labelInput.current.value = "";
-            if (!props.onChange) return;
-            props.onChange("");
+            _setVl({ value: "", label: "" });
             return;
         }
 
         try {
-            const { data } = await utils.getCode({ comnCd: props.comnCd, area: props.area, size: 1, keyword });
-
+            const { data } = await utils.getCode({ comnCd, area, size: 1, keyword });
             const c = Object.values<any>(data)[0].content[0];
 
             if (!c) {
-                labelInput.current.value = "";
-                if (!props.onChange) return;
-                props.onChange("");
+                _setVl({ value: "", label: "" });
                 return;
             }
 
-            const label = utils.getCodeLabel(props.area, c);
-            const code = utils.getCodeValue(props.area, c);
-
-            labelInput.current.value = label;
-            keywordInput.current.value = code;
-            if (!props.onChange) return;
-            props.onChange(code);
+            const label = utils.getCodeLabel(area, c);
+            const code = utils.getCodeValue(area, c);
+            _setVl({ value: code, label });
         } catch (error) {}
     };
 
     const handleClickSearch = () => {
-        const popupParams = utils.toValues(props.popupParams) || null;
+        const params = { ...utils.toValues(popupParams), comnCd };
         openPopup({
-            params: { comnCd: props.comnCd, ...popupParams },
-            url: PopupUrls[props.area || "comnCd"],
-            size: props.popupSize || "sm",
+            params,
+            url: POPUP_URLS[area || "comnCd"],
+            size: popupSize,
             callback: (data: any) => {
-                if (labelInput.current) labelInput.current.value = data.label;
-                if (keywordInput.current) keywordInput.current.value = data.code;
-                if (!props.onChange) return;
-                props.onChange(data.code);
+                _setVl({ value: data.code, label: data.label });
             },
         });
     };
 
     return (
         <div className="w-full">
-            {!edit && (
-                <div>
-                    {(keywordInput.current?.value ? `[${keywordInput.current?.value}] ` : "") +
-                        labelInput.current?.value}
-                </div>
-            )}
+            {!edit && <div>{_vl.value && `[${_vl.value}] ${_vl.label}`}</div>}
             <div hidden={!edit}>
                 <div className="w-full flex">
                     <input
-                        ref={keywordInput}
                         className="input rounded-r-none flex-1"
+                        ref={keywordInput}
                         onChange={handleChange}
-                        maxLength={props.maxLength}
+                        maxLength={maxLength}
                     />
                     <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
                         <Icon icon="search" size="xs" />
                     </button>
-                    <input ref={labelInput} readOnly className="input rounded-l-none flex-[2]" />
+                    <input readOnly defaultValue={_vl.label} className="input rounded-l-none flex-[2]" />
                 </div>
             </div>
         </div>
