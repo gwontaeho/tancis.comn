@@ -123,7 +123,7 @@ export const Checkbox = (props: CheckboxProps) => {
                                     type="checkbox"
                                     disabled={disabled}
                                     onChange={handleChangeAll}
-                                    checked={o.options?.every(({ value }) => _value.includes(value))}
+                                    checked={o.options?.every(({ value }) => _value.includes(value)) || false}
                                 />
                                 <div>{t(`L_AL`)}</div>
                             </label>
@@ -135,7 +135,7 @@ export const Checkbox = (props: CheckboxProps) => {
                                 <input
                                     {..._props}
                                     type="checkbox"
-                                    value={option.value}
+                                    value={option.value || ""}
                                     onChange={handleChange}
                                     checked={_value.some((_) => _ === option.value)}
                                 />
