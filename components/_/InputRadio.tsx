@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { useOptions } from "@/comn/hooks";
 import { TFormControlOptions } from "@/comn/components";
-import classNames from "classnames";
 
 /**
  * edit=true
@@ -27,85 +27,75 @@ type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
     lang?: string;
 };
 
-export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-    (props: RadioProps, ref: React.ForwardedRef<HTMLInputElement>) => {
-        const {
-            edit = true,
-            /** */
-            comnCd,
-            area,
-            lang,
-            options,
+export const Radio = (props: RadioProps) => {
+    const {
+        edit = true,
+        /** */
+        comnCd,
+        area,
+        lang,
+        options,
+        /** */
+        name,
+        value,
+        onClick,
+        onChange,
+        onBlur,
+        onFocus,
+        readOnly,
+        disabled,
+    } = props;
+
+    const _props = Object.fromEntries(
+        Object.entries({
             /** */
             name,
-            value,
             onClick,
-            onChange,
             onBlur,
             onFocus,
             readOnly,
             disabled,
-        } = props;
+        }).filter(([, value]) => value !== undefined),
+    );
 
-        const _props = Object.fromEntries(
-            Object.entries({
-                /** */
-                name,
-                value,
-                onClick,
-                onChange,
-                onBlur,
-                onFocus,
-                readOnly,
-                disabled,
-            }).filter(([, value]) => value !== undefined),
-        );
+    const [_value, _setValue] = React.useState<any>();
 
-        const { t } = useTranslation();
-        const o = useOptions({ comnCd, area, lang, options });
+    const { t } = useTranslation();
+    const o = useOptions({ comnCd, area, lang, options });
 
-        const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
+    React.useEffect(() => {
+        if (value === _value) return;
+        _setValue(value);
+    }, [value]);
 
-        const _ref = React.useRef<(HTMLInputElement | null)[]>([]);
-        const _refCb = React.useCallback<React.RefCallback<HTMLInputElement>>((node) => {
-            _ref.current.push(node);
-            if (!ref) return;
-            if (typeof ref === "function") {
-                ref(node);
-            } else {
-                ref.current = node;
-            }
-        }, []);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        _setValue(e.target.value);
+        if (!onChange) return;
+        onChange(e);
+    };
 
-        return (
-            <div className="w-full">
-                {!edit && (
-                    <div>
-                        {o.options
-                            ?.filter(({ value }) => {
-                                return (
-                                    value ===
-                                    _ref.current.find((node) => {
-                                        return node?.checked;
-                                    })?.value
-                                );
-                            })
-                            .map(({ value, label }) => {
-                                return `[${value}] ${label}`;
-                            })}
-                    </div>
-                )}
-                <div className={classNames("flex flex-wrap w-fit", !edit && "hidden")}>
-                    {o.options?.map(({ label, value }, i) => {
-                        return (
-                            <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
-                                <input {..._props} ref={_refCb} type="radio" value={value} />
-                                {label && <div> {t(label)}</div>}
-                            </label>
-                        );
-                    })}
-                </div>
+    const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
+
+    return (
+        <div className="w-full">
+            {!edit && <div>{o.options?.find(({ value }) => value === _value)?.label}</div>}
+
+            <div className={classNames("flex flex-wrap w-fit", !edit && "hidden")}>
+                {o.options?.map((option, i) => {
+                    return (
+                        <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
+                            <input
+                                {..._props}
+                                type="radio"
+                                value={option.value}
+                                checked={option.value === _value}
+                                onChange={handleChange}
+                            />
+                            {option.label && <div> {t(option.label)}</div>}
+                        </label>
+                    );
+                })}
             </div>
-        );
-    },
-);
+        </div>
+    );
+};

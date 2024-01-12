@@ -197,6 +197,8 @@ export const useForm = (props: UseFormProps) => {
                             case "datetime":
                             case "code":
                             case "file":
+                            case "select":
+                            case "radio":
                             case "checkbox": {
                                 const { min, max, minLength, pattern, validate, ...rest } = value;
 

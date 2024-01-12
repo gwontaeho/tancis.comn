@@ -50,6 +50,17 @@ export const Checkbox = (props: CheckboxProps) => {
         disabled,
     } = props;
 
+    const _props = Object.fromEntries(
+        Object.entries({
+            name,
+            onClick,
+            onBlur,
+            onFocus,
+            readOnly,
+            disabled,
+        }).filter(([, value]) => value !== undefined),
+    );
+
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, lang, options });
 
@@ -84,18 +95,6 @@ export const Checkbox = (props: CheckboxProps) => {
         onChange(next);
     };
 
-    const _props = Object.fromEntries(
-        Object.entries({
-            name,
-            value,
-            onClick,
-            onBlur,
-            onFocus,
-            readOnly,
-            disabled,
-        }).filter(([, value]) => value !== undefined),
-    );
-
     /**
      * readOnly 처리 해야함..
      */
@@ -120,7 +119,12 @@ export const Checkbox = (props: CheckboxProps) => {
                     {all && (
                         <div className="flex items-center h-7 space-x-1 mr-3">
                             <label className="flex items-center h-7 space-x-1">
-                                <input type="checkbox" disabled={disabled} onChange={handleChangeAll} />
+                                <input
+                                    type="checkbox"
+                                    disabled={disabled}
+                                    onChange={handleChangeAll}
+                                    checked={o.options?.every(({ value }) => _value.includes(value))}
+                                />
                                 <div>{t(`L_AL`)}</div>
                             </label>
                         </div>

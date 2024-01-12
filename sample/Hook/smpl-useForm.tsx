@@ -24,7 +24,14 @@ const SCHEMA_SEARCH: TFormSchema = {
             rightButton: { icon: "left", onClick: () => {} },
         },
         select: { type: "select", label: "select", required: true, comnCd: "COM_0015", area: "comnCd" },
-        checkbox: { type: "checkbox", label: "checkbox", all: true, required: true },
+        checkbox: {
+            type: "checkbox",
+            label: "checkbox",
+            all: true,
+            required: true,
+            comnCd: "COM_0014",
+            area: "comnCd",
+        },
         radio: { type: "radio", label: "radio", required: true, comnCd: "COM_0014", area: "comnCd" },
         date: { type: "date", label: "date", required: true },
         time: { type: "time", label: "time", required: true },
@@ -182,7 +189,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("qwdqwdwq", "ewew");
+                                setValue("checkbox", ["E", "S"]);
                             }}
                         >
                             <code>setValue() sdad</code>

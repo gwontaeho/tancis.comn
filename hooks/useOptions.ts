@@ -28,12 +28,14 @@ export const useOptions = (props: UseOptionsProps) => {
         (async () => {
             try {
                 const { data } = await utils.getCode({ comnCd, area });
-                _setOptions(
-                    Object.values<any>(data)[0].content.map((code: any) => ({
-                        label: utils.getCodeLabel(area, code),
-                        value: utils.getCodeValue(area, code),
-                    })),
-                );
+                setTimeout(() => {
+                    _setOptions(
+                        Object.values<any>(data)[0].content.map((code: any) => ({
+                            label: utils.getCodeLabel(area, code),
+                            value: utils.getCodeValue(area, code),
+                        })),
+                    );
+                }, 1500);
             } catch (error) {
                 console.log(error);
             }

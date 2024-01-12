@@ -102,7 +102,6 @@ export type FormControlProps = InputDaterangeProps & {
     start?: any;
     end?: any;
     all?: boolean;
-    select?: boolean;
     validate?: any;
     pattern?: any;
     min?: any;
@@ -149,12 +148,12 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                             return <InputNumber {...rest} ref={ref} />;
                         case "password":
                             return <InputPassword {...rest} ref={ref} />;
-                        case "select":
-                            return <Select {...rest} ref={ref} />;
-                        case "radio":
-                            return <Radio {...rest} ref={ref} />;
                         case "textarea":
                             return <Textarea {...rest} ref={ref} />;
+                        case "select":
+                            return <Select {...rest} />;
+                        case "radio":
+                            return <Radio {...rest} />;
                         case "file":
                             return <InputFile {...rest} />;
                         case "checkbox":
