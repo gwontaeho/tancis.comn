@@ -107,49 +107,59 @@ export const CityCodeList = (props: any) => {
     }, []);
 
     return (
-        <Page>
-            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_CITY_CD_LST" }]} />
-            <Page.Header title={t("T_CITY_CD_LST")} description={t("T_CITY_CD_LST")} /> */}
+        <Page
+            id={pgeUid}
+            title={t("T_CITY_CD_LST")}
+            description={t("T_CITY_CD_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { label: "T_CITY_CD_LST" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.cityCdSrch.schema.cntyCd}></Group.Control>
-                            <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.cityCdSrch.schema.regnNm} controlSize={10}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.cityCdSrch.schema.cntyCd}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.cityCdSrch.schema.regnNm} controlSize={10}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.cityCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.cityCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.cityCdLst.grid}
-                    data={fetch.getCityCdLst.data?.regnCdList}
-                    onCellClick={handler.click_Grid_CityCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.cityCdLst.grid}
+                        data={fetch.getCityCdLst.data?.regnCdList}
+                        onCellClick={handler.click_Grid_CityCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>

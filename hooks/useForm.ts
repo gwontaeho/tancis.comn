@@ -75,6 +75,9 @@ export const useForm = (props: UseFormProps) => {
             setSchema(name, schemas);
         });
     };
+    const setSchemaAll = (schema: any) => {
+        _setSchema(schema.schema);
+    };
 
     const resetSchema = () => {
         _setSchema(schema);
@@ -264,5 +267,6 @@ export const useForm = (props: UseFormProps) => {
         setError,
         reset,
         getFormValues,
+        setSchemaAll,
     };
 };
