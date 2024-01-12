@@ -237,7 +237,6 @@ export const SampleFormControlSelect = () => {
                 <Page>
                     <FormControl
                         type="select"
-                        select={true}
                         options={[
                             { label: "Select field 1", value: "1" },
                             { label: "Select field 2", value: "2" },
