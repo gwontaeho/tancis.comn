@@ -3,6 +3,7 @@ import RecoilProvider from "@/comn/features/recoil";
 import AuthProvider from "@/comn/features/auth";
 import { SampleRoutes } from "@/comn/sample/smpl-Routes";
 import { SampleMain } from "@/comn/sample/smpl-Main";
+import { ComnMain } from "@/comn/sample/comn-Main";
 import { Layout } from "@/comn/features/layouts";
 import { TancisRoutes } from "@/tra/tancis/Routes";
 import { CommonModal, CommonToast } from "@/comn/components/_";
@@ -19,6 +20,7 @@ export const Base = () => {
                 <Routes>
                     <Route element={<Layout />}>
                         <Route path="/comn/smpl/*" element={<SampleMain />} />
+                        <Route path="/comn/*" element={<ComnMain />} />
                         <Route path="*" element={<Main />} />
                     </Route>
                 </Routes>
