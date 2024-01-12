@@ -44,11 +44,35 @@ export const InputCode = (props: InputCodeProps) => {
 
     const keywordInput = React.useRef<HTMLInputElement>(null);
 
+    React.useEffect(() => {
+        initialized.current = true;
+    }, []);
+
+    /**
+     * # on value changed
+     * 컴포넌트 초기화 이후 value가 바뀔 시(after getComnCd()) keyword input value change
+     */
+    React.useEffect(() => {
+        if (initialized.current === false) {
+            return;
+        }
+
+        if (!keywordInput.current) return;
+        keywordInput.current.value = _vl.value;
+        if (!!value === !!_vl.value) return;
+        if (!onChange) return;
+        onChange(_vl.value);
+    }, [_vl]);
+
     /**
      * # on lang changed
-     * lang이 바뀔 시 value가 있으면 getComnCd 호출
+     * 컴포넌트 초기화 이후 lang이 바뀔 시 value가 있으면 getComnCd 호출
      */
     useEffect(() => {
+        if (initialized.current === false) {
+            return;
+        }
+
         if (!_vl.value) return;
         getComnCd(_vl.value);
     }, [lang]);
@@ -63,23 +87,6 @@ export const InputCode = (props: InputCodeProps) => {
         if (value === _vl.value) return;
         getComnCd(props.value);
     }, [value]);
-
-    /**
-     * # on value changed
-     * 컴포넌트 초기화 이후 value가 바뀔 시(after getComnCd()) keyword input value change
-     */
-    React.useEffect(() => {
-        if (initialized.current === false) {
-            initialized.current = true;
-            return;
-        }
-
-        if (!keywordInput.current) return;
-        keywordInput.current.value = _vl.value;
-        if (!!value === !!_vl.value) return;
-        if (!onChange) return;
-        onChange(_vl.value);
-    }, [_vl]);
 
     /**
      * # keyword input change event handler
@@ -135,6 +142,8 @@ export const InputCode = (props: InputCodeProps) => {
             },
         });
     };
+
+    console.log("code");
 
     return (
         <div className="w-full">
