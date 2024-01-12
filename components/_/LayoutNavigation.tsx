@@ -20,7 +20,6 @@ const NavItem = (props: NavItemProps) => {
     const { children, depth = 1, depth_1, depth_2, _base = "", base = "", to = "", name } = props;
 
     const _depth = depth + 1;
-    console.log(_depth);
 
     const __base = _base + base;
 
