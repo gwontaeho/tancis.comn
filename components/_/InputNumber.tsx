@@ -47,6 +47,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             disabled,
             maxLength,
             placeholder,
+            defaultValue,
         } = props;
 
         const _props = Object.fromEntries(
@@ -65,6 +66,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
                 disabled,
                 maxLength,
                 placeholder,
+                defaultValue,
             }).filter(([, value]) => value !== undefined),
         );
 

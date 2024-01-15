@@ -45,25 +45,38 @@ const data = utils.getMockData({ totCnt: 96 });
 const Grid = (props: any) => {
     const { head, body } = props;
 
+    const [_head, _setHead] = useState(() =>
+        head.map((_: any) => ({ ..._, key: uuid(), cells: _.cells.map((__: any) => ({ ...__, key: uuid() })) })),
+    );
+    const [_body, _setBody] = useState(() =>
+        body.map((_: any) => ({ ..._, key: uuid(), cells: _.cells.map((__: any) => ({ ...__, key: uuid() })) })),
+    );
+
+    const [_content, _setContent] = useState(() => data.content.map((_) => ({ ..._, key: uuid() })));
+
+    const [_selected, _setSelected] = useState();
+
     const test = () => {};
 
-    // console.log(data);
-    const content = data.content;
-
-    console.log(content);
+    console.log(_selected);
 
     return (
         <div className="[&_thead]:bg-uf-card-header [&_.cell]:justify-center [&_.cell]:min-h-[2rem] [&_.cell]:flex [&_.cell]:items-center [&_.cell]:px-2 [&_td]:border [&_th]:border">
             <table className="w-full">
                 <thead>
                     <tr>
-                        {head.map(({ cells }: any) => {
+                        {_head.map(({ key, cells }: any) => {
                             return (
-                                <th className="p-0">
-                                    <div className="grid">
-                                        {cells.map(({ id, header, colspan = 1 }: any) => {
+                                <th key={key} className="p-0">
+                                    <div className="grid gap-[1px] bg-uf-border">
+                                        {cells.map(({ key, id, header, colspan = 1 }: any) => {
                                             return (
-                                                <div className={classNames("cell", SIZES[colspan])}>{header || id}</div>
+                                                <div
+                                                    key={key}
+                                                    className={classNames("cell bg-uf-card-header", SIZES[colspan])}
+                                                >
+                                                    {header || id}
+                                                </div>
                                             );
                                         })}
                                     </div>
@@ -73,20 +86,23 @@ const Grid = (props: any) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {content.map((row: any) => {
+                    {_content.map((row: any) => {
                         return (
-                            <tr>
-                                {body.map(({ cells }: any) => {
+                            <tr key={row.key}>
+                                {_body.map(({ key, cells }: any) => {
                                     return (
-                                        <td className="p-0">
+                                        <td key={key} className="p-0">
                                             <div className="grid gap-[1px] bg-uf-border">
-                                                {cells.map(({ id, header, binding, colspan = 1 }: any) => {
+                                                {cells.map(({ key, id, header, binding, colspan = 1 }: any) => {
                                                     return (
                                                         <div
+                                                            key={key}
                                                             className={classNames(
                                                                 "cell bg-uf-card-background",
                                                                 SIZES[colspan],
+                                                                _selected === row.key + key && "bg-uf-gray",
                                                             )}
+                                                            onClick={() => _setSelected(row.key + key)}
                                                         >
                                                             {row[binding]}
                                                         </div>

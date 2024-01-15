@@ -50,6 +50,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             disabled,
             maxLength,
             placeholder,
+            defaultValue,
         } = props;
 
         const _props = Object.fromEntries(
@@ -69,6 +70,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                 disabled,
                 maxLength,
                 placeholder,
+                defaultValue,
             }).filter(([, value]) => value !== undefined),
         );
 

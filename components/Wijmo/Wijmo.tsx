@@ -393,6 +393,8 @@ export const Wijmo = (props: WijmoProps) => {
                                         <wjGrid.MultiRowCellTemplate
                                             cellType="CellEdit"
                                             template={(cell: any) => {
+                                                console.log(cell.value);
+
                                                 return (
                                                     <div
                                                         className="w-full flex"

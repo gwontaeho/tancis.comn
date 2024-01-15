@@ -106,7 +106,7 @@ export const useWijmo = (props: UseWijmoArgs) => {
 
     const addRow = (data: any) => {
         const item = { ...data, __index: uuid(), __type: "added" };
-        console.log(item);
+
         gridRef.current.control.collectionView.addNew(item);
     };
 

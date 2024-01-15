@@ -103,8 +103,6 @@ export const SampleWijmo = () => {
         defaultSchema: schema2,
     });
 
-    console.log("asd");
-
     const [test, setTest] = useState(0);
     const test2 = useRef(0);
 
