@@ -176,10 +176,10 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("number", "123123,12312312,3,12");
+                                setValue("time", "11:2sd0");
                             }}
                         >
-                            <code>setValue()</code>
+                            <code>setValue()aaaaaaaaa</code>
                         </Button>
                     </Table.Th>
                     <Table.Td></Table.Td>

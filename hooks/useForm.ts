@@ -78,9 +78,21 @@ export const useForm = (props: UseFormProps) => {
         const s = _schema[name] || {};
 
         switch (s.type) {
+            case "time": {
+                const next = new Date(dayjs().format("YYYY-MM-DD") + " " + value);
+                if (!dayjs(next).isValid()) return;
+                setValue(name, next);
+                return;
+            }
+            case "date":
+            case "datetime": {
+                const next = new Date(value);
+                if (!dayjs(next).isValid()) return;
+                setValue(name, next);
+                return;
+            }
             case "number":
                 const converted = Number(String(value).replaceAll(",", ""));
-
                 if (isNaN(converted)) {
                     setValue(name, undefined);
                     return;
