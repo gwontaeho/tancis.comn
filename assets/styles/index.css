@@ -232,20 +232,32 @@
     }
 
     /* Input */
-    .uf-input {
+    .uf-form-control {
         @apply flex flex-col;
     }
-    .uf-input-message {
+    .uf-form-control-main {
+        @apply flex w-full;
+    }
+    .uf-form-control-main[data-lb="true"] {
+        @apply [&_.input]:rounded-l-none;
+    }
+    .uf-form-control-main[data-rb="true"] {
+        @apply [&_.input]:rounded-r-none;
+    }
+    .uf-message {
         @apply text-sm mt-1;
     }
-    .uf-input-error-message {
+    .uf-error-message {
         @apply text-sm mt-1 text-uf-error;
     }
-    .uf-input-left-button {
+    .uf-left-button {
         @apply min-h-[1.75rem] px-2 border-y border-l rounded-l;
     }
-    .uf-input-right-button {
+    .uf-right-button {
         @apply min-h-[1.75rem] px-2 border-y border-r rounded-r;
+    }
+    .uf-right-text {
+        @apply absolute right-0 px-1;
     }
 
     /* Tootip */

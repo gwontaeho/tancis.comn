@@ -123,18 +123,13 @@ const FormControlGroup = (props: FormControlGroupProps) => {
     );
 };
 
-const FormControlEditMode = React.forwardRef((props: any, ref) => {
+const FormControlMain = React.forwardRef((props: any, ref) => {
     const { type, rightButton, leftButton, rightText, getValues, ...rest } = props;
 
     return (
-        <div
-            className={classNames("flex w-full", {
-                "[&_.input]:rounded-r-none": rightButton,
-                "[&_.input]:rounded-l-none": leftButton,
-            })}
-        >
+        <div data-lb={!!leftButton || undefined} data-rb={!!rightButton || undefined} className="uf-form-control-main">
             {props.edit !== false && leftButton && (
-                <button type="button" onClick={leftButton.onClick} className="uf-input-left-button">
+                <button type="button" onClick={leftButton.onClick} className="uf-left-button">
                     <Icon icon={leftButton.icon} size="xs" />
                 </button>
             )}
@@ -176,11 +171,11 @@ const FormControlEditMode = React.forwardRef((props: any, ref) => {
                             return <InputText {...rest} ref={ref} />;
                     }
                 })()}
-                {props.edit !== false && rightText && <span className="absolute right-0 px-1">{rightText}</span>}
+                {props.edit !== false && rightText && <span className="uf-right-text">{rightText}</span>}
             </div>
 
             {props.edit !== false && rightButton && (
-                <button type="button" className="uf-input-right-button" onClick={rightButton.onClick}>
+                <button type="button" className="uf-right-button" onClick={rightButton.onClick}>
                     <Icon icon={rightButton.icon} size="xs" />
                 </button>
             )}
@@ -194,22 +189,22 @@ export const FormControl = Object.assign(
         const { t } = useTranslation();
 
         return (
-            <div className={classNames("uf-input", props.edit !== false ? SIZES[size] : null)}>
+            <div className={classNames("uf-form-control", props.edit !== false ? SIZES[size] : null)}>
                 <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
                     {props.control ? (
                         <ControllerWrapper {...rest}>
-                            <FormControlEditMode />
+                            <FormControlMain />
                         </ControllerWrapper>
                     ) : (
-                        <FormControlEditMode ref={ref} {...rest} />
+                        <FormControlMain ref={ref} {...rest} />
                     )}
                 </Tooltip>
 
                 {/* message */}
-                {message && <div className="uf-input-message">{message}</div>}
+                {message && <div className="uf-message">{message}</div>}
 
                 {/* invalid message */}
-                {invalid?.message && <div className="uf-input-error-message">{t(invalid?.message)}</div>}
+                {invalid?.message && <div className="uf-error-message">{t(invalid?.message)}</div>}
             </div>
         );
     }),

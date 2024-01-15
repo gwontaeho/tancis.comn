@@ -47,7 +47,7 @@ const NavItem = (props: NavItemProps) => {
             </button>
             {Array.isArray(children) && (
                 <Collapse open={open}>
-                    <ul className="pl-4 text-dark-gray">
+                    <ul className="pl-4">
                         {children.map((child) => {
                             return (
                                 <NavItem
@@ -73,7 +73,6 @@ const Menu = () => {
 
     const depth_1 = R.find(({ base }) => pathname.startsWith(base || ""));
     const depth_1_base = depth_1?.base || "";
-
     const depth_2 = depth_1?.children?.find(({ base }) => pathname.startsWith(depth_1_base + (base || "")));
 
     return (
