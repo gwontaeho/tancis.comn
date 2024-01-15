@@ -34,7 +34,7 @@ const defaultSchema: WijmoSchemaType = {
     ],
 };
 
-const data = utils.getMockData({ totCnt: 34 });
+const data = utils.getMockData({ totalElements: 34 });
 
 export const SampleUseWijmo = () => {
     const { grid } = useWijmo({ defaultSchema });
