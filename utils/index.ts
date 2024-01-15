@@ -100,14 +100,14 @@ export const comnUtils = {
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second);
     },
-    getMockData: ({ totCnt = 99 }) => {
+    getMockData: ({ totalElements = 99 }) => {
         return {
             page: {
-                totCnt,
+                totalElements,
                 page: 0,
                 size: 10,
             },
-            content: Array(totCnt)
+            content: Array(totalElements)
                 .fill(null)
                 .map((_, i) => ({
                     id: new Date().getTime() + i,

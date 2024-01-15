@@ -91,7 +91,7 @@ const schema2: any = {
     ],
 };
 
-const data = utils.getMockData({ totCnt: 34 });
+const data = utils.getMockData({ totalElements: 34 });
 
 export const SampleWijmo = () => {
     const st = useStore();
