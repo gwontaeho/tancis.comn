@@ -46,6 +46,8 @@ export type InputDaterangeProps = {
 export const InputDaterange = (props: InputDaterangeProps) => {
     const { edit = true, start, end, rangeButton, setValue } = props;
 
+    console.log(props);
+
     const dateFormat = "MM/DD/YYYY";
 
     const [_startValue, _setStartValue] = React.useState<any>();
@@ -68,16 +70,18 @@ export const InputDaterange = (props: InputDaterangeProps) => {
         if (value > 0) {
             _setStartValue(today);
             _setEndValue(dayjs(today).add(value, unit).toDate());
-            if (props.setValue) {
-                if (props.start) props.setValue(props.start.name, today);
-                if (props.end) props.setValue(props.end.name, dayjs(today).add(value, unit).toDate());
+            if (setValue) {
+                if (props.start) setValue(props.start.name, today, { shouldValidate: true });
+                if (props.end)
+                    setValue(props.end.name, dayjs(today).add(value, unit).toDate(), { shouldValidate: true });
             }
         } else {
             _setStartValue(dayjs(today).add(value, unit).toDate());
             _setEndValue(today);
-            if (props.setValue) {
-                if (props.start) props.setValue(props.start.name, dayjs(today).add(value, unit).toDate());
-                if (props.end) props.setValue(props.end.name, today);
+            if (setValue) {
+                if (props.start)
+                    setValue(props.start.name, dayjs(today).add(value, unit).toDate(), { shouldValidate: true });
+                if (props.end) setValue(props.end.name, today, { shouldValidate: true });
             }
         }
     };
@@ -108,14 +112,14 @@ export const InputDaterange = (props: InputDaterangeProps) => {
                     <div className="flex items-center justify-center min-w-[1.25rem] h-7 bg-header border-y">-</div>
                     <div
                         className={classNames("w-full [&_input]:rounded-l-none", {
-                            "[&_input]:rounded-r-none": props.rangeButton !== undefined,
+                            "[&_input]:rounded-r-none": rangeButton !== undefined,
                         })}
                     >
                         <FormControl type="date" {...props.end} value={_endValue} onChange={_onChangeEnd} />
                     </div>
-                    {props.rangeButton !== undefined && (
+                    {rangeButton !== undefined && (
                         <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
-                            {RANGE_BUTTON_OPTIONS[props.rangeButton].map((props: RangeButtonOptionType) => {
+                            {RANGE_BUTTON_OPTIONS[rangeButton].map((props: RangeButtonOptionType) => {
                                 const { unit, label, value } = props;
                                 return (
                                     <button

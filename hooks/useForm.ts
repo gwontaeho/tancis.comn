@@ -77,36 +77,36 @@ export const useForm = (props: UseFormProps) => {
     const _setValue = (name: any, value: any) => {
         const s = _schema[name] || {};
 
+        let v = value;
         switch (s.type) {
+            case "number": {
+                v = Number(String(v).replaceAll(",", ""));
+                if (isNaN(v)) {
+                    v = undefined;
+                    break;
+                }
+                if (s.thousandSeparator) {
+                    v = v.toLocaleString("ko-KR");
+                    break;
+                }
+                break;
+            }
             case "time": {
-                const next = new Date(dayjs().format("YYYY-MM-DD") + " " + value);
-                if (!dayjs(next).isValid()) return;
-                setValue(name, next);
-                return;
+                v = new Date(dayjs().format("YYYY-MM-DD") + " " + v);
+                if (!dayjs(v).isValid()) return;
+                break;
             }
             case "date":
             case "datetime": {
-                const next = new Date(value);
-                if (!dayjs(next).isValid()) return;
-                setValue(name, next);
-                return;
+                v = new Date(v);
+                if (!dayjs(v).isValid()) return;
+                break;
             }
-            case "number":
-                const converted = Number(String(value).replaceAll(",", ""));
-                if (isNaN(converted)) {
-                    setValue(name, undefined);
-                    return;
-                }
-                if (s.thousandSeparator) {
-                    setValue(name, converted.toLocaleString("ko-KR"));
-                    return;
-                }
-                setValue(name, converted);
-                return;
+
             default:
-                setValue(name, value);
-                return;
+                break;
         }
+        setValue(name, v, { shouldValidate: isSubmitted });
     };
 
     const setSchema = (name: string, value: any) => {
@@ -299,7 +299,6 @@ export const useForm = (props: UseFormProps) => {
                                     invalid: errors[key],
                                     name: key,
                                     control,
-                                    setValue,
                                     rules: getRules(value),
                                 };
                             }

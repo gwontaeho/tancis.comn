@@ -53,15 +53,17 @@ export const InputTimerange = (props: InputTimerangeProps) => {
             _setStartValue(today);
             _setEndValue(dayjs(today).add(value, unit).toDate());
             if (props.setValue) {
-                if (props.start) props.setValue(props.start.name, today);
-                if (props.end) props.setValue(props.end.name, dayjs(today).add(value, unit).toDate());
+                if (props.start) props.setValue(props.start.name, today, { shouldValidate: true });
+                if (props.end)
+                    props.setValue(props.end.name, dayjs(today).add(value, unit).toDate(), { shouldValidate: true });
             }
         } else {
             _setStartValue(dayjs(today).add(value, unit).toDate());
             _setEndValue(today);
             if (props.setValue) {
-                if (props.start) props.setValue(props.start.name, dayjs(today).add(value, unit).toDate());
-                if (props.end) props.setValue(props.end.name, today);
+                if (props.start)
+                    props.setValue(props.start.name, dayjs(today).add(value, unit).toDate(), { shouldValidate: true });
+                if (props.end) props.setValue(props.end.name, today, { shouldValidate: true });
             }
         }
     };

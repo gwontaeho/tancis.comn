@@ -176,7 +176,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("time", "11:2sd0");
+                                setValue("time", "11:20");
                             }}
                         >
                             <code>setValue()aaaaaaaaa</code>
