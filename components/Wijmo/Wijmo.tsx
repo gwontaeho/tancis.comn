@@ -119,6 +119,8 @@ export const Wijmo = (props: WijmoProps) => {
             const value = gridRef.current.control.getCellData(row, col);
             if (!binding) return;
             if (onCellClick && onCellClick[binding]) onCellClick[binding]({ binding, value, rowValues });
+
+            console.log(gridRef.current.control);
         });
 
         _setInitialize(true);

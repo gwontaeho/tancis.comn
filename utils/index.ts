@@ -12,7 +12,7 @@ export const comnUtils = {
         return arg === undefined;
     },
     isNull: (arg: any) => {
-        return arg === null;
+        return arg === null || arg === "null";
     },
     isEmptyString: (arg: any) => {
         return arg === "";
@@ -22,6 +22,12 @@ export const comnUtils = {
     },
     isEmptyObject: (arg: any) => {
         return lodash.isEmpty(arg);
+    },
+    replaceEmpty: (arg: any, replace: any = "") => {
+        if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
+            return replace;
+        }
+        return arg;
     },
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number } = {

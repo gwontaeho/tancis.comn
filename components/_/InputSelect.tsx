@@ -90,7 +90,7 @@ export const Select = (props: SelectProps) => {
                 <div className="relative flex w-full items-center">
                     <select
                         {..._props}
-                        value={_value}
+                        value={_value || ""}
                         onChange={handleChange}
                         className={classNames("input appearance-none pr-5", readOnly && "pointer-events-none")}
                     >
