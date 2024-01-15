@@ -1,12 +1,14 @@
 import axios from "axios";
+
 import { useWijmo, useToast, useFetch } from "@/comn/hooks";
 import { Group, Page } from "@/comn/components";
 import { Wijmo } from "@/comn/components";
+import { useStore } from "@/comn/hooks";
 
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import { utils } from "@/comn/utils";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { api } from "@/comn";
 
 const instance = axios.create({
@@ -92,12 +94,19 @@ const schema2: any = {
 const data = utils.getMockData({ totCnt: 34 });
 
 export const SampleWijmo = () => {
+    const st = useStore();
+
     const grid1 = useWijmo({
         defaultSchema: schema,
     });
     const grid2 = useWijmo({
         defaultSchema: schema2,
     });
+
+    console.log("asd");
+
+    const [test, setTest] = useState(0);
+    const test2 = useRef(0);
 
     const grid2Data = utils.getMockDataWithPaging({ data, page: grid2.page, size: grid2.size });
 
@@ -110,12 +119,15 @@ export const SampleWijmo = () => {
 
     const handleClick = {
         a: (data: any) => {
-            console.log(data);
+            console.log(st.getStore());
         },
     };
 
     return (
         <Page>
+            <div>{test}</div>
+            <div>{test2.current}</div>
+
             <Group>
                 <Wijmo {...grid1.grid} data={data} onCellClick={handleClick} />
                 <div className="space-x-2">
@@ -141,6 +153,8 @@ export const SampleWijmo = () => {
                     <button onClick={() => fetch()}>refetch</button>
                 </div> */}
             </Group>
+            <button onClick={() => st.setStore("test", (prev: any) => 100)}>asd</button>
+            <button onClick={() => (test2.current = test2.current + 100)}>asxxxd</button>
         </Page>
     );
 };

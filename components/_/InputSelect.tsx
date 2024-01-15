@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { useTranslation } from "react-i18next";
 import { useOptions } from "@/comn/hooks";
 import { Icon, TFormControlOptions } from "@/comn/components";
+import classNames from "classnames";
 
 /**
  * edit=true
@@ -87,7 +88,12 @@ export const Select = (props: SelectProps) => {
             {!edit && <div>{o.options?.find(({ value }) => value === _value)?.label}</div>}
             <div hidden={!edit}>
                 <div className="relative flex w-full items-center">
-                    <select {..._props} value={_value} onChange={handleChange} className="input appearance-none pr-5">
+                    <select
+                        {..._props}
+                        value={_value}
+                        onChange={handleChange}
+                        className={classNames("input appearance-none pr-5", readOnly && "pointer-events-none")}
+                    >
                         <option value="">{all ? t("L_AL") : t("L_SELT")}</option>
                         {o.options?.map(({ label, value }, i) => {
                             return (

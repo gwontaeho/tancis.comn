@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { storeState } from "@/comn/features/recoil";
 
@@ -12,6 +13,11 @@ type UseStoreProps = {
  */
 export const useStore = (props?: UseStoreProps) => {
     const [_store, _setStore] = useRecoilState(storeState);
+    const _storeRef = useRef<Record<string, any>>({});
+
+    useEffect(() => {
+        _storeRef.current = _store;
+    }, [_store]);
 
     /**
      *
@@ -19,8 +25,8 @@ export const useStore = (props?: UseStoreProps) => {
      * @returns
      */
     const getStore = (pgeUid?: string) => {
-        if (!pgeUid) return _store;
-        return _store[pgeUid];
+        if (!pgeUid) return _storeRef.current;
+        return _storeRef.current[pgeUid];
     };
 
     /**

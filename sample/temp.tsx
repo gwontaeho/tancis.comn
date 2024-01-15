@@ -1,37 +1,128 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { v4 as uuid } from "uuid";
 import { Page, Button, Group, Layout } from "../components";
+import classNames from "classnames";
+import { utils } from "../utils";
+
+const SIZES: any = {
+    1: "col-span-1",
+    2: "col-span-2",
+    3: "col-span-3",
+    4: "col-span-4",
+    5: "col-span-5",
+    6: "col-span-6",
+    7: "col-span-7",
+    8: "col-span-8",
+    9: "col-span-9",
+    10: "col-span-10",
+    11: "col-span-11",
+    12: "col-span-12",
+};
+
+const schema1 = {
+    id: "grid2",
+    options: { checkbox: true, pagination: "out", add: true, remove: true },
+    head: [
+        { cells: [{ id: "a", header: "asd", colspan: 2 }, { id: "aa" }, { id: "ab" }] },
+        { cells: [{ id: "b", header: "asdas" }] },
+        { cells: [{ id: "c" }] },
+    ],
+    body: [
+        {
+            cells: [{ binding: "id" }],
+        },
+        {
+            cells: [{ binding: "a", colspan: 2 }, { binding: "c" }, { binding: "d" }],
+        },
+        {
+            cells: [{ binding: "b" }],
+        },
+    ],
+};
+
+const data = utils.getMockData({ totCnt: 96 });
+
+const Grid = (props: any) => {
+    const { head, body } = props;
+
+    const test = () => {};
+
+    // console.log(data);
+    const content = data.content;
+
+    console.log(content);
+
+    return (
+        <div className="[&_thead]:bg-uf-card-header [&_.cell]:justify-center [&_.cell]:min-h-[2rem] [&_.cell]:flex [&_.cell]:items-center [&_.cell]:px-2 [&_td]:border [&_th]:border">
+            <table className="w-full">
+                <thead>
+                    <tr>
+                        {head.map(({ cells }: any) => {
+                            return (
+                                <th className="p-0">
+                                    <div className="grid">
+                                        {cells.map(({ id, header, colspan = 1 }: any) => {
+                                            return (
+                                                <div className={classNames("cell", SIZES[colspan])}>{header || id}</div>
+                                            );
+                                        })}
+                                    </div>
+                                </th>
+                            );
+                        })}
+                    </tr>
+                </thead>
+                <tbody>
+                    {content.map((row: any) => {
+                        return (
+                            <tr>
+                                {body.map(({ cells }: any) => {
+                                    return (
+                                        <td className="p-0">
+                                            <div className="grid gap-[1px] bg-uf-border">
+                                                {cells.map(({ id, header, binding, colspan = 1 }: any) => {
+                                                    return (
+                                                        <div
+                                                            className={classNames(
+                                                                "cell bg-uf-card-background",
+                                                                SIZES[colspan],
+                                                            )}
+                                                        >
+                                                            {row[binding]}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+const useGrid = (props: any) => {
+    const [_schema, _setSchema] = useState(props.defaultSchema);
+
+    return { schema: _schema };
+};
 
 export const Temp = () => {
+    const { schema } = useGrid({ defaultSchema: schema1 });
+
     return (
         <Page>
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Group.Row>
-                            <Group.Control />
-                            <Group.Control />
-                            <Group.Control />
-                        </Group.Row>
+                        <Grid {...schema} />
                     </Group.Section>
                 </Group.Body>
             </Group>
-            <Layout direction="row">
-                <Layout.Left>
-                    <Button role="close" variant="underlined" />
-                    <Button role="close"></Button>
-                </Layout.Left>
-                <Layout.Right>
-                    <Button></Button>
-                    <Button color="gray">qwd</Button>
-                    <Button color="gray" variant="outlined">
-                        qwd
-                    </Button>
-                    <Button color="error" variant="outlined">
-                        qwdqwd
-                    </Button>
-                    <Button color="gray">qwd</Button>
-                </Layout.Right>
-            </Layout>
         </Page>
     );
 };

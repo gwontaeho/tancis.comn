@@ -80,21 +80,23 @@ export const Radio = (props: RadioProps) => {
         <div className="w-full">
             {!edit && <div>{o.options?.find(({ value }) => value === _value)?.label}</div>}
 
-            <div className={classNames("flex flex-wrap w-fit", !edit && "hidden")}>
-                {o.options?.map((option, i) => {
-                    return (
-                        <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
-                            <input
-                                {..._props}
-                                type="radio"
-                                value={option.value}
-                                checked={option.value === _value}
-                                onChange={handleChange}
-                            />
-                            {option.label && <div> {t(option.label)}</div>}
-                        </label>
-                    );
-                })}
+            <div hidden={!edit}>
+                <div className={classNames("flex flex-wrap w-fit", readOnly && "pointer-events-none")}>
+                    {o.options?.map((option, i) => {
+                        return (
+                            <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
+                                <input
+                                    {..._props}
+                                    type="radio"
+                                    value={option.value}
+                                    checked={option.value === _value}
+                                    onChange={handleChange}
+                                />
+                                {option.label && <div> {t(option.label)}</div>}
+                            </label>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

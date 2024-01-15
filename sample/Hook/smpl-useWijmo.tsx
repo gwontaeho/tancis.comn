@@ -6,7 +6,9 @@ const defaultSchema: WijmoSchemaType = {
     id: "grid",
     options: { checkbox: true, pagination: "in", add: true, remove: true },
     head: [
-        { cells: [{ header: "aaa", binding: "id", colspan: 3 }, { header: "a" }, { header: "b" }, { header: "c" }] },
+        {
+            cells: [{ header: "aaa", binding: "id", colspan: 3 }, { header: "a" }, { header: "b" }, { header: "c" }],
+        },
         { cells: [{ header: "d", binding: "a" }] },
         { cells: [{ header: "e", binding: "b" }] },
     ],

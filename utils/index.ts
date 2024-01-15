@@ -96,9 +96,11 @@ export const comnUtils = {
     },
     getMockData: ({ totCnt = 99 }) => {
         return {
-            totCnt,
-            page: 0,
-            size: 10,
+            page: {
+                totCnt,
+                page: 0,
+                size: 10,
+            },
             content: Array(totCnt)
                 .fill(null)
                 .map((_, i) => ({

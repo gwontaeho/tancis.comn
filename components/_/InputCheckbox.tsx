@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { useTranslation } from "react-i18next";
 import { useOptions } from "@/comn/hooks";
 import { TFormControlOptions } from "@/comn/components";
+import classNames from "classnames";
 
 /**
  * edit=true
@@ -95,10 +96,6 @@ export const Checkbox = (props: CheckboxProps) => {
         onChange(next);
     };
 
-    /**
-     * readOnly 처리 해야함..
-     */
-
     const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
     return (
         <div className="w-full">
@@ -115,7 +112,7 @@ export const Checkbox = (props: CheckboxProps) => {
                 </div>
             )}
             <div hidden={!edit}>
-                <div className="flex flex-wrap w-fit">
+                <div className={classNames("flex flex-wrap w-fit", readOnly && "pointer-events-none")}>
                     {all && (
                         <div className="flex items-center h-7 space-x-1 mr-3">
                             <label className="flex items-center h-7 space-x-1">
