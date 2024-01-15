@@ -53,7 +53,7 @@ const Modal = (props: ModalProps) => {
         <Fragment key={id}>
             {backdrop && (
                 <motion.div
-                    className="fixed w-full h-full z-[1000]"
+                    className="fixed w-full h-full z-[1000] top-0 left-0"
                     initial={{ opacity: 0 }}
                     animate={{ background: "#00000080", opacity: 0.8 }}
                     transition={{ duration: 0.1 }}
@@ -67,7 +67,7 @@ const Modal = (props: ModalProps) => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1 }}
                     className={classNames(
-                        "absolute top-1/2 left-1/2 w-full border rounded bg-uf-background z-[1001]",
+                        "fixed top-1/2 left-1/2 w-full border rounded bg-uf-background z-[1001]",
                         MODAL_SIZES[size],
                     )}
                 >
