@@ -121,7 +121,7 @@ export const useForm = (props: UseFormProps) => {
                     comnUtils.isUndefined(value) || //
                     comnUtils.isEmptyString(value) ||
                     comnUtils.isEmptyArray(value)
-                        ? null
+                        ? undefined
                         : value,
                 ])
                 .map(([key, value]) => {
@@ -335,6 +335,14 @@ export const useForm = (props: UseFormProps) => {
         );
     };
 
+    const setErrors = (errors: any) => {
+        if (errors === undefined || errors === null) return;
+        Object.keys(_schema).forEach((name) => {
+            if (errors[name] === undefined || errors[name] === null) return;
+            setError(name, { message: errors[name], type: "error" });
+        });
+    };
+
     return {
         schema: getSchema(_schema),
         handleSubmit: _handleSubmit,
@@ -353,6 +361,7 @@ export const useForm = (props: UseFormProps) => {
         errors,
         isSubmitted,
         setError,
+        setErrors,
         reset,
         getFormValues,
         setSchemaAll,

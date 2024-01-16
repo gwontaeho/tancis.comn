@@ -120,6 +120,8 @@ export const InputCode = (props: InputCodeProps) => {
             const { data } = await utils.getCode({ comnCd, area, size: 1, keyword });
             const c = Object.values<any>(data)[0].content[0];
 
+            console.log(c);
+
             if (!c) {
                 _setVl({ value: "", label: "" });
                 return;

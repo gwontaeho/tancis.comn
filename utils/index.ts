@@ -245,7 +245,7 @@ export const comnUtils = {
             case "airptCd":
                 return code.portAirptCd;
             case "coCd":
-                return code.tin;
+                return code.coTin;
             case "prcssStatCd":
                 return code.item;
             case "orgCd":
