@@ -102,6 +102,7 @@ export type FormControlProps = InputDaterangeProps & {
     start?: any;
     end?: any;
     all?: boolean;
+    select?: boolean;
     validate?: any;
     pattern?: any;
     min?: any;

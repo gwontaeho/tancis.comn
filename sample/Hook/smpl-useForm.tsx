@@ -23,7 +23,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             leftButton: { icon: "left", onClick: () => {} },
             rightButton: { icon: "left", onClick: () => {} },
         },
-        select: { type: "select", label: "select", required: true, comnCd: "COM_0015", area: "comnCd", readOnly: true },
+        select: { type: "select", label: "select", required: true, select: false },
         checkbox: {
             type: "checkbox",
             label: "checkbox",
