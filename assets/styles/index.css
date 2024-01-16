@@ -222,13 +222,13 @@
 
     /* Button */
     .uf-button {
-        @apply block px-4 w-fit h-7 transition border border-uf-main bg-uf-main text-uf-white rounded hover:opacity-90 active:opacity-75 will-change-[opacity];
+        @apply block px-3 w-fit h-7 transition border border-uf-main bg-uf-main text-uf-white rounded hover:opacity-90 active:opacity-75 will-change-[opacity];
     }
     .uf-button-outlined {
-        @apply block px-4 w-fit h-7 transition border border-uf-button-outlined-border bg-uf-button-outlined-background text-uf-button-outlined-color rounded hover:brightness-90 active:brightness-75 will-change-[filter];
+        @apply block px-3 w-fit h-7 transition border border-uf-button-outlined-border bg-uf-button-outlined-background text-uf-button-outlined-color rounded hover:brightness-90 active:brightness-75 will-change-[filter];
     }
     .uf-button-underlined {
-        @apply block px-4 w-fit h-7 transition text-uf-main underline hover:brightness-90 active:brightness-75 will-change-[filter];
+        @apply block px-3 w-fit h-7 transition text-uf-main underline hover:brightness-90 active:brightness-75 will-change-[filter];
     }
 
     /* Input */

@@ -43,7 +43,7 @@ const BUTTON_ROLES = {
     save: { text: "B_SAVE", color: "info" },
     list: { text: "B_LST", color: "" },
     submit: { text: "B_SBMT", color: "warning" },
-    search: { text: "B_SRCH", color: "info" },
+    search: { text: "B_SRCH", color: "blue" },
     close: { text: "B_CLS", color: "error" },
     delete: { text: "B_DEL", color: "error" },
     reset: { text: "B_RESET", color: "warning" },
