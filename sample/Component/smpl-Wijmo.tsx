@@ -79,11 +79,12 @@ const schema2: any = {
     ],
     body: [
         {
+            width: 400,
             colspan: 3,
             cells: [{ binding: "frstRegstId", colspan: 3 }],
         },
         {
-            cells: [{ binding: "a" }],
+            cells: [{ binding: "a", width: 400 }],
         },
         {
             cells: [{ binding: "b" }],
@@ -91,7 +92,7 @@ const schema2: any = {
     ],
 };
 
-const data = utils.getMockData({ totalElements: 34 });
+const data = utils.getMockData({ totalElements: 9999 });
 
 export const SampleWijmo = () => {
     const st = useStore();

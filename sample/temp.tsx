@@ -5,10 +5,24 @@ import lodash from "lodash";
 import { useTheme } from "@/comn/hooks";
 import dayjs from "dayjs";
 import constants from "@/comn/constants";
-import { utils } from "@/comn/utils";
-import { Page, Group, Pagination, FormControl } from "../components";
+import { comnUtils, utils } from "@/comn/utils";
+import { Page, Group, Pagination, FormControl, Icon } from "@/comn/components";
 
-const SIZES: any = {
+const COLS: any = {
+    1: "grid-cols-1",
+    2: "grid-cols-2",
+    3: "grid-cols-3",
+    4: "grid-cols-4",
+    5: "grid-cols-5",
+    6: "grid-cols-6",
+    7: "grid-cols-7",
+    8: "grid-cols-8",
+    9: "grid-cols-9",
+    10: "grid-cols-10",
+    11: "grid-cols-11",
+};
+
+const SPANS: any = {
     1: "col-span-1",
     2: "col-span-2",
     3: "col-span-3",
@@ -27,9 +41,15 @@ const schema1 = {
     id: "grid2",
     options: { checkbox: true, pagination: "in", add: true, remove: true },
     head: [
-        { cells: [{ id: "a", header: "asd", colspan: 2 }, { id: "aa" }, { id: "ab" }] },
+        {
+            width: "*",
+            cells: [{ id: "id", header: "asd", colspan: 2, required: true }, { id: "d", header: "adad" }, { id: "ab" }],
+        },
         { cells: [{ id: "b", header: "asdas" }] },
         { cells: [{ id: "c" }] },
+        { cells: [{ id: "e" }] },
+        // { cells: [{ id: "f" }] },
+        // { cells: [{ id: "g" }] },
     ],
     body: [
         {
@@ -37,7 +57,7 @@ const schema1 = {
         },
         {
             cells: [
-                { binding: "a", colspan: 2 },
+                { binding: "a", colspan: 2, link: () => {} },
                 { binding: "c", type: "date" },
                 { binding: "d", type: "number", thousandSeparator: true },
             ],
@@ -45,6 +65,15 @@ const schema1 = {
         {
             cells: [{ binding: "b" }],
         },
+        {
+            cells: [{ binding: "e" }],
+        },
+        // {
+        //     cells: [{ binding: "f" }],
+        // },
+        // {
+        //     cells: [{ binding: "g" }],
+        // },
     ],
 };
 
@@ -60,7 +89,7 @@ type TData = {
 
 const Grid = (props: any) => {
     const {
-        id, //
+        id, // grid id
         head,
         body,
         options,
@@ -73,7 +102,14 @@ const Grid = (props: any) => {
         contentRef,
         selectedRef,
         checkedRef,
+        mRef,
     } = props;
+
+    const fields = body
+        .flatMap(({ cells }: any) => cells)
+        .reduce((prev: any, curr: any) => {
+            return { ...prev, [curr["binding"]]: curr };
+        }, {});
 
     const { theme } = useTheme();
 
@@ -81,11 +117,24 @@ const Grid = (props: any) => {
     const keyBase = useRef(uuid()).current;
 
     const [_head, _setHead] = useState(() =>
-        head.map((_: any) => ({ ..._, __key: uuid(), cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })) })),
+        head.map((_: any) => ({
+            ..._,
+            __key: uuid(),
+            width: _.width || 200,
+            cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })),
+        })),
     );
-    const [_body, _setBody] = useState(() =>
-        body.map((_: any) => ({ ..._, __key: uuid(), cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })) })),
-    );
+    const [_body, _setBody] = useState(() => {
+        return body.map((_: any, index: any) => {
+            return {
+                ..._,
+                __key: uuid(),
+                width: _head[index]?.width || 200,
+                cols: Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 0)),
+                cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })),
+            };
+        });
+    });
 
     const [_content, _setContent] = useState<any[]>(() => {
         const _ = data.content.map((_: any) => {
@@ -102,6 +151,7 @@ const Grid = (props: any) => {
     const [_selectedRow, _setSelectedRow] = useState<Record<string, any> | null>(null);
     const [_editing, _setEditing] = useState<string>();
     const [_checked, _setChecked] = useState<any[]>([]);
+    const [_sortBy, _setSortBy] = useState<any | null>([null, null]);
 
     useEffect(() => {
         _setContent(() => {
@@ -125,6 +175,11 @@ const Grid = (props: any) => {
         _setChecked([]);
     }, [_page]);
 
+    useEffect(() => {
+        mRef.current.handleClickAdd = handleClickAdd;
+        mRef.current.handleClickDelete = handleClickDelete;
+    }, []);
+
     const handleUpdate = (p: any, n: any) => {
         _setContent((prev: any) => {
             const next = prev.map((_: any) => {
@@ -137,7 +192,6 @@ const Grid = (props: any) => {
                 if (__type === "origin" || __type === "updated") {
                     t = Object.keys(rest).every((k) => n[k] === origin[k]) ? "origin" : "updated";
                 }
-
                 return { ...n, __type: t };
             });
 
@@ -156,14 +210,14 @@ const Grid = (props: any) => {
 
     const handleClickDelete = (type: any) => {
         if (type === "radio") {
-            if (!_selectedRow) return;
+            if (!selectedRef.current) return;
             _setContent((prev: any) => {
-                return prev.filter(({ __key }: any) => __key !== _selectedRow.__key);
+                return prev.filter(({ __key }: any) => __key !== selectedRef.current.__key);
             });
             _setSelectedRow(null);
             contentRef.current = contentRef.current
                 .map((_: any) => {
-                    if (_.__key === _selectedRow.__key) {
+                    if (_.__key === selectedRef.current.__key) {
                         if (_.__type === "added") return undefined;
                         return { ..._, __type: "deleted" };
                     } else {
@@ -173,16 +227,16 @@ const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
         }
         if (type === "checkbox") {
-            if (!_checked.length) return;
+            if (!checkedRef.current.length) return;
             _setContent((prev: any) =>
                 prev.filter(({ __key }: any) => {
-                    return !_checked.map((_) => _.__key).includes(__key);
+                    return !checkedRef.current.map((_: any) => _.__key).includes(__key);
                 }),
             );
             _setChecked([]);
             contentRef.current = contentRef.current
                 .map((_: any) => {
-                    if (_checked.map((_) => _.__key).includes(_.__key)) {
+                    if (checkedRef.current.map((_: any) => _.__key).includes(_.__key)) {
                         if (_.__type === "added") return undefined;
                         return { ..._, __type: "deleted" };
                     } else {
@@ -192,8 +246,14 @@ const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
         }
     };
+    const sortedContent =
+        _sortBy[0] === null
+            ? _content
+            : _sortBy[1] === "asc"
+              ? lodash.sortBy(_content, _sortBy[0])
+              : lodash.sortBy(_content, _sortBy[0]).reverse();
+    const pageContent = (pagination === "in" ? lodash.chunk(sortedContent, _size)[_page] : sortedContent) || [];
 
-    const pageContent = (pagination === "in" ? lodash.chunk(_content, _size)[_page] : _content) || [];
     return (
         <div className="[&_.cell]:justify-center [&_.cell]:min-h-[2.5rem] [&_.cell]:flex [&_.cell]:items-center [&_.cell]:px-1">
             <div>
@@ -203,10 +263,11 @@ const Grid = (props: any) => {
                 <button onClick={() => handleClickDelete("radio")}>delete ra</button>
                 <button onClick={() => handleClickDelete("checkbox")}>delete</button>
             </div>
-            <div className="w-full mb-8 border">
+            <div className="w-full mb-8 border overflow-x-auto bg-uf-border">
                 {/* head */}
-                <div className="flex w-full gap-[1px] bg-uf-border border-b border-l border-l-uf-card-background">
-                    <div className="flex items-center justify-center w-8 bg-uf-card-background">
+                <div className="flex w-full gap-[1px] border-b border-l border-l-uf-card-background">
+                    {/* checkbox */}
+                    <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background">
                         <input
                             type="checkbox"
                             checked={pageContent.every(({ __key }: any) =>
@@ -221,17 +282,54 @@ const Grid = (props: any) => {
                             }}
                         />
                     </div>
-                    <div className="flex items-center justify-center w-8 bg-uf-card-background" />
-                    {_head.map(({ __key, cells }: any) => {
+                    {/* radio */}
+                    <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background" />
+                    {/* header */}
+                    {_head.map(({ __key, width, cells }: any) => {
                         return (
-                            <div key={__key} className="flex-1 grid gap-[1px]">
-                                {cells.map(({ __key, id, header, colspan = 1 }: any) => {
+                            <div
+                                key={__key}
+                                className={classNames("grid gap-[1px]")}
+                                style={{ width, minWidth: width, flex: width === "*" ? 1 : 0 }}
+                            >
+                                {cells.map(({ __key, id, header, required, colspan = 1 }: any) => {
                                     return (
                                         <div
                                             key={__key}
-                                            className={classNames("cell bg-uf-card-header", SIZES[colspan])}
+                                            className={classNames(
+                                                "cell bg-uf-card-header font-semibold",
+                                                SPANS[colspan],
+                                            )}
+                                            onClick={() => {
+                                                _setSortBy((prev: any) => {
+                                                    if (prev[0] !== id) {
+                                                        return [id, "asc"];
+                                                    }
+                                                    if (prev[0] === id) {
+                                                        if (prev[1] === "asc") {
+                                                            return [id, "desc"];
+                                                        }
+                                                        if (prev[1] === "desc") {
+                                                            return [null, null];
+                                                        }
+                                                    }
+                                                });
+                                            }}
                                         >
-                                            {header || id}
+                                            <div className="relative">
+                                                {header || id}
+                                                {required && <span className="text-uf-error ml-0.5">*</span>}
+                                                {id === _sortBy[0] && (
+                                                    <Icon
+                                                        icon="up"
+                                                        size="xs"
+                                                        className={classNames(
+                                                            "absolute top-1/2 -translate-y-1/2 left-full translate-x-1",
+                                                            _sortBy[1] === "desc" && "rotate-180",
+                                                        )}
+                                                    />
+                                                )}
+                                            </div>
                                         </div>
                                     );
                                 })}
@@ -240,7 +338,7 @@ const Grid = (props: any) => {
                     })}
                 </div>
                 {/* body */}
-                <div className="flex flex-col w-full gap-[1px] bg-uf-border">
+                <div className="flex flex-col w-full gap-[1px]">
                     {pageContent.map((row: any, rowIndex: any) => {
                         const contentRowKey = row.__key;
                         const rowKey = keyBase + "." + rowIndex;
@@ -258,7 +356,7 @@ const Grid = (props: any) => {
                                           : "border-l-uf-card-background",
                                 )}
                             >
-                                <div className="flex items-center justify-center bg-uf-card-background w-8">
+                                <div className="flex items-center justify-center bg-uf-card-background min-w-[2rem]">
                                     <input
                                         type="checkbox"
                                         checked={_checked.some(({ __key }) => __key === contentRowKey)}
@@ -273,7 +371,7 @@ const Grid = (props: any) => {
                                         }}
                                     />
                                 </div>
-                                <div className="flex items-center justify-center bg-uf-card-background w-8">
+                                <div className="flex items-center justify-center bg-uf-card-background min-w-[2rem]">
                                     <input
                                         type="radio"
                                         checked={_selectedRow?.__key === row.__key}
@@ -286,14 +384,19 @@ const Grid = (props: any) => {
                                         }}
                                     />
                                 </div>
-                                {_body.map(({ cells }: any, colIndex: any) => {
+                                {_body.map(({ cells, cols, width }: any, colIndex: any) => {
                                     const colKey = keyBase + "." + rowIndex + "." + colIndex;
+
                                     return (
                                         /** col */
-                                        <div key={colKey} className="flex-1 grid gap-[1px]">
+                                        <div
+                                            key={colKey}
+                                            className={classNames("grid gap-[1px]", cols > 0 && COLS[cols])}
+                                            style={{ width, minWidth: width, flex: width === "*" ? 1 : 0 }}
+                                        >
                                             {cells.map(
                                                 (
-                                                    { __key, type, binding, colspan = 1, ...rest }: any,
+                                                    { __key, type, binding, colspan = 1, link, ...rest }: any,
                                                     cellIndex: any,
                                                 ) => {
                                                     const celKey =
@@ -305,7 +408,7 @@ const Grid = (props: any) => {
                                                             key={celKey}
                                                             className={classNames(
                                                                 "cell bg-uf-card-background border",
-                                                                SIZES[colspan],
+                                                                SPANS[colspan],
                                                                 _selectedCel === contentCelKey
                                                                     ? "border-uf-info"
                                                                     : originRef.current?.find(
@@ -324,7 +427,13 @@ const Grid = (props: any) => {
                                                             }}
                                                         >
                                                             {_editing !== contentCelKey && (
-                                                                <p className="select-none">
+                                                                <p
+                                                                    className={classNames(
+                                                                        "select-none break-all",
+                                                                        link && "underline text-uf-blue cursor-pointer",
+                                                                    )}
+                                                                    onClick={() => link && link()}
+                                                                >
                                                                     {(() => {
                                                                         switch (type) {
                                                                             case "date": {
@@ -348,10 +457,9 @@ const Grid = (props: any) => {
                                                                                     ],
                                                                                 );
                                                                             }
+                                                                            default:
+                                                                                return row[binding];
                                                                         }
-
-                                                                        return row[binding];
-                                                                        // return row[binding];
                                                                     })()}
                                                                 </p>
                                                             )}
@@ -400,7 +508,6 @@ const Grid = (props: any) => {
 
 const CellControl = (props: any) => {
     const { type, row, binding, handleUpdate, ...rest } = props;
-    console.log(rest);
 
     const ref = useRef<any>();
     const value = useRef(row[binding]);
@@ -421,20 +528,31 @@ const CellControl = (props: any) => {
     };
 
     const handleBlur = () => {
-        handleUpdate(row, { ...row, [binding]: value.current });
+        handleUpdate(row, {
+            ...row,
+            [binding]: value.current,
+        });
     };
 
     return (
-        <FormControl ref={ref} type={type} defaultValue={row[binding]} onChange={handleChange} onBlur={handleBlur} />
+        <FormControl
+            {...rest}
+            ref={ref}
+            type={type}
+            defaultValue={row[binding]}
+            onChange={handleChange}
+            onBlur={handleBlur}
+        />
     );
 };
 
 const useGrid = (props: any) => {
     /**
-     * type
+     * __type
      * added | origin | deleted | updated
      *
-     *
+     * cell type
+     * text | number | date | select
      */
 
     const [_schema, _setSchema] = useState(props.defaultSchema);
@@ -445,11 +563,17 @@ const useGrid = (props: any) => {
     const _contentRef = useRef([]);
     const _checkedRef = useRef([]);
     const _selectedRef = useRef(null);
+    const _mRef = useRef<any>({});
 
+    const addRow = () => {
+        _mRef.current.handleClickAdd();
+    };
+    const deleteRow = (type: any) => {
+        _mRef.current.handleClickDelete(type);
+    };
     const getData = () => {
         return _contentRef.current;
     };
-    const getPageData = () => {};
     const getOriginData = () => {
         return _originRef.current;
     };
@@ -459,7 +583,6 @@ const useGrid = (props: any) => {
     const getSelectedRow = () => {
         return _selectedRef.current;
     };
-    const getSelectedCell = () => {};
 
     return {
         schema: {
@@ -472,6 +595,7 @@ const useGrid = (props: any) => {
             contentRef: _contentRef,
             selectedRef: _selectedRef,
             checkedRef: _checkedRef,
+            mRef: _mRef,
         },
         page: _page,
         size: _size,
@@ -479,13 +603,15 @@ const useGrid = (props: any) => {
         getOriginData,
         getSelectedRow,
         getCheckedRows,
+        addRow,
+        deleteRow,
     };
 };
 
-const data = utils.getMockData({ totalElements: 9999 });
+const data = utils.getMockData({ totalElements: 7 });
 
 export const Temp = () => {
-    const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, page, size } = useGrid({
+    const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, addRow, deleteRow, page, size } = useGrid({
         defaultSchema: schema1,
     });
     const data2 = utils.getMockDataWithPaging({ data, page, size });
@@ -503,6 +629,9 @@ export const Temp = () => {
             <button onClick={() => console.log(getOriginData())}>get getOriginData</button>
             <button onClick={() => console.log(getSelectedRow())}>get radio</button>
             <button onClick={() => console.log(getCheckedRows())}>get checkbox</button>
+            <button onClick={() => addRow()}>add row</button>
+            <button onClick={() => deleteRow("radio")}>delete radio</button>
+            <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
         </Page>
     );
 };
