@@ -52,8 +52,6 @@ const handleMask = (v: any, schema: any) => {
         let formattedValueArray = [];
         const maxFormattedLength = maskedValueArray.length;
 
-        console.log(maxFormattedLength);
-
         for (let i = 0; i < oldValueArray.length; i++) {
             let skip = 0;
             for (
@@ -78,8 +76,6 @@ const handleMask = (v: any, schema: any) => {
             if (maskedValueArray[i] !== letter) newValueArray.push(letter);
             formattedValueArray[i + skip] = letter;
         }
-
-        console.log(formattedValueArray);
 
         let formattedValue = formattedValueArray.join("");
         formattedValue = schema.exact ? formattedValue.substring(0, maxFormattedLength) : formattedValue;
