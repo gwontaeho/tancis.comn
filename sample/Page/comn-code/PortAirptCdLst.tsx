@@ -77,48 +77,52 @@ export const PortAirptCodeList = (props: any) => {
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.portAirptCdSrch.schema.cntyCd}></Group.Control>
-                            <Group.Control {...form.portAirptCdSrch.schema.portAirptTpCd}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.portAirptCdSrch.schema.regnCd}></Group.Control>
-                            <Group.Control {...form.portAirptCdSrch.schema.regnNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.portAirptCdSrch.schema.cntyCd}></Group.Control>
+                                <Group.Control {...form.portAirptCdSrch.schema.portAirptTpCd}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.portAirptCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.portAirptCdSrch.schema.regnNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.portAirptCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.portAirptCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.portAirptCdLst.grid}
-                    data={fetch.getPortAirptCdLst.data?.regnCdList}
-                    onCellClick={handler.click_Grid_PortAirptCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.portAirptCdLst.grid}
+                        data={fetch.getPortAirptCdLst.data?.regnCdList}
+                        onCellClick={handler.click_Grid_PortAirptCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

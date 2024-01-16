@@ -71,50 +71,60 @@ export const BankCodeList = (props: any) => {
     }, []);
 
     return (
-        <Page>
-            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_BNK_CD_LST" }]} />
-            <Page.Header title={t("T_BNK_CD_LST")} description={t("T_BNK_CD_LST")} /> */}
+        <Page
+            id={pgeUid}
+            title={t("T_BNK_CD_LST")}
+            description={t("T_BNK_CD_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { label: "T_BNK_CD_LST" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.bnkCdSrch.schema.cdVldVal}></Group.Control>
-                            <Group.Control {...form.bnkCdSrch.schema.cdVldValNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.bnkCdSrch.schema.cdVldVal}></Group.Control>
+                                <Group.Control {...form.bnkCdSrch.schema.cdVldValNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.bnkCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.bnkCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.bnkCdLst.grid}
-                    data={fetch.getBnkCdLst.data?.comnCdList}
-                    onCellClick={handler.click_Grid_BnkCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.bnkCdLst.grid}
+                        data={fetch.getBnkCdLst.data?.comnCdList}
+                        onCellClick={handler.click_Grid_BnkCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

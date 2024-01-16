@@ -12,7 +12,7 @@ export const comnUtils = {
         return arg === undefined;
     },
     isNull: (arg: any) => {
-        return arg === null;
+        return arg === null || arg === "null";
     },
     isEmptyString: (arg: any) => {
         return arg === "";
@@ -22,6 +22,12 @@ export const comnUtils = {
     },
     isEmptyObject: (arg: any) => {
         return lodash.isEmpty(arg);
+    },
+    replaceEmpty: (arg: any, replace: any = "") => {
+        if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
+            return replace;
+        }
+        return arg;
     },
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number } = {
@@ -168,13 +174,13 @@ export const comnUtils = {
                 url = `/api/v1/intptl/comnppup/comn-cd?comnCd=CO012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`;
                 break;
             case "portAirptCd":
-                url = `/api/v1/intptl/comnppup/port-airpt-cd?portAirptTpCd=${portAirptTpCd}&regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/intptl/comnppup/regn/port-airpt-cd?portAirptTpCd=${portAirptTpCd}&regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "airptCd":
-                url = `/api/v1/intptl/comnppup/airpt-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/intptl/comnppup/regn/airpt-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "coCd":
-                url = `/api/v1/intptl/comnppup/co?coTpCd=${coTpCd}&tin=${keyword}&coNm=${keywordName}`;
+                url = `/api/v1/intptl/comnppup/co?coTpCd=${coTpCd}&coTin=${keyword}&coNm=${keywordName}`;
                 break;
             case "prcssStatCd":
                 url = `/api/v1/intptl/comnppup/prcss-stat-cd?bsopPrcssStatCd=COM_9000&item=${keyword}&itemNm=${keywordName}`;
@@ -235,11 +241,11 @@ export const comnUtils = {
             case "bnkCd":
                 return code.cdVldVal;
             case "portAirptCd":
-                return code.portAirptCd;
+                return code.regnCd;
             case "airptCd":
-                return code.portAirptCd;
+                return code.regnCd;
             case "coCd":
-                return code.tin;
+                return code.coTin;
             case "prcssStatCd":
                 return code.item;
             case "orgCd":

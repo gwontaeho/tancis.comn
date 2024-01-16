@@ -25,16 +25,25 @@ const HEIGHTS = {
 };
 
 const BUTTON_VARIANTS = {
-    contained: "uf-button",
-    outlined: "uf-button-outlined",
-    underlined: "uf-button-underlined",
+    contained: { style: "uf-button", color: "" },
+    outlined: { style: "uf-button-outlined", color: "" },
+    underlined: { style: "uf-button-underlined", color: "" },
+    primary: { style: "uf-button", color: "blue" },
+    warning: { style: "uf-button", color: "warning" },
+    danger: { style: "uf-button", color: "error" },
+    secondary: { style: "uf-button", color: "gray" },
+    info: { style: "uf-button", color: "info" },
+    "outline-info": { style: "uf-button-outlined", color: "info" },
+    "outline-primary": { style: "uf-button-outlined", color: "blue" },
+    "outline-danger": { style: "uf-button-outlined", color: "error" },
+    "outline-secondary": { style: "uf-button-outlined", color: "gray" },
 };
 
 const BUTTON_ROLES = {
     save: { text: "B_SAVE", color: "info" },
     list: { text: "B_LST", color: "" },
     submit: { text: "B_SBMT", color: "warning" },
-    search: { text: "B_SRCH", color: "info" },
+    search: { text: "B_SRCH", color: "blue" },
     close: { text: "B_CLS", color: "error" },
     delete: { text: "B_DEL", color: "error" },
     reset: { text: "B_RESET", color: "warning" },
@@ -62,7 +71,9 @@ export const Button = (props: ButtonProps) => {
         ? { "data-color": color }
         : role && BUTTON_ROLES[role].color
           ? { "data-color": BUTTON_ROLES[role].color }
-          : {};
+          : variant && BUTTON_VARIANTS[variant].color
+            ? { "data-color": BUTTON_VARIANTS[variant].color }
+            : {};
 
     return (
         <button
@@ -70,7 +81,7 @@ export const Button = (props: ButtonProps) => {
             {..._color}
             type={type}
             className={classNames(
-                BUTTON_VARIANTS[variant],
+                BUTTON_VARIANTS[variant].style,
                 role && BUTTON_ROLES[role].color,
                 width && WIDTHS[width],
                 height && HEIGHTS[height],

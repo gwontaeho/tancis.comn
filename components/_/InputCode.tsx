@@ -121,7 +121,7 @@ export const InputCode = (props: InputCodeProps) => {
             const c = Object.values<any>(data)[0].content[0];
 
             if (!c) {
-                _setVl({ value: "", label: "" });
+                _setVl({ value: keyword, label: "" });
                 return;
             }
 

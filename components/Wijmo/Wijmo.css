@@ -73,3 +73,7 @@
 .wj-flexgrid .wj-marquee {
     transition: 0.3s;
 }
+
+.wj-control {
+    background-color: transparent;
+}

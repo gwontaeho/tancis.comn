@@ -77,44 +77,48 @@ export const ProcessingStatusCodeList = (props: any) => {
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.prcssStatCdSrch.schema.item}></Group.Control>
-                            <Group.Control {...form.prcssStatCdSrch.schema.itemNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.prcssStatCdSrch.schema.item}></Group.Control>
+                                <Group.Control {...form.prcssStatCdSrch.schema.itemNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.prcssStatCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.prcssStatCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.prcssStatCdLst.grid}
-                    data={fetch.getPrcssStatCdLst.data?.prcssStatCdList}
-                    onCellClick={handler.click_Grid_PrcssStatCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.prcssStatCdLst.grid}
+                        data={fetch.getPrcssStatCdLst.data?.prcssStatCdList}
+                        onCellClick={handler.click_Grid_PrcssStatCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>
