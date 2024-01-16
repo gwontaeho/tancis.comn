@@ -82,44 +82,48 @@ export const OrganizationCodeList = (props: any) => {
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.orgCdSrch.schema.orgCd}></Group.Control>
-                            <Group.Control {...form.orgCdSrch.schema.orgNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.orgCdSrch.schema.orgCd}></Group.Control>
+                                <Group.Control {...form.orgCdSrch.schema.orgNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.orgCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.orgCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.orgCdLst.grid}
-                    data={fetch.getOrgCdLst.data?.orgList}
-                    onCellClick={handler.click_Grid_OrgCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.orgCdLst.grid}
+                        data={fetch.getOrgCdLst.data?.orgList}
+                        onCellClick={handler.click_Grid_OrgCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

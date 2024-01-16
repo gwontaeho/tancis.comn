@@ -85,8 +85,6 @@ export const CommonCodeList = (props: any) => {
                 nodes: [...BASE.nodes, { label: "T_COMN_CD_LST" }],
             }}
         >
-            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_COMN_CD_LST" }]} />
-            <Page.Header title={t("T_COMN_CD_LST")} description={t("T_COMN_CD_LST")} /> */}
             <form>
                 <Group>
                     <Group.Body>
@@ -137,7 +135,7 @@ export const CommonCodeList = (props: any) => {
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

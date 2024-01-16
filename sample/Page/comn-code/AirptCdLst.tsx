@@ -108,47 +108,51 @@ export const AirptCodeList = () => {
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.airptCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.airptCdSrch.schema.regnCd}></Group.Control>
-                            <Group.Control {...form.airptCdSrch.schema.regnNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.airptCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.airptCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.airptCdSrch.schema.regnNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.airptCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.airptCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.airptCdLst.grid}
-                    data={fetch.getAirptCdLst.data?.regnCdList}
-                    onCellClick={handler.click_Grid_AirptCdLst}
-                />
+                <Group.Body>
+                    <Wijmo
+                        {...grid.airptCdLst.grid}
+                        data={fetch.getAirptCdLst.data?.regnCdList}
+                        onCellClick={handler.click_Grid_AirptCdLst}
+                    />
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

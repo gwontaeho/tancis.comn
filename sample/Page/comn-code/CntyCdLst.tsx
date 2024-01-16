@@ -71,50 +71,62 @@ export const CountryCodeList = (props: any) => {
     }, []);
 
     return (
-        <Page>
-            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_CNTY_CD_LST" }]} />
-            <Page.Header title={t("T_CNTY_CD_LST")} description={t("T_CNTY_CD_LST")} /> */}
+        <Page
+            id={pgeUid}
+            title={t("T_CNTY_CD_LST")}
+            description={t("T_CNTY_CD_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { label: "T_CNTY_CD_LST" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.cntyCdSrch.schema.cntyCd}></Group.Control>
-                            <Group.Control {...form.cntyCdSrch.schema.cntyNm}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.cntyCdSrch.schema.cntyCd}></Group.Control>
+                                <Group.Control {...form.cntyCdSrch.schema.cntyNm}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.cntyCdSrch.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    onClick={() => {
+                                        handler.click_Btn_Srch();
+                                    }}
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.cntyCdSrch.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.click_Btn_Srch();
-                                }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Wijmo
-                    {...grid.cntyCdLst.grid}
-                    data={fetch.getCntyCdLst.data?.cntyCdList}
-                    onCellClick={handler.click_Grid_CntyCdLst}
-                />
+                <Group.Body>
+                    <Group.Section>
+                        <Wijmo
+                            {...grid.cntyCdLst.grid}
+                            data={fetch.getCntyCdLst.data?.cntyCdList}
+                            onCellClick={handler.click_Grid_CntyCdLst}
+                        />
+                    </Group.Section>
+                </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

@@ -92,13 +92,7 @@ export const SampleFormControlCode = () => {
             <Group>
                 <Group.Body>
                     <Group.Row>
-                        <Group.Control
-                            {...form.schema.field1}
-                            popupParams={{
-                                cntyCd: () => form.getValues("field3"),
-                                regnCd: () => form.getValues("field1"),
-                            }}
-                        ></Group.Control>
+                        <Group.Control {...form.schema.field1}></Group.Control>
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.field2}></Group.Control>
