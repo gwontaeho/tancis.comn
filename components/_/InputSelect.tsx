@@ -26,6 +26,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
     area?: string;
     lang?: string;
     all?: boolean;
+    select?: boolean;
     readOnly?: boolean;
 };
 
@@ -39,6 +40,7 @@ export const Select = (props: SelectProps) => {
         options,
         /** */
         all,
+        select = true,
         /** */
         name,
         value,
@@ -79,10 +81,6 @@ export const Select = (props: SelectProps) => {
 
     const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
 
-    /**
-     * readOnly 처리 해야함..
-     */
-
     return (
         <div className="w-full">
             {!edit && <div>{o.options?.find(({ value }) => value === _value)?.label}</div>}
@@ -94,7 +92,7 @@ export const Select = (props: SelectProps) => {
                         onChange={handleChange}
                         className={classNames("input appearance-none pr-5", readOnly && "pointer-events-none")}
                     >
-                        <option value="">{all ? t("L_AL") : t("L_SELT")}</option>
+                        {(all || select) && <option value="">{all ? t("L_AL") : t("L_SELT")}</option>}
                         {o.options?.map(({ label, value }, i) => {
                             return (
                                 <option key={OPTIONS_ID_BASE + "." + i} value={value}>

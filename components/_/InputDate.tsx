@@ -9,13 +9,15 @@ export type InputDateProps = {
     edit?: boolean;
     name?: string;
     value?: Date | null;
+    defaultValue?: any;
     readOnly?: boolean;
     disabled?: boolean;
     onChange?: (value?: Date | null) => void;
+    onBlur?: (...args: any) => void;
 };
 
 export const InputDate = (props: InputDateProps) => {
-    const { edit = true, name, value, readOnly, disabled, onChange } = props;
+    const { edit = true, name, value, defaultValue, readOnly, disabled, onChange, onBlur } = props;
 
     const { theme } = useTheme();
 
@@ -40,6 +42,7 @@ export const InputDate = (props: InputDateProps) => {
             name,
             readOnly,
             disabled,
+            onBlur,
         }).filter(([, value]) => value !== undefined),
     );
 
