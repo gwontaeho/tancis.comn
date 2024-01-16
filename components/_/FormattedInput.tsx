@@ -52,6 +52,8 @@ const handleMask = (v: any, schema: any) => {
         let formattedValueArray = [];
         const maxFormattedLength = maskedValueArray.length;
 
+        console.log(maxFormattedLength);
+
         for (let i = 0; i < oldValueArray.length; i++) {
             let skip = 0;
             for (
@@ -77,6 +79,8 @@ const handleMask = (v: any, schema: any) => {
             formattedValueArray[i + skip] = letter;
         }
 
+        console.log(formattedValueArray);
+
         let formattedValue = formattedValueArray.join("");
         formattedValue = schema.exact ? formattedValue.substring(0, maxFormattedLength) : formattedValue;
         v = formattedValue;
@@ -94,6 +98,13 @@ export const getFormattedValue = (v: any, schema: any) => {
     v = handleMask(v, schema);
 
     return v;
+};
+
+export const getUnFormattedValue = (v: any, schema: any) => {
+    if (!schema || !schema.mask) return v;
+    console.log(v);
+    var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    return v.replace(reg, "");
 };
 
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(

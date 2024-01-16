@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as rhf from "react-hook-form";
 import dayjs from "dayjs";
 import { GroupControlProps } from "@/comn/components";
-import { getFormattedValue } from "@/comn/components/_";
+import { getFormattedValue, getUnFormattedValue } from "@/comn/components/_";
 import { comnUtils } from "@/comn/utils";
 
 // export type TFormRules = Partial<{
@@ -122,6 +122,8 @@ export const useForm = (props: UseFormProps) => {
                         key,
                         (() => {
                             switch (_formFields[key]) {
+                                case "text":
+                                    return getUnFormattedValue(value, schema[key]);
                                 case "date":
                                     if (!dayjs(value).isValid()) return null;
                                     return dayjs(value).format("YYYY-MM-DD");
