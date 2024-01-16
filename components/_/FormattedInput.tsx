@@ -15,6 +15,94 @@ export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & 
     onValueChange?: (values: TFormattedInputValues) => void;
 };
 
+const handleDecimalScale = (v: any, schema: any) => {
+    if (schema.decimalScale === undefined) return v;
+    const a = v.split(".");
+    const int = a[0];
+    const dec = a[1]?.replaceAll(",", "").slice(0, schema.decimalScale);
+    return int + (dec !== undefined ? "." + dec : "");
+};
+
+const handleNumber = (v: any, schema: any) => {
+    if (schema.type !== "number") return v;
+    if (v === ".") v = "0.";
+    if (isNaN(Number(v.replaceAll(",", "")))) v = v.replaceAll(/[\D]/g, "");
+    return v;
+};
+
+const handleThousandSeparator = (v: any, schema: any) => {
+    if (schema.thousandSeparator !== true) return v;
+    const a = v.replaceAll(",", "").split(".");
+    const int = a[0];
+    const dec = a[1];
+    v = (int ? Number(int).toLocaleString("ko-KR") : "") + (dec !== undefined ? "." + dec : "");
+    return v;
+};
+
+const handleMask = (v: any, schema: any) => {
+    if (schema.mask === undefined) return v;
+    if (schema.decimalScale === undefined && schema.thousandSeparator !== true) {
+        const SET_LETTER = ["a", "A", "0", "*"];
+        const REG_NUMBER = /^[0-9]+$/;
+
+        const oldValue = v;
+        let maskedValueArray = schema.mask.split("");
+        let oldValueArray = oldValue.split("");
+        let newValueArray = [];
+        let formattedValueArray = [];
+        const maxFormattedLength = maskedValueArray.length;
+
+        for (let i = 0; i < oldValueArray.length; i++) {
+            let skip = 0;
+            for (
+                let j = i + skip;
+                !SET_LETTER.includes(maskedValueArray[i + skip]) && i + skip < maxFormattedLength;
+                j++
+            ) {
+                if (maskedValueArray[i] === oldValueArray[i]) break;
+                formattedValueArray[j] = maskedValueArray[j];
+                skip++;
+            }
+            let letter = oldValueArray[i];
+            const letterType = maskedValueArray[i + skip];
+            const isNumber = REG_NUMBER.test(letter);
+            const shouldUpperString = letterType === "A";
+            const shouldLowerString = letterType === "a";
+            const shouldNumber = letterType === "0";
+            if (shouldNumber && !isNumber) break;
+            if ((shouldUpperString || shouldLowerString) && isNumber) break;
+            if (shouldUpperString) letter = letter.toUpperCase();
+            if (shouldLowerString) letter = letter.toLowerCase();
+            if (maskedValueArray[i] !== letter) newValueArray.push(letter);
+            formattedValueArray[i + skip] = letter;
+        }
+
+        let formattedValue = formattedValueArray.join("");
+        formattedValue = schema.exact ? formattedValue.substring(0, maxFormattedLength) : formattedValue;
+        v = formattedValue;
+    }
+
+    return v;
+};
+
+export const getFormattedValue = (v: any, schema: any) => {
+    if (schema.letterCase === "lower") v = v.toLowerCase();
+    if (schema.letterCase === "upper") v = v.toUpperCase();
+    v = handleNumber(v, schema);
+    v = handleDecimalScale(v, schema);
+    v = handleThousandSeparator(v, schema);
+    v = handleMask(v, schema);
+
+    return v;
+};
+
+export const getUnFormattedValue = (v: any, schema: any) => {
+    if (!schema || !schema.mask) return v;
+    console.log(v);
+    var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    return v.replace(reg, "");
+};
+
 export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputProps>(
     (props: FormattedInputProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
