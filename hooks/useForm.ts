@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as rhf from "react-hook-form";
 import dayjs from "dayjs";
 import { GroupControlProps } from "@/comn/components";
+import { getFormattedValue } from "@/comn/components/_";
 import { comnUtils } from "@/comn/utils";
 
 // export type TFormRules = Partial<{
@@ -76,19 +77,11 @@ export const useForm = (props: UseFormProps) => {
      */
     const _setValue = (name: any, value: any) => {
         const s = _schema[name] || {};
-
         let v = value;
         switch (s.type) {
+            case "text":
             case "number": {
-                v = Number(String(v).replaceAll(",", ""));
-                if (isNaN(v)) {
-                    v = undefined;
-                    break;
-                }
-                if (s.thousandSeparator) {
-                    v = v.toLocaleString("ko-KR");
-                    break;
-                }
+                v = getFormattedValue(v, s);
                 break;
             }
             case "time": {
