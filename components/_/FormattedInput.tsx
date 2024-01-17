@@ -7,7 +7,7 @@ export type TFormattedInputValues = {
 };
 
 export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-    mask?: string;
+    mask?: string | Array<any>;
     exact?: boolean;
     decimalScale?: number;
     thousandSeparator?: boolean;
@@ -41,48 +41,24 @@ const handleThousandSeparator = (v: any, schema: any) => {
 
 const handleMask = (v: any, schema: any) => {
     if (schema.mask === undefined) return v;
-    if (schema.decimalScale === undefined && schema.thousandSeparator !== true) {
-        const SET_LETTER = ["a", "A", "0", "*"];
-        const REG_NUMBER = /^[0-9]+$/;
+    let pos = 0;
+    let temp = "";
+    var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    let t = v.replace(reg, "").split("");
 
-        const oldValue = v;
-        let maskedValueArray = schema.mask.split("");
-        let oldValueArray = oldValue.split("");
-        let newValueArray = [];
-        let formattedValueArray = [];
-        const maxFormattedLength = maskedValueArray.length;
-
-        for (let i = 0; i < oldValueArray.length; i++) {
-            let skip = 0;
-            for (
-                let j = i + skip;
-                !SET_LETTER.includes(maskedValueArray[i + skip]) && i + skip < maxFormattedLength;
-                j++
-            ) {
-                if (maskedValueArray[i] === oldValueArray[i]) break;
-                formattedValueArray[j] = maskedValueArray[j];
-                skip++;
+    for (let i = 0; i < schema.mask.length; i++) {
+        if (typeof schema.mask[i] === "string") {
+            temp += schema.mask[i];
+        } else {
+            if (!schema.mask[i].test(t[pos])) {
+                break;
             }
-            let letter = oldValueArray[i];
-            const letterType = maskedValueArray[i + skip];
-            const isNumber = REG_NUMBER.test(letter);
-            const shouldUpperString = letterType === "A";
-            const shouldLowerString = letterType === "a";
-            const shouldNumber = letterType === "0";
-            if (shouldNumber && !isNumber) break;
-            if ((shouldUpperString || shouldLowerString) && isNumber) break;
-            if (shouldUpperString) letter = letter.toUpperCase();
-            if (shouldLowerString) letter = letter.toLowerCase();
-            if (maskedValueArray[i] !== letter) newValueArray.push(letter);
-            formattedValueArray[i + skip] = letter;
+            temp += t[pos];
+            pos++;
         }
-
-        let formattedValue = formattedValueArray.join("");
-        formattedValue = schema.exact ? formattedValue.substring(0, maxFormattedLength) : formattedValue;
-        v = formattedValue;
     }
 
-    return v;
+    return temp;
 };
 
 export const getFormattedValue = (v: any, schema: any) => {
@@ -98,7 +74,6 @@ export const getFormattedValue = (v: any, schema: any) => {
 
 export const getUnFormattedValue = (v: any, schema: any) => {
     if (!schema || !schema.mask) return v;
-    console.log(v);
     var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
     return v.replace(reg, "");
 };
@@ -121,6 +96,8 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const _type = decimalScale || thousandSeparator ? "number" : type;
         const SET_LETTER = ["a", "A", "0", "*"];
         const REG_NUMBER = /^[0-9]+$/;
+
+        console.log(mask);
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             let v: TFormattedInputValues = { value: e.target.value, formattedValue: "", event: e };
@@ -196,46 +173,37 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const handleMask = (e: React.ChangeEvent<HTMLInputElement>, v: TFormattedInputValues) => {
             if (decimalScale !== undefined || thousandSeparator) return;
             if (mask === undefined) return;
-            const oldValue = e.target.value;
-            let maskedValueArray = mask.split("");
-            let oldValueArray = oldValue.split("");
-            let newValueArray = [];
-            let formattedValueArray = [];
-            const maxFormattedLength = maskedValueArray.length;
-            const maxLength = maskedValueArray.filter((_) => SET_LETTER.includes(_)).length;
 
-            for (let i = 0; i < oldValueArray.length; i++) {
-                let skip = 0;
-                for (
-                    let j = i + skip;
-                    !SET_LETTER.includes(maskedValueArray[i + skip]) && i + skip < maxFormattedLength;
-                    j++
-                ) {
-                    if (maskedValueArray[i] === oldValueArray[i]) break;
-                    formattedValueArray[j] = maskedValueArray[j];
-                    skip++;
+            let pos = 0;
+            let temp = "";
+            var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+            let t = e.target.value.replace(reg, "").split("");
+            let real = "";
+
+            let pl = t.length;
+            let p = e.target.selectionStart || 0;
+
+            for (var i = 0; i < mask.length; i++) {
+                if (typeof mask[i] === "string") {
+                    if (t[pos] === undefined) {
+                        break;
+                    }
+                    temp += mask[i];
+                } else {
+                    if (!mask[i].test(t[pos])) {
+                        break;
+                    }
+                    temp += t[pos];
+                    real += t[pos];
+                    pos++;
                 }
-                let letter = oldValueArray[i];
-                const letterType = maskedValueArray[i + skip];
-                const isNumber = REG_NUMBER.test(letter);
-                const shouldUpperString = letterType === "A";
-                const shouldLowerString = letterType === "a";
-                const shouldNumber = letterType === "0";
-                if (shouldNumber && !isNumber) break;
-                if ((shouldUpperString || shouldLowerString) && isNumber) break;
-                if (shouldUpperString) letter = letter.toUpperCase();
-                if (shouldLowerString) letter = letter.toLowerCase();
-                if (maskedValueArray[i] !== letter) newValueArray.push(letter);
-                formattedValueArray[i + skip] = letter;
             }
 
-            let value = newValueArray.join("");
-            let formattedValue = formattedValueArray.join("");
-            value = exact ? value.substring(0, maxLength) : value;
-            formattedValue = exact ? formattedValue.substring(0, maxFormattedLength) : formattedValue;
-            e.target.value = formattedValue;
-            v.value = value;
-            v.formattedValue = formattedValue;
+            temp = exact ? temp.substring(0, mask.length) : temp;
+            e.target.value = temp;
+            v.value = real;
+            v.formattedValue = temp;
+            e.target.setSelectionRange(p - (pl - real.length), p - (pl - real.length));
         };
 
         return <input {...rest} ref={ref} onChange={handleChange} />;
