@@ -16,24 +16,26 @@ export type FormattedInputProps = React.InputHTMLAttributes<HTMLInputElement> & 
 };
 
 const handleDecimalScale = (v: any, schema: any) => {
+    if (v === undefined || v === null) return v;
     if (schema.decimalScale === undefined) return v;
     const a = v.split(".");
     const int = a[0];
-    const dec = a[1]?.replaceAll(",", "").slice(0, schema.decimalScale);
+    const dec = a[1]?.toString().replaceAll(",", "").slice(0, schema.decimalScale);
     return int + (dec !== undefined ? "." + dec : "");
 };
 
 const handleNumber = (v: any, schema: any) => {
-    if (v === undefined) return v;
+    if (v === undefined || v === null) return v;
     if (schema.type !== "number") return v;
     if (v === ".") v = "0.";
-    if (isNaN(Number(v.replaceAll(",", "")))) v = v.replaceAll(/[\D]/g, "");
+    if (isNaN(Number(v.toString().replaceAll(",", "")))) v = v.toString().replaceAll(/[\D]/g, "");
     return v;
 };
 
 const handleThousandSeparator = (v: any, schema: any) => {
+    if (v === undefined || v === null) return v;
     if (schema.thousandSeparator !== true) return v;
-    const a = v.replaceAll(",", "").split(".");
+    const a = v.toString().replaceAll(",", "").split(".");
     const int = a[0];
     const dec = a[1];
     v = (int ? Number(int).toLocaleString("ko-KR") : "") + (dec !== undefined ? "." + dec : "");

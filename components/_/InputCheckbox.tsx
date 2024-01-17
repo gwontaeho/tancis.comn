@@ -126,7 +126,7 @@ export const Checkbox = (props: CheckboxProps) => {
                             </label>
                         </div>
                     )}
-                    {o.options?.map((option, i) => {
+                    {(options || o.options)?.map((option, i) => {
                         return (
                             <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
                                 <input
