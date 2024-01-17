@@ -24,6 +24,7 @@ const handleDecimalScale = (v: any, schema: any) => {
 };
 
 const handleNumber = (v: any, schema: any) => {
+    if (v === undefined) return v;
     if (schema.type !== "number") return v;
     if (v === ".") v = "0.";
     if (isNaN(Number(v.replaceAll(",", "")))) v = v.replaceAll(/[\D]/g, "");
@@ -189,6 +190,7 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
                         break;
                     }
                     temp += mask[i];
+                    p++;
                 } else {
                     if (!mask[i].test(t[pos])) {
                         break;
