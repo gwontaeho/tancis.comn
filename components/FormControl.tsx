@@ -92,7 +92,7 @@ export type FormControlProps = InputDaterangeProps & {
     rules?: any;
     defaultValue?: any;
     onFocus?: (e: any) => void;
-    mask?: string;
+    mask?: string | Array<any>;
     message?: string;
     maxLength?: number;
     exact?: boolean;

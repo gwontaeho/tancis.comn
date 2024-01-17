@@ -65,6 +65,10 @@ type GroupRowProps = {
     children?: React.ReactNode;
 };
 
+type GroupAnyProps = {
+    children?: React.ReactNode;
+};
+
 type GroupLabelProps = FormControlProps & {
     label?: React.ReactNode;
     labelSize?: keyof typeof SIZES;
@@ -73,6 +77,7 @@ type GroupLabelProps = FormControlProps & {
 
 export type GroupControlProps = GroupLabelProps & {
     controlSize?: keyof typeof SIZES;
+    only?: "control" | "label";
     "data-parent"?: string;
 };
 
@@ -114,7 +119,7 @@ const GroupTitle = (props: GroupTitleProps) => {
     const sizes = { 3: "text-lg", 2: "text-xl", 1: "text-2xl" };
 
     return (
-        <div className="w-full">
+        <div className="">
             {title && <div className={sizes[titleSize] + " font-semibold"}>{t(title)}</div>}
             {description && <p>{t(description)}</p>}
         </div>
@@ -161,11 +166,22 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
     );
 });
 
-const GroupControl = forwardRef((props: GroupControlProps, ref) => {
-    const { labelSize, label, controlSize = 4, ...rest } = props;
+const GroupAny = (props: GroupAnyProps) => {
+    const { children, ...rest } = props;
     return (
         <>
-            {!props["data-parent"] && label !== undefined && (
+            <div className={"p-1 flex items-center space-x-1"} {...rest}>
+                {children}
+            </div>
+        </>
+    );
+};
+
+const GroupControl = forwardRef((props: GroupControlProps, ref) => {
+    const { labelSize, label, only, controlSize = 4, ...rest } = props;
+    return (
+        <>
+            {!props["data-parent"] && label !== undefined && only !== "control" && (
                 <GroupLabel required={props.required} label={label} labelSize={labelSize} />
             )}
             {props["data-parent"] === "group_col" ? (
@@ -215,5 +231,7 @@ Group.Section = GroupSection;
 Group.Title = GroupTitle;
 Group.Row = GroupRow;
 Group.Col = GroupCol;
+Group.Field = GroupCol;
+Group.Any = GroupAny;
 Group.Label = GroupLabel;
 Group.Control = GroupControl;

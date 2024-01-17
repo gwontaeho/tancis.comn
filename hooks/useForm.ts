@@ -330,6 +330,13 @@ export const useForm = (props: UseFormProps) => {
         );
     };
 
+    const setCheckAll = (name: string, check: boolean) => {
+        const s = _schema[name];
+        if (s === undefined || s.type !== "checkbox") {
+            return;
+        }
+    };
+
     const setErrors = (errors: any) => {
         if (errors === undefined || errors === null) return;
         Object.keys(_schema).forEach((name) => {
@@ -360,5 +367,6 @@ export const useForm = (props: UseFormProps) => {
         reset,
         getFormValues,
         setSchemaAll,
+        setCheckAll,
     };
 };
