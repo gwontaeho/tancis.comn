@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo, cloneElement } from "react";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
 import lodash from "lodash";
-import { useTheme } from "@/comn/hooks";
+import { useStore, useTheme } from "@/comn/hooks";
 import dayjs from "dayjs";
 import constants from "@/comn/constants";
 import { comnUtils, utils } from "@/comn/utils";
-import { Page, Group, Pagination, FormControl, Icon } from "@/comn/components";
+import { Page, Group, Pagination, FormControl, Icon, Layout } from "@/comn/components";
+import { InputText } from "../components/_";
 
 const COLS: any = {
     1: "grid-cols-1",
@@ -39,38 +40,37 @@ const SPANS: any = {
 
 const schema1 = {
     id: "grid2",
-    options: { checkbox: true, pagination: "in", add: true, remove: true },
+    options: { checkbox: true, pagination: "in", add: true, remove: true, group: "q", edit: false },
     head: [
         {
             width: "*",
-            cells: [{ id: "id", header: "asd", colspan: 2, required: true }, { id: "d", header: "adad" }, { id: "ab" }],
+            cells: [{ id: "q", colspan: 2, required: true }, { id: "d", header: "adad" }, { id: "ab" }],
         },
-        { cells: [{ id: "b", header: "asdas" }] },
-        { cells: [{ id: "c" }] },
-        { cells: [{ id: "e" }] },
-        // { cells: [{ id: "f" }] },
+        { width: "200", cells: [{ id: "b" }] },
+        {
+            width: "200",
+            cells: [{ id: "c", colspan: 2 }, { id: "c" }, { id: "c" }],
+        },
+        { width: 300, cells: [{ id: "e" }] },
+        { width: 300, cells: [{ id: "f" }] },
         // { cells: [{ id: "g" }] },
     ],
     body: [
         {
-            cells: [{ binding: "id" }],
+            cells: [{ binding: "q", required: true }],
         },
         {
-            cells: [
-                { binding: "a", colspan: 2, link: () => {} },
-                { binding: "c", type: "date" },
-                { binding: "d", type: "number", thousandSeparator: true },
-            ],
+            cells: [{ binding: "b", type: "number", thousandSeparator: true }],
         },
         {
-            cells: [{ binding: "b" }],
+            cells: [{ binding: "a", colspan: 2, link: () => {} }, { binding: "c", type: "text" }, { binding: "d" }],
         },
         {
-            cells: [{ binding: "e" }],
+            cells: [{ id: "test", binding: "e", edit: false }],
         },
-        // {
-        //     cells: [{ binding: "f" }],
-        // },
+        {
+            cells: [{ binding: "f" }],
+        },
         // {
         //     cells: [{ binding: "g" }],
         // },
@@ -103,6 +103,7 @@ const Grid = (props: any) => {
         selectedRef,
         checkedRef,
         mRef,
+        render,
     } = props;
 
     const fields = body
@@ -113,29 +114,92 @@ const Grid = (props: any) => {
 
     const { theme } = useTheme();
 
-    const { pagination } = options;
+    const { pagination, group, edit = false } = options;
     const keyBase = useRef(uuid()).current;
 
-    const [_head, _setHead] = useState(() =>
-        head.map((_: any) => ({
-            ..._,
-            __key: uuid(),
-            width: _.width || 200,
-            cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })),
-        })),
-    );
-    const [_body, _setBody] = useState(() => {
-        return body.map((_: any, index: any) => {
+    const bodyRef = useRef<HTMLDivElement>(null);
+    const selectedCelRef = useRef<any>();
+    console.log(edit);
+
+    /**
+     * head
+     */
+    const [_head, _setHead] = useState(() => {
+        return head.map((_: any) => {
+            const w =
+                typeof _.width === "string" && _.width.endsWith("*")
+                    ? {
+                          flex: Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1, //
+                          minWidth:
+                              _.minWidth ||
+                              160 * (Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1),
+                      }
+                    : {
+                          width: isNaN(Number(_.width)) ? 160 : Number(_.width),
+                          minWidth: isNaN(Number(_.width)) ? 160 : Number(_.width),
+                      };
             return {
                 ..._,
+                ...w,
                 __key: uuid(),
-                width: _head[index]?.width || 200,
-                cols: Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 0)),
                 cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })),
             };
         });
     });
+    /**
+     * body
+     */
+    const [_body, _setBody] = useState(() => {
+        return body.map((_: any, index: any) => {
+            const cols = Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 0));
 
+            // console.log(cols);
+            // console.log(_.cells);
+
+            const a = _.cells.reduce((prev: any, curr: any, index: any) => {
+                const { colspan = 1 } = curr;
+
+                // console.log(curr);
+
+                if (!prev[index]) prev[index] = [];
+
+                // console.log(prev);
+
+                const _ =
+                    prev[index].reduce((p: any, c: any) => {
+                        return p + (c.colspan || 1);
+                    }, 0) +
+                        colspan <
+                    cols;
+
+                if (_) {
+                    prev[index + 1] = [curr];
+                } else {
+                    prev[index] = [...prev[index], curr];
+                }
+
+                return prev;
+            }, []);
+
+            console.log(a);
+
+            return {
+                ..._,
+                __key: uuid(),
+                flex: _head[index]?.flex,
+                width: _head[index]?.width,
+                minWidth: _head[index]?.minWidth,
+                cols: Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 0)),
+                cells: _.cells.map((__: any) => ({
+                    ...__,
+                    __key: uuid(),
+                    edit: typeof __.edit === "boolean" ? __.edit : edit,
+                })),
+                _cells: [],
+            };
+        });
+    });
+    console.log(_body);
     const [_content, _setContent] = useState<any[]>(() => {
         const _ = data.content.map((_: any) => {
             return { ..._, __key: uuid(), __type: "origin" };
@@ -146,8 +210,6 @@ const Grid = (props: any) => {
     });
     const [_page, _setPage] = useState<number>(page);
     const [_size, _setSize] = useState<number>(size);
-
-    const [_selectedCel, _setSelectedCel] = useState<string>();
     const [_selectedRow, _setSelectedRow] = useState<Record<string, any> | null>(null);
     const [_editing, _setEditing] = useState<string>();
     const [_checked, _setChecked] = useState<any[]>([]);
@@ -155,7 +217,7 @@ const Grid = (props: any) => {
 
     useEffect(() => {
         _setContent(() => {
-            const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+            const _ = data.content.map((_: any, i: any) => ({ ..._, __key: uuid(), __type: "origin", __index: i + 1 }));
             originRef.current = _;
             contentRef.current = _;
             return _;
@@ -178,6 +240,7 @@ const Grid = (props: any) => {
     useEffect(() => {
         mRef.current.handleClickAdd = handleClickAdd;
         mRef.current.handleClickDelete = handleClickDelete;
+        mRef.current.handleUpdate = handleUpdate;
     }, []);
 
     const handleUpdate = (p: any, n: any) => {
@@ -186,13 +249,15 @@ const Grid = (props: any) => {
                 if (_.__key !== p.__key) return _;
 
                 const origin = originRef.current.find(({ __key }: any) => __key === p.__key);
-                const { __type, __key, ...rest } = n;
+                const content = contentRef.current.find(({ __key }: any) => __key === p.__key);
+                const asigned = Object.assign(content, n);
+                const { __type, __key, ...rest } = asigned;
                 let t = __type;
 
                 if (__type === "origin" || __type === "updated") {
                     t = Object.keys(rest).every((k) => n[k] === origin[k]) ? "origin" : "updated";
                 }
-                return { ...n, __type: t };
+                return { ...asigned, __type: t };
             });
 
             contentRef.current = next;
@@ -246,12 +311,27 @@ const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
         }
     };
+
+    const groupedContent = Object.entries(
+        _content.reduce((prev, curr) => {
+            const g = curr[group];
+
+            if (prev[g]) {
+                prev[g].push(curr);
+            } else {
+                prev[g] = [curr];
+            }
+
+            return prev;
+        }, {}),
+    );
+
     const sortedContent =
         _sortBy[0] === null
             ? _content
             : _sortBy[1] === "asc"
-              ? lodash.sortBy(_content, _sortBy[0])
-              : lodash.sortBy(_content, _sortBy[0]).reverse();
+              ? lodash.sortBy(_content, [_sortBy[0]])
+              : lodash.sortBy(_content, [_sortBy[0]]).reverse();
     const pageContent = (pagination === "in" ? lodash.chunk(sortedContent, _size)[_page] : sortedContent) || [];
 
     return (
@@ -263,9 +343,10 @@ const Grid = (props: any) => {
                 <button onClick={() => handleClickDelete("radio")}>delete ra</button>
                 <button onClick={() => handleClickDelete("checkbox")}>delete</button>
             </div>
-            <div className="w-full mb-8 border overflow-x-auto bg-uf-border">
+
+            <div className="w-full mb-8 border overflow-x-auto bg-uf-border max-h-[1000px]">
                 {/* head */}
-                <div className="flex w-full gap-[1px] border-b border-l border-l-uf-card-background">
+                <div className="flex w-max gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10">
                     {/* checkbox */}
                     <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background">
                         <input
@@ -284,14 +365,12 @@ const Grid = (props: any) => {
                     </div>
                     {/* radio */}
                     <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background" />
+                    {/* index */}
+                    <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background" />
                     {/* header */}
-                    {_head.map(({ __key, width, cells }: any) => {
+                    {_head.map(({ __key, width, minWidth, flex, cells }: any) => {
                         return (
-                            <div
-                                key={__key}
-                                className={classNames("grid gap-[1px]")}
-                                style={{ width, minWidth: width, flex: width === "*" ? 1 : 0 }}
-                            >
+                            <div key={__key} className={classNames("grid gap-[1px]")} style={{ width, minWidth, flex }}>
                                 {cells.map(({ __key, id, header, required, colspan = 1 }: any) => {
                                     return (
                                         <div
@@ -316,7 +395,7 @@ const Grid = (props: any) => {
                                                 });
                                             }}
                                         >
-                                            <div className="relative">
+                                            <div className="relative break-all">
                                                 {header || id}
                                                 {required && <span className="text-uf-error ml-0.5">*</span>}
                                                 {id === _sortBy[0] && (
@@ -338,7 +417,7 @@ const Grid = (props: any) => {
                     })}
                 </div>
                 {/* body */}
-                <div className="flex flex-col w-full gap-[1px]">
+                <div ref={bodyRef} className="flex flex-col w-full gap-[1px]">
                     {pageContent.map((row: any, rowIndex: any) => {
                         const contentRowKey = row.__key;
                         const rowKey = keyBase + "." + rowIndex;
@@ -348,7 +427,7 @@ const Grid = (props: any) => {
                             <div
                                 key={rowKey}
                                 className={classNames(
-                                    "flex gap-[1px] border-l",
+                                    "flex w-full gap-[1px] border-l",
                                     row.__type === "added"
                                         ? "border-l-uf-success"
                                         : row.__type === "updated"
@@ -356,7 +435,7 @@ const Grid = (props: any) => {
                                           : "border-l-uf-card-background",
                                 )}
                             >
-                                <div className="flex items-center justify-center bg-uf-card-background min-w-[2rem]">
+                                <div className="flex items-center justify-center bg-uf-card-header min-w-[2rem]">
                                     <input
                                         type="checkbox"
                                         checked={_checked.some(({ __key }) => __key === contentRowKey)}
@@ -371,7 +450,7 @@ const Grid = (props: any) => {
                                         }}
                                     />
                                 </div>
-                                <div className="flex items-center justify-center bg-uf-card-background min-w-[2rem]">
+                                <div className="flex items-center justify-center bg-uf-card-header min-w-[2rem]">
                                     <input
                                         type="radio"
                                         checked={_selectedRow?.__key === row.__key}
@@ -384,7 +463,10 @@ const Grid = (props: any) => {
                                         }}
                                     />
                                 </div>
-                                {_body.map(({ cells, cols, width }: any, colIndex: any) => {
+                                <div className="flex items-center justify-center bg-uf-card-header min-w-[2rem] font-semibold">
+                                    {row.__index}
+                                </div>
+                                {_body.map(({ cells, cols, width, minWidth, flex }: any, colIndex: any) => {
                                     const colKey = keyBase + "." + rowIndex + "." + colIndex;
 
                                     return (
@@ -392,90 +474,138 @@ const Grid = (props: any) => {
                                         <div
                                             key={colKey}
                                             className={classNames("grid gap-[1px]", cols > 0 && COLS[cols])}
-                                            style={{ width, minWidth: width, flex: width === "*" ? 1 : 0 }}
+                                            style={{ width, minWidth, flex, gridAutoColumns: "auto" }}
                                         >
                                             {cells.map(
                                                 (
-                                                    { __key, type, binding, colspan = 1, link, ...rest }: any,
+                                                    {
+                                                        id,
+                                                        __key,
+                                                        type = "text",
+                                                        binding,
+                                                        colspan = 0,
+                                                        link,
+                                                        width,
+                                                        edit,
+                                                        /** validation */
+                                                        min,
+                                                        max,
+                                                        minLength,
+                                                        pattern,
+                                                        validate,
+                                                        required,
+                                                        maxLength,
+                                                        ...rest
+                                                    }: any,
                                                     cellIndex: any,
                                                 ) => {
                                                     const celKey =
                                                         keyBase + "." + rowIndex + "." + colIndex + "." + cellIndex;
-                                                    const contentCelKey = contentRowKey + "." + __key;
+                                                    const cellData = row[binding];
+
+                                                    const invalid = (() => {
+                                                        switch (type) {
+                                                            case "number": {
+                                                                if (typeof min === "number") {
+                                                                }
+                                                                if (typeof max === "number") {
+                                                                }
+                                                                break;
+                                                            }
+                                                            case "text": {
+                                                                if (typeof minLength === "number") {
+                                                                }
+                                                                if (typeof maxLength === "number") {
+                                                                }
+                                                                break;
+                                                            }
+                                                            default:
+                                                        }
+                                                        if (typeof required === "boolean") {
+                                                            return !cellData;
+                                                        }
+                                                        if (pattern instanceof RegExp) {
+                                                        }
+                                                        if (validate) {
+                                                        }
+                                                        return null;
+                                                    })();
 
                                                     return (
                                                         <div
                                                             key={celKey}
+                                                            style={{ width }}
                                                             className={classNames(
-                                                                "cell bg-uf-card-background border",
+                                                                "cell bg-uf-card-background border aria-selected:border-uf-info",
                                                                 SPANS[colspan],
-                                                                _selectedCel === contentCelKey
-                                                                    ? "border-uf-info"
+                                                                invalid
+                                                                    ? "border-uf-error"
                                                                     : originRef.current?.find(
                                                                             ({ __key }: any) => __key === row.__key,
-                                                                        )?.[binding] !== row[binding]
+                                                                        )?.[binding] !== cellData
                                                                       ? "border-uf-warning"
                                                                       : "border-uf-card-background",
                                                             )}
-                                                            onClick={() => {
-                                                                if (_selectedCel === contentCelKey) {
-                                                                    _setEditing(contentCelKey);
-                                                                    return;
+                                                            onClick={(e) => {
+                                                                if (selectedCelRef.current) {
+                                                                    selectedCelRef.current.removeAttribute(
+                                                                        "aria-selected",
+                                                                    );
                                                                 }
-                                                                _setSelectedCel(contentCelKey);
-                                                                _setEditing("");
+                                                                selectedCelRef.current = e.currentTarget;
+                                                                e.currentTarget.ariaSelected = "true";
                                                             }}
                                                         >
-                                                            {_editing !== contentCelKey && (
-                                                                <p
-                                                                    className={classNames(
-                                                                        "select-none break-all",
-                                                                        link && "underline text-uf-blue cursor-pointer",
-                                                                    )}
-                                                                    onClick={() => link && link()}
-                                                                >
-                                                                    {(() => {
-                                                                        switch (type) {
-                                                                            case "date": {
-                                                                                return dayjs(row[binding]).format(
-                                                                                    constants.DATE_FORMAT_DAYJS[
-                                                                                        theme.lang
-                                                                                    ],
-                                                                                );
+                                                            {!edit &&
+                                                                (!!render[id] ? (
+                                                                    render[id](row)
+                                                                ) : (
+                                                                    <p
+                                                                        className={classNames(
+                                                                            "select-none break-all",
+                                                                            link &&
+                                                                                "underline text-uf-blue cursor-pointer",
+                                                                        )}
+                                                                        onClick={() => link && link()}
+                                                                    >
+                                                                        {(() => {
+                                                                            switch (type) {
+                                                                                case "date": {
+                                                                                    return dayjs(row[binding]).format(
+                                                                                        constants.DATE_FORMAT_DAYJS[
+                                                                                            theme.lang
+                                                                                        ],
+                                                                                    );
+                                                                                }
+                                                                                case "time": {
+                                                                                    return dayjs(row[binding]).format(
+                                                                                        constants.TIME_FORMAT_DAYJS[
+                                                                                            theme.lang
+                                                                                        ],
+                                                                                    );
+                                                                                }
+                                                                                case "datetime": {
+                                                                                    return dayjs(row[binding]).format(
+                                                                                        constants.DATETIME_FORMAT_DAYJS[
+                                                                                            theme.lang
+                                                                                        ],
+                                                                                    );
+                                                                                }
+                                                                                default:
+                                                                                    return cellData;
                                                                             }
-                                                                            case "time": {
-                                                                                return dayjs(row[binding]).format(
-                                                                                    constants.TIME_FORMAT_DAYJS[
-                                                                                        theme.lang
-                                                                                    ],
-                                                                                );
-                                                                            }
-                                                                            case "datetime": {
-                                                                                return dayjs(row[binding]).format(
-                                                                                    constants.DATETIME_FORMAT_DAYJS[
-                                                                                        theme.lang
-                                                                                    ],
-                                                                                );
-                                                                            }
-                                                                            default:
-                                                                                return row[binding];
-                                                                        }
-                                                                    })()}
-                                                                </p>
+                                                                        })()}
+                                                                    </p>
+                                                                ))}
+                                                            {edit && (
+                                                                <CellControl
+                                                                    {...rest}
+                                                                    row={row}
+                                                                    type={type}
+                                                                    binding={binding}
+                                                                    handleUpdate={handleUpdate}
+                                                                />
                                                             )}
-                                                            {_selectedCel === contentCelKey &&
-                                                                _editing === contentCelKey && (
-                                                                    <CellControl
-                                                                        {...rest}
-                                                                        row={row}
-                                                                        type={type}
-                                                                        binding={binding}
-                                                                        originRef={originRef}
-                                                                        contentRef={contentRef}
-                                                                        handleUpdate={handleUpdate}
-                                                                        setContent={_setContent}
-                                                                    />
-                                                                )}
                                                         </div>
                                                     );
                                                 },
@@ -509,15 +639,7 @@ const Grid = (props: any) => {
 const CellControl = (props: any) => {
     const { type, row, binding, handleUpdate, ...rest } = props;
 
-    const ref = useRef<any>();
     const value = useRef(row[binding]);
-
-    useEffect(() => {
-        if (!ref.current) return;
-        ref.current.focus();
-
-        return () => {};
-    }, []);
 
     const handleChange = (e: any) => {
         if (e.target) {
@@ -529,20 +651,12 @@ const CellControl = (props: any) => {
 
     const handleBlur = () => {
         handleUpdate(row, {
-            ...row,
             [binding]: value.current,
         });
     };
 
     return (
-        <FormControl
-            {...rest}
-            ref={ref}
-            type={type}
-            defaultValue={row[binding]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-        />
+        <FormControl {...rest} type={type} defaultValue={row[binding]} onChange={handleChange} onBlur={handleBlur} />
     );
 };
 
@@ -583,6 +697,13 @@ const useGrid = (props: any) => {
     const getSelectedRow = () => {
         return _selectedRef.current;
     };
+    const setSchema = () => {};
+
+    const updateRow = (p: any, n: any) => {
+        return _mRef.current.handleUpdate(p, n);
+    };
+
+    const validate = () => {};
 
     return {
         schema: {
@@ -605,23 +726,57 @@ const useGrid = (props: any) => {
         getCheckedRows,
         addRow,
         deleteRow,
+        updateRow,
+        validate,
     };
 };
 
-const data = utils.getMockData({ totalElements: 7 });
+const data = utils.getMockData({ totalElements: 9999 });
 
 export const Temp = () => {
-    const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, addRow, deleteRow, page, size } = useGrid({
-        defaultSchema: schema1,
-    });
+    const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, addRow, deleteRow, updateRow, page, size } =
+        useGrid({
+            defaultSchema: schema1,
+        });
     const data2 = utils.getMockDataWithPaging({ data, page, size });
+
+    const { pgeStore, setStore } = useStore({ pgeUid: "test" });
+    console.log("a12e2e1e1");
+    const _test = {
+        test: (props: any) => {
+            return (
+                <Layout>
+                    <FormControl
+                        type="select"
+                        onChange={(e) => {
+                            console.log(e);
+                            updateRow(props, { q: e.target.value });
+                            // setStore("test", { test: true });
+                        }}
+                        options={[{ label: "a", value: "b" }]}
+                    />
+                    <FormControl
+                        type="text"
+                        edit={props.q === "b"}
+                        value={props.g}
+                        onChange={(e) => {
+                            console.log(e);
+                            updateRow(props, { g: e.target.value });
+                            // setStore("test", { test: true });
+                        }}
+                    />
+                    <button>asd</button>
+                </Layout>
+            );
+        },
+    };
 
     return (
         <Page>
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Grid {...schema} data={data} />
+                        <Grid {...schema} data={data} render={_test} />
                     </Group.Section>
                 </Group.Body>
             </Group>
