@@ -10,7 +10,7 @@ export type TFormFieldValue = any;
 export type TFormValues = Record<TFormFieldName, TFormFieldValue>;
 export type TFormSchema = { id: string; schema: TFormControlSchema };
 type TFormControlSchema = Record<string, GroupControlProps>;
-type UseFormProps = { defaultSchema: TFormSchema; values?: any; defaultValues?: any };
+type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 
 export const useForm = (props: UseFormProps) => {
     const { defaultSchema, defaultValues } = props;
@@ -28,7 +28,51 @@ export const useForm = (props: UseFormProps) => {
         handleSubmit,
         clearErrors,
         formState: { errors, isSubmitted },
-    } = reacthookform.useForm<TFormValues>({ defaultValues });
+    } = reacthookform.useForm<TFormValues>({
+        defaultValues:
+            defaultValues &&
+            Object.fromEntries(
+                Object.entries(defaultValues).map(([k, v]) => {
+                    return [
+                        k,
+                        (() => {
+                            const s = schema[k];
+                            if (s) {
+                                switch (s.type) {
+                                    case "text":
+                                    case "number": {
+                                        return getFormattedValue(String(v), s);
+                                    }
+                                    case "checkbox":
+                                        if (!Array.isArray(v)) return null;
+                                        return v;
+                                    case "time": {
+                                        if (dayjs(v).isValid()) {
+                                            return dayjs(v).toDate();
+                                        }
+                                        if (dayjs("2000-01-01 " + v).isValid()) {
+                                            return dayjs("2000-01-01 " + v).toDate();
+                                        }
+                                        return null;
+                                    }
+                                    case "date":
+                                    case "datetime": {
+                                        if (dayjs(v).isValid()) {
+                                            return dayjs(v).toDate();
+                                        }
+                                        return null;
+                                    }
+                                    default:
+                                        return v;
+                                }
+                            }
+
+                            return v;
+                        })(),
+                    ];
+                }),
+            ),
+    });
 
     const [_schema, _setSchema] = React.useState<TFormControlSchema>(schema);
 
@@ -74,6 +118,12 @@ export const useForm = (props: UseFormProps) => {
                     v = getFormattedValue(String(v), s);
                     break;
                 }
+                case "checkbox":
+                    if (!Array.isArray(v)) {
+                        v = null;
+                        break;
+                    }
+                    break;
                 case "time": {
                     if (dayjs(v).isValid()) {
                         v = dayjs(v).toDate();
@@ -95,6 +145,7 @@ export const useForm = (props: UseFormProps) => {
                     v = null;
                     break;
                 }
+
                 default:
                     break;
             }

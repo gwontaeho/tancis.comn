@@ -110,7 +110,14 @@ export const SampleUseForm = () => {
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
-        defaultValues: { startdate: new Date(), date: new Date(), text: "asd" },
+        defaultValues: {
+            startdate: new Date(),
+            date: new Date(),
+            text: "12312312",
+            number: "11231232312312",
+            time: new Date(),
+            checkbox: ["a", "b"],
+        },
     });
 
     const text = watch(["text"]);
