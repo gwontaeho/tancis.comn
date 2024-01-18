@@ -1,6 +1,7 @@
 export const useAuth = () => {
     const auth: { [key: string]: any } = {
-        tin: "111111111",
+        /* tin number dummy */
+        tin: "123456789",
     };
 
     const get = (key: string): any => {

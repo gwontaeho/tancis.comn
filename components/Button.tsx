@@ -81,6 +81,7 @@ export const Button = (props: ButtonProps) => {
             {..._color}
             type={type}
             className={classNames(
+                "min-w-fit",
                 BUTTON_VARIANTS[variant].style,
                 role && BUTTON_ROLES[role].color,
                 width && WIDTHS[width],

@@ -9,6 +9,17 @@ export const BASE = {
 };
 
 export const APIS = {
+    getWrshCdLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "wrshCd",
+            page: page,
+            size: size,
+            keyword: data.regnCd,
+            keywordName: data.regnNm,
+            cntyCd: data.cntyCd,
+        });
+    },
+
     getComnCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
             comnCd: data.comnCd,

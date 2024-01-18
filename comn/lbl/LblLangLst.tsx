@@ -4,42 +4,42 @@ import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_CURR_CD_SRCH, SCHEMA_GRID_CURR_CD } from "./ComnCdService";
+import { BASE, APIS, SF_LBL_LANG_SRCH, SG_LBL_LANG_LIST } from "./services/LblLangPrsccService";
 
-export const WrhsCodeList = (props: any) => {
-    const pgeUid = "wrhsCdLst";
+export const CurrencyCodeList = (props: any) => {
+    const pgeUid = "lblLangLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
 
     const form = {
-        currCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_CURR_CD_SRCH,
+        lblLangSrch: useForm({
+            defaultSchema: SF_LBL_LANG_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        currCdLst: useWijmo({
-            defaultSchema: SCHEMA_GRID_CURR_CD,
+        lblLangLst: useWijmo({
+            defaultSchema: SG_LBL_LANG_LIST,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getCurrCdLst: useFetch({
-            api: (page = grid.currCdLst.page) => {
-                return APIS.getCurrCdLst(form.currCdSrch.getValues(), page, grid.currCdLst.size);
+        getLblLangLst: useFetch({
+            api: (page = grid.lblLangLst.page) => {
+                return APIS.getLblLangList(form.lblLangSrch.getValues(), page, grid.lblLangLst.size);
             },
-            enabled: comnUtils.isEmpty(form.currCdSrch.errors) && form.currCdSrch.isSubmitted,
-            key: [grid.currCdLst.page, grid.currCdLst.size],
+            enabled: comnUtils.isEmpty(form.lblLangSrch.errors) && form.lblLangSrch.isSubmitted,
+            key: [grid.lblLangLst.page, grid.lblLangLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.currCdSrch.getValues(),
-                    page: grid.currCdLst.page,
-                    size: grid.currCdLst.size,
+                    form: form.lblLangSrch.getValues(),
+                    page: grid.lblLangLst.page,
+                    size: grid.lblLangLst.size,
                 });
             },
         }),
@@ -47,18 +47,18 @@ export const WrhsCodeList = (props: any) => {
 
     const handler = {
         click_Btn_Srch: () => {
-            form.currCdSrch.handleSubmit(
+            form.lblLangSrch.handleSubmit(
                 () => {
-                    grid.currCdLst.setPage(0);
-                    fetch.getCurrCdLst.fetch(0);
+                    grid.lblLangLst.setPage(0);
+                    fetch.getLblLangLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_CurrCdLst: {
-            currCd: (data: any) => {
+        click_Grid_LblLangLst: {
+            lblLang: (data: any) => {
                 if (!comnUtils.isPopup()) return;
                 postMessage({ code: data.value, label: data.rowValues.currNm });
                 close();
@@ -85,15 +85,15 @@ export const WrhsCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.currCdSrch.schema.currCd}></Group.Control>
-                                <Group.Control {...form.currCdSrch.schema.currNm}></Group.Control>
+                                <Group.Control {...form.lblLangSrch.schema.lblId}></Group.Control>
+                                <Group.Control {...form.lblLangSrch.schema.lblNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
                             <Layout.Left>
                                 <Button
                                     onClick={() => {
-                                        form.currCdSrch.reset();
+                                        form.lblLangSrch.reset();
                                     }}
                                 >
                                     {t("B_RESET")}
@@ -117,18 +117,13 @@ export const WrhsCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         <Wijmo
-                            {...grid.currCdLst.grid}
-                            data={fetch.getCurrCdLst.data?.currCdList}
-                            onCellClick={handler.click_Grid_CurrCdLst}
+                            {...grid.lblLangLst.grid}
+                            data={fetch.getLblLangLst.data?.lblLangList}
+                            onCellClick={handler.click_Grid_LblLangLst}
                         />
                     </Group.Section>
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button role="close" onClick={close}></Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };
