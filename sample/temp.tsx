@@ -40,7 +40,7 @@ const SPANS: any = {
 
 const schema1 = {
     id: "grid2",
-    options: { checkbox: true, pagination: "in", add: true, remove: true, group: "q", edit: true },
+    options: { checkbox: true, pagination: "out", add: true, remove: true, edit: true },
     head: [
         {
             width: "*",
@@ -49,15 +49,19 @@ const schema1 = {
         { width: 100, cells: [{ id: "b" }] },
         {
             width: 300,
-            cells: [{ id: "c", colspan: 2 }, { id: "c", width: 200 }, { id: "c" }],
+            cells: [{ id: "c", colspan: 2 }, { id: "c" }, { id: "c" }],
         },
-        // { width: 300, cells: [{ id: "e" }] },
-        // { width: 300, cells: [{ id: "f" }] },
-        // { cells: [{ id: "g" }] },
+        { width: 300, cells: [{ id: "e" }] },
+        { width: 300, cells: [{ id: "f" }] },
+        { cells: [{ id: "g" }] },
     ],
     body: [
         {
-            cells: [{ binding: "q", required: true }],
+            cells: [
+                { binding: "index", required: true, colspan: 2 },
+                { binding: "test", required: true },
+                { binding: "q", required: true },
+            ],
         },
         {
             cells: [{ binding: "q", edit: false }],
@@ -65,15 +69,15 @@ const schema1 = {
         {
             cells: [{ binding: "a", colspan: 2, link: () => {} }, { binding: "c", type: "text" }, { binding: "d" }],
         },
-        // {
-        //     cells: [{ id: "test", binding: "e", edit: false }],
-        // },
-        // {
-        //     cells: [{ binding: "f", type: "date" }],
-        // },
-        // {
-        //     cells: [{ binding: "g" }],
-        // },
+        {
+            cells: [{ id: "test", binding: "e", edit: false }],
+        },
+        {
+            cells: [{ binding: "f", type: "date" }],
+        },
+        {
+            cells: [{ binding: "g" }],
+        },
     ],
 };
 
@@ -99,7 +103,6 @@ const Grid = (props: any) => {
         setSize,
         data,
         refs,
-
         render,
     } = props;
     const { mRef, originRef, contentRef, selectedRef, checkedRef, pagedRef, paginationRef } = refs;
@@ -109,6 +112,7 @@ const Grid = (props: any) => {
     const _keyBase = useRef(uuid()).current;
     const _selectedCelRef = useRef<any>();
     const _setTotalCount = useRef<any>();
+    const _initialized = useRef(false);
 
     /**
      * head
@@ -194,14 +198,6 @@ const Grid = (props: any) => {
         });
     });
 
-    const [_content, _setContent] = useState<any[]>(() => {
-        const _ = data.content.map((_: any) => {
-            return { ..._, __key: uuid(), __type: "origin" };
-        });
-        originRef.current = _;
-        contentRef.current = _;
-        return _;
-    });
     const [_page, _setPage] = useState<number>(page);
     const [_size, _setSize] = useState<number>(size);
     const [_selectedRow, _setSelectedRow] = useState<Record<string, any> | null>(null);
@@ -218,16 +214,9 @@ const Grid = (props: any) => {
         originRef.current = _;
         contentRef.current = _;
 
-        /** sort */
-        // const sortedContent =
-        //     _sortBy[0] === null
-        //         ? _content
-        //         : _sortBy[1] === "asc"
-        //           ? lodash.sortBy(_content, [_sortBy[0]])
-        //           : lodash.sortBy(_content, [_sortBy[0]]).reverse();
-
         /** paged */
         const paged = pagination === "in" ? lodash.chunk(_, size)[page] : _;
+        pagedRef.current = paged;
 
         return paged;
     });
@@ -239,14 +228,24 @@ const Grid = (props: any) => {
         mRef.current.handleUpdate = handleUpdate;
         mRef.current.handleClickAdd = handleClickAdd;
         mRef.current.handleClickDelete = handleClickDelete;
+        _initialized.current = true;
     }, []);
 
+    /** set paged content */
     useEffect(() => {
+        if (!_initialized.current) return;
         pagedRef.current = _test;
     }, [_test]);
 
+    /** on head schema changed */
+    useEffect(() => {}, []);
+
+    /** on body schema changed */
+    useEffect(() => {}, []);
+
     /** on content changed */
     useEffect(() => {
+        if (!_initialized.current) return;
         _setTest(() => {
             /** origin content */
             const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
@@ -256,30 +255,39 @@ const Grid = (props: any) => {
             contentRef.current = _;
 
             /** paged */
-            const paged = pagination === "in" ? lodash.chunk(_, size)[page] : _;
-
+            const paged = paginationRef.current.pagination === "in" ? lodash.chunk(_, size)[page] : _;
             return paged || [];
         });
     }, [data.content]);
 
     /** on paging, on sizing */
     useEffect(() => {
-        const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-        const paged = pagination === "in" ? lodash.chunk(_, _size)[_page] : _;
+        if (!_initialized.current) return;
+
+        if (paginationRef.current.pagination === "in") {
+            const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _size)[_page];
+            _setTest(paged || []);
+        }
+
         paginationRef.current.page = _page;
         paginationRef.current.size = _size;
-        _setTest(paged || []);
+
         _setChecked([]);
         _setSelectedRow(null);
     }, [_page, _size]);
 
     /** on select row (radio) */
     useEffect(() => {
+        if (!_initialized.current) return;
+
         selectedRef.current = _selectedRow;
     }, [_selectedRow]);
 
     /** on check row (checkbox) */
     useEffect(() => {
+        if (!_initialized.current) return;
+
         checkedRef.current = _checked;
     }, [_checked]);
 
@@ -324,15 +332,19 @@ const Grid = (props: any) => {
 
     /** handle add */
     const handleClickAdd = () => {
+        if (paginationRef.current.pagination !== "in") return;
+
         contentRef.current = [...contentRef.current, { __key: uuid(), __type: "added" }];
         const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-        const paged = pagination === "in" ? lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page] : _;
+        const paged = lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page];
         _setTotalCount.current?.(_.length);
         _setTest(paged || []);
     };
 
     /** handle delete */
     const handleClickDelete = (type: any) => {
+        if (paginationRef.current.pagination !== "in") return;
+
         if (type === "radio") {
             if (!selectedRef.current) return;
             contentRef.current = contentRef.current
@@ -348,8 +360,7 @@ const Grid = (props: any) => {
             _setSelectedRow(null);
 
             const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-            const paged =
-                pagination === "in" ? lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page] : _;
+            const paged = lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page];
             _setTotalCount.current?.(_.length);
             _setTest(paged || []);
             return;
@@ -369,15 +380,12 @@ const Grid = (props: any) => {
             _setChecked([]);
 
             const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-            const paged =
-                pagination === "in" ? lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page] : _;
+            const paged = lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page];
             _setTotalCount.current?.(_.length);
             _setTest(paged || []);
             return;
         }
     };
-
-    console.log(_head);
 
     return (
         <div className="[&_.cell]:justify-center [&_.cell]:min-h-[2.5rem] [&_.cell]:flex [&_.cell]:items-center [&_.cell]:px-1">
@@ -396,7 +404,7 @@ const Grid = (props: any) => {
 
             <div className="w-full mb-2 border overflow-x-auto bg-uf-border max-h-[1000px]">
                 {/* head */}
-                <div className="flex w-max gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10">
+                <div className="flex w-full gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10">
                     {/* checkbox */}
                     <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background">
                         <input
@@ -438,21 +446,15 @@ const Grid = (props: any) => {
 
                                                 /** cel */
                                                 return (
-                                                    <div key={bKey} className="cell bg-uf-card-header flex-1">
+                                                    <div
+                                                        key={bKey}
+                                                        className="cell bg-uf-card-header flex-1"
+                                                        style={{ minWidth: bProps.width, maxWidth: bProps.width }}
+                                                    >
                                                         {bProps.id}
                                                         {bProps.required && (
                                                             <span className="text-uf-error ml-0.5">*</span>
                                                         )}
-                                                        {/* {id === _sortBy[0] && (
-                                                            <Icon
-                                                                icon="up"
-                                                                size="xs"
-                                                                className={classNames(
-                                                                    "absolute top-1/2 -translate-y-1/2 left-full translate-x-1",
-                                                                    _sortBy[1] === "desc" && "rotate-180",
-                                                                )}
-                                                            />
-                                                        )} */}
                                                     </div>
                                                 );
                                             })}
@@ -515,7 +517,7 @@ const Grid = (props: any) => {
                                 {_body.map((colProps: any, colIndex: any) => {
                                     const { cells, width, minWidth, flex } = colProps;
                                     const colKey = rowKey + "." + colIndex;
-                                    console.log(colProps);
+
                                     return (
                                         /** col */
                                         <div
@@ -537,175 +539,35 @@ const Grid = (props: any) => {
                                                                 <div
                                                                     key={bKey}
                                                                     className="cell flex-1 bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info"
-                                                                    style={{ maxWidth: bProps.width }}
+                                                                    style={{
+                                                                        minWidth: bProps.width,
+                                                                        maxWidth: bProps.width,
+                                                                    }}
                                                                 >
-                                                                    {bProps.edit ? (
-                                                                        <FormControl
-                                                                            value={rowProps[bProps.binding]}
-                                                                            onChange={(arg: any) => {
-                                                                                handleUpdate(rowProps, {
-                                                                                    ...rowProps,
-                                                                                    [bProps.binding]: arg.target
-                                                                                        ? arg.target.value
-                                                                                        : arg,
-                                                                                });
-                                                                            }}
-                                                                        />
-                                                                    ) : (
-                                                                        rowProps[bProps.binding]
-                                                                    )}
+                                                                    {!bProps.edit &&
+                                                                        (render?.cell?.[bProps.binding]?.() ||
+                                                                            rowProps[bProps.binding])}
+
+                                                                    {bProps.edit &&
+                                                                        (render?.edit?.[bProps.binding]?.() || (
+                                                                            <FormControl
+                                                                                value={rowProps[bProps.binding]}
+                                                                                onChange={(arg: any) => {
+                                                                                    handleUpdate(rowProps, {
+                                                                                        ...rowProps,
+                                                                                        [bProps.binding]: arg.target
+                                                                                            ? arg.target.value
+                                                                                            : arg,
+                                                                                    });
+                                                                                }}
+                                                                            />
+                                                                        ))}
                                                                 </div>
                                                             );
                                                         })}
                                                     </div>
                                                 );
                                             })}
-
-                                            {/* {cells.map(
-                                                (
-                                                    {
-                                                        id,
-                                                        __key,
-                                                        type = "text",
-                                                        binding,
-                                                        colspan = 0,
-                                                        link,
-                                                        width,
-                                                        edit,
-
-                                                        min,
-                                                        max,
-                                                        minLength,
-                                                        pattern,
-                                                        validate,
-                                                        required,
-                                                        maxLength,
-                                                        ...rest
-                                                    }: any,
-                                                    cellIndex: any,
-                                                ) => {
-                                                    const celKey =
-                                                        _keyBase + "." + rowIndex + "." + colIndex + "." + cellIndex;
-                                                    const cellData = row[binding];
-
-                                                    const invalid = (() => {
-                                                        switch (type) {
-                                                            case "number": {
-                                                                if (typeof min === "number") {
-                                                                }
-                                                                if (typeof max === "number") {
-                                                                }
-                                                                break;
-                                                            }
-                                                            case "text": {
-                                                                if (typeof minLength === "number") {
-                                                                }
-                                                                if (typeof maxLength === "number") {
-                                                                }
-                                                                break;
-                                                            }
-                                                            default:
-                                                        }
-                                                        if (typeof required === "boolean") {
-                                                            return !cellData;
-                                                        }
-                                                        if (pattern instanceof RegExp) {
-                                                        }
-                                                        if (validate) {
-                                                        }
-                                                        return null;
-                                                    })();
-
-                                                    return (
-                                                        <div
-                                                            key={celKey}
-                                                            style={{ width }}
-                                                            className={classNames(
-                                                                "cell bg-uf-card-background border aria-selected:border-uf-info",
-                                                                SPANS[colspan],
-                                                                invalid
-                                                                    ? "border-uf-error"
-                                                                    : originRef.current?.find(
-                                                                            ({ __key }: any) => __key === row.__key,
-                                                                        )?.[binding] !== cellData
-                                                                      ? "border-uf-warning"
-                                                                      : "border-uf-card-background",
-                                                            )}
-                                                            onClick={(e) => {
-                                                                if (_selectedCelRef.current) {
-                                                                    _selectedCelRef.current.removeAttribute(
-                                                                        "aria-selected",
-                                                                    );
-                                                                }
-                                                                _selectedCelRef.current = e.currentTarget;
-                                                                e.currentTarget.ariaSelected = "true";
-                                                            }}
-                                                        >
-                                                            {!edit &&
-                                                                (!!render[id] ? (
-                                                                    render[id](row)
-                                                                ) : (
-                                                                    <p
-                                                                        className={classNames(
-                                                                            "select-none break-all",
-                                                                            link &&
-                                                                                "underline text-uf-blue cursor-pointer",
-                                                                        )}
-                                                                        onClick={() => link && link()}
-                                                                    >
-                                                                        {(() => {
-                                                                            switch (type) {
-                                                                                case "date": {
-                                                                                    return dayjs(row[binding]).format(
-                                                                                        constants.DATE_FORMAT_DAYJS[
-                                                                                            theme.lang
-                                                                                        ],
-                                                                                    );
-                                                                                }
-                                                                                case "time": {
-                                                                                    return dayjs(row[binding]).format(
-                                                                                        constants.TIME_FORMAT_DAYJS[
-                                                                                            theme.lang
-                                                                                        ],
-                                                                                    );
-                                                                                }
-                                                                                case "datetime": {
-                                                                                    return dayjs(row[binding]).format(
-                                                                                        constants.DATETIME_FORMAT_DAYJS[
-                                                                                            theme.lang
-                                                                                        ],
-                                                                                    );
-                                                                                }
-                                                                                default:
-                                                                                    return cellData;
-                                                                            }
-                                                                        })()}
-                                                                    </p>
-                                                                ))}
-                                                            {edit && (
-                                                                <FormControl
-                                                                    {...rest}
-                                                                    type={type}
-                                                                    value={row[binding]}
-                                                                    onChange={(arg: any) => {
-                                                                        if (arg.target) {
-                                                                            handleUpdate(row, {
-                                                                                ...row,
-                                                                                [binding]: arg.target.value,
-                                                                            });
-                                                                        } else {
-                                                                            handleUpdate(row, {
-                                                                                ...row,
-                                                                                [binding]: arg,
-                                                                            });
-                                                                        }
-                                                                    }}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    );
-                                                },
-                                            )} */}
                                         </div>
                                     );
                                 })}
@@ -767,7 +629,7 @@ const useGrid = (props: any) => {
     const _checkedRef = useRef([]);
     const _selectedRef = useRef(null);
     const _pagedRef = useRef([]);
-    const _paginationRef = useRef({ page: _page, size: _size });
+    const _paginationRef = useRef({ page: _page, size: _size, pagination: _schema.options.pagination });
 
     const addRow = () => {
         _mRef.current.handleClickAdd();
@@ -825,7 +687,7 @@ const useGrid = (props: any) => {
     };
 };
 
-const data = utils.getMockData({ totalElements: 8 });
+const data = utils.getMockData({ totalElements: 600 });
 
 export const Temp = () => {
     const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, addRow, deleteRow, updateRow, page, size } =
@@ -834,11 +696,21 @@ export const Temp = () => {
         });
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
+    console.log(data2);
+
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
     const _test = {
         head: {},
-        cell: {},
-        edit: {},
+        cell: {
+            test: (props: any) => {
+                return <div>test hh</div>;
+            },
+        },
+        edit: {
+            test: (props: any) => {
+                return <div>test hh</div>;
+            },
+        },
         // test: (props: any) => {
         //     return (
         //         <Layout>
@@ -872,7 +744,7 @@ export const Temp = () => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Grid {...schema} data={data} render={_test} />
+                        <Grid {...schema} data={data2} render={_test} />
                     </Group.Section>
                 </Group.Body>
             </Group>

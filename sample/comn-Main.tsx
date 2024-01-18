@@ -11,7 +11,7 @@ import { PortAirptCodeList } from "@/comn/sample/Page/comn-code/PortAirptCdLst";
 import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
 import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
 import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
-import { LabelLanguageList } from "@/comn/comn/lbl/LblLangLst";
+// import { LabelLanguageList } from "@/comn/comn/lbl/LblLangLst";
 
 export const ComnMain = () => {
     return (
@@ -27,7 +27,7 @@ export const ComnMain = () => {
             <Route path="/comn/ppup/coCdPpup" element={<CompanyCodeList />} />
             <Route path="/comn/ppup/prcssStatPpup" element={<ProcessingStatusCodeList />} />
             <Route path="/comn/ppup/orgCdPpup" element={<OrganizationCodeList />} />
-            <Route path="/comn/lbl/lblLangLst" element={<LabelLanguageList />} />
+            {/* <Route path="/comn/lbl/lblLangLst" element={<LabelLanguageList />} /> */}
         </Routes>
     );
 };

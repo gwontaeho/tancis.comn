@@ -124,6 +124,7 @@ export const comnUtils = {
             content: Array(totalElements)
                 .fill(null)
                 .map((_, i) => ({
+                    index: i,
                     q: ["abc", "bob", "tom", "ken"][Math.floor(Math.random() * 4)],
                     id: new Date().getTime() + i,
                     a: "a" + Math.random() * 1000,
