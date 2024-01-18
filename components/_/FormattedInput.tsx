@@ -66,8 +66,8 @@ const handleMask = (v: any, schema: any) => {
 };
 
 export const getFormattedValue = (v: any, schema: any) => {
-    if (schema.letterCase === "lower") v = v.toLowerCase();
-    if (schema.letterCase === "upper") v = v.toUpperCase();
+    if (schema.letterCase === "lower" && v !== undefined) v = v.toLowerCase();
+    if (schema.letterCase === "upper" && v !== undefined) v = v.toUpperCase();
     v = handleNumber(v, schema);
     v = handleDecimalScale(v, schema);
     v = handleThousandSeparator(v, schema);

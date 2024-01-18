@@ -11,22 +11,23 @@ import { PortAirptCodeList } from "@/comn/sample/Page/comn-code/PortAirptCdLst";
 import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
 import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
 import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
-import { __Test } from "../components/__TEST";
+import { LabelLanguageList } from "@/comn/comn/lbl/LblLangLst";
 
 export const ComnMain = () => {
     return (
         <Routes>
-            <Route path="/ppup/comnCdPpup" element={<CommonCodeList />} />
-            <Route path="/ppup/cntyCdPpup" element={<CountryCodeList />} />
-            <Route path="/ppup/cityCdPpup" element={<CityCodeList />} />
-            <Route path="/ppup/currCdPpup" element={<CurrencyCodeList />} />
-            <Route path="/ppup/bnkCdPpup" element={<BankCodeList />} />
-            <Route path="/ppup/portCdPpup" element={<PortCodeList />} />
-            <Route path="/ppup/portAirptCdPpup" element={<PortAirptCodeList />} />
-            <Route path="/ppup/airptCdPpup" element={<AirptCodeList />} />
-            <Route path="/ppup/coCdPpup" element={<CompanyCodeList />} />
-            <Route path="/ppup/prcssStatPpup" element={<ProcessingStatusCodeList />} />
-            <Route path="/ppup/orgCdPpup" element={<OrganizationCodeList />} />
+            <Route path="/comn/ppup/comnCdPpup" element={<CommonCodeList />} />
+            <Route path="/comn/ppup/cntyCdPpup" element={<CountryCodeList />} />
+            <Route path="/comn/ppup/cityCdPpup" element={<CityCodeList />} />
+            <Route path="/comn/ppup/currCdPpup" element={<CurrencyCodeList />} />
+            <Route path="/comn/ppup/bnkCdPpup" element={<BankCodeList />} />
+            <Route path="/comn/ppup/portCdPpup" element={<PortCodeList />} />
+            <Route path="/comn/ppup/portAirptCdPpup" element={<PortAirptCodeList />} />
+            <Route path="/comn/ppup/airptCdPpup" element={<AirptCodeList />} />
+            <Route path="/comn/ppup/coCdPpup" element={<CompanyCodeList />} />
+            <Route path="/comn/ppup/prcssStatPpup" element={<ProcessingStatusCodeList />} />
+            <Route path="/comn/ppup/orgCdPpup" element={<OrganizationCodeList />} />
+            <Route path="/comn/lbl/lblLangLst" element={<LabelLanguageList />} />
         </Routes>
     );
 };

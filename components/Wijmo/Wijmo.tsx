@@ -48,6 +48,7 @@ type WijmoProps = {
     size: number;
     page: number;
     onCellClick?: { [name: string]: Function };
+    onRowClick?: any;
     setSize?: React.Dispatch<React.SetStateAction<number>>;
     setPage?: React.Dispatch<React.SetStateAction<number>>;
     onPageChange?: (page: number) => void;
@@ -63,6 +64,7 @@ export const Wijmo = (props: WijmoProps) => {
         size,
         page,
         onCellClick,
+        onRowClick,
         setSize,
         setPage,
         onPageChange,
@@ -119,6 +121,7 @@ export const Wijmo = (props: WijmoProps) => {
             const value = gridRef.current.control.getCellData(row, col);
             if (!binding) return;
             if (onCellClick && onCellClick[binding]) onCellClick[binding]({ binding, value, rowValues });
+            if (onRowClick) onRowClick({ binding, value, rowValues });
 
             console.log(gridRef.current.control);
         });

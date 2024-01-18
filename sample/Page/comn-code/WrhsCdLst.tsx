@@ -1,48 +1,47 @@
 import { useEffect } from "react";
-import { comnUtils, comnEnvs } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useToast, usePopup, useTheme, useStore } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_COMN_CD_SRCH, SCHEMA_GRID_COMN_CD } from "./ComnCdService";
+import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth } from "@/comn/hooks";
+import { BASE, APIS, SCHEMA_FORM_CURR_CD_SRCH, SCHEMA_GRID_CURR_CD } from "./ComnCdService";
 
-export const CommonCodeList = (props: any) => {
-    const pgeUid = "comnCdLst";
+export const WrhsCodeList = (props: any) => {
+    const pgeUid = "wrhsCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage, getParams } = usePopup();
-    const params = getParams();
-    const { theme } = useTheme();
+    const { close, postMessage } = usePopup();
+    const auth = useAuth();
+    auth.get("tin");
 
     const form = {
-        comnCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_COMN_CD_SRCH,
-            defaultValues:
-                { ...pgeStore?.form, comnCd: params?.comnCd || "", langCd: theme.lang.toUpperCase() || "" } || {},
+        wrshCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CURR_CD_SRCH,
+            defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        comnCdLst: useWijmo({
-            defaultSchema: SCHEMA_GRID_COMN_CD,
+        wrshCdLst: useWijmo({
+            defaultSchema: SCHEMA_GRID_CURR_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getComnCdLst: useFetch({
-            api: (page = grid.comnCdLst.page) => {
-                return APIS.getComnCdLst(form.comnCdSrch.getValues(), page, grid.comnCdLst.size);
+        getWrshCdLst: useFetch({
+            api: (page = grid.wrshCdLst.page) => {
+                return APIS.getWrshCdLst(form.wrshCdSrch.getValues(), page, grid.wrshCdLst.size);
             },
-            enabled: comnUtils.isEmpty(form.comnCdSrch.errors) && form.comnCdSrch.isSubmitted,
-            key: [grid.comnCdLst.page, grid.comnCdLst.size],
+            enabled: comnUtils.isEmpty(form.wrshCdSrch.errors) && form.wrshCdSrch.isSubmitted,
+            key: [grid.wrshCdLst.page, grid.wrshCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.comnCdSrch.getValues(),
-                    page: grid.comnCdLst.page,
-                    size: grid.comnCdLst.size,
+                    form: form.wrshCdSrch.getValues(),
+                    page: grid.wrshCdLst.page,
+                    size: grid.wrshCdLst.size,
                 });
             },
         }),
@@ -50,40 +49,37 @@ export const CommonCodeList = (props: any) => {
 
     const handler = {
         click_Btn_Srch: () => {
-            form.comnCdSrch.handleSubmit(
+            form.wrshCdSrch.handleSubmit(
                 () => {
-                    grid.comnCdLst.setPage(0);
-                    fetch.getComnCdLst.fetch(0);
+                    grid.wrshCdLst.setPage(0);
+                    fetch.getWrshCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_ComnCdLst: {
-            cdVldVal: (data: any) => {
+        click_Grid_WrshCdLst: {
+            wrshCd: (data: any) => {
                 if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
+                postMessage({ code: data.value, label: data.rowValues.currNm });
                 close();
             },
         },
     };
 
     useEffect(() => {
-        if (params?.comnCd) {
-            form.comnCdSrch.setSchema("comnCd", { readOnly: true });
-        }
         handler.click_Btn_Srch();
     }, []);
 
     return (
         <Page
             id={pgeUid}
-            title={t("T_COMN_CD_LST")}
-            description={t("T_COMN_CD_LST")}
+            title={t("T_CURR_CD_LST")}
+            description={t("T_CURR_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_COMN_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "T_CURR_CD_LST" }],
             }}
         >
             <form>
@@ -91,19 +87,15 @@ export const CommonCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.comnCdSrch.schema.comnCd}></Group.Control>
-                                <Group.Control {...form.comnCdSrch.schema.cdVldVal}></Group.Control>
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...form.comnCdSrch.schema.cdVldValNm}></Group.Control>
-                                <Group.Control {...form.comnCdSrch.schema.langCd} select={true}></Group.Control>
+                                <Group.Control {...form.wrshCdSrch.schema.wrshCd}></Group.Control>
+                                <Group.Control {...form.wrshCdSrch.schema.currNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
                             <Layout.Left>
                                 <Button
                                     onClick={() => {
-                                        form.comnCdSrch.reset();
+                                        form.wrshCdSrch.reset();
                                     }}
                                 >
                                     {t("B_RESET")}
@@ -127,9 +119,9 @@ export const CommonCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         <Wijmo
-                            {...grid.comnCdLst.grid}
-                            data={fetch.getComnCdLst.data?.comnCdList}
-                            onCellClick={handler.click_Grid_ComnCdLst}
+                            {...grid.wrshCdLst.grid}
+                            data={fetch.getWrshCdLst.data?.wrshCdList}
+                            onCellClick={handler.click_Grid_WrshCdLst}
                         />
                     </Group.Section>
                 </Group.Body>
