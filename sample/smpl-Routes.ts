@@ -1,15 +1,15 @@
 export const SampleRoutes = [
     {
         name: "Sample",
-        base: "/comn/smpl",
+        base: "/comn",
         children: [
             {
                 name: "temp",
-                base: "/temp",
+                base: "/smpl/temp",
             },
             {
                 name: "Sample Component",
-                base: "/components",
+                base: "/smpl/components",
                 children: [
                     {
                         name: "FormControl",
@@ -117,7 +117,7 @@ export const SampleRoutes = [
             },
             {
                 name: "Sample Hook",
-                base: "/hooks",
+                base: "/smpl/hooks",
                 children: [
                     {
                         name: "useModal ·",
@@ -162,41 +162,57 @@ export const SampleRoutes = [
                 ],
             },
             {
-                name: "Sample Page",
-                base: "/pages",
+                name: "Common Page",
+                base: "/comn",
 
                 children: [
                     {
-                        name: "List",
-                        to: "/list",
-                    },
-                    {
-                        name: "Detail",
-                        to: "/detail",
-                    },
-                    {
-                        name: "Update",
-                        to: "/update",
-                    },
-                    {
-                        name: "Regist",
-                        to: "/regist",
-                    },
-                    {
                         name: "Common Code Popup",
-                        to: "/comnCdPpup",
+                        to: "/ppup/comnCdPpup",
                     },
                     {
                         name: "Country Code Popup",
-                        to: "/cntyCdPpup",
+                        to: "/ppup/cntyCdPpup",
+                    },
+                    {
+                        name: "City Code Popup",
+                        to: "/ppup/cityCdPpup",
                     },
                     {
                         name: "Currency Code Popup",
-                        to: "/currCdPpup",
+                        to: "/ppup/currCdPpup",
                     },
                     {
                         name: "Bank Code Popup",
-                        to: "/bnkCdPpup",
+                        to: "/ppup/bnkCdPpup",
+                    },
+                    {
+                        name: "Port Code Popup",
+                        to: "/ppup/portCdPpup",
+                    },
+                    {
+                        name: "Port/ Airport Code Popup",
+                        to: "/ppup/portAirptCdPpup",
+                    },
+                    {
+                        name: "Airport Code Popup",
+                        to: "/ppup/airptCdPpup",
+                    },
+                    {
+                        name: "Company Code Popup",
+                        to: "/ppup/coCdPpup",
+                    },
+                    {
+                        name: "Process Status Code Popup",
+                        to: "/ppup/prcssStatPpup",
+                    },
+                    {
+                        name: "Organization Code Popup",
+                        to: "/ppup/orgCdPpup",
+                    },
+                    {
+                        name: "Label Language Processing",
+                        to: "/lbl/lblLangLst",
                     },
                 ],
             },

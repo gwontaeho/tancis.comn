@@ -6,7 +6,7 @@ import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SF_LBL_LANG_SRCH, SG_LBL_LANG_LIST } from "./services/LblLangPrsccService";
 
-export const CurrencyCodeList = (props: any) => {
+export const LabelLanguageList = (props: any) => {
     const pgeUid = "lblLangLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });

@@ -18,7 +18,8 @@ export const CommonCodeList = (props: any) => {
     const form = {
         comnCdSrch: useForm({
             defaultSchema: SCHEMA_FORM_COMN_CD_SRCH,
-            defaultValues: { ...pgeStore?.form, comnCd: params?.comnCd, langCd: theme.lang.toUpperCase() } || {},
+            defaultValues:
+                { ...pgeStore?.form, comnCd: params?.comnCd || "", langCd: theme.lang.toUpperCase() || "" } || {},
         }),
     };
 
