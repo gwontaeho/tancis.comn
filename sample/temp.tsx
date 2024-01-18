@@ -6,7 +6,7 @@ import { useStore, useTheme } from "@/comn/hooks";
 import dayjs from "dayjs";
 import constants from "@/comn/constants";
 import { comnUtils, utils } from "@/comn/utils";
-import { Page, Group, Pagination, FormControl, Icon, Layout } from "@/comn/components";
+import { Page, Group, Pagination, FormControl, Icon, Layout, Button } from "@/comn/components";
 import { InputText } from "../components/_";
 
 const COLS: any = {
@@ -40,19 +40,19 @@ const SPANS: any = {
 
 const schema1 = {
     id: "grid2",
-    options: { checkbox: true, pagination: "in", add: true, remove: true, group: "q", edit: false },
+    options: { checkbox: true, pagination: "in", add: true, remove: true, group: "q", edit: true },
     head: [
         {
             width: "*",
             cells: [{ id: "q", colspan: 2, required: true }, { id: "d", header: "adad" }, { id: "ab" }],
         },
-        { width: "200", cells: [{ id: "b" }] },
+        { width: 100, cells: [{ id: "b" }] },
         {
-            width: "200",
-            cells: [{ id: "c", colspan: 2 }, { id: "c" }, { id: "c" }],
+            width: 300,
+            cells: [{ id: "c", colspan: 2 }, { id: "c", width: 200 }, { id: "c" }],
         },
-        { width: 300, cells: [{ id: "e" }] },
-        { width: 300, cells: [{ id: "f" }] },
+        // { width: 300, cells: [{ id: "e" }] },
+        // { width: 300, cells: [{ id: "f" }] },
         // { cells: [{ id: "g" }] },
     ],
     body: [
@@ -60,17 +60,17 @@ const schema1 = {
             cells: [{ binding: "q", required: true }],
         },
         {
-            cells: [{ binding: "b", type: "number", thousandSeparator: true }],
+            cells: [{ binding: "q", edit: false }],
         },
         {
             cells: [{ binding: "a", colspan: 2, link: () => {} }, { binding: "c", type: "text" }, { binding: "d" }],
         },
-        {
-            cells: [{ id: "test", binding: "e", edit: false }],
-        },
-        {
-            cells: [{ binding: "f" }],
-        },
+        // {
+        //     cells: [{ id: "test", binding: "e", edit: false }],
+        // },
+        // {
+        //     cells: [{ binding: "f", type: "date" }],
+        // },
         // {
         //     cells: [{ binding: "g" }],
         // },
@@ -98,51 +98,61 @@ const Grid = (props: any) => {
         setPage,
         setSize,
         data,
-        originRef,
-        contentRef,
-        selectedRef,
-        checkedRef,
-        mRef,
+        refs,
+
         render,
     } = props;
-
-    const fields = body
-        .flatMap(({ cells }: any) => cells)
-        .reduce((prev: any, curr: any) => {
-            return { ...prev, [curr["binding"]]: curr };
-        }, {});
+    const { mRef, originRef, contentRef, selectedRef, checkedRef, pagedRef, paginationRef } = refs;
+    const { pagination, group, edit = false } = options;
 
     const { theme } = useTheme();
-
-    const { pagination, group, edit = false } = options;
-    const keyBase = useRef(uuid()).current;
-
-    const bodyRef = useRef<HTMLDivElement>(null);
-    const selectedCelRef = useRef<any>();
-    console.log(edit);
+    const _keyBase = useRef(uuid()).current;
+    const _selectedCelRef = useRef<any>();
+    const _setTotalCount = useRef<any>();
 
     /**
      * head
      */
     const [_head, _setHead] = useState(() => {
         return head.map((_: any) => {
-            const w =
-                typeof _.width === "string" && _.width.endsWith("*")
-                    ? {
-                          flex: Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1, //
-                          minWidth:
-                              _.minWidth ||
-                              160 * (Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1),
-                      }
-                    : {
-                          width: isNaN(Number(_.width)) ? 160 : Number(_.width),
-                          minWidth: isNaN(Number(_.width)) ? 160 : Number(_.width),
-                      };
+            const maxCols = Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
+            const rect = (() => {
+                if (typeof _.width === "string" && _.width.endsWith("*")) {
+                    const flex = Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1;
+                    return {
+                        flex, //
+                        width: undefined,
+                        minWidth: _.minWidth || 160 * flex,
+                    };
+                }
+
+                return {
+                    width: _.width || 160,
+                    minWidth: _.width || 160,
+                };
+            })();
+
             return {
                 ..._,
-                ...w,
+                ...rect,
                 __key: uuid(),
-                cells: _.cells.map((__: any) => ({ ...__, __key: uuid() })),
+                cells: _.cells
+                    .map((__: any) => ({ ...__, __key: uuid() }))
+                    .reduce(
+                        (prev: any, curr: any) => {
+                            const { colspan = 1 } = curr;
+                            const _ =
+                                prev[prev.length - 1].reduce((p: any, c: any) => {
+                                    return p + (c.colspan || 1);
+                                }, 0) +
+                                    colspan >
+                                maxCols;
+                            if (_) prev[prev.length] = [curr];
+                            else prev[prev.length - 1] = [...prev[prev.length - 1], curr];
+                            return prev;
+                        },
+                        [[]],
+                    ),
             };
         });
     });
@@ -151,55 +161,39 @@ const Grid = (props: any) => {
      */
     const [_body, _setBody] = useState(() => {
         return body.map((_: any, index: any) => {
-            const cols = Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 0));
-
-            // console.log(cols);
-            // console.log(_.cells);
-
-            const a = _.cells.reduce((prev: any, curr: any, index: any) => {
-                const { colspan = 1 } = curr;
-
-                // console.log(curr);
-
-                if (!prev[index]) prev[index] = [];
-
-                // console.log(prev);
-
-                const _ =
-                    prev[index].reduce((p: any, c: any) => {
-                        return p + (c.colspan || 1);
-                    }, 0) +
-                        colspan <
-                    cols;
-
-                if (_) {
-                    prev[index + 1] = [curr];
-                } else {
-                    prev[index] = [...prev[index], curr];
-                }
-
-                return prev;
-            }, []);
-
-            console.log(a);
-
+            const maxCols = Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
             return {
                 ..._,
                 __key: uuid(),
                 flex: _head[index]?.flex,
                 width: _head[index]?.width,
                 minWidth: _head[index]?.minWidth,
-                cols: Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 0)),
-                cells: _.cells.map((__: any) => ({
-                    ...__,
-                    __key: uuid(),
-                    edit: typeof __.edit === "boolean" ? __.edit : edit,
-                })),
-                _cells: [],
+                cells: _.cells
+                    .map((__: any) => ({
+                        ...__,
+                        __key: uuid(),
+                        /** edit priority -> cell, option */
+                        edit: typeof __.edit === "boolean" ? __.edit : edit,
+                    }))
+                    .reduce(
+                        (prev: any, curr: any) => {
+                            const { colspan = 1 } = curr;
+                            const _ =
+                                prev[prev.length - 1].reduce((p: any, c: any) => {
+                                    return p + (c.colspan || 1);
+                                }, 0) +
+                                    colspan >
+                                maxCols;
+                            if (_) prev[prev.length] = [curr];
+                            else prev[prev.length - 1] = [...prev[prev.length - 1], curr];
+                            return prev;
+                        },
+                        [[]],
+                    ),
             };
         });
     });
-    console.log(_body);
+
     const [_content, _setContent] = useState<any[]>(() => {
         const _ = data.content.map((_: any) => {
             return { ..._, __key: uuid(), __type: "origin" };
@@ -215,71 +209,132 @@ const Grid = (props: any) => {
     const [_checked, _setChecked] = useState<any[]>([]);
     const [_sortBy, _setSortBy] = useState<any | null>([null, null]);
 
+    /** initialize content */
+    const [_test, _setTest] = useState<any[]>(() => {
+        /** origin content */
+        const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+
+        /** content refs */
+        originRef.current = _;
+        contentRef.current = _;
+
+        /** sort */
+        // const sortedContent =
+        //     _sortBy[0] === null
+        //         ? _content
+        //         : _sortBy[1] === "asc"
+        //           ? lodash.sortBy(_content, [_sortBy[0]])
+        //           : lodash.sortBy(_content, [_sortBy[0]]).reverse();
+
+        /** paged */
+        const paged = pagination === "in" ? lodash.chunk(_, size)[page] : _;
+
+        return paged;
+    });
+
+    // const _sort = (d: any, b: any) => {};
+
+    /** set method */
     useEffect(() => {
-        _setContent(() => {
-            const _ = data.content.map((_: any, i: any) => ({ ..._, __key: uuid(), __type: "origin", __index: i + 1 }));
+        mRef.current.handleUpdate = handleUpdate;
+        mRef.current.handleClickAdd = handleClickAdd;
+        mRef.current.handleClickDelete = handleClickDelete;
+    }, []);
+
+    useEffect(() => {
+        pagedRef.current = _test;
+    }, [_test]);
+
+    /** on content changed */
+    useEffect(() => {
+        _setTest(() => {
+            /** origin content */
+            const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+
+            /** content refs */
             originRef.current = _;
             contentRef.current = _;
-            return _;
+
+            /** paged */
+            const paged = pagination === "in" ? lodash.chunk(_, size)[page] : _;
+
+            return paged || [];
         });
     }, [data.content]);
 
+    /** on paging, on sizing */
+    useEffect(() => {
+        const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
+        const paged = pagination === "in" ? lodash.chunk(_, _size)[_page] : _;
+        paginationRef.current.page = _page;
+        paginationRef.current.size = _size;
+        _setTest(paged || []);
+        _setChecked([]);
+        _setSelectedRow(null);
+    }, [_page, _size]);
+
+    /** on select row (radio) */
     useEffect(() => {
         selectedRef.current = _selectedRow;
     }, [_selectedRow]);
 
+    /** on check row (checkbox) */
     useEffect(() => {
         checkedRef.current = _checked;
     }, [_checked]);
 
-    useEffect(() => {
-        _setSelectedRow(null);
-        _setChecked([]);
-    }, [_page]);
-
-    useEffect(() => {
-        mRef.current.handleClickAdd = handleClickAdd;
-        mRef.current.handleClickDelete = handleClickDelete;
-        mRef.current.handleUpdate = handleUpdate;
-    }, []);
-
+    /** handle update */
     const handleUpdate = (p: any, n: any) => {
-        _setContent((prev: any) => {
-            const next = prev.map((_: any) => {
-                if (_.__key !== p.__key) return _;
+        if (!p?.__key) return;
 
-                const origin = originRef.current.find(({ __key }: any) => __key === p.__key);
-                const content = contentRef.current.find(({ __key }: any) => __key === p.__key);
-                const asigned = Object.assign(content, n);
-                const { __type, __key, ...rest } = asigned;
-                let t = __type;
-
-                if (__type === "origin" || __type === "updated") {
-                    t = Object.keys(rest).every((k) => n[k] === origin[k]) ? "origin" : "updated";
-                }
-                return { ...asigned, __type: t };
-            });
-
-            contentRef.current = next;
-            return next;
+        contentRef.current = contentRef.current.map((_: any) => {
+            if (_.__key !== p.__key) return _;
+            const { __type, __key, ...rest } = n;
+            return {
+                ..._,
+                ...rest,
+                __type:
+                    _.__type === "origin" || _.__type === "updated"
+                        ? Object.keys(rest).every((k) => n[k] === originRef[k])
+                            ? "origin"
+                            : "updated"
+                        : _.__type,
+            };
         });
+
+        if (pagedRef.current.find(({ __key }: any) => __key === p.__key)) {
+            _setTest((prev) =>
+                prev.map((_) => {
+                    if (_.__key !== p.__key) return _;
+                    const { __type, __key, ...rest } = n;
+                    return {
+                        ..._,
+                        ...rest,
+                        __type:
+                            _.__type === "origin" || _.__type === "updated"
+                                ? Object.keys(rest).every((k) => n[k] === originRef[k])
+                                    ? "origin"
+                                    : "updated"
+                                : _.__type,
+                    };
+                }),
+            );
+        }
     };
 
+    /** handle add */
     const handleClickAdd = () => {
-        _setContent((prev: any) => {
-            const next = [...prev, { __key: uuid(), __type: "added" }];
-            contentRef.current = next;
-            return next;
-        });
+        contentRef.current = [...contentRef.current, { __key: uuid(), __type: "added" }];
+        const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
+        const paged = pagination === "in" ? lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page] : _;
+        _setTotalCount.current?.(_.length);
+        _setTest(paged || []);
     };
 
+    /** handle delete */
     const handleClickDelete = (type: any) => {
         if (type === "radio") {
             if (!selectedRef.current) return;
-            _setContent((prev: any) => {
-                return prev.filter(({ __key }: any) => __key !== selectedRef.current.__key);
-            });
-            _setSelectedRow(null);
             contentRef.current = contentRef.current
                 .map((_: any) => {
                     if (_.__key === selectedRef.current.__key) {
@@ -290,15 +345,17 @@ const Grid = (props: any) => {
                     }
                 })
                 .filter((_: any) => _ !== undefined);
+            _setSelectedRow(null);
+
+            const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
+            const paged =
+                pagination === "in" ? lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page] : _;
+            _setTotalCount.current?.(_.length);
+            _setTest(paged || []);
+            return;
         }
         if (type === "checkbox") {
             if (!checkedRef.current.length) return;
-            _setContent((prev: any) =>
-                prev.filter(({ __key }: any) => {
-                    return !checkedRef.current.map((_: any) => _.__key).includes(__key);
-                }),
-            );
-            _setChecked([]);
             contentRef.current = contentRef.current
                 .map((_: any) => {
                     if (checkedRef.current.map((_: any) => _.__key).includes(_.__key)) {
@@ -309,54 +366,45 @@ const Grid = (props: any) => {
                     }
                 })
                 .filter((_: any) => _ !== undefined);
+            _setChecked([]);
+
+            const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
+            const paged =
+                pagination === "in" ? lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page] : _;
+            _setTotalCount.current?.(_.length);
+            _setTest(paged || []);
+            return;
         }
     };
 
-    const groupedContent = Object.entries(
-        _content.reduce((prev, curr) => {
-            const g = curr[group];
-
-            if (prev[g]) {
-                prev[g].push(curr);
-            } else {
-                prev[g] = [curr];
-            }
-
-            return prev;
-        }, {}),
-    );
-
-    const sortedContent =
-        _sortBy[0] === null
-            ? _content
-            : _sortBy[1] === "asc"
-              ? lodash.sortBy(_content, [_sortBy[0]])
-              : lodash.sortBy(_content, [_sortBy[0]]).reverse();
-    const pageContent = (pagination === "in" ? lodash.chunk(sortedContent, _size)[_page] : sortedContent) || [];
+    console.log(_head);
 
     return (
         <div className="[&_.cell]:justify-center [&_.cell]:min-h-[2.5rem] [&_.cell]:flex [&_.cell]:items-center [&_.cell]:px-1">
-            <div>
-                <button onClick={handleClickAdd}>add</button>
-            </div>
-            <div>
-                <button onClick={() => handleClickDelete("radio")}>delete ra</button>
-                <button onClick={() => handleClickDelete("checkbox")}>delete</button>
+            <div className="flex justify-between mb-2">
+                <div className="flex gap-1">
+                    <Button>import</Button>
+                    <Button>export</Button>
+                </div>
+
+                <div className="flex gap-1">
+                    <Button onClick={handleClickAdd}>add</Button>
+                    <Button onClick={() => handleClickDelete("radio")}>delete</Button>
+                    <Button onClick={() => handleClickDelete("checkbox")}>delete</Button>
+                </div>
             </div>
 
-            <div className="w-full mb-8 border overflow-x-auto bg-uf-border max-h-[1000px]">
+            <div className="w-full mb-2 border overflow-x-auto bg-uf-border max-h-[1000px]">
                 {/* head */}
                 <div className="flex w-max gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10">
                     {/* checkbox */}
                     <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background">
                         <input
                             type="checkbox"
-                            checked={pageContent.every(({ __key }: any) =>
-                                _checked.some((row: any) => row.__key === __key),
-                            )}
+                            checked={_test.every(({ __key }: any) => _checked.some((row: any) => row.__key === __key))}
                             onChange={(e) => {
                                 if (e.target.checked) {
-                                    _setChecked(pageContent);
+                                    _setChecked(_test);
                                 } else {
                                     _setChecked([]);
                                 }
@@ -368,47 +416,46 @@ const Grid = (props: any) => {
                     {/* index */}
                     <div className="flex items-center justify-center min-w-[2rem] bg-uf-card-background" />
                     {/* header */}
-                    {_head.map(({ __key, width, minWidth, flex, cells }: any) => {
+                    {_head.map((colProps: any, colIndex: any) => {
+                        const { width, minWidth, flex, cells } = colProps;
+                        const colKey = "head." + _keyBase + "." + colIndex;
+
+                        /** col */
                         return (
-                            <div key={__key} className={classNames("grid gap-[1px]")} style={{ width, minWidth, flex }}>
-                                {cells.map(({ __key, id, header, required, colspan = 1 }: any) => {
+                            <div
+                                key={colKey}
+                                className={classNames("flex flex-col gap-[1px]")}
+                                style={{ width, minWidth, flex }}
+                            >
+                                {cells.map((celProps: any, celIndex: any) => {
+                                    const celKey = colKey + "." + celIndex;
+
+                                    /** cel's row */
                                     return (
-                                        <div
-                                            key={__key}
-                                            className={classNames(
-                                                "cell bg-uf-card-header font-semibold",
-                                                SPANS[colspan],
-                                            )}
-                                            onClick={() => {
-                                                _setSortBy((prev: any) => {
-                                                    if (prev[0] !== id) {
-                                                        return [id, "asc"];
-                                                    }
-                                                    if (prev[0] === id) {
-                                                        if (prev[1] === "asc") {
-                                                            return [id, "desc"];
-                                                        }
-                                                        if (prev[1] === "desc") {
-                                                            return [null, null];
-                                                        }
-                                                    }
-                                                });
-                                            }}
-                                        >
-                                            <div className="relative break-all">
-                                                {header || id}
-                                                {required && <span className="text-uf-error ml-0.5">*</span>}
-                                                {id === _sortBy[0] && (
-                                                    <Icon
-                                                        icon="up"
-                                                        size="xs"
-                                                        className={classNames(
-                                                            "absolute top-1/2 -translate-y-1/2 left-full translate-x-1",
-                                                            _sortBy[1] === "desc" && "rotate-180",
+                                        <div key={celKey} className="flex h-full gap-[1px]">
+                                            {celProps.map((bProps: any, bIndex: any) => {
+                                                const bKey = celKey + "." + bIndex;
+
+                                                /** cel */
+                                                return (
+                                                    <div key={bKey} className="cell bg-uf-card-header flex-1">
+                                                        {bProps.id}
+                                                        {bProps.required && (
+                                                            <span className="text-uf-error ml-0.5">*</span>
                                                         )}
-                                                    />
-                                                )}
-                                            </div>
+                                                        {/* {id === _sortBy[0] && (
+                                                            <Icon
+                                                                icon="up"
+                                                                size="xs"
+                                                                className={classNames(
+                                                                    "absolute top-1/2 -translate-y-1/2 left-full translate-x-1",
+                                                                    _sortBy[1] === "desc" && "rotate-180",
+                                                                )}
+                                                            />
+                                                        )} */}
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     );
                                 })}
@@ -417,10 +464,11 @@ const Grid = (props: any) => {
                     })}
                 </div>
                 {/* body */}
-                <div ref={bodyRef} className="flex flex-col w-full gap-[1px]">
-                    {pageContent.map((row: any, rowIndex: any) => {
-                        const contentRowKey = row.__key;
-                        const rowKey = keyBase + "." + rowIndex;
+                <div className="flex flex-col w-full gap-[1px]">
+                    {_test.map((rowProps: any, rowIndex: any) => {
+                        const rowKey = _keyBase + "." + rowIndex;
+                        const rowType = rowProps.__type;
+                        const contentKey = rowProps.__key;
 
                         return (
                             /** row */
@@ -428,9 +476,9 @@ const Grid = (props: any) => {
                                 key={rowKey}
                                 className={classNames(
                                     "flex w-full gap-[1px] border-l",
-                                    row.__type === "added"
+                                    rowType === "added"
                                         ? "border-l-uf-success"
-                                        : row.__type === "updated"
+                                        : rowType === "updated"
                                           ? "border-l-uf-warning"
                                           : "border-l-uf-card-background",
                                 )}
@@ -438,14 +486,12 @@ const Grid = (props: any) => {
                                 <div className="flex items-center justify-center bg-uf-card-header min-w-[2rem]">
                                     <input
                                         type="checkbox"
-                                        checked={_checked.some(({ __key }) => __key === contentRowKey)}
+                                        checked={_checked.some(({ __key }) => __key === contentKey)}
                                         onChange={(e) => {
                                             if (e.target.checked) {
-                                                _setChecked((prev) => [...prev, row]);
+                                                _setChecked((prev) => [...prev, rowProps]);
                                             } else {
-                                                _setChecked((prev) =>
-                                                    prev.filter(({ __key }) => __key !== contentRowKey),
-                                                );
+                                                _setChecked((prev) => prev.filter(({ __key }) => __key !== contentKey));
                                             }
                                         }}
                                     />
@@ -453,10 +499,10 @@ const Grid = (props: any) => {
                                 <div className="flex items-center justify-center bg-uf-card-header min-w-[2rem]">
                                     <input
                                         type="radio"
-                                        checked={_selectedRow?.__key === row.__key}
+                                        checked={_selectedRow?.__key === rowProps.__key}
                                         onChange={(e) => {
                                             if (e.target.checked) {
-                                                _setSelectedRow(row);
+                                                _setSelectedRow(rowProps);
                                             } else {
                                                 _setSelectedRow(null);
                                             }
@@ -464,19 +510,58 @@ const Grid = (props: any) => {
                                     />
                                 </div>
                                 <div className="flex items-center justify-center bg-uf-card-header min-w-[2rem] font-semibold">
-                                    {row.__index}
+                                    {_page * _size + rowIndex + 1}
                                 </div>
-                                {_body.map(({ cells, cols, width, minWidth, flex }: any, colIndex: any) => {
-                                    const colKey = keyBase + "." + rowIndex + "." + colIndex;
-
+                                {_body.map((colProps: any, colIndex: any) => {
+                                    const { cells, width, minWidth, flex } = colProps;
+                                    const colKey = rowKey + "." + colIndex;
+                                    console.log(colProps);
                                     return (
                                         /** col */
                                         <div
                                             key={colKey}
-                                            className={classNames("grid gap-[1px]", cols > 0 && COLS[cols])}
-                                            style={{ width, minWidth, flex, gridAutoColumns: "auto" }}
+                                            className={classNames("flex flex-col gap-[1px]")}
+                                            style={{ width, minWidth, flex }}
                                         >
-                                            {cells.map(
+                                            {cells.map((cellProps: any, celIndex: any) => {
+                                                const celKey = colKey + "." + celIndex;
+
+                                                /** cel's row */
+                                                return (
+                                                    <div key={celKey} className="flex h-full gap-[1px]">
+                                                        {cellProps.map((bProps: any, bIndex: any) => {
+                                                            const bKey = celKey + "." + bIndex;
+
+                                                            /** cel */
+                                                            return (
+                                                                <div
+                                                                    key={bKey}
+                                                                    className="cell flex-1 bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info"
+                                                                    style={{ maxWidth: bProps.width }}
+                                                                >
+                                                                    {bProps.edit ? (
+                                                                        <FormControl
+                                                                            value={rowProps[bProps.binding]}
+                                                                            onChange={(arg: any) => {
+                                                                                handleUpdate(rowProps, {
+                                                                                    ...rowProps,
+                                                                                    [bProps.binding]: arg.target
+                                                                                        ? arg.target.value
+                                                                                        : arg,
+                                                                                });
+                                                                            }}
+                                                                        />
+                                                                    ) : (
+                                                                        rowProps[bProps.binding]
+                                                                    )}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                );
+                                            })}
+
+                                            {/* {cells.map(
                                                 (
                                                     {
                                                         id,
@@ -487,7 +572,7 @@ const Grid = (props: any) => {
                                                         link,
                                                         width,
                                                         edit,
-                                                        /** validation */
+
                                                         min,
                                                         max,
                                                         minLength,
@@ -500,7 +585,7 @@ const Grid = (props: any) => {
                                                     cellIndex: any,
                                                 ) => {
                                                     const celKey =
-                                                        keyBase + "." + rowIndex + "." + colIndex + "." + cellIndex;
+                                                        _keyBase + "." + rowIndex + "." + colIndex + "." + cellIndex;
                                                     const cellData = row[binding];
 
                                                     const invalid = (() => {
@@ -547,12 +632,12 @@ const Grid = (props: any) => {
                                                                       : "border-uf-card-background",
                                                             )}
                                                             onClick={(e) => {
-                                                                if (selectedCelRef.current) {
-                                                                    selectedCelRef.current.removeAttribute(
+                                                                if (_selectedCelRef.current) {
+                                                                    _selectedCelRef.current.removeAttribute(
                                                                         "aria-selected",
                                                                     );
                                                                 }
-                                                                selectedCelRef.current = e.currentTarget;
+                                                                _selectedCelRef.current = e.currentTarget;
                                                                 e.currentTarget.ariaSelected = "true";
                                                             }}
                                                         >
@@ -598,18 +683,29 @@ const Grid = (props: any) => {
                                                                     </p>
                                                                 ))}
                                                             {edit && (
-                                                                <CellControl
+                                                                <FormControl
                                                                     {...rest}
-                                                                    row={row}
                                                                     type={type}
-                                                                    binding={binding}
-                                                                    handleUpdate={handleUpdate}
+                                                                    value={row[binding]}
+                                                                    onChange={(arg: any) => {
+                                                                        if (arg.target) {
+                                                                            handleUpdate(row, {
+                                                                                ...row,
+                                                                                [binding]: arg.target.value,
+                                                                            });
+                                                                        } else {
+                                                                            handleUpdate(row, {
+                                                                                ...row,
+                                                                                [binding]: arg,
+                                                                            });
+                                                                        }
+                                                                    }}
                                                                 />
                                                             )}
                                                         </div>
                                                     );
                                                 },
-                                            )}
+                                            )} */}
                                         </div>
                                     );
                                 })}
@@ -618,66 +714,60 @@ const Grid = (props: any) => {
                     })}
                 </div>
             </div>
-            <Pagination
+
+            <GridPagination
+                setTotalCount={_setTotalCount}
                 page={_page}
                 size={_size}
-                onChangePage={(next) => {
+                totalCount={pagination === "in" ? data.content.length : data.page.totalElements}
+                onChangePage={(next: any) => {
                     _setPage(next);
                     if (pagination === "out") setPage(next);
                 }}
-                onChangeSize={(next) => {
+                onChangeSize={(next: any) => {
                     _setSize(next);
                     _setPage(0);
                     if (pagination === "out") setSize(next);
                 }}
-                totalCount={pagination === "in" ? _content.length : data.page.totalElements}
             />
         </div>
     );
 };
 
-const CellControl = (props: any) => {
-    const { type, row, binding, handleUpdate, ...rest } = props;
+const GridPagination = (props: any) => {
+    const { page, size, onChangePage, onChangeSize, totalCount, setTotalCount } = props;
 
-    const value = useRef(row[binding]);
-
-    const handleChange = (e: any) => {
-        if (e.target) {
-            value.current = e.target.value;
-        } else {
-            value.current = e;
-        }
-    };
-
-    const handleBlur = () => {
-        handleUpdate(row, {
-            [binding]: value.current,
-        });
-    };
+    const [_totalCount, _setTotalCount] = useState(totalCount);
+    useEffect(() => {
+        setTotalCount.current = _setTotalCount;
+    }, []);
 
     return (
-        <FormControl {...rest} type={type} defaultValue={row[binding]} onChange={handleChange} onBlur={handleBlur} />
+        <Pagination
+            page={page}
+            size={size}
+            onChangePage={onChangePage}
+            onChangeSize={onChangeSize}
+            totalCount={_totalCount}
+        />
     );
 };
 
 const useGrid = (props: any) => {
-    /**
-     * __type
-     * added | origin | deleted | updated
-     *
-     * cell type
-     * text | number | date | select
-     */
+    const { defaultSchema } = props;
 
-    const [_schema, _setSchema] = useState(props.defaultSchema);
+    /** id, options, head, body */
+    const [_schema, _setSchema] = useState(defaultSchema);
     const [_page, _setPage] = useState(0);
     const [_size, _setSize] = useState(10);
 
+    const _mRef = useRef<any>({});
     const _originRef = useRef([]);
     const _contentRef = useRef([]);
     const _checkedRef = useRef([]);
     const _selectedRef = useRef(null);
-    const _mRef = useRef<any>({});
+    const _pagedRef = useRef([]);
+    const _paginationRef = useRef({ page: _page, size: _size });
 
     const addRow = () => {
         _mRef.current.handleClickAdd();
@@ -712,11 +802,15 @@ const useGrid = (props: any) => {
             size: _size,
             setPage: _setPage,
             setSize: _setSize,
-            originRef: _originRef,
-            contentRef: _contentRef,
-            selectedRef: _selectedRef,
-            checkedRef: _checkedRef,
-            mRef: _mRef,
+            refs: {
+                mRef: _mRef,
+                originRef: _originRef,
+                contentRef: _contentRef,
+                selectedRef: _selectedRef,
+                checkedRef: _checkedRef,
+                pagedRef: _pagedRef,
+                paginationRef: _paginationRef,
+            },
         },
         page: _page,
         size: _size,
@@ -731,7 +825,7 @@ const useGrid = (props: any) => {
     };
 };
 
-const data = utils.getMockData({ totalElements: 9999 });
+const data = utils.getMockData({ totalElements: 8 });
 
 export const Temp = () => {
     const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, addRow, deleteRow, updateRow, page, size } =
@@ -741,34 +835,36 @@ export const Temp = () => {
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
-    console.log("a12e2e1e1");
     const _test = {
-        test: (props: any) => {
-            return (
-                <Layout>
-                    <FormControl
-                        type="select"
-                        onChange={(e) => {
-                            console.log(e);
-                            updateRow(props, { q: e.target.value });
-                            // setStore("test", { test: true });
-                        }}
-                        options={[{ label: "a", value: "b" }]}
-                    />
-                    <FormControl
-                        type="text"
-                        edit={props.q === "b"}
-                        value={props.g}
-                        onChange={(e) => {
-                            console.log(e);
-                            updateRow(props, { g: e.target.value });
-                            // setStore("test", { test: true });
-                        }}
-                    />
-                    <button>asd</button>
-                </Layout>
-            );
-        },
+        head: {},
+        cell: {},
+        edit: {},
+        // test: (props: any) => {
+        //     return (
+        //         <Layout>
+        //             <FormControl
+        //                 type="select"
+        //                 onChange={(e) => {
+        //                     console.log(e);
+        //                     updateRow(props, { q: e.target.value });
+        //                     // setStore("test", { test: true });
+        //                 }}
+        //                 options={[{ label: "a", value: "b" }]}
+        //             />
+        //             <FormControl
+        //                 type="text"
+        //                 edit={props.q === "b"}
+        //                 value={props.g}
+        //                 onChange={(e) => {
+        //                     console.log(e);
+        //                     updateRow(props, { g: e.target.value });
+        //                     // setStore("test", { test: true });
+        //                 }}
+        //             />
+        //             <button>asd</button>
+        //         </Layout>
+        //     );
+        // },
     };
 
     return (
@@ -787,6 +883,7 @@ export const Temp = () => {
             <button onClick={() => addRow()}>add row</button>
             <button onClick={() => deleteRow("radio")}>delete radio</button>
             <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
+            <button onClick={() => updateRow(getSelectedRow(), { q: "asd" })}>ffffffffffff</button>
         </Page>
     );
 };

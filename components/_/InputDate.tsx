@@ -52,8 +52,6 @@ export const InputDate = (props: InputDateProps) => {
         onChange(date);
     };
 
-    console.log(name, value, _value);
-
     return (
         <div className="w-full">
             {!edit && (
