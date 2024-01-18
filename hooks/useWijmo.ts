@@ -122,6 +122,16 @@ export const useWijmo = (props: UseWijmoArgs) => {
         });
     };
 
+    const updateRow = (row: any) => {
+        for (let i = 0; i < gridRef.current.control.collectionView.items.length; i++) {
+            if (gridRef.current.control.collectionView.items[i].__index === row.__index) {
+                gridRef.current.control.collectionView.items[i] = row;
+                gridRef.current.control.collectionView.refresh();
+                return;
+            }
+        }
+    };
+
     const grid = { gridRef, contentRef, schema, page: _page, setPage, size: _size, setSize };
 
     return {
@@ -139,5 +149,6 @@ export const useWijmo = (props: UseWijmoArgs) => {
         getDataWithDeleted,
         addRow,
         deleteRow,
+        updateRow,
     };
 };

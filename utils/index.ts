@@ -5,9 +5,23 @@ import { api } from "@/comn";
 export const comnEnvs = {
     base: `${process.env.REACT_APP_BASE}`,
     base_comn: `${process.env.REACT_APP_BASE_COMN}`,
+    locale: {
+        ko: "ko-KR",
+        en: "en-TZ",
+        tz: "sw-TZ",
+    },
 };
 
 export const comnUtils = {
+    getLocale: () => {
+        return localStorage.getItem("lang")?.toString() || "en";
+    },
+    getLocaleString: () => {
+        let locale = localStorage.getItem("lang")?.toString() || "en";
+        if (locale === "tz") return comnEnvs.locale.tz;
+        else if (locale === "en") return comnEnvs.locale.en;
+        else return comnEnvs.locale.ko;
+    },
     isUndefined: (arg: any) => {
         return arg === undefined;
     },
