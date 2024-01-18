@@ -101,8 +101,6 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         const SET_LETTER = ["a", "A", "0", "*"];
         const REG_NUMBER = /^[0-9]+$/;
 
-        console.log(mask);
-
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             let v: TFormattedInputValues = { value: e.target.value, formattedValue: "", event: e };
             handleLowerCase(e, v);
