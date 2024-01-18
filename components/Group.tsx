@@ -67,6 +67,7 @@ type GroupRowProps = {
 
 type GroupAnyProps = {
     children?: React.ReactNode;
+    size?: number;
 };
 
 type GroupLabelProps = FormControlProps & {
