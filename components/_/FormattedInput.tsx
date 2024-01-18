@@ -97,10 +97,8 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
         } = props;
 
         const _type = decimalScale || thousandSeparator ? "number" : type;
-        const SET_LETTER = ["a", "A", "0", "*"];
-        const REG_NUMBER = /^[0-9]+$/;
-
-        console.log(mask);
+        // const SET_LETTER = ["a", "A", "0", "*"];
+        // const REG_NUMBER = /^[0-9]+$/;
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             let v: TFormattedInputValues = { value: e.target.value, formattedValue: "", event: e };

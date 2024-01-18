@@ -61,9 +61,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                 onValueChange,
                 /** */
                 name,
-                value,
                 onClick,
-                onChange,
                 onBlur,
                 onFocus,
                 readOnly,
@@ -74,23 +72,28 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             }).filter(([, value]) => value !== undefined),
         );
 
-        const _ref = React.useRef<HTMLInputElement | null>(null);
+        const [_value, _setValue] = React.useState<any>(typeof value == "string" ? value : "");
+
+        React.useEffect(() => {
+            if (value === _value) return;
+            _setValue(typeof value !== "string" ? "" : value);
+        }, [value]);
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            _setValue(e.target.value);
+            if (!onChange) return;
+            onChange(e);
+        };
 
         return (
             <div className="w-full">
-                {!edit && <div>{_ref.current?.value}</div>}
+                {!edit && <div>{_value}</div>}
                 <div hidden={!edit}>
                     <FormattedInput
                         {..._props}
-                        ref={(node) => {
-                            _ref.current = node;
-                            if (!ref) return;
-                            if (typeof ref === "function") {
-                                ref(node);
-                            } else {
-                                ref.current = node;
-                            }
-                        }}
+                        ref={ref}
+                        value={_value}
+                        onChange={handleChange}
                         type="text"
                         autoComplete="off"
                         className="input"

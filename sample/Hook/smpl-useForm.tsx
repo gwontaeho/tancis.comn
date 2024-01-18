@@ -11,8 +11,32 @@ const SCHEMA_SEARCH: TFormSchema = {
             label: "text",
             message: "asd",
             rightButton: { icon: "bell", onClick: () => console.log("a") },
-            mask: "[VS] AA",
-            readOnly: true,
+            mask: [
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                "-",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                "-",
+                /\d/,
+                "-",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+            ],
+
+            // readOnly: true,
         },
         number: { type: "number", label: "number", min: 3, thousandSeparator: true },
         password: { type: "password", label: "password", required: true },
@@ -23,7 +47,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             leftButton: { icon: "left", onClick: () => {} },
             rightButton: { icon: "left", onClick: () => {} },
         },
-        select: { type: "select", label: "select", required: true, select: false },
+        select: { type: "select", label: "select", required: true },
         checkbox: {
             type: "checkbox",
             label: "checkbox",
@@ -32,7 +56,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             comnCd: "COM_0014",
             area: "comnCd",
         },
-        radio: { type: "radio", label: "radio", required: true, comnCd: "COM_0014", area: "comnCd", readOnly: true },
+        radio: { type: "radio", label: "radio", required: true, comnCd: "COM_0014", area: "comnCd" },
         date: { type: "date", label: "date", required: true },
         time: { type: "time", label: "time", required: true },
         datetime: { type: "datetime", label: "datetime", required: true },
@@ -86,7 +110,7 @@ export const SampleUseForm = () => {
         validate,
     } = useForm({
         defaultSchema: SCHEMA_SEARCH,
-        defaultValues: { radio: "1" },
+        defaultValues: { startdate: new Date(), date: new Date(), text: "asd" },
     });
 
     const text = watch(["text"]);
@@ -122,7 +146,7 @@ export const SampleUseForm = () => {
                                 <Group.Control {...schema.textarea} />
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...schema.select} options={OPTION} defaultValue="A05" />
+                                <Group.Control {...schema.select} options={OPTION} />
                                 <Group.Control {...schema.checkbox} options={OPTION} />
                             </Group.Row>
                             <Group.Row>
@@ -177,7 +201,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setValue("time", "11:20");
+                                setValue("text", 12311231213);
                             }}
                         >
                             <code>setValue()aaaaaaaaa</code>
@@ -201,7 +225,7 @@ export const SampleUseForm = () => {
                     <Table.Th>
                         <Button
                             onClick={() => {
-                                setSchema("radio", { comnCd: "COM_0015" });
+                                setSchema("ggggggg", { comnCd: "COM_0015" });
                             }}
                         >
                             <code>wwdqw()</code>

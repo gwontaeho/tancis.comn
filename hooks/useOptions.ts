@@ -15,7 +15,7 @@ export const useOptions = (props: UseOptionsProps) => {
     const theme = useTheme();
 
     const [_lang, _setLang] = React.useState(lang || localStorage.getItem("lang") || "ko");
-    const [_options, _setOptions] = React.useState(options);
+    const [_options, _setOptions] = React.useState([]);
 
     React.useEffect(() => {
         if (!lang) return;
@@ -40,5 +40,5 @@ export const useOptions = (props: UseOptionsProps) => {
         })();
     }, [comnCd, area, theme.theme.lang]);
 
-    return { options: _options };
+    return { options: options || _options };
 };

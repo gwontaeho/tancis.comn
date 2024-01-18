@@ -42,9 +42,7 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
         const _props = Object.fromEntries(
             Object.entries({
                 name,
-                value,
                 onClick,
-                onChange,
                 onBlur,
                 onFocus,
                 readOnly,
@@ -55,24 +53,30 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
         );
 
         const [show, setShow] = React.useState(false);
-        const _ref = React.useRef<HTMLInputElement | null>(null);
+
+        const [_value, _setValue] = React.useState<any>(typeof value == "string" ? value : "");
+
+        React.useEffect(() => {
+            if (value === _value) return;
+            _setValue(typeof value !== "string" ? "" : value);
+        }, [value]);
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            _setValue(e.target.value);
+            if (!onChange) return;
+            onChange(e);
+        };
 
         return (
             <div className="w-full">
-                {!edit && <div>{_ref.current?.value}</div>}
+                {!edit && <div>{_value}</div>}
                 <div hidden={!edit}>
                     <div className="relative flex items-center">
                         <input
                             {..._props}
-                            ref={(node) => {
-                                _ref.current = node;
-                                if (!ref) return;
-                                if (typeof ref === "function") {
-                                    ref(node);
-                                } else {
-                                    ref.current = node;
-                                }
-                            }}
+                            ref={ref}
+                            value={_value}
+                            onChange={handleChange}
                             type={show ? "text" : "password"}
                             autoComplete="off"
                             className="input"
