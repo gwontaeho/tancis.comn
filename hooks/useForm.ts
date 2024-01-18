@@ -41,7 +41,7 @@ export const useForm = (props: UseFormProps) => {
                                 switch (s.type) {
                                     case "text":
                                     case "number": {
-                                        return getFormattedValue(String(v), s);
+                                        return getFormattedValue(v, s);
                                     }
                                     case "checkbox":
                                         if (!Array.isArray(v)) return null;
