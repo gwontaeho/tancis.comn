@@ -1,4 +1,5 @@
 import React from "react";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 
 export type TFormattedInputValues = {
     value: string;
@@ -38,7 +39,7 @@ const handleThousandSeparator = (v: any, schema: any) => {
     const a = v.toString().replaceAll(",", "").split(".");
     const int = a[0];
     const dec = a[1];
-    v = (int ? Number(int).toLocaleString("ko-KR") : "") + (dec !== undefined ? "." + dec : "");
+    v = (int ? Number(int).toLocaleString(comnUtils.getLocaleString()) : "") + (dec !== undefined ? "." + dec : "");
     return v;
 };
 
@@ -165,7 +166,9 @@ export const FormattedInput = React.forwardRef<HTMLInputElement, FormattedInputP
             const int = a[0];
             const dec = a[1];
 
-            e.target.value = (int ? Number(int).toLocaleString("ko-KR") : "") + (dec !== undefined ? "." + dec : "");
+            e.target.value =
+                (int ? Number(int).toLocaleString(comnUtils.getLocaleString()) : "") +
+                (dec !== undefined ? "." + dec : "");
             v.value = e.target.value.replaceAll(",", "");
             v.formattedValue = e.target.value;
         };
