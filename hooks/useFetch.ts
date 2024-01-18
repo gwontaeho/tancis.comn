@@ -40,12 +40,14 @@ type UseFetchReturn = {
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
+    setShowToast: (showToast: boolean) => void;
 };
 
 export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     const { api, key = [], enabled, showToast = false, onSuccess, onError, notifyStatus } = props;
 
     const toast = useToast();
+    const _showToast = useRef(showToast);
 
     const isArray = Array.isArray(api);
     const initialData = isArray ? Array(api.length).fill(undefined) : undefined;
@@ -79,7 +81,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             dispatch({ type: "success", payload: data });
 
             if (onSuccess) {
-                if (showToast) toast.showToast({ type: "success", content: "msg.00003" });
+                if (_showToast.current) toast.showToast({ type: "success", content: "msg.00003" });
                 onSuccess(data);
             }
 
@@ -91,7 +93,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             if (notifyStatus) dispatch({ type: "error" });
 
             if (onError) {
-                if (showToast) toast.showToast({ type: "error", content: "An error occurred " });
+                if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred " });
                 onError(error);
             }
 
@@ -100,5 +102,9 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         }
     };
 
-    return { data, fetch, isLoading, isSuccess, isError };
+    const setShowToast = (showToast: boolean) => {
+        _showToast.current = showToast;
+    };
+
+    return { data, fetch, isLoading, isSuccess, isError, setShowToast };
 };
