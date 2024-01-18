@@ -112,6 +112,8 @@ export type FormControlProps = InputDaterangeProps & {
     popupSize?: "sm" | "md" | "lg";
     inputLabel?: string;
     rows?: number;
+    startRef?: any;
+    endRef?: any;
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {
@@ -186,7 +188,7 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
 
 export const FormControl = Object.assign(
     React.forwardRef((props: FormControlProps, ref) => {
-        const { size = "full", message, invalid, getValues, ...rest } = props;
+        const { size = "full", message, invalid, ...rest } = props;
         const { t } = useTranslation();
 
         return (

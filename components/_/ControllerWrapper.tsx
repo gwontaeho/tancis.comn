@@ -19,6 +19,7 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
         defaultValue,
         rules: {
             ...rules,
+
             onChange: (event) => {
                 if (!onChange) return;
                 if (!event.target) return;
@@ -27,10 +28,18 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
         },
     });
 
+    /**
+     * name
+     * value
+     * onChange
+     * onBlur
+     */
+
     return React.cloneElement(children, {
         ...rest,
+        name: field.name,
+        value: field.value,
         onChange: field.onChange,
         onBlur: field.onBlur,
-        value: field.value,
     });
 };

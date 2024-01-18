@@ -41,9 +41,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
         const _props = Object.fromEntries(
             Object.entries({
                 name,
-                value,
                 onClick,
-                onChange,
                 onBlur,
                 onFocus,
                 readOnly,
@@ -54,23 +52,28 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
             }).filter(([, value]) => value !== undefined),
         );
 
-        const _ref = React.useRef<HTMLTextAreaElement | null>(null);
+        const [_value, _setValue] = React.useState<any>(typeof value == "string" ? value : "");
+
+        React.useEffect(() => {
+            if (value === _value) return;
+            _setValue(typeof value !== "string" ? "" : value);
+        }, [value]);
+
+        const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+            _setValue(e.target.value);
+            if (!onChange) return;
+            onChange(e);
+        };
 
         return (
             <div className="w-full">
-                {!edit && <div>{_ref.current?.value}</div>}
+                {!edit && <div>{_value}</div>}
                 <div hidden={!edit}>
                     <textarea
                         {..._props}
-                        ref={(node) => {
-                            _ref.current = node;
-                            if (!ref) return;
-                            if (typeof ref === "function") {
-                                ref(node);
-                            } else {
-                                ref.current = node;
-                            }
-                        }}
+                        ref={ref}
+                        value={_value}
+                        onChange={handleChange}
                         className="input overflow-hidden"
                     />
                 </div>

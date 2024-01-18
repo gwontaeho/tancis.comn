@@ -1,27 +1,16 @@
-import { useState } from "react";
-import * as rhf from "react-hook-form";
+import React from "react";
 import dayjs from "dayjs";
+import * as reacthookform from "react-hook-form";
+import { comnUtils } from "@/comn/utils";
 import { GroupControlProps } from "@/comn/components";
 import { getFormattedValue, getUnFormattedValue } from "@/comn/components/_";
-import { comnUtils } from "@/comn/utils";
-
-// export type TFormRules = Partial<{
-//     required: Boolean | string;
-//     min: any;
-//     max: any;
-//     maxLength: any;
-//     minLength: any;
-//     pattern: any;
-//     validate: any;
-// }>;
 
 export type TFormFieldName = string;
 export type TFormFieldValue = any;
 export type TFormValues = Record<TFormFieldName, TFormFieldValue>;
 export type TFormSchema = { id: string; schema: TFormControlSchema };
 type TFormControlSchema = Record<string, GroupControlProps>;
-
-type UseFormProps = { defaultSchema: TFormSchema; values?: any; defaultValues?: any };
+type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 
 export const useForm = (props: UseFormProps) => {
     const { defaultSchema, defaultValues } = props;
@@ -29,28 +18,64 @@ export const useForm = (props: UseFormProps) => {
 
     const {
         control,
-        register,
         getValues,
         setValue,
         setFocus,
-        handleSubmit,
         trigger,
-        clearErrors,
         watch,
         reset,
         setError,
+        handleSubmit,
+        clearErrors,
         formState: { errors, isSubmitted },
-    } = rhf.useForm<TFormValues>({ defaultValues });
+    } = reacthookform.useForm<TFormValues>({
+        defaultValues:
+            defaultValues &&
+            Object.fromEntries(
+                Object.entries(defaultValues).map(([k, v]) => {
+                    return [
+                        k,
+                        (() => {
+                            const s = schema[k];
+                            if (s) {
+                                switch (s.type) {
+                                    case "text":
+                                    case "number": {
+                                        return getFormattedValue(String(v), s);
+                                    }
+                                    case "checkbox":
+                                        if (!Array.isArray(v)) return null;
+                                        return v;
+                                    case "time": {
+                                        if (dayjs(v).isValid()) {
+                                            return dayjs(v).toDate();
+                                        }
+                                        if (dayjs("2000-01-01 " + v).isValid()) {
+                                            return dayjs("2000-01-01 " + v).toDate();
+                                        }
+                                        return null;
+                                    }
+                                    case "date":
+                                    case "datetime": {
+                                        if (dayjs(v).isValid()) {
+                                            return dayjs(v).toDate();
+                                        }
+                                        return null;
+                                    }
+                                    default:
+                                        return v;
+                                }
+                            }
 
-    /**
-     * 스키마
-     */
-    const [_schema, _setSchema] = useState<TFormControlSchema>(schema);
+                            return v;
+                        })(),
+                    ];
+                }),
+            ),
+    });
 
-    /**
-     * 스키마에 등록된
-     * field-type object
-     */
+    const [_schema, _setSchema] = React.useState<TFormControlSchema>(schema);
+
     const _formFields = Object.fromEntries(
         Object.entries(_schema).reduce<any>((prev, curr) => {
             switch (curr[1].type) {
@@ -72,34 +97,63 @@ export const useForm = (props: UseFormProps) => {
         }, []),
     );
 
-    /**
-     * set value
-     */
     const _setValue = (name: any, value: any) => {
-        const s = _schema[name] || {};
-        let v = value;
-        switch (s.type) {
-            case "text":
-            case "number": {
-                v = getFormattedValue(v, s);
-                break;
-            }
-            case "time": {
-                v = new Date(dayjs().format("YYYY-MM-DD") + " " + v);
-                if (!dayjs(v).isValid()) return;
-                break;
-            }
-            case "date":
-            case "datetime": {
-                v = new Date(v);
-                if (!dayjs(v).isValid()) return;
-                break;
-            }
+        const s = _schema[name];
 
-            default:
-                break;
+        if (
+            comnUtils.isEmptyString(value) ||
+            comnUtils.isEmptyArray(value) ||
+            comnUtils.isUndefined(value) ||
+            comnUtils.isNull(value)
+        ) {
+            setValue(name, null, { shouldValidate: isSubmitted });
+            return;
         }
-        setValue(name, v, { shouldValidate: isSubmitted });
+
+        if (s) {
+            let v = value;
+            switch (s.type) {
+                case "text":
+                case "number": {
+                    v = getFormattedValue(String(v), s);
+                    break;
+                }
+                case "checkbox":
+                    if (!Array.isArray(v)) {
+                        v = null;
+                        break;
+                    }
+                    break;
+                case "time": {
+                    if (dayjs(v).isValid()) {
+                        v = dayjs(v).toDate();
+                        break;
+                    }
+                    if (dayjs("2000-01-01 " + v).isValid()) {
+                        v = dayjs("2000-01-01 " + v).toDate();
+                        break;
+                    }
+                    v = null;
+                    break;
+                }
+                case "date":
+                case "datetime": {
+                    if (dayjs(v).isValid()) {
+                        v = dayjs(v).toDate();
+                        break;
+                    }
+                    v = null;
+                    break;
+                }
+
+                default:
+                    break;
+            }
+            setValue(name, v, { shouldValidate: isSubmitted });
+            return;
+        }
+
+        setValue(name, value, { shouldValidate: isSubmitted });
     };
 
     const setSchema = (name: string, value: any) => {
@@ -108,37 +162,34 @@ export const useForm = (props: UseFormProps) => {
 
     const _getValues = (arg?: any) => {
         return Object.fromEntries(
-            Object.entries<any>(getValues(arg))
-                .map(([key, value]) => [
-                    key,
-                    comnUtils.isUndefined(value) || //
-                    comnUtils.isEmptyString(value) ||
-                    comnUtils.isEmptyArray(value)
-                        ? undefined
-                        : value,
-                ])
-                .map(([key, value]) => {
-                    return [
-                        key,
-                        (() => {
-                            switch (_formFields[key]) {
-                                case "text":
-                                    return getUnFormattedValue(value, schema[key]);
-                                case "date":
-                                    if (!dayjs(value).isValid()) return null;
-                                    return dayjs(value).format("YYYY-MM-DD");
-                                case "time":
-                                    if (!dayjs(value).isValid()) return null;
-                                    return dayjs(value).format("HH:mm:ss");
-                                case "datetime":
-                                    if (!dayjs(value).isValid()) return null;
-                                    return dayjs(value).format("YYYY-MM-DD HH:mm:ss");
-                                default:
-                                    return value;
-                            }
-                        })(),
-                    ];
-                }),
+            Object.entries<any>(getValues(arg)).map(([key, value]) => [
+                key,
+                comnUtils.isEmptyString(value) || //
+                comnUtils.isEmptyArray(value) ||
+                comnUtils.isUndefined(value) ||
+                comnUtils.isNull(value)
+                    ? undefined
+                    : (() => {
+                          switch (_formFields[key]) {
+                              case "text":
+                                  return getUnFormattedValue(value, schema[key]);
+                              case "number":
+                                  if (isNaN(Number(String(value).replaceAll(",", "")))) return undefined;
+                                  return Number(String(value).replaceAll(",", ""));
+                              case "date":
+                                  if (!dayjs(value).isValid()) return undefined;
+                                  return dayjs(value).format("YYYY-MM-DD");
+                              case "time":
+                                  if (!dayjs(value).isValid()) return undefined;
+                                  return dayjs(value).format("HH:mm:ss");
+                              case "datetime":
+                                  if (!dayjs(value).isValid()) return undefined;
+                                  return dayjs(value).format("YYYY-MM-DD HH:mm:ss");
+                              default:
+                                  return value;
+                          }
+                      })(),
+            ]),
         );
     };
 
@@ -176,8 +227,8 @@ export const useForm = (props: UseFormProps) => {
     };
 
     const clearValues = () => {
-        Object.keys(_schema).forEach((name) => {
-            setValue(name, null);
+        Object.keys(_getValues()).forEach((name) => {
+            setValue(name, null, { shouldValidate: isSubmitted });
         });
     };
 
@@ -263,7 +314,6 @@ export const useForm = (props: UseFormProps) => {
                                 return {
                                     ...rest,
                                     invalid: errors[key],
-                                    setValue,
                                     start: {
                                         ...value.start,
                                         invalid: errors[value.start.name],
@@ -279,48 +329,14 @@ export const useForm = (props: UseFormProps) => {
                                 };
                             }
 
-                            case "date":
-                            case "time":
-                            case "datetime":
-                            case "code":
-                            case "file":
-                            case "select":
-                            case "radio":
-                            case "checkbox": {
+                            default: {
                                 const { min, max, minLength, pattern, validate, ...rest } = value;
-
                                 return {
                                     ...rest,
                                     invalid: errors[key],
                                     name: key,
                                     control,
                                     rules: getRules(value),
-                                };
-                            }
-
-                            case "number": {
-                                const { min, max, minLength, pattern, validate, ...rest } = value;
-
-                                return {
-                                    ...rest,
-                                    ...register(key, {
-                                        ...getRules(value),
-                                        setValueAs: (v) => {
-                                            if (comnUtils.isEmptyString(v) || comnUtils.isUndefined(v)) return null;
-                                            return Number(String(v).replaceAll(",", ""));
-                                        },
-                                    }),
-                                    invalid: errors[key],
-                                };
-                            }
-
-                            default: {
-                                const { min, max, minLength, pattern, validate, ...rest } = value;
-
-                                return {
-                                    ...rest,
-                                    ...register(key, { ...getRules(value) }),
-                                    invalid: errors[key],
                                 };
                             }
                         }

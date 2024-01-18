@@ -1,7 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
-import classNames from "classnames";
 import { v4 as uuid } from "uuid";
+import classNames from "classnames";
 import { InputDateProps } from "@/comn/components/_";
 import { FormControl } from "@/comn/components";
 
@@ -40,102 +40,71 @@ export type InputDaterangeProps = {
     start?: InputDateProps;
     end?: InputDateProps;
     rangeButton?: 0 | 1 | 2;
-    setValue?: any;
 };
 
 export const InputDaterange = (props: InputDaterangeProps) => {
-    const { edit = true, start, end, rangeButton, setValue } = props;
+    const { edit = true, start, end, rangeButton } = props;
 
-    console.log(props);
-
-    const dateFormat = "MM/DD/YYYY";
-
-    const [_startValue, _setStartValue] = React.useState<any>();
-    const [_endValue, _setEndValue] = React.useState<any>();
-
-    React.useEffect(() => {
-        if (!props.start?.onChange) return;
-        if (String(props.start.value) === String(_startValue)) return;
-        props.start.onChange(_startValue);
-    }, [_startValue]);
-
-    React.useEffect(() => {
-        if (!props.end?.onChange) return;
-        if (String(props.end.value) === String(_endValue)) return;
-        props.end.onChange(_endValue);
-    }, [_endValue]);
+    const startRef = React.useRef<any>({});
+    const endRef = React.useRef<any>({});
 
     const _handleClickButton = (unit: DateUnitType, value: number) => {
+        if (!startRef.current.handleChangeStart) return;
+        if (!endRef.current.handleChangeEnd) return;
+
         const today = new Date();
+
         if (value > 0) {
-            _setStartValue(today);
-            _setEndValue(dayjs(today).add(value, unit).toDate());
-            if (setValue) {
-                if (props.start) setValue(props.start.name, today, { shouldValidate: true });
-                if (props.end)
-                    setValue(props.end.name, dayjs(today).add(value, unit).toDate(), { shouldValidate: true });
-            }
+            startRef.current.handleChangeStart(today);
+            endRef.current.handleChangeEnd(dayjs(today).add(value, unit).toDate());
         } else {
-            _setStartValue(dayjs(today).add(value, unit).toDate());
-            _setEndValue(today);
-            if (setValue) {
-                if (props.start)
-                    setValue(props.start.name, dayjs(today).add(value, unit).toDate(), { shouldValidate: true });
-                if (props.end) setValue(props.end.name, today, { shouldValidate: true });
-            }
+            startRef.current.handleChangeStart(dayjs(today).add(value, unit).toDate());
+            endRef.current.handleChangeEnd(today);
         }
     };
 
-    const _onChangeStart = (v: any) => {
-        _setStartValue(v);
-    };
-
-    const _onChangeEnd = (v: any) => {
-        _setEndValue(v);
-    };
-
     return (
-        <div className="w-full">
-            {!edit && (
-                <div>
-                    {(_startValue ? dayjs(_startValue).format(dateFormat) : "") +
-                        " ~ " +
-                        (_endValue ? dayjs(_endValue).format(dateFormat) : "")}
+        <div className="flex w-full items-center">
+            <div className="min-w-fit flex-1 [&_input]:rounded-r-none">
+                <FormControl //
+                    {...start}
+                    type="date"
+                    edit={edit}
+                    startRef={startRef}
+                />
+            </div>
+            <div className={classNames("flex items-center justify-center min-w-[1.25rem]", edit && "border-y h-7")}>
+                ~
+            </div>
+            <div
+                className={classNames("min-w-fit flex-1 [&_input]:rounded-l-none", {
+                    "[&_input]:rounded-r-none": rangeButton !== undefined,
+                })}
+            >
+                <FormControl //
+                    {...end}
+                    type="date"
+                    edit={edit}
+                    endRef={endRef}
+                />
+            </div>
+            {edit && rangeButton !== undefined && (
+                <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
+                    {RANGE_BUTTON_OPTIONS[rangeButton].map((props: RangeButtonOptionType) => {
+                        const { unit, label, value } = props;
+                        return (
+                            <button
+                                key={uuid()}
+                                type="button"
+                                className="px-2"
+                                onClick={() => _handleClickButton(unit, value)}
+                            >
+                                {label}
+                            </button>
+                        );
+                    })}
                 </div>
             )}
-
-            <div hidden={!edit}>
-                <div className="flex">
-                    <div className="w-full [&_input]:rounded-r-none">
-                        <FormControl type="date" {...props.start} value={_startValue} onChange={_onChangeStart} />
-                    </div>
-                    <div className="flex items-center justify-center min-w-[1.25rem] h-7 bg-header border-y">-</div>
-                    <div
-                        className={classNames("w-full [&_input]:rounded-l-none", {
-                            "[&_input]:rounded-r-none": rangeButton !== undefined,
-                        })}
-                    >
-                        <FormControl type="date" {...props.end} value={_endValue} onChange={_onChangeEnd} />
-                    </div>
-                    {rangeButton !== undefined && (
-                        <div className="flex divide-x bg-header text-sm border-y border-r rounded-r h-7">
-                            {RANGE_BUTTON_OPTIONS[rangeButton].map((props: RangeButtonOptionType) => {
-                                const { unit, label, value } = props;
-                                return (
-                                    <button
-                                        key={uuid()}
-                                        type="button"
-                                        className="px-2"
-                                        onClick={() => _handleClickButton(unit, value)}
-                                    >
-                                        {label}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-            </div>
         </div>
     );
 };

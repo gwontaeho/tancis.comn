@@ -34,9 +34,6 @@ export const comnUtils = {
     isEmptyArray: (arg: any) => {
         return Array.isArray(arg) && arg.length === 0;
     },
-    isEmptyObject: (arg: any) => {
-        return lodash.isEmpty(arg);
-    },
     replaceEmpty: (arg: any, replace: any = "") => {
         if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
             return replace;
