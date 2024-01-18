@@ -170,7 +170,7 @@ const GroupAny = (props: GroupAnyProps) => {
     const { children, ...rest } = props;
     return (
         <>
-            <div className={"p-1 flex items-center space-x-1"} {...rest}>
+            <div className={"p-1 flex items-center space-x-1 min-w-fit text-center"} {...rest}>
                 {children}
             </div>
         </>
