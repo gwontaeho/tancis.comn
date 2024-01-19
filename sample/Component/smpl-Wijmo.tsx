@@ -44,7 +44,6 @@ const schema: any = {
                 {
                     colspan: 3,
                     binding: "id",
-                    width: "*",
                 },
                 {
                     binding: "a",
@@ -92,7 +91,7 @@ const schema2: any = {
     ],
 };
 
-const data = utils.getMockData({ totalElements: 9999 });
+const data = utils.getMockData({ totalElements: 123 });
 
 export const SampleWijmo = () => {
     const st = useStore();
