@@ -46,6 +46,7 @@ export const Tab = (props: TabProps) => {
                     return (
                         <button
                             key={key + i}
+                            type="button"
                             className={classNames(
                                 "truncate transition rounded-t border-b-2 border-transparent max-w-xs h-8 px-4 text-lg",
                                 {
