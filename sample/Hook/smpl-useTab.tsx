@@ -17,7 +17,12 @@ export const SampleUseTab = () => {
 
     return (
         <Sample title="useTab">
-            <Tab {...tab}></Tab>
+            <Tab {...tab}>
+                <Tab.Panel>첫번째 탭</Tab.Panel>
+                <Tab.Panel>두번째 탭</Tab.Panel>
+                <Tab.Panel>세번째 탭</Tab.Panel>
+                <Tab.Panel>네번째 탭</Tab.Panel>
+            </Tab>
 
             <Sample.Section title="useTab(props: UseTabProps): UseTabReturn">
                 <Sample.Table
