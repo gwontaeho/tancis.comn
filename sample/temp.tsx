@@ -93,6 +93,9 @@ export const Temp = () => {
                     </Group.Section>
                 </Group.Body>
             </Group>
+            <button onClick={() => setOption("edit", true)}>edit</button>
+            <button onClick={() => setOption("edit", false)}>edit</button>
+
             <button onClick={() => console.log(setOption("checkbox", false))}>set option</button>
             <button onClick={() => console.log(setOption("radio", false))}>set option radio</button>
             <button onClick={() => console.log(getData())}>get Data</button>

@@ -264,12 +264,31 @@ export const Grid = (props: any) => {
         }
     }, []);
 
+    console.log("asd");
+
     /** set option */
     const setOption = React.useCallback((target: any, value: any) => {
         _setOptions((prev) => {
             _grid.current[target] = value;
             return { ...prev, [target]: value };
         });
+
+        if (target === "edit") {
+            _setBody((prev: any) => {
+                const next = prev.map((col: any) => {
+                    return {
+                        ...col,
+                        edit: value,
+                        cells: col.cells.map((b: any) => {
+                            return b.map((_: any) => {
+                                return { ..._, edit: value };
+                            });
+                        }),
+                    };
+                });
+                return next;
+            });
+        }
     }, []);
 
     /** handle update */
