@@ -13,13 +13,26 @@ export type InputDateProps = {
     readOnly?: boolean;
     disabled?: boolean;
     onChange?: (value?: Date | null) => void;
+    onValueChange?: any;
     onBlur?: (...args: any) => void;
     startRef?: any;
     endRef?: any;
 };
 
 export const InputDate = (props: InputDateProps) => {
-    const { edit = true, name, value, defaultValue, readOnly, disabled, onChange, onBlur, startRef, endRef } = props;
+    const {
+        edit = true,
+        name,
+        value,
+        defaultValue,
+        readOnly,
+        disabled,
+        onChange,
+        onValueChange,
+        onBlur,
+        startRef,
+        endRef,
+    } = props;
     const _props = Object.fromEntries(
         Object.entries({
             name,
@@ -48,8 +61,16 @@ export const InputDate = (props: InputDateProps) => {
 
     const handleChange = (date: Date) => {
         _setValue(date);
-        if (!onChange) return;
-        onChange(date);
+        if (onChange) {
+            onChange(date);
+        }
+        if (onValueChange) {
+            onValueChange({
+                value: date,
+                data: dayjs(date).format(constants.DATE_FORMAT),
+                formattedValue: dayjs(date).format(constants.DATE_FORMAT),
+            });
+        }
     };
 
     return (

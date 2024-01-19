@@ -114,6 +114,7 @@ export type FormControlProps = InputDaterangeProps & {
     rows?: number;
     startRef?: any;
     endRef?: any;
+    onValueChange?: (e: any) => void;
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {
