@@ -41,8 +41,6 @@ export const useGrid = (props: any) => {
         // _handleChangeSize
     });
 
-    console.log(_grid);
-
     const getData = () => {
         return _grid.current._content;
     };
@@ -58,8 +56,8 @@ export const useGrid = (props: any) => {
     const updateRow = (p: any, n: any) => {
         _grid.current._handleUpdate(p, n);
     };
-    const addRow = () => {
-        _grid.current._handleClickAdd?.();
+    const addRow = (data?: any) => {
+        _grid.current._handleClickAdd?.(data);
     };
     const deleteRow = (type: any) => {
         _grid.current._handleClickDelete?.(type);

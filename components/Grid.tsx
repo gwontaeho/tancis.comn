@@ -156,6 +156,8 @@ export const Grid = (props: any) => {
 
             return paged || [];
         });
+
+        _setTotalCount.current(_grid.current._pagination === "in" ? data.content.length : data.page.totalElements);
     }, [data.content]);
 
     /** set edit */
@@ -316,10 +318,10 @@ export const Grid = (props: any) => {
      * pagination = in
      * handle add
      */
-    const handleClickAdd = React.useCallback(() => {
+    const handleClickAdd = React.useCallback((data?: any) => {
         if (_grid.current._pagination !== "in") return;
 
-        _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added" }];
+        _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added", ...data }];
         const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
         const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
 
@@ -508,7 +510,7 @@ export const Grid = (props: any) => {
                 </div>
 
                 <div className="flex gap-1">
-                    <Button onClick={handleClickAdd}>add</Button>
+                    <Button onClick={() => handleClickAdd()}>add</Button>
                     <Button onClick={() => handleClickDelete("radio")}>radio delete</Button>
                     <Button onClick={() => handleClickDelete("checkbox")}>checked delete</Button>
                 </div>

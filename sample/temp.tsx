@@ -2,19 +2,17 @@ import { useStore } from "@/comn/hooks";
 import { useGrid } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Page, Group, FormControl, Grid } from "@/comn/components";
+import { Link } from "react-router-dom";
 
 const schema1 = {
-    options: { radio: true, checkbox: true, pagination: "out", add: true, delete: true, edit: false },
-    head: [
-        { cells: [{ binding: "q" }] },
-        { cells: [{ binding: "q" }] },
-        { cells: [{ binding: "q" }] },
-        { cells: [{ binding: "q" }] },
-        { cells: [{ binding: "q" }] },
-    ],
+    options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: false },
+    head: [{ cells: [{ binding: "text" }] }, { cells: [{ binding: "number" }] }],
     body: [
         {
-            cells: [{ binding: "q" }],
+            cells: [{ binding: "text" }],
+        },
+        {
+            cells: [{ binding: "number" }],
         },
     ],
 };
@@ -71,6 +69,8 @@ export const Temp = () => {
                     </Group.Section>
                 </Group.Body>
             </Group>
+
+            <Link to="/asd">asd</Link>
             <button onClick={() => setSize(30)}>edit</button>
 
             <button onClick={() => setOption("edit", true)}>edit</button>
@@ -82,7 +82,7 @@ export const Temp = () => {
             <button onClick={() => console.log(getOrigin())}>get getOriginData</button>
             <button onClick={() => console.log(getSelectedRow())}>get radio</button>
             <button onClick={() => console.log(getChecked())}>get checkbox</button>
-            <button onClick={() => addRow()}>add row</button>
+            <button onClick={() => addRow({ text: "asdwdq" })}>add row</button>
             <button onClick={() => deleteRow("radio")}>delete radio</button>
             <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
             <button onClick={() => updateRow(getSelectedRow(), { q: "asd" })}>ffffffffffff</button>

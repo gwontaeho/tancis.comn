@@ -134,6 +134,11 @@ export const comnUtils = {
                     e: "e" + Math.random() * 1000,
                     f: "f" + Math.random() * 1000,
                     g: "g" + Math.random() * 1000,
+                    text: (Math.random() * 1000).toFixed(),
+                    number: Math.ceil(Math.random() * 10000000),
+                    date: "2022-10-10",
+                    time: "11:20:10",
+                    datetime: "2022-10-10 10:30:20",
                 })),
         };
     },
