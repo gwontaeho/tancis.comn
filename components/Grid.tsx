@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Button, FormControl, Pagination } from "@/comn/components";
 
 export const Grid = (props: any) => {
-    const { _grid, data, render } = props;
+    const { _grid, data = { content: [], page: { totalElements: 0 } }, render } = props;
 
     const { t } = useTranslation();
 
