@@ -4,7 +4,7 @@ import ReactDatePicker from "react-datepicker";
 import { useTheme } from "@/comn/hooks";
 
 import { Icon } from "@/comn/components";
-import { DATETIME_FORMAT_DAYJS, DATETIME_FORMAT_INPUT } from "@/comn/constants";
+import { DATETIME_FORMAT_DAYJS, DATETIME_FORMAT_INPUT, DATETIME_FORMAT } from "@/comn/constants";
 
 export type InputDateimeProps = {
     edit?: boolean;
@@ -13,10 +13,11 @@ export type InputDateimeProps = {
     readOnly?: boolean;
     disabled?: boolean;
     onChange?: (value?: Date | null) => void;
+    onValueChange?: any;
 };
 
 export const InputDatetime = (props: InputDateimeProps) => {
-    const { edit = true, name, value, readOnly, disabled, onChange } = props;
+    const { edit = true, name, value, readOnly, disabled, onChange, onValueChange } = props;
     const _props = Object.fromEntries(
         Object.entries({
             name,
@@ -41,6 +42,14 @@ export const InputDatetime = (props: InputDateimeProps) => {
         _setValue(date);
         if (!onChange) return;
         onChange(date);
+
+        if (onValueChange) {
+            onValueChange({
+                value: date,
+                data: dayjs(date).format(DATETIME_FORMAT),
+                formattedValue: dayjs(date).format(DATETIME_FORMAT),
+            });
+        }
     };
 
     return (

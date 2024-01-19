@@ -37,15 +37,19 @@ export const useGrid = (props: any) => {
         // _handleUpdate
         // _handleClickAdd
         // _handleClickDelete
+        // _handleChangePage
+        // _handleChangeSize
     });
+
+    console.log(_grid);
 
     const getData = () => {
         return _grid.current._content;
     };
-    const getOriginData = () => {
+    const getOrigin = () => {
         return _grid.current._origin;
     };
-    const getCheckedRows = () => {
+    const getChecked = () => {
         return _grid.current._checked;
     };
     const getSelectedRow = () => {
@@ -69,20 +73,28 @@ export const useGrid = (props: any) => {
     const setShow = (type: any, target: any, value: any) => {
         _grid.current._setShow?.(type, target, value);
     };
+    const setPage = (next: any) => {
+        _grid.current._handleChangePage(next);
+    };
+    const setSize = (next: any) => {
+        _grid.current._handleChangeSize(next);
+    };
 
     return {
-        schema: { _grid },
+        grid: { _grid },
         page: _page,
         size: _size,
         getData,
-        getOriginData,
+        getOrigin,
         getSelectedRow,
-        getCheckedRows,
+        getChecked,
         addRow,
         deleteRow,
         updateRow,
         setEdit,
         setShow,
         setOption,
+        setPage,
+        setSize,
     };
 };

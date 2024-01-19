@@ -4,7 +4,7 @@ import { utils } from "@/comn/utils";
 import { Page, Group, FormControl, Grid } from "@/comn/components";
 
 const schema1 = {
-    options: { radio: true, checkbox: true, pagination: "out", add: true, delete: true, edit: true },
+    options: { radio: true, checkbox: true, pagination: "out", add: true, delete: true, edit: false },
     head: [
         {
             width: "*",
@@ -30,7 +30,7 @@ const schema1 = {
             ],
         },
         {
-            cells: [{ binding: "q", type: "date" }],
+            cells: [{ binding: "q", type: "number", thousandSeparator: true }],
         },
         {
             cells: [{ binding: "a", colspan: 2, link: () => {} }, { binding: "c", type: "text" }, { binding: "d" }],
@@ -54,16 +54,16 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 26 });
+const data = utils.getMockData({ totalElements: 66 });
 
 export const Temp = () => {
     const {
-        schema,
+        grid,
         getData,
-        getOriginData,
+        getOrigin,
         setOption,
         getSelectedRow,
-        getCheckedRows,
+        getChecked,
         addRow,
         deleteRow,
         updateRow,
@@ -71,9 +71,12 @@ export const Temp = () => {
         size,
         setEdit,
         setShow,
+        setPage,
+        setSize,
     } = useGrid({
         defaultSchema: schema1,
     });
+    console.log(page, size);
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
@@ -89,19 +92,21 @@ export const Temp = () => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Grid {...schema} data={data2} render={_test} />
+                        <Grid {...grid} data={data2} render={_test} />
                     </Group.Section>
                 </Group.Body>
             </Group>
+            <button onClick={() => setSize(30)}>edit</button>
+
             <button onClick={() => setOption("edit", true)}>edit</button>
             <button onClick={() => setOption("edit", false)}>edit</button>
 
             <button onClick={() => console.log(setOption("checkbox", false))}>set option</button>
             <button onClick={() => console.log(setOption("radio", false))}>set option radio</button>
             <button onClick={() => console.log(getData())}>get Data</button>
-            <button onClick={() => console.log(getOriginData())}>get getOriginData</button>
+            <button onClick={() => console.log(getOrigin())}>get getOriginData</button>
             <button onClick={() => console.log(getSelectedRow())}>get radio</button>
-            <button onClick={() => console.log(getCheckedRows())}>get checkbox</button>
+            <button onClick={() => console.log(getChecked())}>get checkbox</button>
             <button onClick={() => addRow()}>add row</button>
             <button onClick={() => deleteRow("radio")}>delete radio</button>
             <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>

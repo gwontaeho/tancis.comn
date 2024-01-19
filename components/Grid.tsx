@@ -144,7 +144,7 @@ export const Grid = (props: any) => {
         if (!_grid.current._initialized) return;
         _setTest(() => {
             /** origin content */
-            const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+            const _ = data.content?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
             /** content refs */
             _grid.current._origin = _;
@@ -162,16 +162,16 @@ export const Grid = (props: any) => {
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
 
-        if (_grid.current._pagination === "in") {
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _size)[_page];
-            _setTest(paged || []);
-        }
+        // if (_grid.current._pagination === "in") {
+        //     const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+        //     const paged = lodash.chunk(_, _size)[_page];
+        //     _setTest(paged || []);
+        // }
 
-        _grid.current._checked = [];
-        _grid.current._selectedRow = null;
-        _setChecked([]);
-        _setSelectedRow(null);
+        // _grid.current._checked = [];
+        // _grid.current._selectedRow = null;
+        // _setChecked([]);
+        // _setSelectedRow(null);
     }, [_page, _size]);
 
     /** set edit */
@@ -263,8 +263,6 @@ export const Grid = (props: any) => {
                 break;
         }
     }, []);
-
-    console.log("asd");
 
     /** set option */
     const setOption = React.useCallback((target: any, value: any) => {
@@ -420,8 +418,21 @@ export const Grid = (props: any) => {
 
     /** handle page */
     const handleChangePage = React.useCallback((next: any) => {
+        _grid.current._checked = [];
+        _grid.current._selectedRow = null;
+
         _grid.current._page = next;
+
         _setPage(next);
+        _setChecked([]);
+        _setSelectedRow(null);
+
+        if (_grid.current._pagination === "in") {
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _grid.current._size)[next];
+            _setTest(paged || []);
+        }
+
         if (_grid.current._pagination === "out") {
             _grid.current._setPage(next);
         }
@@ -429,11 +440,24 @@ export const Grid = (props: any) => {
 
     /** handle size */
     const handleChangeSize = React.useCallback((next: any) => {
+        _grid.current._checked = [];
+        _grid.current._selectedRow = null;
+
         _grid.current._page = 0;
         _grid.current._size = next;
-        _setSize(next);
         _setPage(0);
+        _setSize(next);
+        _setChecked([]);
+        _setSelectedRow(null);
+
+        if (_grid.current._pagination === "in") {
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, next)[0];
+            _setTest(paged || []);
+        }
+
         if (_grid.current._pagination === "out") {
+            _grid.current._setPage(0);
             _grid.current._setSize(next);
         }
     }, []);
@@ -479,6 +503,8 @@ export const Grid = (props: any) => {
 
     /** set method */
     React.useEffect(() => {
+        _grid.current._handleChangePage = handleChangePage;
+        _grid.current._handleChangeSize = handleChangeSize;
         _grid.current._setEdit = setEdit;
         _grid.current._setShow = setShow;
         _grid.current._setOption = setOption;
@@ -651,16 +677,19 @@ export const Grid = (props: any) => {
                                                                     {bProps.edit &&
                                                                         (render?.edit?.[bProps.binding]?.() || (
                                                                             <FormControl
-                                                                                value={rowProps[bProps.binding]}
                                                                                 type={bProps.type}
-                                                                                onChange={(arg: any) => {
-                                                                                    handleUpdate(rowProps, {
-                                                                                        ...rowProps,
-                                                                                        [bProps.binding]: arg.target
-                                                                                            ? arg.target.value
-                                                                                            : arg,
-                                                                                    });
-                                                                                }}
+                                                                                mask={bProps.mask}
+                                                                                decimalScale={bProps.decimalScale}
+                                                                                thousandSeparator={
+                                                                                    bProps.thousandSeparator
+                                                                                }
+                                                                                // value={rowProps[bProps.binding]}
+                                                                                // onValueChange={({ data }) => {
+                                                                                //     handleUpdate(rowProps, {
+                                                                                //         ...rowProps,
+                                                                                //         [bProps.binding]: data,
+                                                                                //     });
+                                                                                // }}
                                                                             />
                                                                         ))}
                                                                 </div>

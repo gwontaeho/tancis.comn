@@ -54,7 +54,6 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             Object.entries({
                 decimalScale,
                 thousandSeparator,
-                onValueChange,
                 /** */
                 onClick,
                 onBlur,
@@ -80,6 +79,11 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             onChange(e);
         };
 
+        const handleValueChange = (_: any) => {
+            if (!onValueChange) return;
+            onValueChange({ ..._, data: Number(_.value) });
+        };
+
         return (
             <div className="w-full">
                 {!edit && <div>{_value}</div>}
@@ -89,6 +93,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
                         ref={ref}
                         value={_value}
                         onChange={handleChange}
+                        onValueChange={handleValueChange}
                         type="number"
                         inputMode="numeric"
                         autoComplete="off"
