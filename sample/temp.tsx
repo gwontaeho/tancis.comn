@@ -6,40 +6,15 @@ import { Page, Group, FormControl, Grid } from "@/comn/components";
 const schema1 = {
     options: { radio: true, checkbox: true, pagination: "out", add: true, delete: true, edit: false },
     head: [
-        {
-            width: "*",
-            cells: [{ binding: "q", colspan: 2, required: true }, { binding: "d", header: "adad" }, { binding: "ab" }],
-        },
-        { width: 100, cells: [{ binding: "b" }] },
-        {
-            id: "col",
-            show: false,
-            width: 300,
-            cells: [{ binding: "c", colspan: 2 }, { binding: "c" }, { binding: "c" }],
-        },
-        // { width: 300, cells: [{ binding: "e" }] },
-        { width: 300, cells: [{ binding: "f" }] },
-        { cells: [{ binding: "g" }] },
+        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "q" }] },
     ],
     body: [
         {
-            cells: [
-                { binding: "index", required: true, colspan: 2 },
-                { binding: "test", required: true },
-                { binding: "q", required: true },
-            ],
-        },
-        {
-            cells: [{ binding: "q", type: "number", thousandSeparator: true }],
-        },
-        {
-            cells: [{ binding: "a", colspan: 2, link: () => {} }, { binding: "c", type: "text" }, { binding: "d" }],
-        },
-        {
-            cells: [{ binding: "f", type: "date" }],
-        },
-        {
-            cells: [{ binding: "g" }],
+            cells: [{ binding: "q" }],
         },
     ],
 };

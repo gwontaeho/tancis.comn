@@ -158,22 +158,6 @@ export const Grid = (props: any) => {
         });
     }, [data.content]);
 
-    /** on paging, on sizing */
-    React.useEffect(() => {
-        if (!_grid.current._initialized) return;
-
-        // if (_grid.current._pagination === "in") {
-        //     const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-        //     const paged = lodash.chunk(_, _size)[_page];
-        //     _setTest(paged || []);
-        // }
-
-        // _grid.current._checked = [];
-        // _grid.current._selectedRow = null;
-        // _setChecked([]);
-        // _setSelectedRow(null);
-    }, [_page, _size]);
-
     /** set edit */
     const setEdit = React.useCallback((type: any, target: any, value: any) => {
         /**
