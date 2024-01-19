@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 import constants from "@/comn/constants";
 import { comnUtils, utils } from "@/comn/utils";
 import { Page, Group, Pagination, FormControl, Icon, Layout, Button } from "@/comn/components";
-import { InputText } from "../components/_";
 
 const COLS: any = {
     1: "grid-cols-1",
@@ -40,7 +39,7 @@ const SPANS: any = {
 
 const schema1 = {
     id: "grid2",
-    options: { checkbox: true, pagination: "out", add: true, remove: true, edit: true },
+    options: { checkbox: true, pagination: "in", add: true, remove: true, edit: true },
     head: [
         {
             width: "*",
@@ -93,6 +92,7 @@ type TData = {
 
 const Grid = (props: any) => {
     const {
+        _grid,
         id, // grid id
         head,
         body,
@@ -102,10 +102,11 @@ const Grid = (props: any) => {
         setPage,
         setSize,
         data,
-        refs,
         render,
     } = props;
-    const { mRef, originRef, contentRef, selectedRef, checkedRef, pagedRef, paginationRef } = refs;
+
+    console.log(_grid);
+
     const { pagination, group, edit = false } = options;
 
     const { theme } = useTheme();
@@ -211,12 +212,12 @@ const Grid = (props: any) => {
         const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
         /** content refs */
-        originRef.current = _;
-        contentRef.current = _;
+        _grid.current._origin = _;
+        _grid.current._content = _;
 
         /** paged */
-        const paged = pagination === "in" ? lodash.chunk(_, size)[page] : _;
-        pagedRef.current = paged;
+        const paged = _grid.current._pagination === "in" ? lodash.chunk(_, size)[page] : _;
+        _grid.current._paged = paged;
 
         return paged;
     });
@@ -225,16 +226,17 @@ const Grid = (props: any) => {
 
     /** set method */
     useEffect(() => {
-        mRef.current.handleUpdate = handleUpdate;
-        mRef.current.handleClickAdd = handleClickAdd;
-        mRef.current.handleClickDelete = handleClickDelete;
+        _grid.current._handleUpdate = handleUpdate;
+        _grid.current._handleClickAdd = handleClickAdd;
+        _grid.current._handleClickDelete = handleClickDelete;
+
         _initialized.current = true;
     }, []);
 
     /** set paged content */
     useEffect(() => {
         if (!_initialized.current) return;
-        pagedRef.current = _test;
+        _grid.current._paged = _test;
     }, [_test]);
 
     /** on head schema changed */
@@ -251,11 +253,13 @@ const Grid = (props: any) => {
             const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
             /** content refs */
-            originRef.current = _;
-            contentRef.current = _;
+            _grid.current._origin = _;
+            _grid.current._content = _;
 
             /** paged */
-            const paged = paginationRef.current.pagination === "in" ? lodash.chunk(_, size)[page] : _;
+            const paged = _grid.current._pagination === "in" ? lodash.chunk(_, size)[page] : _;
+            _grid.current._paged = paged;
+
             return paged || [];
         });
     }, [data.content]);
@@ -264,14 +268,14 @@ const Grid = (props: any) => {
     useEffect(() => {
         if (!_initialized.current) return;
 
-        if (paginationRef.current.pagination === "in") {
-            const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
+        if (_grid.current._pagination === "in") {
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
             const paged = lodash.chunk(_, _size)[_page];
             _setTest(paged || []);
         }
 
-        paginationRef.current.page = _page;
-        paginationRef.current.size = _size;
+        _grid.current._page = _page;
+        _grid.current._size = _size;
 
         _setChecked([]);
         _setSelectedRow(null);
@@ -281,21 +285,21 @@ const Grid = (props: any) => {
     useEffect(() => {
         if (!_initialized.current) return;
 
-        selectedRef.current = _selectedRow;
+        _grid.current._selected = _selectedRow;
     }, [_selectedRow]);
 
     /** on check row (checkbox) */
     useEffect(() => {
         if (!_initialized.current) return;
 
-        checkedRef.current = _checked;
+        _grid.current._checked = _checked;
     }, [_checked]);
 
     /** handle update */
     const handleUpdate = (p: any, n: any) => {
         if (!p?.__key) return;
 
-        contentRef.current = contentRef.current.map((_: any) => {
+        _grid.current._content = _grid.current._content.map((_: any) => {
             if (_.__key !== p.__key) return _;
             const { __type, __key, ...rest } = n;
             return {
@@ -303,14 +307,14 @@ const Grid = (props: any) => {
                 ...rest,
                 __type:
                     _.__type === "origin" || _.__type === "updated"
-                        ? Object.keys(rest).every((k) => n[k] === originRef[k])
+                        ? Object.keys(rest).every((k) => n[k] === _grid.current._origin[k])
                             ? "origin"
                             : "updated"
                         : _.__type,
             };
         });
 
-        if (pagedRef.current.find(({ __key }: any) => __key === p.__key)) {
+        if (_grid.current._paged.find(({ __key }: any) => __key === p.__key)) {
             _setTest((prev) =>
                 prev.map((_) => {
                     if (_.__key !== p.__key) return _;
@@ -320,7 +324,7 @@ const Grid = (props: any) => {
                         ...rest,
                         __type:
                             _.__type === "origin" || _.__type === "updated"
-                                ? Object.keys(rest).every((k) => n[k] === originRef[k])
+                                ? Object.keys(rest).every((k) => n[k] === _grid.current._origin[k])
                                     ? "origin"
                                     : "updated"
                                 : _.__type,
@@ -332,24 +336,25 @@ const Grid = (props: any) => {
 
     /** handle add */
     const handleClickAdd = () => {
-        if (paginationRef.current.pagination !== "in") return;
+        if (_grid.current._pagination !== "in") return;
 
-        contentRef.current = [...contentRef.current, { __key: uuid(), __type: "added" }];
-        const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-        const paged = lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page];
+        _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added" }];
+        const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+        const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
+
         _setTotalCount.current?.(_.length);
         _setTest(paged || []);
     };
 
     /** handle delete */
     const handleClickDelete = (type: any) => {
-        if (paginationRef.current.pagination !== "in") return;
+        if (_grid.current._pagination !== "in") return;
 
         if (type === "radio") {
-            if (!selectedRef.current) return;
-            contentRef.current = contentRef.current
+            if (!_grid.current._selected) return;
+            _grid.current._content = _grid.current._content
                 .map((_: any) => {
-                    if (_.__key === selectedRef.current.__key) {
+                    if (_.__key === _grid.current._selected.__key) {
                         if (_.__type === "added") return undefined;
                         return { ..._, __type: "deleted" };
                     } else {
@@ -359,17 +364,17 @@ const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
             _setSelectedRow(null);
 
-            const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page];
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
             _setTotalCount.current?.(_.length);
             _setTest(paged || []);
             return;
         }
         if (type === "checkbox") {
-            if (!checkedRef.current.length) return;
-            contentRef.current = contentRef.current
+            if (!_grid.current._checked.length) return;
+            _grid.current._content = _grid.current._content
                 .map((_: any) => {
-                    if (checkedRef.current.map((_: any) => _.__key).includes(_.__key)) {
+                    if (_grid.current._checked.map((_: any) => _.__key).includes(_.__key)) {
                         if (_.__type === "added") return undefined;
                         return { ..._, __type: "deleted" };
                     } else {
@@ -379,8 +384,8 @@ const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
             _setChecked([]);
 
-            const _ = contentRef.current.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, paginationRef.current.size)[paginationRef.current.page];
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
             _setTotalCount.current?.(_.length);
             _setTest(paged || []);
             return;
@@ -623,36 +628,43 @@ const useGrid = (props: any) => {
     const [_page, _setPage] = useState(0);
     const [_size, _setSize] = useState(10);
 
-    const _mRef = useRef<any>({});
-    const _originRef = useRef([]);
-    const _contentRef = useRef([]);
-    const _checkedRef = useRef([]);
-    const _selectedRef = useRef(null);
-    const _pagedRef = useRef([]);
-    const _paginationRef = useRef({ page: _page, size: _size, pagination: _schema.options.pagination });
+    const _grid = useRef<any>({
+        _origin: [],
+        _content: [],
+        _checked: [],
+        _paged: [],
+        _selected: null,
+        /** paging */
+        _page,
+        _size,
+        _pagination: _schema.options.pagination,
+        _setPage,
+        _setSize,
+        _handleClickDelete: null,
+    });
 
-    const addRow = () => {
-        _mRef.current.handleClickAdd();
-    };
-    const deleteRow = (type: any) => {
-        _mRef.current.handleClickDelete(type);
-    };
     const getData = () => {
-        return _contentRef.current;
+        return _grid.current._content;
     };
     const getOriginData = () => {
-        return _originRef.current;
+        return _grid.current._origin;
     };
     const getCheckedRows = () => {
-        return _checkedRef.current;
+        return _grid.current._checked;
     };
     const getSelectedRow = () => {
-        return _selectedRef.current;
+        return _grid.current._selected;
     };
     const setSchema = () => {};
 
     const updateRow = (p: any, n: any) => {
-        return _mRef.current.handleUpdate(p, n);
+        _grid.current._handleUpdate(p, n);
+    };
+    const addRow = () => {
+        _grid.current._handleClickAdd?.();
+    };
+    const deleteRow = (type: any) => {
+        _grid.current._handleClickDelete?.(type);
     };
 
     const validate = () => {};
@@ -660,19 +672,11 @@ const useGrid = (props: any) => {
     return {
         schema: {
             ..._schema,
+            _grid,
             page: _page,
             size: _size,
             setPage: _setPage,
             setSize: _setSize,
-            refs: {
-                mRef: _mRef,
-                originRef: _originRef,
-                contentRef: _contentRef,
-                selectedRef: _selectedRef,
-                checkedRef: _checkedRef,
-                pagedRef: _pagedRef,
-                paginationRef: _paginationRef,
-            },
         },
         page: _page,
         size: _size,
@@ -687,7 +691,7 @@ const useGrid = (props: any) => {
     };
 };
 
-const data = utils.getMockData({ totalElements: 600 });
+const data = utils.getMockData({ totalElements: 7 });
 
 export const Temp = () => {
     const { schema, getData, getOriginData, getSelectedRow, getCheckedRows, addRow, deleteRow, updateRow, page, size } =
@@ -744,7 +748,7 @@ export const Temp = () => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Grid {...schema} data={data2} render={_test} />
+                        <Grid {...schema} data={data} render={_test} />
                     </Group.Section>
                 </Group.Body>
             </Group>
