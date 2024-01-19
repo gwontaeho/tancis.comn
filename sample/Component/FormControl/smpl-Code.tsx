@@ -83,6 +83,13 @@ export const SampleFormControlCode = () => {
                 controlSize: 10,
                 popupSize: "md",
             },
+            field12: {
+                type: "code",
+                area: "wrshCd",
+                label: "WareHouse Code",
+                controlSize: 10,
+                popupSize: "md",
+            },
         },
     };
     const form = useForm({ defaultSchema: SCHEMA_FORM });
@@ -124,22 +131,23 @@ export const SampleFormControlCode = () => {
                     <Group.Row>
                         <Group.Control {...form.schema.field11}></Group.Control>
                     </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field12}></Group.Control>
+                    </Group.Row>
                 </Group.Body>
             </Group>
 
-            <Group bgColor={false}>
-                <Layout direction="row">
-                    <Layout.Right>
-                        <Button
-                            onClick={() => {
-                                console.log(form.getValues());
-                            }}
-                        >
-                            Value
-                        </Button>
-                    </Layout.Right>
-                </Layout>
-            </Group>
+            <Layout direction="row">
+                <Layout.Right>
+                    <Button
+                        onClick={() => {
+                            console.log(form.getValues());
+                        }}
+                    >
+                        Value
+                    </Button>
+                </Layout.Right>
+            </Layout>
         </Page>
     );
 };

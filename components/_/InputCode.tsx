@@ -28,6 +28,7 @@ const POPUP_URLS: { [id: string]: string } = {
     coCd: `/comn/smpl/pages/coCdPpup`,
     prcssStatCd: `/comn/smpl/pages/prcssStatPpup`,
     orgCd: `/comn/smpl/pages/orgCdPpup`,
+    wrhsgCd: `/comn/smpl/pages/orgCdPpup`,
 };
 
 export const InputCode = (props: InputCodeProps) => {
