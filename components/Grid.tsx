@@ -139,7 +139,7 @@ export const Grid = (props: GridProps) => {
             _grid.current._pagination === "in" ? lodash.chunk(_, _grid.current._size)[_grid.current._page] : _;
         _grid.current._paged = paged;
 
-        return paged;
+        return paged || [];
     });
 
     /** set paged content */
