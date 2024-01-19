@@ -49,7 +49,13 @@ export const SF_LBL_LANG_SRCH: TFormSchema = {
 export const SF_LBL_LANG: TFormSchema = {
     id: "form_LblLang",
     schema: {
-        lblId: { type: "text", label: "L_LBL_ID", letterCase: "upper", required: true, minLength: 3 },
+        lblId: {
+            type: "text",
+            label: "L_LBL_ID",
+            letterCase: "upper",
+            required: true,
+            minLength: { value: 3, message: "라벨 아이디를 3자 이상 입력하세요." },
+        },
         lblNmKo: { type: "text", label: "L_LBL_NM_KO", controlSize: 10, required: true },
         lblNmEn: { type: "text", label: "L_LBL_NM_EN", controlSize: 10, required: true },
         lblNmTz: { type: "text", label: "L_LBL_NM_TZ", controlSize: 10, required: true },
