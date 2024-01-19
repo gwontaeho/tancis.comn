@@ -633,6 +633,7 @@ export const Grid = (props: any) => {
                                                                         (render?.edit?.[bProps.binding]?.() || (
                                                                             <FormControl
                                                                                 value={rowProps[bProps.binding]}
+                                                                                type={bProps.type}
                                                                                 onChange={(arg: any) => {
                                                                                     handleUpdate(rowProps, {
                                                                                         ...rowProps,

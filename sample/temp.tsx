@@ -4,7 +4,7 @@ import { utils } from "@/comn/utils";
 import { Page, Group, FormControl, Grid } from "@/comn/components";
 
 const schema1 = {
-    options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
+    options: { radio: true, checkbox: true, pagination: "out", add: true, delete: true, edit: true },
     head: [
         {
             width: "*",
@@ -30,7 +30,7 @@ const schema1 = {
             ],
         },
         {
-            cells: [{ binding: "q", edit: false }],
+            cells: [{ binding: "q", type: "date" }],
         },
         {
             cells: [{ binding: "a", colspan: 2, link: () => {} }, { binding: "c", type: "text" }, { binding: "d" }],
@@ -79,16 +79,8 @@ export const Temp = () => {
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
 
     const _test = {
-        head: {
-            q: () => {
-                return <FormControl />;
-            },
-        },
-        cell: {
-            q: (props: any) => {
-                return <div>test hh</div>;
-            },
-        },
+        head: {},
+        cell: {},
         edit: {},
     };
 
@@ -97,7 +89,7 @@ export const Temp = () => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Grid {...schema} data={data} render={_test} />
+                        <Grid {...schema} data={data2} render={_test} />
                     </Group.Section>
                 </Group.Body>
             </Group>
