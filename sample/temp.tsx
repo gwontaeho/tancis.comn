@@ -6,13 +6,16 @@ import { Link } from "react-router-dom";
 
 const schema1 = {
     options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: false },
-    head: [{ cells: [{ binding: "text" }] }, { cells: [{ binding: "number" }] }],
+    head: [
+        { id: "text", cells: [{ binding: "text" }] },
+        { id: "col", cells: [{ binding: "number" }] },
+    ],
     body: [
         {
             cells: [{ binding: "text" }],
         },
         {
-            cells: [{ binding: "number" }],
+            cells: [{ binding: "number", colspan: 2 }, { binding: "q" }, { binding: "time" }],
         },
     ],
 };
@@ -27,7 +30,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 66 });
+const data = utils.getMockData({ totalElements: 999 });
 
 export const Temp = () => {
     const {
@@ -49,7 +52,7 @@ export const Temp = () => {
     } = useGrid({
         defaultSchema: schema1,
     });
-    console.log(page, size);
+
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
@@ -60,38 +63,63 @@ export const Temp = () => {
         edit: {},
     };
 
+    const _test2 = {
+        onCellClick: {
+            text: (data: any) => {
+                console.log(data);
+            },
+        },
+        onRowClick: (data: any) => {
+            console.log(data);
+        },
+    };
+
     return (
         <Page>
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Grid {...grid} data={data2} render={_test} />
+                        <Grid
+                            {...grid}
+                            data={data}
+                            render={_test}
+                            onCellClick={_test2.onCellClick}
+                            onRowClick={_test2.onRowClick}
+                        />
                     </Group.Section>
                 </Group.Body>
             </Group>
 
             <Link to="/asd">asd</Link>
-            <button onClick={() => setSize(30)}>edit</button>
+            <button onClick={() => setSize(30)}>setSize 30</button>
 
-            <button onClick={() => setOption("edit", true)}>edit</button>
-            <button onClick={() => setOption("edit", false)}>edit</button>
+            <button onClick={() => setOption("edit", true)}>setOption edit true</button>
+            <button onClick={() => setOption("edit", false)}>setOption edit false</button>
 
-            <button onClick={() => console.log(setOption("checkbox", false))}>set option</button>
-            <button onClick={() => console.log(setOption("radio", false))}>set option radio</button>
-            <button onClick={() => console.log(getData())}>get Data</button>
-            <button onClick={() => console.log(getOrigin())}>get getOriginData</button>
-            <button onClick={() => console.log(getSelectedRow())}>get radio</button>
-            <button onClick={() => console.log(getChecked())}>get checkbox</button>
-            <button onClick={() => addRow({ text: "asdwdq" })}>add row</button>
+            <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
+            <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
             <button onClick={() => deleteRow("radio")}>delete radio</button>
             <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
-            <button onClick={() => updateRow(getSelectedRow(), { q: "asd" })}>ffffffffffff</button>
-            <button onClick={() => setEdit("cell", "a", true)}>asdasd</button>
-            <button onClick={() => setEdit("cell", "a", false)}>awqeqwew 1 12sdasd</button>
-            <button onClick={() => setEdit("column", "col", true)}>'12e1231e2'</button>
-            <button onClick={() => setEdit("column", "col", false)}>awqeqwew sadsd a1 12sdasd</button>
-            <button onClick={() => setShow("column", "col", true)}>awqeqwew sadsd a1 12sdasd</button>
-            <button onClick={() => setShow("column", "col", false)}>awqeqwew sadsd a1 12sdasd</button>
+
+            <button onClick={() => setOption("checkbox", true)}>setOption checkbox true</button>
+            <button onClick={() => setOption("checkbox", false)}>setOption checkbox false</button>
+            <button onClick={() => setOption("radio", true)}>setOption radio true</button>
+            <button onClick={() => setOption("radio", false)}>setOption radio false</button>
+
+            <button onClick={() => console.log(getData())}>getData</button>
+            <button onClick={() => console.log(getOrigin())}>getOrigin</button>
+            <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
+            <button onClick={() => console.log(getChecked())}>getChecked</button>
+
+            <button onClick={() => addRow({ text: "added" })}>add row</button>
+
+            <button onClick={() => updateRow(getSelectedRow(), { text: "updated" })}>updateRow selected</button>
+
+            <button onClick={() => setEdit("column", "col", true)}>show text</button>
+            <button onClick={() => setEdit("cell", "time", true)}>show text</button>
+
+            <button onClick={() => setShow("column", "text", true)}>show text</button>
+            <button onClick={() => setShow("column", "text", false)}>hide text</button>
         </Page>
     );
 };

@@ -5,8 +5,17 @@ import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Button, FormControl, Pagination } from "@/comn/components";
 
-export const Grid = (props: any) => {
-    const { _grid, data = { content: [], page: { totalElements: 0 } }, render } = props;
+type GridProps = any;
+
+export const Grid = (props: GridProps) => {
+    const {
+        /**  */
+        _grid,
+        data = { content: [], page: { totalElements: 0 } },
+        render,
+        onCellClick,
+        onRowClick,
+    } = props;
 
     const { t } = useTranslation();
 
@@ -336,6 +345,69 @@ export const Grid = (props: any) => {
     const handleClickDelete = React.useCallback((type: any) => {
         if (_grid.current._pagination !== "in") return;
 
+        if (typeof type === "object" && type.__key) {
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (_.__key === type.__key) {
+                        if (_.__type === "added") return undefined;
+                        return { ..._, __type: "deleted" };
+                    } else {
+                        return _;
+                    }
+                })
+                .filter((_: any) => _ !== undefined);
+
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
+            _setTotalCount.current?.(_.length);
+
+            if (paged) {
+                _setTest(paged);
+                return;
+            } else {
+                if (_grid.current._page === 0) {
+                    _setTest([]);
+                    return;
+                }
+                const next = _grid.current._page - 1;
+                _grid.current._page = next;
+                _setPage(next);
+                return;
+            }
+        }
+
+        if (Array.isArray(type)) {
+            if (!type.length) return;
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (type.map((_: any) => _.__key).includes(_.__key)) {
+                        if (_.__type === "added") return undefined;
+                        return { ..._, __type: "deleted" };
+                    } else {
+                        return _;
+                    }
+                })
+                .filter((_: any) => _ !== undefined);
+
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
+            _setTotalCount.current?.(_.length);
+
+            if (paged) {
+                _setTest(paged);
+                return;
+            } else {
+                if (_grid.current._page === 0) {
+                    _setTest([]);
+                    return;
+                }
+                const next = _grid.current._page - 1;
+                _grid.current._page = next;
+                _setPage(next);
+                return;
+            }
+        }
+
         if (type === "radio") {
             if (!_grid.current._selectedRow) return;
             _grid.current._content = _grid.current._content
@@ -595,6 +667,9 @@ export const Grid = (props: any) => {
                             /** row */
                             <div
                                 key={rowKey}
+                                onClick={() => {
+                                    if (onRowClick) onRowClick(rowProps);
+                                }}
                                 className={classNames(
                                     "flex w-full gap-[1px] border-l",
                                     rowType === "added"
@@ -656,6 +731,14 @@ export const Grid = (props: any) => {
                                                                         minWidth: bProps.width,
                                                                         maxWidth: bProps.width,
                                                                     }}
+                                                                    onClick={() => {
+                                                                        if (onCellClick[bProps.binding])
+                                                                            onCellClick[bProps.binding]({
+                                                                                binding: bProps.binding,
+                                                                                value: rowProps[bProps.binding],
+                                                                                rowValues: rowProps,
+                                                                            });
+                                                                    }}
                                                                 >
                                                                     {!bProps.edit &&
                                                                         (render?.cell?.[bProps.binding]?.() ||
@@ -709,6 +792,7 @@ const GridPagination = (props: any) => {
     const { page, size, onChangePage, onChangeSize, totalCount, setTotalCount } = props;
 
     const [_totalCount, _setTotalCount] = React.useState(totalCount);
+
     React.useEffect(() => {
         setTotalCount.current = _setTotalCount;
     }, []);
