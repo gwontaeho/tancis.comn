@@ -28,6 +28,7 @@ type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
     all?: boolean;
     value?: any[];
     onChange?: (value: any[]) => void;
+    onValueChange?: any;
 };
 
 export const Checkbox = (props: CheckboxProps) => {
@@ -45,6 +46,7 @@ export const Checkbox = (props: CheckboxProps) => {
         value,
         onClick,
         onChange,
+        onValueChange,
         onBlur,
         onFocus,
         readOnly,
@@ -84,16 +86,26 @@ export const Checkbox = (props: CheckboxProps) => {
             : _value.filter((_) => _ !== event.target.value);
         _setValue(next);
 
-        if (!onChange) return;
-        onChange(next);
+        if (onChange) {
+            onChange(next);
+        }
+
+        if (onValueChange) {
+            onValueChange({ data: next });
+        }
     };
 
     const handleChangeAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         const next = event.target.checked ? o.options?.map(({ value }) => value) || [] : [];
         _setValue(next);
 
-        if (!onChange) return;
-        onChange(next);
+        if (onChange) {
+            onChange(next);
+        }
+
+        if (onValueChange) {
+            onValueChange({ data: next });
+        }
     };
 
     const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);

@@ -25,6 +25,7 @@ type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
     comnCd?: string;
     area?: string;
     lang?: string;
+    onValueChange?: any;
 };
 
 export const Radio = (props: RadioProps) => {
@@ -40,6 +41,7 @@ export const Radio = (props: RadioProps) => {
         value,
         onClick,
         onChange,
+        onValueChange,
         onBlur,
         onFocus,
         readOnly,
@@ -70,8 +72,13 @@ export const Radio = (props: RadioProps) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         _setValue(e.target.value);
-        if (!onChange) return;
-        onChange(e);
+        if (onChange) {
+            onChange(e);
+        }
+
+        if (onValueChange) {
+            onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
+        }
     };
 
     const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);

@@ -3,6 +3,8 @@ import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
+import { getFormattedValue } from "@/comn/components/_";
 import { Button, FormControl, Pagination } from "@/comn/components";
 
 type GridProps = any;
@@ -721,6 +723,46 @@ export const Grid = (props: GridProps) => {
                                                     <div key={celKey} className="flex h-full gap-[1px]">
                                                         {cellProps.map((bProps: any, bIndex: any) => {
                                                             const bKey = celKey + "." + bIndex;
+                                                            const value = rowProps[bProps.binding];
+
+                                                            // const cellSchema = {
+                                                            //     mask: bProps.mask,
+                                                            //     decimalScale: bProps.decimalScale,
+                                                            //     thousandSeparator: bProps.thousandSeparator,
+                                                            //     letterCase: bProps.letterCase,
+                                                            // };
+
+                                                            // const cellData = (() => {
+                                                            //     switch (bProps.type) {
+                                                            //         case "text":
+                                                            //         case "number": {
+                                                            //             return getFormattedValue(value, cellSchema);
+                                                            //         }
+                                                            //         case "date":
+                                                            //             if (!dayjs(value).isValid()) return "";
+                                                            //             return dayjs(value).format("YYYY-MM-DD");
+                                                            //         case "time":
+                                                            //             if (dayjs(value).isValid()) {
+                                                            //                 return dayjs(value).format("HH:mm:ss");
+                                                            //             }
+                                                            //             if (dayjs("2000-01-01 " + value).isValid()) {
+                                                            //                 return dayjs("2000-01-01 " + value).format(
+                                                            //                     "HH:mm:ss",
+                                                            //                 );
+                                                            //             }
+                                                            //             return "";
+                                                            //         case "datetime":
+                                                            //             if (!dayjs(value).isValid()) return "";
+                                                            //             return dayjs(value).format(
+                                                            //                 "YYYY-MM-DD HH:mm:ss",
+                                                            //             );
+                                                            //         case "checkbox":
+                                                            //         case "radio":
+                                                            //         case "select":
+                                                            //             break;
+                                                            //     }
+                                                            //     return value;
+                                                            // })();
 
                                                             /** cel */
                                                             return (
@@ -735,32 +777,58 @@ export const Grid = (props: GridProps) => {
                                                                         if (onCellClick[bProps.binding])
                                                                             onCellClick[bProps.binding]({
                                                                                 binding: bProps.binding,
-                                                                                value: rowProps[bProps.binding],
+                                                                                value: value,
                                                                                 rowValues: rowProps,
                                                                             });
                                                                     }}
                                                                 >
-                                                                    {!bProps.edit &&
+                                                                    <FormControl
+                                                                        edit={bProps.edit}
+                                                                        type={bProps.type}
+                                                                        mask={bProps.mask}
+                                                                        letterCase={bProps.letterCase}
+                                                                        decimalScale={bProps.decimalScale}
+                                                                        thousandSeparator={bProps.thousandSeparator}
+                                                                        area={bProps.area}
+                                                                        comnCd={bProps.comnCd}
+                                                                        value={value}
+                                                                        options={bProps.options}
+                                                                        onValueChange={({ data }) => {
+                                                                            console.log(data);
+                                                                            handleUpdate(rowProps, {
+                                                                                ...rowProps,
+                                                                                [bProps.binding]: data,
+                                                                            });
+                                                                        }}
+                                                                    />
+
+                                                                    {/* {!bProps.edit &&
                                                                         (render?.cell?.[bProps.binding]?.() ||
-                                                                            rowProps[bProps.binding])}
+                                                                            cellData)}
+
                                                                     {bProps.edit &&
                                                                         (render?.edit?.[bProps.binding]?.() || (
                                                                             <FormControl
                                                                                 type={bProps.type}
                                                                                 mask={bProps.mask}
+                                                                                letterCase={bProps.letterCase}
                                                                                 decimalScale={bProps.decimalScale}
                                                                                 thousandSeparator={
                                                                                     bProps.thousandSeparator
                                                                                 }
-                                                                                // value={rowProps[bProps.binding]}
-                                                                                // onValueChange={({ data }) => {
-                                                                                //     handleUpdate(rowProps, {
-                                                                                //         ...rowProps,
-                                                                                //         [bProps.binding]: data,
-                                                                                //     });
-                                                                                // }}
+                                                                                area={bProps.area}
+                                                                                comnCd={bProps.comnCd}
+                                                                                value={cellData}
+                                                                                options={bProps.options}
+                                                                                onValueChange={({ data }) => {
+                                                                                    console.log(data);
+                                                                                    handleUpdate(rowProps, {
+                                                                                        ...rowProps,
+                                                                                        [bProps.binding]: data,
+                                                                                    });
+                                                                                }}
                                                                             />
-                                                                        ))}
+                                                                        ))} */}
                                                                 </div>
                                                             );
                                                         })}

@@ -5,17 +5,79 @@ import { Page, Group, FormControl, Grid } from "@/comn/components";
 import { Link } from "react-router-dom";
 
 const schema1 = {
-    options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: false },
+    options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
     head: [
-        { id: "text", cells: [{ binding: "text" }] },
-        { id: "col", cells: [{ binding: "number" }] },
+        { id: "text", width: "*", cells: [{ binding: "text" }] },
+        { cells: [{ binding: "number" }] },
+        { cells: [{ binding: "date" }] },
+        { cells: [{ binding: "time" }] },
+        { cells: [{ binding: "datetime" }] },
+        { cells: [{ binding: "select" }] },
+        { cells: [{ binding: "radio" }] },
+        { cells: [{ binding: "checkbox" }] },
+        { cells: [{ binding: "code" }] },
     ],
     body: [
         {
             cells: [{ binding: "text" }],
         },
         {
-            cells: [{ binding: "number", colspan: 2 }, { binding: "q" }, { binding: "time" }],
+            cells: [{ binding: "number", type: "number", thousandSeparator: true }],
+        },
+        {
+            cells: [{ binding: "date", type: "date" }],
+        },
+        {
+            cells: [{ binding: "time", type: "time" }],
+        },
+        {
+            cells: [{ binding: "datetime", type: "datetime" }],
+        },
+        {
+            cells: [
+                {
+                    binding: "select",
+                    type: "select",
+                    options: [
+                        { label: "a", value: "a" },
+                        { label: "b", value: "b" },
+                    ],
+                },
+            ],
+        },
+        {
+            cells: [
+                {
+                    binding: "radio",
+                    type: "radio",
+                    options: [
+                        { label: "a", value: "a" },
+                        { label: "b", value: "b" },
+                    ],
+                },
+            ],
+        },
+        {
+            cells: [
+                {
+                    binding: "checkbox",
+                    type: "checkbox",
+                    options: [
+                        { label: "a", value: "a" },
+                        { label: "b", value: "b" },
+                    ],
+                },
+            ],
+        },
+        {
+            cells: [
+                {
+                    binding: "code",
+                    type: "code",
+                    area: "comnCd",
+                    comnCd: "COM_0015",
+                },
+            ],
         },
     ],
 };

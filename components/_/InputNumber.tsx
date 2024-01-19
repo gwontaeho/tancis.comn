@@ -1,4 +1,5 @@
 import React from "react";
+
 import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
 
 /**
@@ -66,20 +67,25 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             }).filter(([, value]) => value !== undefined),
         );
 
-        const [_value, _setValue] = React.useState<any>(typeof value == "string" ? value : "");
+        const [_value, _setValue] = React.useState<any>(
+            typeof value === "string" || typeof value === "number" ? value : "",
+        );
 
         React.useEffect(() => {
             if (value === _value) return;
+
             _setValue(typeof value !== "string" ? "" : value);
         }, [value]);
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            _setValue(e.target.value);
+            // _setValue(e.target.value);
             if (!onChange) return;
             onChange(e);
         };
 
         const handleValueChange = (_: any) => {
+            _setValue(_.formattedValue);
+
             if (!onValueChange) return;
             onValueChange({ ..._, data: Number(_.value) });
         };

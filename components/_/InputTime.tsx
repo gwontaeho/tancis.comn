@@ -39,9 +39,19 @@ export const InputTime = (props: InputTimeProps) => {
     }, []);
 
     React.useEffect(() => {
-        if (!value || !dayjs(value).isValid()) return _setValue(undefined);
         if (dayjs(value).isSame(dayjs(_value))) return;
-        _setValue(dayjs(value).toDate());
+
+        if (!value) return _setValue(undefined);
+
+        if (dayjs(value).isValid()) {
+            _setValue(dayjs(value).toDate());
+            return;
+        }
+
+        if (dayjs("2000-01-01 " + value).isValid()) {
+            _setValue(dayjs("2000-01-01 " + value).toDate());
+            return;
+        }
     }, [value]);
 
     const handleChange = (date: Date) => {

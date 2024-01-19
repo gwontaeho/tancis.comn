@@ -28,6 +28,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
     all?: boolean;
     select?: boolean;
     readOnly?: boolean;
+    onValueChange?: any;
 };
 
 export const Select = (props: SelectProps) => {
@@ -46,6 +47,7 @@ export const Select = (props: SelectProps) => {
         value,
         onClick,
         onChange,
+        onValueChange,
         onBlur,
         onFocus,
         readOnly,
@@ -75,8 +77,12 @@ export const Select = (props: SelectProps) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         _setValue(e.target.value);
-        if (!onChange) return;
-        onChange(e);
+        if (onChange) {
+            onChange(e);
+        }
+        if (onValueChange) {
+            onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
+        }
     };
 
     const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
