@@ -160,6 +160,13 @@ export const useForm = (props: UseFormProps) => {
         _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }));
     };
 
+    const getValue = (name: string) => {
+        const v = _getValues([name]);
+        if (v === undefined) return undefined;
+
+        return v[0];
+    };
+
     const _getValues = (arg?: any) => {
         return Object.fromEntries(
             Object.entries<any>(getValues(arg)).map(([key, value]) => [
@@ -364,6 +371,7 @@ export const useForm = (props: UseFormProps) => {
     return {
         schema: getSchema(_schema),
         handleSubmit: _handleSubmit,
+        getValue,
         getValues: _getValues,
         setValue: _setValue,
         setSchema,

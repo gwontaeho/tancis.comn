@@ -40,8 +40,8 @@ const BUTTON_VARIANTS = {
 };
 
 const BUTTON_ROLES = {
-    save: { text: "B_SAVE", color: "info" },
-    list: { text: "B_LST", color: "" },
+    save: { text: "B_SAVE", color: "primary" },
+    list: { text: "B_LST", color: "gray" },
     submit: { text: "B_SBMT", color: "warning" },
     search: { text: "B_SRCH", color: "blue" },
     close: { text: "B_CLS", color: "error" },
@@ -49,6 +49,8 @@ const BUTTON_ROLES = {
     reset: { text: "B_RESET", color: "warning" },
     confirm: { text: "B_CFRM", color: "success" },
     ok: { text: "B_OK", color: "success" },
+    edit: { text: "B_EDIT", color: "primary" },
+    cancel: { text: "B_CNCL", color: "warning" },
     apply: { text: "B_APPD", color: "blue" },
     gridAdd: { text: "B_ADD", color: "blue" },
     gridDelete: { text: "B_DELETE", color: "error" },
