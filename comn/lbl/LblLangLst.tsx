@@ -166,7 +166,7 @@ export const LblLangLst = (props: any) => {
                 <Layout.Button
                     variant="primary"
                     onClick={() => {
-                        navigate(URLS.LblLangEdit);
+                        navigate(URLS.lblLangRgsr);
                     }}
                 >
                     {t("B_NEW_$0", { 0: "Label" })}
@@ -175,5 +175,3 @@ export const LblLangLst = (props: any) => {
         </Page>
     );
 };
-
-export {};

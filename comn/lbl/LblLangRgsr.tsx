@@ -7,56 +7,28 @@ import { useForm, useFetch, useStore, useToast, useModal } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_LBL_LANG } from "./services/LblLangPrsccService";
 import { useNavigate, useParams } from "react-router-dom";
 
-export const LblLangEdit = (props: any) => {
-    const pgeUid = "LblLangEdit";
+export const LblLangRgsr = (props: any) => {
+    const pgeUid = "LblLangRgsr";
     const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
     const navigate = useNavigate(); // Navigate Hook !== 화면 이동 Hook ==!
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
-    const { lblId } = useParams(); // Key Information of this Component Router !== 라우터에 정의된 키정보 ==!
     const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
 
     const form = {
         lblLang: useForm({
             defaultSchema: SF_LBL_LANG,
-            defaultValues: {},
+            defaultValues: { lblId: "L_", lblTpCd: "L" },
         }),
     };
 
     const fetch = {
-        getLblLang: useFetch({
-            api: (data) => APIS.getLblLang(lblId),
-            enabled: !!lblId,
-            onSuccess: (data) => {
-                const lblLang = data.lblLang.content;
-                const lblLangInfoList = lblLang.lblLangInfoList;
-
-                if (lblLangInfoList) {
-                    lblLangInfoList.map((item: any) => {
-                        switch (item.langCd) {
-                            case "EN":
-                                lblLang.lblNmEn = item.lblNm;
-                                break;
-                            case "TZ":
-                                lblLang.lblNmTz = item.lblNm;
-                                break;
-                            default:
-                                lblLang.lblNmKo = item.lblNm;
-                                break;
-                        }
-                    });
-                }
-                form.lblLang.setValues(lblLang);
-            },
-            onError: (error) => {},
-            showToast: true,
-        }),
         saveLblLang: useFetch({
             api: (lblIds) => APIS.saveLblLang(lblIds),
             onSuccess: () => {
                 modal.openModal({
                     content: "msg.00003",
                     onCancel: () => {
-                        navigate(`${URLS.lblLangDtl}/${lblId}`);
+                        navigate(`${URLS.lblLangLst}`);
                     },
                 });
             },
@@ -66,16 +38,10 @@ export const LblLangEdit = (props: any) => {
     };
 
     const handler = {
-        deleteLblLang: () => {
-            modal.openModal({
-                content: "msg.00103",
-                onConfirm: () => {
-                    fetch.saveLblLang.fetch(lblId);
-                },
-            });
-        },
         saveLblLang: form.lblLang.handleSubmit(
             () => {
+                if (!handler.checkLblId()) return;
+
                 const data = form.lblLang.getValues();
                 modal.openModal({
                     content: "msg.00101",
@@ -88,12 +54,24 @@ export const LblLangEdit = (props: any) => {
                 toast.showToast({ type: "warning", content: "msg.00002" });
             },
         ),
+        checkLblId: () => {
+            const value = form.lblLang.getValue("lblTpCd");
+            const lblId = form.lblLang.getValue("lblId");
+
+            if (lblId.substring(0, 2) !== value + "_") {
+                form.lblLang.setError("lblId", {
+                    message: "라벨 ID 는 '" + value + "_' 로 시작되어야 합니다.",
+                });
+                return false;
+            } else {
+                form.lblLang.clearErrors("lblId");
+            }
+            return true;
+        },
     };
 
     useEffect(() => {
-        fetch.getLblLang.fetch();
-        form.lblLang.setSchema("lblId", { edit: false });
-        form.lblLang.setSchema("lblTpCd", { edit: false });
+        form.lblLang.setFocus("lblId");
     }, []);
 
     return (
@@ -114,7 +92,12 @@ export const LblLangEdit = (props: any) => {
                                 <Group.Control {...form.lblLang.schema.lblId}></Group.Control>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.lblLang.schema.lblTpCd}></Group.Control>
+                                <Group.Control
+                                    {...form.lblLang.schema.lblTpCd}
+                                    onChange={() => {
+                                        handler.checkLblId();
+                                    }}
+                                ></Group.Control>
                                 <Group.Control {...form.lblLang.schema.bsopClsfCd}></Group.Control>
                             </Group.Row>
                             <Group.Row>
@@ -137,12 +120,6 @@ export const LblLangEdit = (props: any) => {
                                 ></Button>
                             </Layout.Left>
                             <Layout.Right>
-                                <Button
-                                    role="cancel"
-                                    onClick={() => {
-                                        navigate(`${URLS.lblLangDtl}/${lblId}`);
-                                    }}
-                                ></Button>
                                 <Button
                                     role="save"
                                     onClick={() => {

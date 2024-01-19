@@ -14,6 +14,7 @@ import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
 import { LblLangLst } from "@/comn/comn/lbl/LblLangLst";
 import { LblLangEdit } from "@/comn/comn/lbl/LblLangEdit";
 import { LblLangDtl } from "@/comn/comn/lbl/LblLangDtl";
+import { LblLangRgsr } from "@/comn/comn/lbl/LblLangRgsr";
 
 export const ComnMain = () => {
     return (
@@ -30,6 +31,7 @@ export const ComnMain = () => {
             <Route path="/comn/ppup/prcssStatPpup" element={<ProcessingStatusCodeList />} />
             <Route path="/comn/ppup/orgCdPpup" element={<OrganizationCodeList />} />
             <Route path="/comn/lbl/lblLangLst" element={<LblLangLst />} />
+            <Route path="/comn/lbl/lblLangRgsr" element={<LblLangRgsr />} />
             <Route path="/comn/lbl/LblLangDtl/:lblId" element={<LblLangDtl />} />
             <Route path="/comn/lbl/LblLangEdit/:lblId" element={<LblLangEdit />} />
         </Routes>
