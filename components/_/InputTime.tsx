@@ -29,9 +29,7 @@ export const InputTime = (props: InputTimeProps) => {
 
     const { theme } = useTheme();
 
-    const [_value, _setValue] = React.useState<Date | null | undefined>(() => {
-        return !value || !dayjs(value).isValid() ? undefined : dayjs(value).toDate();
-    });
+    const [_value, _setValue] = React.useState<Date | null | undefined>(formatTime(value));
 
     React.useEffect(() => {
         if (startRef) startRef.current.handleChangeStart = handleChange;
@@ -41,17 +39,7 @@ export const InputTime = (props: InputTimeProps) => {
     React.useEffect(() => {
         if (dayjs(value).isSame(dayjs(_value))) return;
 
-        if (!value) return _setValue(undefined);
-
-        if (dayjs(value).isValid()) {
-            _setValue(dayjs(value).toDate());
-            return;
-        }
-
-        if (dayjs("2000-01-01 " + value).isValid()) {
-            _setValue(dayjs("2000-01-01 " + value).toDate());
-            return;
-        }
+        _setValue(formatTime(value));
     }, [value]);
 
     const handleChange = (date: Date) => {
@@ -70,13 +58,7 @@ export const InputTime = (props: InputTimeProps) => {
 
     return (
         <div className="w-full">
-            {!edit && (
-                <div>
-                    {!!_value &&
-                        dayjs(_value).isValid() &&
-                        dayjs(_value).format(constants.TIME_FORMAT_DAYJS[theme.lang])}
-                </div>
-            )}
+            {!edit && <div>{localeTime(_value, theme.lang)}</div>}
             <div hidden={!edit}>
                 <div className="relative w-full [&>div]:w-full">
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
@@ -90,10 +72,36 @@ export const InputTime = (props: InputTimeProps) => {
                         autoComplete="off"
                         timeIntervals={5}
                         className="input pl-5"
+                        portalId="root"
                         popperProps={{ strategy: "fixed" }}
                     />
                 </div>
             </div>
         </div>
     );
+};
+
+export const localeTime = (v: any, l: "ko" | "en" | "tz") => {
+    if (!v) return "";
+    if (!dayjs(v).isValid()) return "";
+
+    return dayjs(v).format(constants.TIME_FORMAT_DAYJS[l]);
+};
+
+export const formatTime = (v: any) => {
+    if (!v) return undefined;
+
+    if (dayjs(v).isValid()) return dayjs(v).toDate();
+    if (dayjs("2000-10-10 " + v).isValid()) return dayjs("2000-10-10 " + v).toDate();
+
+    return undefined;
+};
+
+export const unformatTime = (v: any, o?: any) => {
+    if (!v) return undefined;
+
+    if (dayjs(v).isValid()) return dayjs(v).format(constants.TIME_FORMAT);
+    if (dayjs("2000-10-10 " + v).isValid()) return dayjs("2000-10-10 " + v).format(constants.TIME_FORMAT);
+
+    return undefined;
 };

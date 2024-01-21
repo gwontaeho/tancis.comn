@@ -48,7 +48,7 @@ export const InputTimerange = (props: InputTimerangeProps) => {
     };
 
     return (
-        <div className="flex w-full items-center">
+        <div className="flex w-full">
             <div className="flex-1 [&_input]:rounded-r-none">
                 <FormControl //
                     {...start}

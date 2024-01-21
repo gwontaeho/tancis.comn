@@ -1,6 +1,22 @@
 import lodash from "lodash";
 import dayjs from "dayjs";
 import { api } from "@/comn";
+import {
+    /**  */
+    formatText,
+    formatNumber,
+    formatCheckbox,
+    formatDate,
+    formatTime,
+    formatDatetime,
+    /** */
+    unformatText,
+    unformatNumber,
+    unformatCheckbox,
+    unformatDate,
+    unformatTime,
+    unformatDatetime,
+} from "@/comn/components/_";
 
 export const comnEnvs = {
     base: `${process.env.REACT_APP_BASE}`,
@@ -13,6 +29,83 @@ export const comnEnvs = {
 };
 
 export const comnUtils = {
+    //#region value format
+    getViewValue: () => {},
+    getFormattedValue: (v: any, o?: any) => {
+        switch (o?.type) {
+            case "text":
+                return formatText(v, o);
+            case "number":
+                return formatNumber(v, o);
+            case "checkbox":
+                return formatCheckbox(v);
+            case "date":
+                return formatDate(v);
+            case "time":
+                return formatTime(v);
+            case "datetime":
+                return formatDatetime(v);
+        }
+        return v;
+    },
+    getUnformattedValue: (v: any, o?: any) => {
+        switch (o?.type) {
+            case "text":
+                return unformatText(v, o);
+            case "number":
+                return unformatNumber(v, o);
+            case "checkbox":
+                return unformatCheckbox(v, o);
+            case "date":
+                return unformatDate(v, o);
+            case "time":
+                return unformatTime(v, o);
+            case "datetime":
+                return unformatDatetime(v, o);
+        }
+        return v;
+    },
+    getValidatedValue: (v: any, o?: any) => {
+        if (o?.required) {
+            if (!v) {
+                return { message: "r", type: "required" };
+            }
+        }
+        if (o?.min) {
+            if (v < o.min) {
+                return { message: "r", type: "min" };
+            }
+        }
+        if (o?.max) {
+            if (v > o.max) {
+                console.log(v, o.max);
+                return { message: "r", type: "max" };
+            }
+        }
+        if (o?.minLength) {
+            if (v?.length < o.minLength) {
+                return { message: "r", type: "minLength" };
+            }
+        }
+        if (o?.maxLength) {
+            if (v?.length > o.maxLength) {
+                return { message: "r", type: "maxLength" };
+            }
+        }
+        if (o?.pattern && o.pattern instanceof RegExp) {
+            if (!o.pattern.test(v)) {
+                return { message: "r", type: "pattern" };
+            }
+        }
+        if (o?.validate && typeof o.validate === "function") {
+            if (!o.validate(v)) {
+                return { message: "r", type: "validate" };
+            }
+        }
+    },
+    //#endregion
+
+    //#region locale
     getLocale: () => {
         return localStorage.getItem("lang")?.toString() || "en";
     },
@@ -22,6 +115,9 @@ export const comnUtils = {
         else if (locale === "en") return comnEnvs.locale.en;
         else return comnEnvs.locale.ko;
     },
+    //#endregion
+
+    //#region empty
     isUndefined: (arg: any) => {
         return arg === undefined;
     },
@@ -37,6 +133,8 @@ export const comnUtils = {
     isEmptyObject: (arg: any) => {
         return lodash.isEmpty(arg);
     },
+    //#endregion
+
     replaceEmpty: (arg: any, replace: any = "") => {
         if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
             return replace;
@@ -448,3 +546,5 @@ const idb = {
 
 export const envs = comnEnvs;
 export const utils = comnUtils;
+
+export default { envs, utils };

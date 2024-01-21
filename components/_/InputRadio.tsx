@@ -5,19 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useOptions } from "@/comn/hooks";
 import { TFormControlOptions } from "@/comn/components";
 
-/**
- * edit=true
- *
- * name
- * value
- * onClick
- * onChange
- * onBlur
- * onFocus
- * readOnly
- * disabled
- */
-
 /** */
 type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
     edit?: boolean;
@@ -60,7 +47,7 @@ export const Radio = (props: RadioProps) => {
         }).filter(([, value]) => value !== undefined),
     );
 
-    const [_value, _setValue] = React.useState<any>();
+    const [_value, _setValue] = React.useState<any>(value);
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, lang, options });

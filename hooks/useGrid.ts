@@ -18,6 +18,10 @@ export const useGrid = (props: any) => {
         _selectedRow: null,
         _selectedCel: null,
 
+        _rect: [],
+        _head: null,
+        _list: null,
+
         /** options */
         _checkbox: defaultSchema.options.checkbox,
         _radio: defaultSchema.options.radio,

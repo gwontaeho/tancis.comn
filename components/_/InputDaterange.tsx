@@ -64,7 +64,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
     };
 
     return (
-        <div className="flex w-full items-center">
+        <div className="flex w-full">
             <div className="min-w-fit flex-1 [&_input]:rounded-r-none">
                 <FormControl //
                     {...start}

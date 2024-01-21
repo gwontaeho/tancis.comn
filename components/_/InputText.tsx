@@ -1,50 +1,31 @@
 import React from "react";
-import { FormattedInput, FormattedInputProps } from "@/comn/components/_";
-
-/**
- *
- * # FormattedInputProps
- * mask
- * exact
- * letterCase
- * onValueChange
- * - decimalScale
- * - thousandSeparator
- *
- * edit=true
- *
- * name
- * value
- * onClick
- * onChange
- * onBlur
- * onFocus
- * readOnly
- * disabled
- * maxLength
- * placeholder
- */
 
 /** */
-export type InputTextProps = Omit<FormattedInputProps, "decimalScale" | "thousandSeparator"> & {
+export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    onChange?: any;
+    onValueChange?: any;
+
     edit?: boolean;
+    mask?: any;
+    exact?: boolean;
+    letterCase?: "upper" | "lower";
 };
 
 export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
     (props: InputTextProps, ref: React.ForwardedRef<HTMLInputElement>) => {
         const {
-            edit = true,
             /** */
+            edit = true,
             mask,
             exact,
             letterCase,
+            value,
+            onChange,
             onValueChange,
             /** */
             name,
-            value,
-            onClick,
-            onChange,
             onBlur,
+            onClick,
             onFocus,
             readOnly,
             disabled,
@@ -55,14 +36,9 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
         const _props = Object.fromEntries(
             Object.entries({
-                mask,
-                exact,
-                letterCase,
-                onValueChange,
-                /** */
                 name,
-                onClick,
                 onBlur,
+                onClick,
                 onFocus,
                 readOnly,
                 disabled,
@@ -71,25 +47,27 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                 defaultValue,
             }).filter(([, value]) => value !== undefined),
         );
+        const o = { mask, exact, letterCase };
 
-        const [_value, _setValue] = React.useState<any>(typeof value == "string" ? value : "");
+        const [_value, _setValue] = React.useState<any>(formatText(value, o));
 
         React.useEffect(() => {
             if (value === _value) return;
-            _setValue(typeof value !== "string" ? "" : value);
+            _setValue(formatText(value, o));
         }, [value]);
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            _setValue(e.target.value);
+            _setValue(formatText(e.target.value, o));
+
             if (!onChange) return;
-            onChange(e);
+            onChange(formatText(e.target.value, o));
         };
 
         return (
             <div className="w-full">
                 {!edit && <div>{_value}</div>}
                 <div hidden={!edit}>
-                    <FormattedInput
+                    <input
                         {..._props}
                         ref={ref}
                         value={_value}
@@ -103,3 +81,57 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         );
     },
 );
+
+export const formatText = (v: any, o?: any) => {
+    if (!v) return "";
+
+    let f = String(v);
+
+    if (o?.letterCase === "upper") {
+        f.toUpperCase();
+    }
+
+    if (o?.letterCase === "lower") {
+        f.toLowerCase();
+    }
+
+    if (o?.mask) {
+        let pos = 0;
+        let temp = "";
+        var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        let t = f.replace(reg, "").split("");
+        let real = "";
+
+        for (var i = 0; i < o.mask.length; i++) {
+            if (typeof o.mask[i] === "string") {
+                if (t[pos] === undefined) {
+                    break;
+                }
+                temp += o.mask[i];
+            } else {
+                if (!o.mask[i].test(t[pos])) {
+                    break;
+                }
+                temp += t[pos];
+                real += t[pos];
+                pos++;
+            }
+        }
+
+        f = temp;
+    }
+
+    return f;
+};
+
+export const unformatText = (v: any, o?: any) => {
+    return v;
+
+    let f = String(v);
+
+    if (o?.mask) {
+    }
+
+    var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    return v.replace(reg, "");
+};

@@ -191,7 +191,7 @@ export const FormControl = Object.assign(
     React.forwardRef((props: FormControlProps, ref) => {
         const { size = "full", message, invalid, ...rest } = props;
         const { t } = useTranslation();
-
+        console.log(invalid);
         return (
             <div className={classNames("uf-form-control", props.edit !== false ? SIZES[size] : null)}>
                 <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
@@ -205,10 +205,12 @@ export const FormControl = Object.assign(
                 </Tooltip>
 
                 {/* message */}
-                {message && <div className="uf-message">{message}</div>}
+                {props.edit !== false && message && <div className="uf-message">{message}</div>}
 
                 {/* invalid message */}
-                {invalid?.message && <div className="uf-error-message">{t(invalid?.message)}</div>}
+                {props.edit !== false && invalid && (
+                    <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
+                )}
             </div>
         );
     }),

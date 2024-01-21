@@ -12,20 +12,24 @@ const schema1 = {
         { cells: [{ binding: "date" }] },
         { cells: [{ binding: "time" }] },
         { cells: [{ binding: "datetime" }] },
-        { cells: [{ binding: "select" }] },
-        { cells: [{ binding: "radio" }] },
-        { cells: [{ binding: "checkbox" }] },
-        { cells: [{ binding: "code" }] },
+        // { cells: [{ binding: "select" }] },
+        // { cells: [{ binding: "radio" }] },
+        // { cells: [{ binding: "checkbox" }] },
+        // { cells: [{ binding: "code" }] },
     ],
     body: [
         {
-            cells: [{ binding: "text" }],
+            cells: [{ binding: "text", required: true }],
         },
         {
-            cells: [{ binding: "number", type: "number", thousandSeparator: true }],
+            cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
         },
         {
-            cells: [{ binding: "date", type: "date" }],
+            cells: [
+                { binding: "date", type: "date", colspan: 2 },
+                { binding: "date", type: "date" },
+                { binding: "date", type: "date" },
+            ],
         },
         {
             cells: [{ binding: "time", type: "time" }],
@@ -33,52 +37,52 @@ const schema1 = {
         {
             cells: [{ binding: "datetime", type: "datetime" }],
         },
-        {
-            cells: [
-                {
-                    binding: "select",
-                    type: "select",
-                    options: [
-                        { label: "a", value: "a" },
-                        { label: "b", value: "b" },
-                    ],
-                },
-            ],
-        },
-        {
-            cells: [
-                {
-                    binding: "radio",
-                    type: "radio",
-                    options: [
-                        { label: "a", value: "a" },
-                        { label: "b", value: "b" },
-                    ],
-                },
-            ],
-        },
-        {
-            cells: [
-                {
-                    binding: "checkbox",
-                    type: "checkbox",
-                    options: [
-                        { label: "a", value: "a" },
-                        { label: "b", value: "b" },
-                    ],
-                },
-            ],
-        },
-        {
-            cells: [
-                {
-                    binding: "code",
-                    type: "code",
-                    area: "comnCd",
-                    comnCd: "COM_0015",
-                },
-            ],
-        },
+        // {
+        //     cells: [
+        //         {
+        //             binding: "select",
+        //             type: "select",
+        //             options: [
+        //                 { label: "a", value: "a" },
+        //                 { label: "b", value: "b" },
+        //             ],
+        //         },
+        //     ],
+        // },
+        // {
+        //     cells: [
+        //         {
+        //             binding: "radio",
+        //             type: "radio",
+        //             options: [
+        //                 { label: "a", value: "a" },
+        //                 { label: "b", value: "b" },
+        //             ],
+        //         },
+        //     ],
+        // },
+        // {
+        //     cells: [
+        //         {
+        //             binding: "checkbox",
+        //             type: "checkbox",
+        //             options: [
+        //                 { label: "a", value: "a" },
+        //                 { label: "b", value: "b" },
+        //             ],
+        //         },
+        //     ],
+        // },
+        // {
+        //     cells: [
+        //         {
+        //             binding: "code",
+        //             type: "code",
+        //             area: "comnCd",
+        //             comnCd: "COM_0015",
+        //         },
+        //     ],
+        // },
     ],
 };
 
@@ -92,7 +96,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 999 });
+const data = utils.getMockData({ totalElements: 30000 });
 
 export const Temp = () => {
     const {
@@ -184,8 +188,4 @@ export const Temp = () => {
             <button onClick={() => setShow("column", "text", false)}>hide text</button>
         </Page>
     );
-};
-
-const LTest = () => {
-    return <div>a</div>;
 };

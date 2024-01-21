@@ -163,6 +163,23 @@
         @apply p-4 flex items-center justify-between;
     }
 
+    /* Grid */
+    .uf-grid-option {
+        @apply flex items-center justify-center min-w-[2rem] bg-uf-card-header;
+    }
+    .uf-grid-head {
+    }
+    .uf-grid-head::-webkit-scrollbar {
+        display: none;
+    }
+    .uf-grid-body {
+    }
+    .uf-grid-row {
+    }
+    .uf-grid-cell {
+        @apply flex-1 flex justify-center items-center min-h-[2.5rem] px-1;
+    }
+
     /* Page */
     .uf-page {
         @apply flex flex-col gap-4;

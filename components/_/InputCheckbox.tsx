@@ -67,23 +67,19 @@ export const Checkbox = (props: CheckboxProps) => {
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, lang, options });
 
-    const [_value, _setValue] = React.useState<any[]>(value || []);
+    const [_value, _setValue] = React.useState<any[]>(formatCheckbox(value));
 
     React.useEffect(() => {
-        if (value === undefined || value === null) {
-            _setValue([]);
-            return;
-        }
-
-        if (!Array.isArray(value)) return;
         if (String(value) === String(_value)) return;
-        _setValue(value);
+
+        _setValue(formatCheckbox(value));
     }, [value]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const next = event.target.checked
             ? [..._value, event.target.value]
             : _value.filter((_) => _ !== event.target.value);
+
         _setValue(next);
 
         if (onChange) {
@@ -97,6 +93,7 @@ export const Checkbox = (props: CheckboxProps) => {
 
     const handleChangeAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         const next = event.target.checked ? o.options?.map(({ value }) => value) || [] : [];
+
         _setValue(next);
 
         if (onChange) {
@@ -156,4 +153,15 @@ export const Checkbox = (props: CheckboxProps) => {
             </div>
         </div>
     );
+};
+
+export const formatCheckbox = (v: any) => {
+    if (!Array.isArray(v)) return [];
+    return v;
+};
+
+export const unformatCheckbox = (v: any, o?: any) => {
+    if (!Array.isArray(v)) return undefined;
+    if (v.length === 0) return undefined;
+    return v;
 };

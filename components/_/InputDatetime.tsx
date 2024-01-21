@@ -4,7 +4,7 @@ import ReactDatePicker from "react-datepicker";
 import { useTheme } from "@/comn/hooks";
 
 import { Icon } from "@/comn/components";
-import { DATETIME_FORMAT_DAYJS, DATETIME_FORMAT_INPUT, DATETIME_FORMAT } from "@/comn/constants";
+import constants from "@/comn/constants";
 
 export type InputDateimeProps = {
     edit?: boolean;
@@ -28,14 +28,12 @@ export const InputDatetime = (props: InputDateimeProps) => {
 
     const { theme } = useTheme();
 
-    const [_value, _setValue] = React.useState<Date | null | undefined>(() => {
-        return !value || !dayjs(value).isValid() ? undefined : dayjs(value).toDate();
-    });
+    const [_value, _setValue] = React.useState<Date | null | undefined>(formatDatetime(value));
 
     React.useEffect(() => {
-        if (!value || !dayjs(value).isValid()) return _setValue(undefined);
         if (dayjs(value).isSame(dayjs(_value))) return;
-        _setValue(dayjs(value).toDate());
+
+        _setValue(formatDatetime(value));
     }, [value]);
 
     const handleChange = (date: Date) => {
@@ -46,19 +44,15 @@ export const InputDatetime = (props: InputDateimeProps) => {
         if (onValueChange) {
             onValueChange({
                 value: date,
-                data: dayjs(date).format(DATETIME_FORMAT),
-                formattedValue: dayjs(date).format(DATETIME_FORMAT),
+                data: dayjs(date).format(constants.DATETIME_FORMAT),
+                formattedValue: dayjs(date).format(constants.DATETIME_FORMAT),
             });
         }
     };
 
     return (
         <div className="w-full">
-            {!edit && (
-                <div>
-                    {!!_value && dayjs(_value).isValid() && dayjs(_value).format(DATETIME_FORMAT_DAYJS[theme.lang])}
-                </div>
-            )}
+            {!edit && <div>{localeDatetime(value, theme.lang)}</div>}
             <div hidden={!edit}>
                 <div className="relative w-full [&>div]:w-full">
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
@@ -66,15 +60,37 @@ export const InputDatetime = (props: InputDateimeProps) => {
                         {..._props}
                         selected={_value}
                         onChange={handleChange}
-                        dateFormat={DATETIME_FORMAT_INPUT[theme.lang]}
+                        dateFormat={constants.DATETIME_FORMAT_INPUT[theme.lang]}
                         autoComplete="off"
                         showTimeSelect
                         timeIntervals={5}
                         className="input pl-5"
+                        portalId="root"
                         popperProps={{ strategy: "fixed" }}
                     />
                 </div>
             </div>
         </div>
     );
+};
+
+export const localeDatetime = (v: any, l: "ko" | "en" | "tz") => {
+    if (!v) return "";
+    if (!dayjs(v).isValid()) return "";
+
+    return dayjs(v).format(constants.TIME_FORMAT_DAYJS[l]);
+};
+
+export const formatDatetime = (v: any) => {
+    if (!v) return undefined;
+    if (!dayjs(v).isValid()) return undefined;
+
+    return dayjs(v).toDate();
+};
+
+export const unformatDatetime = (v: any, o?: any) => {
+    if (!v) return undefined;
+    if (!dayjs(v).isValid()) return undefined;
+
+    return dayjs(v).format(constants.TIME_FORMAT);
 };

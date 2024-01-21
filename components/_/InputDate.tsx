@@ -43,9 +43,7 @@ export const InputDate = (props: InputDateProps) => {
     );
     const { theme } = useTheme();
 
-    const [_value, _setValue] = React.useState<Date | null | undefined>(() => {
-        return !value || !dayjs(value).isValid() ? undefined : dayjs(value).toDate();
-    });
+    const [_value, _setValue] = React.useState<Date | null | undefined>(formatDate(value));
 
     React.useEffect(() => {
         if (startRef) startRef.current.handleChangeStart = handleChange;
@@ -53,17 +51,18 @@ export const InputDate = (props: InputDateProps) => {
     }, []);
 
     React.useEffect(() => {
-        if (value === undefined) return _setValue(undefined);
-        if (!value || !dayjs(value).isValid()) return _setValue(undefined);
         if (dayjs(value).isSame(dayjs(_value))) return;
-        _setValue(dayjs(value).toDate());
+
+        _setValue(formatDate(value));
     }, [value]);
 
     const handleChange = (date: Date) => {
         _setValue(date);
+
         if (onChange) {
             onChange(date);
         }
+
         if (onValueChange) {
             onValueChange({
                 value: date,
@@ -75,13 +74,7 @@ export const InputDate = (props: InputDateProps) => {
 
     return (
         <div className="w-full">
-            {!edit && (
-                <div>
-                    {!!_value &&
-                        dayjs(_value).isValid() &&
-                        dayjs(_value).format(constants.DATE_FORMAT_DAYJS[theme.lang])}
-                </div>
-            )}
+            {!edit && <div>{localeDate(_value, theme.lang)}</div>}
             <div hidden={!edit}>
                 <div className="relative w-full [&>div]:w-full">
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
@@ -99,4 +92,25 @@ export const InputDate = (props: InputDateProps) => {
             </div>
         </div>
     );
+};
+
+export const localeDate = (v: any, l: "ko" | "en" | "tz") => {
+    if (!v) return "";
+    if (!dayjs(v).isValid()) return "";
+
+    return dayjs(v).format(constants.DATE_FORMAT_DAYJS[l]);
+};
+
+export const formatDate = (v: any) => {
+    if (!v) return undefined;
+    if (!dayjs(v).isValid()) return undefined;
+
+    return dayjs(v).toDate();
+};
+
+export const unformatDate = (v: any, o?: any) => {
+    if (!v) return undefined;
+    if (!dayjs(v).isValid()) return undefined;
+
+    return dayjs(v).format(constants.DATE_FORMAT);
 };
