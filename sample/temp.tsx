@@ -138,6 +138,7 @@ export const Temp = () => {
             { area: "currCd" },
             { area: "cityCd" },
             { area: "portAirptCd" },
+            { area: "test" },
         ],
     });
 

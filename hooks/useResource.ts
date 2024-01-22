@@ -26,6 +26,12 @@ export const useResource = (props: UseOptionsProps) => {
 
             console.log(
                 Object.entries(_s).map(([_, v]: any, i) => {
+                    let data = [];
+                    const status = r[i].status;
+                    if (status === "fulfilled") {
+                        data = (r[i] as PromiseFulfilledResult<any>).value;
+                    }
+
                     return [_, { ...v, ...r[i] }];
                 }),
             );

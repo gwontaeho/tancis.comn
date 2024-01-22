@@ -59,8 +59,8 @@ export const useGrid = (props: any) => {
     const getSelectedRow = () => {
         return _grid.current._selectedRow;
     };
-    const updateRow = (p: any, n: any) => {
-        _grid.current._handleUpdate(p, n);
+    const updateRow = (n: any) => {
+        _grid.current._handleUpdate(n);
     };
     const addRow = (data?: any) => {
         _grid.current._handleClickAdd?.(data);
