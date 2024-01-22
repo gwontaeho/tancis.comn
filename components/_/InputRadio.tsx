@@ -13,6 +13,7 @@ type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
     area?: string;
     lang?: string;
     onValueChange?: any;
+    onChange?: any;
 };
 
 export const Radio = (props: RadioProps) => {
@@ -51,7 +52,6 @@ export const Radio = (props: RadioProps) => {
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options });
-    console.log(o);
 
     React.useEffect(() => {
         if (value === _value) return;
@@ -61,7 +61,7 @@ export const Radio = (props: RadioProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         _setValue(e.target.value);
         if (onChange) {
-            onChange(e);
+            onChange(e.target.value);
         }
 
         if (onValueChange) {

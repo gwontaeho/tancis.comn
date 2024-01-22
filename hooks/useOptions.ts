@@ -5,18 +5,23 @@ import { resourceState } from "@/comn/features/recoil";
 import { utils, idb } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
 
+type TOption = {
+    label: string;
+    value: string;
+};
+
 type UseOptionsProps = {
     area?: string;
     comnCd?: string;
-    options?: { label: string; value: any }[];
+    options?: TOption[];
 };
 
 export const useOptions = (props: UseOptionsProps) => {
-    const { comnCd, area, options } = props;
+    const { comnCd, area, options = [] } = props;
 
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
-    const [_options, _setOptions] = React.useState<{ label: string; value: any }[]>([]);
+    const [_options, _setOptions] = React.useState<TOption[]>(options);
 
     React.useEffect(() => {
         const key = area && utils.getResourceKey(area, comnCd, theme.lang);

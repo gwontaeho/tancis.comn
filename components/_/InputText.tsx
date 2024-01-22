@@ -130,7 +130,7 @@ export const unformatText = (v: any, o?: any) => {
 
     if (o?.mask) {
         var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        return v.replace(reg, "");
+        return f.replace(reg, "");
     }
-    return v;
+    return f;
 };

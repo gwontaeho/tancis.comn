@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
-import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import { idb, utils } from "@/comn/utils";
 
-import { resourceState } from "@/comn/features/recoil";
 import { useOptions } from "@/comn/hooks";
 import { Icon, TFormControlOptions } from "@/comn/components";
 
@@ -29,19 +26,19 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 export const Select = (props: SelectProps) => {
     const {
         edit = true,
+        options,
         /** */
         comnCd,
         area,
-        options,
         /** */
         all,
         select = true,
         /** */
         name,
         value,
+        onValueChange,
         onClick,
         onChange,
-        onValueChange,
         onBlur,
         onFocus,
         readOnly,
@@ -51,8 +48,8 @@ export const Select = (props: SelectProps) => {
     const _props = Object.fromEntries(
         Object.entries({
             name,
-            onClick,
             onBlur,
+            onClick,
             onFocus,
             readOnly,
             disabled,
@@ -71,19 +68,18 @@ export const Select = (props: SelectProps) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         _setValue(e.target.value);
-        if (onChange) {
-            onChange(e.target.value);
-        }
-        if (onValueChange) {
-            onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
-        }
+        if (onChange) onChange(e.target.value);
+
+        // if (onValueChange) {
+        //     onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
+        // }
     };
 
     const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
 
     return (
         <div className="w-full">
-            {!edit && <div>{o.options?.find(({ value }) => value === _value)?.label}</div>}
+            {!edit && <div>{viewSelect(value, { options: o.options })}</div>}
             <div hidden={!edit}>
                 <div className="relative flex w-full items-center">
                     <select
@@ -106,4 +102,17 @@ export const Select = (props: SelectProps) => {
             </div>
         </div>
     );
+};
+
+export const viewSelect = (v: any, o?: any) => {
+    if (!o?.options) return;
+
+    const option = o.options?.find(({ value }: any) => value === v);
+
+    if (!option) return;
+
+    const vt = option.value ? `[${option.value}] ` : "";
+    const lt = option.label;
+
+    return vt + lt;
 };
