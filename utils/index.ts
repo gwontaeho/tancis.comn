@@ -78,7 +78,6 @@ export const comnUtils = {
         }
         if (o?.max) {
             if (v > o.max) {
-                console.log(v, o.max);
                 return { message: "r", type: "max" };
             }
         }

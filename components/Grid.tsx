@@ -283,6 +283,20 @@ export const Grid = (props: any) => {
         }
     }, []);
 
+    /** reset data */
+    const resetData = () => {
+        const o = _grid.current._origin;
+
+        _grid.current._content = o;
+
+        const paged =
+            _grid.current._pagination === "in" ? lodash.chunk(o, _grid.current._size)[_grid.current._page] : o;
+        _grid.current._paged = paged;
+
+        _setTotalCount(o.length);
+        _setTest(paged || []);
+    };
+
     /** handle update */
     const handleUpdate = React.useCallback((p: any, n: any) => {
         if (!p?.__key) return;
@@ -563,6 +577,7 @@ export const Grid = (props: any) => {
         _grid.current._setEdit = setEdit;
         _grid.current._setShow = setShow;
         _grid.current._setOption = setOption;
+        _grid.current._resetData = resetData;
         _grid.current._handleCheck = handleCheck;
         _grid.current._handleSelect = handleSelect;
         _grid.current._handleUpdate = handleUpdate;
@@ -643,7 +658,11 @@ export const Grid = (props: any) => {
                                                             maxWidth: bProps.width,
                                                         }}
                                                     >
-                                                        {render?.head?.[bProps.binding]?.() ||
+                                                        {render?.head?.[bProps.binding]?.({
+                                                            binding: bProps.binding,
+                                                            id: colProps.id,
+                                                            header: bProps.header,
+                                                        }) ||
                                                             t(bProps.header) ||
                                                             bProps.binding}
                                                         {bProps.required && (
@@ -739,7 +758,7 @@ const Row = React.memo((props: any) => {
     React.useEffect(() => {
         _grid.current._rect[rowIndex] = ref.current.getBoundingClientRect();
         _grid.current._list.resetAfterIndex(rowIndex);
-    }, []);
+    }, [_body]);
 
     return (
         <div

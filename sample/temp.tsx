@@ -1,7 +1,7 @@
 import { useStore } from "@/comn/hooks";
 import { useGrid } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
-import { Page, Group, FormControl, Grid } from "@/comn/components";
+import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 
 const schema1 = {
@@ -111,6 +111,7 @@ export const Temp = () => {
         setShow,
         setPage,
         setSize,
+        resetData,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -120,9 +121,49 @@ export const Temp = () => {
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
 
     const _test = {
-        head: {},
-        cell: {},
-        edit: {},
+        head: {
+            text: (data: any) => {
+                /**
+                 * # data
+                 * id
+                 * header
+                 * binding
+                 */
+                return (
+                    <Layout>
+                        <FormControl />
+                    </Layout>
+                );
+            },
+        },
+        cell: {
+            text: (data: any) => {
+                /**
+                 * # data
+                 * value
+                 * rowValues
+                 * binding
+                 */
+
+                return <Layout>*custom* {data.value}</Layout>;
+            },
+        },
+        edit: {
+            text: (data: any) => {
+                /**
+                 * # data
+                 * value
+                 * rowValues
+                 * binding
+                 */
+                return (
+                    <Layout direction="row" gap={1}>
+                        <FormControl />
+                        <FormControl />
+                    </Layout>
+                );
+            },
+        },
     };
 
     const _test2 = {
@@ -153,6 +194,7 @@ export const Temp = () => {
             </Group>
 
             <Link to="/asd">asd</Link>
+            <button onClick={() => resetData()}>reset</button>
             <button onClick={() => setSize(30)}>setSize 30</button>
 
             <button onClick={() => setOption("edit", true)}>setOption edit true</button>

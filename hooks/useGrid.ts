@@ -37,7 +37,9 @@ export const useGrid = (props: any) => {
         _setSize,
 
         // _setEdit
+        // _setShow
         // _setOption
+        // _resetData
         // _handleUpdate
         // _handleClickAdd
         // _handleClickDelete
@@ -81,6 +83,9 @@ export const useGrid = (props: any) => {
     const setSize = (next: any) => {
         _grid.current._handleChangeSize(next);
     };
+    const resetData = () => {
+        _grid.current._resetData();
+    };
 
     return {
         grid: { _grid },
@@ -98,5 +103,6 @@ export const useGrid = (props: any) => {
         setOption,
         setPage,
         setSize,
+        resetData,
     };
 };
