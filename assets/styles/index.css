@@ -165,7 +165,7 @@
 
     /* Grid */
     .uf-grid-option {
-        @apply flex items-center justify-center min-w-[2rem] bg-uf-card-header;
+        @apply flex items-center justify-center min-w-[2rem] max-w-[2rem] bg-uf-card-header;
     }
     .uf-grid-head {
     }

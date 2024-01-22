@@ -1,5 +1,5 @@
 import { useStore } from "@/comn/hooks";
-import { useGrid } from "@/comn/hooks";
+import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ const schema1 = {
         { cells: [{ binding: "text2" }] },
         { cells: [{ binding: "number" }] },
         { cells: [{ binding: "date" }] },
+        { cells: [{ binding: "select" }] },
         // { cells: [{ binding: "time" }] },
         // { cells: [{ binding: "datetime" }] },
         // { cells: [{ binding: "select" }] },
@@ -29,7 +30,14 @@ const schema1 = {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
         },
         {
-            cells: [{ binding: "date", type: "date", colspan: 2 }],
+            cells: [
+                { binding: "date", type: "date", colspan: 2 },
+                { binding: "date1", type: "date" },
+                { binding: "date2", type: "date" },
+            ],
+        },
+        {
+            cells: [{ binding: "select", type: "select", colspan: 2, area: "comnCd", comnCd: "COM_0015" }],
         },
         // {
         //     cells: [{ binding: "time", type: "time" }],
@@ -123,6 +131,15 @@ export const Temp = () => {
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
+
+    const test123 = useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0015" },
+            { area: "currCd" },
+            { area: "cityCd" },
+            { area: "portAirptCd" },
+        ],
+    });
 
     const _test = {
         head: {
@@ -224,10 +241,10 @@ export const Temp = () => {
             <button onClick={() => updateRow(getSelectedRow(), { text: "updated" })}>updateRow selected</button>
 
             <button onClick={() => setEdit("column", "col", true)}>show text</button>
-            <button onClick={() => setEdit("cell", "time", true)}>show text</button>
+            <button onClick={() => setEdit("column", "time", true)}>show text</button>
 
-            <button onClick={() => setShow("column", "text", true)}>show text</button>
-            <button onClick={() => setShow("column", "text", false)}>hide text</button>
+            <button onClick={() => setShow("cell", "date1", true)}>show text</button>
+            <button onClick={() => setShow("cell", "date1", false)}>hide text</button>
         </Page>
     );
 };
