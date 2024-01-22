@@ -239,7 +239,7 @@ export const Temp = () => {
 
             <button onClick={() => addRow({ text: "added" })}>add row</button>
 
-            <button onClick={() => updateRow(getSelectedRow(), { text: "updated" })}>updateRow selected</button>
+            <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
 
             <button onClick={() => setEdit("column", "col", true)}>show text</button>
             <button onClick={() => setEdit("column", "time", true)}>show text</button>
