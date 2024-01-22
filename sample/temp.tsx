@@ -105,7 +105,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 30000 });
+const data = utils.getMockData({ totalElements: 3000 });
 
 export const Temp = () => {
     useResource({
