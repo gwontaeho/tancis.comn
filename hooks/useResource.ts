@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { resourceState } from "@/comn/features/recoil";
 import { utils } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
 
@@ -8,10 +10,11 @@ export const useResource = (props: UseOptionsProps) => {
     const { defaultSchema } = props;
 
     const { theme } = useTheme();
+    const setRecource = useSetRecoilState(resourceState);
 
     const [_s, _setS] = useState(() => {
         return defaultSchema.reduce((p: any, c: any) => {
-            return { ...p, [c.area + (c.comnCd ? `__${c.comnCd}` : "")]: { area: c.area, comnCd: c.comnCd } };
+            return { ...p, [c.area + (c.comnCd ? `:${c.comnCd}` : "")]: { area: c.area, comnCd: c.comnCd } };
         }, {});
     });
 
@@ -23,25 +26,31 @@ export const useResource = (props: UseOptionsProps) => {
         try {
             const e = Object.entries(_s).map(([_, v]: any) => utils.getCode({ area: v.area, comnCd: v.comnCd }));
             const r = await Promise.allSettled(e);
-
-            console.log(
+            const next = Object.fromEntries(
                 Object.entries(_s).map(([_, v]: any, i) => {
                     let data = [];
-                    const status = r[i].status;
-                    if (status === "fulfilled") {
-                        data = (r[i] as PromiseFulfilledResult<any>).value;
+                    let options = [];
+                    let reason;
+                    const status = r[i].status === "fulfilled" ? "success" : "error";
+                    if (status === "success") {
+                        data = Object.values<any>((r[i] as PromiseFulfilledResult<any>).value.data)[0].content;
+                        options = data.map((code: any) => ({
+                            label: utils.getCodeLabel(v.area, code),
+                            value: utils.getCodeValue(v.area, code),
+                        }));
                     }
-
-                    return [_, { ...v, ...r[i] }];
+                    if (status === "error") {
+                        reason = (r[i] as PromiseRejectedResult).reason;
+                    }
+                    return [_, { ...v, status, data, reason, options }];
                 }),
             );
-        } catch (error) {}
+
+            _setS(next);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    return {};
+    return { resource: _s };
 };
-// data:   Object.values<any>(r[i].value.data)[0].content
-// Object.values<any>(data)[0].content.map((code: any) => ({
-//     label: utils.getCodeLabel(area, code),
-//     value: utils.getCodeValue(area, code),
-// })),

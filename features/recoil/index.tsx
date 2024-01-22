@@ -35,6 +35,11 @@ export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "
     ],
 });
 
+export const resourceState = atom<any>({
+    key: "resourceState",
+    default: {},
+});
+
 export const modalState = atom<ModalProps[]>({
     key: "modalState",
     default: [],

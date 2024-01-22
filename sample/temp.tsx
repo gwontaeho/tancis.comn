@@ -1,6 +1,7 @@
 import { useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
+
 import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 
@@ -107,6 +108,16 @@ type TData = {
 const data = utils.getMockData({ totalElements: 30000 });
 
 export const Temp = () => {
+    const { resource } = useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0015" },
+            { area: "currCd" },
+            { area: "cityCd" },
+            { area: "portAirptCd" },
+            { area: "test" },
+        ],
+    });
+
     const {
         grid,
         getData,
@@ -131,16 +142,6 @@ export const Temp = () => {
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
-
-    const test123 = useResource({
-        defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0015" },
-            { area: "currCd" },
-            { area: "cityCd" },
-            { area: "portAirptCd" },
-            { area: "test" },
-        ],
-    });
 
     const _test = {
         head: {
@@ -239,7 +240,7 @@ export const Temp = () => {
 
             <button onClick={() => addRow({ text: "added" })}>add row</button>
 
-            <button onClick={() => updateRow(getSelectedRow(), { text: "updated" })}>updateRow selected</button>
+            <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
 
             <button onClick={() => setEdit("column", "col", true)}>show text</button>
             <button onClick={() => setEdit("column", "time", true)}>show text</button>

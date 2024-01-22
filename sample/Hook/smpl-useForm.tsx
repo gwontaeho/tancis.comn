@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Page, Group, Button, Table } from "@/comn/components";
 import { TFormSchema, TFormValues } from "@/comn/hooks";
-import { useForm } from "@/comn/hooks";
+import { useForm, useResource } from "@/comn/hooks";
 
 const SCHEMA_SEARCH: TFormSchema = {
     id: "search",
@@ -96,6 +96,16 @@ const OPTION = [
 ];
 
 export const SampleUseForm = () => {
+    const { resource } = useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0015" },
+            { area: "currCd" },
+            { area: "cityCd" },
+            { area: "portAirptCd" },
+            { area: "test" },
+        ],
+    });
+
     const {
         schema,
         setSchema,
@@ -125,8 +135,6 @@ export const SampleUseForm = () => {
         },
     });
 
-    console.log(errors);
-
     const text = watch(["text"]);
 
     const onSubmit = (data: TFormValues) => {
@@ -137,8 +145,6 @@ export const SampleUseForm = () => {
         console.log(data);
         console.log("b");
     };
-
-    useEffect(() => {}, []);
 
     const etr = (v: any) => {
         setEditable(v);
