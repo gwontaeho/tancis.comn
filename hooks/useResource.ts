@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
+
 import { resourceState } from "@/comn/features/recoil";
-import { utils } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
+import { utils, idb } from "@/comn/utils";
 
 type UseOptionsProps = any;
 
@@ -24,6 +25,7 @@ export const useResource = (props: UseOptionsProps) => {
 
     const gg = async () => {
         try {
+            let _r: any = {};
             const e = Object.entries(_s).map(([_, v]: any) => utils.getCode({ area: v.area, comnCd: v.comnCd }));
             const r = await Promise.allSettled(e);
             const next = Object.fromEntries(
@@ -33,6 +35,7 @@ export const useResource = (props: UseOptionsProps) => {
                     let reason;
                     const status = r[i].status === "fulfilled" ? "success" : "error";
                     if (status === "success") {
+                        _r[_] = { t: new Date() };
                         data = Object.values<any>((r[i] as PromiseFulfilledResult<any>).value.data)[0].content;
                         options = data.map((code: any) => ({
                             label: utils.getCodeLabel(v.area, code),
@@ -46,6 +49,7 @@ export const useResource = (props: UseOptionsProps) => {
                 }),
             );
 
+            setRecource((prev: any) => ({ ...prev, ..._r }));
             _setS(next);
         } catch (error) {
             console.log(error);

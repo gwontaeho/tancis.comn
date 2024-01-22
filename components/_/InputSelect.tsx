@@ -1,22 +1,12 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
+import classNames from "classnames";
+import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+
+import { resourceState } from "@/comn/features/recoil";
 import { useOptions } from "@/comn/hooks";
 import { Icon, TFormControlOptions } from "@/comn/components";
-import classNames from "classnames";
-
-/**
- * edit=true
- *
- * name
- * value
- * onClick
- * onChange
- * onBlur
- * onFocus
- * readOnly
- * disabled
- */
 
 /** */
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
@@ -65,6 +55,9 @@ export const Select = (props: SelectProps) => {
             disabled,
         }).filter(([, value]) => value !== undefined),
     );
+
+    const [resource] = useRecoilState(resourceState);
+    console.log(resource);
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, lang, options });
