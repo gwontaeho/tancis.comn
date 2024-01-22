@@ -875,8 +875,8 @@ const Row = React.memo((props: any) => {
                                                         maxWidth: bProps.width,
                                                     }}
                                                     onClick={() => {
-                                                        if (onCellClick[binding])
-                                                            onCellClick[binding]({
+                                                        if (onCellClick?.[binding])
+                                                            onCellClick?.[binding]({
                                                                 binding: binding,
                                                                 value: uv,
                                                                 formattedValue: fv,
