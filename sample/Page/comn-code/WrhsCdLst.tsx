@@ -4,7 +4,7 @@ import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_CURR_CD_SRCH, SCHEMA_GRID_CURR_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_WRHS_CD_SRCH, SCHEMA_GRID_WRHS_CD } from "./ComnCdService";
 
 export const WrhsCodeList = (props: any) => {
     const pgeUid = "wrhsCdLst";
@@ -17,14 +17,14 @@ export const WrhsCodeList = (props: any) => {
 
     const form = {
         wrshCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_CURR_CD_SRCH,
+            defaultSchema: SCHEMA_FORM_WRHS_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
         wrshCdLst: useWijmo({
-            defaultSchema: SCHEMA_GRID_CURR_CD,
+            defaultSchema: SCHEMA_GRID_WRHS_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
@@ -60,9 +60,9 @@ export const WrhsCodeList = (props: any) => {
             )();
         },
         click_Grid_WrshCdLst: {
-            wrshCd: (data: any) => {
+            coDclaCd: (data: any) => {
                 if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.currNm });
+                postMessage({ code: data.value, label: data.rowValues.wrhsNm });
                 close();
             },
         },
@@ -75,11 +75,11 @@ export const WrhsCodeList = (props: any) => {
     return (
         <Page
             id={pgeUid}
-            title={t("T_CURR_CD_LST")}
-            description={t("T_CURR_CD_LST")}
+            title={t("T_WRHS_CD_LST")}
+            description={t("T_WRHS_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_CURR_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "T_WRHS_CD_LST" }],
             }}
         >
             <form>
@@ -87,8 +87,8 @@ export const WrhsCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.wrshCdSrch.schema.wrshCd}></Group.Control>
-                                <Group.Control {...form.wrshCdSrch.schema.currNm}></Group.Control>
+                                <Group.Control {...form.wrshCdSrch.schema.wrhsCd}></Group.Control>
+                                <Group.Control {...form.wrshCdSrch.schema.wrhsNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
@@ -120,7 +120,7 @@ export const WrhsCodeList = (props: any) => {
                     <Group.Section>
                         <Wijmo
                             {...grid.wrshCdLst.grid}
-                            data={fetch.getWrshCdLst.data?.wrshCdList}
+                            data={fetch.getWrshCdLst.data?.wrhsList}
                             onCellClick={handler.click_Grid_WrshCdLst}
                         />
                     </Group.Section>

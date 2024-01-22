@@ -324,8 +324,11 @@ export const comnUtils = {
             case "orgCd":
                 url = `/api/v1/intptl/comnppup/org?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
                 break;
+            case "wrhsCd":
+                url = `/api/v1/intptl/comnppup/wrhs?wrhsOprtTpCd=&coDclaCd=${keyword}&wrhsNm=${keywordName}`;
+                break;
             case "test":
-                url = `/api/v1/intptl/comnppudp/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
+                url = `/api/v1/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
                 break;
             default:
                 url = `/api/v1/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
@@ -361,6 +364,8 @@ export const comnUtils = {
                 return code.itemNm;
             case "orgCd":
                 return code.orgNm;
+            case "wrhsCd":
+                return code.wrhsNm;
             default:
                 return code.cdVldValNm;
         }
@@ -389,6 +394,8 @@ export const comnUtils = {
                 return code.item;
             case "orgCd":
                 return code.orgCd;
+            case "wrhsCd":
+                return code.coDclaCd;
             default:
                 return code.cdVldVal;
         }

@@ -17,18 +17,18 @@ type InputCodeProps = {
 };
 
 const POPUP_URLS: { [id: string]: string } = {
-    comnCd: `/comn/smpl/pages/comnCdPpup`,
-    cityCd: `/comn/smpl/pages/cityCdPpup`,
-    cntyCd: `/comn/smpl/pages/cntyCdPpup`,
-    bnkCd: `/comn/smpl/pages/bnkCdPpup`,
-    currCd: `/comn/smpl/pages/currCdPpup`,
-    portCd: `/comn/smpl/pages/portCdPpup`,
-    portAirptCd: `/comn/smpl/pages/portAirptCdPpup`,
-    airptCd: `/comn/smpl/pages/airptCdPpup`,
-    coCd: `/comn/smpl/pages/coCdPpup`,
-    prcssStatCd: `/comn/smpl/pages/prcssStatPpup`,
-    orgCd: `/comn/smpl/pages/orgCdPpup`,
-    wrhsgCd: `/comn/smpl/pages/orgCdPpup`,
+    comnCd: `/comn/comn/ppup/comnCdPpup`,
+    cityCd: `/comn/comn/ppup/cityCdPpup`,
+    cntyCd: `/comn/comn/ppup/cntyCdPpup`,
+    bnkCd: `/comn/comn/ppup/bnkCdPpup`,
+    currCd: `/comn/comn/ppup/currCdPpup`,
+    portCd: `/comncomn/ppup/portCdPpup`,
+    portAirptCd: `/comn/comn/ppup/portAirptCdPpup`,
+    airptCd: `/comn/comn/ppup/airptCdPpup`,
+    coCd: `/comn/comn/ppup/coCdPpup`,
+    prcssStatCd: `/comn/comn/ppup/prcssStatPpup`,
+    orgCd: `/comn/comn/ppup/orgCdPpup`,
+    wrhsCd: `/comn/comn/ppup/wrhsCdPpup`,
 };
 
 export const InputCode = (props: InputCodeProps) => {

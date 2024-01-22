@@ -11,12 +11,11 @@ export const BASE = {
 export const APIS = {
     getWrshCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
-            area: "wrshCd",
+            area: "wrhsCd",
             page: page,
             size: size,
-            keyword: data.regnCd,
-            keywordName: data.regnNm,
-            cntyCd: data.cntyCd,
+            keyword: data.wrshCd,
+            keywordName: data.wrhsNm,
         });
     },
 
@@ -423,6 +422,28 @@ export const SCHEMA_GRID_ORG_CD: WijmoSchemaType = {
     ],
 };
 
+export const SCHEMA_GRID_WRHS_CD: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "out", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_WRHS_CD", binding: "coDclaCd" }] },
+        { cells: [{ header: "L_WRHS_NM", binding: "wrhsNm" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "coDclaCd",
+                    width: 150,
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "wrhsNm", width: "*" }],
+        },
+    ],
+};
+
 export const SCHEMA_FORM_COMN_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
@@ -544,5 +565,13 @@ export const SCHEMA_FORM_ORG_CD_SRCH: TFormSchema = {
     schema: {
         orgCd: { type: "text", label: "L_ORG_CD" },
         orgNm: { type: "text", label: "L_ORG_NM" },
+    },
+};
+
+export const SCHEMA_FORM_WRHS_CD_SRCH: TFormSchema = {
+    id: "form",
+    schema: {
+        wrhsCd: { type: "text", label: "L_WRHS_CD" },
+        wrhsNm: { type: "text", label: "L_WRHS_NM" },
     },
 };

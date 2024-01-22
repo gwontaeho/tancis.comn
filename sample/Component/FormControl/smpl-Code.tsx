@@ -85,7 +85,7 @@ export const SampleFormControlCode = () => {
             },
             field12: {
                 type: "code",
-                area: "wrshCd",
+                area: "wrhsCd",
                 label: "WareHouse Code",
                 controlSize: 10,
                 popupSize: "md",
