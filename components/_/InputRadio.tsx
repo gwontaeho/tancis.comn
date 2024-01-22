@@ -51,7 +51,6 @@ export const Radio = (props: RadioProps) => {
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options });
-    console.log(o);
 
     React.useEffect(() => {
         if (value === _value) return;
