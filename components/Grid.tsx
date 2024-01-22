@@ -851,10 +851,20 @@ const Row = React.memo((props: any) => {
                                                             });
                                                     }}
                                                 >
-                                                    {!bProps.edit && (render?.cell?.[bProps.binding]?.() || uv)}
+                                                    {!bProps.edit &&
+                                                        (render?.cell?.[bProps.binding]?.({
+                                                            value: value,
+                                                            rowValues: row,
+                                                            binding: bProps.binding,
+                                                        }) ||
+                                                            uv)}
 
                                                     {bProps.edit &&
-                                                        (render?.edit?.[bProps.binding]?.() || (
+                                                        (render?.edit?.[bProps.binding]?.({
+                                                            value: value,
+                                                            rowValues: row,
+                                                            binding: bProps.binding,
+                                                        }) || (
                                                             <FormControl
                                                                 {...o}
                                                                 area={bProps.area}
