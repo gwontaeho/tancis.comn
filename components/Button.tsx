@@ -50,6 +50,7 @@ const BUTTON_ROLES = {
     confirm: { text: "B_CFRM", color: "success" },
     ok: { text: "B_OK", color: "success" },
     edit: { text: "B_EDIT", color: "primary" },
+    new: { text: "B_NEW", color: "gray" },
     cancel: { text: "B_CNCL", color: "warning" },
     apply: { text: "B_APPD", color: "blue" },
     gridAdd: { text: "B_ADD", color: "blue" },
