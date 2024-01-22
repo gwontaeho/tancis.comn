@@ -28,6 +28,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
     all?: boolean;
     select?: boolean;
     readOnly?: boolean;
+    onChange?: any;
     onValueChange?: any;
 };
 
@@ -78,7 +79,7 @@ export const Select = (props: SelectProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         _setValue(e.target.value);
         if (onChange) {
-            onChange(e);
+            onChange(e.target.value);
         }
         if (onValueChange) {
             onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
