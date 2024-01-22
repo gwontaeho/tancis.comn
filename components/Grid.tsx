@@ -687,7 +687,9 @@ export const Grid = (props: any) => {
                         _checked,
                         _selectedRow,
                     }}
-                    itemSize={(index) => _grid.current._rect[index]?.["height"] || 0}
+                    itemSize={(index) =>
+                        _grid.current._rect[index]?.["height"] || _grid.current._rect[0]?.["height"] || 0
+                    }
                 >
                     {Row}
                 </List>
@@ -801,10 +803,11 @@ const Row = React.memo((props: any) => {
                                     <div key={celKey} className="flex h-full gap-[1px]">
                                         {cellProps.map((bProps: any, bIndex: any) => {
                                             const bKey = celKey + "." + bIndex;
-                                            const value = row[bProps.binding];
+                                            const binding = bProps.binding;
+                                            const value = row[binding];
                                             const ov = _grid.current._origin.find(
                                                 ({ __key }: any) => __key === contentKey,
-                                            )?.[bProps.binding];
+                                            )?.[binding];
 
                                             const o = {
                                                 type: bProps.type,
@@ -817,6 +820,8 @@ const Row = React.memo((props: any) => {
                                                 /** code */
                                                 area: bProps.area,
                                                 comnCd: bProps.comnCd,
+                                                /** */
+                                                options: bProps.options,
                                                 /** rules */
                                                 min: bProps.min,
                                                 max: bProps.max,
@@ -836,15 +841,21 @@ const Row = React.memo((props: any) => {
                                                 <div
                                                     key={bKey}
                                                     {...(vldv && { "aria-invalid": true })}
-                                                    className="uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error "
+                                                    className={classNames(
+                                                        "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error",
+                                                        (bProps.align === "start" || bProps.align === "left") &&
+                                                            "justify-start",
+                                                        (bProps.align === "end" || bProps.align === "start") &&
+                                                            "justify-end",
+                                                    )}
                                                     style={{
                                                         minWidth: bProps.width,
                                                         maxWidth: bProps.width,
                                                     }}
                                                     onClick={() => {
-                                                        if (onCellClick[bProps.binding])
-                                                            onCellClick[bProps.binding]({
-                                                                binding: bProps.binding,
+                                                        if (onCellClick[binding])
+                                                            onCellClick[binding]({
+                                                                binding: binding,
                                                                 value: uv,
                                                                 formattedValue: fv,
                                                                 rowValues: row,
@@ -852,32 +863,26 @@ const Row = React.memo((props: any) => {
                                                     }}
                                                 >
                                                     {!bProps.edit &&
-                                                        (render?.cell?.[bProps.binding]?.({
+                                                        (render?.cell?.[binding]?.({
                                                             value: value,
                                                             rowValues: row,
-                                                            binding: bProps.binding,
+                                                            binding: binding,
                                                         }) ||
                                                             uv)}
 
                                                     {bProps.edit &&
-                                                        (render?.edit?.[bProps.binding]?.({
+                                                        (render?.edit?.[binding]?.({
                                                             value: value,
                                                             rowValues: row,
-                                                            binding: bProps.binding,
+                                                            binding: binding,
                                                         }) || (
                                                             <FormControl
                                                                 {...o}
-                                                                area={bProps.area}
-                                                                comnCd={bProps.comnCd}
                                                                 value={fv}
-                                                                options={bProps.options}
                                                                 onChange={(v) => {
                                                                     _grid.current._handleUpdate(row, {
                                                                         ...row,
-                                                                        [bProps.binding]: comnUtils.getUnformattedValue(
-                                                                            v,
-                                                                            o,
-                                                                        ),
+                                                                        [binding]: comnUtils.getUnformattedValue(v, o),
                                                                     });
                                                                 }}
                                                             />

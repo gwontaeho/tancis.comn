@@ -19,7 +19,7 @@ const schema1 = {
     ],
     body: [
         {
-            cells: [{ binding: "text", required: true }],
+            cells: [{ binding: "text", required: true, align: "left" }],
         },
         {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
