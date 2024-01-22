@@ -126,13 +126,10 @@ export const formatText = (v: any, o?: any) => {
 };
 
 export const unformatText = (v: any, o?: any) => {
-    return v;
-
     let f = String(v);
 
     if (o?.mask) {
+        var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        return v.replace(reg, "");
     }
-
-    var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-    return v.replace(reg, "");
 };
