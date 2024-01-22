@@ -38,7 +38,9 @@ const schema1 = {
             ],
         },
         {
-            cells: [{ binding: "select", type: "select", colspan: 2, area: "comnCd", comnCd: "COM_0015" }],
+            cells: [
+                { binding: "select", type: "select", colspan: 2, area: "comnCd", comnCd: "COM_0015", required: true },
+            ],
         },
         // {
         //     cells: [{ binding: "time", type: "time" }],

@@ -40,21 +40,21 @@ const BUTTON_VARIANTS = {
 };
 
 const BUTTON_ROLES = {
-    save: { text: "B_SAVE", color: "primary" },
-    list: { text: "B_LST", color: "gray" },
-    submit: { text: "B_SBMT", color: "warning" },
-    search: { text: "B_SRCH", color: "blue" },
-    close: { text: "B_CLS", color: "error" },
-    delete: { text: "B_DEL", color: "error" },
-    reset: { text: "B_RESET", color: "warning" },
-    confirm: { text: "B_CFRM", color: "success" },
-    ok: { text: "B_OK", color: "success" },
-    edit: { text: "B_EDIT", color: "primary" },
-    new: { text: "B_NEW", color: "gray" },
-    cancel: { text: "B_CNCL", color: "warning" },
-    apply: { text: "B_APPD", color: "blue" },
-    gridAdd: { text: "B_ADD", color: "blue" },
-    gridDelete: { text: "B_DELETE", color: "error" },
+    save: { text: "B_SAVE", color: "primary", variant: undefined },
+    list: { text: "B_LST", color: "gray", variant: undefined },
+    submit: { text: "B_SBMT", color: "warning", variant: undefined },
+    search: { text: "B_SRCH", color: "blue", variant: undefined },
+    close: { text: "B_CLS", color: "error", variant: undefined },
+    delete: { text: "B_DEL", color: "error", variant: undefined },
+    reset: { text: "B_RESET", color: "warning", variant: undefined },
+    confirm: { text: "B_CFRM", color: "success", variant: undefined },
+    ok: { text: "B_OK", color: "success", variant: undefined },
+    edit: { text: "B_EDIT", color: "primary", variant: undefined },
+    new: { text: "B_NEW", color: "gray", variant: undefined },
+    cancel: { text: "B_CNCL", color: "warning", variant: undefined },
+    apply: { text: "B_APPD", color: "blue", variant: undefined },
+    gridAdd: { text: "B_ADD", color: "blue", variant: "uf-button-outlined" },
+    gridDelete: { text: "B_DELETE", color: "error", variant: "uf-button-outlined" },
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -85,7 +85,9 @@ export const Button = (props: ButtonProps) => {
             type={type}
             className={classNames(
                 "min-w-fit",
-                BUTTON_VARIANTS[variant].style,
+                role && BUTTON_ROLES[role].variant !== undefined
+                    ? BUTTON_ROLES[role].variant
+                    : BUTTON_VARIANTS[variant].style,
                 role && BUTTON_ROLES[role].color,
                 width && WIDTHS[width],
                 height && HEIGHTS[height],
