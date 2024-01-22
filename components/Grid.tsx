@@ -299,11 +299,11 @@ export const Grid = (props: any) => {
     };
 
     /** handle update */
-    const handleUpdate = React.useCallback((p: any, n: any) => {
-        if (!p?.__key) return;
+    const handleUpdate = React.useCallback((n: any) => {
+        if (!n?.__key) return;
 
         _grid.current._content = _grid.current._content.map((_: any) => {
-            if (_.__key !== p.__key) return _;
+            if (_.__key !== n.__key) return _;
             const { __type, __key, ...rest } = n;
             return {
                 ..._,
@@ -317,10 +317,10 @@ export const Grid = (props: any) => {
             };
         });
 
-        if (_grid.current._paged.find(({ __key }: any) => __key === p.__key)) {
+        if (_grid.current._paged.find(({ __key }: any) => __key === n.__key)) {
             _setTest((prev) =>
                 prev.map((_) => {
-                    if (_.__key !== p.__key) return _;
+                    if (_.__key !== n.__key) return _;
                     const { __type, __key, ...rest } = n;
                     return {
                         ..._,
