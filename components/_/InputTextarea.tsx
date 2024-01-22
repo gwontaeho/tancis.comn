@@ -1,20 +1,5 @@
 import React from "react";
 
-/**
- * edit=true
- *
- * name
- * value
- * onClick
- * onChange
- * onBlur
- * onFocus
- * readOnly
- * disabled
- * maxLength
- * placeholder
- */
-
 /** */
 export type InputTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
     edit?: boolean;
@@ -52,11 +37,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
             }).filter(([, value]) => value !== undefined),
         );
 
-        const [_value, _setValue] = React.useState<any>(typeof value == "string" ? value : "");
+        const [_value, _setValue] = React.useState<any>(formatTextarea(value));
 
         React.useEffect(() => {
             if (value === _value) return;
-            _setValue(typeof value !== "string" ? "" : value);
+            _setValue(formatTextarea(value));
         }, [value]);
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -81,3 +66,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
         );
     },
 );
+
+export const formatTextarea = (v: any, o?: any) => {
+    if (!v) return "";
+
+    let f = String(v);
+
+    return f;
+};

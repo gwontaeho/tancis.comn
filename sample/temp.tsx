@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 const schema1 = {
     options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
     head: [
-        { id: "text", width: "*", cells: [{ binding: "text" }] },
+        { id: "text", cells: [{ binding: "text" }] },
         { cells: [{ binding: "number" }] },
         { cells: [{ binding: "date" }] },
-        { cells: [{ binding: "time" }] },
-        { cells: [{ binding: "datetime" }] },
+        // { cells: [{ binding: "time" }] },
+        // { cells: [{ binding: "datetime" }] },
         // { cells: [{ binding: "select" }] },
         // { cells: [{ binding: "radio" }] },
         // { cells: [{ binding: "checkbox" }] },
@@ -31,12 +31,12 @@ const schema1 = {
                 { binding: "date", type: "date" },
             ],
         },
-        {
-            cells: [{ binding: "time", type: "time" }],
-        },
-        {
-            cells: [{ binding: "datetime", type: "datetime" }],
-        },
+        // {
+        //     cells: [{ binding: "time", type: "time" }],
+        // },
+        // {
+        //     cells: [{ binding: "datetime", type: "datetime" }],
+        // },
         // {
         //     cells: [
         //         {

@@ -728,7 +728,6 @@ const Row = React.memo((props: any) => {
 
     const rowIndex = index;
     const row = _test[rowIndex];
-    console.log(rowIndex);
     const rowKey = _grid.current._key + "." + rowIndex;
     const rowType = row?.__type;
     const contentKey = row?.__key;
@@ -754,7 +753,7 @@ const Row = React.memo((props: any) => {
                     if (onRowClick) onRowClick(row);
                 }}
                 className={classNames(
-                    "flex w-max min-w-full gap-[1px] border-l bg-uf-border",
+                    "flex w-full min-w-full gap-[1px] border-l bg-uf-border",
                     rowType === "added"
                         ? "border-l-uf-success"
                         : rowType === "updated"

@@ -15,6 +15,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             validate: (v: any) => v === "test",
             rightButton: { icon: "bell", onClick: () => console.log("a") },
             exact: false,
+            mask: ["a", /\d/],
             // mask: [
             //     /\d/,
             //     /\d/,
