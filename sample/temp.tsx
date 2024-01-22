@@ -6,7 +6,7 @@ import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 
 const schema1 = {
-    options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
+    options: { index: true, radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
     head: [
         { id: "text", width: "*", cells: [{ binding: "text" }] },
         { cells: [{ binding: "text2" }] },
@@ -228,6 +228,8 @@ export const Temp = () => {
             <button onClick={() => deleteRow("radio")}>delete radio</button>
             <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
 
+            <button onClick={() => setOption("index", true)}>setOption index true</button>
+            <button onClick={() => setOption("index", false)}>setOption index false</button>
             <button onClick={() => setOption("checkbox", true)}>setOption checkbox true</button>
             <button onClick={() => setOption("checkbox", false)}>setOption checkbox false</button>
             <button onClick={() => setOption("radio", true)}>setOption radio true</button>

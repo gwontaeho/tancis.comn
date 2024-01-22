@@ -403,7 +403,7 @@ export const comnUtils = {
 };
 
 type IdbReturn = { key: string; value: any; created: Date; updated: Date } | undefined;
-const idb = {
+export const idb = {
     /**
      * idb select
      * @param dname database name

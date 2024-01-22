@@ -121,6 +121,7 @@ export const Grid = (props: any) => {
     const [_checked, _setChecked] = React.useState<any[]>([]);
     const [_sortBy, _setSortBy] = React.useState<any | null>([null, null]);
     const [_options, _setOptions] = React.useState({
+        index: _grid.current._index,
         checkbox: _grid.current._checkbox,
         radio: _grid.current._radio,
         edit: _grid.current._edit,
@@ -627,7 +628,7 @@ export const Grid = (props: any) => {
                     {/* radio */}
                     {_options.radio && <div className="uf-grid-option" />}
                     {/* index */}
-                    <div className="uf-grid-option" />
+                    {_options.index && <div className="uf-grid-option" />}
                     {/* header */}
                     {_head.map((colProps: any, colIndex: any) => {
                         const { show, width, minWidth, flex, cells } = colProps;
@@ -734,6 +735,7 @@ const Row = React.memo((props: any) => {
     const {
         _grid,
         /** option */
+        index: oIndex,
         checkbox,
         radio,
         /** handler */
@@ -802,7 +804,7 @@ const Row = React.memo((props: any) => {
                         />
                     </div>
                 )}
-                <div className="uf-grid-option font-semibold">{_page * _size + rowIndex + 1}</div>
+                {oIndex && <div className="uf-grid-option font-semibold">{_page * _size + rowIndex + 1}</div>}
                 {/* body columns */}
                 {_body.map((colProps: any, colIndex: any) => {
                     const { show, cells, width, minWidth, flex } = colProps;
