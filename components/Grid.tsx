@@ -38,6 +38,7 @@ export const Grid = (props: any) => {
                 return {
                     width: _.width || 160,
                     minWidth: _.width || 160,
+                    maxWidth: _.width || 160,
                 };
             })();
             return {
@@ -357,6 +358,7 @@ export const Grid = (props: any) => {
      */
     const handleClickDelete = React.useCallback((type: any) => {
         if (_grid.current._pagination !== "in") return;
+        if (!type) return;
 
         if (typeof type === "object" && type.__key) {
             _grid.current._content = _grid.current._content
@@ -862,7 +864,7 @@ const Row = React.memo((props: any) => {
                                                     key={bKey}
                                                     {...(vldv && { "aria-invalid": true })}
                                                     className={classNames(
-                                                        "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error",
+                                                        "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error break-all",
                                                         (bProps.align === "start" || bProps.align === "left") &&
                                                             "justify-start",
                                                         (bProps.align === "end" || bProps.align === "right") &&

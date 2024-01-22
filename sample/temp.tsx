@@ -8,6 +8,7 @@ const schema1 = {
     options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
     head: [
         { id: "text", width: "*", cells: [{ binding: "text" }] },
+        { cells: [{ binding: "text2" }] },
         { cells: [{ binding: "number" }] },
         { cells: [{ binding: "date" }] },
         // { cells: [{ binding: "time" }] },
@@ -20,6 +21,9 @@ const schema1 = {
     body: [
         {
             cells: [{ binding: "text", required: true, align: "left" }],
+        },
+        {
+            cells: [{ binding: "text2" }],
         },
         {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
