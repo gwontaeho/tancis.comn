@@ -160,8 +160,8 @@ export const SampleUseForm = () => {
                                 <Group.Control {...schema.textarea} />
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...schema.select} options={OPTION} />
-                                <Group.Control {...schema.checkbox} options={OPTION} />
+                                <Group.Control {...schema.select} />
+                                <Group.Control {...schema.checkbox} />
                             </Group.Row>
                             <Group.Row>
                                 <Group.Control {...schema.radio} options={OPTION} />
