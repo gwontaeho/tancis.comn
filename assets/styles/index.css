@@ -180,6 +180,10 @@
         @apply flex-1 flex justify-center items-center min-h-[2.5rem] px-1;
     }
 
+    .uf-grid-cell a {
+        @apply underline;
+    }
+
     /* Page */
     .uf-page {
         @apply flex flex-col gap-4;
