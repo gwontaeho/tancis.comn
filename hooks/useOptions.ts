@@ -1,44 +1,41 @@
 import React from "react";
-import { utils } from "@/comn/utils";
+import { useRecoilState } from "recoil";
+
+import { resourceState } from "@/comn/features/recoil";
+import { utils, idb } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
 
 type UseOptionsProps = {
-    lang?: string;
-    comnCd?: string;
     area?: string;
+    comnCd?: string;
     options?: { label: string; value: any }[];
 };
 
 export const useOptions = (props: UseOptionsProps) => {
-    const { lang, comnCd, area, options } = props;
+    const { comnCd, area, options } = props;
 
-    const theme = useTheme();
-
-    const [_lang, _setLang] = React.useState(lang || localStorage.getItem("lang") || "ko");
-    const [_options, _setOptions] = React.useState([]);
-
-    React.useEffect(() => {
-        if (!lang) return;
-        _setLang(lang);
-    }, [lang]);
+    const { theme } = useTheme();
+    const [resource] = useRecoilState(resourceState);
+    const [_options, _setOptions] = React.useState<{ label: string; value: any }[]>([]);
 
     React.useEffect(() => {
-        if (!area) return;
+        const key = area && utils.getResourceKey(area, comnCd, theme.lang);
+        if (!key) return;
+        if (!resource[key]) return;
 
-        (async () => {
-            try {
-                const { data } = await utils.getCode({ comnCd, area });
-                _setOptions(
-                    Object.values<any>(data)[0].content.map((code: any) => ({
-                        label: utils.getCodeLabel(area, code),
-                        value: utils.getCodeValue(area, code),
-                    })),
-                );
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-    }, [comnCd, area, theme.theme.lang]);
+        getOptionsFromIDB(key);
+    }, [resource]);
 
-    return { options: options || _options };
+    const getOptionsFromIDB = async (key: any) => {
+        try {
+            const resource = await idb.get("TANCIS", "RESOURCE", key);
+            if (!resource) return;
+
+            _setOptions(resource.value.options);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return { options: _options };
 };

@@ -13,7 +13,7 @@ export const useResource = (props: UseOptionsProps) => {
     const { theme } = useTheme();
     const setRecource = useSetRecoilState(resourceState);
 
-    const [_s, _setS] = useState(() => {
+    const [_resource, _setResource] = useState(() => {
         return defaultSchema.reduce((p: any, c: any) => {
             return { ...p, [c.area + (c.comnCd ? `:${c.comnCd}` : "")]: { area: c.area, comnCd: c.comnCd } };
         }, {});
@@ -25,36 +25,47 @@ export const useResource = (props: UseOptionsProps) => {
 
     const gg = async () => {
         try {
-            let _r: any = {};
-            const e = Object.entries(_s).map(([_, v]: any) => utils.getCode({ area: v.area, comnCd: v.comnCd }));
+            let keys: any = [];
+            const e = Object.entries(_resource).map(([_, v]: any) => utils.getCode({ area: v.area, comnCd: v.comnCd }));
             const r = await Promise.allSettled(e);
             const next = Object.fromEntries(
-                Object.entries(_s).map(([_, v]: any, i) => {
+                Object.entries(_resource).map(([_, v]: any, i) => {
                     let data = [];
                     let options = [];
                     let reason;
-                    const status = r[i].status === "fulfilled" ? "success" : "error";
-                    if (status === "success") {
-                        _r[_] = { t: new Date() };
+
+                    const status = r[i].status;
+                    if (status === "fulfilled") {
+                        keys.push(_);
                         data = Object.values<any>((r[i] as PromiseFulfilledResult<any>).value.data)[0].content;
                         options = data.map((code: any) => ({
                             label: utils.getCodeLabel(v.area, code),
                             value: utils.getCodeValue(v.area, code),
                         }));
                     }
-                    if (status === "error") {
+                    if (status === "rejected") {
                         reason = (r[i] as PromiseRejectedResult).reason;
                     }
                     return [_, { ...v, status, data, reason, options }];
                 }),
             );
 
-            setRecource((prev: any) => ({ ...prev, ..._r }));
-            _setS(next);
+            const ir = await Promise.allSettled(
+                keys.map((key: any) => {
+                    return idb.update("TANCIS", "RESOURCE", key + `;${theme.lang}`, next[key]);
+                }),
+            );
+
+            const reduced = ir.reduce((p: any, n: any) => {
+                return { ...p, [n.value.key]: n.value.updated };
+            }, {});
+
+            setRecource((prev: any) => ({ ...prev, ...reduced }));
+            _setResource(next);
         } catch (error) {
             console.log(error);
         }
     };
 
-    return { resource: _s };
+    return { resource: _resource };
 };

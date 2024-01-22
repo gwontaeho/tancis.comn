@@ -150,6 +150,10 @@ export const comnUtils = {
     },
     //#endregion
 
+    getResourceKey: (area: string, comnCd?: string, lang?: string) => {
+        return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
+    },
+
     replaceEmpty: (arg: any, replace: any = "") => {
         if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
             return replace;
@@ -521,13 +525,17 @@ export const idb = {
      */
     update: (dname: string, sname: string, key: string, value: any) => {
         return new Promise<IdbReturn>(async (resolve, reject) => {
-            const dbs = await indexedDB.databases();
-            if (!dbs.find(({ name }) => name === dname)) {
-                resolve(undefined);
-                return;
-            }
-
+            // const dbs = await indexedDB.databases();
+            // if (!dbs.find(({ name }) => name === dname)) {
+            //     resolve(undefined);
+            //     return;
+            // }
             const request = indexedDB.open(dname);
+
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                db.createObjectStore(sname, { keyPath: "key" });
+            };
 
             /**
              * db connected
@@ -538,10 +546,10 @@ export const idb = {
                 /**
                  * store does not exist
                  */
-                if (!db.objectStoreNames.contains(sname)) {
-                    resolve(undefined);
-                    return;
-                }
+                // if (!db.objectStoreNames.contains(sname)) {
+                //     resolve(undefined);
+                //     return;
+                // }
 
                 const ts = db.transaction(sname, "readwrite");
                 const os = ts.objectStore(sname);
@@ -551,11 +559,13 @@ export const idb = {
                  */
                 const getRecord = os.get(key);
                 getRecord.onsuccess = () => {
-                    if (!getRecord.result) {
-                        resolve(undefined);
-                        return;
-                    }
-                    const record = { ...getRecord.result, value, updated: new Date() };
+                    const current = new Date();
+                    // if (!getRecord.result) {
+                    //     console.log("f");
+                    //     resolve(undefined);
+                    //     return;
+                    // }
+                    const record = { key, created: current, ...getRecord.result, value, updated: current };
                     const updateRecord = os.put(record);
                     updateRecord.onsuccess = () => {
                         if (updateRecord.result) {
@@ -572,4 +582,4 @@ export const idb = {
 export const envs = comnEnvs;
 export const utils = comnUtils;
 
-export default { envs, utils };
+export default { envs, utils, idb };

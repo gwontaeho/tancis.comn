@@ -65,7 +65,7 @@ export const Checkbox = (props: CheckboxProps) => {
     );
 
     const { t } = useTranslation();
-    const o = useOptions({ comnCd, area, lang, options });
+    const o = useOptions({ comnCd, area, options });
 
     const [_value, _setValue] = React.useState<any[]>(formatCheckbox(value));
 

@@ -904,7 +904,7 @@ const Row = React.memo((props: any) => {
                                                                 {...o}
                                                                 value={fv}
                                                                 onChange={(v) => {
-                                                                    _grid.current._handleUpdate(row, {
+                                                                    _grid.current._handleUpdate({
                                                                         ...row,
                                                                         [binding]: comnUtils.getUnformattedValue(v, o),
                                                                     });

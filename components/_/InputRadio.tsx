@@ -50,7 +50,8 @@ export const Radio = (props: RadioProps) => {
     const [_value, _setValue] = React.useState<any>(value);
 
     const { t } = useTranslation();
-    const o = useOptions({ comnCd, area, lang, options });
+    const o = useOptions({ comnCd, area, options });
+    console.log(o);
 
     React.useEffect(() => {
         if (value === _value) return;

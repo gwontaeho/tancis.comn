@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import { idb, utils } from "@/comn/utils";
 
 import { resourceState } from "@/comn/features/recoil";
 import { useOptions } from "@/comn/hooks";
@@ -10,15 +11,18 @@ import { Icon, TFormControlOptions } from "@/comn/components";
 
 /** */
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
+    onChange?: any;
+
     edit?: boolean;
-    options?: TFormControlOptions;
-    comnCd?: string;
-    area?: string;
-    lang?: string;
     all?: boolean;
     select?: boolean;
+    options?: TFormControlOptions;
+
+    /** code */
+    comnCd?: string;
+    area?: string;
+
     readOnly?: boolean;
-    onChange?: any;
     onValueChange?: any;
 };
 
@@ -28,7 +32,6 @@ export const Select = (props: SelectProps) => {
         /** */
         comnCd,
         area,
-        lang,
         options,
         /** */
         all,
@@ -56,11 +59,8 @@ export const Select = (props: SelectProps) => {
         }).filter(([, value]) => value !== undefined),
     );
 
-    const [resource] = useRecoilState(resourceState);
-    console.log(resource);
-
     const { t } = useTranslation();
-    const o = useOptions({ comnCd, area, lang, options });
+    const o = useOptions({ comnCd, area, options });
 
     const [_value, _setValue] = React.useState<any>();
 

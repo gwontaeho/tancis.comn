@@ -52,7 +52,7 @@ const SCHEMA_SEARCH: TFormSchema = {
             leftButton: { icon: "left", onClick: () => {} },
             rightButton: { icon: "left", onClick: () => {} },
         },
-        select: { type: "select", label: "select", required: true },
+        select: { type: "select", label: "select", required: true, comnCd: "COM_0015", area: "comnCd" },
         checkbox: {
             type: "checkbox",
             label: "checkbox",
@@ -96,8 +96,9 @@ const OPTION = [
 ];
 
 export const SampleUseForm = () => {
-    const { resource } = useResource({
+    useResource({
         defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0014" },
             { area: "comnCd", comnCd: "COM_0015" },
             { area: "currCd" },
             { area: "cityCd" },

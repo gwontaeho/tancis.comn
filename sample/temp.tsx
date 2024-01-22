@@ -108,7 +108,7 @@ type TData = {
 const data = utils.getMockData({ totalElements: 30000 });
 
 export const Temp = () => {
-    const { resource } = useResource({
+    useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0015" },
             { area: "currCd" },
