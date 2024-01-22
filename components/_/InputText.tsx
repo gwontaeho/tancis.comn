@@ -108,6 +108,7 @@ export const formatText = (v: any, o?: any) => {
                     break;
                 }
                 temp += o.mask[i];
+                pos++;
             } else {
                 if (!o.mask[i].test(t[pos])) {
                     break;
