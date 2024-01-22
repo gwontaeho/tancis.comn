@@ -669,7 +669,7 @@ export const Grid = (props: any) => {
                         }
                     }}
                     itemCount={_test.length > _totalCount ? _totalCount : _test.length}
-                    height={500}
+                    height={400}
                     width="100%"
                     itemData={{
                         _grid,

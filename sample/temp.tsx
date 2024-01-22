@@ -25,11 +25,7 @@ const schema1 = {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
         },
         {
-            cells: [
-                { binding: "date", type: "date", colspan: 2 },
-                { binding: "date", type: "date" },
-                { binding: "date", type: "date" },
-            ],
+            cells: [{ binding: "date", type: "date", colspan: 2 }],
         },
         // {
         //     cells: [{ binding: "time", type: "time" }],
