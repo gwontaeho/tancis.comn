@@ -851,6 +851,7 @@ const Row = React.memo((props: any) => {
                                                 maxLength: bProps.maxLength,
                                             };
 
+                                            const vv = comnUtils.getViewValue(value, o);
                                             const fv = comnUtils.getFormattedValue(value, o);
                                             const uv = comnUtils.getUnformattedValue(value, o);
                                             const vldv = comnUtils.getValidatedValue(uv, o);
@@ -887,7 +888,7 @@ const Row = React.memo((props: any) => {
                                                             rowValues: row,
                                                             binding: binding,
                                                         }) ||
-                                                            uv)}
+                                                            vv)}
 
                                                     {bProps.edit &&
                                                         (render?.edit?.[binding]?.({

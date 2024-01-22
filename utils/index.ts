@@ -30,7 +30,23 @@ export const comnEnvs = {
 
 export const comnUtils = {
     //#region value format
-    getViewValue: () => {},
+    getViewValue: (v: any, o?: any, l?: any) => {
+        switch (o?.type) {
+            case "text":
+                return formatText(v, o);
+            case "number":
+                return formatNumber(v, o);
+            case "checkbox":
+                return unformatCheckbox(v, o);
+            case "date":
+                return unformatDate(v, o);
+            case "time":
+                return unformatTime(v, o);
+            case "datetime":
+                return unformatDatetime(v, o);
+        }
+        return v;
+    },
     getFormattedValue: (v: any, o?: any) => {
         switch (o?.type) {
             case "text":
