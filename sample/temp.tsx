@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const schema1 = {
     options: { radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
     head: [
-        { id: "text", cells: [{ binding: "text" }] },
+        { id: "text", width: "*", cells: [{ binding: "text" }] },
         { cells: [{ binding: "number" }] },
         { cells: [{ binding: "date" }] },
         // { cells: [{ binding: "time" }] },

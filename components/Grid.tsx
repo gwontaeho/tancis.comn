@@ -644,8 +644,8 @@ export const Grid = (props: any) => {
                                                         }}
                                                     >
                                                         {render?.head?.[bProps.binding]?.() ||
-                                                            bProps.binding ||
-                                                            t(bProps.header)}
+                                                            t(bProps.header) ||
+                                                            bProps.binding}
                                                         {bProps.required && (
                                                             <span className="text-uf-error ml-0.5">*</span>
                                                         )}
