@@ -128,6 +128,8 @@ export const Grid = (props: any) => {
         edit: _grid.current._edit,
         add: _grid.current._add,
         delete: _grid.current._delete,
+        exportExcel: _grid.current._exportExcel,
+        importExcel: _grid.current._importExcel,
     });
 
     /** initialize content */
@@ -439,6 +441,44 @@ export const Grid = (props: any) => {
             }
         }
 
+        if (type === "all") {
+            const c = _grid.current._checked;
+            const s = _grid.current._selectedRow;
+            const a = [...c, s].filter((_) => _);
+
+            if (!a.length) return;
+
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (a.map((_: any) => _.__key).includes(_.__key)) {
+                        if (_.__type === "added") return undefined;
+                        return { ..._, __type: "deleted" };
+                    } else {
+                        return _;
+                    }
+                })
+                .filter((_: any) => _ !== undefined);
+            _setChecked([]);
+
+            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
+            _setTotalCount(_.length);
+
+            if (paged) {
+                _setTest(paged);
+                return;
+            } else {
+                if (_grid.current._page === 0) {
+                    _setTest([]);
+                    return;
+                }
+                const next = _grid.current._page - 1;
+                _grid.current._page = next;
+                _setPage(next);
+                return;
+            }
+        }
+
         if (type === "radio") {
             if (!_grid.current._selectedRow) return;
             _grid.current._content = _grid.current._content
@@ -609,16 +649,15 @@ export const Grid = (props: any) => {
 
     return (
         <div>
-            <div className="flex justify-between mb-2">
-                <div className="flex gap-1">
-                    <Button>import</Button>
-                    <Button>export</Button>
+            <div className="flex justify-between">
+                <div className="flex gap-1 [&_*]:mb-2">
+                    {_options.importExcel && <Button>import</Button>}
+                    {_options.importExcel && <Button>export</Button>}
                 </div>
 
-                <div className="flex gap-1">
-                    <Button onClick={() => handleClickAdd()}>add</Button>
-                    <Button onClick={() => handleClickDelete("radio")}>radio delete</Button>
-                    <Button onClick={() => handleClickDelete("checkbox")}>checked delete</Button>
+                <div className="flex gap-1 [&_*]:mb-2">
+                    {_options.add && <Button onClick={() => handleClickAdd()}>add</Button>}
+                    {_options.delete && <Button onClick={() => handleClickDelete("all")}>delete</Button>}
                 </div>
             </div>
 
