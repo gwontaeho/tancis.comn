@@ -61,7 +61,7 @@ export const useResource = (props: UseOptionsProps) => {
             }, {});
 
             setRecource((prev: any) => ({ ...prev, ...reduced }));
-            _setResource(next);
+            // _setResource(next);
         } catch (error) {
             console.log(error);
         }

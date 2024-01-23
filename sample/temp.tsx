@@ -201,6 +201,7 @@ export const Temp = () => {
             console.log(data);
         },
     };
+    console.log("page");
 
     return (
         <Page>

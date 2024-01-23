@@ -18,6 +18,7 @@ export const Grid = (props: any) => {
         onRowClick,
     } = props;
 
+    const __t = data?.__t?.getTime();
     const { t } = useTranslation();
 
     /**
@@ -131,12 +132,15 @@ export const Grid = (props: any) => {
 
     /** initialize content */
     const [_test, _setTest] = React.useState<any[]>(() => {
-        if (!Array.isArray(data.content)) return;
+        if (!Array.isArray(data.content)) return [];
 
         /** origin content */
         const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
         /** content refs */
+
+        _grid.current._dataCreated = data.__t;
+        _grid.current._dataUpdated = data.__t;
         _grid.current._origin = _;
         _grid.current._content = _;
 
@@ -157,11 +161,18 @@ export const Grid = (props: any) => {
     /** on content changed */
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
+    }, [data.content]);
+
+    /** on content changed */
+    React.useEffect(() => {
+        if (!_grid.current._initialized) return;
         if (!Array.isArray(data.content)) return;
+        if (data.content.length === 0 && _test.length === 0) return;
 
         _setTest(() => {
             const _ = data.content?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
+            _grid.current._dataUpdated = data.__t;
             _grid.current._origin = _;
             _grid.current._content = _;
 
@@ -172,7 +183,7 @@ export const Grid = (props: any) => {
         });
 
         _setTotalCount(_grid.current._pagination === "in" ? data.content.length : data.page.totalElements);
-    }, [data.content]);
+    }, [__t]);
 
     /** set edit */
     const setEdit = React.useCallback((type: any, target: any, value: any) => {
@@ -594,6 +605,8 @@ export const Grid = (props: any) => {
         _grid.current._handleChangeSize = handleChangeSize;
 
         _grid.current._initialized = true;
+
+        console.log(_grid.current);
     }, []);
 
     return (
