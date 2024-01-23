@@ -23,7 +23,7 @@ export const useGrid = (props: any) => {
         _list: null,
 
         /** options */
-        _index: defaultSchema.options.checkbox,
+        _index: defaultSchema.options.index,
         _checkbox: defaultSchema.options.checkbox,
         _radio: defaultSchema.options.radio,
         _edit: defaultSchema.options.edit,

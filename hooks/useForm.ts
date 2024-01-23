@@ -93,7 +93,7 @@ export const useForm = (props: UseFormProps) => {
         );
     };
     const _setValue = (name: any, value: any) => {
-        setValue(name, comnUtils.getFormattedValue(value, _schema[name]), { shouldValidate: isSubmitted });
+        setValue(name, comnUtils.getFormattedValue(value, _schema[name]) ?? null, { shouldValidate: isSubmitted });
     };
     const _setValues = (values: TFormValues, part?: boolean) => {
         Object.keys(_fields).forEach((name) => {
