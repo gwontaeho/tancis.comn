@@ -234,6 +234,8 @@ export const Grid = (props: any) => {
                     return next;
                 });
                 break;
+            case "row":
+                break;
         }
     }, []);
 
