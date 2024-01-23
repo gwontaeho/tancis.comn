@@ -6,7 +6,17 @@ import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 
 const schema1 = {
-    options: { index: true, radio: true, checkbox: true, pagination: "in", add: true, delete: true, edit: true },
+    options: {
+        index: true,
+        radio: true,
+        checkbox: true,
+        pagination: "in",
+        add: true,
+        delete: true,
+        edit: true,
+        exportExcel: true,
+        importExcel: true,
+    },
     head: [
         { id: "text", width: "*", cells: [{ binding: "text" }] },
         { cells: [{ binding: "text2" }] },
@@ -31,11 +41,7 @@ const schema1 = {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
         },
         {
-            cells: [
-                { binding: "date", type: "date", colspan: 2 },
-                { binding: "date1", type: "date" },
-                { binding: "date2", type: "date" },
-            ],
+            cells: [{ binding: "date", type: "date", colspan: 2 }],
         },
         {
             cells: [
@@ -201,7 +207,6 @@ export const Temp = () => {
             console.log(data);
         },
     };
-    console.log("page");
 
     return (
         <Page>
@@ -219,39 +224,32 @@ export const Temp = () => {
                 </Group.Body>
             </Group>
 
-            <Link to="/asd">asd</Link>
-            <button onClick={() => resetData()}>reset</button>
-            <button onClick={() => setSize(30)}>setSize 30</button>
-
-            <button onClick={() => setOption("edit", true)}>setOption edit true</button>
-            <button onClick={() => setOption("edit", false)}>setOption edit false</button>
-
-            <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
-            <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
-            <button onClick={() => deleteRow("radio")}>delete radio</button>
-            <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
-
-            <button onClick={() => setOption("index", true)}>setOption index true</button>
-            <button onClick={() => setOption("index", false)}>setOption index false</button>
-            <button onClick={() => setOption("checkbox", true)}>setOption checkbox true</button>
-            <button onClick={() => setOption("checkbox", false)}>setOption checkbox false</button>
-            <button onClick={() => setOption("radio", true)}>setOption radio true</button>
-            <button onClick={() => setOption("radio", false)}>setOption radio false</button>
-
-            <button onClick={() => console.log(getData())}>getData</button>
-            <button onClick={() => console.log(getOrigin())}>getOrigin</button>
-            <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
-            <button onClick={() => console.log(getChecked())}>getChecked</button>
-
-            <button onClick={() => addRow({ text: "added" })}>add row</button>
-
-            <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
-
-            <button onClick={() => setEdit("column", "col", true)}>show text</button>
-            <button onClick={() => setEdit("column", "time", true)}>show text</button>
-
-            <button onClick={() => setShow("cell", "date1", true)}>show text</button>
-            <button onClick={() => setShow("cell", "date1", false)}>hide text</button>
+            <Layout direction="row" gap={8}>
+                <button onClick={() => resetData()}>reset</button>
+                <button onClick={() => setSize(30)}>setSize 30</button>
+                <button onClick={() => setOption("edit", true)}>setOption edit true</button>
+                <button onClick={() => setOption("edit", false)}>setOption edit false</button>
+                <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
+                <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
+                <button onClick={() => deleteRow("radio")}>delete radio</button>
+                <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
+                <button onClick={() => setOption("index", true)}>setOption index true</button>
+                <button onClick={() => setOption("index", false)}>setOption index false</button>
+                <button onClick={() => setOption("checkbox", true)}>setOption checkbox true</button>
+                <button onClick={() => setOption("checkbox", false)}>setOption checkbox false</button>
+                <button onClick={() => setOption("radio", true)}>setOption radio true</button>
+                <button onClick={() => setOption("radio", false)}>setOption radio false</button>
+                <button onClick={() => console.log(getData())}>getData</button>
+                <button onClick={() => console.log(getOrigin())}>getOrigin</button>
+                <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
+                <button onClick={() => console.log(getChecked())}>getChecked</button>
+                <button onClick={() => addRow({ text: "added" })}>add row</button>
+                <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
+                <button onClick={() => setEdit("column", "text", true)}>edit column true</button>
+                <button onClick={() => setEdit("column", "text", false)}>edit column false</button>
+                <button onClick={() => setShow("column", "text", true)}>show text</button>
+                <button onClick={() => setShow("column", "text", false)}>hide text</button>
+            </Layout>
         </Page>
     );
 };

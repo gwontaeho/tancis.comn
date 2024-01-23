@@ -150,10 +150,17 @@ export const comnUtils = {
     },
     //#endregion
 
+    getGridData: (content: any) => {
+        return {
+            //
+            content,
+            __t: new Date(),
+            page: { totalElements: Array.isArray(content) ? content.length : 0 },
+        };
+    },
     getResourceKey: (area: string, comnCd?: string, lang?: string) => {
         return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
     },
-
     replaceEmpty: (arg: any, replace: any = "") => {
         if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
             return replace;

@@ -19,23 +19,28 @@ type UseOptionsProps = {
 export const useOptions = (props: UseOptionsProps) => {
     const { comnCd, area, options = [] } = props;
 
+    const ref = React.useRef<any>({});
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
     const [_options, _setOptions] = React.useState<TOption[]>(options);
 
     React.useEffect(() => {
-        const key = area && utils.getResourceKey(area, comnCd, theme.lang);
-        if (!key) return;
-        if (!resource[key]) return;
+        if (!area) return;
 
+        const key = utils.getResourceKey(area, comnCd, theme.lang);
+        if (!resource[key]) return;
         getOptionsFromIDB(key);
+
+        /** */
     }, [resource]);
 
     const getOptionsFromIDB = async (key: any) => {
         try {
             const resource = await idb.get("TANCIS", "RESOURCE", key);
             if (!resource) return;
+            if (ref.current.key === resource.key) return;
 
+            ref.current.key = resource.key;
             _setOptions(resource.value.options);
         } catch (error) {
             console.log(error);

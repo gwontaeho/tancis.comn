@@ -29,6 +29,8 @@ export const useGrid = (props: any) => {
         _edit: defaultSchema.options.edit,
         _add: defaultSchema.options.add,
         _delete: defaultSchema.options.delete,
+        _exportExcel: defaultSchema.options.exportExcel,
+        _importExcel: defaultSchema.options.importExcel,
 
         /** paging */
         _pagination: defaultSchema.options.pagination,

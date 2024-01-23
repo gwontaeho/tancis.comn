@@ -605,8 +605,6 @@ export const Grid = (props: any) => {
         _grid.current._handleChangeSize = handleChangeSize;
 
         _grid.current._initialized = true;
-
-        console.log(_grid.current);
     }, []);
 
     return (
