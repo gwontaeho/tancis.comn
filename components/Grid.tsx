@@ -945,8 +945,19 @@ const Row = React.memo((props: any) => {
                                                             value: value,
                                                             rowValues: row,
                                                             binding: binding,
-                                                        }) ||
-                                                            vv)}
+                                                        }) || (
+                                                            <FormControl
+                                                                {...o}
+                                                                edit={false}
+                                                                value={fv}
+                                                                onChange={(v) => {
+                                                                    _grid.current._handleUpdate({
+                                                                        ...row,
+                                                                        [binding]: comnUtils.getUnformattedValue(v, o),
+                                                                    });
+                                                                }}
+                                                            />
+                                                        ))}
 
                                                     {bProps.edit &&
                                                         (render?.edit?.[binding]?.({
