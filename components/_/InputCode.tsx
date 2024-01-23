@@ -113,7 +113,7 @@ export const InputCode = (props: InputCodeProps) => {
         if (!area && !comnCd) return;
 
         if (props.maxLength !== undefined && keyword.length < props.maxLength) {
-            _setVl({ value: "", label: "" });
+            _setVl({ value: keyword, label: "" });
             return;
         }
 
@@ -129,7 +129,9 @@ export const InputCode = (props: InputCodeProps) => {
             const label = utils.getCodeLabel(area, c);
             const code = utils.getCodeValue(area, c);
             _setVl({ value: code, label });
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleClickSearch = () => {
@@ -143,8 +145,6 @@ export const InputCode = (props: InputCodeProps) => {
             },
         });
     };
-
-    console.log("code");
 
     return (
         <div className="w-full">
