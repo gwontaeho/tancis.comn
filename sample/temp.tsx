@@ -10,7 +10,6 @@ const schema1 = {
         index: "DESC",
         radio: true,
         checkbox: true,
-        pagination: "in",
         add: true,
         delete: true,
         edit: true,
@@ -117,7 +116,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 3000 });
+const data = utils.getMockData({ totalElements: 200 });
 
 export const Temp = () => {
     useResource({

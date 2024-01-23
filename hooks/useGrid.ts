@@ -22,6 +22,9 @@ export const useGrid = (props: any) => {
         _head: null,
         _list: null,
 
+        /** group */
+        _group: {},
+
         /** sort */
         _sort: {},
 

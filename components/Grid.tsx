@@ -356,22 +356,22 @@ export const Grid = (props: any) => {
     }, []);
 
     /**
-     * only pagination = in
+     * only pagination = in | false
      * handle add
      */
     const handleClickAdd = React.useCallback((data?: any) => {
-        if (_grid.current._pagination !== "in") return;
+        if (_grid.current._pagination === "out") return;
         _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added", ...data }];
 
         __setGrid(_grid.current._content);
     }, []);
 
     /**
-     * only pagination = in
+     * only pagination = in | false
      * handle delete
      */
     const handleClickDelete = React.useCallback((type: any) => {
-        if (_grid.current._pagination !== "in") return;
+        if (_grid.current._pagination === "out") return;
         if (!type) return;
 
         /** row */
@@ -555,27 +555,33 @@ export const Grid = (props: any) => {
     /** handle sort */
     const handleSort = (binding: any, value?: any) => {
         const _ = _grid.current._sort;
-        const pseq = _[binding]?.seq;
-        const pval = _[binding]?.val;
-        const seqs = Object.entries(_)
-            .map(([__, v]: any) => v?.seq)
-            .filter((_) => _ !== undefined);
 
-        const nseq = pseq === undefined ? (seqs.length === 0 ? 0 : Math.max(...seqs) + 1) : pseq;
+        /** prev */
+        const prev = _[binding];
 
-        switch (pval) {
-            case undefined: {
-                _grid.current._sort[binding] = { seq: nseq, val: "asc" };
-                break;
+        if (prev) {
+            const pval = prev.val;
+            const pseq = prev.seq;
+
+            if (pval === "asc") {
+                _grid.current._sort[binding] = {
+                    seq: pseq,
+                    val: "desc",
+                };
             }
-            case "asc": {
-                _grid.current._sort[binding] = { seq: nseq, val: "desc" };
-                break;
-            }
-            case "desc": {
+
+            if (pval === "desc") {
                 delete _grid.current._sort[binding];
-                break;
             }
+        } else {
+            const seqs = Object.entries(_)
+                .map(([__, v]: any) => v?.seq)
+                .filter((_) => _ !== undefined);
+            const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
+            _grid.current._sort[binding] = {
+                seq: nseq,
+                val: "asc",
+            };
         }
 
         _setSort(_grid.current._sort);
@@ -607,7 +613,7 @@ export const Grid = (props: any) => {
         const paged =
             _grid.current._pagination === "in"
                 ? lodash.chunk(existed, _grid.current._size)[_grid.current._page]
-                : ordered;
+                : existed;
 
         _setTotalCount(existed.length);
 
@@ -625,8 +631,6 @@ export const Grid = (props: any) => {
             return;
         }
     };
-
-    console.log(_sort);
 
     /** initialize */
     React.useEffect(() => {
@@ -708,10 +712,6 @@ export const Grid = (props: any) => {
                                                     <div
                                                         key={bKey}
                                                         className="uf-grid-cell bg-uf-card-header"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleSort(bProps.binding);
-                                                        }}
                                                         style={{
                                                             minWidth: bProps.width,
                                                             maxWidth: bProps.width,
@@ -728,21 +728,31 @@ export const Grid = (props: any) => {
                                                             <span className="text-uf-error ml-0.5">*</span>
                                                         )}
                                                         <div className="flex">
-                                                            {_sort[bProps.binding] && (
-                                                                <button>
-                                                                    <Icon
-                                                                        icon="arrowUp"
-                                                                        size="xs"
-                                                                        className={classNames(
-                                                                            "ml-1",
-                                                                            _sort[bProps.binding].val === "desc" &&
-                                                                                "rotate-180",
-                                                                        )}
-                                                                    />
-                                                                </button>
-                                                            )}
-                                                            <button>
+                                                            {/* filter */}
+                                                            {/* <button>
                                                                 <Icon icon="funnel" size="xs" className="ml-1" />
+                                                            </button> */}
+                                                            {/* sort */}
+                                                            <button
+                                                                className="relative"
+                                                                onClick={() => {
+                                                                    handleSort(bProps.binding);
+                                                                }}
+                                                            >
+                                                                <Icon
+                                                                    icon={
+                                                                        _sort[bProps.binding]?.val === "asc"
+                                                                            ? "barsUp"
+                                                                            : _sort[bProps.binding]?.val === "desc"
+                                                                              ? "barsDown"
+                                                                              : "bars"
+                                                                    }
+                                                                    size="xs"
+                                                                    className="ml-1"
+                                                                />
+                                                                <span className="text-[10px] absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
+                                                                    {}
+                                                                </span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -792,13 +802,15 @@ export const Grid = (props: any) => {
                 </List>
             </div>
 
-            <Pagination
-                page={_page}
-                size={_size}
-                onChangePage={handleChangePage}
-                onChangeSize={handleChangeSize}
-                totalCount={_totalCount}
-            />
+            {_grid.current._pagination && (
+                <Pagination
+                    page={_page}
+                    size={_size}
+                    onChangePage={handleChangePage}
+                    onChangeSize={handleChangeSize}
+                    totalCount={_totalCount}
+                />
+            )}
         </div>
     );
 };
@@ -828,6 +840,7 @@ const Row = React.memo((props: any) => {
     } = data;
 
     const row = _test[rowIndex];
+
     const rowKey = _grid.current._key + "." + rowIndex;
     const rowType = row?.__type;
     const contentKey = row?.__key;
