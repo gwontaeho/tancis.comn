@@ -86,7 +86,7 @@ export const Grid = (props: any) => {
                     .map((__: any) => ({
                         ...__,
                         __key: uuid(),
-                        /** edit priority -> cell, option */
+                        /** init edit priority -> cell, option */
                         edit:
                             typeof __.edit === "boolean"
                                 ? __.edit
@@ -113,9 +113,10 @@ export const Grid = (props: any) => {
         });
     });
 
-    const [_totalCount, _setTotalCount] = React.useState<number>(
-        _grid.current._pagination === "in" ? data.content.length : data.page.totalElements,
-    );
+    const [_totalCount, _setTotalCount] = React.useState<number>(() => {
+        if (!data?.content) return 0;
+        return _grid.current._pagination === "in" ? data.content.length : data.page.totalElements;
+    });
     const [_page, _setPage] = React.useState<number>(_grid.current._page);
     const [_size, _setSize] = React.useState<number>(_grid.current._size);
     const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
@@ -138,8 +139,6 @@ export const Grid = (props: any) => {
 
         /** origin content */
         const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-
-        /** content refs */
 
         _grid.current._dataCreated = data.__t;
         _grid.current._dataUpdated = data.__t;
@@ -764,6 +763,7 @@ export const Grid = (props: any) => {
                         _size,
                         _checked,
                         _selectedRow,
+                        _totalCount,
                     }}
                     itemSize={(index) =>
                         _grid.current._rect[index]?.["height"] || _grid.current._rect[0]?.["height"] || 0
@@ -786,12 +786,12 @@ export const Grid = (props: any) => {
 
 /** row */
 const Row = React.memo((props: any) => {
-    const { data, index, style } = props;
+    const { data, index: rowIndex, style } = props;
 
     const {
         _grid,
         /** option */
-        index: oIndex,
+        index,
         checkbox,
         radio,
         /** handler */
@@ -805,9 +805,9 @@ const Row = React.memo((props: any) => {
         _size,
         _checked,
         _selectedRow,
+        _totalCount,
     } = data;
 
-    const rowIndex = index;
     const row = _test[rowIndex];
     const rowKey = _grid.current._key + "." + rowIndex;
     const rowType = row?.__type;
@@ -860,7 +860,12 @@ const Row = React.memo((props: any) => {
                         />
                     </div>
                 )}
-                {oIndex && <div className="uf-grid-option font-semibold">{_page * _size + rowIndex + 1}</div>}
+                {index && (
+                    <div className="uf-grid-option font-semibold">
+                        {index === "DESC" ? _totalCount - (_page * _size + rowIndex) : _page * _size + rowIndex + 1}
+                    </div>
+                )}
+
                 {/* body columns */}
                 {_body.map((colProps: any, colIndex: any) => {
                     const { show, cells, width, minWidth, flex } = colProps;

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const schema1 = {
     options: {
-        index: true,
+        index: "DESC",
         radio: true,
         checkbox: true,
         pagination: "in",
