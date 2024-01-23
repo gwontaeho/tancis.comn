@@ -232,7 +232,7 @@
 
     /* Layout */
     .uf-layout {
-        @apply w-full flex flex-wrap;
+        @apply w-full flex;
     }
     .uf-layout-left {
         @apply flex flex-wrap gap-1;
