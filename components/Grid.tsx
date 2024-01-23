@@ -121,7 +121,7 @@ export const Grid = (props: any) => {
     const [_size, _setSize] = React.useState<number>(_grid.current._size);
     const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
     const [_checked, _setChecked] = React.useState<any[]>([]);
-    const [_sortBy, _setSortBy] = React.useState<any | null>([null, null]);
+    const [_sort, _setSort] = React.useState<any | null>({});
     const [_options, _setOptions] = React.useState({
         index: _grid.current._index,
         checkbox: _grid.current._checkbox,
@@ -158,11 +158,6 @@ export const Grid = (props: any) => {
         if (!_grid.current._initialized) return;
         _grid.current._paged = _test;
     }, [_test]);
-
-    /** on content changed */
-    React.useEffect(() => {
-        if (!_grid.current._initialized) return;
-    }, [data.content]);
 
     /** on content changed */
     React.useEffect(() => {
@@ -305,6 +300,10 @@ export const Grid = (props: any) => {
 
     /** reset data */
     const resetData = () => {
+        // remove sort options
+        //
+        //
+
         const o = _grid.current._origin;
 
         _grid.current._content = o;
@@ -357,28 +356,25 @@ export const Grid = (props: any) => {
     }, []);
 
     /**
-     * pagination = in
+     * only pagination = in
      * handle add
      */
     const handleClickAdd = React.useCallback((data?: any) => {
         if (_grid.current._pagination !== "in") return;
-
         _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added", ...data }];
-        const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-        const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
 
-        _setTotalCount(_.length);
-        _setTest(paged || []);
+        __setGrid(_grid.current._content);
     }, []);
 
     /**
-     * pagination = in
-     * handle add
+     * only pagination = in
+     * handle delete
      */
     const handleClickDelete = React.useCallback((type: any) => {
         if (_grid.current._pagination !== "in") return;
         if (!type) return;
 
+        /** row */
         if (typeof type === "object" && type.__key) {
             _grid.current._content = _grid.current._content
                 .map((_: any) => {
@@ -391,25 +387,10 @@ export const Grid = (props: any) => {
                 })
                 .filter((_: any) => _ !== undefined);
 
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
-            _setTotalCount(_.length);
-
-            if (paged) {
-                _setTest(paged);
-                return;
-            } else {
-                if (_grid.current._page === 0) {
-                    _setTest([]);
-                    return;
-                }
-                const next = _grid.current._page - 1;
-                _grid.current._page = next;
-                _setPage(next);
-                return;
-            }
+            __setGrid(_grid.current._content);
+            return;
         }
-
+        /** row array */
         if (Array.isArray(type)) {
             if (!type.length) return;
             _grid.current._content = _grid.current._content
@@ -423,25 +404,12 @@ export const Grid = (props: any) => {
                 })
                 .filter((_: any) => _ !== undefined);
 
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
-            _setTotalCount(_.length);
-
-            if (paged) {
-                _setTest(paged);
-                return;
-            } else {
-                if (_grid.current._page === 0) {
-                    _setTest([]);
-                    return;
-                }
-                const next = _grid.current._page - 1;
-                _grid.current._page = next;
-                _setPage(next);
-                return;
-            }
+            __setGrid(_grid.current._content);
+            return;
         }
-
+        /**
+         * both radio, checkbox
+         */
         if (type === "all") {
             const c = _grid.current._checked;
             const s = _grid.current._selectedRow;
@@ -459,27 +427,13 @@ export const Grid = (props: any) => {
                     }
                 })
                 .filter((_: any) => _ !== undefined);
+            _setSelectedRow(null);
             _setChecked([]);
 
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
-            _setTotalCount(_.length);
-
-            if (paged) {
-                _setTest(paged);
-                return;
-            } else {
-                if (_grid.current._page === 0) {
-                    _setTest([]);
-                    return;
-                }
-                const next = _grid.current._page - 1;
-                _grid.current._page = next;
-                _setPage(next);
-                return;
-            }
+            __setGrid(_grid.current._content);
+            return;
         }
-
+        /** radio */
         if (type === "radio") {
             if (!_grid.current._selectedRow) return;
             _grid.current._content = _grid.current._content
@@ -494,24 +448,10 @@ export const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
             _setSelectedRow(null);
 
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
-            _setTotalCount(_.length);
-
-            if (paged) {
-                _setTest(paged);
-                return;
-            } else {
-                if (_grid.current._page === 0) {
-                    _setTest([]);
-                    return;
-                }
-                const next = _grid.current._page - 1;
-                _grid.current._page = next;
-                _setPage(next);
-                return;
-            }
+            __setGrid(_grid.current._content);
+            return;
         }
+        /** checkbox */
         if (type === "checkbox") {
             if (!_grid.current._checked.length) return;
             _grid.current._content = _grid.current._content
@@ -526,23 +466,8 @@ export const Grid = (props: any) => {
                 .filter((_: any) => _ !== undefined);
             _setChecked([]);
 
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _grid.current._size)[_grid.current._page];
-            _setTotalCount(_.length);
-
-            if (paged) {
-                _setTest(paged);
-                return;
-            } else {
-                if (_grid.current._page === 0) {
-                    _setTest([]);
-                    return;
-                }
-                const next = _grid.current._page - 1;
-                _grid.current._page = next;
-                _setPage(next);
-                return;
-            }
+            __setGrid(_grid.current._content);
+            return;
         }
     }, []);
 
@@ -558,9 +483,7 @@ export const Grid = (props: any) => {
         _setSelectedRow(null);
 
         if (_grid.current._pagination === "in") {
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, _grid.current._size)[next];
-            _setTest(paged || []);
+            __setGrid(_grid.current._content);
         }
 
         if (_grid.current._pagination === "out") {
@@ -581,9 +504,7 @@ export const Grid = (props: any) => {
         _setSelectedRow(null);
 
         if (_grid.current._pagination === "in") {
-            const _ = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-            const paged = lodash.chunk(_, next)[0];
-            _setTest(paged || []);
+            __setGrid(_grid.current._content);
         }
 
         if (_grid.current._pagination === "out") {
@@ -630,6 +551,82 @@ export const Grid = (props: any) => {
             _setSelectedRow(null);
         }
     }, []);
+
+    /** handle sort */
+    const handleSort = (binding: any, value?: any) => {
+        const _ = _grid.current._sort;
+        const pseq = _[binding]?.seq;
+        const pval = _[binding]?.val;
+        const seqs = Object.entries(_)
+            .map(([__, v]: any) => v?.seq)
+            .filter((_) => _ !== undefined);
+
+        const nseq = pseq === undefined ? (seqs.length === 0 ? 0 : Math.max(...seqs) + 1) : pseq;
+
+        switch (pval) {
+            case undefined: {
+                _grid.current._sort[binding] = { seq: nseq, val: "asc" };
+                break;
+            }
+            case "asc": {
+                _grid.current._sort[binding] = { seq: nseq, val: "desc" };
+                break;
+            }
+            case "desc": {
+                delete _grid.current._sort[binding];
+                break;
+            }
+        }
+
+        _setSort(_grid.current._sort);
+        __setGrid(_grid.current._content);
+    };
+
+    /**
+     * set grid view
+     * sort
+     * add
+     * delete
+     * paging
+     * sizing
+     */
+    const __setGrid = (content: any) => {
+        const order = Object.entries(_grid.current._sort).reduce(
+            (p: any, c: any) => {
+                return [
+                    [...p[0], c[0]],
+                    [...p[1], c[1].val],
+                ];
+            },
+            [[], []],
+        );
+
+        const ordered = lodash.orderBy(content, order[0], order[1]);
+        const existed = ordered.filter(({ __type }: any) => __type !== "deleted");
+
+        const paged =
+            _grid.current._pagination === "in"
+                ? lodash.chunk(existed, _grid.current._size)[_grid.current._page]
+                : ordered;
+
+        _setTotalCount(existed.length);
+
+        if (paged) {
+            _setTest(paged);
+            return;
+        } else {
+            if (_grid.current._page === 0) {
+                _setTest([]);
+                return;
+            }
+            const next = _grid.current._page - 1;
+            _grid.current._page = next;
+            _setPage(next);
+            return;
+        }
+    };
+
+    console.log(_sort);
 
     /** initialize */
     React.useEffect(() => {
@@ -711,6 +708,10 @@ export const Grid = (props: any) => {
                                                     <div
                                                         key={bKey}
                                                         className="uf-grid-cell bg-uf-card-header"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleSort(bProps.binding);
+                                                        }}
                                                         style={{
                                                             minWidth: bProps.width,
                                                             maxWidth: bProps.width,
@@ -726,10 +727,24 @@ export const Grid = (props: any) => {
                                                         {bProps.required && (
                                                             <span className="text-uf-error ml-0.5">*</span>
                                                         )}
-                                                        {/* <div className="flex">
-                                                            <Icon icon="arrowUp" size="xs" className="ml-1" />
-                                                            <Icon icon="funnel" size="xs" className="ml-1" />
-                                                        </div> */}
+                                                        <div className="flex">
+                                                            {_sort[bProps.binding] && (
+                                                                <button>
+                                                                    <Icon
+                                                                        icon="arrowUp"
+                                                                        size="xs"
+                                                                        className={classNames(
+                                                                            "ml-1",
+                                                                            _sort[bProps.binding].val === "desc" &&
+                                                                                "rotate-180",
+                                                                        )}
+                                                                    />
+                                                                </button>
+                                                            )}
+                                                            <button>
+                                                                <Icon icon="funnel" size="xs" className="ml-1" />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 );
                                             })}

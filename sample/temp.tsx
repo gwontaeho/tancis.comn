@@ -21,6 +21,7 @@ const schema1 = {
         { id: "text", width: "*", cells: [{ binding: "text" }] },
         { cells: [{ binding: "text2" }] },
         { cells: [{ binding: "number" }] },
+        { cells: [{ binding: "q" }] },
         { cells: [{ binding: "date" }] },
         { cells: [{ binding: "select" }] },
         // { cells: [{ binding: "time" }] },
@@ -39,6 +40,9 @@ const schema1 = {
         },
         {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
+        },
+        {
+            cells: [{ binding: "q" }],
         },
         {
             cells: [{ binding: "date", type: "date", colspan: 2 }],
@@ -224,7 +228,7 @@ export const Temp = () => {
                 </Group.Body>
             </Group>
 
-            <Layout direction="row" gap={8}>
+            <Layout.Left direction="row" gap={8}>
                 <button onClick={() => resetData()}>reset</button>
                 <button onClick={() => setSize(30)}>setSize 30</button>
                 <button onClick={() => setOption("edit", true)}>setOption edit true</button>
@@ -249,7 +253,7 @@ export const Temp = () => {
                 <button onClick={() => setEdit("column", "text", false)}>edit column false</button>
                 <button onClick={() => setShow("column", "text", true)}>show text</button>
                 <button onClick={() => setShow("column", "text", false)}>hide text</button>
-            </Layout>
+            </Layout.Left>
         </Page>
     );
 };

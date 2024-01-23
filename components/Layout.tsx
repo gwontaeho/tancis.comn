@@ -51,13 +51,13 @@ export const Layout = (props: LayoutProps) => {
 const LayoutLeft = (props: LayoutProps) => {
     const { children, direction = "col", gap, size } = props;
 
-    return <div className={classNames("uf-layout-left", size && SIZES[size])}>{children}</div>;
+    return <div className={classNames("uf-layout-left", size && SIZES[size], gap && GAPS[gap])}>{children}</div>;
 };
 
 const LayoutRight = (props: LayoutProps) => {
     const { children, direction = "col", gap, size } = props;
 
-    return <div className={classNames("uf-layout-right", size && SIZES[size])}>{children}</div>;
+    return <div className={classNames("uf-layout-right", size && SIZES[size], gap && GAPS[gap])}>{children}</div>;
 };
 
 Layout.Left = LayoutLeft;
