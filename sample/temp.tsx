@@ -35,7 +35,7 @@ const schema1 = {
             cells: [{ binding: "text", required: true, align: "left" }],
         },
         {
-            cells: [{ binding: "text2" }],
+            cells: [{ binding: "text2", rightButton: { icon: "search", onClick: (d: any) => console.log(d) } }],
         },
         {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],

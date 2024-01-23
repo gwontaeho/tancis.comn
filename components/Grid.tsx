@@ -919,8 +919,28 @@ const Row = React.memo((props: any) => {
                                                 required: bProps.required,
                                                 maxLength: bProps.maxLength,
                                                 /** */
-                                                rightButton: bProps.rightButton,
-                                                leftButton: bProps.leftButton,
+                                                rightButton: bProps.rightButton && {
+                                                    ...bProps.rightButton,
+                                                    onClick:
+                                                        bProps.rightButton.onClick &&
+                                                        (() =>
+                                                            bProps.rightButton.onClick({
+                                                                value: value,
+                                                                rowValues: row,
+                                                                binding: binding,
+                                                            })),
+                                                },
+                                                leftButton: bProps.leftButton && {
+                                                    ...bProps.leftButton,
+                                                    onClick:
+                                                        bProps.leftButton.onClick &&
+                                                        (() =>
+                                                            bProps.leftButton.onClick({
+                                                                value: value,
+                                                                rowValues: row,
+                                                                binding: binding,
+                                                            })),
+                                                },
                                             };
 
                                             const vv = comnUtils.getViewValue(value, o);
