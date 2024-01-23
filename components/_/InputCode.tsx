@@ -113,7 +113,7 @@ export const InputCode = (props: InputCodeProps) => {
         if (!area && !comnCd) return;
 
         if (props.maxLength !== undefined && keyword.length < props.maxLength) {
-            _setVl({ value: "", label: "" });
+            _setVl({ value: keyword, label: "" });
             return;
         }
 
