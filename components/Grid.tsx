@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
 
 import { comnUtils } from "@/comn/utils";
-import { Button, FormControl, Pagination } from "@/comn/components";
+import { Button, FormControl, Pagination, Icon } from "@/comn/components";
 
 export const Grid = (props: any) => {
     const {
@@ -726,6 +726,10 @@ export const Grid = (props: any) => {
                                                         {bProps.required && (
                                                             <span className="text-uf-error ml-0.5">*</span>
                                                         )}
+                                                        {/* <div className="flex">
+                                                            <Icon icon="arrowUp" size="xs" className="ml-1" />
+                                                            <Icon icon="funnel" size="xs" className="ml-1" />
+                                                        </div> */}
                                                     </div>
                                                 );
                                             })}
