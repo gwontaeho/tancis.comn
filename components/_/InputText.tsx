@@ -65,7 +65,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
         return (
             <div className="w-full">
-                {!edit && <div>{_value}</div>}
+                {!edit && <div title={_value}>{_value}</div>}
                 <div hidden={!edit}>
                     <input
                         {..._props}
@@ -75,6 +75,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                         type="text"
                         autoComplete="off"
                         className="input"
+                        title={_value}
                     />
                 </div>
             </div>

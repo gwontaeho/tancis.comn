@@ -79,7 +79,9 @@ export const Select = (props: SelectProps) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{viewSelect(value, { options: o.options })}</div>}
+            {!edit && (
+                <div title={viewSelect(value, { options: o.options })}>{viewSelect(value, { options: o.options })}</div>
+            )}
             <div hidden={!edit}>
                 <div className="relative flex w-full items-center">
                     <select
