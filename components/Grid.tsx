@@ -131,6 +131,8 @@ export const Grid = (props: any) => {
 
     /** initialize content */
     const [_test, _setTest] = React.useState<any[]>(() => {
+        if (!Array.isArray(data.content)) return;
+
         /** origin content */
         const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
@@ -155,6 +157,8 @@ export const Grid = (props: any) => {
     /** on content changed */
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
+        if (!Array.isArray(data.content)) return;
+
         _setTest(() => {
             const _ = data.content?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
