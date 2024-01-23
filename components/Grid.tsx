@@ -918,6 +918,9 @@ const Row = React.memo((props: any) => {
                                                 validate: bProps.validate,
                                                 required: bProps.required,
                                                 maxLength: bProps.maxLength,
+                                                /** */
+                                                rightButton: bProps.rightButton,
+                                                leftButton: bProps.leftButton,
                                             };
 
                                             const vv = comnUtils.getViewValue(value, o);
