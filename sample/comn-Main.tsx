@@ -16,6 +16,10 @@ import { LblLangLst } from "@/comn/comn/lbl/LblLangLst";
 import { LblLangEdit } from "@/comn/comn/lbl/LblLangEdit";
 import { LblLangDtl } from "@/comn/comn/lbl/LblLangDtl";
 import { LblLangRgsr } from "@/comn/comn/lbl/LblLangRgsr";
+import { MsgLangLst } from "@/comn/comn/msg/MsgLangLst";
+import { MsgLangEdit } from "@/comn/comn/msg/MsgLangEdit";
+import { MsgLangDtl } from "@/comn/comn/msg/MsgLangDtl";
+import { MsgLangRgsr } from "@/comn/comn/msg/MsgLangRgsr";
 
 export const ComnMain = () => {
     return (
@@ -36,6 +40,10 @@ export const ComnMain = () => {
             <Route path="/comn/lbl/lblLangRgsr" element={<LblLangRgsr />} />
             <Route path="/comn/lbl/LblLangDtl/:lblId" element={<LblLangDtl />} />
             <Route path="/comn/lbl/LblLangEdit/:lblId" element={<LblLangEdit />} />
+            <Route path="/comn/msg/msgLangLst" element={<MsgLangLst />} />
+            <Route path="/comn/msg/msgLangRgsr" element={<MsgLangRgsr />} />
+            <Route path="/comn/msg/MsgLangDtl/:msgId" element={<MsgLangDtl />} />
+            <Route path="/comn/msg/MsgLangEdit/:msgId" element={<MsgLangEdit />} />
         </Routes>
     );
 };

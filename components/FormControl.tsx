@@ -114,6 +114,7 @@ export type FormControlProps = InputDaterangeProps & {
     rows?: number;
     startRef?: any;
     endRef?: any;
+    placeholder?: string;
     onValueChange?: (e: any) => void;
 };
 
