@@ -54,7 +54,7 @@ const NavItem = (props: NavItemProps) => {
             </button>
             {Array.isArray(children) && (
                 <Collapse open={open}>
-                    <ul className="pl-4 text-uf-gray">
+                    <ul className="pl-4 text-uf-gray dark:text-uf-lightgray">
                         {children.map((child) => {
                             return (
                                 <NavItem

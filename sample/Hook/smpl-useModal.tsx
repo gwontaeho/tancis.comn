@@ -1,22 +1,8 @@
+import axios from "axios";
 import { useModal } from "@/comn/hooks";
 import { Button, Table, Tree } from "@/comn/components";
 import { Sample } from "@/comn/components/_";
-
-// export type ModalProps = {
-//     id?: string;
-//     content?: React.ReactNode;
-//     backdrop?: boolean;
-//     size?: keyof typeof MODAL_SIZES;
-//     onConfirm?: () => void;
-//     onCancel?: () => void;
-// };
-
-// const MODAL_SIZES = {
-//     sm: "max-w-sm",
-//     md: "max-w-lg",
-//     lg: "max-w-[70vw]",
-//     xl: "max-w-[90vw]",
-// };
+import { useEffect, useState } from "react";
 
 export const SampleUseModal = () => {
     const modal = useModal();

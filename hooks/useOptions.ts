@@ -1,16 +1,17 @@
 import React from "react";
+import { v4 as uuid } from "uuid";
 import { useRecoilState } from "recoil";
 
 import { resourceState } from "@/comn/features/recoil";
 import { utils, idb } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
 
-type TOption = {
+export type TOption = {
     label: string;
     value: string;
 };
 
-type UseOptionsProps = {
+export type UseOptionsProps = {
     area?: string;
     comnCd?: string;
     options?: TOption[];
@@ -19,7 +20,7 @@ type UseOptionsProps = {
 export const useOptions = (props: UseOptionsProps) => {
     const { comnCd, area, options = [] } = props;
 
-    const ref = React.useRef<any>({});
+    const ref = React.useRef<any>({ base: uuid() });
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
     const [_options, _setOptions] = React.useState<TOption[]>(options);
@@ -47,5 +48,5 @@ export const useOptions = (props: UseOptionsProps) => {
         }
     };
 
-    return { options: _options };
+    return { base: ref.current.base, options: _options, hasOption: _options.length > 0 };
 };
