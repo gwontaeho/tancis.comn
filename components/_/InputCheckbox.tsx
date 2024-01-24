@@ -1,66 +1,49 @@
 import React from "react";
-import { v4 as uuid } from "uuid";
-import { useTranslation } from "react-i18next";
-import { useOptions } from "@/comn/hooks";
-import { TFormControlOptions } from "@/comn/components";
+import lodash from "lodash";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
-/**
- * edit=true
- *
- * name
- * value
- * onClick
- * onChange
- * onBlur
- * onFocus
- * readOnly
- * disabled
- */
+import { useOptions, UseOptionsProps } from "@/comn/hooks";
 
 /** */
-type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type CheckboxProps = UseOptionsProps & {
     edit?: boolean;
-    options?: TFormControlOptions;
-    comnCd?: string;
-    area?: string;
-    lang?: string;
     all?: boolean;
+
+    name?: string;
     value?: any[];
-    onChange?: (value: any[]) => void;
-    onValueChange?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    onBlur?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const Checkbox = (props: CheckboxProps) => {
     const {
-        edit = true,
-        /** */
-        comnCd,
-        area,
-        lang,
-        options,
         /** */
         all,
-        /** */
-        name,
+        edit = true,
+        /** useOptions props */
+        area,
+        comnCd,
+        options,
+        /**  */
         value,
-        onClick,
         onChange,
-        onValueChange,
-        onBlur,
-        onFocus,
+        /** input props */
+        name,
         readOnly,
         disabled,
+        onBlur,
     } = props;
 
+    /** input props */
     const _props = Object.fromEntries(
         Object.entries({
             name,
-            onClick,
-            onBlur,
-            onFocus,
             readOnly,
             disabled,
+            onBlur,
         }).filter(([, value]) => value !== undefined),
     );
 
@@ -70,11 +53,13 @@ export const Checkbox = (props: CheckboxProps) => {
     const [_value, _setValue] = React.useState<any[]>(formatCheckbox(value));
 
     React.useEffect(() => {
-        if (String(value) === String(_value)) return;
+        /** is equal */
+        if (lodash.isEqual(value, _value)) return;
 
         _setValue(formatCheckbox(value));
     }, [value]);
 
+    /** handle change */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const next = event.target.checked
             ? [..._value, event.target.value]
@@ -85,33 +70,26 @@ export const Checkbox = (props: CheckboxProps) => {
         if (onChange) {
             onChange(next);
         }
-
-        if (onValueChange) {
-            onValueChange({ data: next });
-        }
     };
 
+    /** handle change all */
     const handleChangeAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const next = event.target.checked ? o.options?.map(({ value }) => value) || [] : [];
+        const next = event.target.checked ? o.options.map(({ value }) => value) : [];
 
         _setValue(next);
 
         if (onChange) {
             onChange(next);
         }
-
-        if (onValueChange) {
-            onValueChange({ data: next });
-        }
     };
 
-    const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
     return (
         <div className="w-full">
+            {/* view text */}
             {!edit && (
                 <div>
                     {o.options
-                        ?.filter(({ value }) => {
+                        .filter(({ value }) => {
                             return _value.includes(value);
                         })
                         .map(({ label, value }) => {
@@ -122,33 +100,35 @@ export const Checkbox = (props: CheckboxProps) => {
             )}
             <div hidden={!edit}>
                 <div className={classNames("flex flex-wrap w-fit", readOnly && "pointer-events-none")}>
-                    {all && (
+                    {/* all checkbox */}
+                    {all && o.hasOption && (
                         <div className="flex items-center h-7 space-x-1 mr-3">
                             <label className="flex items-center h-7 space-x-1">
                                 <input
                                     type="checkbox"
                                     disabled={disabled}
                                     onChange={handleChangeAll}
-                                    checked={o.options?.every(({ value }) => _value.includes(value)) || false}
+                                    checked={o.options.every(({ value }) => _value.includes(value)) || false}
                                 />
                                 <div>{t(`L_AL`)}</div>
                             </label>
                         </div>
                     )}
-                    {o.options?.map((option, i) => {
-                        return (
-                            <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
-                                <input
-                                    {..._props}
-                                    type="checkbox"
-                                    value={option.value || ""}
-                                    onChange={handleChange}
-                                    checked={_value.some((_) => _ === option.value)}
-                                />
-                                {option.label && <div>{t(option.label)}</div>}
-                            </label>
-                        );
-                    })}
+                    {o.hasOption &&
+                        o.options.map((option, i) => {
+                            return (
+                                <label key={o.base + "." + i} className="flex items-center h-7 space-x-1 mr-3">
+                                    <input
+                                        {..._props}
+                                        type="checkbox"
+                                        value={option.value}
+                                        onChange={handleChange}
+                                        checked={_value.some((_) => _ === option.value)}
+                                    />
+                                    {option.label && <div>{t(option.label)}</div>}
+                                </label>
+                            );
+                        })}
                 </div>
             </div>
         </div>
@@ -156,12 +136,17 @@ export const Checkbox = (props: CheckboxProps) => {
 };
 
 export const formatCheckbox = (v: any) => {
+    /** not array */
     if (!Array.isArray(v)) return [];
+
     return v;
 };
 
 export const unformatCheckbox = (v: any, o?: any) => {
+    /** not array */
     if (!Array.isArray(v)) return undefined;
+    /** empty array */
     if (v.length === 0) return undefined;
+
     return v;
 };

@@ -1,50 +1,44 @@
-import React, { useEffect } from "react";
-import { v4 as uuid } from "uuid";
+import React from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { useOptions } from "@/comn/hooks";
-import { TFormControlOptions } from "@/comn/components";
+
+import { useOptions, UseOptionsProps } from "@/comn/hooks";
 
 /** */
-type RadioProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type RadioProps = UseOptionsProps & {
     edit?: boolean;
-    options?: TFormControlOptions;
-    comnCd?: string;
-    area?: string;
-    lang?: string;
-    onValueChange?: any;
-    onChange?: any;
+
+    name?: string;
+    value?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    onBlur?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const Radio = (props: RadioProps) => {
     const {
         edit = true,
-        /** */
-        comnCd,
+        /** useOptions props */
         area,
-        lang,
+        comnCd,
         options,
         /** */
         name,
         value,
-        onClick,
-        onChange,
-        onValueChange,
-        onBlur,
-        onFocus,
         readOnly,
         disabled,
+        onBlur,
+        onChange,
     } = props;
 
     const _props = Object.fromEntries(
         Object.entries({
             /** */
             name,
-            onClick,
-            onBlur,
-            onFocus,
             readOnly,
             disabled,
+            onBlur,
         }).filter(([, value]) => value !== undefined),
     );
 
@@ -63,36 +57,57 @@ export const Radio = (props: RadioProps) => {
         if (onChange) {
             onChange(e.target.value);
         }
-
-        if (onValueChange) {
-            onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
-        }
     };
-
-    const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
 
     return (
         <div className="w-full">
-            {!edit && <div>{o.options?.find(({ value }) => value === _value)?.label}</div>}
+            {/* view text */}
+            {!edit && <div>{viewRadio(value, { options: o.options })}</div>}
 
             <div hidden={!edit}>
                 <div className={classNames("flex flex-wrap w-fit", readOnly && "pointer-events-none")}>
-                    {o.options?.map((option, i) => {
-                        return (
-                            <label key={OPTIONS_ID_BASE + "." + i} className="flex items-center h-7 space-x-1 mr-3">
-                                <input
-                                    {..._props}
-                                    type="radio"
-                                    value={option.value}
-                                    checked={option.value === _value}
-                                    onChange={handleChange}
-                                />
-                                {option.label && <div> {t(option.label)}</div>}
-                            </label>
-                        );
-                    })}
+                    {o.hasOption &&
+                        o.options.map((option, i) => {
+                            return (
+                                <label key={o.base + "." + i} className="flex items-center h-7 space-x-1 mr-3">
+                                    <input
+                                        {..._props}
+                                        type="radio"
+                                        value={option.value}
+                                        checked={option.value === _value}
+                                        onChange={handleChange}
+                                    />
+                                    {option.label && <div> {t(option.label)}</div>}
+                                </label>
+                            );
+                        })}
                 </div>
             </div>
         </div>
     );
+};
+
+export const viewRadio = (v: any, o?: any) => {
+    if (!o?.options) return;
+
+    const option = o.options?.find(({ value }: any) => value === v);
+
+    if (!option) return;
+
+    const vt = option.value ? `[${option.value}] ` : "";
+    const lt = option.label;
+
+    return vt + lt;
+};
+
+export const formatRadio = (v: any) => {
+    if (!v) return "";
+
+    return String(v);
+};
+
+export const unformatRadio = (v: any, o?: any) => {
+    if (v) return undefined;
+
+    return String(v);
 };

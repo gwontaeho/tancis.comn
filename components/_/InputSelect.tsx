@@ -1,84 +1,70 @@
 import React from "react";
-import { v4 as uuid } from "uuid";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
-import { useOptions } from "@/comn/hooks";
-import { Icon, TFormControlOptions } from "@/comn/components";
+import { useOptions, UseOptionsProps } from "@/comn/hooks";
+import { Icon } from "@/comn/components";
 
 /** */
-type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-    onChange?: any;
-
+type SelectProps = UseOptionsProps & {
     edit?: boolean;
     all?: boolean;
     select?: boolean;
-    options?: TFormControlOptions;
 
-    /** code */
-    comnCd?: string;
-    area?: string;
-
+    name?: string;
+    value?: any;
     readOnly?: boolean;
-    onValueChange?: any;
+    disabled?: boolean;
+    onBlur?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const Select = (props: SelectProps) => {
     const {
-        edit = true,
-        options,
-        /** */
-        comnCd,
-        area,
         /** */
         all,
+        edit = true,
         select = true,
-        /** */
+        /** useOptions props */
+        area,
+        comnCd,
+        options,
+        /** input props */
         name,
         value,
-        onValueChange,
-        onClick,
-        onChange,
-        onBlur,
-        onFocus,
         readOnly,
         disabled,
+        onBlur,
+        onChange,
     } = props;
 
     const _props = Object.fromEntries(
         Object.entries({
             name,
-            onBlur,
-            onClick,
-            onFocus,
             readOnly,
             disabled,
+            onBlur,
         }).filter(([, value]) => value !== undefined),
     );
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options });
 
-    const [_value, _setValue] = React.useState<any>();
+    const [_value, _setValue] = React.useState<any>(formatSelect(value));
 
     React.useEffect(() => {
         if (value === _value) return;
-        _setValue(value);
+        _setValue(formatSelect(value));
     }, [value]);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         _setValue(e.target.value);
         if (onChange) onChange(e.target.value);
-
-        // if (onValueChange) {
-        //     onValueChange({ value: e.target.value, data: e.target.value, formattedValue: e.target.value });
-        // }
     };
-
-    const OPTIONS_ID_BASE = React.useMemo(() => uuid(), []);
 
     return (
         <div className="w-full">
+            {/* view text */}
             {!edit && (
                 <div title={viewSelect(value, { options: o.options })}>{viewSelect(value, { options: o.options })}</div>
             )}
@@ -86,18 +72,19 @@ export const Select = (props: SelectProps) => {
                 <div className="relative flex w-full items-center">
                     <select
                         {..._props}
-                        value={_value || ""}
+                        value={_value}
                         onChange={handleChange}
                         className={classNames("input appearance-none pr-5", readOnly && "pointer-events-none")}
                     >
                         {(all || select) && <option value="">{all ? t("L_AL") : t("L_SELT")}</option>}
-                        {o.options?.map(({ label, value }, i) => {
-                            return (
-                                <option key={OPTIONS_ID_BASE + "." + i} value={value}>
-                                    {t(label)}
-                                </option>
-                            );
-                        })}
+                        {o.hasOption &&
+                            o.options.map(({ label, value }, i) => {
+                                return (
+                                    <option key={o.base + "." + i} value={value}>
+                                        {t(label)}
+                                    </option>
+                                );
+                            })}
                     </select>
                     <Icon icon="down" size="xs" className="absolute right-1 pointer-events-none" />
                 </div>
@@ -117,4 +104,16 @@ export const viewSelect = (v: any, o?: any) => {
     const lt = option.label;
 
     return vt + lt;
+};
+
+export const formatSelect = (v: any) => {
+    if (!v) return "";
+
+    return String(v);
+};
+
+export const unformatSelect = (v: any, o?: any) => {
+    if (v) return undefined;
+
+    return String(v);
 };
