@@ -62,6 +62,8 @@ type GroupFooterProps = {
 };
 
 type GroupRowProps = {
+    borderLeft?: boolean;
+    borderRight?: boolean;
     children?: React.ReactNode;
 };
 
@@ -143,8 +145,18 @@ const GroupFooter = (props: GroupFooterProps) => {
 };
 
 const GroupRow = (props: GroupRowProps) => {
-    const { children } = props;
-    return <div className="uf-group-row">{children}</div>;
+    const { borderLeft = true, borderRight = true, children } = props;
+    return (
+        <div
+            className={classNames(
+                "uf-group-row",
+                borderLeft === false && "border-l-0",
+                borderRight === false && "border-r-0",
+            )}
+        >
+            {children}
+        </div>
+    );
 };
 
 const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
