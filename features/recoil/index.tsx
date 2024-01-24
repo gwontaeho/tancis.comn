@@ -1,7 +1,7 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
-import i18n from "@/comn/features/locales/i18n";
+// import i18n from "@/comn/features/locales/i18n";
 import { ModalProps, ToastProps } from "@/comn/components/_";
 
 export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "tz" }>({
@@ -23,7 +23,7 @@ export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "
             onSet((n, o: any) => {
                 if (n.lang !== o.lang) {
                     localStorage.setItem("lang", n.lang);
-                    i18n.changeLanguage(n.lang);
+                    // i18n.changeLanguage(n.lang);
                 }
                 if (n.isDark !== o.isDark) {
                     localStorage.setItem("isDark", n.isDark);

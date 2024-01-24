@@ -554,7 +554,7 @@ export const Grid = (props: any) => {
 
     /** handle sort */
     const handleSort = (binding: any, value?: any) => {
-        const _ = _grid.current._sort;
+        let _ = _grid.current._sort;
 
         /** prev */
         const prev = _[binding];
@@ -564,25 +564,39 @@ export const Grid = (props: any) => {
             const pseq = prev.seq;
 
             if (pval === "asc") {
-                _grid.current._sort[binding] = {
+                _[binding] = {
                     seq: pseq,
                     val: "desc",
                 };
             }
 
             if (pval === "desc") {
-                delete _grid.current._sort[binding];
+                delete _[binding];
             }
         } else {
             const seqs = Object.entries(_)
                 .map(([__, v]: any) => v?.seq)
                 .filter((_) => _ !== undefined);
             const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
-            _grid.current._sort[binding] = {
+            _[binding] = {
                 seq: nseq,
                 val: "asc",
             };
         }
+
+        _ = Object.fromEntries(
+            lodash
+                .sortBy(Object.entries(_), [
+                    (a: any) => {
+                        return a[1].seq;
+                    },
+                ])
+                .map(([k, v]: any, i: any) => {
+                    return [k, { ...v, seq: i }];
+                }),
+        );
+
+        _grid.current._sort = _;
 
         _setSort(_grid.current._sort);
         __setGrid(_grid.current._content);
@@ -597,15 +611,21 @@ export const Grid = (props: any) => {
      * sizing
      */
     const __setGrid = (content: any) => {
-        const order = Object.entries(_grid.current._sort).reduce(
-            (p: any, c: any) => {
-                return [
-                    [...p[0], c[0]],
-                    [...p[1], c[1].val],
-                ];
-            },
-            [[], []],
-        );
+        const order = lodash
+            .sortBy(Object.entries(_grid.current._sort), [
+                (a: any) => {
+                    return a[1].seq;
+                },
+            ])
+            .reduce(
+                (p: any, c: any) => {
+                    return [
+                        [...p[0], c[0]],
+                        [...p[1], c[1].val],
+                    ];
+                },
+                [[], []],
+            );
 
         const ordered = lodash.orderBy(content, order[0], order[1]);
         const existed = ordered.filter(({ __type }: any) => __type !== "deleted");
@@ -653,8 +673,8 @@ export const Grid = (props: any) => {
         <div>
             <div className="flex justify-between">
                 <div className="flex gap-1 [&_*]:mb-2">
-                    {_options.importExcel && <Button>import</Button>}
-                    {_options.importExcel && <Button>export</Button>}
+                    {_options.importExcel && <Button>Import</Button>}
+                    {_options.exportExcel && <Button>Export</Button>}
                 </div>
 
                 <div className="flex gap-1 [&_*]:mb-2">
@@ -751,7 +771,7 @@ export const Grid = (props: any) => {
                                                                     className="ml-1"
                                                                 />
                                                                 <span className="text-[10px] absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
-                                                                    {}
+                                                                    {_sort[bProps.binding]?.seq}
                                                                 </span>
                                                             </button>
                                                         </div>

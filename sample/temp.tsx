@@ -7,28 +7,31 @@ import { Link } from "react-router-dom";
 
 const schema1 = {
     options: {
-        index: "DESC",
+        index: true,
         radio: true,
         checkbox: true,
         add: true,
         delete: true,
         edit: true,
-        exportExcel: true,
         importExcel: true,
+        exportExcel: true,
+        pagination: "in",
     },
     head: [
-        { id: "text", width: "*", cells: [{ binding: "text" }] },
-        { cells: [{ binding: "text2" }] },
-        { cells: [{ binding: "number" }] },
-        { cells: [{ binding: "q" }] },
-        { cells: [{ binding: "date" }] },
-        { cells: [{ binding: "select" }] },
-        // { cells: [{ binding: "time" }] },
-        // { cells: [{ binding: "datetime" }] },
-        // { cells: [{ binding: "select" }] },
-        // { cells: [{ binding: "radio" }] },
-        // { cells: [{ binding: "checkbox" }] },
-        // { cells: [{ binding: "code" }] },
+        {
+            id: "text",
+            width: "*",
+            cells: [{ binding: "text", required: true }],
+        },
+        {
+            cells: [{ binding: "text2", required: true }],
+        },
+        {
+            cells: [{ binding: "number", required: true }],
+        },
+        {
+            cells: [{ binding: "q", required: true }],
+        },
     ],
     body: [
         {
@@ -116,7 +119,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 200 });
+const data = utils.getMockData({ totalElements: 1000 });
 
 export const Temp = () => {
     useResource({
