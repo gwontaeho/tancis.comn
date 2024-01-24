@@ -33,6 +33,12 @@ const FLEXES = {
     12: "flex-[12]",
 };
 
+const ALIGNS = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
+};
+
 type GroupProps = {
     children?: React.ReactNode;
     bgColor?: boolean;
@@ -62,6 +68,8 @@ type GroupFooterProps = {
 };
 
 type GroupRowProps = {
+    borderTop?: boolean;
+    borderBottom?: boolean;
     borderLeft?: boolean;
     borderRight?: boolean;
     children?: React.ReactNode;
@@ -69,7 +77,8 @@ type GroupRowProps = {
 
 type GroupAnyProps = {
     children?: React.ReactNode;
-    size?: number;
+    align?: keyof typeof ALIGNS;
+    anySize?: keyof typeof SIZES;
 };
 
 type GroupLabelProps = FormControlProps & {
@@ -145,13 +154,15 @@ const GroupFooter = (props: GroupFooterProps) => {
 };
 
 const GroupRow = (props: GroupRowProps) => {
-    const { borderLeft = true, borderRight = true, children } = props;
+    const { borderLeft = true, borderRight = true, borderTop = true, borderBottom = true, children } = props;
     return (
         <div
             className={classNames(
                 "uf-group-row",
                 borderLeft === false && "border-l-0",
                 borderRight === false && "border-r-0",
+                borderTop === false && "border-t-0",
+                borderBottom === false && "border-b-0",
             )}
         >
             {children}
@@ -180,11 +191,20 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 });
 
 const GroupAny = (props: GroupAnyProps) => {
-    const { children, ...rest } = props;
+    const { children, anySize, align = "center", ...rest } = props;
     return (
         <>
-            <div className={"p-1 flex items-center space-x-1 min-w-fit text-center"} {...rest}>
-                {children}
+            <div
+                className={classNames(
+                    "p-1",
+                    "flex",
+                    "items-center",
+                    "space-x-1",
+                    anySize === undefined ? "min-w-fit" : SIZES[anySize],
+                )}
+                {...rest}
+            >
+                <div className={classNames("w-full", ALIGNS[align])}>{children}</div>
             </div>
         </>
     );
