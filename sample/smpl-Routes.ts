@@ -214,6 +214,10 @@ export const SampleRoutes = [
                         name: "Label Language Processing",
                         to: "/lbl/lblLangLst",
                     },
+                    {
+                        name: "Message Language Processing",
+                        to: "/msg/msgLangLst",
+                    },
                 ],
             },
         ],
