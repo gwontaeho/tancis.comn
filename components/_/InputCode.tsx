@@ -32,7 +32,17 @@ const POPUP_URLS: { [id: string]: string } = {
 };
 
 export const InputCode = (props: InputCodeProps) => {
-    const { edit = true, area, comnCd, value, maxLength, popupParams, popupSize = "sm", onChange } = props;
+    const {
+        edit = true,
+        //
+        area,
+        comnCd,
+        value,
+        maxLength,
+        popupParams,
+        popupSize = "sm",
+        onChange,
+    } = props;
 
     const initialized = React.useRef(false);
 
@@ -41,7 +51,9 @@ export const InputCode = (props: InputCodeProps) => {
         theme: { lang },
     } = useTheme();
 
+    /** value */
     const [_vl, _setVl] = React.useState<{ value: string; label: string }>({ value: "", label: "" });
+    const [_keyword, _setKeyword] = React.useState<string>("");
 
     const keywordInput = React.useRef<HTMLInputElement>(null);
 
@@ -93,7 +105,11 @@ export const InputCode = (props: InputCodeProps) => {
      * # keyword input change event handler
      * keyword input value 빈 값일 때 value 초기화
      */
+    /**
+     * handle change keyword
+     */
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        /** empty keyword */
         if (!e.target.value) {
             _setVl({ value: "", label: "" });
             return;

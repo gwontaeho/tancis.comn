@@ -1,43 +1,45 @@
 import React from "react";
-import ReactDatePicker from "react-datepicker";
 import dayjs from "dayjs";
+import ReactDatePicker from "react-datepicker";
+
 import constants from "@/comn/constants";
 import { useTheme } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
 
 export type InputDateProps = {
     edit?: boolean;
-    name?: string;
-    value?: Date | null;
-    defaultValue?: any;
-    readOnly?: boolean;
-    disabled?: boolean;
-    onChange?: (value?: Date | null) => void;
-    onValueChange?: any;
-    onBlur?: (...args: any) => void;
     startRef?: any;
     endRef?: any;
+
+    name?: string;
+    value?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    defaultValue?: any;
+    onBlur?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const InputDate = (props: InputDateProps) => {
     const {
         edit = true,
-        name,
-        value,
-        defaultValue,
-        readOnly,
-        disabled,
-        onChange,
-        onValueChange,
-        onBlur,
         startRef,
         endRef,
+        /** input props */
+        name,
+        value,
+        readOnly,
+        disabled,
+        defaultValue,
+        onBlur,
+        onChange,
     } = props;
     const _props = Object.fromEntries(
         Object.entries({
             name,
             readOnly,
             disabled,
+            defaultValue,
             onBlur,
         }).filter(([, value]) => value !== undefined),
     );
@@ -61,14 +63,6 @@ export const InputDate = (props: InputDateProps) => {
 
         if (onChange) {
             onChange(date);
-        }
-
-        if (onValueChange) {
-            onValueChange({
-                value: date,
-                data: dayjs(date).format(constants.DATE_FORMAT),
-                formattedValue: dayjs(date).format(constants.DATE_FORMAT),
-            });
         }
     };
 

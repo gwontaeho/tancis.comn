@@ -1,28 +1,42 @@
 import React from "react";
 import dayjs from "dayjs";
 import ReactDatePicker from "react-datepicker";
-import { useTheme } from "@/comn/hooks";
 
+import { useTheme } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
 import constants from "@/comn/constants";
 
 export type InputDateimeProps = {
     edit?: boolean;
+
     name?: string;
-    value?: Date | null;
+    value?: any;
     readOnly?: boolean;
     disabled?: boolean;
-    onChange?: (value?: Date | null) => void;
-    onValueChange?: any;
+    defaultValue?: any;
+    onBlur?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const InputDatetime = (props: InputDateimeProps) => {
-    const { edit = true, name, value, readOnly, disabled, onChange, onValueChange } = props;
+    const {
+        edit = true,
+        /** input props */
+        name,
+        value,
+        readOnly,
+        disabled,
+        defaultValue,
+        onBlur,
+        onChange,
+    } = props;
     const _props = Object.fromEntries(
         Object.entries({
             name,
             readOnly,
             disabled,
+            defaultValue,
+            onBlur,
         }).filter(([, value]) => value !== undefined),
     );
 
@@ -38,15 +52,8 @@ export const InputDatetime = (props: InputDateimeProps) => {
 
     const handleChange = (date: Date) => {
         _setValue(date);
-        if (!onChange) return;
-        onChange(date);
-
-        if (onValueChange) {
-            onValueChange({
-                value: date,
-                data: dayjs(date).format(constants.DATETIME_FORMAT),
-                formattedValue: dayjs(date).format(constants.DATETIME_FORMAT),
-            });
+        if (onChange) {
+            onChange(date);
         }
     };
 

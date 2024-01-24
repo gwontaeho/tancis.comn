@@ -9,7 +9,7 @@ export type TFormFieldName = string;
 export type TFormFieldValue = any;
 export type TFormValues = Record<TFormFieldName, TFormFieldValue>;
 export type TFormSchema = { id: string; schema: TFormControlSchema };
-type TFormControlSchema = Record<string, GroupControlProps>;
+type TFormControlSchema = Record<string, any>;
 type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 
 export const useForm = (props: UseFormProps) => {

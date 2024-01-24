@@ -2,8 +2,19 @@ import React from "react";
 import { IconButton } from "@/comn/components/IconButton";
 
 /** */
-export type InputPasswordProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type InputPasswordProps = {
     edit?: boolean;
+
+    name?: string;
+    value?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    maxLength?: number;
+    placeholder?: string;
+    defaultValue?: any;
+    onBlur?: (arg?: any) => void;
+    onFocus?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordProps>(
@@ -11,36 +22,33 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
         const {
             /** */
             edit = true,
-            value,
-            onChange,
-            /** */
+            /** input props */
             name,
-            onBlur,
-            onClick,
-            onFocus,
+            value,
             readOnly,
             disabled,
             maxLength,
             placeholder,
             defaultValue,
+            onBlur,
+            onFocus,
+            onChange,
         } = props;
 
         const _props = Object.fromEntries(
             Object.entries({
                 name,
-                onBlur,
-                onClick,
-                onFocus,
                 readOnly,
                 disabled,
                 maxLength,
                 placeholder,
                 defaultValue,
+                onBlur,
+                onFocus,
             }).filter(([, value]) => value !== undefined),
         );
 
         const [show, setShow] = React.useState(false);
-
         const [_value, _setValue] = React.useState<any>(formatPassword(value));
 
         React.useEffect(() => {
@@ -52,8 +60,9 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             _setValue(e.target.value);
 
-            if (!onChange) return;
-            onChange(e);
+            if (onChange) {
+                onChange(e.target.value);
+            }
         };
 
         return (
@@ -86,9 +95,11 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
 export const formatPassword = (v: any, o?: any) => {
     if (!v) return "";
 
-    let f = String(v);
-
-    return f;
+    return String(v);
 };
 
-export const unformatPassword = (v: any, o?: any) => {};
+export const unformatPassword = (v: any, o?: any) => {
+    if (!v) return undefined;
+
+    return String(v);
+};

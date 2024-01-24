@@ -191,9 +191,7 @@ export const SampleFormControlTextarea = () => {
                 </Page>
 
                 <Sample.Code>{`<FormControl type="textarea" minLength={10} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" minLength={10} />
-                </Page>
+                <Page></Page>
             </Sample.Section>
         </Sample>
     );

@@ -1,13 +1,21 @@
 import React from "react";
 
 /** */
-export type InputNumberProps = React.InputHTMLAttributes<HTMLInputElement> & {
-    onChange?: any;
-    onValueChange?: any;
-
+export type InputNumberProps = {
     edit?: boolean;
     decimalScale?: number;
     thousandSeparator?: boolean;
+
+    name?: string;
+    value?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    maxLength?: number;
+    placeholder?: string;
+    defaultValue?: any;
+    onBlur?: (arg?: any) => void;
+    onFocus?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
@@ -17,32 +25,29 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             edit = true,
             decimalScale,
             thousandSeparator,
-            value,
-            onChange,
-            onValueChange,
-            /** */
+            /** input props */
             name,
-            onBlur,
-            onClick,
-            onFocus,
+            value,
             readOnly,
             disabled,
             maxLength,
             placeholder,
             defaultValue,
+            onBlur,
+            onFocus,
+            onChange,
         } = props;
 
         const _props = Object.fromEntries(
             Object.entries({
                 name,
-                onBlur,
-                onClick,
-                onFocus,
                 readOnly,
                 disabled,
                 maxLength,
                 placeholder,
                 defaultValue,
+                onBlur,
+                onFocus,
             }).filter(([, value]) => value !== undefined),
         );
         const o = { decimalScale, thousandSeparator };
@@ -63,12 +68,13 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
 
         return (
             <div className="w-full">
-                {!edit && <div>{_value}</div>}
+                {!edit && <div title={_value}>{_value}</div>}
                 <div hidden={!edit}>
                     <input
                         {..._props}
                         ref={ref}
                         value={_value}
+                        title={_value}
                         onChange={handleChange}
                         type="text"
                         inputMode="numeric"

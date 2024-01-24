@@ -417,7 +417,6 @@ export const Wijmo = (props: WijmoProps) => {
                                                     >
                                                         <FormControl
                                                             size="full"
-                                                            lang={lang}
                                                             type={cellProps.type}
                                                             name={cellProps.key}
                                                             defaultValue={cell.value}

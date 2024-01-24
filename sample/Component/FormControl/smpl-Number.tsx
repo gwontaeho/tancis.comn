@@ -171,9 +171,7 @@ export const SampleFormControlNumber = () => {
                 </Page>
 
                 <Sample.Code>{`<FormControl type="number" minLength={10} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="number" minLength={10} />
-                </Page>
+                <Page></Page>
             </Sample.Section>
         </Sample>
     );

@@ -74,8 +74,8 @@ const Logo = () => {
 
     return (
         <Link to="/">
-            <img src={src["light"]} alt={alt} title={name} hidden={theme.isDark === "true"} />
-            <img src={src["dark"]} alt={alt} title={name} hidden={theme.isDark === "false"} />
+            <img src={src["light"]} alt={alt} title={name} hidden={theme.isDark === "true"} width={195} height={46} />
+            <img src={src["dark"]} alt={alt} title={name} hidden={theme.isDark === "false"} width={195} height={46} />
         </Link>
     );
 };

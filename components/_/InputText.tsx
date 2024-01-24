@@ -1,14 +1,22 @@
 import React from "react";
 
 /** */
-export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> & {
-    onChange?: any;
-    onValueChange?: any;
-
+export type InputTextProps = {
     edit?: boolean;
     mask?: any;
     exact?: boolean;
     letterCase?: "upper" | "lower";
+
+    name?: string;
+    value?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    maxLength?: number;
+    placeholder?: string;
+    defaultValue?: any;
+    onBlur?: (arg?: any) => void;
+    onFocus?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
@@ -19,32 +27,29 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             mask,
             exact,
             letterCase,
-            value,
-            onChange,
-            onValueChange,
-            /** */
+            /** input props */
             name,
-            onBlur,
-            onClick,
-            onFocus,
+            value,
             readOnly,
             disabled,
             maxLength,
             placeholder,
             defaultValue,
+            onBlur,
+            onFocus,
+            onChange,
         } = props;
 
         const _props = Object.fromEntries(
             Object.entries({
                 name,
-                onBlur,
-                onClick,
-                onFocus,
                 readOnly,
                 disabled,
                 maxLength,
                 placeholder,
                 defaultValue,
+                onBlur,
+                onFocus,
             }).filter(([, value]) => value !== undefined),
         );
         const o = { mask, exact, letterCase };
@@ -59,8 +64,9 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             _setValue(formatText(e.target.value, o));
 
-            if (!onChange) return;
-            onChange(formatText(e.target.value, o));
+            if (onChange) {
+                onChange(formatText(e.target.value, o));
+            }
         };
 
         return (
@@ -71,11 +77,11 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                         {..._props}
                         ref={ref}
                         value={_value}
+                        title={_value}
                         onChange={handleChange}
                         type="text"
                         autoComplete="off"
                         className="input"
-                        title={_value}
                     />
                 </div>
             </div>

@@ -153,9 +153,7 @@ export const SampleFormControlPassword = () => {
                 </Page>
 
                 <Sample.Code>{`<FormControl type="password" minLength={10} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="password" minLength={10} />
-                </Page>
+                <Page></Page>
             </Sample.Section>
         </Sample>
     );

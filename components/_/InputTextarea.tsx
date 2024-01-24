@@ -1,18 +1,29 @@
 import React from "react";
 
 /** */
-export type InputTextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+export type InputTextareaProps = {
     edit?: boolean;
+
+    name?: string;
+    value?: any;
+    rows?: number;
+    readOnly?: boolean;
+    disabled?: boolean;
+    maxLength?: number;
+    placeholder?: string;
+    defaultValue?: any;
+    onBlur?: (arg?: any) => void;
+    onFocus?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps>(
     (props: InputTextareaProps, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
         const {
             edit = true,
-            /** */
+            /** input props */
             name,
             value,
-            onClick,
             onChange,
             onBlur,
             onFocus,
@@ -26,14 +37,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
         const _props = Object.fromEntries(
             Object.entries({
                 name,
-                onClick,
-                onBlur,
-                onFocus,
                 readOnly,
                 disabled,
                 maxLength,
                 placeholder,
                 rows,
+                onBlur,
+                onFocus,
             }).filter(([, value]) => value !== undefined),
         );
 
@@ -46,18 +56,20 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
             _setValue(e.target.value);
-            if (!onChange) return;
-            onChange(e);
+            if (onChange) {
+                onChange(e.target.value);
+            }
         };
 
         return (
             <div className="w-full">
-                {!edit && <div>{_value}</div>}
+                {!edit && <div title={_value}>{_value}</div>}
                 <div hidden={!edit}>
                     <textarea
                         {..._props}
                         ref={ref}
                         value={_value}
+                        title={_value}
                         onChange={handleChange}
                         className="input overflow-hidden"
                     />
@@ -73,4 +85,10 @@ export const formatTextarea = (v: any, o?: any) => {
     let f = String(v);
 
     return f;
+};
+
+export const unformatTextarea = (v: any, o?: any) => {
+    if (v) return undefined;
+
+    return String(v);
 };

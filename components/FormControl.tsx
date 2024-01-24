@@ -23,6 +23,7 @@ import {
     InputBoolean,
     ControllerWrapper,
 } from "@/comn/components/_";
+import { TOption } from "@/comn/hooks";
 
 export type FormControlType =
     | "text"
@@ -62,60 +63,79 @@ type FormControlGroupProps = {
     children?: React.ReactNode;
 };
 
-export type TFormControlOptions = {
-    label: string;
-    value: string;
-}[];
+type TButton = {
+    icon?: IconsType;
+    onClick?: (arg: any) => void;
+};
 
 export type FormControlProps = InputDaterangeProps & {
+    /** common */
     type?: FormControlType;
-    value?: any;
-    getValues?: any;
     edit?: boolean;
-    name?: string;
-    options?: TFormControlOptions;
     rightText?: string;
-    leftButton?: React.ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconsType };
-    rightButton?: React.ButtonHTMLAttributes<HTMLButtonElement> & { icon: IconsType };
-    onChange?: (e: any) => void;
-    onBlur?: () => void;
-    disabled?: boolean;
+    leftButton?: TButton;
+    rightButton?: TButton;
+
+    /** common input props */
+    name?: string;
+    value?: any;
     readOnly?: boolean;
-    setValue?: any;
-    invalid?: any;
-    comnCd?: string;
+    disabled?: boolean;
+    onBlur?: (arg?: any) => void;
+    onFocus?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
+
+    /** UseOptions props */
     area?: string;
-    keyword?: string;
-    multiple?: boolean;
-    size?: keyof typeof SIZES;
-    control?: any;
-    rules?: any;
-    defaultValue?: any;
-    onFocus?: (e: any) => void;
-    mask?: string | Array<any>;
-    message?: string;
-    maxLength?: number;
+    comnCd?: string;
+    options?: TOption[];
+
+    /** text */
+    mask?: string | any[];
     exact?: boolean;
+    letterCase?: "upper" | "lower";
+    maxLength?: number;
+    placeholder?: string;
+    defaultValue?: any;
+
+    /** number */
     decimalScale?: number;
     thousandSeparator?: boolean;
-    letterCase?: "upper" | "lower";
+
+    /** checkbox */
+    all?: boolean;
+
+    /** select */
+    select?: boolean;
+
+    /** range */
     start?: any;
     end?: any;
-    all?: boolean;
-    select?: boolean;
-    validate?: any;
-    pattern?: any;
-    min?: any;
-    max?: any;
-    minLength?: any;
-    lang?: string;
-    popupSize?: "sm" | "md" | "lg";
-    inputLabel?: string;
+
+    /** textarea */
     rows?: number;
+
+    /** date, time */
     startRef?: any;
     endRef?: any;
-    placeholder?: string;
-    onValueChange?: (e: any) => void;
+
+    /** code */
+    popupSize?: "sm" | "md" | "lg";
+
+    /** file */
+    multiple?: boolean;
+
+    /** boolean */
+    inputLabel?: string;
+
+    /** useForm */
+    rules?: any;
+    invalid?: any;
+
+    /** form control */
+    size?: keyof typeof SIZES;
+    control?: any;
+    message?: string;
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {
