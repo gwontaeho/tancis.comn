@@ -39,15 +39,22 @@ const NavItem = (props: NavItemProps) => {
 
     return (
         <li>
-            <button className="p-2 text-lg flex w-full items-center justify-between" onClick={handleClick}>
-                <p className={classNames({ "text-uf-blue": current })}>{name}</p>
+            <button
+                className={classNames(
+                    "p-1 flex text-[14px] w-full items-center justify-between text-left",
+                    _depth === 2 && "font-medium",
+                    _depth !== 2 && "text-[13px]",
+                )}
+                onClick={handleClick}
+            >
+                <p className={classNames({ "text-uf-blue underline": current })}>{name}</p>
                 {children && (
                     <Icon icon="down" size="xs" className={classNames("transition", { "rotate-180": open })} />
                 )}
             </button>
             {Array.isArray(children) && (
                 <Collapse open={open}>
-                    <ul className="pl-4">
+                    <ul className="pl-4 text-uf-gray">
                         {children.map((child) => {
                             return (
                                 <NavItem
@@ -78,7 +85,7 @@ const Menu = () => {
     return (
         <nav className="p-2">
             {depth_1 && depth_2 && (
-                <ul className="p-2">
+                <ul className="p-2 flex flex-col gap-2">
                     {depth_2?.children?.map((child) => {
                         return (
                             <NavItem
