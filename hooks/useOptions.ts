@@ -24,6 +24,8 @@ export const useOptions = (props: UseOptionsProps) => {
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
     const [_options, _setOptions] = React.useState<TOption[]>(options);
+    /**  */
+    const [__t, __setT] = React.useState<any>();
 
     React.useEffect(() => {
         if (!area) return;
@@ -42,11 +44,12 @@ export const useOptions = (props: UseOptionsProps) => {
             if (ref.current.key === resource.key) return;
 
             ref.current.key = resource.key;
+            __setT(new Date());
             _setOptions(resource.value.options);
         } catch (error) {
             console.log(error);
         }
     };
 
-    return { base: ref.current.base, options: _options, hasOption: _options.length > 0 };
+    return { base: ref.current.base, __t, options: _options, hasOption: _options.length > 0 };
 };
