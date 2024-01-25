@@ -71,7 +71,7 @@ export const InputCode = (props: InputCodeProps) => {
     const __t = o.__t?.getTime();
 
     /** 코드 값 */
-    const [_value, _setValue] = React.useState<string>("");
+    const [_value, _setValue] = React.useState<string>(formatCode(value));
     const keywordInput = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
@@ -143,6 +143,7 @@ export const InputCode = (props: InputCodeProps) => {
                     <input
                         {..._props}
                         ref={keywordInput}
+                        defaultValue={_value}
                         onChange={handleChange}
                         className="input rounded-r-none flex-1"
                     />
@@ -152,11 +153,27 @@ export const InputCode = (props: InputCodeProps) => {
                     <input
                         readOnly={true}
                         disabled={disabled}
-                        value={_label}
+                        defaultValue={_label}
                         className="input rounded-l-none flex-[2]"
                     />
                 </div>
             </div>
         </div>
     );
+};
+
+export const formatCode = (v: any, o?: any) => {
+    if (!v) return "";
+
+    let f = String(v);
+
+    return f;
+};
+
+export const unformatCode = (v: any, o?: any) => {
+    if (!v) return undefined;
+
+    let f = String(v);
+
+    return f;
 };

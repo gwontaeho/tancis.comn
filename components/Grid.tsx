@@ -938,7 +938,7 @@ const Row = React.memo((props: any) => {
                                 return (
                                     <div key={celKey} className="flex h-full gap-[1px]">
                                         {cellProps.map((bProps: any, bIndex: any) => {
-                                            const bKey = celKey + "." + bIndex;
+                                            const bKey = contentKey + "." + celKey + "." + bIndex;
                                             const binding = bProps.binding;
                                             const value = row[binding];
                                             const ov = _grid.current._origin.find(
