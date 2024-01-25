@@ -71,7 +71,7 @@ export const InputCode = (props: InputCodeProps) => {
     const __t = o.__t?.getTime();
 
     /** 코드 값 */
-    const [_value, _setValue] = React.useState<string>("");
+    const [_value, _setValue] = React.useState<string>(formatCode(value));
     const keywordInput = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
@@ -137,12 +137,13 @@ export const InputCode = (props: InputCodeProps) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{_value && `[${_value}] ${_label}`}</div>}
+            {!edit && <div>{viewCode(_value, { options: o.options })}</div>}
             <div hidden={!edit}>
                 <div className="w-full flex">
                     <input
                         {..._props}
                         ref={keywordInput}
+                        defaultValue={_value}
                         onChange={handleChange}
                         className="input rounded-r-none flex-1"
                     />
@@ -152,11 +153,40 @@ export const InputCode = (props: InputCodeProps) => {
                     <input
                         readOnly={true}
                         disabled={disabled}
-                        value={_label}
+                        defaultValue={_label}
                         className="input rounded-l-none flex-[2]"
                     />
                 </div>
             </div>
         </div>
     );
+};
+
+export const viewCode = (v: any, o?: any) => {
+    if (!o?.options) return;
+
+    const option = o.options?.find(({ value }: any) => value === v);
+
+    if (!option) return;
+
+    const vt = option.value ? `[${option.value}] ` : "";
+    const lt = option.label;
+
+    return vt + lt;
+};
+
+export const formatCode = (v: any, o?: any) => {
+    if (!v) return "";
+
+    let f = String(v);
+
+    return f;
+};
+
+export const unformatCode = (v: any, o?: any) => {
+    if (!v) return undefined;
+
+    let f = String(v);
+
+    return f;
 };

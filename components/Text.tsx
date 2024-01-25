@@ -26,5 +26,6 @@ export const Text = (props: TextProps) => {
                 {children}
             </a>
         );
-    return <p>{children}</p>;
+
+    return <span>{children}</span>;
 };
