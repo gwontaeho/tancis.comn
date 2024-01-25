@@ -1,22 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import lodash from "lodash";
-import { usePopup, useTheme } from "@/comn/hooks";
+import { usePopup, useOptions, UseOptionsProps } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
 
-type InputCodeProps = {
+type InputCodeProps = UseOptionsProps & {
     edit?: boolean;
-    name?: string;
-    value?: any;
-    comnCd?: string;
-    area?: string;
-    maxLength?: number;
     popupSize?: "sm" | "md" | "lg";
     popupParams?: any;
-    onChange?: (...args: any) => void;
+
+    value?: any;
+    name?: string;
+    readOnly?: boolean;
+    disabled?: boolean;
+    maxLength?: number;
+    onBlur?: (arg?: any) => void;
+    onFocus?: (arg?: any) => void;
+    onChange?: (arg?: any) => void;
 };
 
-const POPUP_URLS: { [id: string]: string } = {
+const POPUP_URLS: Record<string, string> = {
     comnCd: `/comn/comn/ppup/comnCdPpup`,
     cityCd: `/comn/comn/ppup/cityCdPpup`,
     cntyCd: `/comn/comn/ppup/cntyCdPpup`,
@@ -34,121 +37,77 @@ const POPUP_URLS: { [id: string]: string } = {
 export const InputCode = (props: InputCodeProps) => {
     const {
         edit = true,
-        //
+        popupSize = "sm",
+        popupParams,
+        /** useOptions props */
         area,
         comnCd,
+        options,
+        /** */
         value,
+        name,
+        readOnly,
+        disabled,
         maxLength,
-        popupParams,
-        popupSize = "sm",
+        onBlur,
+        onFocus,
         onChange,
     } = props;
 
-    const initialized = React.useRef(false);
+    const _props = Object.fromEntries(
+        Object.entries({
+            name,
+            readOnly,
+            disabled,
+            maxLength,
+            onBlur,
+            onFocus,
+        }).filter(([, value]) => value !== undefined),
+    );
 
     const { openPopup } = usePopup();
-    const {
-        theme: { lang },
-    } = useTheme();
 
-    /** value */
-    const [_vl, _setVl] = React.useState<{ value: string; label: string }>({ value: "", label: "" });
-    const [_keyword, _setKeyword] = React.useState<string>("");
+    const o = useOptions({ comnCd, area, options });
+    const __t = o.__t?.getTime();
 
+    /** 코드 값 */
+    const [_value, _setValue] = React.useState<string>("");
     const keywordInput = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
-        initialized.current = true;
-    }, []);
+        if (!__t) return;
+        if (typeof value !== "string") return;
+        if (value === _value) return;
 
-    /**
-     * # on value changed
-     * 컴포넌트 초기화 이후 value가 바뀔 시(after getComnCd()) keyword input value change
-     */
-    React.useEffect(() => {
-        if (initialized.current === false) {
+        const next = o.options.find((_) => _.value === value.toUpperCase());
+
+        if (!next) {
+            handleValueChange("");
+
             return;
         }
 
-        if (!keywordInput.current) return;
-        keywordInput.current.value = _vl.value;
-        if (!!value === !!_vl.value) return;
-        if (!onChange) return;
-        onChange(_vl.value);
-    }, [_vl]);
-
-    /**
-     * # on lang changed
-     * 컴포넌트 초기화 이후 lang이 바뀔 시 value가 있으면 getComnCd 호출
-     */
-    useEffect(() => {
-        if (initialized.current === false) {
-            return;
+        if (next) {
+            handleValueChange(next.value);
         }
+    }, [value, __t]);
 
-        if (!_vl.value) return;
-        getComnCd(_vl.value);
-    }, [lang]);
-
-    /**
-     * # on props.value changed
-     * props.value 와 value의 값이 다르고,
-     * 두 값 모두 비어있지 않을 시 getComnCd 호출
-     */
-    React.useEffect(() => {
-        if (!value && !_vl.value) return;
-        if (value === _vl.value) return;
-        getComnCd(props.value);
-    }, [value]);
-
-    /**
-     * # keyword input change event handler
-     * keyword input value 빈 값일 때 value 초기화
-     */
     /**
      * handle change keyword
      */
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
-        /** empty keyword */
-        if (!e.target.value) {
-            _setVl({ value: "", label: "" });
+        /** 값 세팅 조건 */
+        if (maxLength !== e.target.value.length) {
+            handleValueChange("");
             return;
         }
 
-        getComnCd(e.target.value);
+        const next = o.options.find(({ value }) => value === e.target.value.toUpperCase());
+
+        if (next) {
+            handleValueChange(next.value);
+        }
     }, 500);
-
-    /**
-     * getComnCd fetching api
-     * 검색 조건에 충족되지 않으면 value 초기화
-     *
-     * # on api success
-     * set value
-     */
-    const getComnCd = async (keyword: string) => {
-        if (!area && !comnCd) return;
-
-        if (props.maxLength !== undefined && keyword.length < props.maxLength) {
-            _setVl({ value: keyword, label: "" });
-            return;
-        }
-
-        try {
-            const { data } = await utils.getCode({ comnCd, area, size: 1, keyword });
-            const c = Object.values<any>(data)[0].content[0];
-
-            if (!c) {
-                _setVl({ value: keyword, label: "" });
-                return;
-            }
-
-            const label = utils.getCodeLabel(area, c);
-            const code = utils.getCodeValue(area, c);
-            _setVl({ value: code, label });
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const handleClickSearch = () => {
         const params = { ...utils.toValues(popupParams), comnCd };
@@ -157,26 +116,45 @@ export const InputCode = (props: InputCodeProps) => {
             url: POPUP_URLS[area || "comnCd"],
             size: popupSize,
             callback: (data: any) => {
-                _setVl({ value: data.code, label: data.label });
+                handleValueChange(data.code);
             },
         });
     };
 
+    const handleValueChange = (v?: any) => {
+        _setValue(v);
+
+        if (onChange) {
+            onChange(v);
+        }
+
+        if (keywordInput.current) {
+            keywordInput.current.value = v;
+        }
+    };
+
+    const _label = o.options.find(({ value }) => value === _value)?.label;
+
     return (
         <div className="w-full">
-            {!edit && <div>{_vl.value && `[${_vl.value}] ${_vl.label}`}</div>}
+            {!edit && <div>{_value && `[${_value}] ${_label}`}</div>}
             <div hidden={!edit}>
                 <div className="w-full flex">
                     <input
-                        className="input rounded-r-none flex-1"
+                        {..._props}
                         ref={keywordInput}
                         onChange={handleChange}
-                        maxLength={maxLength}
+                        className="input rounded-r-none flex-1"
                     />
                     <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
                         <Icon icon="search" size="xs" />
                     </button>
-                    <input readOnly defaultValue={_vl.label} className="input rounded-l-none flex-[2]" />
+                    <input
+                        readOnly={true}
+                        disabled={disabled}
+                        value={_label}
+                        className="input rounded-l-none flex-[2]"
+                    />
                 </div>
             </div>
         </div>

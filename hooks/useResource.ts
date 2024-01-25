@@ -5,7 +5,14 @@ import { resourceState } from "@/comn/features/recoil";
 import { useTheme } from "@/comn/hooks";
 import { utils, idb } from "@/comn/utils";
 
-type UseOptionsProps = any;
+type TResource = {
+    area: string;
+    comnCd?: string;
+};
+
+type UseOptionsProps = {
+    defaultSchema: TResource[];
+};
 
 export const useResource = (props: UseOptionsProps) => {
     const { defaultSchema } = props;

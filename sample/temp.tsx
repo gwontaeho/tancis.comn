@@ -44,7 +44,7 @@ const schema1 = {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
         },
         {
-            cells: [{ binding: "q" }],
+            cells: [{ binding: "q", type: "code", area: "comnCd", comnCd: "COM_0015", maxLength: 3 }],
         },
         {
             cells: [{ binding: "date", type: "date", colspan: 2 }],
@@ -119,7 +119,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 0 });
+const data = utils.getMockData({ totalElements: 120 });
 
 export const Temp = () => {
     useResource({
