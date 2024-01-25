@@ -194,7 +194,7 @@ export const Grid = (props: any) => {
     const setWidth = (col: any, diff: any) => {
         const rects = _grid.current._headRects;
         const rect = rects[col];
-        const next = rect.width + diff;
+        const next = rect.width + diff < 80 ? 80 : rect.width + diff;
 
         _setHead((prev: any) => {
             return prev.map((_: any, index: any) => {
