@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
+import Draggable from "react-draggable";
 
 import { comnUtils } from "@/comn/utils";
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
@@ -82,6 +83,7 @@ export const Grid = (props: any) => {
                 flex: _head[index]?.flex,
                 width: _head[index]?.width,
                 minWidth: _head[index]?.minWidth,
+                maxWidth: _head[index]?.maxWidth,
                 cells: _.cells
                     .map((__: any) => ({
                         ...__,
@@ -112,6 +114,8 @@ export const Grid = (props: any) => {
             };
         });
     });
+
+    // const [_rect, _setRec] = React.useState();
 
     const [_totalCount, _setTotalCount] = React.useState<number>(() => {
         if (!data?.content) return 0;
@@ -180,6 +184,45 @@ export const Grid = (props: any) => {
 
         _setTotalCount(_grid.current._pagination === "in" ? data.content.length : data.page.totalElements);
     }, [__t]);
+
+    /** set width */
+    const setWidth = (col: any, diff: any) => {
+        const rects = _grid.current._headRects;
+        const rect = rects[col];
+        const next = rect.width + diff;
+
+        _setHead((prev: any) => {
+            return prev.map((_: any, index: any) => {
+                if (!rects[index]) return _;
+                const { flex, ...rest } = _;
+
+                if (index !== col) {
+                    const w = rects[index].width;
+                    return { ...rest, width: w, minWidth: w, maxWidth: w };
+                }
+
+                if (index === col) {
+                    return { ...rest, minWidth: next, width: next, maxWidth: next };
+                }
+            });
+        });
+
+        _setBody((prev: any) => {
+            return prev.map((_: any, index: any) => {
+                if (!rects[index]) return _;
+                const { flex, ...rest } = _;
+
+                if (index !== col) {
+                    const w = rects[index].width;
+                    return { ...rest, width: w, minWidth: w, maxWidth: w };
+                }
+
+                if (index === col) {
+                    return { ...rest, minWidth: next, width: next, maxWidth: next };
+                }
+            });
+        });
+    };
 
     /** set edit */
     const setEdit = React.useCallback((type: any, target: any, value: any) => {
@@ -707,16 +750,21 @@ export const Grid = (props: any) => {
                     {_options.index && <div className="uf-grid-option" />}
                     {/* header */}
                     {_head.map((colProps: any, colIndex: any) => {
-                        const { show, width, minWidth, flex, cells } = colProps;
+                        const { show, width, minWidth, maxWidth, flex, cells } = colProps;
                         const colKey = "head." + _grid.current._key + "." + colIndex;
 
                         /** col */
                         if (!show) return null;
                         return (
                             <div
+                                ref={(node) => {
+                                    if (node) {
+                                        _grid.current._headRects[colIndex] = node.getBoundingClientRect();
+                                    }
+                                }}
                                 key={colKey}
-                                className={classNames("flex flex-col gap-[1px]")}
-                                style={{ width, minWidth, flex }}
+                                className={classNames("flex flex-col gap-[1px] relative")}
+                                style={{ width, minWidth, maxWidth, flex }}
                             >
                                 {cells.map((celProps: any, celIndex: any) => {
                                     const celKey = colKey + "." + celIndex;
@@ -781,6 +829,16 @@ export const Grid = (props: any) => {
                                         </div>
                                     );
                                 })}
+                                <Draggable
+                                    axis="x"
+                                    position={{ x: 0, y: 0 }}
+                                    onStop={(event: any, data: any) => {
+                                        const x = data.x;
+                                        setWidth(colIndex, x);
+                                    }}
+                                >
+                                    <div className="absolute -right-[2px] w-[4px] h-full cursor-col-resize z-[9999]"></div>
+                                </Draggable>
                             </div>
                         );
                     })}

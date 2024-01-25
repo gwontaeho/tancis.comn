@@ -137,7 +137,7 @@ export const InputCode = (props: InputCodeProps) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{_value && `[${_value}] ${_label}`}</div>}
+            {!edit && <div>{viewCode(_value, { options: o.options })}</div>}
             <div hidden={!edit}>
                 <div className="w-full flex">
                     <input
@@ -160,6 +160,19 @@ export const InputCode = (props: InputCodeProps) => {
             </div>
         </div>
     );
+};
+
+export const viewCode = (v: any, o?: any) => {
+    if (!o?.options) return;
+
+    const option = o.options?.find(({ value }: any) => value === v);
+
+    if (!option) return;
+
+    const vt = option.value ? `[${option.value}] ` : "";
+    const lt = option.label;
+
+    return vt + lt;
 };
 
 export const formatCode = (v: any, o?: any) => {

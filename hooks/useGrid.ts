@@ -18,12 +18,20 @@ export const useGrid = (props: any) => {
         _selectedRow: null,
         _selectedCel: null,
 
-        _rect: [],
+        /** head ref for sync scroll */
         _head: null,
         _list: null,
+        _headRects: [],
+
+        /** rows rect */
+        _rect: [],
 
         /** group */
-        _group: {},
+        _group: {
+            text: {
+                open: true,
+            },
+        },
 
         /** sort */
         _sort: {},

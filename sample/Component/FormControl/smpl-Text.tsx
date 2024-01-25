@@ -71,7 +71,7 @@ export const SampleFormControlText = () => {
                     ]}
                 />
 
-                <Sample.Code>{`<FormControl type="text" value={'Text field'} />`}</Sample.Code>
+                {/* <Sample.Code>{`<FormControl type="text" value={'Text field'} />`}</Sample.Code>
                 <Page>
                     <FormControl type="text" value={"Text field"} />
                 </Page>
@@ -182,7 +182,7 @@ export const SampleFormControlText = () => {
                 </Page>
 
                 <Sample.Code>{`<FormControl type="text" minLength={10} />`}</Sample.Code>
-                <Page></Page>
+                <Page></Page> */}
             </Sample.Section>
         </Sample>
     );
