@@ -73,9 +73,15 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
     };
 
     const validateBySchema = (data: Array<any>) => {
-        let errors = [];
+        let errors: Array<any> = [];
+        data.map((item: any, index: number) => {
+            Object.entries(item).map(([k, v]: any) => {
+                let r = comnUtils.getValidatedValue(v, meta.current.schema[k]);
+                if (r !== undefined) errors.push({ row: index + 1, label: meta.current.labels[k], ...r });
+            });
+        });
 
-        data.map((item: any, index: number) => {});
+        console.log(errors);
     };
 
     const parseData = (data: Array<Array<any>>) => {
@@ -87,7 +93,11 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
         let temp = data.slice(2);
         let result: Array<any> = [];
         meta.current.keys = data[0];
-        meta.current.labels = data[1];
+        meta.current.labels = {};
+        data[0].map((item, index) => {
+            meta.current.labels[item] = data[1][index];
+        });
+
         temp.map((item: any) => {
             let t: { [key: string]: any } = {};
             meta.current.keys.map((key: any, index: number) => {
