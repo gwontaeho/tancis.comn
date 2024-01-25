@@ -149,6 +149,12 @@ export const Grid = (props: any) => {
         _grid.current._origin = _;
         _grid.current._content = _;
 
+        /** grouped */
+        // const grouped = Object.entries(lodash.groupBy(_, "q")).reduce((p: any, c: any) => {
+        //     const g = { __key: uuid(), __type: "group", binding: c[0] };
+        //     return [...p, g, ...c[1]];
+        // }, []);
+
         /** paged */
         const paged =
             _grid.current._pagination === "in" ? lodash.chunk(_, _grid.current._size)[_grid.current._page] : _;
@@ -176,8 +182,7 @@ export const Grid = (props: any) => {
             _grid.current._origin = _;
             _grid.current._content = _;
 
-            const paged =
-                _grid.current._pagination === "in" ? lodash.chunk(_, _grid.current._size)[_grid.current._page] : _;
+            const paged = returnPaged(_);
 
             return paged || [];
         });
@@ -654,6 +659,38 @@ export const Grid = (props: any) => {
      * sizing
      */
     const __setGrid = (content: any) => {
+        const sorted = returnSorted(content);
+        const paged = returnPaged(sorted);
+
+        _setTotalCount(sorted.length);
+
+        if (paged) {
+            _setTest(paged);
+            return;
+        } else {
+            if (_grid.current._page === 0) {
+                _setTest([]);
+                return;
+            }
+            const next = _grid.current._page - 1;
+            _grid.current._page = next;
+            _setPage(next);
+            return;
+        }
+    };
+
+    const returnGrouped = (d: any) => {
+        return Object.entries(lodash.groupBy(d, "q")).reduce((p: any, c: any) => {
+            const g = { __key: uuid(), __type: "group", binding: c[0] };
+            return [...p, g, ...c[1]];
+        }, []);
+    };
+
+    const returnPaged = (d: any) => {
+        return _grid.current._pagination === "in" ? lodash.chunk(d, _grid.current._size)[_grid.current._page] : d;
+    };
+
+    const returnSorted = (d: any) => {
         const order = lodash
             .sortBy(Object.entries(_grid.current._sort), [
                 (a: any) => {
@@ -669,30 +706,9 @@ export const Grid = (props: any) => {
                 },
                 [[], []],
             );
-
-        const ordered = lodash.orderBy(content, order[0], order[1]);
+        const ordered = lodash.orderBy(d, order[0], order[1]);
         const existed = ordered.filter(({ __type }: any) => __type !== "deleted");
-
-        const paged =
-            _grid.current._pagination === "in"
-                ? lodash.chunk(existed, _grid.current._size)[_grid.current._page]
-                : existed;
-
-        _setTotalCount(existed.length);
-
-        if (paged) {
-            _setTest(paged);
-            return;
-        } else {
-            if (_grid.current._page === 0) {
-                _setTest([]);
-                return;
-            }
-            const next = _grid.current._page - 1;
-            _grid.current._page = next;
-            _setPage(next);
-            return;
-        }
+        return existed;
     };
 
     /** initialize */
@@ -710,6 +726,11 @@ export const Grid = (props: any) => {
         _grid.current._handleChangeSize = handleChangeSize;
 
         _grid.current._initialized = true;
+    }, []);
+
+    const gtest = Object.entries(lodash.groupBy(_test, "q")).reduce((p: any, c: any) => {
+        const g = { __key: uuid(), __type: "group", binding: c[0] };
+        return [...p, g, ...c[1]];
     }, []);
 
     return (
@@ -837,7 +858,7 @@ export const Grid = (props: any) => {
                                         setWidth(colIndex, x);
                                     }}
                                 >
-                                    <div className="absolute -right-[2px] w-[4px] h-full cursor-col-resize z-[9999]"></div>
+                                    <div className="absolute right-0 w-[4px] h-full cursor-col-resize z-[9999]"></div>
                                 </Draggable>
                             </div>
                         );
@@ -871,6 +892,8 @@ export const Grid = (props: any) => {
                         _checked,
                         _selectedRow,
                         _totalCount,
+                        /** group test */
+                        gtest,
                     }}
                     itemSize={(index) =>
                         _grid.current._rect[index]?.["height"] || _grid.current._rect[0]?.["height"] || 0
@@ -915,9 +938,12 @@ const Row = React.memo((props: any) => {
         _checked,
         _selectedRow,
         _totalCount,
+        /** gtest */
+        gtest,
     } = data;
 
     const row = _test[rowIndex];
+    // const row = gtest[rowIndex];
 
     const rowKey = _grid.current._key + "." + rowIndex;
     const rowType = row?.__type;
@@ -937,195 +963,208 @@ const Row = React.memo((props: any) => {
                 // , top: style.height * rowIndex + rowIndex
             }}
         >
-            <div
-                ref={ref}
-                key={rowKey}
-                onClick={() => {
-                    if (onRowClick) onRowClick(row);
-                }}
-                className={classNames(
-                    "flex w-full min-w-full gap-[1px] border-l bg-uf-border",
-                    rowType === "added"
-                        ? "border-l-uf-success"
-                        : rowType === "updated"
-                          ? "border-l-uf-warning"
-                          : "border-l-uf-card-background",
-                )}
-            >
-                {checkbox && (
-                    <div className="uf-grid-option">
-                        <input
-                            type="checkbox"
-                            checked={_checked.some(({ __key }: any) => __key === contentKey)}
-                            onChange={(e) => _grid.current._handleCheck(e, row)}
-                        />
-                    </div>
-                )}
-                {radio && (
-                    <div className="uf-grid-option">
-                        <input
-                            type="radio"
-                            checked={_selectedRow?.__key === row?.__key}
-                            onChange={(e) => _grid.current._handleSelect(e, row)}
-                        />
-                    </div>
-                )}
-                {index && (
-                    <div className="uf-grid-option font-semibold">
-                        {index === "DESC" ? _totalCount - (_page * _size + rowIndex) : _page * _size + rowIndex + 1}
-                    </div>
-                )}
-
-                {/* body columns */}
-                {_body.map((colProps: any, colIndex: any) => {
-                    const { show, cells, width, minWidth, flex } = colProps;
-                    const colKey = rowKey + "." + colIndex;
-
-                    /** col */
-                    if (!show) return null;
-                    return (
-                        <div
-                            key={colKey}
-                            className={classNames("flex flex-col gap-[1px]")}
-                            style={{ width, minWidth, flex }}
-                        >
-                            {cells.map((cellProps: any, celIndex: any) => {
-                                const celKey = colKey + "." + celIndex;
-
-                                /** cel's row */
-                                return (
-                                    <div key={celKey} className="flex h-full gap-[1px]">
-                                        {cellProps.map((bProps: any, bIndex: any) => {
-                                            const bKey = contentKey + "." + celKey + "." + bIndex;
-                                            const binding = bProps.binding;
-                                            const value = row[binding];
-                                            const ov = _grid.current._origin.find(
-                                                ({ __key }: any) => __key === contentKey,
-                                            )?.[binding];
-
-                                            const o = {
-                                                type: bProps.type,
-                                                /** text */
-                                                mask: bProps.mask,
-                                                letterCase: bProps.letterCase,
-                                                /** number */
-                                                decimalScale: bProps.decimalScale,
-                                                thousandSeparator: bProps.thousandSeparator,
-                                                /** code */
-                                                area: bProps.area,
-                                                comnCd: bProps.comnCd,
-                                                /** */
-                                                options: bProps.options,
-                                                /** rules */
-                                                min: bProps.min,
-                                                max: bProps.max,
-                                                minLength: bProps.minLength,
-                                                pattern: bProps.pattern,
-                                                validate: bProps.validate,
-                                                required: bProps.required,
-                                                maxLength: bProps.maxLength,
-                                                /** */
-                                                rightButton: bProps.rightButton && {
-                                                    ...bProps.rightButton,
-                                                    onClick:
-                                                        bProps.rightButton.onClick &&
-                                                        (() =>
-                                                            bProps.rightButton.onClick({
-                                                                value: value,
-                                                                rowValues: row,
-                                                                binding: binding,
-                                                            })),
-                                                },
-                                                leftButton: bProps.leftButton && {
-                                                    ...bProps.leftButton,
-                                                    onClick:
-                                                        bProps.leftButton.onClick &&
-                                                        (() =>
-                                                            bProps.leftButton.onClick({
-                                                                value: value,
-                                                                rowValues: row,
-                                                                binding: binding,
-                                                            })),
-                                                },
-                                            };
-
-                                            const vv = comnUtils.getViewValue(value, o);
-                                            const fv = comnUtils.getFormattedValue(value, o);
-                                            const uv = comnUtils.getUnformattedValue(value, o);
-                                            const vldv = comnUtils.getValidatedValue(uv, o);
-
-                                            /** cel */
-                                            return (
-                                                <div
-                                                    key={bKey}
-                                                    {...(vldv && { "aria-invalid": true })}
-                                                    className={classNames(
-                                                        "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error break-all",
-                                                        (bProps.align === "start" || bProps.align === "left") &&
-                                                            "justify-start",
-                                                        (bProps.align === "end" || bProps.align === "right") &&
-                                                            "justify-end",
-                                                    )}
-                                                    style={{
-                                                        minWidth: bProps.width,
-                                                        maxWidth: bProps.width,
-                                                    }}
-                                                    onClick={() => {
-                                                        if (onCellClick?.[binding])
-                                                            onCellClick?.[binding]({
-                                                                binding: binding,
-                                                                value: uv,
-                                                                formattedValue: fv,
-                                                                rowValues: row,
-                                                            });
-                                                    }}
-                                                >
-                                                    {!bProps.edit &&
-                                                        (render?.cell?.[binding]?.({
-                                                            value: value,
-                                                            rowValues: row,
-                                                            binding: binding,
-                                                        }) || (
-                                                            <FormControl
-                                                                {...o}
-                                                                edit={false}
-                                                                value={fv}
-                                                                onChange={(v) => {
-                                                                    _grid.current._handleUpdate({
-                                                                        ...row,
-                                                                        [binding]: comnUtils.getUnformattedValue(v, o),
-                                                                    });
-                                                                }}
-                                                            />
-                                                        ))}
-
-                                                    {bProps.edit &&
-                                                        (render?.edit?.[binding]?.({
-                                                            value: value,
-                                                            rowValues: row,
-                                                            binding: binding,
-                                                        }) || (
-                                                            <FormControl
-                                                                {...o}
-                                                                value={fv}
-                                                                onChange={(v) => {
-                                                                    _grid.current._handleUpdate({
-                                                                        ...row,
-                                                                        [binding]: comnUtils.getUnformattedValue(v, o),
-                                                                    });
-                                                                }}
-                                                            />
-                                                        ))}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                );
-                            })}
+            {rowType === "group" && (
+                <div ref={ref} key={rowKey} className="h-[2.5rem]">
+                    asd
+                </div>
+            )}
+            {rowType !== "group" && (
+                <div
+                    ref={ref}
+                    key={rowKey}
+                    onClick={() => {
+                        if (onRowClick) onRowClick(row);
+                    }}
+                    className={classNames(
+                        "flex w-full min-w-full gap-[1px] border-l bg-uf-border",
+                        rowType === "added"
+                            ? "border-l-uf-success"
+                            : rowType === "updated"
+                              ? "border-l-uf-warning"
+                              : "border-l-uf-card-background",
+                    )}
+                >
+                    {checkbox && (
+                        <div className="uf-grid-option">
+                            <input
+                                type="checkbox"
+                                checked={_checked.some(({ __key }: any) => __key === contentKey)}
+                                onChange={(e) => _grid.current._handleCheck(e, row)}
+                            />
                         </div>
-                    );
-                })}
-            </div>
+                    )}
+                    {radio && (
+                        <div className="uf-grid-option">
+                            <input
+                                type="radio"
+                                checked={_selectedRow?.__key === row?.__key}
+                                onChange={(e) => _grid.current._handleSelect(e, row)}
+                            />
+                        </div>
+                    )}
+                    {index && (
+                        <div className="uf-grid-option font-semibold">
+                            {index === "DESC" ? _totalCount - (_page * _size + rowIndex) : _page * _size + rowIndex + 1}
+                        </div>
+                    )}
+
+                    {/* body columns */}
+                    {_body.map((colProps: any, colIndex: any) => {
+                        const { show, cells, width, minWidth, flex } = colProps;
+                        const colKey = rowKey + "." + colIndex;
+
+                        /** col */
+                        if (!show) return null;
+                        return (
+                            <div
+                                key={colKey}
+                                className={classNames("flex flex-col gap-[1px]")}
+                                style={{ width, minWidth, flex }}
+                            >
+                                {cells.map((cellProps: any, celIndex: any) => {
+                                    const celKey = colKey + "." + celIndex;
+
+                                    /** cel's row */
+                                    return (
+                                        <div key={celKey} className="flex h-full gap-[1px]">
+                                            {cellProps.map((bProps: any, bIndex: any) => {
+                                                const bKey = contentKey + "." + celKey + "." + bIndex;
+                                                const binding = bProps.binding;
+                                                const value = row[binding];
+                                                const ov = _grid.current._origin.find(
+                                                    ({ __key }: any) => __key === contentKey,
+                                                )?.[binding];
+
+                                                const o = {
+                                                    type: bProps.type,
+                                                    /** text */
+                                                    mask: bProps.mask,
+                                                    letterCase: bProps.letterCase,
+                                                    /** number */
+                                                    decimalScale: bProps.decimalScale,
+                                                    thousandSeparator: bProps.thousandSeparator,
+                                                    /** code */
+                                                    area: bProps.area,
+                                                    comnCd: bProps.comnCd,
+                                                    /** */
+                                                    options: bProps.options,
+                                                    /** rules */
+                                                    min: bProps.min,
+                                                    max: bProps.max,
+                                                    minLength: bProps.minLength,
+                                                    pattern: bProps.pattern,
+                                                    validate: bProps.validate,
+                                                    required: bProps.required,
+                                                    maxLength: bProps.maxLength,
+                                                    /** */
+                                                    rightButton: bProps.rightButton && {
+                                                        ...bProps.rightButton,
+                                                        onClick:
+                                                            bProps.rightButton.onClick &&
+                                                            (() =>
+                                                                bProps.rightButton.onClick({
+                                                                    value: value,
+                                                                    rowValues: row,
+                                                                    binding: binding,
+                                                                })),
+                                                    },
+                                                    leftButton: bProps.leftButton && {
+                                                        ...bProps.leftButton,
+                                                        onClick:
+                                                            bProps.leftButton.onClick &&
+                                                            (() =>
+                                                                bProps.leftButton.onClick({
+                                                                    value: value,
+                                                                    rowValues: row,
+                                                                    binding: binding,
+                                                                })),
+                                                    },
+                                                };
+
+                                                const vv = comnUtils.getViewValue(value, o);
+                                                const fv = comnUtils.getFormattedValue(value, o);
+                                                const uv = comnUtils.getUnformattedValue(value, o);
+                                                const vldv = comnUtils.getValidatedValue(uv, o);
+
+                                                /** cel */
+                                                return (
+                                                    <div
+                                                        key={bKey}
+                                                        {...(vldv && { "aria-invalid": true })}
+                                                        className={classNames(
+                                                            "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error break-all",
+                                                            (bProps.align === "start" || bProps.align === "left") &&
+                                                                "justify-start",
+                                                            (bProps.align === "end" || bProps.align === "right") &&
+                                                                "justify-end",
+                                                        )}
+                                                        style={{
+                                                            minWidth: bProps.width,
+                                                            maxWidth: bProps.width,
+                                                        }}
+                                                        onClick={() => {
+                                                            if (onCellClick?.[binding])
+                                                                onCellClick?.[binding]({
+                                                                    binding: binding,
+                                                                    value: uv,
+                                                                    formattedValue: fv,
+                                                                    rowValues: row,
+                                                                });
+                                                        }}
+                                                    >
+                                                        {!bProps.edit &&
+                                                            (render?.cell?.[binding]?.({
+                                                                value: value,
+                                                                rowValues: row,
+                                                                binding: binding,
+                                                            }) || (
+                                                                <FormControl
+                                                                    {...o}
+                                                                    edit={false}
+                                                                    value={fv}
+                                                                    onChange={(v) => {
+                                                                        _grid.current._handleUpdate({
+                                                                            ...row,
+                                                                            [binding]: comnUtils.getUnformattedValue(
+                                                                                v,
+                                                                                o,
+                                                                            ),
+                                                                        });
+                                                                    }}
+                                                                />
+                                                            ))}
+
+                                                        {bProps.edit &&
+                                                            (render?.edit?.[binding]?.({
+                                                                value: value,
+                                                                rowValues: row,
+                                                                binding: binding,
+                                                            }) || (
+                                                                <FormControl
+                                                                    {...o}
+                                                                    value={fv}
+                                                                    onChange={(v) => {
+                                                                        _grid.current._handleUpdate({
+                                                                            ...row,
+                                                                            [binding]: comnUtils.getUnformattedValue(
+                                                                                v,
+                                                                                o,
+                                                                            ),
+                                                                        });
+                                                                    }}
+                                                                />
+                                                            ))}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }, areEqual);
