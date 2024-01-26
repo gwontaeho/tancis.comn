@@ -16,11 +16,6 @@ const schema1 = {
         importExcel: true,
         exportExcel: true,
         pagination: "in",
-        group: {
-            q: { _seq: 0 },
-            w: { _seq: 1 },
-            ww: { _seq: 2 },
-        },
     },
     head: [
         {
