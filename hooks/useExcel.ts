@@ -4,7 +4,7 @@ import lodash from "lodash";
 
 type UseExcelProps = {
     edit?: boolean;
-    template?: "string";
+    template?: string;
     schema?: any;
     handler?: (data?: any) => { data: Array<any> };
     onSuccess?: (data?: any) => void;

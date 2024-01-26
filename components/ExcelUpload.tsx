@@ -10,7 +10,7 @@ import lodash from "lodash";
 type ExcelUploadProps = {
     edit?: boolean;
     schema?: any;
-    handler?: (args: any) => {};
+    handler?: (args: any) => { data: Array<any>; errors: any };
     onSuccess?: (args: any) => {};
     onError?: (args: any) => {};
 };
@@ -62,12 +62,56 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             const rawData: Array<Array<any>> = XLSX.utils.sheet_to_json(ws, { header: 1 });
             const parsedData = parseData(rawData);
             if (comnUtils.isEmptyArray(parsedData)) {
-                console.warn("There is no data in the uploaded Excel.");
-                if (onSuccess) onSuccess(parsedData);
+                console.warn(t("msg.com.00012"));
+                if (onError) onError({ type: "nodata", message: t("msg.com.00012"), errors: [] });
                 return;
             }
-            setSchemaMatrix(schema);
-            validateBySchema(parsedData);
+            try {
+                setSchemaMatrix(schema);
+            } catch (err) {
+                if (onError) {
+                    onError({
+                        type: "fail-parse-schema",
+                        message: t("msg.com.00013"),
+                        errors: [],
+                    });
+                }
+                console.warn(t("msg.com.00013"), err);
+                return;
+            }
+
+            const errors = validateBySchema(parsedData);
+            if (errors.length > 0) {
+                if (onError)
+                    onError({
+                        type: "fail-validation",
+                        message: t("msg.com.00014"),
+                        errors: errors,
+                    });
+                console.warn(t("msg.com.00014"));
+                return;
+            }
+
+            if (handler) {
+                const { data, errors } = handler(parsedData);
+                if (errors.length > 0) {
+                    if (onError) {
+                        onError({
+                            type: "fail-handler",
+                            message: t("msg.com.0001"),
+                            errors: errors,
+                        });
+                    }
+                    return;
+                }
+                if (onSuccess) {
+                    onSuccess(data);
+                    return;
+                }
+            }
+            if (onSuccess) {
+                onSuccess(parsedData);
+            }
         };
         reader.readAsBinaryString(f);
     };
@@ -81,7 +125,7 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             });
         });
 
-        console.log(errors);
+        return errors;
     };
 
     const parseData = (data: Array<Array<any>>) => {
@@ -94,7 +138,7 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
         let result: Array<any> = [];
         meta.current.keys = data[0];
         meta.current.labels = {};
-        data[0].map((item, index) => {
+        data[0].forEach((item, index) => {
             meta.current.labels[item] = data[1][index];
         });
 
