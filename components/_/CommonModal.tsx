@@ -53,7 +53,7 @@ const Modal = (props: ModalProps) => {
         <Fragment key={id}>
             {backdrop && (
                 <motion.div
-                    className="fixed w-full h-full z-[1000] top-0 left-0"
+                    className="fixed w-screen h-screen z-[9998] top-0 left-0"
                     initial={{ opacity: 0 }}
                     animate={{ background: "#00000080", opacity: 0.8 }}
                     transition={{ duration: 0.1 }}
@@ -67,7 +67,7 @@ const Modal = (props: ModalProps) => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1 }}
                     className={classNames(
-                        "fixed top-1/2 left-1/2 w-full border rounded bg-uf-background z-[1001]",
+                        "fixed flex flex-col top-1/2 left-1/2 w-full max-h-[90vh] border rounded bg-uf-background z-[9999]",
                         MODAL_SIZES[size],
                     )}
                 >
@@ -79,7 +79,7 @@ const Modal = (props: ModalProps) => {
                         <div className="text-lg">{t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
-                    <div className="p-4">{typeof content === "string" ? t(content) : content}</div>
+                    <div className="p-4 flex-1 overflow-auto">{typeof content === "string" ? t(content) : content}</div>
                     <div className="p-4 flex space-x-2 justify-end">
                         <Button onClick={() => handleCancel()} role="close"></Button>
                         {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
