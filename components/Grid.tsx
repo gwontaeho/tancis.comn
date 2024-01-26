@@ -159,44 +159,45 @@ export const Grid = (props: any) => {
         /**
          * grouping
          */
-        // let grouped = _;
+        let grouped = _;
         // const groups = Object.entries<any>(_grid.current._group);
         // const hasGroup = groups.length > 0;
 
         // if (hasGroup) {
-        //     const getGrouped = (data: any, by: any, depth: any, parent?: any): any => {
+        //     const getGrouped = (data: any, by: any, depth: any, parent: any, groupKey: any): any => {
         //         if (!by) return data;
         //         const nextDepth = depth + 1;
         //         const nextParent = [...parent, by];
         //         const __key = uuid();
 
-        //         _grid.current._groupStatus[__key] = { open: true };
-
         //         return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
+        //             const nextGroupKey = groupKey + "__" + c[0];
+
+        //             _grid.current._groupStatus[nextGroupKey] = { open: true };
         //             const g = {
         //                 __key,
         //                 __type: "group",
         //                 depth,
+        //                 groupKey: nextGroupKey,
         //                 binding: by[0],
         //                 value: c[0],
         //                 open: true,
         //             };
 
-        //             console.log(g);
-        //             return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent)];
+        //             return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, nextGroupKey)];
         //         }, []);
         //     };
 
-        //     grouped = getGrouped(grouped, groups[0], 0, []);
+        //     grouped = getGrouped(grouped, groups[0], 0, [], "");
         // }
-
-        // console.log(_grid.current._group);
 
         /**
          * paging
          */
         const paged =
-            _grid.current._pagination === "in" ? lodash.chunk(_, _grid.current._size)[_grid.current._page] : _;
+            _grid.current._pagination === "in"
+                ? lodash.chunk(grouped, _grid.current._size)[_grid.current._page]
+                : grouped;
         _grid.current._paged = paged;
 
         return paged || [];
@@ -221,9 +222,9 @@ export const Grid = (props: any) => {
             _grid.current._origin = _;
             _grid.current._content = _;
 
-            const grouped = returnGrouped(_);
+            // const grouped = returnGrouped(_);
 
-            const paged = returnPaged(grouped);
+            const paged = returnPaged(_);
 
             return paged || [];
         });
