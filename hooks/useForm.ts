@@ -251,6 +251,8 @@ export const useForm = (props: UseFormProps) => {
         });
     };
 
+    const view = (name: string) => {};
+
     return {
         schema: getSchema(_schema),
         handleSubmit: _handleSubmit,
@@ -275,5 +277,6 @@ export const useForm = (props: UseFormProps) => {
         getFormValues,
         setSchemaAll,
         setCheckAll,
+        view,
     };
 };
