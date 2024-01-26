@@ -16,6 +16,11 @@ const schema1 = {
         importExcel: true,
         exportExcel: true,
         pagination: "in",
+        group: {
+            q: { _seq: 0 },
+            w: { _seq: 1 },
+            ww: { _seq: 2 },
+        },
     },
     head: [
         {
@@ -32,30 +37,25 @@ const schema1 = {
         {
             cells: [{ binding: "q", required: true }],
         },
-        {
-            cells: [{ binding: "w", required: true }],
-        },
     ],
     body: [
         {
             colspan: 2,
             cells: [
-                { binding: "text", required: true, align: "left" },
-                { binding: "text", required: true, align: "left" },
+                { binding: "q", required: true, align: "left" },
+                { binding: "q", required: true, align: "left" },
             ],
         },
         {
-            cells: [{ binding: "text2", rightButton: { icon: "search" } }],
+            cells: [{ binding: "w", rightButton: { icon: "search" } }],
+        },
+        {
+            cells: [{ binding: "ww" }],
         },
         {
             cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
         },
-        {
-            cells: [{ binding: "q", type: "code", area: "comnCd", comnCd: "COM_0015", maxLength: 3 }],
-        },
-        {
-            cells: [{ binding: "w", type: "code", area: "comnCd", comnCd: "COM_0015", maxLength: 3 }],
-        },
+
         // {
         //     cells: [{ binding: "date", type: "date", colspan: 2 }],
         // },

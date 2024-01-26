@@ -27,10 +27,7 @@ export const useGrid = (props: any) => {
         _rect: [],
 
         /** group */
-        _group: {
-            q: { _seq: 0 },
-            w: { _seq: 1 },
-        },
+        _group: defaultSchema.options.group,
         _groupStatus: {},
 
         /** sort */
