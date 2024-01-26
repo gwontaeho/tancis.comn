@@ -28,10 +28,10 @@ export const useGrid = (props: any) => {
 
         /** group */
         _group: {
-            text: {
-                open: true,
-            },
+            q: { _seq: 0 },
+            w: { _seq: 1 },
         },
+        _groupStatus: {},
 
         /** sort */
         _sort: {},

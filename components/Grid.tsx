@@ -27,7 +27,7 @@ export const Grid = (props: any) => {
      */
     const [_head, _setHead] = React.useState(() => {
         return _grid.current._defaultSchema.head.map((_: any) => {
-            const maxCols = Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
+            const maxCols = _.colspan ?? Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
             const rect = (() => {
                 if (typeof _.width === "string" && _.width.endsWith("*")) {
                     const flex = Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1;
@@ -74,7 +74,7 @@ export const Grid = (props: any) => {
      */
     const [_body, _setBody] = React.useState(() => {
         return _grid.current._defaultSchema.body.map((_: any, index: any) => {
-            const maxCols = Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
+            const maxCols = _.colspan ?? Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
             return {
                 ..._,
                 __key: uuid(),
@@ -126,6 +126,7 @@ export const Grid = (props: any) => {
     const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
     const [_checked, _setChecked] = React.useState<any[]>([]);
     const [_sort, _setSort] = React.useState<any | null>({});
+    const [_group, _setGroup] = React.useState<any | null>({});
     const [_options, _setOptions] = React.useState({
         index: _grid.current._index,
         checkbox: _grid.current._checkbox,
@@ -137,27 +138,66 @@ export const Grid = (props: any) => {
         importExcel: _grid.current._importExcel,
     });
 
-    /** initialize content */
+    /**
+     * initialize content
+     *
+     *
+     *
+     */
     const [_test, _setTest] = React.useState<any[]>(() => {
         if (!Array.isArray(data.content)) return [];
 
-        /** origin content */
+        /**
+         * content setting
+         */
         const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-
         _grid.current._dataCreated = data.__t;
         _grid.current._dataUpdated = data.__t;
         _grid.current._origin = _;
         _grid.current._content = _;
 
-        /** grouped */
-        // const grouped = Object.entries(lodash.groupBy(_, "q")).reduce((p: any, c: any) => {
-        //     const g = { __key: uuid(), __type: "group", binding: c[0] };
-        //     return [...p, g, ...c[1]];
-        // }, []);
+        /**
+         * grouping
+         */
+        let grouped = _;
+        // const groups = Object.entries<any>(_grid.current._group);
+        // const hasGroup = groups.length > 0;
 
-        /** paged */
+        // if (hasGroup) {
+        //     const getGrouped = (data: any, by: any, depth: any, parent: any, groupKey: any): any => {
+        //         if (!by) return data;
+        //         const nextDepth = depth + 1;
+        //         const nextParent = [...parent, by];
+        //         const __key = uuid();
+
+        //         return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
+        //             const nextGroupKey = groupKey + "__" + c[0];
+
+        //             _grid.current._groupStatus[nextGroupKey] = { open: true };
+        //             const g = {
+        //                 __key,
+        //                 __type: "group",
+        //                 depth,
+        //                 groupKey: nextGroupKey,
+        //                 binding: by[0],
+        //                 value: c[0],
+        //                 open: true,
+        //             };
+
+        //             return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, nextGroupKey)];
+        //         }, []);
+        //     };
+
+        //     grouped = getGrouped(grouped, groups[0], 0, [], "");
+        // }
+
+        /**
+         * paging
+         */
         const paged =
-            _grid.current._pagination === "in" ? lodash.chunk(_, _grid.current._size)[_grid.current._page] : _;
+            _grid.current._pagination === "in"
+                ? lodash.chunk(grouped, _grid.current._size)[_grid.current._page]
+                : grouped;
         _grid.current._paged = paged;
 
         return paged || [];
@@ -181,6 +221,8 @@ export const Grid = (props: any) => {
             _grid.current._dataUpdated = data.__t;
             _grid.current._origin = _;
             _grid.current._content = _;
+
+            // const grouped = returnGrouped(_);
 
             const paged = returnPaged(_);
 
@@ -646,6 +688,8 @@ export const Grid = (props: any) => {
 
         _grid.current._sort = _;
 
+        console.log(_grid.current._sort);
+
         _setSort(_grid.current._sort);
         __setGrid(_grid.current._content);
     };
@@ -660,6 +704,7 @@ export const Grid = (props: any) => {
      */
     const __setGrid = (content: any) => {
         const sorted = returnSorted(content);
+        // const grouped = returnGrouped(content);
         const paged = returnPaged(sorted);
 
         _setTotalCount(sorted.length);
@@ -680,10 +725,30 @@ export const Grid = (props: any) => {
     };
 
     const returnGrouped = (d: any) => {
-        return Object.entries(lodash.groupBy(d, "q")).reduce((p: any, c: any) => {
-            const g = { __key: uuid(), __type: "group", binding: c[0] };
-            return [...p, g, ...c[1]];
-        }, []);
+        const groups = Object.entries<any>(_grid.current._group);
+        const hasGroup = groups.length > 0;
+
+        if (!hasGroup) return d;
+
+        if (hasGroup) {
+            const getGrouped = (data: any, base: any, depth: any): any => {
+                if (!base) return data;
+                const next = depth + 1;
+
+                return Object.entries(lodash.groupBy(data, base[0])).reduce((p: any, c: any) => {
+                    const g = { __key: uuid(), __type: "group", depth, binding: base[0], value: c[0], open: true };
+                    return [...p, g, ...getGrouped(c[1], groups[next], next)];
+                }, []);
+            };
+
+            return getGrouped(d, groups[0], 0);
+        }
+    };
+
+    const toggleGroup = (binding: any, value: any, open: any) => {
+        // _grid.current._group[binding] = { ..._grid.current._group[binding], [value]: { open } };
+        // console.log(_grid.current._group);
+        // __setGrid(_grid.current._content);
     };
 
     const returnPaged = (d: any) => {
@@ -726,11 +791,6 @@ export const Grid = (props: any) => {
         _grid.current._handleChangeSize = handleChangeSize;
 
         _grid.current._initialized = true;
-    }, []);
-
-    const gtest = Object.entries(lodash.groupBy(_test, "q")).reduce((p: any, c: any) => {
-        const g = { __key: uuid(), __type: "group", binding: c[0] };
-        return [...p, g, ...c[1]];
     }, []);
 
     return (
@@ -892,8 +952,7 @@ export const Grid = (props: any) => {
                         _checked,
                         _selectedRow,
                         _totalCount,
-                        /** group test */
-                        gtest,
+                        toggleGroup,
                     }}
                     itemSize={(index) =>
                         _grid.current._rect[index]?.["height"] || _grid.current._rect[0]?.["height"] || 0
@@ -939,16 +998,17 @@ const Row = React.memo((props: any) => {
         _selectedRow,
         _totalCount,
         /** gtest */
+        toggleGroup,
         gtest,
     } = data;
 
     const row = _test[rowIndex];
-    // const row = gtest[rowIndex];
 
     const rowKey = _grid.current._key + "." + rowIndex;
     const rowType = row?.__type;
     const contentKey = row?.__key;
 
+    // console.log(row);
     const ref = React.useRef<any>();
 
     React.useEffect(() => {
@@ -964,14 +1024,21 @@ const Row = React.memo((props: any) => {
             }}
         >
             {rowType === "group" && (
-                <div ref={ref} key={rowKey} className="h-[2.5rem]">
-                    asd
+                <div ref={ref} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
+                    <button
+                        className="flex items-center justify-center w-[2rem] h-full"
+                        onClick={() => toggleGroup(row.binding, row.value, !row.open)}
+                    >
+                        <Icon icon="down" size="xs" />
+                    </button>
+                    <div className="px-1">
+                        {row.binding} {row.value}
+                    </div>
                 </div>
             )}
             {rowType !== "group" && (
                 <div
                     ref={ref}
-                    key={rowKey}
                     onClick={() => {
                         if (onRowClick) onRowClick(row);
                     }}
@@ -1007,7 +1074,6 @@ const Row = React.memo((props: any) => {
                             {index === "DESC" ? _totalCount - (_page * _size + rowIndex) : _page * _size + rowIndex + 1}
                         </div>
                     )}
-
                     {/* body columns */}
                     {_body.map((colProps: any, colIndex: any) => {
                         const { show, cells, width, minWidth, flex } = colProps;

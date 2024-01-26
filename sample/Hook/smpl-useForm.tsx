@@ -136,7 +136,10 @@ export const SampleUseForm = () => {
         },
     });
 
-    const text = watch(["text"]);
+    const [text, number] = watch(["text", "number"]);
+
+    console.log(text);
+    console.log(number);
 
     const onSubmit = (data: TFormValues) => {
         console.log(data);
@@ -159,8 +162,12 @@ export const SampleUseForm = () => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...schema.text} />
-                                <Group.Control {...schema.number} />
+                                <Group.Any>
+                                    {text} - {number}
+                                </Group.Any>
+                                <Group.Any>{}</Group.Any>
+                                {/* <Group.Control {...schema.text} />
+                                <Group.Control {...schema.number} /> */}
                             </Group.Row>
                             <Group.Row>
                                 <Group.Control {...schema.password} />

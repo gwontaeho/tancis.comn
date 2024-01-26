@@ -32,10 +32,17 @@ const schema1 = {
         {
             cells: [{ binding: "q", required: true }],
         },
+        {
+            cells: [{ binding: "w", required: true }],
+        },
     ],
     body: [
         {
-            cells: [{ binding: "text", required: true, align: "left" }],
+            colspan: 2,
+            cells: [
+                { binding: "text", required: true, align: "left" },
+                { binding: "text", required: true, align: "left" },
+            ],
         },
         {
             cells: [{ binding: "text2", rightButton: { icon: "search" } }],
@@ -47,13 +54,16 @@ const schema1 = {
             cells: [{ binding: "q", type: "code", area: "comnCd", comnCd: "COM_0015", maxLength: 3 }],
         },
         {
-            cells: [{ binding: "date", type: "date", colspan: 2 }],
+            cells: [{ binding: "w", type: "code", area: "comnCd", comnCd: "COM_0015", maxLength: 3 }],
         },
-        {
-            cells: [
-                { binding: "select", type: "select", colspan: 2, area: "comnCd", comnCd: "COM_0015", required: true },
-            ],
-        },
+        // {
+        //     cells: [{ binding: "date", type: "date", colspan: 2 }],
+        // },
+        // {
+        //     cells: [
+        //         { binding: "select", type: "select", colspan: 2, area: "comnCd", comnCd: "COM_0015", required: true },
+        //     ],
+        // },
         // {
         //     cells: [{ binding: "time", type: "time" }],
         // },
@@ -174,32 +184,31 @@ export const Temp = () => {
             },
         },
         cell: {
-            text: (data: any) => {
-                /**
-                 * # data
-                 * value
-                 * rowValues
-                 * binding
-                 */
-
-                return <Layout>*custom* {data.value}</Layout>;
-            },
+            // text: (data: any) => {
+            //     /**
+            //      * # data
+            //      * value
+            //      * rowValues
+            //      * binding
+            //      */
+            //     return <Layout>*custom* {data.value}</Layout>;
+            // },
         },
         edit: {
-            text: (data: any) => {
-                /**
-                 * # data
-                 * value
-                 * rowValues
-                 * binding
-                 */
-                return (
-                    <Layout direction="row" gap={1}>
-                        <FormControl />
-                        <FormControl />
-                    </Layout>
-                );
-            },
+            // text: (data: any) => {
+            //     /**
+            //      * # data
+            //      * value
+            //      * rowValues
+            //      * binding
+            //      */
+            //     return (
+            //         <Layout direction="row" gap={1}>
+            //             <FormControl />
+            //             <FormControl />
+            //         </Layout>
+            //     );
+            // },
         },
     };
 
