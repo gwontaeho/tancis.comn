@@ -82,44 +82,104 @@ export const comnUtils = {
         return v;
     },
     getValidatedValue: (v: any, o?: any) => {
+        const t = comnUtils.getValidateObject(o);
+
         if (o?.required) {
             if (!v) {
-                return { message: "r", type: "required" };
+                return { message: t.required.message, type: "required" };
             }
         }
         if (o?.min) {
-            if (v < o.min) {
-                return { message: "r", type: "min" };
+            if (v < t.min.value) {
+                return { message: t.min.message, type: "min" };
             }
         }
         if (o?.max) {
-            if (v > o.max) {
-                return { message: "r", type: "max" };
+            if (v > t.max.value) {
+                return { message: t.max.message, type: "max" };
             }
         }
         if (o?.minLength) {
-            if (v?.length < o.minLength) {
-                return { message: "r", type: "minLength" };
+            if (v?.length < t.minLength.value) {
+                return { message: t.minLength.message, type: "minLength" };
             }
         }
         if (o?.maxLength) {
-            if (v?.length > o.maxLength) {
-                return { message: "r", type: "maxLength" };
+            if (v?.length > t.maxLength.value) {
+                return { message: t.maxLength.message, type: "maxLength" };
             }
         }
-        if (o?.pattern && o.pattern instanceof RegExp) {
-            if (!o.pattern.test(v)) {
-                return { message: "r", type: "pattern" };
+        if (o?.pattern) {
+            if (!t.pattern.value.test(v)) {
+                return { message: t.pattern.message, type: "pattern" };
             }
         }
-        if (o?.validate && typeof o.validate === "function") {
-            if (!o.validate(v)) {
-                return { message: "r", type: "validate" };
+        if (o?.validate) {
+            if (!t.validate.value(v)) {
+                return { message: t.validate.message, type: "validate" };
             }
         }
     },
     //#endregion
+    getValidateObject: (o?: any) => {
+        let t: any = {};
 
+        if (o === undefined || o === null) return o;
+        if (o.required !== undefined && typeof o.required !== "object") {
+            t.required = {
+                value: o.required,
+                message: "msg.com.00005",
+                type: "required",
+            };
+        }
+        if (o.min !== undefined && typeof o.min !== "object") {
+            t.min = {
+                value: o.min,
+                message: "msg.com.00006",
+                type: "min",
+            };
+        }
+        if (o.max !== undefined && typeof o.max !== "object") {
+            t.max = {
+                value: o.max,
+                message: "msg.com.00007",
+                type: "max",
+            };
+        }
+        if (o.minLength !== undefined && typeof o.minLength !== "object") {
+            t.minLength = {
+                value: o.minLength,
+                message: "msg.com.00008",
+                type: "minLength",
+            };
+        }
+
+        if (o.maxLength !== undefined && typeof o.maxLength !== "object") {
+            t.maxLength = {
+                value: o.maxLength,
+                message: "msg.com.00009",
+                type: "maxLength",
+            };
+        }
+
+        if (o.pattern !== undefined && o.pattern instanceof RegExp) {
+            t.pattern = {
+                value: o.pattern,
+                message: "msg.com.00010",
+                type: "pattern",
+            };
+        }
+
+        if (o.validate !== undefined && typeof o.validate !== "object") {
+            t.validate = {
+                value: o.validate,
+                message: "msg.com.00011",
+                type: "validate",
+            };
+        }
+
+        return t;
+    },
     //#region locale
     getLocale: () => {
         return localStorage.getItem("lang")?.toString() || "en";

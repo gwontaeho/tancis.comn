@@ -74,7 +74,7 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
 
     const validateBySchema = (data: Array<any>) => {
         let errors: Array<any> = [];
-        data.map((item: any, index: number) => {
+        data.forEach((item: any, index: number) => {
             Object.entries(item).map(([k, v]: any) => {
                 let r = comnUtils.getValidatedValue(v, meta.current.schema[k]);
                 if (r !== undefined) errors.push({ row: index + 1, label: meta.current.labels[k], ...r });
@@ -98,9 +98,9 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             meta.current.labels[item] = data[1][index];
         });
 
-        temp.map((item: any) => {
+        temp.forEach((item: any) => {
             let t: { [key: string]: any } = {};
-            meta.current.keys.map((key: any, index: number) => {
+            meta.current.keys.forEach((key: any, index: number) => {
                 t[key] = item[index];
             });
             result.push(t);

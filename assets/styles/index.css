@@ -294,6 +294,11 @@
     .input {
         @apply block min-h-[1.75rem] p-1 w-full transition bg-uf-input-background border rounded outline-none focus:border-uf-main disabled:bg-black/10;
     }
+
+    .input[readonly] {
+        @apply bg-black/10;
+    }
+
     .button {
         @apply block min-h-[1.75rem] h-7 px-2 transition bg-uf-background border rounded;
     }
