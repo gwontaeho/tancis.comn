@@ -37,7 +37,7 @@ export const SampleUseModal = () => {
     };
 
     const withComponent = () => {
-        modal.openModal({ content: <div>안녕123!1!</div> });
+        modal.openModal({ content: <div className="h-[2000px]">안녕123!1!</div> });
     };
     const widthDrag = () => {
         modal.openModal({ content: <div>안녕123!1!</div>, draggable: true });
@@ -95,7 +95,7 @@ openModal({
                 <Sample.Code exec={withComponent}>{`/* */
 
 openModal({
-    onCancel: () => alert('cancel')
+    compo: () => alert('cancel')
 })`}</Sample.Code>
                 <Sample.Code exec={widthDrag}>{`/* */
                 
