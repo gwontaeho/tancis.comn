@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { Icon, IconsType, IconSizesType } from "@/comn/components";
 
 const WIDTHS = {
     1: "w-1/12",
@@ -37,6 +38,7 @@ const BUTTON_VARIANTS = {
     "outline-primary": { style: "uf-button-outlined", color: "blue" },
     "outline-danger": { style: "uf-button-outlined", color: "error" },
     "outline-secondary": { style: "uf-button-outlined", color: "gray" },
+    "outline-bg": { style: "uf-button-outlined", color: "" },
 };
 
 const BUTTON_ROLES = {
@@ -63,10 +65,12 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: keyof typeof BUTTON_VARIANTS;
     color?: "black" | "white" | "darkgray" | "gray" | "lightgray" | "blue" | "success" | "error" | "info" | "warning";
     role?: keyof typeof BUTTON_ROLES;
+    icon?: IconsType;
+    size?: IconSizesType;
 };
 
 export const Button = (props: ButtonProps) => {
-    let { children, type = "button", variant = "contained", color, width, height, role, ...rest } = props;
+    let { children, type = "button", variant = "contained", color, width, height, role, icon, size, ...rest } = props;
 
     const { t } = useTranslation();
 
@@ -93,6 +97,7 @@ export const Button = (props: ButtonProps) => {
                 height && HEIGHTS[height],
             )}
         >
+            {icon && <Icon icon={icon} size={size} />}
             {role ? t(BUTTON_ROLES[role].text) : typeof children === "string" ? t(children) : children}
         </button>
     );
