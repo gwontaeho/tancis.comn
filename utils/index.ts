@@ -250,6 +250,7 @@ export const comnUtils = {
                 .map((_, i) => ({
                     index: i,
                     q: ["abc", "bob", "tom", "ken"][Math.floor(Math.random() * 4)],
+                    w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
                     id: new Date().getTime() + i,
                     a: "a" + Math.random() * 1000,
                     b: "b" + Math.random() * 1000,
