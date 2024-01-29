@@ -27,7 +27,11 @@ export const useGrid = (props: any) => {
         _rect: [],
 
         /** group */
-        _group: defaultSchema.options.group,
+        _group: Array.isArray(defaultSchema.options.group)
+            ? defaultSchema.options.group.reduce((p: any, c: any, seq: any) => {
+                  return { ...p, [c]: { seq } };
+              }, {})
+            : {},
         _groupStatus: {},
 
         /** sort */
@@ -73,6 +77,9 @@ export const useGrid = (props: any) => {
     const getSelectedRow = () => {
         return _grid.current._selectedRow;
     };
+    const getSelectedCell = () => {
+        return _grid.current._selectedCel;
+    };
     const updateRow = (n: any) => {
         _grid.current._handleUpdate(n);
     };
@@ -108,6 +115,7 @@ export const useGrid = (props: any) => {
         getData,
         getOrigin,
         getSelectedRow,
+        getSelectedCell,
         getChecked,
         addRow,
         deleteRow,
