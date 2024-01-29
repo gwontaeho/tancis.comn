@@ -20,36 +20,25 @@ const schema1 = {
     },
     head: [
         {
-            id: "text",
-            width: "*",
-            cells: [{ binding: "text", required: true }],
-        },
-        {
-            cells: [{ binding: "text2", required: true }],
-        },
-        {
-            cells: [{ binding: "number", required: true }],
-        },
-        {
             cells: [{ binding: "q", required: true }],
+        },
+        {
+            cells: [{ binding: "w", required: true }],
+        },
+        {
+            cells: [{ binding: "ww", required: true }],
         },
     ],
     body: [
         {
+            cells: [{ binding: "q", rightButton: { icon: "search" } }],
+        },
+        {
+            cells: [{ binding: "q" }],
+        },
+        {
             colspan: 2,
-            cells: [
-                { binding: "q", required: true, align: "left" },
-                { binding: "q", required: true, align: "left" },
-            ],
-        },
-        {
-            cells: [{ binding: "w", rightButton: { icon: "search" } }],
-        },
-        {
-            cells: [{ binding: "ww" }],
-        },
-        {
-            cells: [{ binding: "number", type: "number", thousandSeparator: true, max: 5 }],
+            cells: [{ binding: "ww" }, { binding: "ww" }, { binding: "ww" }],
         },
 
         // {
@@ -125,7 +114,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 120 });
+const data = utils.getMockData({ totalElements: 77 });
 
 export const Temp = () => {
     useResource({
@@ -144,6 +133,7 @@ export const Temp = () => {
         getOrigin,
         setOption,
         getSelectedRow,
+        getSelectedCell,
         getChecked,
         addRow,
         deleteRow,
@@ -165,19 +155,19 @@ export const Temp = () => {
 
     const _test = {
         head: {
-            text: (data: any) => {
-                /**
-                 * # data
-                 * id
-                 * header
-                 * binding
-                 */
-                return (
-                    <Layout>
-                        <FormControl />
-                    </Layout>
-                );
-            },
+            // text: (data: any) => {
+            //     /**
+            //      * # data
+            //      * id
+            //      * header
+            //      * binding
+            //      */
+            //     return (
+            //         <Layout>
+            //             <FormControl />
+            //         </Layout>
+            //     );
+            // },
         },
         cell: {
             // text: (data: any) => {
@@ -211,11 +201,11 @@ export const Temp = () => {
     const _test2 = {
         onCellClick: {
             text: (data: any) => {
-                console.log(data);
+                // console.log(data);
             },
         },
         onRowClick: (data: any) => {
-            console.log(data);
+            // console.log(data);
         },
     };
 
@@ -253,6 +243,16 @@ export const Temp = () => {
                 <button onClick={() => console.log(getData())}>getData</button>
                 <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                 <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
+                <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
+                <button
+                    onClick={() => {
+                        const cel = getSelectedCell();
+                        updateRow({ ...cel?.rowValues, q: "123123" });
+                        console.log(cel?.rowValues);
+                    }}
+                >
+                    셀 데이터 바꾸기
+                </button>
                 <button onClick={() => console.log(getChecked())}>getChecked</button>
                 <button onClick={() => addRow({ text: "added" })}>add row</button>
                 <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
