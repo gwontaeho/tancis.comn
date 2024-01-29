@@ -16,7 +16,7 @@ const schema1 = {
         importExcel: true,
         exportExcel: true,
         pagination: "in",
-        // group: ["q", "12313"],
+        group: ["q", "12313"],
     },
     head: [
         {

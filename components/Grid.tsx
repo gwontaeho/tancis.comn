@@ -1056,7 +1056,7 @@ const Row = React.memo((props: any) => {
     React.useEffect(() => {
         _grid.current._rect[rowIndex] = ref.current.getBoundingClientRect();
         _grid.current._list.resetAfterIndex(rowIndex);
-    }, [_body]);
+    }, [_test, _body]);
 
     return (
         <div style={{ ...style }}>
