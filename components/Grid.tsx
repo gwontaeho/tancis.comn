@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
@@ -160,39 +160,37 @@ export const Grid = (props: any) => {
          * grouping
          */
         let grouped = _;
-        const hasGroup = !!_grid.current._group;
+        // const groups = Object.entries<any>(_grid.current._group);
+        // const hasGroup = groups.length > 0;
 
-        if (hasGroup) {
-            const groups = Object.entries<any>(_grid.current._group);
+        // if (hasGroup) {
+        //     const getGrouped = (data: any, by: any, depth: any, parent: any, groupKey: any): any => {
+        //         if (!by) return data;
+        //         const nextDepth = depth + 1;
+        //         const nextParent = [...parent, by];
+        //         const __key = uuid();
 
-            const getGrouped = (data: any, by: any, depth: any, parent: any, prevGroupKey: any): any => {
-                if (!by) return data;
-                const nextDepth = depth + 1;
-                const nextParent = [...parent, by];
-                const __key = uuid();
+        //         return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
+        //             const nextGroupKey = groupKey + "__" + c[0];
 
-                return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
-                    const groupKey = prevGroupKey + "__" + c[0];
+        //             _grid.current._groupStatus[nextGroupKey] = { open: true };
+        //             const g = {
+        //                 __key,
+        //                 __type: "group",
+        //                 depth,
+        //                 groupKey: nextGroupKey,
+        //                 binding: by[0],
+        //                 value: c[0],
+        //                 open: true,
+        //             };
 
-                    _grid.current._groupStatus[groupKey] = { open: true };
-                    const g = {
-                        __key,
-                        __type: "group",
-                        depth,
-                        groupKey,
-                        binding: by[0],
-                        value: c[0],
-                        count: c[1].length,
-                        open: true,
-                    };
+        //             return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, nextGroupKey)];
+        //         }, []);
+        //     };
 
-                    return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, groupKey)];
-                }, []);
-            };
+        //     grouped = getGrouped(grouped, groups[0], 0, [], "");
+        // }
 
-            grouped = getGrouped(grouped, groups[0], 0, [], "");
-        }
-        console.log(_grid.current._groupStatus);
         /**
          * paging
          */
@@ -224,9 +222,9 @@ export const Grid = (props: any) => {
             _grid.current._origin = _;
             _grid.current._content = _;
 
-            const grouped = returnGrouped(_);
+            // const grouped = returnGrouped(_);
 
-            const paged = returnPaged(grouped);
+            const paged = returnPaged(_);
 
             return paged || [];
         });
@@ -690,6 +688,8 @@ export const Grid = (props: any) => {
 
         _grid.current._sort = _;
 
+        console.log(_grid.current._sort);
+
         _setSort(_grid.current._sort);
         __setGrid(_grid.current._content);
     };
@@ -703,19 +703,14 @@ export const Grid = (props: any) => {
      * sizing
      */
     const __setGrid = (content: any) => {
-        let view = content;
+        const sorted = returnSorted(content);
+        // const grouped = returnGrouped(content);
+        const paged = returnPaged(sorted);
 
-        /** remove deleted */
-        view = returnExist(view);
-        /** sort, group */
-        view = returnGrouped(view);
+        _setTotalCount(sorted.length);
 
-        _setTotalCount(view.length);
-
-        view = returnPaged(view);
-
-        if (view) {
-            _setTest(view);
+        if (paged) {
+            _setTest(paged);
             return;
         } else {
             if (_grid.current._page === 0) {
@@ -730,78 +725,38 @@ export const Grid = (props: any) => {
     };
 
     const returnGrouped = (d: any) => {
-        const hasGroup = !!_grid.current._group;
-
-        console.log(returnSorted(d));
+        const groups = Object.entries<any>(_grid.current._group);
+        const hasGroup = groups.length > 0;
 
         if (!hasGroup) return d;
 
         if (hasGroup) {
-            const groups = Object.entries<any>(_grid.current._group);
-            const getGrouped = (data: any, by: any, depth: any, parent: any, prevGroupKey: any): any => {
-                if (!by) return data;
-                const nextDepth = depth + 1;
-                const nextParent = [...parent, by];
-                const __key = uuid();
+            const getGrouped = (data: any, base: any, depth: any): any => {
+                if (!base) return data;
+                const next = depth + 1;
 
-                return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
-                    const groupKey = prevGroupKey + "__" + c[0];
-
-                    if (_grid.current._groupStatus[groupKey] === undefined) {
-                        _grid.current._groupStatus[groupKey] = { open: true };
-                    }
-
-                    const open = _grid.current._groupStatus[groupKey].open;
-
-                    const g = {
-                        __key,
-                        __type: "group",
-                        depth,
-                        groupKey: groupKey,
-                        binding: by[0],
-                        value: c[0],
-                        count: c[1].length,
-                        open,
-                    };
-
-                    if (open) {
-                        return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, groupKey)];
-                    } else {
-                        return [...p, g];
-                    }
+                return Object.entries(lodash.groupBy(data, base[0])).reduce((p: any, c: any) => {
+                    const g = { __key: uuid(), __type: "group", depth, binding: base[0], value: c[0], open: true };
+                    return [...p, g, ...getGrouped(c[1], groups[next], next)];
                 }, []);
             };
 
-            return getGrouped(d, groups[0], 0, [], "");
+            return getGrouped(d, groups[0], 0);
         }
     };
 
-    const returnExist = useCallback((d: any) => {
-        return d.filter(({ __type }: any) => __type !== "deleted");
-    }, []);
-
-    const toggleGroup = (groupKey: any, open: any) => {
-        _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
-        __setGrid(_grid.current._content);
+    const toggleGroup = (binding: any, value: any, open: any) => {
+        // _grid.current._group[binding] = { ..._grid.current._group[binding], [value]: { open } };
+        // console.log(_grid.current._group);
+        // __setGrid(_grid.current._content);
     };
 
-    const returnPaged = useCallback((d: any) => {
-        if (_grid.current._pagination === "in") {
-            return lodash.chunk(d, _grid.current._size)[_grid.current._page];
-        }
-
-        if (
-            _grid.current._pagination === "out" ||
-            _grid.current._pagination === false ||
-            _grid.current._pagination === undefined
-        ) {
-            return d;
-        }
-    }, []);
+    const returnPaged = (d: any) => {
+        return _grid.current._pagination === "in" ? lodash.chunk(d, _grid.current._size)[_grid.current._page] : d;
+    };
 
     const returnSorted = (d: any) => {
-        /** sort options */
-        const [iteratees, orders] = lodash
+        const order = lodash
             .sortBy(Object.entries(_grid.current._sort), [
                 (a: any) => {
                     return a[1].seq;
@@ -816,8 +771,9 @@ export const Grid = (props: any) => {
                 },
                 [[], []],
             );
-
-        return lodash.orderBy(d, iteratees, orders);
+        const ordered = lodash.orderBy(d, order[0], order[1]);
+        const existed = ordered.filter(({ __type }: any) => __type !== "deleted");
+        return existed;
     };
 
     /** initialize */
@@ -835,8 +791,6 @@ export const Grid = (props: any) => {
         _grid.current._handleChangeSize = handleChangeSize;
 
         _grid.current._initialized = true;
-
-        return () => {};
     }, []);
 
     return (
@@ -859,8 +813,6 @@ export const Grid = (props: any) => {
                     ref={(node) => (_grid.current._head = node)}
                     className="uf-grid-head flex w-full gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10 overflow-x-auto"
                 >
-                    {/* group */}
-                    {_grid.current._group && <div className="uf-grid-option" />}
                     {/* checkbox */}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
@@ -1017,7 +969,6 @@ export const Grid = (props: any) => {
                     onChangePage={handleChangePage}
                     onChangeSize={handleChangeSize}
                     totalCount={_totalCount}
-                    totalCountView={_grid.current._content.length}
                 />
             )}
         </div>
@@ -1074,14 +1025,15 @@ const Row = React.memo((props: any) => {
         >
             {rowType === "group" && (
                 <div ref={ref} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
-                    {row.depth > 0 && <div style={{ width: `${row.depth * 2}rem` }} />}
                     <button
                         className="flex items-center justify-center w-[2rem] h-full"
-                        onClick={() => toggleGroup(row.groupKey, !row.open)}
+                        onClick={() => toggleGroup(row.binding, row.value, !row.open)}
                     >
-                        <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
+                        <Icon icon="down" size="xs" />
                     </button>
-                    <div className="px-1">{`${row.binding}가 ${row.value}이고 ${row.count}개`}</div>
+                    <div className="px-1">
+                        {row.binding} {row.value}
+                    </div>
                 </div>
             )}
             {rowType !== "group" && (
@@ -1099,7 +1051,6 @@ const Row = React.memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
-                    {_grid.current._group && <div className="min-w-[2rem] max-w-[2rem]" />}
                     {checkbox && (
                         <div className="uf-grid-option">
                             <input

@@ -86,37 +86,37 @@ export const comnUtils = {
 
         if (o?.required) {
             if (!v) {
-                return { message: t.required.message, type: "required" };
+                return { message: t.required.message, type: "required", schema: t };
             }
         }
         if (o?.min) {
             if (v < t.min.value) {
-                return { message: t.min.message, type: "min" };
+                return { message: t.min.message, type: "min", schema: t };
             }
         }
         if (o?.max) {
             if (v > t.max.value) {
-                return { message: t.max.message, type: "max" };
+                return { message: t.max.message, type: "max", schema: t };
             }
         }
         if (o?.minLength) {
             if (v?.length < t.minLength.value) {
-                return { message: t.minLength.message, type: "minLength" };
+                return { message: t.minLength.message, type: "minLength", schema: t };
             }
         }
         if (o?.maxLength) {
             if (v?.length > t.maxLength.value) {
-                return { message: t.maxLength.message, type: "maxLength" };
+                return { message: t.maxLength.message, type: "maxLength", schema: t };
             }
         }
         if (o?.pattern) {
             if (!t.pattern.value.test(v)) {
-                return { message: t.pattern.message, type: "pattern" };
+                return { message: t.pattern.message, type: "pattern", schema: t };
             }
         }
         if (o?.validate) {
             if (!t.validate.value(v)) {
-                return { message: t.validate.message, type: "validate" };
+                return { message: t.validate.message, type: "validate", schema: t };
             }
         }
     },

@@ -1,11 +1,12 @@
 import React from "react";
 import * as XLSX from "xlsx";
-import { Icon } from "@/comn/components";
-import { Button } from "@/comn/components";
+import { Icon, Button } from "@/comn/components";
+import {} from "@/comn/components";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
 import { useModal } from "@/comn/hooks";
 import lodash from "lodash";
+import { CommonErrors } from "./_";
 
 type ExcelUploadProps = {
     edit?: boolean;
@@ -82,12 +83,20 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
 
             const errors = validateBySchema(parsedData);
             if (errors.length > 0) {
-                if (onError)
-                    onError({
-                        type: "fail-validation",
-                        message: t("msg.com.00014"),
-                        errors: errors,
-                    });
+                const result = {
+                    type: "fail-validation",
+                    message: t("msg.com.00014"),
+                    errors: errors,
+                };
+
+                modal.openModal({
+                    content: <CommonErrors {...result} />,
+                    draggable: true,
+                    size: "lg",
+                    title: "Error List",
+                });
+
+                if (onError) onError(result);
                 console.warn(t("msg.com.00014"));
                 return;
             }
@@ -119,7 +128,7 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
     const validateBySchema = (data: Array<any>) => {
         let errors: Array<any> = [];
         data.forEach((item: any, index: number) => {
-            Object.entries(item).map(([k, v]: any) => {
+            Object.entries(item).forEach(([k, v]: any) => {
                 let r = comnUtils.getValidatedValue(v, meta.current.schema[k]);
                 if (r !== undefined) errors.push({ row: index + 1, label: meta.current.labels[k], ...r });
             });

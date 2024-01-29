@@ -23,5 +23,6 @@ export * from "./InputDaterange";
 export * from "./InputTimerange";
 export * from "./InputBoolean";
 export * from "./InputCode";
+export * from "./CommonError";
 
 export * from "./Sample";

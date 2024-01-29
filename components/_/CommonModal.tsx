@@ -21,12 +21,13 @@ export type ModalProps = {
     backdrop?: boolean;
     draggable?: boolean;
     size?: keyof typeof MODAL_SIZES;
+    title?: string;
     onConfirm?: () => void;
     onCancel?: () => void;
 };
 
 const Modal = (props: ModalProps) => {
-    const { id, onConfirm, onCancel, content, draggable = false, backdrop = true, size = "sm" } = props;
+    const { id, onConfirm, onCancel, content, draggable = false, backdrop = true, size = "sm", title } = props;
 
     const ref = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();
@@ -74,7 +75,7 @@ const Modal = (props: ModalProps) => {
                             "cursor-move": draggable,
                         })}
                     >
-                        <div className="text-lg">{t("L_ALT")}</div>
+                        <div className="text-lg">{title ? t(title) : t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
                     <div className="p-4 flex-1 overflow-auto">{typeof content === "string" ? t(content) : content}</div>
