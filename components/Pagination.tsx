@@ -7,13 +7,22 @@ type PaginationProps = {
     page?: number;
     size?: number;
     totalCount?: number;
+    totalCountView?: number;
     pageGroupSize?: number;
     onChangePage?: (page: number) => void;
     onChangeSize?: (page: number) => void;
 };
 
 export const Pagination = (props: PaginationProps) => {
-    const { page = 0, size = 10, totalCount = 0, pageGroupSize = 10, onChangePage, onChangeSize } = props;
+    const {
+        page = 0,
+        size = 10,
+        totalCount = 0,
+        totalCountView,
+        pageGroupSize = 10,
+        onChangePage,
+        onChangeSize,
+    } = props;
 
     const [_pageGroup, _setPageGroup] = useState(0);
     const _pageGroups = lodash.chunk(Array.from(Array(Math.ceil(totalCount / size)).keys()), pageGroupSize);
@@ -50,7 +59,7 @@ export const Pagination = (props: PaginationProps) => {
                     <option value="500">500</option>
                     <option value="1000">1000</option>
                 </select>
-                <p>Total : {totalCount}</p>
+                <p>Total : {totalCountView ?? totalCount}</p>
             </div>
             <ul className="flex space-x-1">
                 <button

@@ -311,6 +311,7 @@ export const comnUtils = {
                     index: i,
                     q: ["abc", "bob", "tom", "ken"][Math.floor(Math.random() * 4)],
                     w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
+                    ww: ["77", "22"][Math.floor(Math.random() * 2)],
                     id: new Date().getTime() + i,
                     a: "a" + Math.random() * 1000,
                     b: "b" + Math.random() * 1000,
