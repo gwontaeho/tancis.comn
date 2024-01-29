@@ -34,7 +34,7 @@ const schema1 = {
             cells: [{ binding: "q", rightButton: { icon: "search" } }],
         },
         {
-            cells: [{ binding: "w" }],
+            cells: [{ binding: "q" }],
         },
         {
             colspan: 2,
@@ -114,7 +114,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 9999 });
+const data = utils.getMockData({ totalElements: 8 });
 
 export const Temp = () => {
     useResource({
@@ -201,11 +201,11 @@ export const Temp = () => {
     const _test2 = {
         onCellClick: {
             text: (data: any) => {
-                console.log(data);
+                // console.log(data);
             },
         },
         onRowClick: (data: any) => {
-            console.log(data);
+            // console.log(data);
         },
     };
 
@@ -244,6 +244,15 @@ export const Temp = () => {
                 <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                 <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
                 <button onClick={() => console.log(getSelectedCel())}>getSelectedCel</button>
+                <button
+                    onClick={() => {
+                        const cel = getSelectedCel();
+                        updateRow({ ...cel?.rowValues, q: "123123" });
+                        console.log(cel?.rowValues);
+                    }}
+                >
+                    셀 데이터 바꾸기
+                </button>
                 <button onClick={() => console.log(getChecked())}>getChecked</button>
                 <button onClick={() => addRow({ text: "added" })}>add row</button>
                 <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>

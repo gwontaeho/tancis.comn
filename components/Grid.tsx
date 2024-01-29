@@ -422,31 +422,17 @@ export const Grid = (props: any) => {
                 ...rest,
                 __type:
                     _.__type === "origin" || _.__type === "updated"
-                        ? Object.keys(rest).every((k) => n[k] === _grid.current._origin[k])
-                            ? "origin"
-                            : "updated"
+                        ? Object.keys(rest).some((k) => {
+                              console.log(n[k]);
+                              return n[k] !== _grid.current._origin.find((o: any) => o.__key === n.__key)[k];
+                          })
+                            ? "updated"
+                            : "origin"
                         : _.__type,
             };
         });
 
-        if (_grid.current._paged.find(({ __key }: any) => __key === n.__key)) {
-            _setTest((prev) =>
-                prev.map((_) => {
-                    if (_.__key !== n.__key) return _;
-                    const { __type, __key, ...rest } = n;
-                    return {
-                        ..._,
-                        ...rest,
-                        __type:
-                            _.__type === "origin" || _.__type === "updated"
-                                ? Object.keys(rest).every((k) => n[k] === _grid.current._origin[k])
-                                    ? "origin"
-                                    : "updated"
-                                : _.__type,
-                    };
-                }),
-            );
-        }
+        __setGrid(_grid.current._content);
     }, []);
 
     /**
@@ -1064,6 +1050,8 @@ const Row = React.memo((props: any) => {
     const rowKey = _grid.current._key + "." + rowIndex;
     const rowType = row?.__type;
     const contentKey = row?.__key;
+
+    console.log(contentKey);
 
     const ref = React.useRef<any>();
 
