@@ -114,7 +114,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 8 });
+const data = utils.getMockData({ totalElements: 77 });
 
 export const Temp = () => {
     useResource({
@@ -133,7 +133,7 @@ export const Temp = () => {
         getOrigin,
         setOption,
         getSelectedRow,
-        getSelectedCel,
+        getSelectedCell,
         getChecked,
         addRow,
         deleteRow,
@@ -243,10 +243,10 @@ export const Temp = () => {
                 <button onClick={() => console.log(getData())}>getData</button>
                 <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                 <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
-                <button onClick={() => console.log(getSelectedCel())}>getSelectedCel</button>
+                <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
                 <button
                     onClick={() => {
-                        const cel = getSelectedCel();
+                        const cel = getSelectedCell();
                         updateRow({ ...cel?.rowValues, q: "123123" });
                         console.log(cel?.rowValues);
                     }}

@@ -77,7 +77,7 @@ export const useGrid = (props: any) => {
     const getSelectedRow = () => {
         return _grid.current._selectedRow;
     };
-    const getSelectedCel = () => {
+    const getSelectedCell = () => {
         return _grid.current._selectedCel;
     };
     const updateRow = (n: any) => {
@@ -115,7 +115,7 @@ export const useGrid = (props: any) => {
         getData,
         getOrigin,
         getSelectedRow,
-        getSelectedCel,
+        getSelectedCell,
         getChecked,
         addRow,
         deleteRow,

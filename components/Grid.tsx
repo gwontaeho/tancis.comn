@@ -1051,8 +1051,6 @@ const Row = React.memo((props: any) => {
     const rowType = row?.__type;
     const contentKey = row?.__key;
 
-    console.log(contentKey);
-
     const ref = React.useRef<any>();
 
     React.useEffect(() => {
