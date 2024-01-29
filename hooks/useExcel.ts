@@ -6,6 +6,7 @@ type UseExcelProps = {
     edit?: boolean;
     template?: string;
     schema?: any;
+    keys?: any;
     handler?: (data?: any) => { data: Array<any> };
     onSuccess?: (data?: any) => void;
     onError?: (error?: any) => void;
@@ -20,12 +21,13 @@ type UseExcelReturn = {
 };
 
 export const useExcel = (props: UseExcelProps): UseExcelReturn => {
-    const { edit = true, schema, handler, template, onSuccess, onError } = props;
+    const { edit = true, schema, handler, template, keys, onSuccess, onError } = props;
 
     const [_data, _setData] = React.useState<Array<any>>([]);
     const [_schema, _setSchema] = React.useState<any>({
         edit: edit,
         schema: schema,
+        keys: keys,
         handler: handler,
         onSuccess: onSuccess,
         onError: onError,

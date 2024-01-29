@@ -11,13 +11,14 @@ import { CommonErrors } from "./_";
 type ExcelUploadProps = {
     edit?: boolean;
     schema?: any;
+    keys?: any;
     handler?: (args: any) => { data: Array<any>; errors: any };
     onSuccess?: (args: any) => {};
     onError?: (args: any) => {};
 };
 
 export const ExcelUpload = (props: ExcelUploadProps) => {
-    const { edit, schema, handler, onSuccess, onError } = props;
+    const { edit, schema, keys = {}, handler, onSuccess, onError } = props;
     const input = React.useRef<HTMLInputElement>(null);
     const modal = useModal();
     const { t } = useTranslation();
@@ -64,12 +65,14 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             const parsedData = parseData(rawData);
             if (comnUtils.isEmptyArray(parsedData)) {
                 console.warn(t("msg.com.00012"));
+                modal.openModal({ content: t("msg.com.00012") });
                 if (onError) onError({ type: "nodata", message: t("msg.com.00012"), errors: [] });
                 return;
             }
             try {
                 setSchemaMatrix(schema);
             } catch (err) {
+                modal.openModal({ content: t("msg.com.00013") });
                 if (onError) {
                     onError({
                         type: "fail-parse-schema",
@@ -87,13 +90,18 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
                     type: "fail-validation",
                     message: t("msg.com.00014"),
                     errors: errors,
+                    head: keys,
                 };
-
                 modal.openModal({
-                    content: <CommonErrors {...result} />,
-                    draggable: true,
-                    size: "lg",
-                    title: "Error List",
+                    content: t("msg.com.00014"),
+                    onCancel: () => {
+                        modal.openModal({
+                            content: <CommonErrors {...result} />,
+                            draggable: true,
+                            size: "lg",
+                            title: "Error List",
+                        });
+                    },
                 });
 
                 if (onError) onError(result);
@@ -129,12 +137,28 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
         let errors: Array<any> = [];
         data.forEach((item: any, index: number) => {
             Object.entries(item).forEach(([k, v]: any) => {
-                let r = comnUtils.getValidatedValue(v, meta.current.schema[k]);
-                if (r !== undefined) errors.push({ row: index + 1, label: meta.current.labels[k], ...r });
+                let r: any = comnUtils.getValidatedValue(v, meta.current.schema[k]);
+                if (r !== undefined)
+                    errors.push({ row: index + 2, label: meta.current.labels[k], ...keyMapping(r, item, keys) });
             });
         });
 
         return errors;
+    };
+
+    const keyMapping = (row: any, item: any, keys: any) => {
+        if (row === undefined || row == null) return row;
+        if (keys === undefined || keys == null) return row;
+
+        if (keys.key1 !== undefined) row.key1 = item[keys.key1.binding];
+        if (keys.key2 !== undefined) row.key2 = item[keys.key2.binding];
+        if (keys.key3 !== undefined) row.key3 = item[keys.key3.binding];
+        if (keys.key4 !== undefined) row.key4 = item[keys.key4.binding];
+        if (keys.key5 !== undefined) row.key5 = item[keys.key5.binding];
+
+        console.log(row);
+
+        return row;
     };
 
     const parseData = (data: Array<Array<any>>) => {
