@@ -123,7 +123,7 @@ export const Grid = (props: any) => {
     const [_size, _setSize] = React.useState<number>(_grid.current._size);
     const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
     const [_selectedCel, _setSelectedCel] = React.useState<any>(null);
-    const [_editingRow, _setEditingRow] = React.useState<Record<string, any> | null>(null);
+    const [_editingRow, _setEditingRow] = React.useState<any[]>([]);
     const [_checked, _setChecked] = React.useState<any[]>([]);
     const [_sort, _setSort] = React.useState<any | null>({});
     const [_group, _setGroup] = React.useState<any | null>({});
@@ -287,6 +287,8 @@ export const Grid = (props: any) => {
          * # target
          * column id
          * cell binding
+         * row
+         * row key
          */
 
         switch (type) {
@@ -307,7 +309,7 @@ export const Grid = (props: any) => {
                     });
                     return next;
                 });
-                break;
+                return;
             }
             case "cell": {
                 _setBody((prev: any) => {
@@ -324,17 +326,37 @@ export const Grid = (props: any) => {
                     });
                     return next;
                 });
-                break;
+                return;
             }
+            /**
+             * 240129
+             */
             case "row": {
-                /** received row */
-                if (typeof target === "object" && target.__key) {
-                    _setEditingRow(target.__key);
-                }
+                const key =
+                    typeof target === "object" && !!target.__key
+                        ? target.__key
+                        : typeof target === "string" && !!target
+                          ? target
+                          : undefined;
+
+                if (!key) return;
+
+                _setEditingRow((prev) => {
+                    /** to edit */
+                    if (value) {
+                        if (prev.find((r) => r.__key === key)) return prev;
+                        return [...prev, key];
+                    }
+                    /** to read */
+                    return prev.filter((r) => r !== key);
+                });
+
                 break;
             }
         }
     }, []);
+
+    console.log(_editingRow);
 
     /** set show */
     const setShow = React.useCallback((type: any, target: any, value: any) => {
@@ -834,8 +856,6 @@ export const Grid = (props: any) => {
         return () => {};
     }, []);
 
-    console.log(_test);
-
     return (
         <div>
             {/* button */}
@@ -999,6 +1019,7 @@ export const Grid = (props: any) => {
                         _selectedRow,
                         _selectedCel,
                         _setSelectedCel,
+                        _editingRow,
                         _totalCount,
 
                         /** g */
@@ -1050,6 +1071,7 @@ const Row = React.memo((props: any) => {
         _selectedRow,
         _selectedCel,
         _setSelectedCel,
+        _editingRow,
         _totalCount,
         /** gtest */
         toggleGroup,
@@ -1201,6 +1223,8 @@ const Row = React.memo((props: any) => {
                                                 const uv = comnUtils.getUnformattedValue(value, o);
                                                 const vldv = comnUtils.getValidatedValue(uv, o);
 
+                                                const edit = _editingRow.includes(contentKey) ? true : bProps.edit;
+
                                                 /** cel */
                                                 return (
                                                     <div
@@ -1237,7 +1261,7 @@ const Row = React.memo((props: any) => {
                                                                 });
                                                         }}
                                                     >
-                                                        {!bProps.edit &&
+                                                        {!edit &&
                                                             (render?.cell?.[binding]?.({
                                                                 value: value,
                                                                 rowValues: row,
@@ -1259,7 +1283,7 @@ const Row = React.memo((props: any) => {
                                                                 />
                                                             ))}
 
-                                                        {bProps.edit &&
+                                                        {edit &&
                                                             (render?.edit?.[binding]?.({
                                                                 value: value,
                                                                 rowValues: row,

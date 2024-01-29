@@ -1,6 +1,7 @@
 import { useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
+import { utils as xlsxUtils, writeFile } from "xlsx";
 
 import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
@@ -114,7 +115,7 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 77 });
+const data = utils.getMockData({ totalElements: 999 });
 
 export const Temp = () => {
     useResource({
@@ -216,7 +217,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={undefined}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -224,6 +225,20 @@ export const Temp = () => {
                     </Group.Section>
                 </Group.Body>
             </Group>
+
+            <button
+                onClick={() => {
+                    const worksheet = xlsxUtils.json_to_sheet(getData());
+                    const workbook = xlsxUtils.book_new();
+                    xlsxUtils.book_append_sheet(workbook, worksheet, "test");
+
+                    console.log(worksheet);
+
+                    writeFile(workbook, "Presidents.xlsx", { compression: true });
+                }}
+            >
+                asdasd
+            </button>
 
             <Layout.Left direction="row" gap={8}>
                 <button onClick={() => resetData()}>reset</button>
@@ -258,6 +273,8 @@ export const Temp = () => {
                 <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
                 <button onClick={() => setEdit("column", "text", true)}>edit column true</button>
                 <button onClick={() => setEdit("column", "text", false)}>edit column false</button>
+                <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>
+                <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, false)}>edit row false</button>
                 <button onClick={() => setShow("column", "text", true)}>show text</button>
                 <button onClick={() => setShow("column", "text", false)}>hide text</button>
             </Layout.Left>
