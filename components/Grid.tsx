@@ -1,13 +1,13 @@
-import React, { useCallback } from "react";
+import React from "react";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
+import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
-import Draggable from "react-draggable";
 
-import { comnUtils } from "@/comn/utils";
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
+import { comnUtils } from "@/comn/utils";
 
 export const Grid = (props: any) => {
     const {
@@ -115,8 +115,6 @@ export const Grid = (props: any) => {
         });
     });
 
-    // const [_rect, _setRec] = React.useState();
-
     const [_totalCount, _setTotalCount] = React.useState<number>(() => {
         if (!data?.content) return 0;
         return _grid.current._pagination === "in" ? data.content.length : data.page.totalElements;
@@ -124,6 +122,7 @@ export const Grid = (props: any) => {
     const [_page, _setPage] = React.useState<number>(_grid.current._page);
     const [_size, _setSize] = React.useState<number>(_grid.current._size);
     const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
+    const [_selectedCel, _setSelectedCel] = React.useState<any>(null);
     const [_checked, _setChecked] = React.useState<any[]>([]);
     const [_sort, _setSort] = React.useState<any | null>({});
     const [_group, _setGroup] = React.useState<any | null>({});
@@ -140,9 +139,6 @@ export const Grid = (props: any) => {
 
     /**
      * initialize content
-     *
-     *
-     *
      */
     const [_test, _setTest] = React.useState<any[]>(() => {
         if (!Array.isArray(data.content)) return [];
@@ -156,53 +152,57 @@ export const Grid = (props: any) => {
         _grid.current._origin = _;
         _grid.current._content = _;
 
+        let content = _;
+
         /**
          * grouping
          */
-        let grouped = _;
-        const hasGroup = !!_grid.current._group;
+        if (!!_grid.current._group) {
+            const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
+                (a: any) => {
+                    return a[1].seq;
+                },
+            ]);
 
-        if (hasGroup) {
-            const groups = Object.entries<any>(_grid.current._group);
-
-            const getGrouped = (data: any, by: any, depth: any, parent: any, prevGroupKey: any): any => {
+            const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
                 if (!by) return data;
-                const nextDepth = depth + 1;
-                const nextParent = [...parent, by];
-                const __key = uuid();
+
+                const depth = prevDepth + 1;
+                const parent = [...prevParent, by];
 
                 return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
+                    if (c[0] === "undefined") return c[1];
+
                     const groupKey = prevGroupKey + "__" + c[0];
 
                     _grid.current._groupStatus[groupKey] = { open: true };
-                    const g = {
-                        __key,
+                    const row = {
+                        __key: uuid(),
                         __type: "group",
                         depth,
                         groupKey,
-                        binding: by[0],
-                        value: c[0],
-                        count: c[1].length,
                         open: true,
+                        value: c[0],
+                        binding: by[0],
+                        count: c[1].length,
                     };
 
-                    return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, groupKey)];
+                    return [...p, row, ...getGrouped(c[1], groups[depth], depth, parent, groupKey)];
                 }, []);
             };
 
-            grouped = getGrouped(grouped, groups[0], 0, [], "");
+            content = getGrouped(content, groups[0], 0, [], "");
         }
-        console.log(_grid.current._groupStatus);
+
         /**
          * paging
          */
-        const paged =
-            _grid.current._pagination === "in"
-                ? lodash.chunk(grouped, _grid.current._size)[_grid.current._page]
-                : grouped;
-        _grid.current._paged = paged;
+        if (_grid.current._pagination === "in") {
+            content = lodash.chunk(content, _grid.current._size)[_grid.current._page];
+        }
+        _grid.current._paged = content;
 
-        return paged || [];
+        return content;
     });
 
     /** set paged content */
@@ -211,7 +211,9 @@ export const Grid = (props: any) => {
         _grid.current._paged = _test;
     }, [_test]);
 
-    /** on content changed */
+    /**
+     * on data changed
+     */
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
         if (!Array.isArray(data.content)) return;
@@ -645,7 +647,7 @@ export const Grid = (props: any) => {
     }, []);
 
     /** handle sort */
-    const handleSort = (binding: any, value?: any) => {
+    const handleSort = React.useCallback((binding: any) => {
         let _ = _grid.current._sort;
 
         /** prev */
@@ -692,7 +694,7 @@ export const Grid = (props: any) => {
 
         _setSort(_grid.current._sort);
         __setGrid(_grid.current._content);
-    };
+    }, []);
 
     /**
      * set grid view
@@ -703,11 +705,8 @@ export const Grid = (props: any) => {
      * sizing
      */
     const __setGrid = (content: any) => {
-        let view = content;
+        let view = content.filter(({ __type }: any) => __type !== "deleted");
 
-        /** remove deleted */
-        view = returnExist(view);
-        /** sort, group */
         view = returnGrouped(view);
 
         _setTotalCount(view.length);
@@ -729,22 +728,29 @@ export const Grid = (props: any) => {
         }
     };
 
-    const returnGrouped = (d: any) => {
+    const returnGrouped = React.useCallback((d: any) => {
         const hasGroup = !!_grid.current._group;
 
-        console.log(returnSorted(d));
-
-        if (!hasGroup) return d;
+        if (!hasGroup) {
+            return returnSorted(d);
+        }
 
         if (hasGroup) {
-            const groups = Object.entries<any>(_grid.current._group);
-            const getGrouped = (data: any, by: any, depth: any, parent: any, prevGroupKey: any): any => {
-                if (!by) return data;
-                const nextDepth = depth + 1;
-                const nextParent = [...parent, by];
-                const __key = uuid();
+            const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
+                (o: any) => {
+                    return o[1].seq;
+                },
+            ]);
+
+            const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
+                if (!by) return returnSorted(data);
+
+                const depth = prevDepth + 1;
+                const parent = [...prevParent, by];
 
                 return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
+                    if (c[0] === "undefined") return c[1];
+
                     const groupKey = prevGroupKey + "__" + c[0];
 
                     if (_grid.current._groupStatus[groupKey] === undefined) {
@@ -753,39 +759,35 @@ export const Grid = (props: any) => {
 
                     const open = _grid.current._groupStatus[groupKey].open;
 
-                    const g = {
-                        __key,
+                    const row = {
+                        __key: uuid(),
                         __type: "group",
-                        depth,
-                        groupKey: groupKey,
-                        binding: by[0],
-                        value: c[0],
-                        count: c[1].length,
                         open,
+                        depth,
+                        groupKey,
+                        value: c[0],
+                        binding: by[0],
+                        count: c[1].length,
                     };
 
                     if (open) {
-                        return [...p, g, ...getGrouped(c[1], groups[nextDepth], nextDepth, nextParent, groupKey)];
+                        return [...p, row, ...getGrouped(c[1], groups[depth], depth, parent, groupKey)];
                     } else {
-                        return [...p, g];
+                        return [...p, row];
                     }
                 }, []);
             };
 
             return getGrouped(d, groups[0], 0, [], "");
         }
-    };
-
-    const returnExist = useCallback((d: any) => {
-        return d.filter(({ __type }: any) => __type !== "deleted");
     }, []);
 
-    const toggleGroup = (groupKey: any, open: any) => {
+    const toggleGroup = React.useCallback((groupKey: any, open: any) => {
         _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
         __setGrid(_grid.current._content);
-    };
+    }, []);
 
-    const returnPaged = useCallback((d: any) => {
+    const returnPaged = React.useCallback((d: any) => {
         if (_grid.current._pagination === "in") {
             return lodash.chunk(d, _grid.current._size)[_grid.current._page];
         }
@@ -799,12 +801,11 @@ export const Grid = (props: any) => {
         }
     }, []);
 
-    const returnSorted = (d: any) => {
-        /** sort options */
+    const returnSorted = React.useCallback((d: any) => {
         const [iteratees, orders] = lodash
             .sortBy(Object.entries(_grid.current._sort), [
-                (a: any) => {
-                    return a[1].seq;
+                (o: any) => {
+                    return o[1].seq;
                 },
             ])
             .reduce(
@@ -818,7 +819,7 @@ export const Grid = (props: any) => {
             );
 
         return lodash.orderBy(d, iteratees, orders);
-    };
+    }, []);
 
     /** initialize */
     React.useEffect(() => {
@@ -841,6 +842,7 @@ export const Grid = (props: any) => {
 
     return (
         <div>
+            {/* button */}
             <div className="flex justify-between">
                 <div className="flex gap-1 [&_*]:mb-2">
                     {_options.importExcel && <Button>Import</Button>}
@@ -860,7 +862,7 @@ export const Grid = (props: any) => {
                     className="uf-grid-head flex w-full gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10 overflow-x-auto"
                 >
                     {/* group */}
-                    {_grid.current._group && <div className="uf-grid-option" />}
+                    {Object.keys(_grid.current._groupStatus).length > 0 && <div className="uf-grid-option" />}
                     {/* checkbox */}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
@@ -999,17 +1001,21 @@ export const Grid = (props: any) => {
                         _size,
                         _checked,
                         _selectedRow,
+                        _selectedCel,
                         _totalCount,
+
+                        /** g */
                         toggleGroup,
                     }}
                     itemSize={(index) =>
-                        _grid.current._rect[index]?.["height"] || _grid.current._rect[0]?.["height"] || 0
+                        _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0
                     }
                 >
                     {Row}
                 </List>
             </div>
 
+            {/* Pagination */}
             {_grid.current._pagination && (
                 <Pagination
                     page={_page}
@@ -1045,10 +1051,10 @@ const Row = React.memo((props: any) => {
         _size,
         _checked,
         _selectedRow,
+        _selectedCel,
         _totalCount,
         /** gtest */
         toggleGroup,
-        gtest,
     } = data;
 
     const row = _test[rowIndex];
@@ -1057,7 +1063,6 @@ const Row = React.memo((props: any) => {
     const rowType = row?.__type;
     const contentKey = row?.__key;
 
-    // console.log(row);
     const ref = React.useRef<any>();
 
     React.useEffect(() => {
@@ -1066,12 +1071,7 @@ const Row = React.memo((props: any) => {
     }, [_body]);
 
     return (
-        <div
-            style={{
-                ...style,
-                // , top: style.height * rowIndex + rowIndex
-            }}
-        >
+        <div style={{ ...style }}>
             {rowType === "group" && (
                 <div ref={ref} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
                     {row.depth > 0 && <div style={{ width: `${row.depth * 2}rem` }} />}
@@ -1099,7 +1099,9 @@ const Row = React.memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
-                    {_grid.current._group && <div className="min-w-[2rem] max-w-[2rem]" />}
+                    {Object.keys(_grid.current._groupStatus).length > 0 && (
+                        <div className="min-w-[2rem] max-w-[2rem]" />
+                    )}
                     {checkbox && (
                         <div className="uf-grid-option">
                             <input
