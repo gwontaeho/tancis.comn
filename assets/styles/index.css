@@ -177,7 +177,7 @@
     .uf-grid-row {
     }
     .uf-grid-cell {
-        @apply flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1;
+        @apply flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1 transition;
     }
 
     .uf-grid-cell a {

@@ -17,6 +17,7 @@ import { SampleFormControlRange } from "@/comn/sample/Component/FormControl/smpl
 import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
 import { SampleFormControlCode } from "@/comn/sample/Component/FormControl/smpl-Code";
 
+import { SampleText } from "@/comn/sample/Component/smpl-Text";
 import { SamplePage } from "@/comn/sample/Component/smpl-Page";
 import { SampleIcon } from "@/comn/sample/Component/smpl-Icon";
 import { SampleTooltip } from "@/comn/sample/Component/smpl-Tooltip";
@@ -77,6 +78,7 @@ export const SampleMain = () => {
             <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
             <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 
+            <Route path="/components/Text" element={<SampleText />} />
             <Route path="/components/Page" element={<SamplePage />} />
             <Route path="/components/Icon" element={<SampleIcon />} />
             <Route path="/components/Tooltip" element={<SampleTooltip />} />

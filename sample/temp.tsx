@@ -12,7 +12,7 @@ const schema1 = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        edit: false,
         importExcel: true,
         exportExcel: true,
         pagination: "in",
@@ -216,7 +216,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={undefined}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}

@@ -123,6 +123,7 @@ export const Grid = (props: any) => {
     const [_size, _setSize] = React.useState<number>(_grid.current._size);
     const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
     const [_selectedCel, _setSelectedCel] = React.useState<any>(null);
+    const [_editingRow, _setEditingRow] = React.useState<Record<string, any> | null>(null);
     const [_checked, _setChecked] = React.useState<any[]>([]);
     const [_sort, _setSort] = React.useState<any | null>({});
     const [_group, _setGroup] = React.useState<any | null>({});
@@ -198,7 +199,7 @@ export const Grid = (props: any) => {
          * paging
          */
         if (_grid.current._pagination === "in") {
-            content = lodash.chunk(content, _grid.current._size)[_grid.current._page];
+            content = lodash.chunk(content, _grid.current._size)[_grid.current._page] || [];
         }
         _grid.current._paged = content;
 
@@ -281,6 +282,7 @@ export const Grid = (props: any) => {
          * # type
          * column
          * cell
+         * row
          *
          * # target
          * column id
@@ -288,7 +290,7 @@ export const Grid = (props: any) => {
          */
 
         switch (type) {
-            case "column":
+            case "column": {
                 _setBody((prev: any) => {
                     const next = prev.map((col: any) => {
                         const { id } = col;
@@ -306,7 +308,8 @@ export const Grid = (props: any) => {
                     return next;
                 });
                 break;
-            case "cell":
+            }
+            case "cell": {
                 _setBody((prev: any) => {
                     const next = prev.map((col: any) => {
                         return {
@@ -322,8 +325,14 @@ export const Grid = (props: any) => {
                     return next;
                 });
                 break;
-            case "row":
+            }
+            case "row": {
+                /** received row */
+                if (typeof target === "object" && target.__key) {
+                    _setEditingRow(target.__key);
+                }
                 break;
+            }
         }
     }, []);
 
@@ -340,7 +349,7 @@ export const Grid = (props: any) => {
          */
 
         switch (type) {
-            case "column":
+            case "column": {
                 _setHead((prev: any) => {
                     const next = prev.map((col: any) => {
                         const { id } = col;
@@ -364,6 +373,7 @@ export const Grid = (props: any) => {
                     return next;
                 });
                 break;
+            }
         }
     }, []);
 
@@ -395,8 +405,6 @@ export const Grid = (props: any) => {
     /** reset data */
     const resetData = () => {
         // remove sort options
-        //
-        //
 
         const o = _grid.current._origin;
 
@@ -775,7 +783,7 @@ export const Grid = (props: any) => {
 
     const returnPaged = React.useCallback((d: any) => {
         if (_grid.current._pagination === "in") {
-            return lodash.chunk(d, _grid.current._size)[_grid.current._page];
+            return lodash.chunk(d, _grid.current._size)[_grid.current._page] || [];
         }
 
         if (
@@ -825,6 +833,8 @@ export const Grid = (props: any) => {
 
         return () => {};
     }, []);
+
+    console.log(_test);
 
     return (
         <div>

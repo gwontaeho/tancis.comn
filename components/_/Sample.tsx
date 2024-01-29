@@ -50,10 +50,19 @@ const Section = (props: SampleSectionProps) => {
     const { children, title, description } = props;
 
     return (
-        <div className="bg-uf-card-background p-4 rounded">
-            {title && <div className="text-[1.2rem] mb-4">{title}</div>}
-            {description && <div className="text-[1rem] mb-4">{description}</div>}
+        <div className="bg-uf-card-background p-4 flex flex-col rounded gap-4">
+            {title && <div className="text-[1.2rem]">{title}</div>}
+            {description && <div className="text-[1rem]">{description}</div>}
             {children}
+        </div>
+    );
+};
+
+const Result = (props: any) => {
+    return (
+        <div className="flex gap-4">
+            <div className="">Result :</div>
+            <div>{props.children}</div>
         </div>
     );
 };
@@ -99,6 +108,7 @@ const Doc = (props: SampleDocProps) => {
 
 Sample.Section = Section;
 Sample.Doc = Doc;
+Sample.Result = Result;
 Sample.Code = Code;
 
 Sample.Table = (props: SampleTableProps) => {

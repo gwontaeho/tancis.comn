@@ -70,6 +70,14 @@ export const SampleRoutes = [
                         ],
                     },
                     {
+                        name: "Text",
+                        to: "/Text",
+                    },
+                    {
+                        name: "Grid",
+                        to: "/Grid",
+                    },
+                    {
                         name: "Page",
                         to: "/Page",
                     },
@@ -108,10 +116,6 @@ export const SampleRoutes = [
                     {
                         name: "Tree",
                         to: "/Tree",
-                    },
-                    {
-                        name: "Wijmo",
-                        to: "/Wijmo",
                     },
                 ],
             },
