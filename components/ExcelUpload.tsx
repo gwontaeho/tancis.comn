@@ -6,13 +6,13 @@ import { comnEnvs, comnUtils } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
 import { useModal } from "@/comn/hooks";
 import lodash from "lodash";
-import { CommonErrors } from "./_";
+import { CommonErrors } from "@/comn/components/_";
 
 type ExcelUploadProps = {
     edit?: boolean;
     schema?: any;
     keys?: any;
-    handler?: (args: any) => { data: Array<any>; errors: any };
+    handler?: (item: any, index: number) => { data: Array<any>; error?: any };
     onSuccess?: (args: any) => {};
     onError?: (args: any) => {};
 };
@@ -110,23 +110,34 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             }
 
             if (handler) {
-                const { data, errors } = handler(parsedData);
-                if (errors.length > 0) {
+                let _errors: Array<any> = [];
+                parsedData.map((item, index) => {
+                    const { data, error } = handler(item, index);
+                    if (error !== undefined) {
+                        _errors.push(error);
+                    }
+                    return data;
+                });
+
+                console.log(_errors);
+
+                if (_errors.length > 0) {
                     if (onError) {
                         onError({
                             type: "fail-handler",
                             message: t("msg.com.0001"),
-                            errors: errors,
+                            errors: _errors,
                         });
                     }
                     return;
                 }
                 if (onSuccess) {
-                    onSuccess(data);
+                    onSuccess(parsedData);
                     return;
                 }
             }
             if (onSuccess) {
+                console.log(parsedData);
                 onSuccess(parsedData);
             }
         };
@@ -139,7 +150,7 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             Object.entries(item).forEach(([k, v]: any) => {
                 let r: any = comnUtils.getValidatedValue(v, meta.current.schema[k]);
                 if (r !== undefined)
-                    errors.push({ row: index + 2, label: meta.current.labels[k], ...keyMapping(r, item, keys) });
+                    errors.push({ row: index + 3, label: meta.current.labels[k], ...keyMapping(r, item, keys) });
             });
         });
 
@@ -155,8 +166,6 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
         if (keys.key3 !== undefined) row.key3 = item[keys.key3.binding];
         if (keys.key4 !== undefined) row.key4 = item[keys.key4.binding];
         if (keys.key5 !== undefined) row.key5 = item[keys.key5.binding];
-
-        console.log(row);
 
         return row;
     };

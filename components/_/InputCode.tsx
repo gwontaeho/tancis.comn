@@ -25,7 +25,7 @@ const POPUP_URLS: Record<string, string> = {
     cntyCd: `/comn/comn/ppup/cntyCdPpup`,
     bnkCd: `/comn/comn/ppup/bnkCdPpup`,
     currCd: `/comn/comn/ppup/currCdPpup`,
-    portCd: `/comncomn/ppup/portCdPpup`,
+    portCd: `/comn/comn/ppup/portCdPpup`,
     portAirptCd: `/comn/comn/ppup/portAirptCdPpup`,
     airptCd: `/comn/comn/ppup/airptCdPpup`,
     coCd: `/comn/comn/ppup/coCdPpup`,
