@@ -133,6 +133,7 @@ export const Temp = () => {
         getOrigin,
         setOption,
         getSelectedRow,
+        getSelectedCel,
         getChecked,
         addRow,
         deleteRow,
@@ -242,6 +243,7 @@ export const Temp = () => {
                 <button onClick={() => console.log(getData())}>getData</button>
                 <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                 <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
+                <button onClick={() => console.log(getSelectedCel())}>getSelectedCel</button>
                 <button onClick={() => console.log(getChecked())}>getChecked</button>
                 <button onClick={() => addRow({ text: "added" })}>add row</button>
                 <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>

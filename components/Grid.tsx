@@ -1002,6 +1002,7 @@ export const Grid = (props: any) => {
                         _checked,
                         _selectedRow,
                         _selectedCel,
+                        _setSelectedCel,
                         _totalCount,
 
                         /** g */
@@ -1052,6 +1053,7 @@ const Row = React.memo((props: any) => {
         _checked,
         _selectedRow,
         _selectedCel,
+        _setSelectedCel,
         _totalCount,
         /** gtest */
         toggleGroup,
@@ -1208,6 +1210,7 @@ const Row = React.memo((props: any) => {
                                                     <div
                                                         key={bKey}
                                                         {...(vldv && { "aria-invalid": true })}
+                                                        {...(_selectedCel === bKey && { "aria-selected": true })}
                                                         className={classNames(
                                                             "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error break-all",
                                                             (bProps.align === "start" || bProps.align === "left") &&
@@ -1220,6 +1223,15 @@ const Row = React.memo((props: any) => {
                                                             maxWidth: bProps.width,
                                                         }}
                                                         onClick={() => {
+                                                            _setSelectedCel(bKey);
+                                                            _grid.current._selectedCel = {
+                                                                binding: binding,
+                                                                value: uv,
+                                                                formattedValue: fv,
+                                                                rowValues: row,
+                                                            };
+
+                                                            /** on cell click */
                                                             if (onCellClick?.[binding])
                                                                 onCellClick?.[binding]({
                                                                     binding: binding,
