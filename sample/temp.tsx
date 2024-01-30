@@ -15,7 +15,7 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: false,
+        edit: true,
         importExcel: true,
         exportExcel: true,
         pagination: "in",
@@ -44,7 +44,7 @@ const schema1: TGridSchema = {
             cells: [{ binding: "q", rightButton: { icon: "search" } }],
         },
         {
-            cells: [{ binding: "q", align: "left" }],
+            cells: [{ binding: "w", type: "timerange" }],
         },
         {
             colspan: 2,
