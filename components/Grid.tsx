@@ -228,11 +228,15 @@ export const Grid = (props: any) => {
      * set data
      */
     const setData = (d: any) => {
-        const _ = d?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+        let content = (Array.isArray(d) ? d : Array.isArray(d.content) ? d.content : []).map((_: any) => ({
+            ..._,
+            __key: uuid(),
+            __type: "origin",
+        }));
 
         _grid.current._dataUpdated = new Date();
-        _grid.current._origin = _;
-        _grid.current._content = _;
+        _grid.current._origin = content;
+        _grid.current._content = content;
 
         __setGrid(_grid.current._content);
     };
@@ -838,6 +842,7 @@ export const Grid = (props: any) => {
 
     /** initialize */
     React.useEffect(() => {
+        _grid.current._setData = setData;
         _grid.current._setEdit = setEdit;
         _grid.current._setShow = setShow;
         _grid.current._setOption = setOption;

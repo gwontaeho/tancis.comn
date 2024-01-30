@@ -153,6 +153,7 @@ export const Temp = () => {
         setPage,
         setSize,
         resetData,
+        setData,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -279,6 +280,7 @@ export const Temp = () => {
             </button> */}
 
             <Layout.Left direction="row" gap={8}>
+                <button onClick={() => setData(data)}>set data</button>
                 <button onClick={() => resetData()}>reset</button>
                 <button onClick={() => setSize(30)}>setSize 30</button>
                 <button onClick={() => setOption("edit", true)}>setOption edit true</button>
