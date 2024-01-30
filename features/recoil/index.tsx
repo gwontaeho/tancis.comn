@@ -1,28 +1,31 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
-import i18n from "@/comn/features/locales/i18n";
 import { ModalProps, ToastProps } from "@/comn/components/_";
 
 export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "tz" }>({
     key: "themeState",
     default: {
         isDark:
-            localStorage.getItem("isDark") === "true"
+            localStorage.getItem("isDark") === "true" /** default "false" */
                 ? "true"
                 : localStorage.getItem("isDark") === "false"
                   ? "false"
                   : window.matchMedia("(prefers-color-scheme: dark)").matches
                     ? "true"
                     : "false",
-        lang: document.documentElement.lang as "en" | "ko" | "tz",
+        lang:
+            localStorage.getItem("lang") === "en" /** default "ko" */
+                ? "en"
+                : localStorage.getItem("lang") === "tz"
+                  ? "tz"
+                  : "ko",
     },
     effects: [
         ({ onSet }) => {
             onSet((n, o: any) => {
                 if (n.lang !== o.lang) {
                     localStorage.setItem("lang", n.lang);
-                    i18n.changeLanguage(n.lang);
                 }
                 if (n.isDark !== o.isDark) {
                     localStorage.setItem("isDark", n.isDark);

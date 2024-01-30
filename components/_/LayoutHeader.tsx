@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
+import i18n from "@/comn/features/locales/i18n";
 
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
@@ -140,7 +141,10 @@ export const Header = () => {
                     <select
                         className="w-20 h-6 text-uf-white bg-uf-layout-header outline-none cursor-pointer [&>option]:bg-uf-layout-header"
                         value={theme.lang}
-                        onChange={(e) => setTheme((prev) => ({ ...prev, lang: e.target.value as "ko" | "en" | "tz" }))}
+                        onChange={(e) => {
+                            i18n.changeLanguage(e.target.value);
+                            setTheme((prev) => ({ ...prev, lang: e.target.value as "ko" | "en" | "tz" }));
+                        }}
                     >
                         <option value="ko">{t("L_KO")}</option>
                         <option value="en">{t("L_EN")}</option>

@@ -66,7 +66,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
 
     return (
         <div className="flex w-full">
-            <div className="min-w-fit flex-1 [&_input]:rounded-r-none">
+            <div className="flex-1 [&_input]:rounded-r-none">
                 <FormControl //
                     {...start}
                     type="date"
@@ -78,7 +78,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
                 ~
             </div>
             <div
-                className={classNames("min-w-fit flex-1 [&_input]:rounded-l-none", {
+                className={classNames("flex-1 [&_input]:rounded-l-none", {
                     "[&_input]:rounded-r-none": rangeButton !== undefined,
                 })}
             >
