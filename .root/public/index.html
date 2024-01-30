@@ -10,30 +10,25 @@
             try {
                 if (localStorage.getItem("isDark") === "true") {
                     document.documentElement.classList.add("dark");
-                } else if (localStorage.getItem("isDark") === "false") {
                 } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
                     document.documentElement.classList.add("dark");
-                    // toolbar
-                    // document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0B1120");
                 }
             } catch (error) {}
         </script>
         <script>
             try {
-                if (localStorage.getItem("lang")) {
-                    document.documentElement.lang = localStorage.getItem("lang");
+                if (localStorage.getItem("lang") === "en") {
+                    document.documentElement.lang = "en";
+                } else if (localStorage.getItem("lang") === "tz") {
+                    document.documentElement.lang = "tz";
                 }
             } catch (error) {}
         </script>
         <script>
             try {
-                // console.log("%REACT_APP_SYSTEM_GROUP%");
-
-                if (window.location.search.includes("s=e")) {
-                    document.documentElement.classList.add("tanesw");
-                } else if (window.location.search.includes("s=o")) {
+                if ("%REACT_APP_SYSTEM_GROUP%" === "tanoga") {
                     document.documentElement.classList.add("tanoga");
-                } else if (window.location.search.includes("s=c")) {
+                } else if ("%REACT_APP_SYSTEM_GROUP%" === "tancis") {
                     document.documentElement.classList.add("tancis");
                 } else {
                     document.documentElement.classList.add("tanesw");
