@@ -17,38 +17,57 @@ type UseExcelProps = {
 };
 
 type UseExcelReturn = {
-    data: any;
     schema: any;
-    uploadExcel: (...args: any) => void;
-    downloadExcel: () => void;
-    setEdit: (edit: boolean) => void;
+    validate: (data: Array<any>, schema: any) => void;
+    process: (data: Array<any>, handler: (item: any, index: number) => Array<any>) => Array<any>;
+    excelToJson: (file: File, index: number) => Promise<ExcelToJsonReturn>;
+    dataToExcel: () => any;
+    setEdit: (edit: boolean) => any;
 };
 
 type ExcelToJsonReturn = {
     error?: { type: string; message: string; errors: Array<any> };
     data?: Array<any>;
+    schema?: any;
+};
+
+type ValidateReturn = {
+    error?: { type: string; message: string; errors: Array<any> };
 };
 
 export const useExcel = (props: UseExcelProps): UseExcelReturn => {
-    const { edit = true, schema, handler, template, keys, onSuccess, onError } = props;
-    const [_data, _setData] = React.useState<Array<any>>([]);
-    const input = React.useRef<HTMLInputElement>(null);
-    const modal = useModal();
-    const { t } = useTranslation();
-    const meta = React.useRef<any>({});
-
+    const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
+    const { edit = true } = props;
     const [_schema, _setSchema] = React.useState<any>({
         edit: edit,
-        schema: schema,
-        keys: keys,
-        input: input,
-        handler: handler,
-        onSuccess: onSuccess,
-        onError: onError,
     });
 
-    const validate = (data: Array<any>, schema: any) => {
-        setSchemaMatrix(schema);
+    const process = (data: Array<any>, handler: (item: any, index: number) => any) => {
+        data.map((item, index) => {
+            return handler(item, index) || item;
+        });
+
+        return data;
+    };
+
+    const validate = (data: Array<any>, schema: any): ValidateReturn => {
+        let _schema = setSchemaMatrix(schema);
+        if (_schema === null || comnUtils.isEmptyObject(_schema)) {
+            return {
+                error: { type: "no-schema", message: t("msg.com.00003"), errors: [] },
+            };
+        }
+
+        const errors = validateBySchema(data, _schema);
+        if (comnUtils.isEmptyArray(errors)) {
+            return {
+                error: { type: "success", message: t("msg.com.00016"), errors: [] },
+            };
+        } else {
+            return {
+                error: { type: "fail-validation", message: t("msg.com.00014"), errors: errors },
+            };
+        }
     };
 
     const excelToJson = (file: File, index: number = 0) => {
@@ -70,7 +89,6 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
                 const ws = readedData.Sheets[wsname];
                 const rawData: Array<Array<any>> = XLSX.utils.sheet_to_json(ws, { header: 1 });
                 console.log(`sheet name : ${wsname}`);
-                //const parsedData = parseData(rawData);
 
                 if (comnUtils.isEmpty(rawData) || comnUtils.isEmptyArray(rawData)) {
                     reject({
@@ -87,13 +105,13 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
                     });
                     return;
                 }
-                let temp: Array<any> = data.slice(2);
+                let temp: Array<any> = rawData.slice(2);
                 let result: Array<any> = [];
-                let keys = data[0];
+                let keys = rawData[0];
                 let labels: any = {};
 
-                data[0].forEach((item: any, index: number) => {
-                    labels[item] = data[1][index];
+                rawData[0].forEach((item: any, index: number) => {
+                    labels[item] = rawData[1][index];
                 });
 
                 temp.forEach((item: any) => {
@@ -107,6 +125,10 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
                 resolve({
                     error: { type: "success", message: t("msg.com.00016"), errors: [] },
                     data: result,
+                    schema: {
+                        keys: keys,
+                        labels: labels,
+                    },
                 });
                 return;
             };
@@ -116,8 +138,7 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
 
     const setSchemaMatrix = (schema: any) => {
         if (schema === undefined || comnUtils.isEmpty(schema) || comnUtils.isEmptyObject(schema)) {
-            meta.current.schema = null;
-            return;
+            return null;
         }
 
         let t: { [key: string]: any } = {};
@@ -134,19 +155,21 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
                     if (cell.maxLength !== undefined) t[cell.binding].maxLength = cell.maxLength;
                     if (cell.pattern !== undefined) t[cell.binding].pattern = cell.pattern;
                     if (cell.validate !== undefined) t[cell.binding].validate = cell.validate;
+                    if (cell.area !== undefined) t[cell.binding].area = cell.area;
+                    if (cell.comnCd !== undefined) t[cell.binding].comnCd = cell.comnCd;
                 });
             });
-            meta.current.schema = t;
         }
+        return t;
     };
 
-    const validateBySchema = (data: Array<any>) => {
+    const validateBySchema = (data: Array<any>, schema: any) => {
         let errors: Array<any> = [];
         data.forEach((item: any, index: number) => {
             Object.entries(item).forEach(([k, v]: any) => {
-                let r: any = comnUtils.getValidatedValue(v, meta.current.schema[k]);
+                let r: any = comnUtils.getValidatedValue(v, schema[k]);
                 if (r !== undefined)
-                    errors.push({ row: index + 3, label: meta.current.labels[k], ...keyMapping(r, item, keys) });
+                    errors.push({ row: index + 3, label: schema.labels[k], ...keyMapping(r, item, schema.keys) });
             });
         });
 
@@ -166,112 +189,8 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
         return row;
     };
 
-    const parseData = (data: Array<Array<any>>) => {
-        if (comnUtils.isEmpty(data) || comnUtils.isEmptyArray(data)) return [];
-        if (data.length < 2) {
-            console.warn(new Error("Grid meta, header information is'not exist."));
-            return [];
-        }
-        let temp = data.slice(2);
-        let result: Array<any> = [];
-        meta.current.keys = data[0];
-        meta.current.labels = {};
-        data[0].forEach((item, index) => {
-            meta.current.labels[item] = data[1][index];
-        });
-
-        temp.forEach((item: any) => {
-            let t: { [key: string]: any } = {};
-            meta.current.keys.forEach((key: any, index: number) => {
-                t[key] = item[index];
-            });
-            result.push(t);
-        });
-
-        return result;
-    };
-
-    const uploadExcel = () => {
-        if (input === null || input === undefined || input.current === undefined || input.current === null) return;
-        const files = input.current.files || [];
-        const f = files[0];
-        const reader = new FileReader();
-
-        reader.onload = (e: any) => {
-            const data = e.target.result;
-            const readedData = XLSX.read(data, { type: "binary" });
-            const wsname = readedData.SheetNames[0];
-            const ws = readedData.Sheets[wsname];
-            const rawData: Array<Array<any>> = XLSX.utils.sheet_to_json(ws, { header: 1 });
-            const parsedData = parseData(rawData);
-
-            if (comnUtils.isEmptyArray(parsedData)) {
-                modal.openModal({
-                    content: t("msg.com.00012"),
-                    onCancel: () => {
-                        if (onError) onError({ type: "nodata", message: t("msg.com.00012"), errors: [], head: keys });
-                    },
-                });
-                console.warn(t("msg.com.00012"));
-                return;
-            }
-            try {
-                setSchemaMatrix(schema);
-            } catch (err) {
-                modal.openModal({
-                    content: t("msg.com.00013"),
-                    onCancel: () => {
-                        if (onError) {
-                            onError({
-                                type: "error-parse-schema",
-                                message: t("msg.com.00013"),
-                                errors: [],
-                                head: keys,
-                            });
-                        }
-                    },
-                });
-
-                console.warn(t("msg.com.00013"), err);
-                return;
-            }
-
-            const errors = validateBySchema(parsedData);
-            if (errors.length > 0) {
-                modal.openModal({
-                    content: t("msg.com.00014"),
-                    onCancel: () => {
-                        if (onError) {
-                            onError({
-                                type: "fail-validation",
-                                message: t("msg.com.00014"),
-                                errors: errors,
-                                head: keys,
-                            });
-                        }
-                    },
-                });
-                console.warn(t("msg.com.00014"));
-                return;
-            }
-
-            if (handler) {
-                parsedData.map((item, index) => {
-                    return handler(item, index) || item;
-                });
-            }
-
-            if (onSuccess) {
-                onSuccess(parsedData);
-            }
-
-            _setData(parsedData);
-        };
-        reader.readAsBinaryString(f);
-    };
-
-    const downloadExcel = () => {
-        //
+    const dataToExcel = () => {
+        return null;
     };
     const setEdit = (edit: boolean) => {
         _setSchema((prev: any) => {
@@ -279,5 +198,5 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
         });
     };
 
-    return { schema: _schema, data: _data, uploadExcel, downloadExcel, setEdit };
+    return { schema: _schema, validate, process, dataToExcel, excelToJson, setEdit };
 };
