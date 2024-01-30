@@ -24,31 +24,75 @@ const schema1: TGridSchema = {
     },
     head: [
         {
+            colspan: 3,
             width: "*",
             cells: [
-                { binding: "q", required: true, colspan: 2 },
+                {
+                    binding: "q",
+                    header: "qwd0wq0dwq30dwq0dwq023w023w23qq",
+                    required: true,
+                    colspan: 3,
+                },
+                {
+                    binding: "q",
+                    header: "qwd0wq0dwq30dwq323wq0dwq023w023w23qq",
+                    required: true,
+                },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
                 { binding: "q", required: true },
                 { binding: "q", required: true },
             ],
         },
         {
-            cells: [{ binding: "w", required: true }],
-        },
-        {
-            cells: [{ binding: "ww", required: true }],
+            width: "*",
+
+            cells: [
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+                { binding: "q", required: true, colspan: 3 },
+            ],
         },
     ],
     body: [
         {
-            edit: true,
-            cells: [{ binding: "q", rightButton: { icon: "search" } }],
+            cells: [
+                //
+                { binding: "q" },
+                { binding: "q" },
+                { binding: "q" },
+                { binding: "q" },
+
+                { binding: "q", colspan: 4, type: "textarea", rows: 4 },
+            ],
         },
         {
-            cells: [{ binding: "w", type: "timerange" }],
+            cells: [
+                { binding: "w" },
+                { binding: "w" },
+                { binding: "w" },
+                { binding: "w" },
+
+                { binding: "w", type: "textarea" },
+                { binding: "w", type: "textarea" },
+                { binding: "w", type: "textarea" },
+                { binding: "w", type: "textarea" },
+                { binding: "w", type: "textarea" },
+
+                { binding: "w", colspan: 8, type: "textarea", rows: 5 },
+            ],
         },
         {
             colspan: 2,
-            cells: [{ binding: "ww" }, { binding: "ww" }, { binding: "ww" }],
+            cells: [{ binding: "ww" }, { binding: "ww", type: "textarea" }, { binding: "ww" }],
         },
 
         // {
@@ -245,11 +289,16 @@ export const Temp = () => {
                     sheet.columns = [
                         { header: "Id", key: "id", width: 10 },
                         { header: "Name", key: "name", width: 32 },
-                        { header: "D.O.B.", key: "DOB", width: 10, outlineLevel: 1 },
+                        { header: "D.O.B.", key: "dob", width: 10, outlineLevel: 1 },
                     ];
 
-                    for (let i = 0; i < 9999; i++) {
+                    for (let i = 0; i < 77; i++) {
                         sheet.addRow({ id: 1, name: `${3 + 5} - 4 `, dob: new Date(1970, 1, 1) });
+                        const currentRowIdx = sheet.rowCount;
+                        const endColumnIdx = sheet.columnCount;
+
+                        sheet.mergeCells(currentRowIdx, 0, currentRowIdx + 1, 0);
+                        sheet.mergeCells(currentRowIdx, 2, currentRowIdx, 3);
                     }
 
                     workbook.xlsx.writeBuffer().then((b) => {
