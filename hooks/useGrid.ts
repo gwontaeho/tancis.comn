@@ -21,6 +21,7 @@ export type TGridSchema = {
         colspan?: number;
         width?: string | number;
         cells: {
+            width?: number;
             header?: string;
             binding?: string;
             required?: boolean;

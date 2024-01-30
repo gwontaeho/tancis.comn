@@ -22,11 +22,13 @@ export const Grid = (props: any) => {
     const __t = data?.__t?.getTime();
     const { t } = useTranslation();
 
+    const testrect = React.useRef<any>({});
+
     /**
      * head
      */
     const [_head, _setHead] = React.useState(() => {
-        return _grid.current._defaultSchema.head.map((_: any) => {
+        const h = _grid.current._defaultSchema.head.map((_: any) => {
             const maxCols = _.colspan ?? Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
             const rect = (() => {
                 if (typeof _.width === "string" && _.width.endsWith("*")) {
@@ -43,6 +45,7 @@ export const Grid = (props: any) => {
                     maxWidth: _.width || 160,
                 };
             })();
+
             return {
                 ..._,
                 ...rect,
@@ -67,6 +70,10 @@ export const Grid = (props: any) => {
                     ),
             };
         });
+
+        testrect.current.h = new Array(Math.max(...h.map(({ cells }: any) => cells.length))).fill([]);
+
+        return h;
     });
 
     /**
@@ -840,6 +847,17 @@ export const Grid = (props: any) => {
         return lodash.orderBy(d, iteratees, orders);
     }, []);
 
+    React.useEffect(() => {
+        // testrect.current.h.forEach((_: any, i: any) => {
+        //     const max = Math.max(...testrect.current.h[i].map(({ height }: any) => height));
+        //     console.log(testrect.current.h);
+        //     _.forEach(({ node }: any) => {
+        //         node.style.minHeight = `${max}px`;
+        //     });
+        //     console.log(max);
+        // });
+    }, []);
+
     /** initialize */
     React.useEffect(() => {
         _grid.current._setData = setData;
@@ -922,7 +940,18 @@ export const Grid = (props: any) => {
 
                                     /** cel's row */
                                     return (
-                                        <div key={celKey} className="flex h-full gap-[1px]">
+                                        <div
+                                            ref={(node) => {
+                                                if (node) {
+                                                    testrect.current.h[celIndex] = [
+                                                        ...testrect.current.h[celIndex],
+                                                        { node: node, height: node.getBoundingClientRect().height },
+                                                    ];
+                                                }
+                                            }}
+                                            key={celKey}
+                                            className="flex h-full gap-[1px]"
+                                        >
                                             {celProps.map((bProps: any, bIndex: any) => {
                                                 const bKey = celKey + "." + bIndex;
 
@@ -930,7 +959,7 @@ export const Grid = (props: any) => {
                                                 return (
                                                     <div
                                                         key={bKey}
-                                                        className="uf-grid-cell bg-uf-card-header"
+                                                        className="flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1 transition overflow-hidden bg-uf-card-header"
                                                         style={{
                                                             minWidth: bProps.width,
                                                             maxWidth: bProps.width,
@@ -1181,6 +1210,10 @@ const Row = React.memo((props: any) => {
                                                     /** text */
                                                     mask: bProps.mask,
                                                     letterCase: bProps.letterCase,
+
+                                                    /** */
+                                                    rows: bProps.rows,
+
                                                     /** number */
                                                     decimalScale: bProps.decimalScale,
                                                     thousandSeparator: bProps.thousandSeparator,
