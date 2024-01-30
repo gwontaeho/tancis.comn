@@ -40,7 +40,10 @@ export const SampleUseModal = () => {
         modal.openModal({ content: <div className="h-[2000px]">안녕123!1!</div> });
     };
     const widthDrag = () => {
-        modal.openModal({ content: <div>안녕123!1!</div>, draggable: true });
+        modal.openModal({
+            content: <div>안녕123!1!</div>,
+            draggable: true,
+        });
     };
 
     return (

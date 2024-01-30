@@ -220,22 +220,13 @@ export const Grid = (props: any) => {
         if (!Array.isArray(data.content)) return;
         if (data.content.length === 0 && _test.length === 0) return;
 
-        _setTest(() => {
-            const _ = data.content?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-
-            _grid.current._dataUpdated = data.__t;
-            _grid.current._origin = _;
-            _grid.current._content = _;
-
-            const grouped = returnGrouped(_);
-            const paged = returnPaged(grouped);
-
-            return paged || [];
-        });
-
-        _setTotalCount(_grid.current._pagination === "in" ? data.content.length : data.page.totalElements);
+        setData(data.content);
     }, [__t]);
 
+    /**
+     * 240130
+     * set data
+     */
     const setData = (d: any) => {
         const _ = d?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
 
@@ -730,6 +721,9 @@ export const Grid = (props: any) => {
 
         view = returnGrouped(view);
 
+        /**
+         * count 수정 필요
+         */
         _setTotalCount(view.length);
 
         view = returnPaged(view);

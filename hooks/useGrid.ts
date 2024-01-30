@@ -184,7 +184,7 @@ export const useGrid = (props: UseGridProps) => {
     const deleteRow = (type: "radio" | "checkbox" | "all" | TRow | TRow[]) => {
         _grid.current._handleClickDelete?.(type);
     };
-    const setOption = (target: "edit" | "index" | "radio" | "checkbox", value: any) => {
+    const setOption = (target: "add" | "delete" | "edit" | "index" | "radio" | "checkbox", value: any) => {
         _grid.current._setOption?.(target, value);
     };
     const setEdit = (type: "column" | "cell" | "row", target: string | TRow, value: boolean) => {
