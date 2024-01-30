@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { v4 as uuid } from "uuid";
 
@@ -16,7 +17,7 @@ type TabPanelProps = {
 
 export const Tab = (props: TabProps) => {
     const { children, schema, value, onChange } = props;
-
+    const { t } = useTranslation();
     const [key] = React.useState(uuid());
 
     const [_value, _setValue] = React.useState<number>(() => {
@@ -56,7 +57,7 @@ export const Tab = (props: TabProps) => {
                             )}
                             onClick={() => !disabled && handleClickTab(i)}
                         >
-                            {label}
+                            {typeof label === "string" ? t(label) : label}
                         </button>
                     );
                 })}

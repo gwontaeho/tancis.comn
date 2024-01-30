@@ -24,6 +24,11 @@ type UseExcelReturn = {
     setEdit: (edit: boolean) => void;
 };
 
+type ExcelToJsonReturn = {
+    error?: { type: string; message: string; errors: Array<any> };
+    data?: Array<any>;
+};
+
 export const useExcel = (props: UseExcelProps): UseExcelReturn => {
     const { edit = true, schema, handler, template, keys, onSuccess, onError } = props;
     const [_data, _setData] = React.useState<Array<any>>([]);
@@ -41,6 +46,73 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
         onSuccess: onSuccess,
         onError: onError,
     });
+
+    const validate = (data: Array<any>, schema: any) => {
+        setSchemaMatrix(schema);
+    };
+
+    const excelToJson = (file: File, index: number = 0) => {
+        return new Promise<ExcelToJsonReturn>((resolve, reject) => {
+            if (file === undefined || file === null) {
+                resolve({
+                    error: { type: "no-file", message: t("msg.com.00003"), errors: [] },
+                    data: [],
+                });
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = (e: any) => {
+                const data = e.target.result;
+                const readedData = XLSX.read(data, { type: "binary" });
+                const wsname = readedData.SheetNames[index];
+                const ws = readedData.Sheets[wsname];
+                const rawData: Array<Array<any>> = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                console.log(`sheet name : ${wsname}`);
+                //const parsedData = parseData(rawData);
+
+                if (comnUtils.isEmpty(rawData) || comnUtils.isEmptyArray(rawData)) {
+                    reject({
+                        error: { type: "no-data", message: t("msg.com.00012"), errors: [] },
+                        data: [],
+                    });
+                    return;
+                }
+
+                if (data.length < 2) {
+                    reject({
+                        error: { type: "no-meta", message: t("msg.com.00015"), errors: [] },
+                        data: [],
+                    });
+                    return;
+                }
+                let temp: Array<any> = data.slice(2);
+                let result: Array<any> = [];
+                let keys = data[0];
+                let labels: any = {};
+
+                data[0].forEach((item: any, index: number) => {
+                    labels[item] = data[1][index];
+                });
+
+                temp.forEach((item: any) => {
+                    let t: { [key: string]: any } = {};
+                    keys.forEach((key: any, index: number) => {
+                        t[key] = item[index];
+                    });
+                    result.push(t);
+                });
+
+                resolve({
+                    error: { type: "success", message: t("msg.com.00016"), errors: [] },
+                    data: result,
+                });
+                return;
+            };
+            reader.readAsBinaryString(file);
+        });
+    };
 
     const setSchemaMatrix = (schema: any) => {
         if (schema === undefined || comnUtils.isEmpty(schema) || comnUtils.isEmptyObject(schema)) {
