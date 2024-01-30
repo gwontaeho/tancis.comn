@@ -11,7 +11,7 @@ type UseExcelProps = {
     template?: string;
     schema?: any;
     keys?: any;
-    handler?: (data?: any) => { data: Array<any> };
+    handler?: (data?: any, index?: number) => { data: Array<any> };
     onSuccess?: (data?: any) => void;
     onError?: (error?: any) => void;
 };
@@ -19,8 +19,8 @@ type UseExcelProps = {
 type UseExcelReturn = {
     data: any;
     schema: any;
-    upload: (...args: any) => void;
-    download: () => void;
+    uploadExcel: (...args: any) => void;
+    downloadExcel: () => void;
     setEdit: (edit: boolean) => void;
 };
 
@@ -30,7 +30,6 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
     const input = React.useRef<HTMLInputElement>(null);
     const modal = useModal();
     const { t } = useTranslation();
-
     const meta = React.useRef<any>({});
 
     const [_schema, _setSchema] = React.useState<any>({
@@ -135,52 +134,71 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
             const parsedData = parseData(rawData);
 
             if (comnUtils.isEmptyArray(parsedData)) {
+                modal.openModal({
+                    content: t("msg.com.00012"),
+                    onCancel: () => {
+                        if (onError) onError({ type: "nodata", message: t("msg.com.00012"), errors: [], head: keys });
+                    },
+                });
                 console.warn(t("msg.com.00012"));
-                modal.openModal({ content: t("msg.com.00012") });
-                if (onError) onError({ type: "nodata", message: t("msg.com.00012"), errors: [] });
                 return;
             }
             try {
                 setSchemaMatrix(schema);
             } catch (err) {
-                modal.openModal({ content: t("msg.com.00013") });
-                if (onError) {
-                    onError({
-                        type: "fail-parse-schema",
-                        message: t("msg.com.00013"),
-                        errors: [],
-                    });
-                }
+                modal.openModal({
+                    content: t("msg.com.00013"),
+                    onCancel: () => {
+                        if (onError) {
+                            onError({
+                                type: "error-parse-schema",
+                                message: t("msg.com.00013"),
+                                errors: [],
+                                head: keys,
+                            });
+                        }
+                    },
+                });
+
                 console.warn(t("msg.com.00013"), err);
                 return;
             }
 
             const errors = validateBySchema(parsedData);
             if (errors.length > 0) {
-                const result = {
-                    type: "fail-validation",
-                    message: t("msg.com.00014"),
-                    errors: errors,
-                    head: keys,
-                };
-
-                if (onError) onError(result);
+                modal.openModal({
+                    content: t("msg.com.00014"),
+                    onCancel: () => {
+                        if (onError) {
+                            onError({
+                                type: "fail-validation",
+                                message: t("msg.com.00014"),
+                                errors: errors,
+                                head: keys,
+                            });
+                        }
+                    },
+                });
                 console.warn(t("msg.com.00014"));
                 return;
             }
 
+            if (handler) {
+                parsedData.map((item, index) => {
+                    return handler(item, index) || item;
+                });
+            }
+
             if (onSuccess) {
-                console.log(parsedData);
                 onSuccess(parsedData);
             }
+
+            _setData(parsedData);
         };
         reader.readAsBinaryString(f);
     };
 
-    const upload = () => {
-        //
-    };
-    const download = () => {
+    const downloadExcel = () => {
         //
     };
     const setEdit = (edit: boolean) => {
@@ -189,5 +207,5 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
         });
     };
 
-    return { schema: _schema, data: _data, upload, download, setEdit };
+    return { schema: _schema, data: _data, uploadExcel, downloadExcel, setEdit };
 };

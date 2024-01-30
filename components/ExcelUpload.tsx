@@ -13,8 +13,8 @@ type ExcelUploadProps = {
     schema?: any;
     keys?: any;
     handler?: (item: any, index: number) => { data: Array<any>; error?: any };
-    onSuccess?: (args: any) => {};
-    onError?: (args: any) => {};
+    onUpload?: (args: any) => {};
+    onTremplate?: (args: any) => {};
 };
 
 export const ExcelUpload = (props: ExcelUploadProps) => {
