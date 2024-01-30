@@ -93,6 +93,7 @@ export const useGrid = (props: UseGridProps) => {
         //     _setPage?: any;
         //     _setSize?: any;
 
+        //     _setData?: any;
         //     _setEdit?: any;
         //     _setShow?: any;
         //     _setOption?: any;
@@ -149,6 +150,7 @@ export const useGrid = (props: UseGridProps) => {
         _setPage,
         _setSize,
 
+        // _setData
         // _setEdit
         // _setShow
         // _setOption
@@ -202,7 +204,9 @@ export const useGrid = (props: UseGridProps) => {
     const resetData = () => {
         _grid.current._resetData();
     };
-    const setData = () => {};
+    const setData = (data: any) => {
+        _grid.current._setData(data);
+    };
 
     return {
         grid: { _grid },
@@ -221,6 +225,7 @@ export const useGrid = (props: UseGridProps) => {
         setOption,
         setPage,
         setSize,
+        setData,
         resetData,
     };
 };
