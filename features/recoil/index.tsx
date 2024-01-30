@@ -7,16 +7,15 @@ import { ModalProps, ToastProps } from "@/comn/components/_";
 export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "tz" }>({
     key: "themeState",
     default: {
-        isDark: (() => {
-            if (localStorage.getItem("isDark") === "true") return "true";
-            if (localStorage.getItem("isDark") === "false") return "false";
-            if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "true";
-            return "false";
-        })(),
-
-        lang: (() => {
-            return (localStorage.getItem("lang") as "en" | "ko" | "tz") ?? "ko";
-        })(),
+        isDark:
+            localStorage.getItem("isDark") === "true"
+                ? "true"
+                : localStorage.getItem("isDark") === "false"
+                  ? "false"
+                  : window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "true"
+                    : "false",
+        lang: document.documentElement.lang as "en" | "ko" | "tz",
     },
     effects: [
         ({ onSet }) => {
