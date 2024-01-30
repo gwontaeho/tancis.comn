@@ -202,6 +202,7 @@ export const useGrid = (props: UseGridProps) => {
     const resetData = () => {
         _grid.current._resetData();
     };
+    const setData = () => {};
 
     return {
         grid: { _grid },

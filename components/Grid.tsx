@@ -228,7 +228,6 @@ export const Grid = (props: any) => {
             _grid.current._content = _;
 
             const grouped = returnGrouped(_);
-
             const paged = returnPaged(grouped);
 
             return paged || [];
@@ -236,6 +235,16 @@ export const Grid = (props: any) => {
 
         _setTotalCount(_grid.current._pagination === "in" ? data.content.length : data.page.totalElements);
     }, [__t]);
+
+    const setData = (d: any) => {
+        const _ = d?.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+
+        _grid.current._dataUpdated = new Date();
+        _grid.current._origin = _;
+        _grid.current._content = _;
+
+        __setGrid(_grid.current._content);
+    };
 
     /** set width */
     const setWidth = (col: any, diff: any) => {

@@ -24,6 +24,7 @@ const schema1: TGridSchema = {
     },
     head: [
         {
+            width: "*",
             cells: [
                 { binding: "q", required: true, colspan: 2 },
                 { binding: "q", required: true },
@@ -225,7 +226,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            // data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
