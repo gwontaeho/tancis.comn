@@ -3,9 +3,19 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Page, Group, Grid } from "@/comn/components"; // 화면 구성 컴포넌트
-import { useForm, useFetch, useResource, useGrid, useModal, useStore, useToast, usePopup } from "@/comn/hooks"; // hook
+import {
+    useForm,
+    useFetch,
+    useResource,
+    useGrid,
+    useModal,
+    useStore,
+    useToast,
+    usePopup,
+    TGridSchema,
+} from "@/comn/hooks"; // hook
 
-export const SG_ERROR_LIST = {
+export const SG_ERROR_LIST: TGridSchema = {
     id: "errors",
     options: { pagination: "in", index: true },
     head: [

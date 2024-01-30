@@ -1,12 +1,14 @@
-import { useStore } from "@/comn/hooks";
+import { TGridSchema, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { utils as xlsxUtils, writeFile } from "xlsx";
+import excel from "exceljs";
 
 import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
 
-const schema1 = {
+const schema1: TGridSchema = {
     options: {
         index: true,
         radio: true,
@@ -17,11 +19,16 @@ const schema1 = {
         importExcel: true,
         exportExcel: true,
         pagination: "in",
+
         // group: ["q", "w"],
     },
     head: [
         {
-            cells: [{ binding: "q", required: true }],
+            cells: [
+                { binding: "q", required: true, colspan: 2 },
+                { binding: "q", required: true },
+                { binding: "q", required: true },
+            ],
         },
         {
             cells: [{ binding: "w", required: true }],
@@ -32,10 +39,11 @@ const schema1 = {
     ],
     body: [
         {
+            edit: true,
             cells: [{ binding: "q", rightButton: { icon: "search" } }],
         },
         {
-            cells: [{ binding: "q" }],
+            cells: [{ binding: "q", align: "left" }],
         },
         {
             colspan: 2,
@@ -115,8 +123,6 @@ type TData = {
     };
 };
 
-const data = utils.getMockData({ totalElements: 999 });
-
 export const Temp = () => {
     useResource({
         defaultSchema: [
@@ -149,6 +155,8 @@ export const Temp = () => {
     } = useGrid({
         defaultSchema: schema1,
     });
+
+    const data = useMemo(() => utils.getMockData({ totalElements: 999 }), []);
 
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
@@ -226,19 +234,48 @@ export const Temp = () => {
                 </Group.Body>
             </Group>
 
+            {/* exportExcel(data, {},[a+b,name+id]) */}
+
             <button
+                onClick={() => {
+                    const workbook = new excel.Workbook();
+                    const sheet = workbook.addWorksheet("My Sheet");
+                    sheet.columns = [
+                        { header: "Id", key: "id", width: 10 },
+                        { header: "Name", key: "name", width: 32 },
+                        { header: "D.O.B.", key: "DOB", width: 10, outlineLevel: 1 },
+                    ];
+
+                    for (let i = 0; i < 9999; i++) {
+                        sheet.addRow({ id: 1, name: `${3 + 5} - 4 `, dob: new Date(1970, 1, 1) });
+                    }
+
+                    workbook.xlsx.writeBuffer().then((b) => {
+                        let a = new Blob([b]);
+                        let url = window.URL.createObjectURL(a);
+
+                        let elem = document.createElement("a");
+                        elem.href = url;
+                        elem.download = "테스트.xlsx";
+                        elem.click();
+                        elem.remove();
+                    });
+                }}
+            >
+                asdasd
+            </button>
+            {/* <button
                 onClick={() => {
                     const worksheet = xlsxUtils.json_to_sheet(getData());
                     const workbook = xlsxUtils.book_new();
                     xlsxUtils.book_append_sheet(workbook, worksheet, "test");
-
                     console.log(worksheet);
 
                     writeFile(workbook, "Presidents.xlsx", { compression: true });
                 }}
             >
                 asdasd
-            </button>
+            </button> */}
 
             <Layout.Left direction="row" gap={8}>
                 <button onClick={() => resetData()}>reset</button>
@@ -270,7 +307,7 @@ export const Temp = () => {
                 </button>
                 <button onClick={() => console.log(getChecked())}>getChecked</button>
                 <button onClick={() => addRow({ text: "added" })}>add row</button>
-                <button onClick={() => updateRow({ text: "updated" })}>updateRow selected</button>
+                <button onClick={() => {}}>updateRow selected</button>
                 <button onClick={() => setEdit("column", "text", true)}>edit column true</button>
                 <button onClick={() => setEdit("column", "text", false)}>edit column false</button>
                 <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>

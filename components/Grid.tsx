@@ -356,18 +356,14 @@ export const Grid = (props: any) => {
         }
     }, []);
 
-    console.log(_editingRow);
-
     /** set show */
     const setShow = React.useCallback((type: any, target: any, value: any) => {
         /**
          * # type
          * column
-         * cell
          *
          * # target
          * column id
-         * cell binding
          */
 
         switch (type) {
