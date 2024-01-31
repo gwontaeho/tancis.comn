@@ -39,6 +39,12 @@ const ALIGNS = {
     right: "text-right",
 };
 
+const ALIGNS_FLEX = {
+    left: "justify-start",
+    center: "justify-center",
+    right: "justify-rend",
+};
+
 type GroupProps = {
     children?: React.ReactNode;
     bgColor?: boolean;
@@ -85,12 +91,21 @@ type GroupLabelProps = FormControlProps & {
     label?: React.ReactNode;
     labelSize?: keyof typeof SIZES;
     required?: boolean | string;
+    align?: keyof typeof ALIGNS_FLEX;
+    borderTop?: boolean;
+    borderBottom?: boolean;
+    borderLeft?: boolean;
+    borderRight?: boolean;
 };
 
 export type GroupControlProps = GroupLabelProps & {
     controlSize?: keyof typeof SIZES;
     only?: "control" | "label";
     "data-parent"?: string;
+    borderTop?: boolean;
+    borderBottom?: boolean;
+    borderLeft?: boolean;
+    borderRight?: boolean;
 };
 
 type GroupColProps = GroupLabelProps & {
@@ -172,10 +187,29 @@ const GroupRow = (props: GroupRowProps) => {
 
 const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
     const { t } = useTranslation();
-    const { label, labelSize = 2, ...rest } = props;
+    const {
+        label,
+        labelSize = 2,
+        align = "left",
+        borderLeft = true,
+        borderRight = true,
+        borderTop = true,
+        borderBottom = true,
+        ...rest
+    } = props;
 
     return (
-        <div className={classNames("uf-group-label", SIZES[labelSize])}>
+        <div
+            className={classNames(
+                "uf-group-label",
+                SIZES[labelSize],
+                ALIGNS_FLEX[align],
+                borderLeft === false && "border-l-0",
+                borderRight === false && "border-r-0",
+                borderTop === false && "border-t-0",
+                borderBottom === false && "border-b-0",
+            )}
+        >
             {props.type ? <FormControl ref={ref} {...rest} /> : typeof label === "string" ? t(label) : label}
             {props.required && (
                 <span
@@ -211,7 +245,17 @@ const GroupAny = (props: GroupAnyProps) => {
 };
 
 const GroupControl = forwardRef((props: GroupControlProps, ref) => {
-    const { labelSize, label, only, controlSize = 4, ...rest } = props;
+    const {
+        labelSize,
+        label,
+        only,
+        controlSize = 4,
+        borderLeft = false,
+        borderRight = false,
+        borderTop = false,
+        borderBottom = false,
+        ...rest
+    } = props;
     return (
         <>
             {!props["data-parent"] && label !== undefined && only !== "control" && (
@@ -220,7 +264,16 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
             {props["data-parent"] === "group_col" ? (
                 <FormControl ref={ref} {...rest} />
             ) : (
-                <div className={classNames("uf-group-col", SIZES[controlSize])}>
+                <div
+                    className={classNames(
+                        "uf-group-col",
+                        SIZES[controlSize],
+                        borderLeft === false ? "border-l-0" : "border-l-[1px]",
+                        borderRight === false ? "border-r-0" : "border-r-[1px]",
+                        borderTop === false ? "border-t-0" : "border-t-[1px]",
+                        borderBottom === false ? "border-b-0" : "border-b-[1px]",
+                    )}
+                >
                     <FormControl ref={ref} {...rest} />
                 </div>
             )}
