@@ -39,6 +39,7 @@ const BUTTON_VARIANTS = {
     "outline-danger": { style: "uf-button-outlined", color: "error" },
     "outline-secondary": { style: "uf-button-outlined", color: "gray" },
     "outline-bg": { style: "uf-button-outlined", color: "" },
+    "outline-warning": { style: "uf-button-outlined", color: "warning" },
 };
 
 const BUTTON_ROLES = {
