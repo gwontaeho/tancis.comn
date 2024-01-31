@@ -878,6 +878,102 @@ export const Grid = (props: any) => {
         return () => {};
     }, []);
 
+    const fun = (heads: any) => {
+        let t: Array<any> = [];
+
+        for (let i = 0; i < heads.length; i++) {
+            let rowIndex = -1;
+            let colspan = heads[i].colspan || 1;
+            let width = heads[i].width || 100;
+            let _current = 0;
+
+            let head: Array<any> = [];
+
+            for (let col = 0; col < heads[i].cells.length; col++) {
+                const cell = heads[i].cells[col];
+                let isAdd = true;
+
+                if (_current === 0) {
+                    rowIndex++;
+                    if (!head[rowIndex]) head[rowIndex] = Array(colspan);
+                }
+                if (head[rowIndex][_current] === null) {
+                    for (let i = _current; i < colspan; i++) {
+                        if (head[rowIndex][i] === null) {
+                            _current++;
+                            if (_current > col - 1) {
+                                isAdd = false;
+                            }
+                        } else break;
+                    }
+                }
+
+                if (isAdd === false) {
+                    _current = 0;
+                    col--;
+                    continue;
+                }
+                if (_current > colspan - 1) {
+                    _current = 0;
+                    continue;
+                }
+
+                head[rowIndex][_current] = cell;
+
+                if (cell.colspan !== undefined) {
+                    for (let i = _current + 1; i < _current + cell.colspan; i++) {
+                        head[rowIndex][i] = null;
+                    }
+                }
+                if (cell?.rowspan !== undefined) {
+                    for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
+                        if (!head[i]) head[i] = Array(colspan);
+                        head[i][_current] = null;
+                    }
+                }
+
+                _current += cell.colspan === undefined ? 1 : cell.colspan;
+                if (_current > colspan - 1) {
+                    _current = 0;
+                }
+            }
+
+            t.push(head);
+        }
+
+        return t;
+    };
+
+    const combineMatrix = (arr: Array<any>) => {
+        let t = arr[0];
+
+        for (let i = 1; i < arr.length; i++) {
+            for (let j = 0; j < t.length; j++) {
+                t[j] = [...t[j], ...arr[i][j]];
+            }
+        }
+
+        return t;
+    };
+
+    const heads = combineMatrix(fun(_grid.current._defaultSchema.head));
+
+    const getGridWidths = (arr: Array<any>) => {
+        let w = Array(arr[0].length);
+        for (let i = 1; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+                if (w[j] === undefined) w[j] = 100;
+                if (arr[i][j]?.width !== undefined && arr[i][j]?.colspan === undefined) {
+                    w[j] = arr[i][j].width;
+                }
+            }
+        }
+
+        return w;
+    };
+
+    console.log(fun(_grid.current._defaultSchema.head));
+
     return (
         <div>
             {/* button */}
@@ -918,110 +1014,31 @@ export const Grid = (props: any) => {
                     {/* index */}
                     {_options.index && <div className="uf-grid-option" />}
                     {/* header */}
-                    {_head.map((colProps: any, colIndex: any) => {
-                        const { show, width, minWidth, maxWidth, flex, cells } = colProps;
-                        const colKey = "head." + _grid.current._key + "." + colIndex;
 
-                        /** col */
-                        if (!show) return null;
-                        return (
-                            <div
-                                ref={(node) => {
-                                    if (node) {
-                                        _grid.current._headRects[colIndex] = node.getBoundingClientRect();
-                                    }
-                                }}
-                                key={colKey}
-                                className={classNames("flex flex-col gap-[1px] relative")}
-                                style={{ width, minWidth, maxWidth, flex }}
-                            >
-                                {cells.map((celProps: any, celIndex: any) => {
-                                    const celKey = colKey + "." + celIndex;
+                    {/*  */}
 
-                                    /** cel's row */
-                                    return (
-                                        <div
-                                            ref={(node) => {
-                                                if (node) {
-                                                    testrect.current.h[celIndex] = [
-                                                        ...testrect.current.h[celIndex],
-                                                        { node: node, height: node.getBoundingClientRect().height },
-                                                    ];
-                                                }
-                                            }}
-                                            key={celKey}
-                                            className="flex h-full gap-[1px]"
-                                        >
-                                            {celProps.map((bProps: any, bIndex: any) => {
-                                                const bKey = celKey + "." + bIndex;
-
-                                                /** cel */
-                                                return (
-                                                    <div
-                                                        key={bKey}
-                                                        className="flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1 transition overflow-hidden bg-uf-card-header"
-                                                        style={{
-                                                            minWidth: bProps.width,
-                                                            maxWidth: bProps.width,
-                                                        }}
-                                                    >
-                                                        {render?.head?.[bProps.binding]?.({
-                                                            binding: bProps.binding,
-                                                            id: colProps.id,
-                                                            header: bProps.header,
-                                                        }) ||
-                                                            t(bProps.header) ||
-                                                            bProps.binding}
-                                                        {bProps.required && (
-                                                            <span className="text-uf-error ml-0.5">*</span>
-                                                        )}
-                                                        <div className="flex">
-                                                            {/* filter */}
-                                                            {/* <button>
-                                                                <Icon icon="funnel" size="xs" className="ml-1" />
-                                                            </button> */}
-                                                            {/* sort */}
-                                                            <button
-                                                                className="relative"
-                                                                onClick={() => {
-                                                                    handleSort(bProps.binding);
-                                                                }}
-                                                            >
-                                                                <Icon
-                                                                    icon={
-                                                                        _sort[bProps.binding]?.val === "asc"
-                                                                            ? "barsUp"
-                                                                            : _sort[bProps.binding]?.val === "desc"
-                                                                              ? "barsDown"
-                                                                              : "bars"
-                                                                    }
-                                                                    size="xs"
-                                                                    className="ml-1"
-                                                                />
-                                                                <span className="text-[10px] absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
-                                                                    {_sort[bProps.binding]?.seq}
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    );
-                                })}
-                                <Draggable
-                                    axis="x"
-                                    position={{ x: 0, y: 0 }}
-                                    onStop={(event: any, data: any) => {
-                                        const x = data.x;
-                                        setWidth(colIndex, x);
-                                    }}
-                                >
-                                    <div className="absolute right-0 w-[4px] h-full cursor-col-resize z-[9999]"></div>
-                                </Draggable>
-                            </div>
-                        );
-                    })}
+                    <div
+                        className="grid w-full gap-[1px]"
+                        style={{ gridTemplateColumns: "100px 100px 100px 100px 100px 100px 1fr" }}
+                    >
+                        {heads.map((_: any, i: any) => {
+                            return _.map((__: any, j: any) => {
+                                if (!__) return null;
+                                return (
+                                    <div
+                                        className="p-4 bg-uf-card-header"
+                                        style={{
+                                            gridRow: `${i + 1} / span ${__.rowspan ?? 1}`,
+                                            gridColumn: `${j + 1} / span ${__.colspan ?? 1}`,
+                                        }}
+                                    >
+                                        <div>a</div>
+                                    </div>
+                                );
+                            });
+                        })}
+                    </div>
+                    {/*  */}
                 </div>
                 <List
                     ref={(ref) => (_grid.current._list = ref)}
@@ -1354,3 +1371,108 @@ const Row = React.memo((props: any) => {
         </div>
     );
 }, areEqual);
+
+// {_head.map((colProps: any, colIndex: any) => {
+//     const { show, width, minWidth, maxWidth, flex, cells } = colProps;
+//     const colKey = "head." + _grid.current._key + "." + colIndex;
+
+//     /** col */
+//     if (!show) return null;
+//     return (
+//         <div
+//             ref={(node) => {
+//                 if (node) {
+//                     _grid.current._headRects[colIndex] = node.getBoundingClientRect();
+//                 }
+//             }}
+//             key={colKey}
+//             className={classNames("flex flex-col gap-[1px] relative")}
+//             style={{ width, minWidth, maxWidth, flex }}
+//         >
+//             {cells.map((celProps: any, celIndex: any) => {
+//                 const celKey = colKey + "." + celIndex;
+
+//                 /** cel's row */
+//                 return (
+//                     <div
+//                         ref={(node) => {
+//                             if (node) {
+//                                 testrect.current.h[celIndex] = [
+//                                     ...testrect.current.h[celIndex],
+//                                     { node: node, height: node.getBoundingClientRect().height },
+//                                 ];
+//                             }
+//                         }}
+//                         key={celKey}
+//                         className="flex h-full gap-[1px]"
+//                     >
+//                         {celProps.map((bProps: any, bIndex: any) => {
+//                             const bKey = celKey + "." + bIndex;
+
+//                             /** cel */
+//                             return (
+//                                 <div
+//                                     key={bKey}
+//                                     className="flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1 transition overflow-hidden bg-uf-card-header"
+//                                     style={{
+//                                         minWidth: bProps.width,
+//                                         maxWidth: bProps.width,
+//                                     }}
+//                                 >
+//                                     {render?.head?.[bProps.binding]?.({
+//                                         binding: bProps.binding,
+//                                         id: colProps.id,
+//                                         header: bProps.header,
+//                                     }) ||
+//                                         t(bProps.header) ||
+//                                         bProps.binding}
+//                                     {bProps.required && (
+//                                         <span className="text-uf-error ml-0.5">*</span>
+//                                     )}
+//                                     <div className="flex">
+//                                         {/* filter */}
+//                                         {/* <button>
+//                                             <Icon icon="funnel" size="xs" className="ml-1" />
+//                                         </button> */}
+//                                         {/* sort */}
+//                                         <button
+//                                             className="relative"
+//                                             onClick={() => {
+//                                                 handleSort(bProps.binding);
+//                                             }}
+//                                         >
+//                                             <Icon
+//                                                 icon={
+//                                                     _sort[bProps.binding]?.val === "asc"
+//                                                         ? "barsUp"
+//                                                         : _sort[bProps.binding]?.val === "desc"
+//                                                           ? "barsDown"
+//                                                           : "bars"
+//                                                 }
+//                                                 size="xs"
+//                                                 className="ml-1"
+//                                             />
+//                                             <span className="text-[10px] absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
+//                                                 {_sort[bProps.binding]?.seq}
+//                                             </span>
+//                                         </button>
+//                                     </div>
+//                                 </div>
+//                             );
+//                         })}
+//                     </div>
+//                 );
+//             })}
+//             <Draggable
+//                 axis="x"
+//                 position={{ x: 0, y: 0 }}
+//                 onStop={(event: any, data: any) => {
+//                     const x = data.x;
+//                     setWidth(colIndex, x);
+//                 }}
+//             >
+//                 <div className="absolute right-0 w-[4px] h-full cursor-col-resize z-[9999]"></div>
+//             </Draggable>
+//         </div>
+//     );
+// })}

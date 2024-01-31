@@ -28,8 +28,11 @@ const schema1 = {
             width: "*",
             cells: [
                 {
+                    colspan: 2,
                     header: "a",
-                    colspan: 3,
+                },
+                {
+                    header: "b",
                 },
                 {
                     header: "b",
@@ -45,10 +48,10 @@ const schema1 = {
             cells: [
                 {
                     header: "a",
-                    rowspan: 2,
                 },
                 {
                     header: "b",
+                    rowspan: 2,
                     width: 500,
                 },
             ],
@@ -59,7 +62,7 @@ const schema1 = {
             cells: [
                 {
                     header: "a",
-                    colspan: 3,
+                    colspan: 2,
                 },
                 {
                     header: "b",
@@ -67,7 +70,7 @@ const schema1 = {
                 { binding: "c", rowspan: 2 },
                 { binding: "d", required: true },
                 { binding: "e", required: true, width: "*" },
-                { binding: "f", required: true, width: 300 },
+                { binding: "f", required: true, width: 300, colspan: 2 },
             ],
         },
     ],
@@ -219,6 +222,63 @@ export const Temp = () => {
 
     const t: Array<Array<any>> = [];
 
+    const getHederMatrix = (head: any) => {
+        const t: Array<Array<any>> = [];
+        let rowIndex = -1;
+        let colIndex = 0;
+        let colspan = head.colspan;
+        let width = head.width;
+        let _index = 0;
+        if (colspan === undefined) colspan = 1;
+        if (width === undefined) width = 100;
+
+        head.cells.forEach((cell: any, y: number) => {
+            if (_index === 0) {
+                rowIndex++;
+                if (!t[rowIndex]) t[rowIndex] = Array(colspan);
+                colIndex = 0;
+            }
+
+            if (t[rowIndex][_index] === null) {
+                for (let i = _index; i < colspan; i++) {
+                    if (t[rowIndex][i] === null) {
+                        _index++;
+
+                        if (_index > colspan - 1) {
+                            _index = 0;
+
+                            return;
+                        }
+                    } else break;
+                }
+            }
+            if (_index > colspan - 1) {
+                _index = 0;
+                return;
+            }
+
+            t[rowIndex][_index] = cell;
+
+            if (cell.colspan !== undefined) {
+                for (let i = _index + 1; i < _index + cell.colspan; i++) {
+                    t[rowIndex][i] = null;
+                }
+            }
+            if (cell.rowspan !== undefined) {
+                for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
+                    if (!t[i]) t[i] = Array(colspan);
+                    t[i][_index] = null;
+                }
+            }
+
+            _index += cell.colspan === undefined ? 1 : cell.colspan;
+            if (_index > colspan - 1) {
+                _index = 0;
+            }
+        });
+        return t;
+    };
+
     const fun = (heads: any) => {
         let t: Array<any> = [];
 
@@ -286,63 +346,6 @@ export const Temp = () => {
         return t;
     };
 
-    const getHederMatrix = (head: any) => {
-        const t: Array<Array<any>> = [];
-        let rowIndex = -1;
-        let colIndex = 0;
-        let colspan = head.colspan;
-        let width = head.width;
-        let _index = 0;
-        if (colspan === undefined) colspan = 1;
-        if (width === undefined) width = 100;
-
-        head.cells.forEach((cell: any, y: number) => {
-            if (_index === 0) {
-                rowIndex++;
-                if (!t[rowIndex]) t[rowIndex] = Array(colspan);
-                colIndex = 0;
-            }
-
-            if (t[rowIndex][_index] === null) {
-                for (let i = _index; i < colspan; i++) {
-                    if (t[rowIndex][i] === null) {
-                        _index++;
-
-                        if (_index > colspan - 1) {
-                            _index = 0;
-
-                            return;
-                        }
-                    } else break;
-                }
-            }
-            if (_index > colspan - 1) {
-                _index = 0;
-                return;
-            }
-
-            t[rowIndex][_index] = cell;
-
-            if (cell.colspan !== undefined) {
-                for (let i = _index + 1; i < _index + cell.colspan; i++) {
-                    t[rowIndex][i] = null;
-                }
-            }
-            if (cell.rowspan !== undefined) {
-                for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
-                    if (!t[i]) t[i] = Array(colspan);
-                    t[i][_index] = null;
-                }
-            }
-
-            _index += cell.colspan === undefined ? 1 : cell.colspan;
-            if (_index > colspan - 1) {
-                _index = 0;
-            }
-        });
-        return t;
-    };
-
     const combineMatrix = (arr: Array<any>) => {
         let t = arr[0];
 
@@ -371,28 +374,28 @@ export const Temp = () => {
 
     //console.log(getHederMatrix(schema1.head[0]));
     //console.log(getHederMatrix(schema1.head[1]));
-    const heads = combineMatrix(fun(schema1.head));
-    console.log(getGridWidths(heads));
-    let str = "";
-    for (let i = 0; i < heads.length; i++) {
-        for (let j = 0; j < heads[i].length; j++) {
-            if (heads[i][j] === null) continue;
-            str +=
-                '<div style="grid-row: ' +
-                (i + 1) +
-                "/ span " +
-                (heads[i][j].rowspan || 1) +
-                ";grid-column: " +
-                (j + 1) +
-                "/ span  " +
-                (heads[i][j].colspan || 1) +
-                ';">' +
-                (i + "-" + j) +
-                "</div>";
-        }
-    }
+    // const heads = combineMatrix(fun(schema1.head));
+    // console.log(getGridWidths(heads));
+    // let str = "";
+    // for (let i = 0; i < heads.length; i++) {
+    //     for (let j = 0; j < heads[i].length; j++) {
+    //         if (heads[i][j] === null) continue;
+    //         str +=
+    //             '<div style="grid-row: ' +
+    //             (i + 1) +
+    //             "/ span " +
+    //             (heads[i][j].rowspan || 1) +
+    //             ";grid-column: " +
+    //             (j + 1) +
+    //             "/ span  " +
+    //             (heads[i][j].colspan || 1) +
+    //             ';">' +
+    //             (i + "-" + j) +
+    //             "</div>";
+    //     }
+    // }
 
-    console.log(str);
+    // console.log(str);
 
     /*console.log(
         combineMatrix([
