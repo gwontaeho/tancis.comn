@@ -8,7 +8,7 @@ import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 
-const schema1: TGridSchema = {
+const schema1 = {
     options: {
         index: true,
         radio: true,
@@ -28,37 +28,46 @@ const schema1: TGridSchema = {
             width: "*",
             cells: [
                 {
-                    binding: "q",
-                    header: "qwd0wq0dwq30dwq0dwq023w023w23qq",
-                    required: true,
+                    header: "a",
                     colspan: 3,
                 },
                 {
-                    binding: "q",
-                    header: "qwd0wq0dwq30dwq323wq0dwq023w023w23qq",
-                    required: true,
+                    header: "b",
                 },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
+                { binding: "c", rowspan: 2 },
+                { binding: "d", required: true, width: 150 },
+                { binding: "e", required: true, width: 200 },
+                { binding: "f", required: true },
             ],
         },
         {
             width: "*",
-
             cells: [
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true },
-                { binding: "q", required: true, colspan: 3 },
+                {
+                    header: "a",
+                    rowspan: 2,
+                },
+                {
+                    header: "b",
+                    width: 500,
+                },
+            ],
+        },
+        {
+            colspan: 3,
+            width: "*",
+            cells: [
+                {
+                    header: "a",
+                    colspan: 3,
+                },
+                {
+                    header: "b",
+                },
+                { binding: "c", rowspan: 2 },
+                { binding: "d", required: true },
+                { binding: "e", required: true, width: "*" },
+                { binding: "f", required: true, width: 300 },
             ],
         },
     ],
@@ -207,6 +216,192 @@ export const Temp = () => {
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const { pgeStore, setStore } = useStore({ pgeUid: "test" });
+
+    const t: Array<Array<any>> = [];
+
+    const fun = (heads: any) => {
+        let t: Array<any> = [];
+
+        for (let i = 0; i < heads.length; i++) {
+            let rowIndex = -1;
+            let colspan = heads[i].colspan || 1;
+            let width = heads[i].width || 100;
+            let _current = 0;
+
+            let head: Array<any> = [];
+            console.log(heads[i]);
+
+            for (let col = 0; col < heads[i].cells.length; col++) {
+                const cell = heads[i].cells[col];
+                let isAdd = true;
+
+                if (_current === 0) {
+                    rowIndex++;
+                    if (!head[rowIndex]) head[rowIndex] = Array(colspan);
+                }
+                if (head[rowIndex][_current] === null) {
+                    for (let i = _current; i < colspan; i++) {
+                        if (head[rowIndex][i] === null) {
+                            _current++;
+                            if (_current > col - 1) {
+                                isAdd = false;
+                            }
+                        } else break;
+                    }
+                }
+
+                if (isAdd === false) {
+                    _current = 0;
+                    col--;
+                    continue;
+                }
+                if (_current > colspan - 1) {
+                    _current = 0;
+                    continue;
+                }
+
+                head[rowIndex][_current] = cell;
+
+                if (cell.colspan !== undefined) {
+                    for (let i = _current + 1; i < _current + cell.colspan; i++) {
+                        head[rowIndex][i] = null;
+                    }
+                }
+                if (cell.rowspan !== undefined) {
+                    for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
+                        if (!head[i]) head[i] = Array(colspan);
+                        head[i][_current] = null;
+                    }
+                }
+
+                _current += cell.colspan === undefined ? 1 : cell.colspan;
+                if (_current > colspan - 1) {
+                    _current = 0;
+                }
+            }
+
+            t.push(head);
+        }
+
+        return t;
+    };
+
+    const getHederMatrix = (head: any) => {
+        const t: Array<Array<any>> = [];
+        let rowIndex = -1;
+        let colIndex = 0;
+        let colspan = head.colspan;
+        let width = head.width;
+        let _index = 0;
+        if (colspan === undefined) colspan = 1;
+        if (width === undefined) width = 100;
+
+        head.cells.forEach((cell: any, y: number) => {
+            if (_index === 0) {
+                rowIndex++;
+                if (!t[rowIndex]) t[rowIndex] = Array(colspan);
+                colIndex = 0;
+            }
+
+            if (t[rowIndex][_index] === null) {
+                for (let i = _index; i < colspan; i++) {
+                    if (t[rowIndex][i] === null) {
+                        _index++;
+
+                        if (_index > colspan - 1) {
+                            _index = 0;
+
+                            return;
+                        }
+                    } else break;
+                }
+            }
+            if (_index > colspan - 1) {
+                _index = 0;
+                return;
+            }
+
+            t[rowIndex][_index] = cell;
+
+            if (cell.colspan !== undefined) {
+                for (let i = _index + 1; i < _index + cell.colspan; i++) {
+                    t[rowIndex][i] = null;
+                }
+            }
+            if (cell.rowspan !== undefined) {
+                for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
+                    if (!t[i]) t[i] = Array(colspan);
+                    t[i][_index] = null;
+                }
+            }
+
+            _index += cell.colspan === undefined ? 1 : cell.colspan;
+            if (_index > colspan - 1) {
+                _index = 0;
+            }
+        });
+        return t;
+    };
+
+    const combineMatrix = (arr: Array<any>) => {
+        let t = arr[0];
+
+        for (let i = 1; i < arr.length; i++) {
+            for (let j = 0; j < t.length; j++) {
+                t[j] = [...t[j], ...arr[i][j]];
+            }
+        }
+
+        return t;
+    };
+
+    const getGridWidths = (arr: Array<any>) => {
+        let w = Array(arr[0].length);
+        for (let i = 1; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+                if (w[j] === undefined) w[j] = 100;
+                if (arr[i][j]?.width !== undefined && arr[i][j]?.colspan === undefined) {
+                    w[j] = arr[i][j].width;
+                }
+            }
+        }
+
+        return w;
+    };
+
+    //console.log(getHederMatrix(schema1.head[0]));
+    //console.log(getHederMatrix(schema1.head[1]));
+    const heads = combineMatrix(fun(schema1.head));
+    console.log(getGridWidths(heads));
+    let str = "";
+    for (let i = 0; i < heads.length; i++) {
+        for (let j = 0; j < heads[i].length; j++) {
+            if (heads[i][j] === null) continue;
+            str +=
+                '<div style="grid-row: ' +
+                (i + 1) +
+                "/ span " +
+                (heads[i][j].rowspan || 1) +
+                ";grid-column: " +
+                (j + 1) +
+                "/ span  " +
+                (heads[i][j].colspan || 1) +
+                ';">' +
+                (i + "-" + j) +
+                "</div>";
+        }
+    }
+
+    console.log(str);
+
+    /*console.log(
+        combineMatrix([
+            getHederMatrix(schema1.head[0]),
+            getHederMatrix(schema1.head[1]),
+            getHederMatrix(schema1.head[2]),
+        ]),
+    );
+    */
 
     const _test = {
         head: {
