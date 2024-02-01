@@ -9,6 +9,81 @@ import { VariableSizeList as List, areEqual } from "react-window";
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
 
+const fun = (schema: any) => {
+    let t = [];
+
+    for (let i = 0; i < schema.length; i++) {
+        if (schema[i].show === false) {
+            continue;
+        }
+        let rowIndex = -1;
+        let colspan = schema[i].colspan || 1;
+        let _current = 0;
+
+        let head = [];
+
+        for (let col = 0; col < schema[i].cells.length; col++) {
+            const cell = schema[i].cells[col];
+            let isAdd = true;
+
+            if (_current === 0) {
+                rowIndex++;
+                if (!head[rowIndex]) head[rowIndex] = Array(colspan);
+            }
+            if (head[rowIndex][_current] === null) {
+                for (let i = _current; i < colspan; i++) {
+                    if (head[rowIndex][i] === null) {
+                        _current++;
+                        if (_current > col - 1) {
+                            isAdd = false;
+                        }
+                    } else break;
+                }
+            }
+
+            if (isAdd === false) {
+                _current = 0;
+                col--;
+                continue;
+            }
+            if (_current > colspan - 1) {
+                _current = 0;
+                continue;
+            }
+
+            head[rowIndex][_current] = cell;
+            if (cell.colspan !== undefined) {
+                for (let i = _current + 1; i < _current + cell.colspan; i++) {
+                    head[rowIndex][i] = null;
+                }
+            }
+            if (cell?.rowspan !== undefined) {
+                for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
+                    if (!head[i]) head[i] = Array(colspan);
+                    head[i][_current] = null;
+                }
+            }
+
+            _current += cell.colspan === undefined ? 1 : cell.colspan;
+            if (_current > colspan - 1) {
+                _current = 0;
+            }
+        }
+
+        t.push(head);
+    }
+
+    let tt = t[0];
+
+    for (let i = 1; i < t.length; i++) {
+        for (let j = 0; j < tt.length; j++) {
+            tt[j] = [...tt[j], ...t[i][j]];
+        }
+    }
+
+    return tt;
+};
+
 export const Grid = (props: any) => {
     const {
         /**  */
@@ -22,102 +97,52 @@ export const Grid = (props: any) => {
     const __t = data?.__t?.getTime();
     const { t } = useTranslation();
 
-    const testrect = React.useRef<any>({});
-
-    /**
-     * head
-     */
     const [_head, _setHead] = React.useState(() => {
-        const h = _grid.current._defaultSchema.head.map((_: any) => {
-            const maxCols = _.colspan ?? Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
-            const rect = (() => {
-                if (typeof _.width === "string" && _.width.endsWith("*")) {
-                    const flex = Number(_.width.split("*")[0]) > 0 ? Number(_.width.split("*")[0]) : 1;
-                    return {
-                        flex,
-                        width: undefined,
-                        minWidth: _.minWidth || 160 * flex,
-                    };
-                }
-                return {
-                    width: _.width || 160,
-                    minWidth: _.width || 160,
-                    maxWidth: _.width || 160,
-                };
-            })();
-
+        return _grid.current._defaultSchema.head.map((_: any) => {
             return {
                 ..._,
-                ...rect,
-                __key: uuid(),
-                show: typeof _.show === "boolean" ? _.show : true,
-                cells: _.cells
-                    .map((__: any) => ({ ...__, __key: uuid() }))
-                    .reduce(
-                        (prev: any, curr: any) => {
-                            const { colspan = 1 } = curr;
-                            const _ =
-                                prev[prev.length - 1].reduce((p: any, c: any) => {
-                                    return p + (c.colspan || 1);
-                                }, 0) +
-                                    colspan >
-                                maxCols;
-                            if (_) prev[prev.length] = [curr];
-                            else prev[prev.length - 1] = [...prev[prev.length - 1], curr];
-                            return prev;
-                        },
-                        [[]],
-                    ),
+                cells: _.cells.map((__: any) => {
+                    return { ...__, show: _.show === true ? true : _.show === false ? false : true };
+                }),
             };
         });
-
-        testrect.current.h = new Array(Math.max(...h.map(({ cells }: any) => cells.length))).fill([]);
-
-        return h;
     });
 
-    /**
-     * body
-     */
     const [_body, _setBody] = React.useState(() => {
-        return _grid.current._defaultSchema.body.map((_: any, index: any) => {
-            const maxCols = _.colspan ?? Math.max(..._.cells.flatMap((cell: any) => cell.colspan || 1));
+        return _grid.current._defaultSchema.body.map((_: any, i: any) => {
             return {
                 ..._,
-                __key: uuid(),
-                id: _head[index]?.id,
-                show: _head[index]?.show,
-                flex: _head[index]?.flex,
-                width: _head[index]?.width,
-                minWidth: _head[index]?.minWidth,
-                maxWidth: _head[index]?.maxWidth,
-                cells: _.cells
-                    .map((__: any) => ({
+                id: _grid.current._defaultSchema.head[i]?.id,
+                show:
+                    _grid.current._defaultSchema.head[i]?.show === true
+                        ? true
+                        : _grid.current._defaultSchema.head[i]?.show === false
+                          ? false
+                          : true,
+                cells: _.cells.map((__: any) => {
+                    return {
                         ...__,
-                        __key: uuid(),
-                        /** init edit priority -> cell, option */
+                        id: _grid.current._defaultSchema.head[i]?.id,
+                        show:
+                            _grid.current._defaultSchema.head[i]?.show === true
+                                ? true
+                                : _grid.current._defaultSchema.head[i]?.show === false
+                                  ? false
+                                  : true,
                         edit:
-                            typeof __.edit === "boolean"
-                                ? __.edit
-                                : typeof _.edit === "boolean"
-                                  ? _.edit
-                                  : _grid.current._edit,
-                    }))
-                    .reduce(
-                        (prev: any, curr: any) => {
-                            const { colspan = 1 } = curr;
-                            const _ =
-                                prev[prev.length - 1].reduce((p: any, c: any) => {
-                                    return p + (c.colspan || 1);
-                                }, 0) +
-                                    colspan >
-                                maxCols;
-                            if (_) prev[prev.length] = [curr];
-                            else prev[prev.length - 1] = [...prev[prev.length - 1], curr];
-                            return prev;
-                        },
-                        [[]],
-                    ),
+                            __.edit === true
+                                ? true
+                                : __.edit === false
+                                  ? false
+                                  : _.edit === true
+                                    ? true
+                                    : _.edit === false
+                                      ? false
+                                      : _grid.current._defaultSchema.options?.edit === true
+                                        ? true
+                                        : false,
+                    };
+                }),
             };
         });
     });
@@ -248,45 +273,6 @@ export const Grid = (props: any) => {
         __setGrid(_grid.current._content);
     };
 
-    /** set width */
-    const setWidth = (col: any, diff: any) => {
-        const rects = _grid.current._headRects;
-        const rect = rects[col];
-        const next = rect.width + diff < 80 ? 80 : rect.width + diff;
-
-        _setHead((prev: any) => {
-            return prev.map((_: any, index: any) => {
-                if (!rects[index]) return _;
-                const { flex, ...rest } = _;
-
-                if (index !== col) {
-                    const w = rects[index].width;
-                    return { ...rest, width: w, minWidth: w, maxWidth: w };
-                }
-
-                if (index === col) {
-                    return { ...rest, minWidth: next, width: next, maxWidth: next };
-                }
-            });
-        });
-
-        _setBody((prev: any) => {
-            return prev.map((_: any, index: any) => {
-                if (!rects[index]) return _;
-                const { flex, ...rest } = _;
-
-                if (index !== col) {
-                    const w = rects[index].width;
-                    return { ...rest, width: w, minWidth: w, maxWidth: w };
-                }
-
-                if (index === col) {
-                    return { ...rest, minWidth: next, width: next, maxWidth: next };
-                }
-            });
-        });
-    };
-
     /** set edit */
     const setEdit = React.useCallback((type: any, target: any, value: any) => {
         /**
@@ -305,16 +291,12 @@ export const Grid = (props: any) => {
         switch (type) {
             case "column": {
                 _setBody((prev: any) => {
-                    const next = prev.map((col: any) => {
-                        const { id } = col;
-                        if (id !== target) return col;
+                    const next = prev.map((_: any) => {
+                        if (_.id !== target) return _;
                         return {
-                            ...col,
-                            edit: value,
-                            cells: col.cells.map((b: any) => {
-                                return b.map((_: any) => {
-                                    return { ..._, edit: value };
-                                });
+                            ..._,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, edit: value };
                             }),
                         };
                     });
@@ -324,14 +306,12 @@ export const Grid = (props: any) => {
             }
             case "cell": {
                 _setBody((prev: any) => {
-                    const next = prev.map((col: any) => {
+                    const next = prev.map((_: any) => {
                         return {
-                            ...col,
-                            cells: col.cells.map((b: any) => {
-                                return b.map((_: any) => {
-                                    if (_.binding !== target) return _;
-                                    return { ..._, edit: value };
-                                });
+                            ..._,
+                            cells: _.cells.map((__: any) => {
+                                if (__.binding !== target) return __;
+                                return { ...__, edit: value };
                             }),
                         };
                     });
@@ -380,23 +360,27 @@ export const Grid = (props: any) => {
         switch (type) {
             case "column": {
                 _setHead((prev: any) => {
-                    const next = prev.map((col: any) => {
-                        const { id } = col;
-                        if (id !== target) return col;
+                    const next = prev.map((_: any) => {
+                        if (_.id !== target) return _;
                         return {
-                            ...col,
+                            ..._,
                             show: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, show: value };
+                            }),
                         };
                     });
                     return next;
                 });
                 _setBody((prev: any) => {
-                    const next = prev.map((col: any) => {
-                        const { id } = col;
-                        if (id !== target) return col;
+                    const next = prev.map((_: any) => {
+                        if (_.id !== target) return _;
                         return {
-                            ...col,
+                            ..._,
                             show: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, show: value };
+                            }),
                         };
                     });
                     return next;
@@ -415,14 +399,12 @@ export const Grid = (props: any) => {
 
         if (target === "edit") {
             _setBody((prev: any) => {
-                const next = prev.map((col: any) => {
+                const next = prev.map((_: any) => {
                     return {
-                        ...col,
+                        ..._,
                         edit: value,
-                        cells: col.cells.map((b: any) => {
-                            return b.map((_: any) => {
-                                return { ..._, edit: value };
-                            });
+                        cells: _.cells.map((__: any) => {
+                            return { ...__, edit: value };
                         }),
                     };
                 });
@@ -460,7 +442,6 @@ export const Grid = (props: any) => {
                 __type:
                     _.__type === "origin" || _.__type === "updated"
                         ? Object.keys(rest).some((k) => {
-                              console.log(n[k]);
                               return n[k] !== _grid.current._origin.find((o: any) => o.__key === n.__key)[k];
                           })
                             ? "updated"
@@ -847,17 +828,6 @@ export const Grid = (props: any) => {
         return lodash.orderBy(d, iteratees, orders);
     }, []);
 
-    React.useEffect(() => {
-        // testrect.current.h.forEach((_: any, i: any) => {
-        //     const max = Math.max(...testrect.current.h[i].map(({ height }: any) => height));
-        //     console.log(testrect.current.h);
-        //     _.forEach(({ node }: any) => {
-        //         node.style.minHeight = `${max}px`;
-        //     });
-        //     console.log(max);
-        // });
-    }, []);
-
     /** initialize */
     React.useEffect(() => {
         _grid.current._setData = setData;
@@ -878,101 +848,43 @@ export const Grid = (props: any) => {
         return () => {};
     }, []);
 
-    const fun = (heads: any) => {
-        let t: Array<any> = [];
+    const heads = fun(_head);
+    const bodies = fun(_body);
 
-        for (let i = 0; i < heads.length; i++) {
-            let rowIndex = -1;
-            let colspan = heads[i].colspan || 1;
-            let width = heads[i].width || 100;
-            let _current = 0;
+    console.log(heads);
 
-            let head: Array<any> = [];
-
-            for (let col = 0; col < heads[i].cells.length; col++) {
-                const cell = heads[i].cells[col];
-                let isAdd = true;
-
-                if (_current === 0) {
-                    rowIndex++;
-                    if (!head[rowIndex]) head[rowIndex] = Array(colspan);
-                }
-                if (head[rowIndex][_current] === null) {
-                    for (let i = _current; i < colspan; i++) {
-                        if (head[rowIndex][i] === null) {
-                            _current++;
-                            if (_current > col - 1) {
-                                isAdd = false;
-                            }
-                        } else break;
-                    }
-                }
-
-                if (isAdd === false) {
-                    _current = 0;
-                    col--;
-                    continue;
-                }
-                if (_current > colspan - 1) {
-                    _current = 0;
-                    continue;
-                }
-
-                head[rowIndex][_current] = cell;
-
-                if (cell.colspan !== undefined) {
-                    for (let i = _current + 1; i < _current + cell.colspan; i++) {
-                        head[rowIndex][i] = null;
-                    }
-                }
-                if (cell?.rowspan !== undefined) {
-                    for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
-                        if (!head[i]) head[i] = Array(colspan);
-                        head[i][_current] = null;
-                    }
-                }
-
-                _current += cell.colspan === undefined ? 1 : cell.colspan;
-                if (_current > colspan - 1) {
-                    _current = 0;
-                }
-            }
-
-            t.push(head);
-        }
-
-        return t;
-    };
-
-    const combineMatrix = (arr: Array<any>) => {
-        let t = arr[0];
-
-        for (let i = 1; i < arr.length; i++) {
-            for (let j = 0; j < t.length; j++) {
-                t[j] = [...t[j], ...arr[i][j]];
-            }
-        }
-
-        return t;
-    };
-
-    const heads = combineMatrix(fun(_grid.current._defaultSchema.head));
-
-    const getGridWidths = (arr: Array<any>) => {
-        let w = Array(arr[0].length);
-        for (let i = 1; i < arr.length; i++) {
-            for (let j = 0; j < arr[i].length; j++) {
+    const getGridWidths = () => {
+        let w = Array(heads[0].length);
+        for (let i = 1; i < heads.length; i++) {
+            for (let j = 0; j < heads[i].length; j++) {
                 if (w[j] === undefined) w[j] = 100;
-                if (arr[i][j]?.width !== undefined && arr[i][j]?.colspan === undefined) {
-                    w[j] = arr[i][j].width;
+                if (heads[i][j]?.width !== undefined && heads[i][j]?.colspan === undefined) {
+                    w[j] = heads[i][j].width;
                 }
+                // if (heads[i][j]?.show === false) {
+                //     w[j] = null;
+                // }
             }
         }
-
-        return w;
+        console.log(w);
+        return w
+            .filter((_: any) => _)
+            .map((_: any) => {
+                if (typeof _ === "number") {
+                    return `${_}px`;
+                }
+                if (typeof _ === "string") {
+                    if (_.endsWith("*")) {
+                        return `${_.slice(0, -1) || 1}fr`;
+                    }
+                }
+            })
+            .join(" ");
     };
 
-    console.log(fun(_grid.current._defaultSchema.head));
+    const gridTemplateColumns = getGridWidths();
+
+    console.log(gridTemplateColumns);
 
     return (
         <div>
@@ -1014,31 +926,35 @@ export const Grid = (props: any) => {
                     {/* index */}
                     {_options.index && <div className="uf-grid-option" />}
                     {/* header */}
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns }}>
+                        {heads.map((row: any, rowIndex: any) => {
+                            return row.map((cel: any, colIndex: any) => {
+                                if (!cel) return null;
+                                if (cel.show === false) return null;
 
-                    {/*  */}
-
-                    <div
-                        className="grid w-full gap-[1px]"
-                        style={{ gridTemplateColumns: "100px 100px 100px 100px 100px 100px 1fr" }}
-                    >
-                        {heads.map((_: any, i: any) => {
-                            return _.map((__: any, j: any) => {
-                                if (!__) return null;
                                 return (
                                     <div
-                                        className="p-4 bg-uf-card-header"
+                                        key={_grid.current._key + ".gh." + rowIndex + "." + colIndex}
+                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center"
                                         style={{
-                                            gridRow: `${i + 1} / span ${__.rowspan ?? 1}`,
-                                            gridColumn: `${j + 1} / span ${__.colspan ?? 1}`,
+                                            gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
+                                            gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
                                     >
-                                        <div>a</div>
+                                        {render?.head?.[cel.binding]?.({
+                                            id: cel.id,
+                                            binding: cel.binding,
+                                            header: t(cel.header),
+                                        }) ||
+                                            t(cel.header) ||
+                                            cel.binding}
+
+                                        {cel.required && <span className="text-uf-error">*</span>}
                                     </div>
                                 );
                             });
                         })}
                     </div>
-                    {/*  */}
                 </div>
                 <List
                     ref={(ref) => (_grid.current._list = ref)}
@@ -1062,7 +978,7 @@ export const Grid = (props: any) => {
                         onRowClick,
                         /** state */
                         _test,
-                        _body,
+                        bodies,
                         _page,
                         _size,
                         _checked,
@@ -1074,6 +990,9 @@ export const Grid = (props: any) => {
 
                         /** g */
                         toggleGroup,
+                        gridTemplateColumns,
+                        /** grid */
+                        // _bo,
                     }}
                     itemSize={(index) =>
                         _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0
@@ -1114,7 +1033,7 @@ const Row = React.memo((props: any) => {
         onRowClick,
         /** state */
         _test,
-        _body,
+        bodies,
         _page,
         _size,
         _checked,
@@ -1125,6 +1044,7 @@ const Row = React.memo((props: any) => {
         _totalCount,
         /** gtest */
         toggleGroup,
+        gridTemplateColumns,
     } = data;
 
     const row = _test[rowIndex];
@@ -1138,7 +1058,7 @@ const Row = React.memo((props: any) => {
     React.useEffect(() => {
         _grid.current._rect[rowIndex] = ref.current.getBoundingClientRect();
         _grid.current._list.resetAfterIndex(rowIndex);
-    }, [_test, _body]);
+    }, [_test, bodies]);
 
     return (
         <div style={{ ...style }}>
@@ -1196,283 +1116,181 @@ const Row = React.memo((props: any) => {
                         </div>
                     )}
                     {/* body columns */}
-                    {_body.map((colProps: any, colIndex: any) => {
-                        const { show, cells, width, minWidth, flex } = colProps;
-                        const colKey = rowKey + "." + colIndex;
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns }}>
+                        {bodies.map((_: any, rowIndex: any) => {
+                            return _.map((__: any, colIndex: any) => {
+                                if (!__) return null;
+                                if (__.show === false) return null;
 
-                        /** col */
-                        if (!show) return null;
-                        return (
-                            <div
-                                key={colKey}
-                                className={classNames("flex flex-col gap-[1px]")}
-                                style={{ width, minWidth, flex }}
-                            >
-                                {cells.map((cellProps: any, celIndex: any) => {
-                                    const celKey = colKey + "." + celIndex;
+                                const celKey = contentKey + ".gb." + rowIndex + "." + colIndex;
+                                const binding = __.binding;
+                                const value = row[binding];
+                                const ov = _grid.current._origin.find(({ __key }: any) => __key === contentKey)?.[
+                                    binding
+                                ];
+                                const o = {
+                                    type: __.type,
+                                    /** text */
+                                    mask: __.mask,
+                                    letterCase: __.letterCase,
+                                    /** */
+                                    rows: __.rows,
+                                    /** number */
+                                    decimalScale: __.decimalScale,
+                                    thousandSeparator: __.thousandSeparator,
+                                    /** code */
+                                    area: __.area,
+                                    comnCd: __.comnCd,
+                                    /** */
+                                    options: __.options,
+                                    /** rules */
+                                    min: __.min,
+                                    max: __.max,
+                                    minLength: __.minLength,
+                                    pattern: __.pattern,
+                                    validate: __.validate,
+                                    required: __.required,
+                                    maxLength: __.maxLength,
+                                    /** */
+                                    rightButton: __.rightButton && {
+                                        ...__.rightButton,
+                                        onClick:
+                                            __.rightButton.onClick &&
+                                            (() =>
+                                                __.rightButton.onClick({
+                                                    value: value,
+                                                    rowValues: row,
+                                                    binding: binding,
+                                                })),
+                                    },
+                                    leftButton: __.leftButton && {
+                                        ...__.leftButton,
+                                        onClick:
+                                            __.leftButton.onClick &&
+                                            (() =>
+                                                __.leftButton.onClick({
+                                                    value: value,
+                                                    rowValues: row,
+                                                    binding: binding,
+                                                })),
+                                    },
+                                };
+                                const vv = comnUtils.getViewValue(value, o);
+                                const fv = comnUtils.getFormattedValue(value, o);
+                                const uv = comnUtils.getUnformattedValue(value, o);
+                                const vldv = comnUtils.getValidatedValue(uv, o);
+                                const edit = _editingRow.includes(contentKey) ? true : __.edit;
 
-                                    /** cel's row */
-                                    return (
-                                        <div key={celKey} className="flex h-full gap-[1px]">
-                                            {cellProps.map((bProps: any, bIndex: any) => {
-                                                const bKey = contentKey + "." + celKey + "." + bIndex;
-                                                const binding = bProps.binding;
-                                                const value = row[binding];
-                                                const ov = _grid.current._origin.find(
-                                                    ({ __key }: any) => __key === contentKey,
-                                                )?.[binding];
+                                return (
+                                    <div
+                                        key={celKey}
+                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-center border border-uf-card-background aria-selected:border-uf-info"
+                                        {...(vldv && { "aria-invalid": true })}
+                                        {...(_selectedCel === celKey && { "aria-selected": true })}
+                                        style={{
+                                            gridRow: `${rowIndex + 1} / span ${__.rowspan ?? 1}`,
+                                            gridColumn: `${colIndex + 1} / span ${__.colspan ?? 1}`,
+                                        }}
+                                        onClick={() => {
+                                            _setSelectedCel(celKey);
+                                            _grid.current._selectedCel = {
+                                                binding: binding,
+                                                value: uv,
+                                                formattedValue: fv,
+                                                rowValues: row,
+                                            };
 
-                                                const o = {
-                                                    type: bProps.type,
-                                                    /** text */
-                                                    mask: bProps.mask,
-                                                    letterCase: bProps.letterCase,
-
-                                                    /** */
-                                                    rows: bProps.rows,
-
-                                                    /** number */
-                                                    decimalScale: bProps.decimalScale,
-                                                    thousandSeparator: bProps.thousandSeparator,
-                                                    /** code */
-                                                    area: bProps.area,
-                                                    comnCd: bProps.comnCd,
-                                                    /** */
-                                                    options: bProps.options,
-                                                    /** rules */
-                                                    min: bProps.min,
-                                                    max: bProps.max,
-                                                    minLength: bProps.minLength,
-                                                    pattern: bProps.pattern,
-                                                    validate: bProps.validate,
-                                                    required: bProps.required,
-                                                    maxLength: bProps.maxLength,
-                                                    /** */
-                                                    rightButton: bProps.rightButton && {
-                                                        ...bProps.rightButton,
-                                                        onClick:
-                                                            bProps.rightButton.onClick &&
-                                                            (() =>
-                                                                bProps.rightButton.onClick({
-                                                                    value: value,
-                                                                    rowValues: row,
-                                                                    binding: binding,
-                                                                })),
-                                                    },
-                                                    leftButton: bProps.leftButton && {
-                                                        ...bProps.leftButton,
-                                                        onClick:
-                                                            bProps.leftButton.onClick &&
-                                                            (() =>
-                                                                bProps.leftButton.onClick({
-                                                                    value: value,
-                                                                    rowValues: row,
-                                                                    binding: binding,
-                                                                })),
-                                                    },
-                                                };
-
-                                                const vv = comnUtils.getViewValue(value, o);
-                                                const fv = comnUtils.getFormattedValue(value, o);
-                                                const uv = comnUtils.getUnformattedValue(value, o);
-                                                const vldv = comnUtils.getValidatedValue(uv, o);
-
-                                                const edit = _editingRow.includes(contentKey) ? true : bProps.edit;
-
-                                                /** cel */
-                                                return (
-                                                    <div
-                                                        key={bKey}
-                                                        {...(vldv && { "aria-invalid": true })}
-                                                        {...(_selectedCel === bKey && { "aria-selected": true })}
-                                                        className={classNames(
-                                                            "uf-grid-cell bg-uf-card-background border-uf-card-background border aria-selected:border-uf-info aria-[invalid=true]:border-uf-error break-all",
-                                                            (bProps.align === "start" || bProps.align === "left") &&
-                                                                "justify-start",
-                                                            (bProps.align === "end" || bProps.align === "right") &&
-                                                                "justify-end",
-                                                        )}
-                                                        style={{
-                                                            minWidth: bProps.width,
-                                                            maxWidth: bProps.width,
-                                                        }}
-                                                        onClick={() => {
-                                                            _setSelectedCel(bKey);
-                                                            _grid.current._selectedCel = {
-                                                                binding: binding,
-                                                                value: uv,
-                                                                formattedValue: fv,
-                                                                rowValues: row,
-                                                            };
-
-                                                            /** on cell click */
-                                                            if (onCellClick?.[binding])
-                                                                onCellClick?.[binding]({
-                                                                    binding: binding,
-                                                                    value: uv,
-                                                                    formattedValue: fv,
-                                                                    rowValues: row,
-                                                                });
-                                                        }}
-                                                    >
-                                                        {!edit &&
-                                                            (render?.cell?.[binding]?.({
-                                                                value: value,
-                                                                rowValues: row,
-                                                                binding: binding,
-                                                            }) || (
-                                                                <FormControl
-                                                                    {...o}
-                                                                    edit={false}
-                                                                    value={fv}
-                                                                    onChange={(v) => {
-                                                                        _grid.current._handleUpdate({
-                                                                            ...row,
-                                                                            [binding]: comnUtils.getUnformattedValue(
-                                                                                v,
-                                                                                o,
-                                                                            ),
-                                                                        });
-                                                                    }}
-                                                                />
-                                                            ))}
-
-                                                        {edit &&
-                                                            (render?.edit?.[binding]?.({
-                                                                value: value,
-                                                                rowValues: row,
-                                                                binding: binding,
-                                                            }) || (
-                                                                <FormControl
-                                                                    {...o}
-                                                                    value={fv}
-                                                                    onChange={(v) => {
-                                                                        _grid.current._handleUpdate({
-                                                                            ...row,
-                                                                            [binding]: comnUtils.getUnformattedValue(
-                                                                                v,
-                                                                                o,
-                                                                            ),
-                                                                        });
-                                                                    }}
-                                                                />
-                                                            ))}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        );
-                    })}
+                                            /** on cell click */
+                                            if (onCellClick?.[binding])
+                                                onCellClick?.[binding]({
+                                                    binding: binding,
+                                                    value: uv,
+                                                    formattedValue: fv,
+                                                    rowValues: row,
+                                                });
+                                        }}
+                                    >
+                                        {!edit &&
+                                            (render?.cell?.[binding]?.({
+                                                value: value,
+                                                rowValues: row,
+                                                binding: binding,
+                                            }) || (
+                                                <FormControl
+                                                    {...o}
+                                                    edit={false}
+                                                    value={fv}
+                                                    onChange={(v) => {
+                                                        _grid.current._handleUpdate({
+                                                            ...row,
+                                                            [binding]: comnUtils.getUnformattedValue(v, o),
+                                                        });
+                                                    }}
+                                                />
+                                            ))}
+                                        {edit &&
+                                            (render?.edit?.[binding]?.({
+                                                value: value,
+                                                rowValues: row,
+                                                binding: binding,
+                                            }) || (
+                                                <FormControl
+                                                    {...o}
+                                                    value={fv}
+                                                    onChange={(v) => {
+                                                        _grid.current._handleUpdate({
+                                                            ...row,
+                                                            [binding]: comnUtils.getUnformattedValue(v, o),
+                                                        });
+                                                    }}
+                                                />
+                                            ))}
+                                    </div>
+                                );
+                            });
+                        })}
+                    </div>
                 </div>
             )}
         </div>
     );
 }, areEqual);
 
-// {_head.map((colProps: any, colIndex: any) => {
-//     const { show, width, minWidth, maxWidth, flex, cells } = colProps;
-//     const colKey = "head." + _grid.current._key + "." + colIndex;
+/** set width */
+// const setWidth = (col: any, diff: any) => {
+//     const rects = _grid.current._headRects;
+//     const rect = rects[col];
+//     const next = rect.width + diff < 80 ? 80 : rect.width + diff;
 
-//     /** col */
-//     if (!show) return null;
-//     return (
-//         <div
-//             ref={(node) => {
-//                 if (node) {
-//                     _grid.current._headRects[colIndex] = node.getBoundingClientRect();
-//                 }
-//             }}
-//             key={colKey}
-//             className={classNames("flex flex-col gap-[1px] relative")}
-//             style={{ width, minWidth, maxWidth, flex }}
-//         >
-//             {cells.map((celProps: any, celIndex: any) => {
-//                 const celKey = colKey + "." + celIndex;
+//     _setHead((prev: any) => {
+//         return prev.map((_: any, index: any) => {
+//             if (!rects[index]) return _;
+//             const { flex, ...rest } = _;
 
-//                 /** cel's row */
-//                 return (
-//                     <div
-//                         ref={(node) => {
-//                             if (node) {
-//                                 testrect.current.h[celIndex] = [
-//                                     ...testrect.current.h[celIndex],
-//                                     { node: node, height: node.getBoundingClientRect().height },
-//                                 ];
-//                             }
-//                         }}
-//                         key={celKey}
-//                         className="flex h-full gap-[1px]"
-//                     >
-//                         {celProps.map((bProps: any, bIndex: any) => {
-//                             const bKey = celKey + "." + bIndex;
+//             if (index !== col) {
+//                 const w = rects[index].width;
+//                 return { ...rest, width: w, minWidth: w, maxWidth: w };
+//             }
 
-//                             /** cel */
-//                             return (
-//                                 <div
-//                                     key={bKey}
-//                                     className="flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1 transition overflow-hidden bg-uf-card-header"
-//                                     style={{
-//                                         minWidth: bProps.width,
-//                                         maxWidth: bProps.width,
-//                                     }}
-//                                 >
-//                                     {render?.head?.[bProps.binding]?.({
-//                                         binding: bProps.binding,
-//                                         id: colProps.id,
-//                                         header: bProps.header,
-//                                     }) ||
-//                                         t(bProps.header) ||
-//                                         bProps.binding}
-//                                     {bProps.required && (
-//                                         <span className="text-uf-error ml-0.5">*</span>
-//                                     )}
-//                                     <div className="flex">
-//                                         {/* filter */}
-//                                         {/* <button>
-//                                             <Icon icon="funnel" size="xs" className="ml-1" />
-//                                         </button> */}
-//                                         {/* sort */}
-//                                         <button
-//                                             className="relative"
-//                                             onClick={() => {
-//                                                 handleSort(bProps.binding);
-//                                             }}
-//                                         >
-//                                             <Icon
-//                                                 icon={
-//                                                     _sort[bProps.binding]?.val === "asc"
-//                                                         ? "barsUp"
-//                                                         : _sort[bProps.binding]?.val === "desc"
-//                                                           ? "barsDown"
-//                                                           : "bars"
-//                                                 }
-//                                                 size="xs"
-//                                                 className="ml-1"
-//                                             />
-//                                             <span className="text-[10px] absolute top-0 right-0 -translate-y-1/2 translate-x-1/2">
-//                                                 {_sort[bProps.binding]?.seq}
-//                                             </span>
-//                                         </button>
-//                                     </div>
-//                                 </div>
-//                             );
-//                         })}
-//                     </div>
-//                 );
-//             })}
-//             <Draggable
-//                 axis="x"
-//                 position={{ x: 0, y: 0 }}
-//                 onStop={(event: any, data: any) => {
-//                     const x = data.x;
-//                     setWidth(colIndex, x);
-//                 }}
-//             >
-//                 <div className="absolute right-0 w-[4px] h-full cursor-col-resize z-[9999]"></div>
-//             </Draggable>
-//         </div>
-//     );
-// })}
+//             if (index === col) {
+//                 return { ...rest, minWidth: next, width: next, maxWidth: next };
+//             }
+//         });
+//     });
+
+//     _setBody((prev: any) => {
+//         return prev.map((_: any, index: any) => {
+//             if (!rects[index]) return _;
+//             const { flex, ...rest } = _;
+
+//             if (index !== col) {
+//                 const w = rects[index].width;
+//                 return { ...rest, width: w, minWidth: w, maxWidth: w };
+//             }
+
+//             if (index === col) {
+//                 return { ...rest, minWidth: next, width: next, maxWidth: next };
+//             }
+//         });
+//     });
+// };

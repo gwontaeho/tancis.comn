@@ -24,149 +24,58 @@ const schema1 = {
     },
     head: [
         {
-            colspan: 3,
-            width: "*",
-            cells: [
-                {
-                    colspan: 2,
-                    header: "a",
-                },
-                {
-                    header: "b",
-                },
-                {
-                    header: "b",
-                },
-                { binding: "c", rowspan: 2 },
-                { binding: "d", required: true, width: 150 },
-                { binding: "e", required: true, width: 200 },
-                { binding: "f", required: true },
-            ],
-        },
-        {
-            width: "*",
+            id: "test1",
             cells: [
                 {
                     header: "a",
+                    binding: "a",
+                    required: true,
+                    width: 100,
                 },
                 {
-                    header: "b",
-                    rowspan: 2,
-                    width: 500,
+                    header: "a",
+                    binding: "a",
+                    required: true,
+                    width: 100,
                 },
             ],
         },
         {
-            colspan: 3,
-            width: "*",
+            id: "test",
             cells: [
                 {
-                    header: "a",
-                    colspan: 2,
-                },
-                {
+                    width: 100,
                     header: "b",
                 },
-                { binding: "c", rowspan: 2 },
-                { binding: "d", required: true },
-                { binding: "e", required: true, width: "*" },
-                { binding: "f", required: true, width: 300, colspan: 2 },
+                {
+                    width: 100,
+                    header: "b",
+                },
+            ],
+        },
+        {
+            cells: [
+                {
+                    width: 100,
+                    header: "c",
+                },
+                {
+                    width: 100,
+                    header: "c",
+                },
             ],
         },
     ],
     body: [
         {
-            cells: [
-                //
-                { binding: "q" },
-                { binding: "q" },
-                { binding: "q" },
-                { binding: "q" },
-
-                { binding: "q", colspan: 4, type: "textarea", rows: 4 },
-            ],
+            cells: [{ binding: "q" }],
         },
         {
-            cells: [
-                { binding: "w" },
-                { binding: "w" },
-                { binding: "w" },
-                { binding: "w" },
-
-                { binding: "w", type: "textarea" },
-                { binding: "w", type: "textarea" },
-                { binding: "w", type: "textarea" },
-                { binding: "w", type: "textarea" },
-                { binding: "w", type: "textarea" },
-
-                { binding: "w", colspan: 8, type: "textarea", rows: 5 },
-            ],
+            cells: [{ binding: "w" }],
         },
         {
-            colspan: 2,
-            cells: [{ binding: "ww" }, { binding: "ww", type: "textarea" }, { binding: "ww" }],
+            cells: [{ binding: "ww" }],
         },
-
-        // {
-        //     cells: [{ binding: "date", type: "date", colspan: 2 }],
-        // },
-        // {
-        //     cells: [
-        //         { binding: "select", type: "select", colspan: 2, area: "comnCd", comnCd: "COM_0015", required: true },
-        //     ],
-        // },
-        // {
-        //     cells: [{ binding: "time", type: "time" }],
-        // },
-        // {
-        //     cells: [{ binding: "datetime", type: "datetime" }],
-        // },
-        // {
-        //     cells: [
-        //         {
-        //             binding: "select",
-        //             type: "select",
-        //             options: [
-        //                 { label: "a", value: "a" },
-        //                 { label: "b", value: "b" },
-        //             ],
-        //         },
-        //     ],
-        // },
-        // {
-        //     cells: [
-        //         {
-        //             binding: "radio",
-        //             type: "radio",
-        //             options: [
-        //                 { label: "a", value: "a" },
-        //                 { label: "b", value: "b" },
-        //             ],
-        //         },
-        //     ],
-        // },
-        // {
-        //     cells: [
-        //         {
-        //             binding: "checkbox",
-        //             type: "checkbox",
-        //             options: [
-        //                 { label: "a", value: "a" },
-        //                 { label: "b", value: "b" },
-        //             ],
-        //         },
-        //     ],
-        // },
-        // {
-        //     cells: [
-        //         {
-        //             binding: "code",
-        //             type: "code",
-        //             area: "comnCd",
-        //             comnCd: "COM_0015",
-        //         },
-        //     ],
-        // },
     ],
 };
 
@@ -181,7 +90,7 @@ type TData = {
 };
 
 export const Temp = () => {
-    useResource({
+    const { resource } = useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0015" },
             { area: "currCd" },
@@ -218,209 +127,21 @@ export const Temp = () => {
 
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
-    const { pgeStore, setStore } = useStore({ pgeUid: "test" });
-
-    const t: Array<Array<any>> = [];
-
-    const getHederMatrix = (head: any) => {
-        const t: Array<Array<any>> = [];
-        let rowIndex = -1;
-        let colIndex = 0;
-        let colspan = head.colspan;
-        let width = head.width;
-        let _index = 0;
-        if (colspan === undefined) colspan = 1;
-        if (width === undefined) width = 100;
-
-        head.cells.forEach((cell: any, y: number) => {
-            if (_index === 0) {
-                rowIndex++;
-                if (!t[rowIndex]) t[rowIndex] = Array(colspan);
-                colIndex = 0;
-            }
-
-            if (t[rowIndex][_index] === null) {
-                for (let i = _index; i < colspan; i++) {
-                    if (t[rowIndex][i] === null) {
-                        _index++;
-
-                        if (_index > colspan - 1) {
-                            _index = 0;
-
-                            return;
-                        }
-                    } else break;
-                }
-            }
-            if (_index > colspan - 1) {
-                _index = 0;
-                return;
-            }
-
-            t[rowIndex][_index] = cell;
-
-            if (cell.colspan !== undefined) {
-                for (let i = _index + 1; i < _index + cell.colspan; i++) {
-                    t[rowIndex][i] = null;
-                }
-            }
-            if (cell.rowspan !== undefined) {
-                for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
-                    if (!t[i]) t[i] = Array(colspan);
-                    t[i][_index] = null;
-                }
-            }
-
-            _index += cell.colspan === undefined ? 1 : cell.colspan;
-            if (_index > colspan - 1) {
-                _index = 0;
-            }
-        });
-        return t;
-    };
-
-    const fun = (heads: any) => {
-        let t: Array<any> = [];
-
-        for (let i = 0; i < heads.length; i++) {
-            let rowIndex = -1;
-            let colspan = heads[i].colspan || 1;
-            let width = heads[i].width || 100;
-            let _current = 0;
-
-            let head: Array<any> = [];
-            console.log(heads[i]);
-
-            for (let col = 0; col < heads[i].cells.length; col++) {
-                const cell = heads[i].cells[col];
-                let isAdd = true;
-
-                if (_current === 0) {
-                    rowIndex++;
-                    if (!head[rowIndex]) head[rowIndex] = Array(colspan);
-                }
-                if (head[rowIndex][_current] === null) {
-                    for (let i = _current; i < colspan; i++) {
-                        if (head[rowIndex][i] === null) {
-                            _current++;
-                            if (_current > col - 1) {
-                                isAdd = false;
-                            }
-                        } else break;
-                    }
-                }
-
-                if (isAdd === false) {
-                    _current = 0;
-                    col--;
-                    continue;
-                }
-                if (_current > colspan - 1) {
-                    _current = 0;
-                    continue;
-                }
-
-                head[rowIndex][_current] = cell;
-
-                if (cell.colspan !== undefined) {
-                    for (let i = _current + 1; i < _current + cell.colspan; i++) {
-                        head[rowIndex][i] = null;
-                    }
-                }
-                if (cell.rowspan !== undefined) {
-                    for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
-                        if (!head[i]) head[i] = Array(colspan);
-                        head[i][_current] = null;
-                    }
-                }
-
-                _current += cell.colspan === undefined ? 1 : cell.colspan;
-                if (_current > colspan - 1) {
-                    _current = 0;
-                }
-            }
-
-            t.push(head);
-        }
-
-        return t;
-    };
-
-    const combineMatrix = (arr: Array<any>) => {
-        let t = arr[0];
-
-        for (let i = 1; i < arr.length; i++) {
-            for (let j = 0; j < t.length; j++) {
-                t[j] = [...t[j], ...arr[i][j]];
-            }
-        }
-
-        return t;
-    };
-
-    const getGridWidths = (arr: Array<any>) => {
-        let w = Array(arr[0].length);
-        for (let i = 1; i < arr.length; i++) {
-            for (let j = 0; j < arr[i].length; j++) {
-                if (w[j] === undefined) w[j] = 100;
-                if (arr[i][j]?.width !== undefined && arr[i][j]?.colspan === undefined) {
-                    w[j] = arr[i][j].width;
-                }
-            }
-        }
-
-        return w;
-    };
-
-    //console.log(getHederMatrix(schema1.head[0]));
-    //console.log(getHederMatrix(schema1.head[1]));
-    // const heads = combineMatrix(fun(schema1.head));
-    // console.log(getGridWidths(heads));
-    // let str = "";
-    // for (let i = 0; i < heads.length; i++) {
-    //     for (let j = 0; j < heads[i].length; j++) {
-    //         if (heads[i][j] === null) continue;
-    //         str +=
-    //             '<div style="grid-row: ' +
-    //             (i + 1) +
-    //             "/ span " +
-    //             (heads[i][j].rowspan || 1) +
-    //             ";grid-column: " +
-    //             (j + 1) +
-    //             "/ span  " +
-    //             (heads[i][j].colspan || 1) +
-    //             ';">' +
-    //             (i + "-" + j) +
-    //             "</div>";
-    //     }
-    // }
-
-    // console.log(str);
-
-    /*console.log(
-        combineMatrix([
-            getHederMatrix(schema1.head[0]),
-            getHederMatrix(schema1.head[1]),
-            getHederMatrix(schema1.head[2]),
-        ]),
-    );
-    */
-
     const _test = {
         head: {
-            // text: (data: any) => {
-            //     /**
-            //      * # data
-            //      * id
-            //      * header
-            //      * binding
-            //      */
-            //     return (
-            //         <Layout>
-            //             <FormControl />
-            //         </Layout>
-            //     );
-            // },
+            a: (data: any) => {
+                /**
+                 * # data
+                 * id
+                 * header
+                 * binding
+                 */
+                return (
+                    <Layout>
+                        <FormControl />
+                    </Layout>
+                );
+            },
         },
         cell: {
             // text: (data: any) => {
@@ -469,7 +190,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            // data={data}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -558,12 +279,14 @@ export const Temp = () => {
                 <button onClick={() => console.log(getChecked())}>getChecked</button>
                 <button onClick={() => addRow({ text: "added" })}>add row</button>
                 <button onClick={() => {}}>updateRow selected</button>
-                <button onClick={() => setEdit("column", "text", true)}>edit column true</button>
-                <button onClick={() => setEdit("column", "text", false)}>edit column false</button>
+                <button onClick={() => setEdit("column", "test", true)}>edit column true</button>
+                <button onClick={() => setEdit("column", "test", false)}>edit column false</button>
+                <button onClick={() => setEdit("cell", "ww", true)}>edit cell true</button>
+                <button onClick={() => setEdit("cell", "ww", false)}>edit cell false</button>
                 <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>
                 <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, false)}>edit row false</button>
-                <button onClick={() => setShow("column", "text", true)}>show text</button>
-                <button onClick={() => setShow("column", "text", false)}>hide text</button>
+                <button onClick={() => setShow("column", "test1", true)}>show text</button>
+                <button onClick={() => setShow("column", "test1", false)}>hide text</button>
             </Layout.Left>
         </Page>
     );

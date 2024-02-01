@@ -26,6 +26,7 @@ export type TGridSchema = {
             binding?: string;
             required?: boolean;
             colspan?: number;
+            rowspan?: number;
         }[];
     }[];
     body: {
@@ -34,6 +35,7 @@ export type TGridSchema = {
         cells: (FormControlProps & {
             binding: string;
             colspan?: number;
+            rowspan?: number;
             align?: "start" | "end" | "left" | "right" | "center";
         })[];
     }[];
@@ -57,57 +59,9 @@ export const useGrid = (props: UseGridProps) => {
     const [_size, _setSize] = React.useState(10);
 
     const _grid = React.useRef<any>({
-        // {
-        //     _defaultSchema?: any;
-        //     _key?: any;
-        //     _initialized?: any;
-        //     _origin?: any;
-        //     _content?: any;
-        //     _checked?: any;
-        //     _paged?: any;
-        //     _selectedRow?: any;
-        //     _selectedCel?: any;
-
-        //     _head?: any;
-        //     _list?: any;
-        //     _headRects?: any;
-
-        //     _rect?: any;
-
-        //     _group?: any;
-        //     _groupStatus?: any;
-
-        //     _sort?: any;
-
-        //     _index?: any;
-        //     _checkbox?: any;
-        //     _radio?: any;
-        //     _edit?: any;
-        //     _add?: any;
-        //     _delete?: any;
-        //     _exportExcel?: any;
-        //     _importExcel?: any;
-
-        //     _pagination?: any;
-        //     _page?: any;
-        //     _size?: any;
-        //     _setPage?: any;
-        //     _setSize?: any;
-
-        //     _setData?: any;
-        //     _setEdit?: any;
-        //     _setShow?: any;
-        //     _setOption?: any;
-        //     _resetData?: any;
-        //     _handleUpdate?: any;
-        //     _handleClickAdd?: any;
-        //     _handleClickDelete?: any;
-        //     _handleChangePage?: any;
-        //     _handleChangeSize?: any;
-        // }
+        _initialized: false,
         _defaultSchema: defaultSchema,
         _key: uuid(),
-        _initialized: false,
         _origin: [],
         _content: [],
         _checked: [],
