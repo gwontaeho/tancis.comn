@@ -46,16 +46,18 @@ export const comnUtils = {
         return row;
     },
 
-    validateBySchema: (data: Array<any>, schema: any) => {
+    validateBySchema: (data: any, schema: any) => {
         let errors: Array<any> = [];
+        let _data = data.data;
+        let _labels = data.schema.labels;
 
-        data.forEach((item: any, index: number) => {
+        _data.forEach((item: any, index: number) => {
             Object.entries(item).forEach(([k, v]: any) => {
                 let r: any = comnUtils.getValidatedValue(v, schema[k]);
                 if (r !== undefined)
                     errors.push({
-                        row: index + 3,
-                        label: schema.labels[k],
+                        row: index + 1,
+                        label: _labels[k],
                         ...comnUtils.keyMapping(r, item, schema.keys),
                     });
             });
@@ -92,24 +94,24 @@ export const comnUtils = {
         console.log(t);
         return t;
     },
-    validate: (data: any, schema: any, resource: any) => {
+    validateGrid: (data: any, schema: any, resource: any, key?: any) => {
         let _schema = comnUtils.setSchemaMatrix(schema);
-
         if (_schema === null || comnUtils.isEmptyObject(_schema)) {
             return {
+                result: "fail",
                 error: { type: "no-schema", message: "msg.com.00003", errors: [] },
             };
         }
 
-        console.log(_schema);
-
         const errors = comnUtils.validateBySchema(data, _schema);
         if (comnUtils.isEmptyArray(errors)) {
             return {
+                result: "success",
                 error: { type: "success", message: "msg.com.00016", errors: [] },
             };
         } else {
             return {
+                result: "fail",
                 error: { type: "fail-validation", message: "msg.com.00014", errors: errors },
             };
         }

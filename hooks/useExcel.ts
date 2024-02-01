@@ -50,7 +50,7 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
                 console.error(`file is not exist`);
                 reject({
                     result: "fail",
-                    error: { type: "no-file", message: "msg.com.00003", errors: [] },
+                    error: { type: "no-file", message: t("msg.com.00003", { 0: t("L_EXCL") }), errors: [] },
                     data: [],
                 });
                 return;
