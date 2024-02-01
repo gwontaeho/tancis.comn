@@ -16,7 +16,7 @@ type UseExcelReturn = {
     process: (data: Array<any>, handler: (item: any, index: number) => Array<any>) => Array<any>;
     excelToJson: (file: File, index: number) => Promise<ExcelToJsonReturn>;
     dataToExcel: () => any;
-    setEdit: (edit: boolean) => any;
+    setEdit: (id: string, edit: boolean) => any;
 };
 
 type ExcelToJsonReturn = {
@@ -31,10 +31,8 @@ type ValidateReturn = {
 
 export const useExcel = (props: UseExcelProps): UseExcelReturn => {
     const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
-    const { edit = true } = props;
-    const [_schema, _setSchema] = React.useState<any>({
-        edit: edit,
-    });
+    //const { edit = true } = props;
+    const [_schema, _setSchema] = React.useState<any>(props);
 
     const process = (data: Array<any>, handler: (item: any, index: number) => any) => {
         data.map((item, index) => {
@@ -79,6 +77,14 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
             reader.onload = (e: any) => {
                 const data = e.target.result;
                 const readedData = XLSX.read(data, { type: "binary" });
+                if (!readedData.Sheets[index]) {
+                    reject({
+                        error: { type: "no-sheet", message: t("msg.com.00015"), errors: [] },
+                        data: [],
+                    });
+                    return;
+                }
+
                 const wsname = readedData.SheetNames[index];
                 const ws = readedData.Sheets[wsname];
                 const rawData: Array<Array<any>> = XLSX.utils.sheet_to_json(ws, { header: 1 });
@@ -186,9 +192,11 @@ export const useExcel = (props: UseExcelProps): UseExcelReturn => {
     const dataToExcel = () => {
         return null;
     };
-    const setEdit = (edit: boolean) => {
+    const setEdit = (id: string, edit: boolean) => {
         _setSchema((prev: any) => {
-            return { ...prev, edit: edit };
+            const t = { ...prev };
+            t[id].edit = edit;
+            return t;
         });
     };
 
