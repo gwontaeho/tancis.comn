@@ -46,19 +46,21 @@ export const comnUtils = {
         return row;
     },
 
-    validateBySchema: (data: any, schema: any) => {
+    validateBySchema: (data: any, schema: any, resource: any, keys?: any) => {
         let errors: Array<any> = [];
         let _data = data.data;
         let _labels = data.schema.labels;
 
+        //console.log(keys);
+
         _data.forEach((item: any, index: number) => {
             Object.entries(item).forEach(([k, v]: any) => {
-                let r: any = comnUtils.getValidatedValue(v, schema[k]);
+                let r: any = comnUtils.getValidatedValue(v, schema[k], resource);
                 if (r !== undefined)
                     errors.push({
                         row: index + 1,
                         label: _labels[k],
-                        ...comnUtils.keyMapping(r, item, schema.keys),
+                        ...comnUtils.keyMapping(r, item, keys),
                     });
             });
         });
@@ -69,8 +71,6 @@ export const comnUtils = {
         if (schema === undefined || comnUtils.isEmpty(schema) || comnUtils.isEmptyObject(schema)) {
             return null;
         }
-
-        console.log(schema);
 
         let t: { [key: string]: any } = {};
         if (lodash.isArray(schema)) {
@@ -91,10 +91,9 @@ export const comnUtils = {
                 });
             });
         }
-        console.log(t);
         return t;
     },
-    validateGrid: (data: any, schema: any, resource: any, key?: any) => {
+    validateForGrid: (data: any, schema: any, resource: any, keys?: any) => {
         let _schema = comnUtils.setSchemaMatrix(schema);
         if (_schema === null || comnUtils.isEmptyObject(_schema)) {
             return {
@@ -103,7 +102,7 @@ export const comnUtils = {
             };
         }
 
-        const errors = comnUtils.validateBySchema(data, _schema);
+        const errors = comnUtils.validateBySchema(data, _schema, resource, keys);
         if (comnUtils.isEmptyArray(errors)) {
             return {
                 result: "success",
@@ -112,7 +111,7 @@ export const comnUtils = {
         } else {
             return {
                 result: "fail",
-                error: { type: "fail-validation", message: "msg.com.00014", errors: errors },
+                error: { type: "fail-validation", message: "msg.com.00014", errors: errors, head: keys },
             };
         }
     },
@@ -167,9 +166,8 @@ export const comnUtils = {
         }
         return v;
     },
-    getValidatedValue: (v: any, o?: any) => {
+    getValidatedValue: (v: any, o?: any, resource?: any) => {
         const t = comnUtils.getValidateObject(o);
-
         if (o?.required) {
             if (!v) {
                 return { message: t.required.message, type: "required", schema: t };
@@ -203,6 +201,13 @@ export const comnUtils = {
         if (o?.validate) {
             if (!t.validate.value(v)) {
                 return { message: t.validate.message, type: "validate", schema: t };
+            }
+        }
+
+        if (o?.area && resource?.[t.area.value] && resource[t.area.value].options) {
+            let index = lodash.findIndex(resource[t.area.value].options, { value: v });
+            if (index === -1) {
+                return { message: t.area.message, type: "resource", schema: t };
             }
         }
     },
@@ -261,6 +266,14 @@ export const comnUtils = {
                 value: o.validate,
                 message: "msg.com.00011",
                 type: "validate",
+            };
+        }
+
+        if (o.area !== undefined && typeof o.area !== "object") {
+            t.area = {
+                value: o.area + (o.comnCd ? ":" + o.comnCd : ""),
+                message: "msg.com.00017",
+                type: "resource",
             };
         }
 

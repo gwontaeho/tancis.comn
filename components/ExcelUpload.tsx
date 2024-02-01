@@ -1,12 +1,8 @@
-import React from "react";
-import * as XLSX from "xlsx";
-import { Icon, Button } from "@/comn/components";
+import React, { useState } from "react";
+import { Button } from "@/comn/components";
 import {} from "@/comn/components";
-import { comnEnvs, comnUtils } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
-import { useModal } from "@/comn/hooks";
-import lodash from "lodash";
-import { CommonErrors } from "@/comn/components/_";
+import { useModal, useTheme } from "@/comn/hooks";
 
 type ExcelUploadProps = {
     edit?: boolean;
@@ -16,8 +12,12 @@ type ExcelUploadProps = {
 };
 
 export const ExcelUpload = (props: ExcelUploadProps) => {
-    const { edit, onChange, template, onUpload } = props;
+    const { edit, template, onUpload } = props;
+    const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
     const input = React.useRef<HTMLInputElement>(null);
+    const [fileName, setFileName] = useState("");
+    const { theme } = useTheme();
 
     /*
     
@@ -199,33 +199,82 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
 
     return edit === true ? (
         <>
-            <Button variant="secondary">Template</Button>
-            <div className="uf-form-control min-w-fit">
-                <div className="uf-form-control-main">
+            <div className="flex border rounded divide-x overflow-hidden">
+                <div className="[&_*]:border-none [&_*]:rounded-none">
+                    <Button variant="secondary">
+                        <a href={`${process.env.PUBLIC_URL}/assets/${template}_${theme.lang.toLocaleLowerCase()}.xlsx`}>
+                            {t("B_TMPL")}
+                        </a>
+                    </Button>
+                </div>
+                <div className="[&_*]:border-none [&_*]:rounded-none min-w-fit">
                     <div className="w-full relative flex items-center">
-                        <div className="w-full">
-                            <div>
-                                <label>
-                                    <div className="input uf-button bg-uf-main cursor-pointer">
-                                        <Icon icon={"fileSearch"} />
-                                    </div>
-                                    <input hidden={true} type="file" ref={input} accept=".xlsx, .xls" />
-                                </label>
-                            </div>
+                        <div className="min-w-fit">
+                            <label>
+                                <div className={"input " + (fileName === "" ? "hidden" : "max-w-fit")}>{fileName}</div>
+                                <input
+                                    hidden={true}
+                                    type="file"
+                                    ref={input}
+                                    accept=".xlsx, .xls"
+                                    className="w-5"
+                                    onChange={(e: any) => {
+                                        if (e.target.files[0]?.name) {
+                                            setFileName(e.target.files[0].name);
+                                        } else {
+                                            setFileName("");
+                                        }
+                                    }}
+                                />
+                            </label>
                         </div>
+                        <button
+                            type="button"
+                            className="uf-right-button"
+                            onClick={() => {
+                                input.current?.click();
+                            }}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                className="w-3 h-3"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                ></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
+                <div className="[&_*]:border-none [&_*]:rounded-none">
+                    <Button
+                        variant="warning"
+                        onClick={() => {
+                            if (input.current && input.current.files && input.current.files.length > 0) {
+                                modal.openModal({
+                                    content: t("msg.com.00004", { 0: t("L_EXCL") }),
+                                    onConfirm: () => {
+                                        if (onUpload && input && input.current && input.current.files)
+                                            onUpload(input.current.files[0] || null);
+                                    },
+                                });
+                            } else {
+                                modal.openModal({
+                                    content: t("msg.com.00003", { 0: t("L_EXCL") }),
+                                });
+                            }
+                        }}
+                    >
+                        {t("B_UPLD")}
+                    </Button>
+                </div>
             </div>
-            <Button
-                variant="warning"
-                onClick={() => {
-                    if (input.current && input.current.files && input.current.files !== null) {
-                        if (onUpload) onUpload(input.current.files[0] || null);
-                    }
-                }}
-            >
-                Upload
-            </Button>
         </>
     ) : (
         <></>
