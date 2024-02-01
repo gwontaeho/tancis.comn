@@ -7,13 +7,7 @@ import { useModal } from "@/comn/hooks";
 import { CommonErrors } from "@/comn/components/_";
 
 type UseExcelProps = {
-    edit?: boolean;
-    template?: string;
-    schema?: any;
-    keys?: any;
-    handler?: (data?: any, index?: number) => { data: Array<any> };
-    onSuccess?: (data?: any) => void;
-    onError?: (error?: any) => void;
+    [id: string]: { edit: boolean };
 };
 
 type UseExcelReturn = {
