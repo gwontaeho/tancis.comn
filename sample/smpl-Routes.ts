@@ -17,105 +17,105 @@ export const SampleRoutes = [
                         children: [
                             {
                                 name: "Text",
-                                to: "/Text",
+                                to: "/comn/smpl/components/FormControl/Text",
                             },
                             {
                                 name: "Number",
-                                to: "/Number",
+                                to: "/comn/smpl/components/FormControl/Number",
                             },
                             {
                                 name: "Password",
-                                to: "/Password",
+                                to: "/comn/smpl/components/FormControl/Password",
                             },
                             {
                                 name: "Select",
-                                to: "/Select",
+                                to: "/comn/smpl/components/FormControl/Select",
                             },
                             {
                                 name: "Radio",
-                                to: "/Radio",
+                                to: "/comn/smpl/components/FormControl/Radio",
                             },
                             {
                                 name: "Checkbox",
-                                to: "/Checkbox",
+                                to: "/comn/smpl/components/FormControl/Checkbox",
                             },
                             {
                                 name: "Textarea",
-                                to: "/Textarea",
+                                to: "/comn/smpl/components/FormControl/Textarea",
                             },
                             {
                                 name: "Date",
-                                to: "/Date",
+                                to: "/comn/smpl/components/FormControl/Date",
                             },
                             {
                                 name: "Time",
-                                to: "/Time",
+                                to: "/comn/smpl/components/FormControl/Time",
                             },
                             {
                                 name: "Datetime",
-                                to: "/Datetime",
+                                to: "/comn/smpl/components/FormControl/Datetime",
                             },
                             {
                                 name: "Range",
-                                to: "/Range",
+                                to: "/comn/smpl/components/FormControl/Range",
                             },
                             {
                                 name: "File",
-                                to: "/File",
+                                to: "/comn/smpl/components/FormControl/File",
                             },
                             {
                                 name: "Code",
-                                to: "/Code",
+                                to: "/comn/smpl/components/FormControl/Code",
                             },
                         ],
                     },
                     {
                         name: "Text",
-                        to: "/Text",
+                        to: "/comn/smpl/components/Text",
                     },
                     {
                         name: "Grid",
-                        to: "/Grid",
+                        to: "/comn/smpl/components/Grid",
                     },
                     {
                         name: "Page",
-                        to: "/Page",
+                        to: "/comn/smpl/components/Page",
                     },
                     {
                         name: "Icon",
-                        to: "/Icon",
+                        to: "/comn/smpl/components/Icon",
                     },
                     {
                         name: "Button",
-                        to: "/Button",
+                        to: "/comn/smpl/components/Button",
                     },
                     {
                         name: "IconButton",
-                        to: "/IconButton",
+                        to: "/comn/smpl/components/IconButton",
                     },
                     {
                         name: "Group",
-                        to: "/Group",
+                        to: "/comn/smpl/components/Group",
                     },
                     {
                         name: "Layout",
-                        to: "/Layout",
+                        to: "/comn/smpl/components/Layout",
                     },
                     {
                         name: "Tooltip",
-                        to: "/Tooltip",
+                        to: "/comn/smpl/components/Tooltip",
                     },
                     {
                         name: "Table",
-                        to: "/Table",
+                        to: "/comn/smpl/components/Table",
                     },
                     {
                         name: "Tab",
-                        to: "/Tab",
+                        to: "/comn/smpl/components/Tab",
                     },
                     {
                         name: "Tree",
-                        to: "/Tree",
+                        to: "/comn/smpl/components/Tree",
                     },
                 ],
             },
@@ -125,43 +125,43 @@ export const SampleRoutes = [
                 children: [
                     {
                         name: "useModal ·",
-                        to: "/useModal",
+                        to: "/comn/smpl/hooks/useModal",
                     },
                     {
                         name: "useFetch",
-                        to: "/useFetch",
+                        to: "/comn/smpl/hooks/useFetch",
                     },
                     {
                         name: "usePopup",
-                        to: "/usePopup",
+                        to: "/comn/smpl/hooks/usePopup",
                     },
                     {
                         name: "useForm",
-                        to: "/useForm",
+                        to: "/comn/smpl/hooks/useForm",
                     },
                     {
                         name: "useAuth",
-                        to: "/useAuth",
+                        to: "/comn/smpl/hooks/useAuth",
                     },
                     {
                         name: "useToast",
-                        to: "/useToast",
+                        to: "/comn/smpl/hooks/useToast",
                     },
                     {
                         name: "useWijmo",
-                        to: "/useWijmo",
+                        to: "/comn/smpl/hooks/useWijmo",
                     },
                     {
                         name: "useTab",
-                        to: "/useTab",
+                        to: "/comn/smpl/hooks/useTab",
                     },
                     {
                         name: "useTree",
-                        to: "/useTree",
+                        to: "/comn/smpl/hooks/useTree",
                     },
                     {
                         name: "useStore",
-                        to: "/useStore",
+                        to: "/comn/smpl/hooks/useStore",
                     },
                 ],
             },
@@ -172,55 +172,55 @@ export const SampleRoutes = [
                 children: [
                     {
                         name: "Common Code Popup",
-                        to: "/ppup/comnCdPpup",
+                        to: "/comn/comn/ppup/comnCdPpup",
                     },
                     {
                         name: "Country Code Popup",
-                        to: "/ppup/cntyCdPpup",
+                        to: "/comn/comn/ppup/cntyCdPpup",
                     },
                     {
                         name: "City Code Popup",
-                        to: "/ppup/cityCdPpup",
+                        to: "/comn/comn/ppup/cityCdPpup",
                     },
                     {
                         name: "Currency Code Popup",
-                        to: "/ppup/currCdPpup",
+                        to: "/comn/comn/ppup/currCdPpup",
                     },
                     {
                         name: "Bank Code Popup",
-                        to: "/ppup/bnkCdPpup",
+                        to: "/comn/comn/ppup/bnkCdPpup",
                     },
                     {
                         name: "Port Code Popup",
-                        to: "/ppup/portCdPpup",
+                        to: "/comn/comn/ppup/portCdPpup",
                     },
                     {
                         name: "Port/ Airport Code Popup",
-                        to: "/ppup/portAirptCdPpup",
+                        to: "/comn/comn/ppup/portAirptCdPpup",
                     },
                     {
                         name: "Airport Code Popup",
-                        to: "/ppup/airptCdPpup",
+                        to: "/comn/comn/ppup/airptCdPpup",
                     },
                     {
                         name: "Company Code Popup",
-                        to: "/ppup/coCdPpup",
+                        to: "/comn/comn/ppup/coCdPpup",
                     },
                     {
                         name: "Process Status Code Popup",
-                        to: "/ppup/prcssStatPpup",
+                        to: "/comn/comn/ppup/prcssStatPpup",
                     },
                     {
                         name: "Organization Code Popup",
-                        to: "/ppup/orgCdPpup",
+                        to: "/comn/comn/ppup/orgCdPpup",
                     },
                     {
                         name: "Label Language Processing",
-                        to: "/lbl/lblLangLst",
+                        to: "/comn/comn/lbl/lblLangLst",
                     },
                     {
                         name: "Message Language Processing",
-                        to: "/msg/msgLangLst",
+                        to: "/comn/comn/msg/msgLangLst",
                     },
                 ],
             },
