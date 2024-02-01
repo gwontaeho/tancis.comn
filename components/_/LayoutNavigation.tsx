@@ -35,7 +35,7 @@ const NavItem = (props: NavItemProps) => {
     const handleClick = () => {
         if (children) return setOpen((prev) => !prev);
         // navigate(depth_1.base + depth_2.base + __base + to);
-        navigate(process.env.REACT_APP_BASE_CGM + to);
+        navigate(to);
     };
 
     const current = !Array.isArray(children) && location.pathname === depth_1.base + depth_2.base + __base + to;
