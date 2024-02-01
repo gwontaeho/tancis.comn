@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import classNames from "classnames";
+import { useRecoilState } from "recoil";
 import { Collapse, Icon, Button } from "@/comn/components";
 
 import { R } from "@/comn";
+import { routeState } from "@/comn/features/recoil";
 
 type NavItemProps = {
     children?: any[];
@@ -32,7 +34,8 @@ const NavItem = (props: NavItemProps) => {
 
     const handleClick = () => {
         if (children) return setOpen((prev) => !prev);
-        navigate(depth_1.base + depth_2.base + __base + to);
+        // navigate(depth_1.base + depth_2.base + __base + to);
+        navigate(process.env.REACT_APP_BASE_CGM + to);
     };
 
     const current = !Array.isArray(children) && location.pathname === depth_1.base + depth_2.base + __base + to;
@@ -78,9 +81,42 @@ const Menu = () => {
     const location = useLocation();
     const pathname = location.pathname;
 
-    const depth_1 = R.find(({ base }) => pathname.startsWith(base || ""));
-    const depth_1_base = depth_1?.base || "";
-    const depth_2 = depth_1?.children?.find(({ base }) => pathname.startsWith(depth_1_base + (base || "")));
+    const [route] = useRecoilState(routeState);
+
+    const depth_1 = R.find(({ base }) => route.startsWith(base || ""));
+    const depth_1_base = (depth_1?.base || "").startsWith("/") ? depth_1?.base || "" : "/" + (depth_1?.base || "");
+    const depth_2 = depth_1?.children?.find(({ base }) =>
+        route.startsWith(depth_1_base + ((base || "").startsWith("/") ? base || "" : "/" + (base || ""))),
+    );
+
+    // const add = (any: any, d2: any) => {
+    //     return any.map((_: any) => {
+    //         let nn = _;
+
+    //         if (nn.children) {
+    //             nn.children = add(nn.children, d2);
+    //         }
+
+    //         return { ...nn, d2 };
+    //     });
+    // };
+
+    // const temp: any = R.map((_: any) => {
+    //     let n = _;
+    //     const d1 = n.base;
+    //     if (n.children) {
+    //         n.children = n.children.map((__: any) => {
+    //             let nn = __;
+    //             const d2 = d1 + (__.base.startsWith("/") ? __.base : "/" + __.base);
+    //             if (nn.children) {
+    //                 nn.children = add(nn.children, d2);
+    //             }
+    //             return { ...__, d1, d2 };
+    //         });
+    //     }
+
+    //     return n;
+    // });
 
     return (
         <nav className="p-2">

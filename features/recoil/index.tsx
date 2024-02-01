@@ -65,6 +65,19 @@ export const authState = atom<Record<string, any>>({
     },
 });
 
+// 임시
+export const routeState = atom<string>({
+    key: "routeState",
+    default: localStorage.getItem("___route") || "",
+    effects: [
+        ({ onSet }) => {
+            onSet((n, o: any) => {
+                localStorage.setItem("___route", n);
+            });
+        },
+    ],
+});
+
 const DebugObserver = () => {
     const snapshot = useRecoilSnapshot();
 
