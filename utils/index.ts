@@ -28,8 +28,92 @@ export const comnEnvs = {
     },
 };
 
+type ValidateReturn = {
+    error?: { type: string; message: string; errors: Array<any> };
+};
+
 export const comnUtils = {
-    //#region value format
+    keyMapping: (row: any, item: any, keys: any) => {
+        if (row === undefined || row == null) return row;
+        if (keys === undefined || keys == null) return row;
+
+        if (keys.key1 !== undefined) row.key1 = item[keys.key1.binding];
+        if (keys.key2 !== undefined) row.key2 = item[keys.key2.binding];
+        if (keys.key3 !== undefined) row.key3 = item[keys.key3.binding];
+        if (keys.key4 !== undefined) row.key4 = item[keys.key4.binding];
+        if (keys.key5 !== undefined) row.key5 = item[keys.key5.binding];
+
+        return row;
+    },
+
+    validateBySchema: (data: Array<any>, schema: any) => {
+        let errors: Array<any> = [];
+
+        data.forEach((item: any, index: number) => {
+            Object.entries(item).forEach(([k, v]: any) => {
+                let r: any = comnUtils.getValidatedValue(v, schema[k]);
+                if (r !== undefined)
+                    errors.push({
+                        row: index + 3,
+                        label: schema.labels[k],
+                        ...comnUtils.keyMapping(r, item, schema.keys),
+                    });
+            });
+        });
+
+        return errors;
+    },
+    setSchemaMatrix: (schema: any) => {
+        if (schema === undefined || comnUtils.isEmpty(schema) || comnUtils.isEmptyObject(schema)) {
+            return null;
+        }
+
+        console.log(schema);
+
+        let t: { [key: string]: any } = {};
+        if (lodash.isArray(schema)) {
+            schema.forEach((item: any) => {
+                if (item.cells === undefined || comnUtils.isEmptyArray(item)) return false;
+                item.cells.forEach((cell: any) => {
+                    if (cell.binding === undefined || comnUtils.isEmpty(cell.binding)) return false;
+                    t[cell.binding] = {};
+                    if (cell.required !== undefined) t[cell.binding].required = cell.required;
+                    if (cell.min !== undefined) t[cell.binding].min = cell.min;
+                    if (cell.max !== undefined) t[cell.binding].max = cell.max;
+                    if (cell.minLength !== undefined) t[cell.binding].minLength = cell.minLength;
+                    if (cell.maxLength !== undefined) t[cell.binding].maxLength = cell.maxLength;
+                    if (cell.pattern !== undefined) t[cell.binding].pattern = cell.pattern;
+                    if (cell.validate !== undefined) t[cell.binding].validate = cell.validate;
+                    if (cell.area !== undefined) t[cell.binding].area = cell.area;
+                    if (cell.comnCd !== undefined) t[cell.binding].comnCd = cell.comnCd;
+                });
+            });
+        }
+        console.log(t);
+        return t;
+    },
+    validate: (data: any, schema: any, resource: any) => {
+        let _schema = comnUtils.setSchemaMatrix(schema);
+
+        if (_schema === null || comnUtils.isEmptyObject(_schema)) {
+            return {
+                error: { type: "no-schema", message: "msg.com.00003", errors: [] },
+            };
+        }
+
+        console.log(_schema);
+
+        const errors = comnUtils.validateBySchema(data, _schema);
+        if (comnUtils.isEmptyArray(errors)) {
+            return {
+                error: { type: "success", message: "msg.com.00016", errors: [] },
+            };
+        } else {
+            return {
+                error: { type: "fail-validation", message: "msg.com.00014", errors: errors },
+            };
+        }
+    },
     getViewValue: (v: any, o?: any, l?: any) => {
         switch (o?.type) {
             case "text":

@@ -218,7 +218,7 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
             </div>
             <Button
                 variant="warning"
-                onClick={async () => {
+                onClick={() => {
                     if (input.current && input.current.files && input.current.files !== null) {
                         if (onUpload) onUpload(input.current.files[0] || null);
                     }
