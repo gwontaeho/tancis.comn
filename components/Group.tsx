@@ -293,7 +293,7 @@ const GroupCol = (props: GroupColProps) => {
                         {React.Children.map(children, (child: any) => {
                             return (
                                 <div className="[&_*]:border-none [&_*]:rounded-none">
-                                    {React.cloneElement(child, { "data-parent": "group_col" })}
+                                    {child && React.cloneElement(child, { "data-parent": "group_col" })}
                                 </div>
                             );
                         })}
@@ -302,7 +302,7 @@ const GroupCol = (props: GroupColProps) => {
             ) : (
                 <div className={classNames("p-1 flex items-center space-x-1", SIZES[colSize])}>
                     {React.Children.map(children, (child: any) => {
-                        return React.cloneElement(child, { "data-parent": "group_col" });
+                        if (child) return React.cloneElement(child, { "data-parent": "group_col" });
                     })}
                 </div>
             )}
