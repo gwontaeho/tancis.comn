@@ -1,47 +1,45 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Grid, Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth, useGrid } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_WRHS_CD_SRCH, SCHEMA_GRID_WRHS_CD } from "./ComnCdService";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useAuth } from "@/comn/hooks";
+import { BASE, APIS, SCHEMA_FORM_CO_DCLA_CD_SRCH, SCHEMA_GRID_CO_DCLA_CD } from "./ComnCdService";
 
-export const WrhsCodeList = (props: any) => {
-    const pgeUid = "wrhsCdLst";
+export const CompanyDeclareCodeList = (props: any) => {
+    const pgeUid = "coDclaCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
-    const auth = useAuth();
-    auth.get("tin");
 
     const form = {
-        wrhsCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_WRHS_CD_SRCH,
+        coDclaCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CO_DCLA_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        wrhsCdLst: useGrid({
-            defaultSchema: SCHEMA_GRID_WRHS_CD,
+        coDclaCdLst: useGrid({
+            defaultSchema: SCHEMA_GRID_CO_DCLA_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getWrhsCdLst: useFetch({
-            api: (page = grid.wrhsCdLst.page) => {
-                return APIS.getWrhsCdLst(form.wrhsCdSrch.getValues(), page, grid.wrhsCdLst.size);
+        getCoDclaCdLst: useFetch({
+            api: (page = grid.coDclaCdLst.page) => {
+                return APIS.getCoDclaCdLst(form.coDclaCdSrch.getValues(), page, grid.coDclaCdLst.size);
             },
-            enabled: comnUtils.isEmpty(form.wrhsCdSrch.errors) && form.wrhsCdSrch.isSubmitted,
-            key: [grid.wrhsCdLst.page, grid.wrhsCdLst.size],
+            enabled: comnUtils.isEmpty(form.coDclaCdSrch.errors) && form.coDclaCdSrch.isSubmitted,
+            key: [grid.coDclaCdLst.page, grid.coDclaCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.wrhsCdSrch.getValues(),
-                    page: grid.wrhsCdLst.page,
-                    size: grid.wrhsCdLst.size,
+                    form: form.coDclaCdSrch.getValues(),
+                    page: grid.coDclaCdLst.page,
+                    size: grid.coDclaCdLst.size,
                 });
             },
         }),
@@ -49,21 +47,37 @@ export const WrhsCodeList = (props: any) => {
 
     const handler = {
         click_Btn_Srch: () => {
-            form.wrhsCdSrch.handleSubmit(
+            form.coDclaCdSrch.handleSubmit(
                 () => {
-                    grid.wrhsCdLst.setPage(0);
-                    fetch.getWrhsCdLst.fetch(0);
+                    console.log("a");
+                    grid.coDclaCdLst.setPage(0);
+                    fetch.getCoDclaCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_WrhsCdLst: {
-            coDclaCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.wrhsNm });
-                close();
+    };
+
+    const render = {
+        grid_CoDclaCdLst: {
+            cell: {
+                coTin: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+                                debugger;
+                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coDclaTpNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -75,11 +89,11 @@ export const WrhsCodeList = (props: any) => {
     return (
         <Page
             id={pgeUid}
-            title={t("T_WRHS_CD_LST")}
-            description={t("T_WRHS_CD_LST")}
+            title={t("T_CO_DCLA_CD_LST")}
+            description={t("T_CO_DCLA_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_WRHS_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "T_CO_DCLA_CD_LST" }],
             }}
         >
             <form>
@@ -87,8 +101,11 @@ export const WrhsCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.wrhsCdSrch.schema.wrhsCd}></Group.Control>
-                                <Group.Control {...form.wrhsCdSrch.schema.wrhsNm}></Group.Control>
+                                <Group.Control {...form.coDclaCdSrch.schema.coTin}></Group.Control>
+                                <Group.Control {...form.coDclaCdSrch.schema.coDclaTpCd}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.coDclaCdSrch.schema.coNm} controlSize={10}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
@@ -96,7 +113,7 @@ export const WrhsCodeList = (props: any) => {
                                 <Button
                                     role="reset"
                                     onClick={() => {
-                                        form.wrhsCdSrch.reset();
+                                        form.coDclaCdSrch.reset();
                                     }}
                                 ></Button>
                             </Layout.Left>
@@ -117,9 +134,9 @@ export const WrhsCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         <Grid
-                            {...grid.wrhsCdLst.grid}
-                            data={fetch.getWrhsCdLst.data?.wrhsList}
-                            onCellClick={handler.click_Grid_WrhsCdLst}
+                            {...grid.coDclaCdLst.grid}
+                            data={fetch.getCoDclaCdLst.data?.coDclaCdList}
+                            render={render.grid_CoDclaCdLst}
                         />
                     </Group.Section>
                 </Group.Body>

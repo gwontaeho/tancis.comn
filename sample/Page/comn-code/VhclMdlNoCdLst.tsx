@@ -4,44 +4,42 @@ import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid, Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth, useGrid } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_WRHS_CD_SRCH, SCHEMA_GRID_WRHS_CD } from "./ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_VHCL_MDL_NO_CD_SRCH, SCHEMA_GRID_VHCL_MDL_NO_CD } from "./ComnCdService";
 
-export const WrhsCodeList = (props: any) => {
-    const pgeUid = "wrhsCdLst";
+export const VehicleModelNumberCodeList = (props: any) => {
+    const pgeUid = "vhclMdlNoCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
-    const auth = useAuth();
-    auth.get("tin");
 
     const form = {
-        wrhsCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_WRHS_CD_SRCH,
+        vhclMdlNoCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_VHCL_MDL_NO_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        wrhsCdLst: useGrid({
-            defaultSchema: SCHEMA_GRID_WRHS_CD,
+        vhclMdlNoCdLst: useGrid({
+            defaultSchema: SCHEMA_GRID_VHCL_MDL_NO_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getWrhsCdLst: useFetch({
-            api: (page = grid.wrhsCdLst.page) => {
-                return APIS.getWrhsCdLst(form.wrhsCdSrch.getValues(), page, grid.wrhsCdLst.size);
+        getVhclMdlNoCdLst: useFetch({
+            api: (page = grid.vhclMdlNoCdLst.page) => {
+                return APIS.getVhclMdlNoCdLst(form.vhclMdlNoCdSrch.getValues(), page, grid.vhclMdlNoCdLst.size);
             },
-            enabled: comnUtils.isEmpty(form.wrhsCdSrch.errors) && form.wrhsCdSrch.isSubmitted,
-            key: [grid.wrhsCdLst.page, grid.wrhsCdLst.size],
+            enabled: comnUtils.isEmpty(form.vhclMdlNoCdSrch.errors) && form.vhclMdlNoCdSrch.isSubmitted,
+            key: [grid.vhclMdlNoCdLst.page, grid.vhclMdlNoCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.wrhsCdSrch.getValues(),
-                    page: grid.wrhsCdLst.page,
-                    size: grid.wrhsCdLst.size,
+                    form: form.vhclMdlNoCdSrch.getValues(),
+                    page: grid.vhclMdlNoCdLst.page,
+                    size: grid.vhclMdlNoCdLst.size,
                 });
             },
         }),
@@ -49,21 +47,35 @@ export const WrhsCodeList = (props: any) => {
 
     const handler = {
         click_Btn_Srch: () => {
-            form.wrhsCdSrch.handleSubmit(
+            form.vhclMdlNoCdSrch.handleSubmit(
                 () => {
-                    grid.wrhsCdLst.setPage(0);
-                    fetch.getWrhsCdLst.fetch(0);
+                    grid.vhclMdlNoCdLst.setPage(0);
+                    fetch.getVhclMdlNoCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_WrhsCdLst: {
-            coDclaCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.wrhsNm });
-                close();
+    };
+
+    const render = {
+        grid_VhclMdlNoCdLst: {
+            cell: {
+                vhclMdlNoCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+                                postMessage({ code: value, label: rowValues.vhclMdlNoNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -75,11 +87,11 @@ export const WrhsCodeList = (props: any) => {
     return (
         <Page
             id={pgeUid}
-            title={t("T_WRHS_CD_LST")}
-            description={t("T_WRHS_CD_LST")}
+            title={t("T_VHCL_MDL_NO_CD_LST")}
+            description={t("T_VHCL_MDL_NO_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_WRHS_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "T_VHCL_MDL_NO_CD_LST" }],
             }}
         >
             <form>
@@ -87,8 +99,8 @@ export const WrhsCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.wrhsCdSrch.schema.wrhsCd}></Group.Control>
-                                <Group.Control {...form.wrhsCdSrch.schema.wrhsNm}></Group.Control>
+                                <Group.Control {...form.vhclMdlNoCdSrch.schema.vhclMdlNoCd}></Group.Control>
+                                <Group.Control {...form.vhclMdlNoCdSrch.schema.vhclMdlNoNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
@@ -96,7 +108,7 @@ export const WrhsCodeList = (props: any) => {
                                 <Button
                                     role="reset"
                                     onClick={() => {
-                                        form.wrhsCdSrch.reset();
+                                        form.vhclMdlNoCdSrch.reset();
                                     }}
                                 ></Button>
                             </Layout.Left>
@@ -117,9 +129,9 @@ export const WrhsCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         <Grid
-                            {...grid.wrhsCdLst.grid}
-                            data={fetch.getWrhsCdLst.data?.wrhsList}
-                            onCellClick={handler.click_Grid_WrhsCdLst}
+                            {...grid.vhclMdlNoCdLst.grid}
+                            data={fetch.getVhclMdlNoCdLst.data?.vhclMdlNoList}
+                            render={render.grid_VhclMdlNoCdLst}
                         />
                     </Group.Section>
                 </Group.Body>
