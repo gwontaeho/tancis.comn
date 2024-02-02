@@ -36,7 +36,7 @@ const POPUP_URLS: Record<string, string> = {
     coDtlCd: `/comn/comn/ppup/coDtlCdPpup`,
     coDclaCd: `/comn/comn/ppup/coDclaCdPpup`,
     orgDeptCd: `/comn/comn/ppup/orgDeptCdPpup`,
-    cstmOfceCd: `/comn/comn/ppup/cstmOfceCdPpup`,
+    cstmCd: `/comn/comn/ppup/cstmCdPpup`,
     vhclBodyCd: `/comn/comn/ppup/vhclBodyCdPpup`,
     vhclCtgrCd: `/comn/comn/ppup/vhclCtgrCdPpup`,
     vhclClrCd: `/comn/comn/ppup/vhclClrCdPpup`,
@@ -50,6 +50,7 @@ const POPUP_URLS: Record<string, string> = {
     vhclPrplTpCd: `/comn/comn/ppup/vhclPrplTpCdPpup`,
     vhclTrmssnTpCd: `/comn/comn/ppup/vhclTrmssnTpCdPpup`,
     vhclUseCd: `/comn/comn/ppup/vhclUseCdPpup`,
+    coCdDtl: `/comn/comn/ppup/CoCdDtl`,
 };
 
 export const InputCode = (props: InputCodeProps) => {

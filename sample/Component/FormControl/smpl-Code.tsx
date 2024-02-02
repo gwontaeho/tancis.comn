@@ -108,6 +108,135 @@ const SCHEMA_FORM: TFormSchema = {
             maxLength: 3,
             popupSize: "md",
         },
+
+        field14: {
+            type: "code",
+            area: "orgDeptCd",
+            label: "Organization Department Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field15: {
+            type: "code",
+            area: "cstmOfceCd",
+            label: "Customs Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field16: {
+            type: "code",
+            area: "vhclBodyCd",
+            label: "Vehicle Body Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field17: {
+            type: "code",
+            area: "vhclCtgrCd",
+            label: "Vehicle Category Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field18: {
+            type: "code",
+            area: "vhclClrCd",
+            label: "Vehicle Color Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field19: {
+            type: "code",
+            area: "vhclFlCd",
+            label: "Vehicle Fuel Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field20: {
+            type: "code",
+            area: "vhclMkerCd",
+            label: "Vehicle Maker Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field21: {
+            type: "code",
+            area: "vhclImpCntyCd",
+            label: "Vehicle Import Country Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field22: {
+            type: "code",
+            area: "vhclInsrTpCd",
+            label: "Vehicle Insurance Type Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field23: {
+            type: "code",
+            area: "vhclMdlCd",
+            label: "Vehicle Model Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field24: {
+            type: "code",
+            area: "vhclMdlNoCd",
+            label: "Vehicle Model Number Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field25: {
+            type: "code",
+            area: "vhclHlpnCtgrCd",
+            label: "Vehicle Holder Category Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field26: {
+            type: "code",
+            area: "vhclPrplTpCd",
+            label: "Vehicle Propeller Type Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field27: {
+            type: "code",
+            area: "vhclTrmssnTpCd",
+            label: "Vehicle Transmission Type Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field28: {
+            type: "code",
+            area: "vhclUseCd",
+            label: "Vehicle Use Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
+        field29: {
+            type: "code",
+            area: "coCdDtl",
+            label: "Company Code Detail",
+            controlSize: 10,
+            maxLength: 9,
+            popupSize: "md",
+        },
     },
 };
 
@@ -127,6 +256,22 @@ export const SampleFormControlCode = () => {
             { area: "orgCd" },
             { area: "wrhsCd" },
             { area: "coDclaCd" },
+            { area: "orgDeptCd" },
+            { area: "cstmCd" },
+            { area: "vhclBodyCd" },
+            { area: "vhclCtgrCd" },
+            { area: "vhclClrCd" },
+            { area: "vhclFlCd" },
+            { area: "vhclMkerCd" },
+            { area: "vhclImpCntyCd" },
+            { area: "vhclInsrTpCd" },
+            { area: "vhclMdlCd" },
+            { area: "vhclMdlNoCd" },
+            { area: "vhclHlpnCtgrCd" },
+            { area: "vhclPrplTpCd" },
+            { area: "vhclTrmssnTpCd" },
+            { area: "vhclUseCd" },
+            { area: "coCdDtl" },
         ],
     });
 
@@ -174,6 +319,54 @@ export const SampleFormControlCode = () => {
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.field13}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field14}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field15}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field16}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field17}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field18}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field19}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field20}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field21}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field22}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field23}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field24}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field25}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field26}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field27}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field28}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field29}></Group.Control>
                     </Group.Row>
                 </Group.Body>
             </Group>

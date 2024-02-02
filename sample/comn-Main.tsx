@@ -37,6 +37,7 @@ import { VehiclePropellerTypeCodeList } from "./Page/comn-code/VhclPrplTpCdLst";
 import { VehicleTransmissionTypeCodeList } from "./Page/comn-code/VhclTrmssnTpCdLst";
 import { CompanyDeclareCodeList } from "./Page/comn-code/CoDclaCdLst";
 import { CustomsCodeList } from "./Page/comn-code/cstmCdLst";
+import { CompanyCodeDetail } from "./Page/comn-code/CoCdDtl";
 
 export const ComnMain = () => {
     return (
@@ -77,6 +78,7 @@ export const ComnMain = () => {
             <Route path="/comn/ppup/vhclPrplTpCdPpup" element={<VehiclePropellerTypeCodeList />} />
             <Route path="/comn/ppup/vhclTrmssnTpCdPpup" element={<VehicleTransmissionTypeCodeList />} />
             <Route path="/comn/ppup/vhclUseCdPpup" element={<VehicleUseCodeList />} />
+            <Route path="/comn/ppup/coCdDtl" element={<CompanyCodeDetail />} />
         </Routes>
     );
 };

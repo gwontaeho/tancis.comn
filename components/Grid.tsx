@@ -865,8 +865,6 @@ export const Grid = (props: any) => {
             }
         }
 
-        console.log(w);
-
         return w
             .filter((_: any) => _)
             .map((_: any) => {
@@ -875,7 +873,8 @@ export const Grid = (props: any) => {
                 }
                 if (typeof _ === "string") {
                     if (_.endsWith("*")) {
-                        return `${_.slice(0, -1) || 1}fr`;
+                        let t: any = _.slice(0, -1) || 1;
+                        return `minmax( ${t * 100}px , ${t}fr)`;
                     }
                 }
             })
@@ -883,6 +882,7 @@ export const Grid = (props: any) => {
     };
 
     const gridTemplateColumns = getGridWidths();
+    console.log(gridTemplateColumns);
 
     console.log(gridTemplateColumns);
 
