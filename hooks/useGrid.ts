@@ -35,13 +35,13 @@ export type TGridSchema = {
         colspan?: number;
         cells: (FormControlProps & {
             /** */
-            min?: number;
-            max?: number;
-            minLength?: number;
-            pattern?: RegExp;
-            validate?: (arg?: any) => void;
-            required?: boolean;
-            maxLength?: number;
+            min?: any;
+            max?: any;
+            minLength?: any;
+            maxLength?: any;
+            required?: any;
+            pattern?: any;
+            validate?: any;
             /** */
 
             binding: string;
