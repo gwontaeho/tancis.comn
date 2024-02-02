@@ -473,7 +473,7 @@ export const comnUtils = {
 
         let url = "";
 
-        debugger;
+        //debugger;
 
         switch (area) {
             case "comnCd":

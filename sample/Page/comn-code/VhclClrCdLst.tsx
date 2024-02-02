@@ -8,7 +8,7 @@ import { BASE, APIS, SCHEMA_FORM_VHCL_CLR_CD_SRCH, SCHEMA_GRID_VHCL_CLR_CD } fro
 
 export const VehicleColorCodeList = (props: any) => {
     console.log("a");
-    debugger;
+    //debugger;
     const pgeUid = "vhclClrCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
