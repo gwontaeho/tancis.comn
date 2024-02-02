@@ -861,6 +861,13 @@ export const Grid = (props: any) => {
         for (let i = 0; i < heads.length; i++) {
             for (let j = 0; j < heads[i].length; j++) {
                 if (w[j] === undefined) w[j] = 100;
+                if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan !== undefined) {
+                    for (let k = j; k <= j + heads[i]?.[j]?.colspan; k++) {
+                        if (k < heads[0].length) {
+                            w[k] = heads[i]?.[j]?.width / heads[i]?.[j]?.colspan;
+                        }
+                    }
+                }
                 if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan === undefined) {
                     w[j] = heads[i]?.[j].width;
                 }
@@ -869,6 +876,8 @@ export const Grid = (props: any) => {
                 }
             }
         }
+
+        console.log(w);
 
         return w
             .filter((_: any) => _)
