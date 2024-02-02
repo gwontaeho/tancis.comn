@@ -849,6 +849,13 @@ export const Grid = (props: any) => {
         for (let i = 0; i < heads.length; i++) {
             for (let j = 0; j < heads[i].length; j++) {
                 if (w[j] === undefined) w[j] = 100;
+                if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan !== undefined) {
+                    for (let k = j; k <= j + heads[i]?.[j]?.colspan; k++) {
+                        if (k < heads[0].length) {
+                            w[k] = heads[i]?.[j]?.width / heads[i]?.[j]?.colspan;
+                        }
+                    }
+                }
                 if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan === undefined) {
                     w[j] = heads[i]?.[j].width;
                 }
@@ -857,6 +864,8 @@ export const Grid = (props: any) => {
                 }
             }
         }
+
+        console.log(w);
 
         return w
             .filter((_: any) => _)
@@ -946,7 +955,7 @@ export const Grid = (props: any) => {
                                 return (
                                     <div
                                         key={_grid.current._key + ".gh." + rowIndex + "." + colIndex}
-                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center text-center"
+                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
