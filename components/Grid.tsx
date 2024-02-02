@@ -270,7 +270,9 @@ export const Grid = (props: any) => {
         _grid.current._origin = content;
         _grid.current._content = content;
 
-        __setGrid(_grid.current._content);
+        const total = _grid.current._pagination === "out" ? d?.content?.totalElements : undefined;
+
+        __setGrid(_grid.current._content, total);
     };
 
     /** set edit */
@@ -708,15 +710,13 @@ export const Grid = (props: any) => {
      * paging
      * sizing
      */
-    const __setGrid = (content: any) => {
+    const __setGrid = (content: any, total?: any) => {
+        /** 전체 보이는 데이터 */
         let view = content.filter(({ __type }: any) => __type !== "deleted");
 
         view = returnGrouped(view);
 
-        /**
-         * count 수정 필요
-         */
-        _setTotalCount(view.length);
+        _setTotalCount(total || view.length);
 
         view = returnPaged(view);
 
