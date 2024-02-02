@@ -43,6 +43,7 @@ export const SampleGrid = () => {
                 },
                 {
                     colspan: 2,
+
                     cells: [
                         //
                         { binding: "q", width: "*" },
@@ -81,68 +82,68 @@ export const SampleGrid = () => {
                 </Sample.Section>
 
                 <Sample.Section>
-                    <div className="grid gap-4 grid-cols-4">
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">getData</span>
-                            <span>전체 데이터</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">getOrigin</span>
-                            <span>기존 데이터</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">getSelectedRow</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">getSelectedCell</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">getChecked</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">addRow</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">deleteRow</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">updateRow</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">setEdit</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">setShow</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">setOption</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">setPage</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">setSize</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">setData</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <span className="text-lg">resetData</span>
-                            <span>하하앟재ㅏㅎ</span>
-                        </div>
-                    </div>
+                    <ul className="grid gap-4 grid-cols-4 [&_span]:text-lg">
+                        <li className="flex flex-col gap-1">
+                            <span>getData</span>
+                            <p>전체 데이터</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>getOrigin</span>
+                            <p>원본 데이터</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>getSelectedRow</span>
+                            <p>선택된 Row</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>getSelectedCell</span>
+                            <p>선택된 Cell</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>getChecked</span>
+                            <p>체크된 Rows</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>addRow</span>
+                            <p>Row 추가</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>deleteRow</span>
+                            <p>Row 삭제</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>updateRow</span>
+                            <p>Row 수정</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>setEdit</span>
+                            <p>Edit 변경</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>setShow</span>
+                            <p>Show 변경</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>setOption</span>
+                            <p>스키마 옵션 변경</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>setPage</span>
+                            <p>Page 변경</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>setSize</span>
+                            <p>Size 변경</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>setData</span>
+                            <p>Data 설정</p>
+                        </li>
+                        <li className="flex flex-col gap-1">
+                            <span>resetData</span>
+                            <p>원본 데이터로 변경</p>
+                        </li>
+                    </ul>
                 </Sample.Section>
 
                 <Sample.Code>

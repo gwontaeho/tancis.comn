@@ -12,6 +12,7 @@ const SCHEMA_SEARCH: TFormSchema = {
         textarea: {
             type: "textarea",
             label: "textarea",
+
             leftButton: { icon: "left", onClick: () => {} },
             rightButton: { icon: "left", onClick: () => {} },
         },
