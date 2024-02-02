@@ -5,32 +5,15 @@ import { useGrid } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 
 export const SampleGrid = () => {
-    const {
-        grid,
-        getData,
-        getOrigin,
-        getSelectedRow,
-        getSelectedCell,
-        getChecked,
-        addRow,
-        deleteRow,
-        updateRow,
-        setEdit,
-        setShow,
-        setOption,
-        setPage,
-        setSize,
-        setData,
-        resetData,
-    } = useGrid({
+    const s1 = useGrid({
         defaultSchema: {
             id: "test",
             options: {
                 index: true,
                 radio: true,
                 checkbox: true,
-                // edit: true,
                 pagination: "in",
+                height: 300,
             },
             head: [
                 {
@@ -42,10 +25,68 @@ export const SampleGrid = () => {
             ],
             body: [
                 {
-                    cells: [{ binding: "text", required: true }],
+                    cells: [{ binding: "text" }],
                 },
                 {
                     cells: [{ binding: "number" }],
+                },
+            ],
+        },
+    });
+
+    const s2 = useGrid({
+        defaultSchema: {
+            id: "test",
+            options: {
+                index: true,
+                radio: true,
+                checkbox: true,
+                pagination: "in",
+                height: 300,
+            },
+            head: [
+                {
+                    colspan: 2,
+                    cells: [
+                        { binding: "text", colspan: 2 },
+                        { binding: "text", width: 100 },
+                        { binding: "text", width: 100 },
+                        { binding: "text", width: 100, colspan: 2 },
+                    ],
+                },
+                {
+                    cells: [{ binding: "number", width: 100, rowspan: 3 }],
+                },
+                {
+                    colspan: 3,
+                    cells: [
+                        { binding: "number", width: 100 },
+                        { binding: "number", width: 100 },
+                        { binding: "number", width: 100 },
+                        { binding: "number", width: 100, colspan: 3 },
+                        { binding: "number", width: 100, colspan: 2 },
+                        { binding: "number", width: 100 },
+                    ],
+                },
+            ],
+            body: [
+                {
+                    colspan: 2,
+                    cells: [
+                        { binding: "text", colspan: 2 },
+                        { binding: "text", colspan: 2 },
+                    ],
+                },
+                {
+                    cells: [{ binding: "number", rowspan: 2 }],
+                },
+                {
+                    colspan: 3,
+                    cells: [
+                        { binding: "number", colspan: 3 },
+                        { binding: "number", colspan: 2 },
+                        { binding: "number" },
+                    ],
                 },
             ],
         },
@@ -77,29 +118,30 @@ export const SampleGrid = () => {
                 />
             </Sample.Section>
 
-            <Sample.Section>
-                <Grid
-                    {...grid}
-                    data={data}
-                    render={{
-                        cell: {
-                            q: () => {
-                                return (
-                                    <div>
-                                        <div>asd</div>
-                                        <div>asd</div>
-                                        <div>asd</div>
-                                    </div>
-                                );
+            {/* default */}
+            <Sample.Section title="TEST!@#!@#!@">
+                <Sample.Section title="Result">
+                    <Grid
+                        {...s1.grid}
+                        data={data}
+                        render={{
+                            cell: {
+                                q: () => {
+                                    return (
+                                        <div>
+                                            <div>asd</div>
+                                            <div>asd</div>
+                                            <div>asd</div>
+                                        </div>
+                                    );
+                                },
                             },
-                        },
-                    }}
-                />
-            </Sample.Section>
-
-            <Layout direction="row" gap={4}>
-                <Sample.Section title="Schema">
-                    <Sample.Code>{`
+                        }}
+                    />
+                </Sample.Section>
+                <Layout direction="row" gap={4}>
+                    <Sample.Section title="Schema">
+                        <Sample.Code>{`
 import { TGridSchema } from "@/comn/hooks";
 
 const SCHEMA: TGridSchema = {
@@ -109,6 +151,7 @@ const SCHEMA: TGridSchema = {
         radio: true,
         checkbox: true,
         pagination: "in",
+        height: 300,
     },
     head: [
         {
@@ -120,17 +163,17 @@ const SCHEMA: TGridSchema = {
     ],
     body: [
         {
-            cells: [{ binding: "text", required: true }],
+            cells: [{ binding: "text" }],
         },
         {
             cells: [{ binding: "number" }],
         },
     ],
 };`}</Sample.Code>
-                </Sample.Section>
+                    </Sample.Section>
 
-                <Sample.Section title="Component">
-                    <Sample.Code>{`
+                    <Sample.Section title="Component">
+                        <Sample.Code>{`
 import { Grid } from "@/comn/components";
 import { useGrid } from "@/comn/hooks";
 
@@ -156,10 +199,128 @@ const Page = () => {
         defaultSchema: SCHEMA
     });
 
-    return <Grid {...grid} />
+
+    return <Grid {...grid} data={data} />
 };`}</Sample.Code>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="좀더 복잡한..">
+                <Sample.Section title="Result">
+                    <Grid
+                        {...s2.grid}
+                        data={data}
+                        render={{
+                            cell: {
+                                q: () => {
+                                    return (
+                                        <div>
+                                            <div>asd</div>
+                                            <div>asd</div>
+                                            <div>asd</div>
+                                        </div>
+                                    );
+                                },
+                            },
+                        }}
+                    />
                 </Sample.Section>
-            </Layout>
+                <Layout direction="row" gap={4}>
+                    <Sample.Section title="Schema">
+                        <Sample.Code>{`
+import { TGridSchema } from "@/comn/hooks";
+
+const SCHEMA: TGridSchema = {
+    id: "test",
+    options: {
+        index: true,
+        radio: true,
+        checkbox: true,
+        pagination: "in",
+        height: 300,
+    },
+    head: [
+        {
+            colspan: 2,
+            cells: [
+                { binding: "text", colspan: 2 },
+                { binding: "text", width: 100 },
+                { binding: "text", width: 100 },
+                { binding: "text", width: 100, colspan: 2 },
+            ],
+        },
+        {
+            cells: [{ binding: "number", width: 100, rowspan: 3 }],
+        },
+        {
+            colspan: 3,
+            cells: [
+                { binding: "number", width: 100 },
+                { binding: "number", width: 100 },
+                { binding: "number", width: 100 },
+                { binding: "number", width: 100, colspan: 3 },
+                { binding: "number", width: 100, colspan: 2 },
+                { binding: "number", width: 100 },
+            ],
+        },
+    ],
+    body: [
+        {
+            colspan: 2,
+            cells: [
+                { binding: "text", colspan: 2 },
+                { binding: "text", colspan: 2 },
+            ],
+        },
+        {
+            cells: [{ binding: "number", rowspan: 2 }],
+        },
+        {
+            colspan: 3,
+            cells: [
+                { binding: "number", colspan: 3 },
+                { binding: "number", colspan: 2 },
+                { binding: "number" },
+            ],
+        },
+    ],
+};`}</Sample.Code>
+                    </Sample.Section>
+
+                    <Sample.Section title="Component">
+                        <Sample.Code>{`
+import { Grid } from "@/comn/components";
+import { useGrid } from "@/comn/hooks";
+
+const Page = () => {
+    const {
+        grid,
+        getData,
+        getOrigin,
+        getSelectedRow,
+        getSelectedCell,
+        getChecked,
+        addRow,
+        deleteRow,
+        updateRow,
+        setEdit,
+        setShow,
+        setOption,
+        setPage,
+        setSize,
+        setData,
+        resetData,
+    } = useGrid({
+        defaultSchema: SCHEMA
+    });
+
+
+    return <Grid {...grid} data={data} />
+};`}</Sample.Code>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
         </Sample>
     );
 };
