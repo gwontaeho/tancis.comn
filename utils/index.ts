@@ -473,8 +473,6 @@ export const comnUtils = {
 
         let url = "";
 
-        debugger;
-
         switch (area) {
             case "comnCd":
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
@@ -599,6 +597,8 @@ export const comnUtils = {
                 return code.orgNm;
             case "wrhsCd":
                 return code.wrhsNm;
+            case "coDclaCd":
+                return code.coDclaTpNm;
             default:
                 return code.cdVldValNm;
         }
@@ -628,6 +628,8 @@ export const comnUtils = {
             case "orgCd":
                 return code.orgCd;
             case "wrhsCd":
+                return code.coDclaCd;
+            case "coDclaCd":
                 return code.coDclaCd;
             default:
                 return code.cdVldVal;

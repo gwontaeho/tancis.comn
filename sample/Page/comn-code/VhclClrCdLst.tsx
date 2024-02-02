@@ -7,8 +7,6 @@ import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth, use
 import { BASE, APIS, SCHEMA_FORM_VHCL_CLR_CD_SRCH, SCHEMA_GRID_VHCL_CLR_CD } from "./ComnCdService";
 
 export const VehicleColorCodeList = (props: any) => {
-    console.log("a");
-    debugger;
     const pgeUid = "vhclClrCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
