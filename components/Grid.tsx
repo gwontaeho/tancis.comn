@@ -1007,7 +1007,6 @@ export const Grid = (props: any) => {
                     onChangePage={handleChangePage}
                     onChangeSize={handleChangeSize}
                     totalCount={_totalCount}
-                    totalCountView={_grid.current._content.length}
                 />
             )}
         </div>
