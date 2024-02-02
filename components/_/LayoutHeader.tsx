@@ -1,5 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSetRecoilState } from "recoil";
+import { routeState } from "@/comn/features/recoil";
 import { useTheme } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
@@ -17,7 +19,9 @@ type NavItemProps = {
 
 const NavItem = (props: NavItemProps) => {
     const { name, children, base = "", to = "" } = props;
-    const depth_1 = base || to;
+    const depth_1 = (base || to).startsWith("/") ? base || to : "/" + (base || to);
+
+    const setRoute = useSetRecoilState(routeState);
 
     return (
         <li className="group flex relative items-center">
@@ -36,9 +40,9 @@ const NavItem = (props: NavItemProps) => {
                     </li>
                     {children?.map((child) => {
                         const { name, base } = child;
-                        const depth_2 = base;
+                        const depth_2 = base.startsWith("/") ? base : "/" + base;
                         return (
-                            <li key={uuid()}>
+                            <li key={uuid()} onClick={() => setRoute(depth_1 + depth_2)}>
                                 <Link to={depth_1 + depth_2} className="block w-40 py-2 px-4">
                                     {name}
                                 </Link>

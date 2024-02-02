@@ -71,7 +71,18 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export const Button = (props: ButtonProps) => {
-    let { children, type = "button", variant = "contained", color, width, height, role, icon, size, ...rest } = props;
+    let {
+        children,
+        type = "button",
+        variant = "contained",
+        color,
+        width,
+        height,
+        role,
+        icon,
+        size = "xs",
+        ...rest
+    } = props;
 
     const { t } = useTranslation();
 

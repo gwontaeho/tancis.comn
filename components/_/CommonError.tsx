@@ -1,19 +1,6 @@
-import { Fragment, useEffect, useRef } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Page, Group, Grid } from "@/comn/components"; // 화면 구성 컴포넌트
-import {
-    useForm,
-    useFetch,
-    useResource,
-    useGrid,
-    useModal,
-    useStore,
-    useToast,
-    usePopup,
-    TGridSchema,
-} from "@/comn/hooks"; // hook
+import { useGrid, TGridSchema } from "@/comn/hooks"; // hook
 
 export const SG_ERROR_LIST: TGridSchema = {
     id: "errors",
@@ -93,7 +80,8 @@ export type ErrorUnitProps = {
 };
 
 export const CommonErrors = (props: ErrorProps) => {
-    const { type, message, title, errors = [], head = {} } = props;
+    const { type, message, errors = [], head = {} } = props;
+    console.log(props);
     const pgeUid = "ERRORS"; // Page Unique identifier !== 화면 고유 식별자 ==!
     const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
 
@@ -159,7 +147,7 @@ export const CommonErrors = (props: ErrorProps) => {
     };
 
     return (
-        <Page id={pgeUid} title={t("T_ERROR_LST")} description={t("T_ERROR_LST")}>
+        <Page id={""} title={t(message || "")}>
             <Group>
                 <Group.Body>
                     <Grid {...grid.errorList.grid} data={errorData} render={render.errorList} />

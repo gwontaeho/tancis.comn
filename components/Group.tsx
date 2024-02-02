@@ -112,6 +112,7 @@ type GroupColProps = GroupLabelProps & {
     children?: React.ReactNode;
     colSize?: keyof typeof SIZES;
     combine?: boolean;
+    padding?: number;
 };
 
 /**
@@ -254,6 +255,7 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
         borderRight = false,
         borderTop = false,
         borderBottom = false,
+
         ...rest
     } = props;
     return (
@@ -282,7 +284,7 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
 });
 
 const GroupCol = (props: GroupColProps) => {
-    const { children, required, label, labelSize, combine = false, colSize = 4 } = props;
+    const { children, required, label, labelSize, combine = false, colSize = 4, padding = 1 } = props;
     return (
         <>
             {label && <GroupLabel required={required} label={label} labelSize={labelSize} />}
@@ -293,16 +295,16 @@ const GroupCol = (props: GroupColProps) => {
                         {React.Children.map(children, (child: any) => {
                             return (
                                 <div className="[&_*]:border-none [&_*]:rounded-none">
-                                    {React.cloneElement(child, { "data-parent": "group_col" })}
+                                    {child && React.cloneElement(child, { "data-parent": "group_col" })}
                                 </div>
                             );
                         })}
                     </div>
                 </div>
             ) : (
-                <div className={classNames("p-1 flex items-center space-x-1", SIZES[colSize])}>
+                <div className={classNames("p-" + padding + " flex items-center space-x-1", SIZES[colSize])}>
                     {React.Children.map(children, (child: any) => {
-                        return React.cloneElement(child, { "data-parent": "group_col" });
+                        if (child) return React.cloneElement(child, { "data-parent": "group_col" });
                     })}
                 </div>
             )}
