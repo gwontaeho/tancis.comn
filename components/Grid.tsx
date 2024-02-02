@@ -77,7 +77,7 @@ const fun = (schema: any) => {
 
     for (let i = 1; i < t.length; i++) {
         for (let j = 0; j < tt.length; j++) {
-            tt[j] = [...tt[j], ...t[i][j]];
+            tt[j] = [...tt[j], ...(t[i]?.[j] || [])];
         }
     }
 
@@ -851,22 +851,21 @@ export const Grid = (props: any) => {
     const heads = fun(_head);
     const bodies = fun(_body);
 
-    console.log(heads);
-
     const getGridWidths = () => {
         let w = Array(heads[0].length);
-        for (let i = 1; i < heads.length; i++) {
+
+        for (let i = 0; i < heads.length; i++) {
             for (let j = 0; j < heads[i].length; j++) {
                 if (w[j] === undefined) w[j] = 100;
-                if (heads[i][j]?.width !== undefined && heads[i][j]?.colspan === undefined) {
-                    w[j] = heads[i][j].width;
+                if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan === undefined) {
+                    w[j] = heads[i]?.[j].width;
                 }
-                // if (heads[i][j]?.show === false) {
-                //     w[j] = null;
-                // }
+                if (heads[i]?.[j]?.show === false) {
+                    w[j] = null;
+                }
             }
         }
-        console.log(w);
+
         return w
             .filter((_: any) => _)
             .map((_: any) => {
@@ -883,8 +882,6 @@ export const Grid = (props: any) => {
     };
 
     const gridTemplateColumns = getGridWidths();
-
-    console.log(gridTemplateColumns);
 
     return (
         <div>
@@ -1184,7 +1181,7 @@ const Row = React.memo((props: any) => {
                                 return (
                                     <div
                                         key={celKey}
-                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-center border border-uf-card-background aria-selected:border-uf-info"
+                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-center border border-uf-card-background aria-selected:border-uf-info aria-[invalid=true]:border-uf-error"
                                         {...(vldv && { "aria-invalid": true })}
                                         {...(_selectedCel === celKey && { "aria-selected": true })}
                                         style={{

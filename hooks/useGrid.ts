@@ -17,11 +17,12 @@ export type TGridSchema = {
         pagination?: "in" | "out" | false;
     };
     head: {
+        id?: string;
         show?: boolean;
         colspan?: number;
         width?: string | number;
         cells: {
-            width?: number;
+            width?: string | number;
             header?: string;
             binding?: string;
             required?: boolean;
@@ -33,6 +34,7 @@ export type TGridSchema = {
         edit?: boolean;
         colspan?: number;
         cells: (FormControlProps & {
+            required?: boolean;
             binding: string;
             colspan?: number;
             rowspan?: number;
@@ -47,7 +49,7 @@ type TRow = Record<string, any> & {
 };
 
 type UseGridProps = {
-    defaultSchema: any | TGridSchema;
+    defaultSchema: TGridSchema;
     page?: number;
     size?: number;
 };

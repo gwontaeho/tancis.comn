@@ -8,7 +8,7 @@ import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 
-const schema1 = {
+const schema1: TGridSchema = {
     options: {
         index: true,
         radio: true,
@@ -46,10 +46,7 @@ const schema1 = {
                 {
                     width: 100,
                     header: "b",
-                },
-                {
-                    width: 100,
-                    header: "b",
+                    rowspan: 2,
                 },
             ],
         },
@@ -58,10 +55,7 @@ const schema1 = {
                 {
                     width: 100,
                     header: "c",
-                },
-                {
-                    width: 100,
-                    header: "c",
+                    rowspan: 2,
                 },
             ],
         },
