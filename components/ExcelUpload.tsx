@@ -199,9 +199,9 @@ export const ExcelUpload = (props: ExcelUploadProps) => {
 
     return edit === true ? (
         <>
-            <div className="flex border rounded divide-x overflow-hidden">
+            <div className="uf-layout">
                 <div className="[&_*]:border-none [&_*]:rounded-none">
-                    <Button variant="secondary">
+                    <Button variant="outline-primary">
                         <a href={`${process.env.PUBLIC_URL}/assets/${template}_${theme.lang.toLocaleLowerCase()}.xlsx`}>
                             {t("B_TMPL")}
                         </a>
