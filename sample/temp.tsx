@@ -23,34 +23,23 @@ const schema1: TGridSchema = {
         // group: ["q", "w"],
     },
     head: [
+        { cells: [{ header: "L_RPRT_NO", binding: "rprtNo", rowspan: 2, width: 200 }] },
+        { cells: [{ header: "L_CRO_DT", binding: "croDt", rowspan: 2, width: 200 }] },
         {
             colspan: 2,
             cells: [
-                { binding: "a", colspan: 2, width: 100 },
-                { binding: "b", width: 100 },
-                { binding: "c", width: 100 },
+                { header: "L_CRO", colspan: 2, width: 400 },
+                { header: "L_QTY", binding: "qty", width: 200 },
+                { header: "L_WGHT", binding: "wght", width: 200 },
             ],
         },
-        {
-            cells: [{ binding: "d", rowspan: 2, width: 100 }],
-        },
-        {
-            colspan: 3,
-            cells: [{ binding: "e" }, { binding: "f" }, { binding: "g" }, { binding: "h", colspan: 3 }],
-        },
+        { cells: [{ header: "L_CRO_BASE_NO", binding: "croBaseNo", rowspan: 2, width: "2*" }] },
     ],
     body: [
-        {
-            colspan: 2,
-            cells: [{ binding: "q", colspan: 2, rowspan: 2, align: "center" }],
-        },
-        {
-            cells: [{ binding: "w", rowspan: 2 }],
-        },
-        {
-            colspan: 3,
-            cells: [{ binding: "w2w", colspan: 3 }, { binding: "w3w" }, { binding: "w4w" }, { binding: "5ww" }],
-        },
+        { cells: [{ binding: "rprtNo" }] },
+        { cells: [{ binding: "croDt" }] },
+        { colspan: 2, cells: [{ binding: "qty" }, { binding: "wght" }] },
+        { cells: [{ binding: "croBaseNo" }] },
     ],
 };
 
