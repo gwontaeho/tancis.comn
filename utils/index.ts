@@ -447,6 +447,11 @@ export const comnUtils = {
         cntyCd?: string;
         portAirptTpCd?: string;
         coTpCd?: string;
+        coTin?: string;
+        orgNm?: string;
+        cstmTpCd?: string;
+        vhclMnfcCd?: string;
+        vhclMdlCd?: string;
     }) => {
         const {
             comnCd,
@@ -459,51 +464,107 @@ export const comnUtils = {
             cntyCd = "",
             portAirptTpCd = "",
             coTpCd = "",
+            coTin = "",
+            orgNm = "",
+            cstmTpCd = "",
+            vhclMnfcCd = "",
+            vhclMdlCd = "",
         } = args;
 
         let url = "";
+
+        debugger;
+
         switch (area) {
             case "comnCd":
-                url = `/api/v1/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
             case "cityCd":
-                url = `/api/v1/intptl/comnppup/regn/city-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/regn/city-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "portCd":
-                url = `/api/v1/intptl/comnppup/regn/port-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/regn/port-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "cntyCd":
-                url = `/api/v1/intptl/comnppup/cnty-cd?cntyCd=${keyword}&cntyNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/cnty-cd?cntyCd=${keyword}&cntyNm=${keywordName}`;
                 break;
             case "currCd":
-                url = `/api/v1/intptl/comnppup/curr-cd?currCd=${keyword}&currNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/curr-cd?currCd=${keyword}&currNm=${keywordName}`;
                 break;
             case "bnkCd":
-                url = `/api/v1/intptl/comnppup/comn-cd?comnCd=CO012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=CO012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`;
                 break;
             case "portAirptCd":
-                url = `/api/v1/intptl/comnppup/regn/port-airpt-cd?portAirptTpCd=${portAirptTpCd}&regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/regn/port-airpt-cd?portAirptTpCd=${portAirptTpCd}&regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "airptCd":
-                url = `/api/v1/intptl/comnppup/regn/airpt-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/regn/airpt-cd?regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
                 break;
             case "coCd":
-                url = `/api/v1/intptl/comnppup/co?coTpCd=${coTpCd}&coTin=${keyword}&coNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/co?coTpCd=${coTpCd}&coTin=${keyword}&coNm=${keywordName}`;
                 break;
             case "prcssStatCd":
-                url = `/api/v1/intptl/comnppup/prcss-stat-cd?bsopPrcssStatCd=COM_9000&item=${keyword}&itemNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/prcss-stat-cd?bsopPrcssStatCd=COM_9000&item=${keyword}&itemNm=${keywordName}`;
                 break;
             case "orgCd":
-                url = `/api/v1/intptl/comnppup/org?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/org?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
                 break;
             case "wrhsCd":
-                url = `/api/v1/intptl/comnppup/wrhs?wrhsOprtTpCd=&coDclaCd=${keyword}&wrhsNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/wrhs?wrhsOprtTpCd=&coDclaCd=${keyword}&wrhsNm=${keywordName}`;
                 break;
             case "test":
-                url = `/api/v1/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
+                break;
+            case "coDclaCd":
+                url = `/api/v1/ptli/intptl/comnppup/co-dcla-cd?coTin=${coTin}&coDclaTpCd=${keyword}&coNm=${keywordName}`;
+                break;
+            case "orgDeptCd":
+                url = `/api/v1/ptli/intptl/comnppup/org-dept?orgNm=${orgNm}&deptCd=${keyword}&deptNm=${keywordName}`;
+                break;
+            case "cstmCd":
+                url = `/api/v1/ptli/intptl/comnppup/cstm?cstmTpCd=${cstmTpCd}&cstmOfceCd=${keyword}&cstmNm=${keywordName}`;
+                break;
+            case "vhclBodyCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/body?vhclBodyTpCd=${keyword}&vhclBodyTpNm=${keywordName}`;
+                break;
+            case "vhclCtgrCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/ctgr?vhclCtgrCd=${keyword}&vhclCtgrNm=${keywordName}`;
+                break;
+            case "vhclClrCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/clr?vhclClrCd=${keyword}&vhclClrNm=${keywordName}`;
+                break;
+            case "vhclFlCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/fl?vhclFlTpCd=${keyword}&vhclFlNm=${keywordName}`;
+                break;
+            case "vhclMkerCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/mker?vhclMnfcCd=${keyword}&vhclMnfcNm=${keywordName}`;
+                break;
+            case "vhclImpCntyCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/imp-cnty?vhclCntyCd=${keyword}&vhclCntyNm=${keywordName}`;
+                break;
+            case "vhclInsrTpCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/insr-tp?vhclInsrTpCd=${keyword}&vhclInsrTpNm=${keywordName}`;
+                break;
+            case "vhclMdlCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/mdl?vhclMnfcCd=${vhclMnfcCd}&vhclMdlCd=${keyword}&vhclMdlNm=${keywordName}`;
+                break;
+            case "vhclMdlNoCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/mdl-no?vhclMnfcCd=${vhclMnfcCd}&vhclMdlCd=${vhclMdlCd}&vhclMdlNoCd=${keyword}&vhclMdlNoNm=${keywordName}`;
+                break;
+            case "vhclHlpnCtgrCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/hlpn-ctgr?vhclHlpnCtgrCd=${keyword}&vhclHlpnCtgrNm=${keywordName}`;
+                break;
+            case "vhclPrplTpCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/prpl-tp?vhclPrplTpCd=${keyword}&vhclPrplTpNm=${keywordName}`;
+                break;
+            case "vhclTrmssnTpCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/trmssn-tp?vhclTrmssnTpCd=${keyword}&vhclTrmssnTpNm=${keywordName}`;
+                break;
+            case "vhclUseCd":
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/use?vhclUseCd=${keyword}&vhclUseNm=${keywordName}`;
                 break;
             default:
-                url = `/api/v1/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
         }
 

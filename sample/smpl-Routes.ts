@@ -222,6 +222,75 @@ export const SampleRoutes = [
                         name: "Message Language Processing",
                         to: "/comn/comn/msg/msgLangLst",
                     },
+                    {
+                        name: "Company Detail Code Popup",
+                        to: "/comn/comn/ppup/coDtlCdPpup",
+                    },
+                    {
+                        name: "Company Declare Code Popup",
+                        to: "/comn/comn/ppup/coDclaCdPpup",
+                    },
+                    {
+                        name: "Organization Department Code Popup",
+                        to: "/comn/comn/ppup/orgDeptCdPpup",
+                    },
+                    {
+                        name: "Customs Code Popup",
+                        to: "/comn/comn/ppup/cstmCdPpup",
+                    },
+
+                    {
+                        name: "Vehicle Body Code Popup",
+                        to: "/comn/comn/ppup/vhclBodyCdPpup",
+                    },
+                    {
+                        name: "Vehicle Category Code Popup",
+                        to: "/comn/comn/ppup/vhclCtgrCdPpup",
+                    },
+                    {
+                        name: "Vehicle Color Code Popup",
+                        to: "/comn/comn/ppup/vhclClrCdPpup",
+                    },
+                    {
+                        name: "Vehicle Fuel Code Popup",
+                        to: "/comn/comn/ppup/vhclFlCdPpup",
+                    },
+                    {
+                        name: "Vehicle Maker Code Popup",
+                        to: "/comn/comn/ppup/vhclMkerCdPpup",
+                    },
+                    {
+                        name: "Vehicle Import Country Code Popup",
+                        to: "/comn/comn/ppup/vhclImpCntyCdPpup",
+                    },
+                    {
+                        name: "Vehicle Insurance Type Code Popup",
+                        to: "/comn/comn/ppup/vhclInsrTpCdPpup",
+                    },
+                    {
+                        name: "Vehicle Model Code Popup",
+                        to: "/comn/comn/ppup/vhclMdlCdPpup",
+                    },
+                    {
+                        name: "Vehicle Model Number Code Popup",
+                        to: "/comn/comn/ppup/vhclMdlNoCdPpup",
+                    },
+                    {
+                        name: "Vehicle Holder Category Code Popup",
+                        to: "/comn/comn/ppup/vhclHlpnCtgrCdPpup",
+                    },
+                    {
+                        name: "Vehicle Propeller Type Code Popup",
+                        to: "/comn/comn/ppup/vhclPrplTpCdPpup",
+                    },
+                    {
+                        name: "Vehicle Transmission Type Code Popup",
+                        to: "/comn/comn/ppup/vhclTrmssnTpCdPpup",
+                    },
+                    {
+                        name: "Vehicle Use Code Popup",
+                        to: "/comn/comn/ppup/vhclUseCdPpup",
+                    },
                 ],
             },
         ],

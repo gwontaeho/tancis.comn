@@ -100,6 +100,14 @@ const SCHEMA_FORM: TFormSchema = {
             maxLength: 3,
             popupSize: "md",
         },
+        field13: {
+            type: "code",
+            area: "coDclaCd",
+            label: "Company Declare Code",
+            controlSize: 10,
+            maxLength: 3,
+            popupSize: "md",
+        },
     },
 };
 
@@ -118,6 +126,7 @@ export const SampleFormControlCode = () => {
             { area: "prcssStatCd" },
             { area: "orgCd" },
             { area: "wrhsCd" },
+            { area: "coDclaCd" },
         ],
     });
 
@@ -162,6 +171,9 @@ export const SampleFormControlCode = () => {
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.field12}></Group.Control>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field13}></Group.Control>
                     </Group.Row>
                 </Group.Body>
             </Group>

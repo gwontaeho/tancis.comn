@@ -32,6 +32,24 @@ const POPUP_URLS: Record<string, string> = {
     prcssStatCd: `/comn/comn/ppup/prcssStatPpup`,
     orgCd: `/comn/comn/ppup/orgCdPpup`,
     wrhsCd: `/comn/comn/ppup/wrhsCdPpup`,
+
+    coDtlCd: `/comn/comn/ppup/coDtlCdPpup`,
+    coDclaCd: `/comn/comn/ppup/coDclaCdPpup`,
+    orgDeptCd: `/comn/comn/ppup/orgDeptCdPpup`,
+    cstmOfceCd: `/comn/comn/ppup/cstmOfceCdPpup`,
+    vhclBodyCd: `/comn/comn/ppup/vhclBodyCdPpup`,
+    vhclCtgrCd: `/comn/comn/ppup/vhclCtgrCdPpup`,
+    vhclClrCd: `/comn/comn/ppup/vhclClrCdPpup`,
+    vhclFlCd: `/comn/comn/ppup/vhclFlCdPpup`,
+    vhclMkerCd: `/comn/comn/ppup/vhclMkerCdPpup`,
+    vhclImpCntyCd: `/comn/comn/ppup/vhclImpCntyCdPpup`,
+    vhclInsrTpCd: `/comn/comn/ppup/vhclInsrTpCdPpup`,
+    vhclMdlCd: `/comn/comn/ppup/vhclMdlCdPpup`,
+    vhclMdlNoCd: `/comn/comn/ppup/vhclMdlNoCdPpup`,
+    vhclHlpnCtgrCd: `/comn/comn/ppup/vhclHlpnCtgrCdPpup`,
+    vhclPrplTpCd: `/comn/comn/ppup/vhclPrplTpCdPpup`,
+    vhclTrmssnTpCd: `/comn/comn/ppup/vhclTrmssnTpCdPpup`,
+    vhclUseCd: `/comn/comn/ppup/vhclUseCdPpup`,
 };
 
 export const InputCode = (props: InputCodeProps) => {
