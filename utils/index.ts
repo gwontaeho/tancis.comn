@@ -561,6 +561,9 @@ export const comnUtils = {
             case "vhclUseCd":
                 url = `/api/v1/ptli/intptl/comnppup/vhcl/use?vhclUseCd=${keyword}&vhclUseNm=${keywordName}`;
                 break;
+            case "coCdDtl":
+                url = `/api/v1/ptli/intptl/comnppup/co/${keyword}`;
+                break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
@@ -599,6 +602,36 @@ export const comnUtils = {
                 return code.wrhsNm;
             case "coDclaCd":
                 return code.coDclaTpNm;
+            case "orgDeptCd":
+                return code.deptNm;
+            case "cstmCd":
+                return code.cstmNm;
+            case "vhclBodyCd":
+                return code.vhclBodyTpNm;
+            case "vhclCtgrCd":
+                return code.vhclCtgrNm;
+            case "vhclClrCd":
+                return code.vhclClrNm;
+            case "vhclFlCd":
+                return code.vhclFlNm;
+            case "vhclMkerCd":
+                return code.vhclMnfcNm;
+            case "vhclImpCntyCd":
+                return code.vhclCntyNm;
+            case "vhclInsrTpCd":
+                return code.vhclInsrTpNm;
+            case "vhclMdlCd":
+                return code.vhclMdlNm;
+            case "vhclMdlNoCd":
+                return code.vhclMdlNoNm;
+            case "vhclHlpnCtgrCd":
+                return code.vhclHlpnCtgrNm;
+            case "vhclPrplTpCd":
+                return code.vhclPrplTpNm;
+            case "vhclTrmssnTpCd":
+                return code.vhclTrmssnTpNm;
+            case "vhclUseCd":
+                return code.vhclUseNm;
             default:
                 return code.cdVldValNm;
         }
@@ -631,6 +664,36 @@ export const comnUtils = {
                 return code.coDclaCd;
             case "coDclaCd":
                 return code.coDclaCd;
+            case "orgDeptCd":
+                return code.deptCd;
+            case "cstmCd":
+                return code.cstmOfceCd;
+            case "vhclBodyCd":
+                return code.vhclBodyTpCd;
+            case "vhclCtgrCd":
+                return code.vhclCtgrCd;
+            case "vhclClrCd":
+                return code.vhclClrCd;
+            case "vhclFlCd":
+                return code.vhclFlTpCd;
+            case "vhclMkerCd":
+                return code.vhclMnfcCd;
+            case "vhclImpCntyCd":
+                return code.vhclCntyCd;
+            case "vhclInsrTpCd":
+                return code.vhclInsrTpCd;
+            case "vhclMdlCd":
+                return code.vhclMdlCd;
+            case "vhclMdlNoCd":
+                return code.vhclMdlNoCd;
+            case "vhclHlpnCtgrCd":
+                return code.vhclHlpnCtgrCd;
+            case "vhclPrplTpCd":
+                return code.vhclPrplTpCd;
+            case "vhclTrmssnTpCd":
+                return code.vhclTrmssnTpCd;
+            case "vhclUseCd":
+                return code.vhclUseCd;
             default:
                 return code.cdVldVal;
         }

@@ -293,6 +293,13 @@ export const APIS = {
             keywordName: data.vhclUseNm,
         });
     },
+
+    getCoCdDtl: (data: any) => {
+        return comnUtils.getCode({
+            area: "coCdDtl",
+            keyword: data.coTin,
+        });
+    },
 };
 
 export const SCHEMA_GRID_COMN_CD: WijmoSchemaType = {
@@ -1257,5 +1264,19 @@ export const SCHEMA_FORM_VHCL_USE_CD_SRCH: TFormSchema = {
     schema: {
         vhclUseCd: { type: "text", label: "L_VHCL_USE_CD" },
         vhclUseNm: { type: "text", label: "L_VHCL_USE_NM" },
+    },
+};
+
+export const SCHEMA_CO_CD_DTL: TFormSchema = {
+    id: "form",
+    schema: {
+        coTin: { type: "text", label: "L_CO_TIN" },
+        coTpCdNm: { type: "text", label: "L_CO_TP_CD_NM" },
+        coNm: { type: "text", label: "L_CO_NM" },
+        coAddr: { type: "text", label: "L_CO_ADDR" },
+        rprsTlphNo: { type: "text", label: "L_RPRS_TELNO" },
+        rRprsFaxNo: { type: "text", label: "L_RPRS_FAX_NO" },
+        rprsEml: { type: "text", label: "L_RPRS_EML" },
+        prcssStatCdNm: { type: "text", label: "L_PRCSS_STAT_CD_NM" },
     },
 };

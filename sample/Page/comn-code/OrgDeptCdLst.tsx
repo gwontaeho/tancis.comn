@@ -68,7 +68,7 @@ export const OrganizationDepartmentCodeList = (props: any) => {
                         <a
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.orgDeptNm });
+                                postMessage({ code: value, label: rowValues.deptNm });
                                 close();
                             }}
                         >
