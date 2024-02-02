@@ -114,12 +114,12 @@ Sample.Code = Code;
 Sample.Table = (props: SampleTableProps) => {
     return (
         <Table
-            className="[&_tr]:h-[2rem]"
+            className="[&_tr]:h-[2.5rem]"
             before={
                 <colgroup>
                     {props.data?.[0]?.map((_: any, i: number) => {
                         return (
-                            <col key={uuid()} className={classNames({ "w-40": i !== props.data?.[0].length - 1 })} />
+                            <col key={uuid()} className={classNames({ "w-60": i !== props.data?.[0].length - 1 })} />
                         );
                     })}
                 </colgroup>

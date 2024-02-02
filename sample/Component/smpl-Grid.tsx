@@ -29,24 +29,24 @@ export const SampleGrid = () => {
                 index: true,
                 radio: true,
                 checkbox: true,
-                edit: true,
+                // edit: true,
                 pagination: "in",
             },
             head: [
                 {
                     colspan: 2,
+
+                    cells: [
+                        //
+                        { binding: "w", width: "*" },
+                        { binding: "w", width: "*" },
+                    ],
+                },
+                {
                     cells: [
                         //
                         { binding: "q", width: "*" },
                         { binding: "w" },
-                    ],
-                },
-                {
-                    colspan: 2,
-
-                    cells: [
-                        //
-                        { binding: "q", width: "*" },
                         { binding: "w" },
                     ],
                 },
@@ -61,7 +61,6 @@ export const SampleGrid = () => {
                     ],
                 },
                 {
-                    colspan: 2,
                     cells: [
                         //
                         { binding: "q" },
@@ -75,84 +74,48 @@ export const SampleGrid = () => {
     const data = useMemo(() => utils.getMockData({ totalElements: 999 }), []);
 
     return (
-        <div>
-            <Sample>
-                <Sample.Section>
-                    <Grid {...grid} data={data} />
-                </Sample.Section>
+        <Sample>
+            <Sample.Section>
+                <Grid
+                    {...grid}
+                    data={data}
+                    render={{
+                        cell: {
+                            q: () => {
+                                return (
+                                    <div>
+                                        <div>asd</div>
+                                        <div>asd</div>
+                                        <div>asd</div>
+                                    </div>
+                                );
+                            },
+                        },
+                    }}
+                />
+            </Sample.Section>
 
-                <Sample.Section>
-                    <ul className="grid gap-4 grid-cols-4 [&_span]:text-lg">
-                        <li className="flex flex-col gap-1">
-                            <span>getData</span>
-                            <p>전체 데이터</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>getOrigin</span>
-                            <p>원본 데이터</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>getSelectedRow</span>
-                            <p>선택된 Row</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>getSelectedCell</span>
-                            <p>선택된 Cell</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>getChecked</span>
-                            <p>체크된 Rows</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>addRow</span>
-                            <p>Row 추가</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>deleteRow</span>
-                            <p>Row 삭제</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>updateRow</span>
-                            <p>Row 수정</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>setEdit</span>
-                            <p>Edit 변경</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>setShow</span>
-                            <p>Show 변경</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>setOption</span>
-                            <p>스키마 옵션 변경</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>setPage</span>
-                            <p>Page 변경</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>setSize</span>
-                            <p>Size 변경</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>setData</span>
-                            <p>Data 설정</p>
-                        </li>
-                        <li className="flex flex-col gap-1">
-                            <span>resetData</span>
-                            <p>원본 데이터로 변경</p>
-                        </li>
-                    </ul>
-                </Sample.Section>
-
-                <Sample.Code>
-                    {`
-const { getData } = useGrid();
-
-getData();`}
-                </Sample.Code>
-            </Sample>
-        </div>
+            <Sample.Section title="Return">
+                <Sample.Table
+                    data={[
+                        ["Name", "Description"],
+                        ["getData", "전체 데이터"],
+                        ["getOrigin", "원본 데이터"],
+                        ["getSelectedRow", "선택된 Row"],
+                        ["getSelectedCell", "선택된 Cell"],
+                        ["getChecked", "체크된 Rows"],
+                        ["addRow", "Row 추가"],
+                        ["deleteRow", "Row 삭제"],
+                        ["updateRow", "Row 수정"],
+                        ["setEdit", "Edit 상태 변경"],
+                        ["setShow", "Show 상태 변경"],
+                        ["setPage", "Page 변경"],
+                        ["setSize", "Size 변경"],
+                        ["setData", "Data 설정"],
+                        ["resetData", "원본 데이터로 리셋"],
+                    ]}
+                />
+            </Sample.Section>
+        </Sample>
     );
 };
