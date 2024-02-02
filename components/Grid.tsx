@@ -270,7 +270,7 @@ export const Grid = (props: any) => {
         _grid.current._origin = content;
         _grid.current._content = content;
 
-        const total = _grid.current._pagination === "out" ? d?.content?.totalElements : undefined;
+        const total = _grid.current._pagination === "out" ? d?.page?.totalElements : undefined;
 
         __setGrid(_grid.current._content, total);
     };
