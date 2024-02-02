@@ -333,6 +333,23 @@
     *[data-color="warning"] {
         @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-warning [&:not(.uf-button)]:text-uf-warning border-uf-warning;
     }
+    /*
+    .invalid input,
+    .invalid select,
+    .invalid textarea {
+        border: solid 1px var(--uf-error);
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-text-fill-color: var(--uf-text);
+        -webkit-box-shadow: 0 0 0px 1000px var(--uf-input-background) inset;
+        box-shadow: 0 0 0px 1000px var(--uf-input-background) inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+    */
 }
 
 .react-datepicker-popper {
