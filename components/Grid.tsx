@@ -84,6 +84,12 @@ const fun = (schema: any) => {
     return tt;
 };
 
+/**
+ * reducer
+ */
+// const initialArg = {};
+// const reducer = () => {};
+
 export const Grid = (props: any) => {
     const {
         /**  */
@@ -96,6 +102,8 @@ export const Grid = (props: any) => {
 
     const __t = data?.__t?.getTime();
     const { t } = useTranslation();
+
+    // const [state, dispatch] = React.useReducer<any>(reducer, initialArg);
 
     const [_head, _setHead] = React.useState(() => {
         return _grid.current._defaultSchema.head.map((_: any) => {
@@ -832,26 +840,6 @@ export const Grid = (props: any) => {
         return lodash.orderBy(d, iteratees, orders);
     }, []);
 
-    /** initialize */
-    React.useEffect(() => {
-        _grid.current._setData = setData;
-        _grid.current._setEdit = setEdit;
-        _grid.current._setShow = setShow;
-        _grid.current._setOption = setOption;
-        _grid.current._resetData = resetData;
-        _grid.current._handleCheck = handleCheck;
-        _grid.current._handleSelect = handleSelect;
-        _grid.current._handleUpdate = handleUpdate;
-        _grid.current._handleClickAdd = handleClickAdd;
-        _grid.current._handleClickDelete = handleClickDelete;
-        _grid.current._handleChangePage = handleChangePage;
-        _grid.current._handleChangeSize = handleChangeSize;
-
-        _grid.current._initialized = true;
-
-        return () => {};
-    }, []);
-
     const heads = fun(_head);
     const bodies = fun(_body);
 
@@ -886,6 +874,28 @@ export const Grid = (props: any) => {
     };
 
     const gridTemplateColumns = getGridWidths();
+
+    console.log(gridTemplateColumns);
+
+    /** initialize */
+    React.useEffect(() => {
+        _grid.current._setData = setData;
+        _grid.current._setEdit = setEdit;
+        _grid.current._setShow = setShow;
+        _grid.current._setOption = setOption;
+        _grid.current._resetData = resetData;
+        _grid.current._handleCheck = handleCheck;
+        _grid.current._handleSelect = handleSelect;
+        _grid.current._handleUpdate = handleUpdate;
+        _grid.current._handleClickAdd = handleClickAdd;
+        _grid.current._handleClickDelete = handleClickDelete;
+        _grid.current._handleChangePage = handleChangePage;
+        _grid.current._handleChangeSize = handleChangeSize;
+
+        _grid.current._initialized = true;
+
+        return () => {};
+    }, []);
 
     return (
         <div>

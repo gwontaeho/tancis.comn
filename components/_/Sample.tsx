@@ -46,6 +46,14 @@ export const Sample = (props: SampleProps) => {
     );
 };
 
+const Button = (props: any) => {
+    return (
+        <button onClick={props.onClick} className="tracking-wide border p-2 font-semibold">
+            {props.children}
+        </button>
+    );
+};
+
 const Section = (props: SampleSectionProps) => {
     const { children, title, description } = props;
 
@@ -107,6 +115,7 @@ const Doc = (props: SampleDocProps) => {
 };
 
 Sample.Section = Section;
+Sample.Button = Button;
 Sample.Doc = Doc;
 Sample.Result = Result;
 Sample.Code = Code;
