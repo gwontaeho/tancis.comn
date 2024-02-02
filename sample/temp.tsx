@@ -42,10 +42,10 @@ const schema1: TGridSchema = {
     body: [
         {
             colspan: 2,
-            cells: [{ binding: "q1", colspan: 2, rowspan: 2 }],
+            cells: [{ binding: "q", colspan: 2, rowspan: 2, align: "center" }],
         },
         {
-            cells: [{ binding: "w1", rowspan: 2 }],
+            cells: [{ binding: "w", rowspan: 2 }],
         },
         {
             colspan: 3,

@@ -333,6 +333,10 @@
     *[data-color="warning"] {
         @apply [&:not(.uf-button-outlined,.uf-button-underlined)]:bg-uf-warning [&:not(.uf-button)]:text-uf-warning border-uf-warning;
     }
+
+    .uf-group a {
+        text-decoration: underline;
+    }
     /*
     .invalid input,
     .invalid select,

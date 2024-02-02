@@ -8,16 +8,48 @@ import { FormControl } from "@/comn/components";
 
 const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
     [
+        { label: "-3M", unit: "M", value: -3 },
+        { label: "-1M", unit: "M", value: -1 },
+        { label: "-1W", unit: "w", value: -1 },
+        { label: "0", unit: "d", value: 0 },
+        { label: "+1W", unit: "w", value: 1 },
+        { label: "+1M", unit: "M", value: 1 },
+        { label: "+3M", unit: "M", value: 3 },
+    ],
+    [
+        { label: "+1D", unit: "d", value: 1 },
+        { label: "+1W", unit: "w", value: 1 },
+        { label: "+1M", unit: "M", value: 1 },
+        { label: "+2M", unit: "M", value: 2 },
+        { label: "+3M", unit: "M", value: 3 },
+        { label: "+6M", unit: "M", value: 6 },
+        { label: "+12M", unit: "M", value: 12 },
+        { label: "∞", unit: "y", value: 1000 },
+    ],
+    [
+        { label: "-1M", unit: "M", value: -1 },
+        { label: "-1W", unit: "w", value: -1 },
+        { label: "Today", unit: "d", value: 0 },
+        { label: "+1W", unit: "w", value: 1 },
+    ],
+    [
         { label: "-3H", unit: "h", value: -3 },
         { label: "-2H", unit: "h", value: -2 },
         { label: "-1H", unit: "h", value: -1 },
+        { label: "0", unit: "h", value: 0 },
         { label: "+1H", unit: "h", value: 1 },
         { label: "+2H", unit: "h", value: 2 },
         { label: "+3H", unit: "h", value: 3 },
     ],
+    [
+        { label: "1D", unit: "d", value: 1 },
+        { label: "-1W", unit: "w", value: -1 },
+        { label: "-1M", unit: "M", value: -1 },
+        { label: "-3M", unit: "M", value: -3 },
+    ],
 ];
 
-type TimeUnitType = "h";
+type TimeUnitType = "M" | "w" | "d" | "h" | "y";
 type RangeButtonOptionType = { unit: TimeUnitType; label: string; value: number };
 
 export type InputTimerangeProps = {
