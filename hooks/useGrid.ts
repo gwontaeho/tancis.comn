@@ -39,7 +39,7 @@ export type TGridSchema = {
             max?: number;
             minLength?: number;
             pattern?: RegExp;
-            validate?: (arg: any) => void;
+            validate?: (arg?: any) => void;
             required?: boolean;
             maxLength?: number;
             /** */
