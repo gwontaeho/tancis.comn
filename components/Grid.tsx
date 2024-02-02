@@ -702,22 +702,26 @@ export const Grid = (props: any) => {
         __setGrid(_grid.current._content);
     }, []);
 
-    /**
-     * set grid view
-     * sort
-     * add
-     * delete
-     * paging
-     * sizing
-     */
     const __setGrid = (content: any, total?: any) => {
-        /** 전체 보이는 데이터 */
+        /**
+         * 삭제된 데이터 배열에서 제거
+         */
         let view = content.filter(({ __type }: any) => __type !== "deleted");
 
+        /**
+         * 그룹화, 정렬
+         * Group & Sort
+         */
         view = returnGrouped(view);
 
+        /**
+         *
+         */
         _setTotalCount(total || view.length);
 
+        /**
+         *
+         */
         view = returnPaged(view);
 
         if (view) {
@@ -1180,7 +1184,12 @@ const Row = React.memo((props: any) => {
                                 return (
                                     <div
                                         key={celKey}
-                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-center border border-uf-card-background aria-selected:border-uf-info aria-[invalid=true]:border-uf-error"
+                                        className={classNames(
+                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-selected:border-uf-info aria-[invalid=true]:border-uf-error",
+                                            (__.align === "start" || __.align === "left") && "justify-start",
+                                            (__.align === "end" || __.align === "right") && "justify-end",
+                                            (__.align === "center" || __.align === undefined) && "justify-center",
+                                        )}
                                         {...(vldv && { "aria-invalid": true })}
                                         {...(_selectedCel === celKey && { "aria-selected": true })}
                                         style={{
