@@ -100,7 +100,7 @@ export const Button = (props: ButtonProps) => {
             {..._color}
             type={type}
             className={classNames(
-                "min-w-fit",
+                "max-w-full min-w-max flex items-center",
                 role && BUTTON_ROLES[role].variant !== undefined
                     ? BUTTON_ROLES[role].variant
                     : BUTTON_VARIANTS[variant].style,
@@ -109,7 +109,7 @@ export const Button = (props: ButtonProps) => {
                 height && HEIGHTS[height],
             )}
         >
-            {icon && <Icon icon={icon} size={size} />}
+            {icon && <Icon icon={icon} size={size} className="mr-1" />}
             {role ? t(BUTTON_ROLES[role].text) : typeof children === "string" ? t(children) : children}
         </button>
     );
