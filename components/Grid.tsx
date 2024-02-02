@@ -252,7 +252,7 @@ export const Grid = (props: any) => {
         if (!Array.isArray(data.content)) return;
         if (data.content.length === 0 && _test.length === 0) return;
 
-        setData(data.content);
+        setData(data);
     }, [__t]);
 
     /**
