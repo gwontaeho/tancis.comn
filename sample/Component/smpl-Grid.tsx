@@ -232,9 +232,17 @@ export const SampleGrid = () => {
                         </div>
                         <div>
                             <div className="grid grid-cols-2 gap-1">
-                                <Sample.Button onClick={() => console.log(s1.addRow())}>addRow()</Sample.Button>
+                                <Sample.Button onClick={() => console.log(s1.getData())}>setData()</Sample.Button>
+                                <Sample.Button onClick={() => console.log(s1.resetData())}>resetData()</Sample.Button>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="grid grid-cols-2 gap-1">
+                                <Sample.Button onClick={() => s1.addRow()}>addRow()</Sample.Button>
                                 <Sample.Button
-                                    onClick={() => s1.updateRow({ ...s1.getSelectedCell().rowValues, text: "Changed" })}
+                                    onClick={() =>
+                                        s1.updateRow({ ...s1.getSelectedCell()?.rowValues, text: "Changed" })
+                                    }
                                 >
                                     updateRow()
                                 </Sample.Button>
@@ -242,8 +250,6 @@ export const SampleGrid = () => {
                                 <Sample.Button onClick={() => console.log(s1.getData())}>setShow()</Sample.Button>
                                 <Sample.Button onClick={() => console.log(s1.getData())}>setPage()</Sample.Button>
                                 <Sample.Button onClick={() => console.log(s1.getData())}>setSize()</Sample.Button>
-                                <Sample.Button onClick={() => console.log(s1.getData())}>setData()</Sample.Button>
-                                <Sample.Button onClick={() => console.log(s1.resetData())}>resetData()</Sample.Button>
                             </div>
                         </div>
                         <div>
@@ -255,7 +261,7 @@ export const SampleGrid = () => {
                                     setEdit("cell", "text", true)
                                 </Sample.Button>
                                 <Sample.Button onClick={() => s1.setEdit("row", s1.getSelectedRow(), true)}>
-                                    setEdit("row", s1.getSelectedRow(), true)
+                                    setEdit("row", "id", true)
                                 </Sample.Button>
                             </div>
                         </div>

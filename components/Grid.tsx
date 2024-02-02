@@ -334,9 +334,9 @@ export const Grid = (props: any) => {
              */
             case "row": {
                 const key =
-                    typeof target === "object" && !!target.__key
+                    typeof target === "object" && !!target?.__key
                         ? target.__key
-                        : typeof target === "string" && !!target
+                        : typeof target === "string"
                           ? target
                           : undefined;
 
