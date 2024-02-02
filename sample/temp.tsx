@@ -15,7 +15,7 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        // edit: true,
         importExcel: true,
         exportExcel: true,
         pagination: "in",
@@ -25,67 +25,31 @@ const schema1: TGridSchema = {
     head: [
         {
             colspan: 2,
-            id: "test1",
             cells: [
-                {
-                    binding: "a",
-                    required: true,
-                    width: 100,
-                    colspan: 2,
-                },
-                {
-                    binding: "a",
-                    required: true,
-                    width: 100,
-                },
-                {
-                    binding: "a",
-                    required: true,
-                    width: 100,
-                },
+                { binding: "a", colspan: 2, width: 100 },
+                { binding: "b", width: 100 },
+                { binding: "c", width: 100 },
             ],
         },
         {
-            id: "test",
-            cells: [
-                {
-                    width: 100,
-                    header: "b",
-                    rowspan: 2,
-                },
-            ],
+            cells: [{ binding: "d", rowspan: 2, width: 100 }],
         },
         {
             colspan: 3,
-            cells: [
-                {
-                    width: "*",
-                    header: "c",
-                },
-                {
-                    width: "*",
-                    header: "c",
-                },
-                {
-                    width: "*",
-                    header: "c",
-                },
-                {
-                    width: "*",
-                    header: "c",
-                    colspan: 3,
-                },
-            ],
+            cells: [{ binding: "e" }, { binding: "f" }, { binding: "g" }, { binding: "h", colspan: 3 }],
         },
     ],
     body: [
-        { colspan: 2, cells: [{ binding: "q", colspan: 2, rowspan: 2 }] },
         {
-            cells: [{ binding: "w", rowspan: 2 }],
+            colspan: 2,
+            cells: [{ binding: "q1", colspan: 2, rowspan: 2 }],
+        },
+        {
+            cells: [{ binding: "w1", rowspan: 2 }],
         },
         {
             colspan: 3,
-            cells: [{ binding: "ww", colspan: 3 }, { binding: "ww" }, { binding: "ww" }, { binding: "ww" }],
+            cells: [{ binding: "w2w", colspan: 3 }, { binding: "w3w" }, { binding: "w4w" }, { binding: "5ww" }],
         },
     ],
 };
@@ -139,21 +103,21 @@ export const Temp = () => {
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const _test = {
-        head: {
-            a: (data: any) => {
-                /**
-                 * # data
-                 * id
-                 * header
-                 * binding
-                 */
-                return (
-                    <Layout>
-                        <FormControl />
-                    </Layout>
-                );
-            },
-        },
+        // head: {
+        //     a: (data: any) => {
+        //         /**
+        //          * # data
+        //          * id
+        //          * header
+        //          * binding
+        //          */
+        //         return (
+        //             <Layout>
+        //                 <FormControl />
+        //             </Layout>
+        //         );
+        //     },
+        // },
         cell: {
             // text: (data: any) => {
             //     /**

@@ -15,6 +15,7 @@ export type TGridSchema = {
         importExcel?: boolean;
         exportExcel?: boolean;
         pagination?: "in" | "out" | false;
+        height?: number;
     };
     head: {
         id?: string;
@@ -107,6 +108,7 @@ export const useGrid = (props: UseGridProps) => {
         _delete: defaultSchema.options?.delete,
         _exportExcel: defaultSchema.options?.exportExcel,
         _importExcel: defaultSchema.options?.importExcel,
+        _height: defaultSchema.options?.height || 400,
 
         /** paging */
         _pagination: defaultSchema.options?.pagination,

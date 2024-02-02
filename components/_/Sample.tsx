@@ -50,7 +50,7 @@ const Section = (props: SampleSectionProps) => {
     const { children, title, description } = props;
 
     return (
-        <div className="bg-uf-card-background p-4 flex flex-col rounded gap-4">
+        <div className="bg-uf-card-background p-4 flex flex-col flex-1 rounded gap-4">
             {title && <div className="text-[1.2rem]">{title}</div>}
             {description && <div className="text-[1rem]">{description}</div>}
             {children}
@@ -73,7 +73,7 @@ const Code = (props: SampleCodeProps) => {
     }, [props.children]);
 
     return (
-        <pre className="relative">
+        <pre className="relative flex-1">
             <code className={`language-jsx`}>{props.children}</code>
             {props.exec && (
                 <button className="absolute top-2 right-2" onClick={props.exec}>
@@ -114,7 +114,7 @@ Sample.Code = Code;
 Sample.Table = (props: SampleTableProps) => {
     return (
         <Table
-            className="[&_tr]:h-[2.5rem]"
+            className="text-[13px] tracking-wide [&_tr]:h-[2.5rem] [&_td]:px-2"
             before={
                 <colgroup>
                     {props.data?.[0]?.map((_: any, i: number) => {
