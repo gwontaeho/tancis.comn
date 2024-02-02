@@ -408,7 +408,7 @@ export const comnUtils = {
                 .fill(null)
                 .map((_, i) => ({
                     index: i,
-                    q: ["abc", "bob", "tom", "ken"][Math.floor(Math.random() * 4)],
+                    q: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
                     w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
                     ww: ["77", "22"][Math.floor(Math.random() * 2)],
                     id: new Date().getTime() + i,
@@ -419,8 +419,8 @@ export const comnUtils = {
                     e: "e" + Math.random() * 1000,
                     f: "f" + Math.random() * 1000,
                     g: "g" + Math.random() * 1000,
-                    text: (Math.random() * 1000).toFixed(),
-                    number: Math.ceil(Math.random() * 10000000),
+                    text: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
+                    number: Math.ceil(Math.random() * 1000),
                     date: "2022-10-10",
                     time: "11:20:10",
                     datetime: "2022-10-10 10:30:20",
