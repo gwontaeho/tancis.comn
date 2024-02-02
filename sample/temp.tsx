@@ -24,16 +24,21 @@ const schema1: TGridSchema = {
     },
     head: [
         {
+            colspan: 2,
             id: "test1",
             cells: [
                 {
-                    header: "a",
+                    binding: "a",
+                    required: true,
+                    width: 100,
+                    colspan: 2,
+                },
+                {
                     binding: "a",
                     required: true,
                     width: 100,
                 },
                 {
-                    header: "a",
                     binding: "a",
                     required: true,
                     width: 100,
@@ -51,24 +56,36 @@ const schema1: TGridSchema = {
             ],
         },
         {
+            colspan: 3,
             cells: [
                 {
-                    width: 100,
+                    width: "*",
                     header: "c",
-                    rowspan: 2,
+                },
+                {
+                    width: "*",
+                    header: "c",
+                },
+                {
+                    width: "*",
+                    header: "c",
+                },
+                {
+                    width: "*",
+                    header: "c",
+                    colspan: 3,
                 },
             ],
         },
     ],
     body: [
+        { colspan: 2, cells: [{ binding: "q", colspan: 2, rowspan: 2 }] },
         {
-            cells: [{ binding: "q" }],
+            cells: [{ binding: "w", rowspan: 2 }],
         },
         {
-            cells: [{ binding: "w" }],
-        },
-        {
-            cells: [{ binding: "ww" }],
+            colspan: 3,
+            cells: [{ binding: "ww", colspan: 3 }, { binding: "ww" }, { binding: "ww" }, { binding: "ww" }],
         },
     ],
 };
