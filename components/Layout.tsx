@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { Button } from "./Button";
 
 const GAPS = {
+    0: "",
     1: "gap-1",
     2: "gap-2",
     4: "gap-4",
@@ -35,12 +36,12 @@ type LayoutProps = {
 };
 
 export const Layout = (props: LayoutProps) => {
-    const { children, direction = "col", gap } = props;
-    const isRow = direction === "row";
+    const { children, direction = "row", gap = 1 } = props;
+    const isCol = direction === "col";
     return (
         <div
             className={classNames("uf-layout", gap && GAPS[gap], {
-                "flex-col": !isRow,
+                "flex-col": isCol,
             })}
         >
             {children}
@@ -49,13 +50,13 @@ export const Layout = (props: LayoutProps) => {
 };
 
 const LayoutLeft = (props: LayoutProps) => {
-    const { children, direction = "col", gap, size } = props;
+    const { children, gap = 1, size } = props;
 
     return <div className={classNames("uf-layout-left", size && SIZES[size], gap && GAPS[gap])}>{children}</div>;
 };
 
 const LayoutRight = (props: LayoutProps) => {
-    const { children, direction = "col", gap, size } = props;
+    const { children, gap = 1, size } = props;
 
     return <div className={classNames("uf-layout-right", size && SIZES[size], gap && GAPS[gap])}>{children}</div>;
 };

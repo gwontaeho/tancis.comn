@@ -907,7 +907,7 @@ export const Grid = (props: any) => {
     }, []);
 
     return (
-        <div>
+        <div className="flex flex-col w-full">
             {/* button */}
             <div className="flex justify-between">
                 <div className="flex gap-1 [&_*]:mb-2">

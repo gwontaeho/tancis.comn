@@ -304,6 +304,7 @@ const GroupCol = (props: GroupColProps) => {
             ) : (
                 <div className={classNames("p-" + padding + " flex items-center space-x-1", SIZES[colSize])}>
                     {React.Children.map(children, (child: any) => {
+                        if (typeof child === "string") return child;
                         if (child) return React.cloneElement(child, { "data-parent": "group_col" });
                     })}
                 </div>

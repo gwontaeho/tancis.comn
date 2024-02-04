@@ -10,6 +10,7 @@
             try {
                 if (localStorage.getItem("isDark") === "true") {
                     document.documentElement.classList.add("dark");
+                } else if (localStorage.getItem("isDark") === "false") {
                 } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
                     document.documentElement.classList.add("dark");
                 }

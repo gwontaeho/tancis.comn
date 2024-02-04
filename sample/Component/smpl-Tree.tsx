@@ -1,4 +1,5 @@
 import { Layout, Group, Tree, Divider } from "@/comn/components";
+import { Sample } from "@/comn/components/_";
 
 const treeviewItems = () => [
     {
@@ -127,16 +128,20 @@ const treeviewItems = () => [
 
 export const SampleTree = () => {
     return (
-        <Layout direction="row">
-            <Group>
-                <Group.Title title="asd" />
-                <Tree data={treeviewItems()} />
-            </Group>
-            <Divider orientation="vertical" />
+        <Sample title="Tree">
+            <Sample.Section>
+                <Layout direction="row">
+                    <Group>
+                        <Group.Title title="asd" />
+                        <Tree data={treeviewItems()} />
+                    </Group>
+                    <Divider orientation="vertical" />
 
-            <Group>
-                <Tree data={treeviewItems()} />
-            </Group>
-        </Layout>
+                    <Group>
+                        <Tree data={treeviewItems()} />
+                    </Group>
+                </Layout>
+            </Sample.Section>
+        </Sample>
     );
 };

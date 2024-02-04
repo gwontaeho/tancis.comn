@@ -232,13 +232,13 @@
 
     /* Layout */
     .uf-layout {
-        @apply w-full flex;
+        @apply flex w-full;
     }
     .uf-layout-left {
-        @apply flex flex-wrap gap-1;
+        @apply flex flex-wrap;
     }
     .uf-layout-right {
-        @apply flex flex-1 flex-wrap justify-end gap-1;
+        @apply flex flex-1 flex-wrap justify-end;
     }
 
     .uf-layout-left > .uf-form-control,

@@ -26,6 +26,8 @@ import { SampleTree } from "@/comn/sample/Component/smpl-Tree";
 import { SampleTable } from "@/comn/sample/Component/smpl-Table";
 import { SampleIconButton } from "@/comn/sample/Component/smpl-IconButton";
 import { SampleGrid } from "@/comn/sample/Component/smpl-Grid";
+import { SampleGroup } from "@/comn/sample/Component/smpl-Group";
+import { SampleLayout } from "@/comn/sample/Component/smpl-Layout";
 
 import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
@@ -79,7 +81,6 @@ export const SampleMain = () => {
             <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 
             <Route path="/components/Text" element={<SampleText />} />
-
             <Route path="/components/Page" element={<SamplePage />} />
             <Route path="/components/Icon" element={<SampleIcon />} />
             <Route path="/components/Tooltip" element={<SampleTooltip />} />
@@ -88,6 +89,8 @@ export const SampleMain = () => {
             <Route path="/components/Table" element={<SampleTable />} />
             <Route path="/components/IconButton" element={<SampleIconButton />} />
             <Route path="/components/Grid" element={<SampleGrid />} />
+            <Route path="/components/Group" element={<SampleGroup />} />
+            <Route path="/components/Layout" element={<SampleLayout />} />
 
             <Route path="/hooks/useForm" element={<SampleUseForm />} />
             <Route path="/hooks/useModal" element={<SampleUseModal />} />
