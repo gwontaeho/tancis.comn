@@ -16,6 +16,7 @@ export type InputDateProps = {
     readOnly?: boolean;
     disabled?: boolean;
     defaultValue?: any;
+    placeholder?: string;
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
 };
@@ -31,6 +32,7 @@ export const InputDate = (props: InputDateProps) => {
         readOnly,
         disabled,
         defaultValue,
+        placeholder,
         onBlur,
         onChange,
     } = props;
@@ -74,6 +76,7 @@ export const InputDate = (props: InputDateProps) => {
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
                     <ReactDatePicker
                         {..._props}
+                        placeholderText={placeholder}
                         dateFormat={constants.DATE_FORMAT_INPUT[theme.lang]}
                         selected={_value}
                         onChange={handleChange}

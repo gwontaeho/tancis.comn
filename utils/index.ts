@@ -327,11 +327,13 @@ export const comnUtils = {
         return arg;
     },
     getDate: (
-        args: string | { date?: Date; y?: number; m?: number; d?: number } = {
+        args: string | { date?: Date; y?: number; m?: number; d?: number; h?: number; mi?: number } = {
             date: new Date(),
             y: 0,
             m: 0,
             d: 0,
+            h: 0,
+            mi: 0,
         },
     ): Date => {
         if (args === undefined || args === null) return new Date();
@@ -339,14 +341,42 @@ export const comnUtils = {
         if (typeof args === "string") {
             return dayjs(args).toDate();
         } else {
-            const { date, y, m, d } = args;
+            const { date, y, m, d, h, mi } = args;
             let temp = dayjs(date);
             temp = temp
                 .set("y", temp.get("y") + (y || 0))
                 .set("M", temp.get("M") + (m || 0))
-                .set("D", temp.get("D") + (d || 0));
+                .set("D", temp.get("D") + (d || 0))
+                .set("h", temp.get("h") + (h || 0))
+                .set("m", temp.get("m") + (mi || 0));
             return temp.toDate();
         }
+    },
+    compareDate: (a: any, b: any) => {
+        if (typeof a === "string") {
+            a = dayjs(a).toDate();
+        }
+        if (typeof b === "string") {
+            b = dayjs(b).toDate();
+        }
+        a = comnUtils.dateToString(a, "date");
+        b = comnUtils.dateToString(b, "date");
+        if (a > b) return -1;
+        if (a < b) return 1;
+        if (a === b) return 0;
+    },
+    compareTime: (a: any, b: any) => {
+        if (typeof a === "string") {
+            a = dayjs(a).toDate();
+        }
+        if (typeof b === "string") {
+            b = dayjs(b).toDate();
+        }
+        a = comnUtils.dateToString(a, "time");
+        b = comnUtils.dateToString(b, "time");
+        if (a > b) return -1;
+        if (a < b) return 1;
+        if (a === b) return 0;
     },
     findIndex: (array: Array<any>, obj: any) => {
         return lodash.findIndex(array, obj);

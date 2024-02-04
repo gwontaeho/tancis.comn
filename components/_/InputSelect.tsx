@@ -49,7 +49,6 @@ export const Select = (props: SelectProps) => {
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options });
-    console.log(o);
 
     const [_value, _setValue] = React.useState<any>(formatSelect(value));
 

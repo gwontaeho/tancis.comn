@@ -20,14 +20,14 @@ export const DATE_FORMAT_DAYJS = {
 };
 
 export const TIME_FORMAT_INPUT = {
-    ko: "HH:mm:ss",
-    en: "HH:mm:ss",
-    tz: "HH:mm:ss",
+    ko: "HH:mm",
+    en: "HH:mm",
+    tz: "HH:mm",
 };
 export const TIME_FORMAT_DAYJS = {
-    ko: "HH:mm:ss",
-    en: "HH:mm:ss",
-    tz: "HH:mm:ss",
+    ko: "HH:mm",
+    en: "HH:mm",
+    tz: "HH:mm",
 };
 
 export const DATETIME_FORMAT_INPUT = {

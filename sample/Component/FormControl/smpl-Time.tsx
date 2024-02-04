@@ -1,148 +1,1105 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Page, Group, FormControl } from "@/comn/components";
+import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
 import Prism from "prismjs";
+import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 
 export const SampleFormControlTime = () => {
-    React.useEffect(() => {
-        Prism.highlightAll();
-    }, []);
+    const { openPopup } = usePopup();
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            time1: {
+                label: "time1",
+                type: "time",
+                controlSize: 10,
+                required: true,
+            },
+            time2: {
+                label: "time2",
+                type: "time",
+                controlSize: 10,
+            },
+            text: {
+                label: "text",
+                type: "text",
+                controlSize: 10,
+            },
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: { time1: comnUtils.getDate(), time2: comnUtils.getDate() },
+    });
+
     return (
-        <Sample title="Time">
-            <Sample.Section
-                title={`<FormControl type="time" />`}
-                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
-            >
-                <Sample.Table
-                    data={[
-                        ["Properties", "Type", "Default", "Description"],
-                        [
-                            "type",
-                            "string",
-                            "text",
+        <Sample
+            title="Form Control - Time"
+            description={<>폼에서 사용하는 Text 컴포넌트(&lt;input type="time" /&gt;에 대한 사용방법</>}
+        >
+            <Sample.Section title="1. 컴포넌트 사용방법(기본)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="1.1 Size(size) "
+                        description={
                             <>
-                                {" "}
-                                text, <br /> number, password, select, radio, checkbox, textarea, datetime , file,
-                                daterange, timerange, code
-                            </>,
-                        ],
-                        ["value?", "any", "", <>시간 필드(time field)에 나타나는 초깃값을 설정</>],
-                        ["name?", "string", "", <>시간 필드(time field)의 name값 설정</>],
-                        ["rightText?", "string", "", <>시간 필드(time field) 오른쪽의 텍스트 배치</>],
-                        [
-                            "leftButton?",
-                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
-                            "",
-                            <>시간 필드(time field) 왼쪽의 버튼 배치</>,
-                        ],
-                        [
-                            "rightButton?",
-                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
-                            "",
-                            <>시간 필드(time field) 오른쪽의 버튼 배치</>,
-                        ],
-                        ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
-                        ["onBlur?", "void", "", <>포커스 된 시간 필드(time field)의 포커스가 사라졌을 때 호출</>],
-                        ["disabled?", "boolean", "", <>시간 필드(time field)의 요소가 비활성화됨을 명시</>],
-                        ["readOnly?", "boolean", "", <>요소의 시간 필드(time field)가 읽기 전용임을 명시</>],
-                        [
-                            "invalid?",
-                            "any",
-                            "",
-                            <>시간 필드(time field) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,
-                        ],
-                        ["size?", "number", "", <>시간 필드(time field)의 너비를 문자수(in characters) 단위로 명시</>],
-                        ["defaultValue?", "any", "", <>시간 필드(time field)의 기본값을 설정</>],
-                        ["onFocus?", "void", "", <>시간 필드(time field)의 포커스를 받은 경우 호출</>],
-                        ["message?", "string", "", <>시간 필드(time field) 하단의 알림 메세지 설정</>],
-                    ]}
-                />
+                                - Form Control 사이즈 조절
+                                <br />- size : 1 ~ 12 | "fit" | "full"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="time" type="time" value={"12:00"} size={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={"12:00"}
+                                            size={1}
+                                            controlSize={10}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={"12:00"}
+                                            size={4}
+                                            controlSize={10}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="time" type="time" value={"12:00"} size={8} />
+                                        <Group.Control label="time" type="time" value={"12:00"} size={12} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="time" type="time" value={"12:00"} size={"fit"} />
+                                        <Group.Control label="time" type="time" value={"12:00"} size={"full"} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" value={new Date("2024-01-03T03:24:00")} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" value={new Date("2024-01-03T03:24:00")} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" value={"12:00"} size={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={"12:00"}
+                            size={1}
+                            controlSize={10}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={"12:00"}
+                            size={4}
+                            controlSize={10}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" value={"12:00"} size={8} />
+                        <Group.Control label="time" type="time" value={"12:00"} size={12} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" value={"12:00"} size={"fit"} />
+                        <Group.Control label="time" type="time" value={"12:00"} size={"full"} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{` <FormControl type="time" name={'Time field'}/>`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" name={"Time field"} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.2 Label Size(labelSize) "
+                        description={
+                            <>
+                                - 라벨 영역의 사이즈 조절 (default : 2)
+                                <br />- labelSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            labelSize={1}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            labelSize={2}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            labelSize={4}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            labelSize={8}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" rightText={'Time field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" rightText={"Time field"} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            labelSize={1}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            labelSize={2}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            labelSize={4}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            labelSize={8}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="time" leftButton={{ icon: 'search'}} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" leftButton={{ icon: "search" }} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.3 Control Size(controlSize) "
+                        description={
+                            <>
+                                - Form Comtrol 영역의 사이즈 조절 (default : 4)
+                                <br />- controlSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            controlSize={1}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            controlSize={2}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            controlSize={4}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            controlSize={8}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" rightButton={{ icon: 'search'}} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" rightButton={{ icon: "search" }} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            controlSize={1}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            controlSize={2}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            controlSize={4}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            controlSize={8}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="time" onChange={(event) => { alert(event.target.value)}} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="time"
-                        onChange={(event) => {
-                            alert(event.target.value);
-                        }}
-                    />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
 
-                <Sample.Code>{`<FormControl type="time" onBlur={() => { alert('Time field')}} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="time"
-                        onBlur={() => {
-                            alert("Time field");
-                        }}
-                    />
-                </Page>
+                    <Sample.Section
+                        title="1.4 Place Holder(placeholder) "
+                        description={
+                            <>
+                                - input time 의 Place Holder 를 설정
+                                <br />- string
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="time" type="time" placeholder="insert time" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" disabled={true} value={new Date("2024-01-03T03:24:00")} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" disabled={true} value={new Date("2024-01-03T03:24:00")} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" placeholder="insert time" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="time" readOnly={true} value={new Date("2024-01-03T03:24:00")} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" readOnly={true} value={new Date("2024-01-03T03:24:00")} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.5 Value(value) "
+                        description={
+                            <>
+                                - input time 의 value 를 설정
+                                <br />- string (HH:mm) | Date
+                                <br />
+                                {`- comnUtils.getDate({ h : 시간 offset , mi : 분 offset}) 사용`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate({ h: -1, mi: 10 })}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="time" type="time" value={comnUtils.getDate()} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" invalid={{message:"invalid"}}/>`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" invalid={{ message: "invalid" }} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate({ h: -1, mi: 10 })}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" value={comnUtils.getDate()} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="time" size={5} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" size={5} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.6 Read Only(readOnly) "
+                        description={
+                            <>
+                                - input time 의 읽기전용 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            readOnly={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            readOnly={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" defaultValue={'Time field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" defaultValue={new Date("2024-01-03")} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            readOnly={true}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            readOnly={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="time" onFocus={() => { console.log('Time field')}} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="time"
-                        onFocus={() => {
-                            console.log("Time field");
-                        }}
-                    />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.7 Disabled (disabled) "
+                        description={
+                            <>
+                                - input time 의 사용가능 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            disabled={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            disabled={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="time" message={'error!!!'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="time" message={"error!!!"} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            disabled={true}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            disabled={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.8 Required (required) "
+                        description={
+                            <>
+                                - input time 의 필수 여부를 설정 ( default : false )
+                                <br />- 라벨 영역에 빨간색 * 표시
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            required={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            required={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            required={true}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            required={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.9 Message (message) "
+                        description={
+                            <>
+                                - input time 하단에 message 를 표시
+                                <br />- "string"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            message="Message를 표시 합니다."
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            message="message를 표시 합니다."
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.10 Edit (edit) "
+                        description={
+                            <>
+                                - input time 의 상세 조회 상태를 표시( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            edit={false}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            edit={true}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" value={comnUtils.getDate()} edit={false} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="time" type="time" value={comnUtils.getDate()} edit={true} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="2. 컴포넌트 사용방법(추가)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="2.1 Left Button(leftButton)"
+                        description={
+                            <>
+                                - input time 의 왼쪽에 버튼 추가 기능
+                                <br />
+                                {`- leftButton={ icon , onClick}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            leftButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    alert("left button Click");
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            leftButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    alert("left button Click");
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.2 Right Button(rightButton)"
+                        description={
+                            <>
+                                - input time 의 오른쪽에 버튼 추가 기능
+                                <br />
+                                {`- rightButton={ icon , onClick}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            rightButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    alert("right button Click");
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            rightButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    alert("right button Click");
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="3. 컴포넌트 사용방법(이벤트)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="3.1 Change Event(onChange)"
+                        description={
+                            <>
+                                - input time 의 Change Event Handler
+                                <br />
+                                - input time 의 value 를 parameter로 전달
+                                <br />
+                                {`- onChange={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            onChange={(value) => {
+                                                // ( a , b )
+                                                // -1 : a > b
+                                                // 1 : a < b
+                                                // 0 : a === b
+                                                console.log(comnUtils.compareTime(comnUtils.getDate(), value));
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            onChange={(value) => {
+                                // ( a , b )
+                                // -1 : a > b
+                                // 1 : a < b
+                                // 0 : a === b
+                                console.log(comnUtils.compareTime(comnUtils.getDate(), value));
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+
+                    <Sample.Section
+                        title="3.2 Blur Event(onBlur)"
+                        description={
+                            <>
+                                - input time 의 Blur Event Handler
+                                <br />
+                                - input time 의 blur event 를 parameter로 전달
+                                <br />
+                                {`- onBlur={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="time"
+                                            type="time"
+                                            value={comnUtils.getDate()}
+                                            onBlur={(e) => {
+                                                console.log(e.target.value);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="time"
+                            type="time"
+                            value={comnUtils.getDate()}
+                            onBlur={(e) => {
+                                console.log(e.target.value);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="4. 컴포넌트 사용방법(스키마사용)">
+                <Layout direction="col">
+                    <Sample.Section title="4.1 스키마를 이용한 컴포넌트 사용 예시">
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.time1}
+                                            value={comnUtils.getDate()}
+                                            onChange={(value) => {
+                                                let time1 = form.getValue("time1");
+                                                let time2 = form.getValue("time2");
+                                                let result = comnUtils.compareTime(time1, time2);
+                                                if (result === -1) {
+                                                    form.setValue("text", "time1 이 time2 보다 큼");
+                                                } else if (result === 1) {
+                                                    form.setValue("text", "time2 이 time1 보다 큼");
+                                                } else {
+                                                    form.setValue("text", "time1 과 time2 가 동일");
+                                                }
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.time2}
+                                            value={comnUtils.getDate()}
+                                            onChange={(value) => {
+                                                let time1 = form.getValue("time1");
+                                                let time2 = form.getValue("time2");
+                                                let result = comnUtils.compareTime(time1, time2);
+                                                if (result === -1) {
+                                                    form.setValue("text", "time1 이 time2 보다 큼");
+                                                } else if (result === 1) {
+                                                    form.setValue("text", "time2 이 time1 보다 큼");
+                                                } else {
+                                                    form.setValue("text", "time1 과 time2 가 동일");
+                                                }
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.text} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            time1: {
+                label: "time1",
+                type: "time",
+                controlSize: 10,
+                required: true,
+            },
+            time2: {
+                label: "time2",
+                type: "time",
+                controlSize: 10,
+            },
+            text: {
+                label: "text",
+                type: "text",
+                controlSize: 10,
+            },
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: { time1: comnUtils.getDate(), time2: comnUtils.getDate() },
+    });
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.time1}
+                            value={comnUtils.getDate()}
+                            onChange={(value) => {
+                                let time1 = form.getValue("time1");
+                                let time2 = form.getValue("time2");
+                                let result = comnUtils.compareTime(time1, time2);
+                                if (result === -1) {
+                                    form.setValue("text", "time1 이 time2 보다 큼");
+                                } else if (result === 1) {
+                                    form.setValue("text", "time2 이 time1 보다 큼");
+                                } else {
+                                    form.setValue("text", "time1 과 time2 가 동일");
+                                }
+                            }}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.time2}
+                            value={comnUtils.getDate()}
+                            onChange={(value) => {
+                                let time1 = form.getValue("time1");
+                                let time2 = form.getValue("time2");
+                                let result = comnUtils.compareTime(time1, time2);
+                                if (result === -1) {
+                                    form.setValue("text", "time1 이 time2 보다 큼");
+                                } else if (result === 1) {
+                                    form.setValue("text", "time2 이 time1 보다 큼");
+                                } else {
+                                    form.setValue("text", "time1 과 time2 가 동일");
+                                }
+                            }}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.text} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
             </Sample.Section>
         </Sample>
     );

@@ -894,7 +894,7 @@ const Sample = () => {
                                 <br />
                                 - 특정 영어 소문자 : /[a,d,y]/
                                 <br />
-                                - 특정 숫자 : /[a,d,y]/
+                                - 특정 숫자 : /[1,5,3]/
                                 <br />
                                 - 고정 문자 : "문자" ( - , _ 등)
                                 <br />
@@ -939,7 +939,7 @@ const Sample = () => {
                                         <Group.Control
                                             label="text"
                                             type="text"
-                                            placeholder="[A-Z][A-C]-[a-z][a-c]-[0-5]"
+                                            placeholder="[A-Z][A-C]-[a-z][a-c]-[A,D,F]"
                                             mask={[/[A-Z]/, /[A-C]/, "-", /[a-z]/, /[a-c]/, "-", /[A,D,F]/]}
                                         />
                                     </Group.Row>
@@ -989,7 +989,7 @@ const Sample = () => {
                         <Group.Control
                             label="text"
                             type="text"
-                            placeholder="[A-Z][A-C]-[a-z][a-c]-[0-5]"
+                            placeholder="[A-Z][A-C]-[a-z][a-c]-[A,D,F]"
                             mask={[/[A-Z]/, /[A-C]/, "-", /[a-z]/, /[a-c]/, "-", /[0-5]/]}
                             exact={false}
                         />

@@ -16,6 +16,7 @@ export type InputTimeProps = {
     readOnly?: boolean;
     disabled?: boolean;
     defaultValue?: any;
+    placeholder?: any;
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
 };
@@ -31,6 +32,7 @@ export const InputTime = (props: InputTimeProps) => {
         readOnly,
         disabled,
         defaultValue,
+        placeholder,
         onBlur,
         onChange,
     } = props;
@@ -83,6 +85,7 @@ export const InputTime = (props: InputTimeProps) => {
                         className="input pl-5"
                         portalId="root"
                         popperProps={{ strategy: "fixed" }}
+                        placeholderText={placeholder}
                     />
                 </div>
             </div>

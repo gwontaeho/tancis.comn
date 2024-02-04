@@ -59,7 +59,7 @@ export const SampleFormControlRadio = () => {
     return (
         <Sample
             title="Form Control - Radio"
-            description={<>폼에서 사용하는 Select 컴포넌트(&lt;input type="radio" /&gt;에 대한 사용방법</>}
+            description={<>폼에서 사용하는 Input Radio 컴포넌트(&lt;input type="radio" /&gt;에 대한 사용방법</>}
         >
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">
                 <Layout direction="col">
