@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { Upload } from "tus-js-client";
-import { IconButton } from "@/comn/components";
+import { Icon, IconButton } from "@/comn/components";
 import { ControllerWrapper } from "@/comn/components/_";
 
 type InputFileProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -139,6 +139,7 @@ const InputFileMain = React.forwardRef<HTMLInputElement, InputFileProps>(
                     <div className="input">
                         {available.length > 1 ? `파일 ${available.length}개` : available[0]?.file.name}
                     </div>
+                    <Icon icon="fileSearch" size="xs" className="absolute right-1 top-1/2 -translate-y-1/2 z-10" />
                     <input onChange={onChange} hidden multiple={props.multiple} type="file" />
                 </label>
                 {available.length > 1 && (
