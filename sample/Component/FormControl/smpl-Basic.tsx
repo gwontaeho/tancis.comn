@@ -196,10 +196,10 @@ const Sample = () => {
                             title="1.2 <Group.Control />"
                             description={
                                 <>
-                                    - 라벨과 같이 사용 가능
+                                    - 라벨과 같이 사용 가능(label이 없을시 Form Control만 표시)
                                     <br />
-                                    - 라벨, 폼컨트롤 사이즈 조절 가능
-                                    <br />- 라벨 지정가능
+                                    - 라벨, 폼컨트롤 사이즈 조절 가능(labelSize , controlSize)
+                                    <br />- 라벨 지정가능(label)
                                 </>
                             }
                         >

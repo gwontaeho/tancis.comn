@@ -4,6 +4,7 @@ import { useController, Control } from "react-hook-form";
 export type ControllerWrapperProps = {
     children: React.ReactElement;
     onChange?: any;
+    onBlur?: any;
     control?: Control;
     name?: string;
     rules?: any;
@@ -11,7 +12,7 @@ export type ControllerWrapperProps = {
 };
 
 export const ControllerWrapper = (props: ControllerWrapperProps) => {
-    const { children, control, name, rules, onChange, defaultValue, ...rest } = props;
+    const { children, control, name, rules, onChange, onBlur, defaultValue, ...rest } = props;
 
     const { field } = useController({
         name: name as string,
@@ -24,6 +25,11 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
                 if (!onChange) return;
                 if (!event.target) return;
                 onChange(event.target.value);
+            },
+            onBlur: (event) => {
+                if (!onBlur) return;
+                if (!event.target) return;
+                onBlur(event.target);
             },
         },
     });

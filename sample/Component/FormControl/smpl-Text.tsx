@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { Sample } from "@/comn/components/_";
 import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
 import Prism from "prismjs";
-import { useForm, TFormSchema, useResource } from "@/comn/hooks";
+import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
-import { comnUtils } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 
 export const SampleFormControlText = () => {
+    const { openPopup } = usePopup();
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
-            { area: "wrhsCd" },
         ],
     });
 
@@ -26,86 +26,66 @@ export const SampleFormControlText = () => {
     const SG_FORM: TFormSchema = {
         id: "form",
         schema: {
-            text: { label: "text", type: "text", controlSize: 10, size: 6, required: true },
-            number: { label: "number", type: "number", thousandSeparator: true, decimalScale: 3, required: true },
-            password: { label: "password", type: "password" },
-            textarea: { label: "textarea", type: "textarea", controlSize: 10 },
-            select: { label: "select", type: "select", options: code, required: true },
-            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "COM_0100", controlSize: 10 },
-            checkbox: {
-                label: "checkbox",
-                type: "checkbox",
-                area: "comnCd",
-                comnCd: "COM_0100",
+            text1: {
+                label: "text1",
+                type: "text",
                 controlSize: 10,
-                all: true,
-            },
-            date: { label: "date", type: "date", controlSize: 2, required: true },
-            time: { label: "time", type: "time", controlSize: 2 },
-            datetime: { label: "datetime", type: "datetime", controlSize: 2 },
-            daterange: {
-                label: "daterange",
-                type: "daterange",
-                start: { name: "startDt" },
-                end: { name: "endDt" },
-                rangeButton: 0,
-                controlSize: 10,
-            },
-            timerange: { label: "timerange", type: "timerange", start: { name: "startTm" }, end: { name: "endTm" } },
-            code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100", maxLength: 3 },
-            file: { label: "file", type: "file", labelSize: 6 },
-        },
-    };
-
-    const SG_FORM_AFTER: TFormSchema = {
-        id: "form",
-        schema: {
-            text: { label: "text 2", type: "text", required: true, readOnly: true },
-            number: { label: "number 2", type: "number", required: true, thousandSeparator: false, decimalScale: 2 },
-            password: { label: "password 2", type: "text", required: true },
-            textarea: { label: "textarea 2", type: "textarea", required: true, rows: 10 },
-            select: { label: "select 2", type: "select", required: true },
-            radio: {
-                label: "radio 2",
-                type: "radio",
-                area: "comnCd",
-                comnCd: "CAG_0006",
-                controlSize: 10,
+                size: 6,
                 required: true,
+                placeholder: "0000000-0000-0-000000",
+                mask: [
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    "-",
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    "-",
+                    /\d/,
+                    "-",
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                ],
             },
-            checkbox: {
-                label: "checkbox 2",
-                type: "checkbox",
-                area: "comnCd",
-                comnCd: "CAG_0006",
-                required: true,
+            text2: {
+                label: "text2",
+                maxlemgth: 30,
+                leftButton: {
+                    icon: "search",
+                    onClick: () => {
+                        console.log("click");
+                    },
+                },
             },
-            date: { label: "date 2", type: "date", controlSize: 2, required: true },
-            time: { label: "time 2", type: "time", controlSize: 2, required: true },
-            datetime: { label: "datetime", type: "datetime", controlSize: 2 },
-            daterange: {
-                label: "daterange 2",
-                type: "daterange",
-                start: { name: "startDt" },
-                end: { name: "endDt" },
-                rangeButton: 0,
-                controlSize: 10,
+            text3: {
+                label: "text3",
+                rightButton: {
+                    icon: "search",
+                    onClick: () => {
+                        console.log("click");
+                    },
+                },
             },
-            timerange: {
-                label: "timerange 2",
-                type: "timerange",
-                start: { name: "startTm" },
-                end: { name: "endTm" },
-                required: true,
+            text4: {
+                label: "text4",
             },
-            code: { label: "code 2", type: "code", area: "comnCd", comnCd: "CAG_0006", maxLength: 3, required: true },
-            file: { label: "file 2", type: "file", labelSize: 6, required: true },
         },
     };
 
     const form = useForm({
         defaultSchema: SG_FORM,
-        defaultValues: { text: "text", number: 9999.999, code: "A01", chechbox: ["A02"], startDt: comnUtils.getDate() },
+        defaultValues: {},
     });
 
     return (
@@ -115,19 +95,17 @@ export const SampleFormControlText = () => {
         >
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">
                 <Layout direction="col">
-                    <Sample.Section title="1.1 <FormControl />" description={<>- 사이즈 조절</>}>
+                    <Sample.Section
+                        title="1.1 Size(size) "
+                        description={
+                            <>
+                                - Form Control 사이즈 조절
+                                <br />- size : 1 ~ 12 | "fit" | "full"
+                            </>
+                        }
+                    >
                         <Group>
                             <Group.Body>
-                                <Group.Section>
-                                    <Layout direction="col">
-                                        <FormControl type="text" value={"size 1"} size={1} />
-                                        <FormControl type="text" value={"size 4"} size={4} />
-                                        <FormControl type="text" value={"size 8"} size={8} />
-                                        <FormControl type="text" value={"size 12"} size={12} />
-                                        <FormControl type="text" value={"size fit"} size="fit" />
-                                        <FormControl type="text" value={"size full"} size="full" />
-                                    </Layout>
-                                </Group.Section>
                                 <Group.Section>
                                     <Group.Row>
                                         <Group.Control label="text" type="text" value={"size 1"} size={1} />
@@ -167,17 +145,7 @@ const Sample = () => {
 
     return (
         <Group>
-            <Group.Body>
-                <Group.Section>
-                    <Layout direction="col">
-                        <FormControl type="text" value={"size 1"} size={1} />
-                        <FormControl type="text" value={"size 4"} size={4} />
-                        <FormControl type="text" value={"size 8"} size={8} />
-                        <FormControl type="text" value={"size 12"} size={12} />
-                        <FormControl type="text" value={"size fit"} size="fit" />
-                        <FormControl type="text" value={"size full"} size="full" />
-                    </Layout>
-                </Group.Section>
+            <Group.Body>               
                 <Group.Section>
                     <Group.Row>
                         <Group.Control label="text" type="text" value={"size 1"} size={1} />
@@ -217,703 +185,12 @@ const Sample = () => {
 `}</Sample.Code>
                         </Sample.Section>
                     </Sample.Section>
-
-                    <Layout direction="col">
-                        <Sample.Section
-                            title="1.2 <Group.Control />"
-                            description={
-                                <>
-                                    - 라벨과 같이 사용 가능
-                                    <br />
-                                    - 라벨, 폼컨트롤 사이즈 조절 가능
-                                    <br />- 라벨 지정가능
-                                </>
-                            }
-                        >
-                            <Group>
-                                <Group.Body>
-                                    <Group.Section>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="text"
-                                                type="text"
-                                                value={"text"}
-                                                controlSize={10}
-                                                size={6}
-                                                required={true}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="number"
-                                                type="number"
-                                                value={"9999.999"}
-                                                thousandSeparator={true}
-                                                decimalScale={3}
-                                                required={true}
-                                            />
-                                            <Group.Control label="password" type="password" value={"password"} />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="textarea"
-                                                type="textarea"
-                                                value={"textarea"}
-                                                controlSize={10}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="select"
-                                                type="select"
-                                                options={code}
-                                                controlSize={10}
-                                                required={true}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control label="radio" type="radio" options={code} controlSize={10} />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="checkbox"
-                                                type="checkbox"
-                                                options={code}
-                                                all={true}
-                                                controlSize={10}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="date"
-                                                type="date"
-                                                value={comnUtils.getDate()}
-                                                controlSize={2}
-                                                required={true}
-                                            />
-                                            <Group.Control
-                                                label="time"
-                                                type="time"
-                                                value={comnUtils.getDate()}
-                                                controlSize={2}
-                                            />
-                                            <Group.Control
-                                                label="datetime"
-                                                type="datetime"
-                                                value={comnUtils.getDate()}
-                                                controlSize={2}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control label="daterange" type="daterange" controlSize={10} />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="timerange"
-                                                type="timerange"
-                                                controlSize={10}
-                                                size={9}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="code"
-                                                type="code"
-                                                area="comnCd"
-                                                comnCd="COM_0100"
-                                                value="A01"
-                                                maxLength={3}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control labelSize={6} label="file" type="file" />
-                                        </Group.Row>
-                                    </Group.Section>
-                                </Group.Body>
-                            </Group>
-                            <Sample.Section title="Source Code">
-                                <Sample.Code>{`
-const Sample = () => {
-    useResource({
-        defaultSchema: [{ area: "comnCd", comnCd: "COM_0100" }],
-    });
-
-    const code = [
-        { label: "Y", value: "Y" },
-        { label: "N", value: "N" },
-    ];
-    return (
-        <Group>
-            <Group.Body>
-                <Group.Section>
-                    <Group.Row>
-                        <Group.Control
-                            label="text"
-                            type="text"
-                            value={"text"}
-                            controlSize={10}
-                            size={6}
-                            required={true}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="number"
-                            type="number"
-                            value={"9999.999"}
-                            thousandSeparator={true}
-                            decimalScale={3}
-                            required={true}
-                        />
-                        <Group.Control label="password" type="password" value={"password"} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="textarea"
-                            type="textarea"
-                            value={"textarea"}
-                            controlSize={10}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="select"
-                            type="select"
-                            options={code}
-                            controlSize={10}
-                            required={true}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="radio" type="radio" options={code} controlSize={10} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="checkbox"
-                            type="checkbox"
-                            options={code}
-                            all={true}
-                            controlSize={10}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="date"
-                            type="date"
-                            value={comnUtils.getDate()}
-                            controlSize={2}
-                            required={true}
-                        />
-                        <Group.Control
-                            label="time"
-                            type="time"
-                            value={comnUtils.getDate()}
-                            controlSize={2}
-                        />
-                        <Group.Control
-                            label="datetime"
-                            type="datetime"
-                            value={comnUtils.getDate()}
-                            controlSize={2}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="daterange" type="daterange" controlSize={10} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="timerange"
-                            type="timerange"
-                            controlSize={10}
-                            size={9}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="code"
-                            type="code"
-                            area="comnCd"
-                            comnCd="COM_0100"
-                            value="A01"
-                            maxLength={3}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control labelSize={6} label="file" type="file" />
-                    </Group.Row>
-                </Group.Section>
-            </Group.Body>
-        </Group>
-    );
-};
-
-`}</Sample.Code>
-                            </Sample.Section>
-                        </Sample.Section>
-                    </Layout>
-                </Layout>
-            </Sample.Section>
-            <Sample.Section title="2. 컴포넌트 사용방법(기본+제어)">
-                <Layout direction="col">
                     <Sample.Section
-                        title="2.1 <FormControl /> + state"
-                        description={<>- FormControl 을 state 를 통한 제어</>}
-                    >
-                        <Group>
-                            <Group.Body>
-                                <FormControl type="text" value={state.text} size={5} />
-                                <FormControl
-                                    type="number"
-                                    value={state.number}
-                                    thousandSeparator={true}
-                                    decimalScale={3}
-                                />
-                                <FormControl type="password" value={state.password} size={6} />
-                                <FormControl type="textarea" value={state.textarea} />
-                                <FormControl type="select" options={code} value={state.select} />
-                                <FormControl type="radio" options={code} value={state.radio} />
-                                <FormControl type="checkbox" options={code} all={true} value={state.checkbox} />
-                                <FormControl type="date" value={state.date} />
-                                <FormControl type="time" value={state.time} />
-                                <FormControl type="datetime" value={state.datetime} />
-                                <FormControl type="daterange" />
-                                <FormControl type="timerange" />
-                                <FormControl
-                                    type="code"
-                                    area="comnCd"
-                                    comnCd="COM_0100"
-                                    value={state.code}
-                                    size={4}
-                                    maxLength={3}
-                                />
-                                <FormControl type="file" />
-                            </Group.Body>
-                            <Group.Footer>
-                                <Layout>
-                                    <Layout.Left>
-                                        <Button
-                                            onClick={() => {
-                                                setState({
-                                                    text: "text",
-                                                    number: 9999.999,
-                                                    password: "password",
-                                                    textarea: "textarea",
-                                                    select: "Y",
-                                                    radio: "Y",
-                                                    checkbox: ["Y", "N"],
-                                                    date: comnUtils.getDate(),
-                                                    time: comnUtils.getDate(),
-                                                    datetime: comnUtils.getDate(),
-                                                    code: "A01",
-                                                });
-                                            }}
-                                        >
-                                            값 세팅
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                setState({});
-                                            }}
-                                        >
-                                            값 초기화
-                                        </Button>
-                                    </Layout.Left>
-                                </Layout>
-                            </Group.Footer>
-                        </Group>
-                        <Sample.Section title="Source Code">
-                            <Sample.Code>{`
-const Sample = () => {
-
-    const [state, setState] = useState<any | {}>({});
-    useResource({
-        defaultSchema: [{ area: "comnCd", comnCd: "COM_0100" }],
-    });
-
-    const code = [
-        { label: "Y", value: "Y" },
-        { label: "N", value: "N" },
-    ];
-    return (
-        <Group>
-            <Group.Body>
-                <FormControl type="text" value={state.text} size={5} />
-                <FormControl
-                    type="number"
-                    value={state.number}
-                    thousandSeparator={true}
-                    decimalScale={3}
-                />
-                <FormControl type="password" value={state.password} size={6} />
-                <FormControl type="textarea" value={state.textarea} />
-                <FormControl type="select" options={code} value={state.select} />
-                <FormControl type="radio" options={code} value={state.radio} />
-                <FormControl type="checkbox" options={code} all={true} value={state.checkbox} />
-                <FormControl type="date" value={state.date} />
-                <FormControl type="time" value={state.time} />
-                <FormControl type="datetime" value={state.datetime} />
-                <FormControl type="daterange" />
-                <FormControl type="timerange" />
-                <FormControl type="code" area="comnCd" comnCd="COM_0100" value={state.code} size={4} maxLength={3} />
-                <FormControl type="file" />
-            </Group.Body>
-            <Group.Footer>
-                <Layout>
-                    <Layout.Left>
-                        <Button
-                            onClick={() => {
-                                setState({
-                                    text: "text",
-                                    number: 9999.999,
-                                    password: "password",
-                                    textarea: "textarea",
-                                    select: "Y",
-                                    radio: "Y",
-                                    checkbox: ["Y", "N"],
-                                    date: comnUtils.getDate(),
-                                    time: comnUtils.getDate(),
-                                    datetime: comnUtils.getDate(),
-                                    code: "A01",
-                                });
-                            }}
-                        >
-                            값 세팅
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setState({});
-                            }}
-                        >
-                            값 초기화
-                        </Button>
-                    </Layout.Left>
-                </Layout>
-            </Group.Footer>
-        </Group>
-    );
-};
-
-`}</Sample.Code>
-                        </Sample.Section>
-                    </Sample.Section>
-
-                    <Layout direction="col">
-                        <Sample.Section
-                            title="2.2 <Group.Control /> + state"
-                            description={<>- Group.Control 을 state 로 제어</>}
-                        >
-                            <Group>
-                                <Group.Body>
-                                    <Group.Section>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="text"
-                                                type="text"
-                                                value={state.text}
-                                                controlSize={10}
-                                                size={6}
-                                                required={true}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="number"
-                                                type="number"
-                                                value={state.number}
-                                                thousandSeparator={true}
-                                                decimalScale={3}
-                                                required={true}
-                                            />
-                                            <Group.Control label="password" type="password" value={state.password} />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="textarea"
-                                                type="textarea"
-                                                value={state.textarea}
-                                                controlSize={10}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="select"
-                                                value={state.select}
-                                                options={code}
-                                                controlSize={10}
-                                                required={true}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="radio"
-                                                type="radio"
-                                                options={code}
-                                                controlSize={10}
-                                                value={state.radio}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="checkbox"
-                                                type="checkbox"
-                                                options={code}
-                                                all={true}
-                                                controlSize={10}
-                                                value={state.checkbox}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="date"
-                                                type="date"
-                                                value={state.date}
-                                                controlSize={2}
-                                                required={true}
-                                            />
-                                            <Group.Control
-                                                label="time"
-                                                type="time"
-                                                value={state.time}
-                                                controlSize={2}
-                                            />
-                                            <Group.Control
-                                                label="datetime"
-                                                type="datetime"
-                                                value={state.datetime}
-                                                controlSize={2}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control label="daterange" type="daterange" controlSize={10} />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="timerange"
-                                                type="timerange"
-                                                controlSize={10}
-                                                size={9}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control
-                                                label="code"
-                                                type="code"
-                                                area="comnCd"
-                                                comnCd="COM_0100"
-                                                value={state.code}
-                                                maxLength={3}
-                                            />
-                                        </Group.Row>
-                                        <Group.Row>
-                                            <Group.Control labelSize={6} label="file" type="file" />
-                                        </Group.Row>
-                                    </Group.Section>
-                                </Group.Body>
-                                <Group.Footer>
-                                    <Layout>
-                                        <Layout.Left>
-                                            <Button
-                                                onClick={() => {
-                                                    setState({
-                                                        text: "text",
-                                                        number: 9999.999,
-                                                        password: "password",
-                                                        textarea: "textarea",
-                                                        select: "Y",
-                                                        radio: "Y",
-                                                        checkbox: ["Y", "N"],
-                                                        date: comnUtils.getDate(),
-                                                        time: comnUtils.getDate(),
-                                                        datetime: comnUtils.getDate(),
-                                                        code: "A01",
-                                                    });
-                                                }}
-                                            >
-                                                값 세팅
-                                            </Button>
-                                            <Button
-                                                onClick={() => {
-                                                    setState({});
-                                                }}
-                                            >
-                                                값 초기화
-                                            </Button>
-                                        </Layout.Left>
-                                    </Layout>
-                                </Group.Footer>
-                            </Group>
-                            <Sample.Section title="Source Code">
-                                <Sample.Code>{`
-const Sample = () => {
-    const [state, setState] = useState<any | {}>({});
-    useResource({
-        defaultSchema: [{ area: "comnCd", comnCd: "COM_0100" }],
-    });
-
-    const code = [
-        { label: "Y", value: "Y" },
-        { label: "N", value: "N" },
-    ];
-    return (
-        <Group>
-            <Group.Body>
-                <Group.Section>
-                    <Group.Row>
-                        <Group.Control
-                            label="text"
-                            type="text"
-                            value={state.text}
-                            controlSize={10}
-                            size={6}
-                            required={true}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="number"
-                            type="number"
-                            value={state.number}
-                            thousandSeparator={true}
-                            decimalScale={3}
-                            required={true}
-                        />
-                        <Group.Control label="password" type="password" value={state.password} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="textarea"
-                            type="textarea"
-                            value={state.textarea}
-                            controlSize={10}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="select"
-                            value={state.select}
-                            options={code}
-                            controlSize={10}
-                            required={true}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="radio"
-                            type="radio"
-                            options={code}
-                            controlSize={10}
-                            value={state.radio}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="checkbox"
-                            type="checkbox"
-                            options={code}
-                            all={true}
-                            controlSize={10}
-                            value={state.checkbox}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="date"
-                            type="date"
-                            value={state.date}
-                            controlSize={2}
-                            required={true}
-                        />
-                        <Group.Control
-                            label="time"
-                            type="time"
-                            value={state.time}
-                            controlSize={2}
-                        />
-                        <Group.Control
-                            label="datetime"
-                            type="datetime"
-                            value={state.datetime}
-                            controlSize={2}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="daterange" type="daterange" controlSize={10} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="timerange"
-                            type="timerange"
-                            controlSize={10}
-                            size={9}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="code"
-                            type="code"
-                            area="comnCd"
-                            comnCd="COM_0100"
-                            value={state.code}
-                            maxLength={3}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control labelSize={6} label="file" type="file" />
-                    </Group.Row>
-                </Group.Section>
-            </Group.Body>
-            <Group.Footer>
-                <Layout>
-                    <Layout.Left>
-                        <Button
-                            onClick={() => {
-                                setState({
-                                    text: "text",
-                                    number: 9999.999,
-                                    password: "password",
-                                    textarea: "textarea",
-                                    select: "Y",
-                                    radio: "Y",
-                                    checkbox: ["Y", "N"],
-                                    date: comnUtils.getDate(),
-                                    time: comnUtils.getDate(),
-                                    datetime: comnUtils.getDate(),
-                                    code: "A01",
-                                });
-                            }}
-                        >
-                            값 세팅
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setState({});
-                            }}
-                        >
-                            값 초기화
-                        </Button>
-                    </Layout.Left>
-                </Layout>
-            </Group.Footer>
-        </Group>
-    );
-};
-
-`}</Sample.Code>
-                            </Sample.Section>
-                        </Sample.Section>
-                    </Layout>
-                </Layout>
-            </Sample.Section>
-
-            <Sample.Section title="3. 컴포넌트 사용방법(Schema, useForm 사용)">
-                <Layout direction="col">
-                    <Sample.Section
-                        title="3.1 <Group.Control /> + Schema + useForm(Hook)"
+                        title="1.2 Label Size(labelSize) "
                         description={
                             <>
-                                - Form Schema 를 정의 하고 컴포넌트에 주입
-                                <br />- FormControl(Group.Control) 컴포넌트에 Schema 주입
-                                <br />- useForm을 이용한 Form Component 제어(값변경, Schema 변경)
+                                - 라벨 영역의 사이즈 조절 (default : 2)
+                                <br />- labelSize : 1 ~ 12
                             </>
                         }
                     >
@@ -921,228 +198,1087 @@ const Sample = () => {
                             <Group.Body>
                                 <Group.Section>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.text} />
+                                        <Group.Control label="text" type="text" value={"size 1"} labelSize={1} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.number} />
-                                        <Group.Control {...form.schema.password} />
+                                        <Group.Control label="text" type="text" value={"size 2"} labelSize={2} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.textarea} />
+                                        <Group.Control label="text" type="text" value={"size 4"} labelSize={4} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.select} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.radio} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.checkbox} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.date} />
-                                        <Group.Control {...form.schema.time} />
-                                        <Group.Control {...form.schema.datetime} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.daterange} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.timerange} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.code} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control {...form.schema.file} />
+                                        <Group.Control label="text" type="text" value={"size 8"} labelSize={8} />
                                     </Group.Row>
                                 </Group.Section>
                             </Group.Body>
-                            <Group.Footer>
-                                <Layout>
-                                    <Layout.Left>
-                                        <Button
-                                            onClick={() => {
-                                                form.setValues({
-                                                    text: "text",
-                                                    number: 9999.999,
-                                                    password: "password",
-                                                    textarea: "textarea",
-                                                    select: "Y",
-                                                    radio: "A03",
-                                                    checkbox: ["A01", "A02"],
-                                                    date: comnUtils.getDate(),
-                                                    time: comnUtils.getDate(),
-                                                    startDt: comnUtils.getDate(),
-                                                    endDt: comnUtils.getDate(),
-                                                    startTm: comnUtils.getDate(),
-                                                    endTm: comnUtils.getDate(),
-                                                    datetime: comnUtils.getDate(),
-                                                    code: "A01",
-                                                });
-                                            }}
-                                        >
-                                            값 세팅(전체)
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                form.clearValues();
-                                            }}
-                                        >
-                                            값 초기화
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                form.setValue("text", "12345");
-                                            }}
-                                        >
-                                            값 세팅(부분)
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                form.setValues(
-                                                    {
-                                                        text: "text",
-                                                        number: 9999.999,
-                                                        password: "password",
-                                                        textarea: "textarea",
-                                                        select: "N",
-                                                        radio: "A04",
-                                                        code: "A02",
-                                                    },
-                                                    true,
-                                                );
-                                            }}
-                                        >
-                                            값 세팅(부분)
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                form.setSchema("text", { readOnly: true });
-                                            }}
-                                        >
-                                            스키마 변경(부분)
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                form.setSchemaAll(SG_FORM_AFTER);
-                                            }}
-                                        >
-                                            스키마 변경(전체)
-                                        </Button>
-                                    </Layout.Left>
-                                </Layout>
-                            </Group.Footer>
                         </Group>
                         <Sample.Section title="Source Code">
                             <Sample.Code>{`
 const Sample = () => {
 
-    // state 선언
-    const [state, setState] = useState<any | {}>({});
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 1"} labelSize={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 2"} labelSize={2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 4"} labelSize={4} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 8"} labelSize={8} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-    // 코드, Resource 선언
-    useResource({
-        defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
-            { area: "comnCd", comnCd: "CAG_0018" },
-            { area: "comnCd", comnCd: "CAG_0006" },
-            { area: "wrhsCd" },
-        ],
-    });
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.3 Control Size(controlSize) "
+                        description={
+                            <>
+                                - Form Comtrol 영역의 사이즈 조절 (default : 4)
+                                <br />- controlSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"size 1"} controlSize={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"size 2"} controlSize={2} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"size 4"} controlSize={4} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"size 8"} controlSize={8} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-    // 테스트 코드 선언
-    const code = [
-        { label: "Y", value: "Y" },
-        { label: "N", value: "N" },
-    ];
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 1"} controlSize={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 2"} controlSize={2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 4"} controlSize={4} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"size 8"} controlSize={8} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-    // 스키마
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.4 Max Length(maxLength) "
+                        description={
+                            <>
+                                - input text 안의 글자의 최대 길이
+                                <br />- number
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"1"} maxLength={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"5"} maxLength={5} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"10"} maxLength={10} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"1"} maxLength={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"5"} maxLength={5} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"10"} maxLength={10} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.5 Place Holder(placeholder) "
+                        description={
+                            <>
+                                - input text 의 Place Holder 를 설정
+                                <br />- string
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" placeholder="insert text" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" placeholder="insert text" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section title="1.6 Value(value) " description={<>- input text 의 value 를 설정</>}>
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value="text value" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value="text value" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.7 Letter Case(letterCase) "
+                        description={
+                            <>
+                                - input text 의 대소문자 여부를 설정
+                                <br />- "lower" | "upper"{" "}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" letterCase="upper" />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" letterCase="lower" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" letterCase="upper" />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" letterCase="lower" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.8 Read Only(readOnly) "
+                        description={
+                            <>
+                                - input text 의 읽기전용 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value="readonly true" readOnly={true} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value="readonly false"
+                                            readOnly={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value="readonly true" readOnly={true} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value="readonly false"
+                            readOnly={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.8 Disabled (disabled) "
+                        description={
+                            <>
+                                - input text 의 사용가능 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value="disabled true" disabled={true} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value="disabled false"
+                                            disabled={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value="disabled true" disabled={true} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value="disabled false"
+                            disabled={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.9 Required (required) "
+                        description={
+                            <>
+                                - input text 의 필수 여부를 설정 ( default : false )
+                                <br />- 라벨 영역에 빨간색 * 표시
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value="required true" required={true} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value="required false"
+                                            required={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value="required true" required={true} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value="required false"
+                            required={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.10 Message (message) "
+                        description={
+                            <>
+                                - input text 하단에 message 를 표시
+                                <br />- "string"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value=""
+                                            message="Message를 표시 합니다."
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value=""
+                            message="message를 표시 합니다."
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.11 Edit (edit) "
+                        description={
+                            <>
+                                - input text 의 상세 조회 상태를 표시( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value="edit false" edit={false} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value="edit true" edit={true} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value="edit false" edit={false} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value="edit true" edit={true} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="2. 컴포넌트 사용방법(추가)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="2.1 Left Button(leftButton)"
+                        description={
+                            <>
+                                - input text 의 왼쪽에 버튼 추가 기능
+                                <br />
+                                {`- leftButton={ icon , onClick}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value={""}
+                                            leftButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    alert("left button Click");
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value={""}
+                            leftButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    alert("left button Click");
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.2 Right Button(rightButton)"
+                        description={
+                            <>
+                                - input text 의 오른쪽에 버튼 추가 기능
+                                <br />
+                                {`- rightButton={ icon , onClick}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value={""}
+                                            rightButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    alert("right button Click");
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value={""}
+                            rightButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    alert("right button Click");
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.3 Right Text(rightText)"
+                        description={
+                            <>
+                                - input text 의 오른쪽에 텍스트 추가 기능
+                                <br />
+                                {`- rightText`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="text" type="text" value={"100"} rightText="KG" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="text" type="text" value={"100"} rightText="KG" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.4 Mask(mask)"
+                        description={
+                            <>
+                                - input text 데이터 패턴을 정규식의으로 정의
+                                <br />
+                                - 영어 대문자 : /[A-Z]/
+                                <br />
+                                - 영어 소문자 : /[a-z]/
+                                <br />
+                                - 영어 대문자 범위 : /[A-C]/
+                                <br />
+                                - 영어 소문자 범위 : /[a-c]/
+                                <br />
+                                - 특정 영어 대문자 : /[A,D,Y]/
+                                <br />
+                                - 특정 영어 소문자 : /[a,d,y]/
+                                <br />
+                                - 특정 숫자 : /[a,d,y]/
+                                <br />
+                                - 고정 문자 : "문자" ( - , _ 등)
+                                <br />
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            placeholder="00000000-0000-0-000000"
+                                            mask={[
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                "-",
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                "-",
+                                                /\d/,
+                                                "-",
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                                /\d/,
+                                            ]}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            placeholder="[A-Z][A-C]-[a-z][a-c]-[0-5]"
+                                            mask={[/[A-Z]/, /[A-C]/, "-", /[a-z]/, /[a-c]/, "-", /[A,D,F]/]}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            placeholder="00000000-0000-0-000000"
+                            mask={[
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                "-",
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                "-",
+                                /\d/,
+                                "-",
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                            ]}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            placeholder="[A-Z][A-C]-[a-z][a-c]-[0-5]"
+                            mask={[/[A-Z]/, /[A-C]/, "-", /[a-z]/, /[a-c]/, "-", /[0-5]/]}
+                            exact={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="3. 컴포넌트 사용방법(이벤트)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="3.1 Change Event(onChange)"
+                        description={
+                            <>
+                                - input text 의 Change Event Handler
+                                <br />
+                                - input text 의 value 를 parameter로 전달
+                                <br />
+                                {`- onChange={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value="change event"
+                                            onChange={(value) => {
+                                                console.log(value);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value="change event"
+                            onChange={(value) => {
+                                console.log(value);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="3.2 Focus Event(onFocus)"
+                        description={
+                            <>
+                                - input text 의 Focus Event Handler
+                                <br />
+                                - input text 의 focus event 를 parameter로 전달
+                                <br />
+                                {`- onFocus={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value="focus event"
+                                            onFocus={(e) => {
+                                                console.log(e);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value="change event"
+                            onFocus={(e) => {
+                                console.log(e);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="3.3 Blur Event(onBlur)"
+                        description={
+                            <>
+                                - input text 의 Blur Event Handler
+                                <br />
+                                - input text 의 blur event 를 parameter로 전달
+                                <br />
+                                {`- onBlur={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="text"
+                                            type="text"
+                                            value="blur event"
+                                            onBlur={(e) => {
+                                                console.log(e);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="text"
+                            type="text"
+                            value="blur event"
+                            onBlur={(e) => {
+                                console.log(e);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="4. 컴포넌트 사용방법(스키마사용)">
+                <Layout direction="col">
+                    <Sample.Section title="4.1 스키마를 이용한 컴포넌트 사용 예시">
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.text1}
+                                            onChange={(value) => {
+                                                form.setValue("textarea", value);
+                                                form.setSchema("text1", { message: "change..." });
+                                            }}
+                                            onFocus={(e) => {
+                                                form.setValue("textarea", "focus");
+                                                form.setSchema("text1", { message: "focus..." });
+                                                form.setSchemas(["text2", "text3"], {
+                                                    disabled: true,
+                                                });
+                                            }}
+                                            onBlur={(e) => {
+                                                form.setValue("textarea", "blur");
+                                                form.setSchema("text1", { message: "blur..." });
+                                                form.setSchemas(["text2", "text3"], {
+                                                    disabled: false,
+                                                });
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.text2} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.text3} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.text4}
+                                            onBlur={() => {
+                                                form.setFocus("text1");
+                                            }}
+                                            rightButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    openPopup({
+                                                        url: `${comnEnvs.base_comn}/comn/ppup/coCdPpup`,
+                                                        callback: ({ data }) => {
+                                                            form.setValue("text4", data.coNm);
+                                                        },
+                                                    });
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
     const SG_FORM: TFormSchema = {
         id: "form",
         schema: {
-            text: { label: "text", type: "text", controlSize: 10, size: 6, required: true },
-            number: { label: "number", type: "number", thousandSeparator: true, decimalScale: 3, required: true },
-            password: { label: "password", type: "password" },
-            textarea: { label: "textarea", type: "textarea", controlSize: 10 },
-            select: { label: "select", type: "select", options: code, required: true },
-            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "COM_0100", controlSize: 10 },
-            checkbox: {
-                label: "checkbox",
-                type: "checkbox",
-                area: "comnCd",
-                comnCd: "COM_0100",
+            text1: {
+                label: "text1",
+                type: "text",
                 controlSize: 10,
-                all: true,
+                size: 6,
+                required: true,
+                placeholder: "0000000-0000-0-000000",
+                mask: [
+                    /\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/,"-",/\d/,"-",/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,
+                ],
             },
-            date: { label: "date", type: "date", controlSize: 2, required: true },
-            time: { label: "time", type: "time", controlSize: 2 },
-            datetime: { label: "datetime", type: "datetime", controlSize: 2 },
-            daterange: {
-                label: "daterange",
-                type: "daterange",
-                start: { name: "startDt" },
-                end: { name: "endDt" },
-                rangeButton: 0,
-                controlSize: 10,
+            text2: {
+                label: "text2",
+                maxlemgth: 30,
+                leftButton: {
+                    icon: "search",
+                    onClick: () => {
+                        console.log("click");
+                    },
+                },
             },
-            timerange: { label: "timerange", type: "timerange", start: { name: "startTm" }, end: { name: "endTm" } },
-            code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100", maxLength: 3 },
-            file: { label: "file", type: "file", labelSize: 6 },
+            text3: {
+                label: "text3",
+                rightButton: {
+                    icon: "search",
+                    onClick: () => {
+                        console.log("click");
+                    },
+                },
+            },
+            text4: {
+                label: "text4",
+            },
         },
     };
 
-    // 변경 스키마
-    const SG_FORM_AFTER: TFormSchema = {
-        id: "form",
-        schema: {
-            text: { label: "text 2", type: "text", required: true, readOnly: true },
-            number: { label: "number 2", type: "number", required: true, thousandSeparator: false, decimalScale: 2 },
-            password: { label: "password 2", type: "text", required: true },
-            textarea: { label: "textarea 2", type: "textarea", required: true, rows: 10 },
-            select: { label: "select 2", type: "select", required: true },
-            radio: {
-                label: "radio 2",
-                type: "radio",
-                area: "comnCd",
-                comnCd: "CAG_0006",
-                controlSize: 10,
-                required: true,
-            },
-            checkbox: {
-                label: "checkbox 2",
-                type: "checkbox",
-                area: "comnCd",
-                comnCd: "CAG_0006",
-                required: true,
-            },
-            date: { label: "date 2", type: "date", controlSize: 2, required: true },
-            time: { label: "time 2", type: "time", controlSize: 2, required: true },
-            datetime: { label: "datetime", type: "datetime", controlSize: 2 },
-            daterange: {
-                label: "daterange 2",
-                type: "daterange",
-                start: { name: "startDt" },
-                end: { name: "endDt" },
-                rangeButton: 0,
-                controlSize: 10,
-            },
-            timerange: {
-                label: "timerange 2",
-                type: "timerange",
-                start: { name: "startTm" },
-                end: { name: "endTm" },
-                required: true,
-            },
-            code: { label: "code 2", type: "code", area: "comnCd", comnCd: "CAG_0006", maxLength: 3, required: true },
-            file: { label: "file 2", type: "file", labelSize: 6, required: true },
-        },
-    };
-
-    // useForm Hook 생성
     const form = useForm({
         defaultSchema: SG_FORM,
-        defaultValues: { text: "text", number: 9999.999, code: "A01", chechbox: ["A02"], startDt: comnUtils.getDate() },
+        defaultValues: {},
     });
 
     return (
@@ -1150,118 +1286,52 @@ const Sample = () => {
             <Group.Body>
                 <Group.Section>
                     <Group.Row>
-                        <Group.Control {...form.schema.text} />
+                        <Group.Control
+                            {...form.schema.text1}
+                            onChange={(value) => {
+                                form.setValue("textarea", value);
+                                form.setSchema("text1", { message: "change..." });
+                            }}
+                            onFocus={(e) => {
+                                form.setValue("textarea", "focus");
+                                form.setSchema("text1", { message: "focus..." });
+                                form.setSchemas(["text2", "text3"], {
+                                    disabled: true,
+                                });
+                            }}
+                            onBlur={(e) => {
+                                form.setValue("textarea", "blur");
+                                form.setSchema("text1", { message: "blur..." });
+                                form.setSchemas(["text2", "text3"], {
+                                    disabled: false,
+                                });
+                            }}
+                        />
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control {...form.schema.number} />
-                        <Group.Control {...form.schema.password} />
+                        <Group.Control {...form.schema.text2} />
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control {...form.schema.textarea} />
+                        <Group.Control {...form.schema.text3} />
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control {...form.schema.select} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.radio} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.checkbox} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.date} />
-                        <Group.Control {...form.schema.time} />
-                        <Group.Control {...form.schema.datetime} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.daterange} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.timerange} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.code} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control {...form.schema.file} />
+                        <Group.Control
+                            {...form.schema.text4}
+                            rightButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    openPopup({
+                                        url: \`${comnEnvs.base_comn}/comn/ppup/coCdPpup\`,
+                                        callback: ({ data }) => {
+                                            form.setValue("text4", data.coNm);
+                                        },
+                                    });
+                                },
+                            }}
+                        />
                     </Group.Row>
                 </Group.Section>
             </Group.Body>
-            <Group.Footer>
-                <Layout>
-                    <Layout.Left>
-                        <Button
-                            onClick={() => {
-                                form.setValues({
-                                    text: "text",
-                                    number: 9999.999,
-                                    password: "password",
-                                    textarea: "textarea",
-                                    select: "Y",
-                                    radio: "A03",
-                                    checkbox: ["A01", "A02"],
-                                    date: comnUtils.getDate(),
-                                    time: comnUtils.getDate(),
-                                    startDt: comnUtils.getDate(),
-                                    endDt: comnUtils.getDate(),
-                                    startTm: comnUtils.getDate(),
-                                    endTm: comnUtils.getDate(),
-                                    datetime: comnUtils.getDate(),
-                                    code: "A01",
-                                });
-                            }}
-                        >
-                            값 세팅(전체)
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                form.clearValues();
-                            }}
-                        >
-                            값 초기화
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                form.setValue("text", "12345");
-                            }}
-                        >
-                            값 세팅(부분)
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                form.setValues(
-                                    {
-                                        text: "text",
-                                        number: 9999.999,
-                                        password: "password",
-                                        textarea: "textarea",
-                                        select: "N",
-                                        radio: "A04",
-                                        code: "A02",
-                                    },
-                                    true,
-                                );
-                            }}
-                        >
-                            값 세팅(부분)
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                form.setSchema("text", { readOnly: true });
-                            }}
-                        >
-                            스키마 변경(부분)
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                form.setSchemaAll(SG_FORM_AFTER);
-                            }}
-                        >
-                            스키마 변경(전체)
-                        </Button>
-                    </Layout.Left>
-                </Layout>
-            </Group.Footer>
         </Group>
     );
 };

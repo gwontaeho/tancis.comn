@@ -52,6 +52,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                 onFocus,
             }).filter(([, value]) => value !== undefined),
         );
+
         const o = { mask, exact, letterCase };
 
         const [_value, _setValue] = React.useState<any>(formatText(value, o));
@@ -95,11 +96,11 @@ export const formatText = (v: any, o?: any) => {
     let f = String(v);
 
     if (o?.letterCase === "upper") {
-        f.toUpperCase();
+        f = f.toUpperCase();
     }
 
     if (o?.letterCase === "lower") {
-        f.toLowerCase();
+        f = f.toLowerCase();
     }
 
     if (o?.mask) {
@@ -108,6 +109,7 @@ export const formatText = (v: any, o?: any) => {
         var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
         let t = f.replace(reg, "").split("");
         let real = "";
+        let s = 0;
 
         for (var i = 0; i < o.mask.length; i++) {
             if (typeof o.mask[i] === "string") {
@@ -115,7 +117,7 @@ export const formatText = (v: any, o?: any) => {
                     break;
                 }
                 temp += o.mask[i];
-                pos++;
+                s++;
             } else {
                 if (!o.mask[i].test(t[pos])) {
                     break;

@@ -177,6 +177,11 @@ export const useForm = (props: UseFormProps) => {
         return temp;
     };
 
+    const _setFocus = (name: string) => {
+        console.log(control);
+        setTimeout(() => setFocus(name), 0);
+    };
+
     /**
      *
      * @param s
@@ -267,7 +272,7 @@ export const useForm = (props: UseFormProps) => {
         setSchemas,
         resetSchema,
         setEditable,
-        setFocus,
+        setFocus: _setFocus,
         validate,
         clearErrors,
         watch,
