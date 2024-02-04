@@ -65,9 +65,20 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
             }
         };
 
+        const replacePassword = (value: string) => {
+            if (!value) return "*";
+
+            let t = "";
+
+            for (let i = 0; i < value.length; i++) {
+                t += "*";
+            }
+            return t;
+        };
+
         return (
             <div className="w-full">
-                {!edit && <div>{_value}</div>}
+                {!edit && <div>{replacePassword(_value)}</div>}
                 <div hidden={!edit}>
                     <div className="relative flex items-center">
                         <input

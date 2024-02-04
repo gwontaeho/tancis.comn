@@ -55,6 +55,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
         }, [value]);
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+            if (maxLength !== undefined && e.target.value.length > maxLength) {
+                return;
+            }
             _setValue(e.target.value);
             if (onChange) {
                 onChange(e.target.value);

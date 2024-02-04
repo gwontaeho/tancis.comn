@@ -1,197 +1,1244 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Page, Group, FormControl } from "@/comn/components";
+import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
 import Prism from "prismjs";
+import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 
 export const SampleFormControlTextarea = () => {
-    React.useEffect(() => {
-        Prism.highlightAll();
-    }, []);
+    const { openPopup } = usePopup();
+    useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CAG_0018" },
+            { area: "comnCd", comnCd: "CAG_0006" },
+        ],
+    });
+
+    const [state, setState] = useState<any | {}>({});
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            textarea1: {
+                label: "textarea1",
+                type: "textarea",
+                required: true,
+                placeholder: "insert textarea",
+            },
+            textarea2: {
+                label: "textarea2",
+                type: "textarea",
+                maxLength: 30,
+                placeholder: "insert textarea",
+            },
+            textarea3: {
+                label: "textarea3",
+                type: "textarea",
+            },
+            textarea4: {
+                type: "text",
+                label: "textarea4",
+            },
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: {},
+    });
+
     return (
-        <Sample title="Textarea">
-            <Sample.Section
-                title={`<FormControl type="textarea" />`}
-                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
-            >
-                <Sample.Table
-                    data={[
-                        ["Properties", "Type", "Default", "Description"],
-                        [
-                            "type",
-                            "string",
-                            "text",
+        <Sample
+            title="Form Control - Textarea"
+            description={<>폼에서 사용하는 Textarea 컴포넌트(&lt;type="textarea" /&gt;에 대한 사용방법</>}
+        >
+            <Sample.Section title="1. 컴포넌트 사용방법(기본)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="1.1 Size(size) "
+                        description={
                             <>
-                                {" "}
-                                text, <br /> number, password, select, radio, checkbox, textarea, datetime , file,
-                                daterange, timerange, code
-                            </>,
-                        ],
-                        ["value?", "any", "", <>텍스트 입력 영역(Textarea)에 나타나는 초깃값을 설정</>],
-                        ["name?", "string", "", <>텍스트 입력 영역(Textarea)의 name값 설정</>],
-                        ["rightText?", "string", "", <>텍스트 입력 영역(Textarea) 오른쪽의 텍스트 배치</>],
-                        [
-                            "leftButton?",
-                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
-                            "",
-                            <>텍스트 입력 영역(Textarea) 왼쪽의 버튼 배치</>,
-                        ],
-                        [
-                            "rightButton?",
-                            "React.ButtonHTMLAttributes<HTMLButtonElement>",
-                            "",
-                            <>텍스트 입력 영역(Textarea) 오른쪽의 버튼 배치</>,
-                        ],
-                        ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
-                        ["onBlur?", "void", "", <>포커스 된 텍스트 입력 영역(Textarea)의 포커스가 사라졌을 때 호출</>],
-                        ["disabled?", "boolean", "", <>텍스트 입력 영역(Textarea)의 요소가 비활성화됨을 명시</>],
-                        ["readOnly?", "boolean", "", <>요소의 텍스트 입력 영역(Textarea)가 읽기 전용임을 명시</>],
-                        [
-                            "invalid?",
-                            "any",
-                            "",
-                            <>텍스트 입력 영역(Textarea) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,
-                        ],
-                        [
-                            "size?",
-                            "number",
-                            "",
-                            <>텍스트 입력 영역(Textarea)의 너비를 문자수(in characters) 단위로 명시</>,
-                        ],
-                        ["defaultValue?", "any", "", <>텍스트 입력 영역(Textarea)의 기본값을 설정</>],
-                        ["onFocus?", "void", "", <>텍스트 입력 영역(Textarea)의 포커스를 받은 경우 호출</>],
-                        ["mask?", "string", "", <>텍스트 입력 영역(Textarea)의 특정한 규칙을 설정</>],
-                        ["message?", "string", "", <>텍스트 입력 영역(Textarea) 하단의 알림 메세지 설정</>],
-                        [
-                            "maxLength?",
-                            "number",
-                            "",
-                            <>텍스트 입력 영역(Textarea)에 입력할 수 있는 최대 문자수를 명시</>,
-                        ],
-                        ["decimalScale?", "number", "", <>텍스트 입력 영역(Textarea)의 허용되는 소수 자릿수를 제어</>],
-                        ["thousandSeparator?", "boolean", "", <>텍스트 입력 영역(Textarea)의 1000단위 콤마 설정</>],
-                        [
-                            "letterCase?",
-                            "string",
-                            "",
-                            <>텍스트 입력 영역(Textarea)의 대문자 또는 소문자 설정 (대문자 : upper / 소문자 : lower)</>,
-                        ],
-                        ["minLength?", "number", "", <>텍스트 입력 영역(Textarea)에 입력해야하는 최소 문자수를 명시</>],
-                    ]}
-                />
+                                - Form Control 사이즈 조절
+                                <br />- size : 1 ~ 12 | "fit" | "full"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value={"size 1"} size={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 1"}
+                                            size={1}
+                                            controlSize={10}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 4"}
+                                            size={4}
+                                            controlSize={10}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value={"size 8"} size={8} />
+                                        <Group.Control label="textarea" type="textarea" value={"size 12"} size={12} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size fit"}
+                                            size={"fit"}
+                                        />
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size full"}
+                                            size={"full"}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" value={'Textarea field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" value={"Textarea field"} rows={10} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>               
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 1"} size={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value={"size 1"}
+                            size={1}
+                            controlSize={10}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value={"size 4"}
+                            size={4}
+                            controlSize={10}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 8"} size={8} />
+                        <Group.Control label="textarea" type="textarea" value={"size 12"} size={12} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size fit"} size={"fit"} />
+                        <Group.Control label="textarea" type="textarea" value={"size full"} size={"full"} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{` <FormControl type="textarea" name={'Textarea field'}/>`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" name={"Textarea field"} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.2 Label Size(labelSize) "
+                        description={
+                            <>
+                                - 라벨 영역의 사이즈 조절 (default : 2)
+                                <br />- labelSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 1"}
+                                            labelSize={1}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 2"}
+                                            labelSize={2}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 4"}
+                                            labelSize={4}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 8"}
+                                            labelSize={8}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" rightText={'Textarea field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" rightText={"Textarea field"} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 1"} labelSize={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 2"} labelSize={2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 4"} labelSize={4} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 8"} labelSize={8} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" leftButton={{ icon: 'search'}} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" leftButton={{ icon: "search" }} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.3 Control Size(controlSize) "
+                        description={
+                            <>
+                                - Form Comtrol 영역의 사이즈 조절 (default : 4)
+                                <br />- controlSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 1"}
+                                            controlSize={1}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 2"}
+                                            controlSize={2}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 4"}
+                                            controlSize={4}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={"size 8"}
+                                            controlSize={8}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" rightButton={{ icon: 'search'}} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" rightButton={{ icon: "search" }} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 1"} controlSize={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 2"} controlSize={2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 4"} controlSize={4} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"size 8"} controlSize={8} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" onChange={(event) => { alert(event.target.value)}} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="textarea"
-                        onChange={(event) => {
-                            alert(event.target.value);
-                        }}
-                    />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.4 Max Length(maxLength) "
+                        description={
+                            <>
+                                - textarea 안의 글자의 최대 길이
+                                <br />- number
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" maxLength={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value={"5"} maxLength={5} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value={"10"} maxLength={10} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" onBlur={() => { alert('Textarea field')}} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="textarea"
-                        onBlur={() => {
-                            alert("Textarea field");
-                        }}
-                    />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"1"} maxLength={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"5"} maxLength={5} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"10"} maxLength={10} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" disabled={true} defaultValue={'Textarea field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" disabled={true} defaultValue={"Textarea field"} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.5 Place Holder(placeholder) "
+                        description={
+                            <>
+                                - textarea 의 Place Holder 를 설정
+                                <br />- string
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" placeholder="insert textarea" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" readOnly={true} defaultValue={'Textarea field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" readOnly={true} defaultValue={"Textarea field"} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" placeholder="insert textarea" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" invalid={{message:"invalid"}}/>`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" invalid={{ message: "invalid" }} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section title="1.6 Value(value) " description={<>- textarea 의 value 를 설정</>}>
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value="textarea value" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" size={5} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" size={5} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="textarea value" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" defaultValue={'Textarea field'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" defaultValue={"Textarea field"} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
 
-                <Sample.Code>{`<FormControl type="textarea" onFocus={() => { console.log('Textarea field')}} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="textarea"
-                        onFocus={() => {
-                            console.log("Textarea field");
-                        }}
-                    />
-                </Page>
+                    <Sample.Section
+                        title="1.7 Read Only(readOnly) "
+                        description={
+                            <>
+                                - textarea 의 읽기전용 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="readonly true"
+                                            readOnly={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="readonly false"
+                                            readOnly={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" mask={'AAA-000-aaa'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" mask={"AAA-000-aaa"} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="readonly true" readOnly={true} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value="readonly false"
+                            readOnly={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" message={'error!!!'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" message={"error!!!"} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.8 Disabled (disabled) "
+                        description={
+                            <>
+                                - textarea 의 사용가능 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="disabled true"
+                                            disabled={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="disabled false"
+                                            disabled={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" maxLength={3} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" maxLength={3} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="disabled true" disabled={true} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value="disabled false"
+                            disabled={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" decimalScale={3} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" decimalScale={3} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.9 Required (required) "
+                        description={
+                            <>
+                                - textarea 의 필수 여부를 설정 ( default : false )
+                                <br />- 라벨 영역에 빨간색 * 표시
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="required true"
+                                            required={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="required false"
+                                            required={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" thousandSeparator={true} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" thousandSeparator={true} />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="required true" required={true} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value="required false"
+                            required={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="textarea" letterCase={'upper'} />`}</Sample.Code>
-                <Page>
-                    <FormControl type="textarea" letterCase={"upper"} />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.10 Message (message) "
+                        description={
+                            <>
+                                - textarea 하단에 message 를 표시
+                                <br />- "string"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value=""
+                                            message="Message를 표시 합니다."
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="textarea" minLength={10} />`}</Sample.Code>
-                <Page></Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value=""
+                            message="message를 표시 합니다."
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.11 Edit (edit) "
+                        description={
+                            <>
+                                - textarea 의 상세 조회 상태를 표시( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="edit false"
+                                            edit={false}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value="edit true" edit={true} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="edit false" edit={false} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="edit true" edit={true} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.12 Rows (rows) "
+                        description={
+                            <>
+                                - textarea 의 Rows 를 설정
+                                <br />- number
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value="edit false" rows={10} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value="edit false" rows={10} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="2. 컴포넌트 사용방법(추가)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="2.1 Left Button(leftButton)"
+                        description={
+                            <>
+                                - textarea 의 왼쪽에 버튼 추가 기능
+                                <br />
+                                {`- leftButton={ icon , onClick}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={""}
+                                            leftButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    alert("left button Click");
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value={""}
+                            leftButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    alert("left button Click");
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.2 Right Button(rightButton)"
+                        description={
+                            <>
+                                - textarea 의 오른쪽에 버튼 추가 기능
+                                <br />
+                                {`- rightButton={ icon , onClick}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value={""}
+                                            rightButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    alert("right button Click");
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value={""}
+                            rightButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    alert("right button Click");
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.3 Right Text(rightText)"
+                        description={
+                            <>
+                                - textarea 의 오른쪽에 텍스트 추가 기능
+                                <br />
+                                {`- rightText`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="textarea" type="textarea" value={"100"} rightText="KG" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="textarea" type="textarea" value={"100"} rightText="KG" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="3. 컴포넌트 사용방법(이벤트)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="3.1 Change Event(onChange)"
+                        description={
+                            <>
+                                - textarea 의 Change Event Handler
+                                <br />
+                                - textarea 의 value 를 parameter로 전달
+                                <br />
+                                {`- onChange={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="change event"
+                                            onChange={(value) => {
+                                                console.log(value);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value="change event"
+                            onChange={(value) => {
+                                console.log(value);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="3.2 Focus Event(onFocus)"
+                        description={
+                            <>
+                                - textarea 의 Focus Event Handler
+                                <br />
+                                - textarea 의 focus event 를 parameter로 전달
+                                <br />
+                                {`- onFocus={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="focus event"
+                                            onFocus={(e) => {
+                                                console.log(e);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value="change event"
+                            onFocus={(e) => {
+                                console.log(e);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="3.3 Blur Event(onBlur)"
+                        description={
+                            <>
+                                - textarea 의 Blur Event Handler
+                                <br />
+                                - textarea 의 blur event 를 parameter로 전달
+                                <br />
+                                {`- onBlur={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="textarea"
+                                            type="textarea"
+                                            value="blur event"
+                                            onBlur={(e) => {
+                                                console.log(e);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="textarea"
+                            type="textarea"
+                            value="blur event"
+                            onBlur={(e) => {
+                                console.log(e);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="4. 컴포넌트 사용방법(스키마사용)">
+                <Layout direction="col">
+                    <Sample.Section title="4.1 스키마를 이용한 컴포넌트 사용 예시">
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.textarea1}
+                                            onChange={(value) => {
+                                                form.setValue("textarea2", value);
+                                                form.setSchema("textarea1", { message: "change..." });
+                                            }}
+                                            onFocus={(e) => {
+                                                form.setValue("textarea2", "focus");
+                                                form.setSchema("textarea1", { message: "focus..." });
+                                                form.setSchemas(["textarea2", "textarea3"], {
+                                                    disabled: true,
+                                                    required: true,
+                                                });
+                                            }}
+                                            onBlur={(e) => {
+                                                form.setValue("textarea2", "blur");
+                                                form.setSchema("textarea1", { message: "blur..." });
+                                                form.setSchemas(["textarea2", "textarea3"], {
+                                                    disabled: false,
+                                                    required: false,
+                                                    maxLength: 10,
+                                                });
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.textarea2} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.textarea3} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                            <Group.Footer>
+                                <Layout>
+                                    <Layout.Left>
+                                        <Button
+                                            onClick={() => {
+                                                alert(form.getValue("textarea1"));
+                                            }}
+                                        >
+                                            Get Value
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                form.setValue("textarea1", "1234567");
+                                            }}
+                                        >
+                                            Set Value
+                                        </Button>
+                                    </Layout.Left>
+                                </Layout>
+                            </Group.Footer>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            textarea1: {
+                label: "textarea1",
+                type: "textarea",
+                required: true,
+                placeholder: "insert textarea",
+            },
+            textarea2: {
+                label: "textarea2",
+                type: "textarea",
+                maxLength: 30,
+                placeholder: "insert textarea",
+            },
+            textarea3: {
+                label: "textarea3",
+                type: "textarea",
+            },
+            
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: {},
+    });
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.textarea1}
+                            onChange={(value) => {
+                                form.setValue("textarea2", value);
+                                form.setSchema("textarea1", { message: "change..." });
+                            }}
+                            onFocus={(e) => {
+                                form.setValue("textarea2", "focus");
+                                form.setSchema("textarea1", { message: "focus..." });
+                                form.setSchemas(["textarea2", "textarea3"], {
+                                    disabled: true,
+                                });
+                            }}
+                            onBlur={(e) => {
+                                form.setValue("textarea2", "blur");
+                                form.setSchema("textarea1", { message: "blur..." });
+                                form.setSchemas(["textarea2", "textarea3"], {
+                                    disabled: false,
+                                });
+                            }}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.textarea2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.textarea3} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.textarea4} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+            <Group.Footer>
+                <Layout>
+                    <Layout.Left>
+                        <Button
+                            onClick={() => {
+                                alert(form.getValue("textarea1"));
+                            }}
+                        >
+                            Get Value
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                form.setValue("textarea1", "1234567");
+                            }}
+                        >
+                            Set Value
+                        </Button>
+                    </Layout.Left>
+                </Layout>
+            </Group.Footer>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
             </Sample.Section>
         </Sample>
     );

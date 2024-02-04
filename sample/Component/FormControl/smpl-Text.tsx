@@ -60,7 +60,7 @@ export const SampleFormControlText = () => {
             },
             text2: {
                 label: "text2",
-                maxlemgth: 30,
+                maxLength: 30,
                 leftButton: {
                     icon: "search",
                     onClick: () => {
@@ -514,7 +514,7 @@ const Sample = () => {
                         </Sample.Section>
                     </Sample.Section>
                     <Sample.Section
-                        title="1.8 Disabled (disabled) "
+                        title="1.9 Disabled (disabled) "
                         description={
                             <>
                                 - input text 의 사용가능 여부를 설정 ( default : false )
@@ -568,7 +568,7 @@ const Sample = () => {
                         </Sample.Section>
                     </Sample.Section>
                     <Sample.Section
-                        title="1.9 Required (required) "
+                        title="1.10 Required (required) "
                         description={
                             <>
                                 - input text 의 필수 여부를 설정 ( default : false )
@@ -623,7 +623,7 @@ const Sample = () => {
                         </Sample.Section>
                     </Sample.Section>
                     <Sample.Section
-                        title="1.10 Message (message) "
+                        title="1.11 Message (message) "
                         description={
                             <>
                                 - input text 하단에 message 를 표시
@@ -671,7 +671,7 @@ const Sample = () => {
                         </Sample.Section>
                     </Sample.Section>
                     <Sample.Section
-                        title="1.11 Edit (edit) "
+                        title="1.12 Edit (edit) "
                         description={
                             <>
                                 - input text 의 상세 조회 상태를 표시( default : false )
