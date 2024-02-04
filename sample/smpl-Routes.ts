@@ -60,8 +60,12 @@ export const SampleRoutes = [
                                 to: "/comn/smpl/components/FormControl/Datetime",
                             },
                             {
-                                name: "Range",
-                                to: "/comn/smpl/components/FormControl/Range",
+                                name: "DateRange",
+                                to: "/comn/smpl/components/FormControl/DateRange",
+                            },
+                            {
+                                name: "TimeRange",
+                                to: "/comn/smpl/components/FormControl/TimeRange",
                             },
                             {
                                 name: "File",

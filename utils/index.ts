@@ -378,6 +378,19 @@ export const comnUtils = {
         if (a < b) return 1;
         if (a === b) return 0;
     },
+    compareDatetime: (a: any, b: any) => {
+        if (typeof a === "string") {
+            a = dayjs(a).toDate();
+        }
+        if (typeof b === "string") {
+            b = dayjs(b).toDate();
+        }
+        a = comnUtils.dateToString(a, "datetime");
+        b = comnUtils.dateToString(b, "datetime");
+        if (a > b) return -1;
+        if (a < b) return 1;
+        if (a === b) return 0;
+    },
     findIndex: (array: Array<any>, obj: any) => {
         return lodash.findIndex(array, obj);
     },

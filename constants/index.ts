@@ -31,14 +31,14 @@ export const TIME_FORMAT_DAYJS = {
 };
 
 export const DATETIME_FORMAT_INPUT = {
-    ko: "yyyy-MM-dd HH:mm:ss",
-    en: "dd/MM/yyyy HH:mm:ss",
-    tz: "dd/MM/yyyy HH:mm:ss",
+    ko: "yyyy-MM-dd HH:mm",
+    en: "dd/MM/yyyy HH:mm",
+    tz: "dd/MM/yyyy HH:mm",
 };
 export const DATETIME_FORMAT_DAYJS = {
-    ko: "YYYY-MM-DD HH:mm:ss",
-    en: "DD/MM/YYYY HH:mm:ss",
-    tz: "DD/MM/YYYY HH:mm:ss",
+    ko: "YYYY-MM-DD HH:mm",
+    en: "DD/MM/YYYY HH:mm",
+    tz: "DD/MM/YYYY HH:mm",
 };
 
 export default {

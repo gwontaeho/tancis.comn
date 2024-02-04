@@ -14,7 +14,8 @@ import { SampleFormControlTextarea } from "@/comn/sample/Component/FormControl/s
 import { SampleFormControlDate } from "@/comn/sample/Component/FormControl/smpl-Date";
 import { SampleFormControlTime } from "@/comn/sample/Component/FormControl/smpl-Time";
 import { SampleFormControlDatetime } from "@/comn/sample/Component/FormControl/smpl-Datetime";
-import { SampleFormControlRange } from "@/comn/sample/Component/FormControl/smpl-Range";
+import { SampleFormControlDateRange } from "@/comn/sample/Component/FormControl/smpl-DateRange";
+import { SampleFormControlTimeRange } from "@/comn/sample/Component/FormControl/smpl-TimeRange";
 import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
 import { SampleFormControlCode } from "@/comn/sample/Component/FormControl/smpl-Code";
 
@@ -78,7 +79,8 @@ export const SampleMain = () => {
             <Route path="/components/FormControl/Date" element={<SampleFormControlDate />} />
             <Route path="/components/FormControl/Time" element={<SampleFormControlTime />} />
             <Route path="/components/FormControl/Datetime" element={<SampleFormControlDatetime />} />
-            <Route path="/components/FormControl/Range" element={<SampleFormControlRange />} />
+            <Route path="/components/FormControl/DateRange" element={<SampleFormControlDateRange />} />
+            <Route path="/components/FormControl/TimeRange" element={<SampleFormControlTimeRange />} />
             <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
             <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 

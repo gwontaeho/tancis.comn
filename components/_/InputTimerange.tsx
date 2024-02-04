@@ -56,7 +56,7 @@ export type InputTimerangeProps = {
     edit?: boolean;
     start?: InputTimeProps;
     end?: InputTimeProps;
-    rangeButton?: 0 | 1 | 2;
+    rangeButton?: 3;
 };
 
 export const InputTimerange = (props: InputTimerangeProps) => {

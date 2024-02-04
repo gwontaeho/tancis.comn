@@ -56,7 +56,7 @@ export type InputDaterangeProps = {
     edit?: boolean;
     start?: InputDateProps;
     end?: InputDateProps;
-    rangeButton?: 0 | 1 | 2;
+    rangeButton?: 0 | 1 | 2 | 3;
 };
 
 export const InputDaterange = (props: InputDaterangeProps) => {
