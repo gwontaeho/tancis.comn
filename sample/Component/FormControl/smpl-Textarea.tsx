@@ -57,7 +57,7 @@ export const SampleFormControlTextarea = () => {
     return (
         <Sample
             title="Form Control - Textarea"
-            description={<>폼에서 사용하는 Textarea 컴포넌트(&lt;type="textarea" /&gt;에 대한 사용방법</>}
+            description={<>폼에서 사용하는 Textarea 컴포넌트(&lt;textarea /&gt;에 대한 사용방법</>}
         >
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">
                 <Layout direction="col">

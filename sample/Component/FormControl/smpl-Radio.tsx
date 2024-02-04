@@ -1,209 +1,1090 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Page, Group, FormControl } from "@/comn/components";
+import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
 import Prism from "prismjs";
+import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 
 export const SampleFormControlRadio = () => {
-    React.useEffect(() => {
-        Prism.highlightAll();
-    }, []);
+    const { openPopup } = usePopup();
+    useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CAG_0018" },
+            { area: "comnCd", comnCd: "CAG_0006" },
+            { area: "cntyCd" },
+            { area: "wrhsCd" },
+        ],
+    });
+
+    const [state, setState] = useState<any | {}>({});
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            radio1: {
+                label: "radio1",
+                type: "radio",
+                options: code,
+                required: true,
+            },
+            radio2: {
+                label: "radio2",
+                type: "radio",
+                area: "comnCd",
+                comnCd: "COM_0100",
+                required: true,
+            },
+            radio3: {
+                label: "radio3",
+                type: "radio",
+                options: code,
+                area: "cntyCd",
+                required: true,
+            },
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: {},
+    });
+
     return (
-        <Sample title="Radio">
-            <Sample.Section
-                title={`<FormControl type="radio" />`}
-                description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
-            >
-                <Sample.Table
-                    data={[
-                        ["Properties", "Type", "Default", "Description"],
-                        [
-                            "type",
-                            "string",
-                            "text",
+        <Sample
+            title="Form Control - Radio"
+            description={<>폼에서 사용하는 Select 컴포넌트(&lt;input type="radio" /&gt;에 대한 사용방법</>}
+        >
+            <Sample.Section title="1. 컴포넌트 사용방법(기본)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="1.1 Size(size) "
+                        description={
                             <>
-                                {" "}
-                                text, <br /> number, password, select, radio, checkbox, textarea, datetime , file,
-                                daterange, timerange, code
-                            </>,
-                        ],
-                        [
-                            "options?",
-                            "TFormControlOptions",
-                            "",
-                            <>라디오 버튼(radio button)의 옵션 메뉴를 제공하는 드롭다운 리스트 </>,
-                        ],
-                        ["value?", "any", "", <>라디오 버튼(radio button)에 나타나는 초깃값을 설정</>],
-                        ["name?", "string", "", <>라디오 버튼(radio button)의 name값 설정</>],
-                        ["rightText?", "string", "", <>라디오 버튼(radio button) 오른쪽의 텍스트 배치</>],
-                        ["onChange?", "void", "", <>값이 변경된 직후가 아니라, 변경되고 포커스를 잃을 때 발생</>],
-                        ["onBlur?", "void", "", <>포커스 된 라디오 버튼(radio button)의 포커스가 사라졌을 때 호출</>],
-                        ["disabled?", "boolean", "", <>라디오 버튼(radio button)의 요소가 비활성화됨을 명시</>],
-                        [
-                            "invalid?",
-                            "any",
-                            "",
-                            <>라디오 버튼(radio button) 내용의 유효성검사 시 false일 경우에 나타내는 가상클래스</>,
-                        ],
-                        ["defaultValue?", "any", "", <>라디오 버튼(radio button)의 기본값을 설정</>],
-                        ["onFocus?", "void", "", <>라디오 버튼(radio button)의 포커스를 받은 경우 호출</>],
-                        ["message?", "string", "", <>라디오 버튼(radio button) 하단의 알림 메세지 설정</>],
-                        ["area?", "string", "", <>라디오 버튼(radio button) 공통 코드를 호출</>],
-                    ]}
-                />
+                                - Form Control 사이즈 조절
+                                <br />- size : 1 ~ 12 | "fit" | "full"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" size={1} options={code} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            size={1}
+                                            controlSize={10}
+                                            options={code}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            size={4}
+                                            controlSize={10}
+                                            options={code}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" size={8} options={code} />
+                                        <Group.Control label="radio" type="radio" size={12} options={code} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" size={"fit"} options={code} />
+                                        <Group.Control label="radio" type="radio" size={"full"} options={code} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="radio" options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
 
-                <Sample.Code>{`<FormControl type="radio" value={"Select field"} options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        value={"Select field"}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" size={1} options={code} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            size={1}
+                            controlSize={10}
+                            options={code}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            size={4}
+                            controlSize={10}
+                            options={code}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" size={8} options={code} />
+                        <Group.Control label="radio" type="radio" size={12} options={code} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" size={"fit"} options={code} />
+                        <Group.Control label="radio" type="radio" size={"full"} options={code} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="radio" name={"Radio field"} options={[{ label: "radio 1", value: "1" }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        name={"Radio field"}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.2 Label Size(labelSize) "
+                        description={
+                            <>
+                                - 라벨 영역의 사이즈 조절 (default : 2)
+                                <br />- labelSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} labelSize={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} labelSize={2} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} labelSize={4} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} labelSize={8} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="radio" rightText={"Radio field"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        rightText={"Radio field"}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
 
-                <Sample.Code>{`<FormControl type="radio" onChange={(event) => {alert(event.target.value);}} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        onChange={(event) => {
-                            alert(event.target.value);
-                        }}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} labelSize={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} labelSize={2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} labelSize={4} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} labelSize={8} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="radio" onBlur={() => {alert("Radio field");}} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        onBlur={() => {
-                            alert("Radio field");
-                        }}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.3 Control Size(controlSize) "
+                        description={
+                            <>
+                                - Form Comtrol 영역의 사이즈 조절 (default : 4)
+                                <br />- controlSize : 1 ~ 12
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} controlSize={1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} controlSize={2} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} controlSize={4} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" options={code} controlSize={8} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
 
-                <Sample.Code>{`<FormControl type="radio" disabled={true} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        disabled={true}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
 
-                <Sample.Code>{`<FormControl type="radio" invalid={{ message: "invalid" }} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        invalid={{ message: "invalid" }}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} controlSize={1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} controlSize={2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} controlSize={4} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" options={code} controlSize={8} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="radio" defaultValue={"2"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        defaultValue={"2"}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
 
-                <Sample.Code>{`<FormControl type="radio" onFocus={() => {console.log("Radio field");}} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        onFocus={() => {
-                            console.log("Radio field");
-                        }}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+                    <Sample.Section title="1.4 Value(value) " description={<>- radio 의 value 를 설정</>}>
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" value="Y" options={code} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" value="N" options={code} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
 
-                <Sample.Code>{`<FormControl type="radio" message={"error!!!"} options={[{ label: "radio 1", value: "1",  }, { label: "radio 2", value: "2" }, { label: "radio 3", value: "3" }]} />`}</Sample.Code>
-                <Page>
-                    <FormControl
-                        type="radio"
-                        message={"error!!!"}
-                        options={[
-                            { label: "radio 1", value: "1" },
-                            { label: "radio 2", value: "2" },
-                            { label: "radio 3", value: "3" },
-                        ]}
-                    />
-                </Page>
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" value="Y" options={code} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" value="N" options={code} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
 
-                <Sample.Code>{`<FormControl type="radio" area="currCd" />`}</Sample.Code>
-                <Page>
-                    <FormControl type="radio" area="currCd" />
-                </Page>
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+
+                    <Sample.Section
+                        title="1.5 Read Only(readOnly) "
+                        description={
+                            <>
+                                - radio 의 읽기전용 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            value="Y"
+                                            options={code}
+                                            readOnly={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            value="N"
+                                            options={code}
+                                            readOnly={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            value="Y"
+                            options={code}
+                            readOnly={true}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            value="N"
+                            options={code}
+                            readOnly={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.6 Disabled (disabled) "
+                        description={
+                            <>
+                                - radio 의 사용가능 여부를 설정 ( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="Y"
+                                            disabled={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="N"
+                                            disabled={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="Y"
+                            disabled={true}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="N"
+                            disabled={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.7 Required (required) "
+                        description={
+                            <>
+                                - radio 의 필수 여부를 설정 ( default : false )
+                                <br />- 라벨 영역에 빨간색 * 표시
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="Y"
+                                            required={true}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="N"
+                                            required={false}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="Y"
+                            required={true}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="N"
+                            required={false}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.8 Message (message) "
+                        description={
+                            <>
+                                - radio 하단에 message 를 표시
+                                <br />- "string"
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="Y"
+                                            message="Message를 표시 합니다."
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="Y"
+                            message="Message를 표시 합니다."
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="1.9 Edit (edit) "
+                        description={
+                            <>
+                                - radio 의 상세 조회 상태를 표시( default : false )
+                                <br />- true | false
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="Y"
+                                            edit={false}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            value="N"
+                                            edit={true}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="Y"
+                            edit={false}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            value="N"
+                            edit={true}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+
+                    <Sample.Section
+                        title="1.10 Options (options) "
+                        description={
+                            <>
+                                - radio 의 Options을 정의
+                                <br />
+                                {`- Array<{label:string, value:string}>`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={[
+                                                { label: "Options 1", value: "1" },
+                                                { label: "Options 2", value: "2" },
+                                                { label: "Options 3", value: "3" },
+                                                { label: "Options 4", value: "4" },
+                                                { label: "Options 5", value: "5" },
+                                            ]}
+                                            value="3"
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={[
+                                { label: "Options 1", value: "1" },
+                                { label: "Options 2", value: "2" },
+                                { label: "Options 3", value: "3" },
+                                { label: "Options 4", value: "4" },
+                                { label: "Options 5", value: "5" },
+                            ]}
+                            value="3"
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+
+                    <Sample.Section
+                        title="1.11 코드 조회 (area , comnCd) "
+                        description={
+                            <>
+                                - 코드를 조회하여 radio 의 Options 을 정의
+                                <br />- useResource Hook 필요
+                                <br />- area : 조회할 코드명 (Code 컴포넌트 참조)
+                                <br />- comnCd : area="comnCd" 공통 코드일 경우 공통코드그룹 ID
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="COM_0100" />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="CAG_0018" />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" area="wrhsCd" />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control label="radio" type="radio" area="cntyCd" />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CAG_0018" },
+            { area: "comnCd", comnCd: "CAG_0006" },
+            { area: "cntyCd" },
+            { area: "wrhsCd" },
+        ],
+    });
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="COM_0100" />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="CAG_0018" />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" area="wrhsCd" />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control label="radio" type="radio" area="cntyCd" />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="2. 컴포넌트 사용방법(이벤트)">
+                <Layout direction="col">
+                    <Sample.Section
+                        title="2.1 Change Event(onChange)"
+                        description={
+                            <>
+                                - radio 의 Change Event Handler
+                                <br />
+                                - radio 의 value 를 parameter로 전달
+                                <br />
+                                {`- onChange={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            onChange={(value) => {
+                                                console.log(value);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            onChange={(value) => {
+                                console.log(value);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title="2.2 Blur Event(onBlur)"
+                        description={
+                            <>
+                                - radio 의 Blur Event Handler
+                                <br />
+                                - radio 의 blur event 를 parameter로 전달
+                                <br />
+                                {`- onBlur={(e)=>{})}`}
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            label="radio"
+                                            type="radio"
+                                            options={code}
+                                            onBlur={(e) => {
+                                                console.log(e);
+                                            }}
+                                        />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            label="radio"
+                            type="radio"
+                            options={code}
+                            onBlur={(e) => {
+                                console.log(e);
+                            }}
+                        />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="4. 컴포넌트 사용방법(스키마사용)">
+                <Layout direction="col">
+                    <Sample.Section title="4.1 스키마를 이용한 컴포넌트 사용 예시">
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.radio1}
+                                            onChange={(value) => {
+                                                form.setSchema("radio2", { area: "comnCd", comnCd: "CAG_0018" });
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.radio2}
+                                            onChange={(value) => {
+                                                form.setSchema("radio3", { area: "wrhsCd" });
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.radio3} />
+                                    </Group.Row>
+                                </Group.Section>
+                            </Group.Body>
+                            <Group.Footer>
+                                <Layout>
+                                    <Layout.Left>
+                                        <Button
+                                            onClick={() => {
+                                                alert(form.getValue("radio1"));
+                                            }}
+                                        >
+                                            Get Value
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                form.setValue("radio1", "Y");
+                                            }}
+                                        >
+                                            Set Value
+                                        </Button>
+                                    </Layout.Left>
+                                </Layout>
+                            </Group.Footer>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CAG_0018" },
+            { area: "comnCd", comnCd: "CAG_0006" },
+            { area: "cntyCd" },
+            { area: "wrhsCd" },
+        ],
+    });
+
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            radio1: {
+                label: "radio1",
+                type: "radio",
+                options: code,
+                required: true,
+            },
+            radio2: {
+                label: "radio2",
+                type: "radio",
+                area: "comnCd",
+                comnCd: "COM_0100",
+                required: true,
+            },
+            radio3: {
+                label: "radio3",
+                type: "radio",
+                options: code,
+                area: "cntyCd",
+                required: true,
+            },
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: {},
+    });
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: {},
+    });
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.radio1}
+                            onChange={(value) => {
+                                form.setSchema("radio2", { area: "comnCd", comnCd: "CAG_0018" });
+                            }}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.radio2}
+                            onChange={(value) => {
+                                form.setSchema("radio3", { area: "wrhsCd" });
+                            }}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.radio3} />
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+            <Group.Footer>
+                <Layout>
+                    <Layout.Left>
+                        <Button
+                            onClick={() => {
+                                alert(form.getValue("radio1"));
+                            }}
+                        >
+                            Get Value
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                form.setValue("radio1", "Y");
+                            }}
+                        >
+                            Set Value
+                        </Button>
+                    </Layout.Left>
+                </Layout>
+            </Group.Footer>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
             </Sample.Section>
         </Sample>
     );
