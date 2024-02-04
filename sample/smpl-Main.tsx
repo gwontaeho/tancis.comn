@@ -30,6 +30,7 @@ import { SampleIconButton } from "@/comn/sample/Component/smpl-IconButton";
 import { SampleGrid } from "@/comn/sample/Component/smpl-Grid";
 import { SampleGroup } from "@/comn/sample/Component/smpl-Group";
 import { SampleLayout } from "@/comn/sample/Component/smpl-Layout";
+import { SampleButton } from "@/comn/sample/Component/smpl-Button";
 
 import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
@@ -95,6 +96,7 @@ export const SampleMain = () => {
             <Route path="/components/Grid" element={<SampleGrid />} />
             <Route path="/components/Group" element={<SampleGroup />} />
             <Route path="/components/Layout" element={<SampleLayout />} />
+            <Route path="/components/Button" element={<SampleButton />} />
 
             <Route path="/hooks/useForm" element={<SampleUseForm />} />
             <Route path="/hooks/useModal" element={<SampleUseModal />} />

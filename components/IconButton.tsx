@@ -11,7 +11,10 @@ export const IconButton = (props: IconButtomProps) => {
         <button
             {...rest}
             type="button"
-            className={classNames("rounded-full p-1 transition hover:bg-black/20 dark:hover:bg-white/20", className)}
+            className={classNames(
+                "rounded-full p-1 w-fit transition hover:bg-black/20 dark:hover:bg-white/20",
+                className,
+            )}
         >
             <Icon icon={icon} size={size} />
         </button>

@@ -45,7 +45,7 @@ const TreeItem = (props: TreeItemProps) => {
     };
 
     return (
-        <li className="font-mono">
+        <li>
             <button
                 className={classNames("h-7 flex items-center space-x-1.5", { "ml-[1.125rem]": !children })}
                 onClick={handleClick}

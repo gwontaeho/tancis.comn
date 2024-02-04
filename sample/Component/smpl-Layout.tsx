@@ -111,64 +111,64 @@ const Sample = () => {
             </Sample.Section>
 
             <Sample.Section title="2. " description="Layout">
-                <Layout direction="row">
-                    <Sample.Section title="Result">
-                        <Page>
-                            <Layout gap={4}>
-                                {/* 2개 Group 영역 분리 */}
-                                <Group>
-                                    <Group.Body>
-                                        <Group.Section>
-                                            <Group.Row>
-                                                <Group.Control label="Text" type="text" />
-                                                <Group.Control label="Number" type="number" />
-                                            </Group.Row>
-                                            <Group.Row>
-                                                <Group.Control label="Date" type="date" />
-                                                <Group.Control controlSize={6} type="select" />
-                                            </Group.Row>
-                                            <Group.Row>
-                                                {/* Col 내부 영역 분리 */}
-                                                <Group.Col colSize={6}>
-                                                    <Layout>
-                                                        <Button>1</Button>
-                                                        <Button>2</Button>
-                                                        <Button>3</Button>
-                                                    </Layout>
-                                                </Group.Col>
-                                                <Group.Col colSize={6}>
-                                                    <Layout.Right>
-                                                        <Button>1</Button>
-                                                        <Button>2</Button>
-                                                    </Layout.Right>
-                                                </Group.Col>
-                                            </Group.Row>
-                                            <Group.Row>
-                                                <Group.Col>
-                                                    <Layout direction="col">
-                                                        <Button>1</Button>
-                                                        <Button>2</Button>
-                                                        <Button>3</Button>
-                                                    </Layout>
-                                                </Group.Col>
-                                            </Group.Row>
-                                        </Group.Section>
-                                    </Group.Body>
-                                </Group>
-                                <Group>
-                                    <Group.Body>
-                                        <Group.Section>
-                                            <Group.Row>
-                                                <Group.Control label="Text" type="text" controlSize={10} />
-                                            </Group.Row>
-                                        </Group.Section>
-                                    </Group.Body>
-                                </Group>
-                            </Layout>
-                        </Page>
-                    </Sample.Section>
-                    <Sample.Section title="Code">
-                        <Sample.Code>{`
+                <Sample.Section title="Result">
+                    <Page>
+                        <Layout gap={4}>
+                            {/* 2개 Group 영역 분리 */}
+                            <Group>
+                                <Group.Body>
+                                    <Group.Section>
+                                        <Group.Row>
+                                            <Group.Control label="Text" type="text" />
+                                            <Group.Control label="Number" type="number" />
+                                        </Group.Row>
+                                        <Group.Row>
+                                            <Group.Control label="Date" type="date" />
+                                            <Group.Control controlSize={6} type="select" />
+                                        </Group.Row>
+                                        <Group.Row>
+                                            {/* Col 내부 영역 분리 */}
+                                            <Group.Col colSize={6}>
+                                                <Layout>
+                                                    <Button>1</Button>
+                                                    <Button>2</Button>
+                                                    <Button>3</Button>
+                                                </Layout>
+                                            </Group.Col>
+                                            <Group.Col colSize={6}>
+                                                <Layout.Right>
+                                                    <Button>1</Button>
+                                                    <Button>2</Button>
+                                                </Layout.Right>
+                                            </Group.Col>
+                                        </Group.Row>
+                                        <Group.Row>
+                                            <Group.Col>
+                                                <Layout direction="col">
+                                                    <Button>1</Button>
+                                                    <Button>2</Button>
+                                                    <Button>3</Button>
+                                                </Layout>
+                                            </Group.Col>
+                                        </Group.Row>
+                                    </Group.Section>
+                                </Group.Body>
+                            </Group>
+                            <Group>
+                                <Group.Body>
+                                    <Group.Section>
+                                        <Group.Row>
+                                            <Group.Control label="Text" type="text" controlSize={10} />
+                                        </Group.Row>
+                                    </Group.Section>
+                                </Group.Body>
+                            </Group>
+                        </Layout>
+                    </Page>
+                </Sample.Section>
+
+                <Sample.Section title="Code">
+                    <Sample.Code>{`
 const Sample = () => {
     return (
         <Page>
@@ -228,8 +228,7 @@ const Sample = () => {
 };
 
 `}</Sample.Code>
-                    </Sample.Section>
-                </Layout>
+                </Sample.Section>
             </Sample.Section>
         </Sample>
     );

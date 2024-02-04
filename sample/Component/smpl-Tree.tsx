@@ -1,7 +1,7 @@
 import { Layout, Group, Tree, Divider } from "@/comn/components";
 import { Sample } from "@/comn/components/_";
 
-const treeviewItems = () => [
+const data = [
     {
         id: "1",
         name: "public",
@@ -130,16 +130,29 @@ export const SampleTree = () => {
     return (
         <Sample title="Tree">
             <Sample.Section>
-                <Layout direction="row">
-                    <Group>
-                        <Group.Title title="asd" />
-                        <Tree data={treeviewItems()} />
-                    </Group>
-                    <Divider orientation="vertical" />
+                <Sample.Table
+                    data={[
+                        ["Props", "Description"],
+                        ["data", ""],
+                    ]}
+                />
+            </Sample.Section>
 
-                    <Group>
-                        <Tree data={treeviewItems()} />
-                    </Group>
+            <Sample.Section title="1. 사용법" description="">
+                <Layout direction="row">
+                    <Sample.Section title="Result">
+                        <Tree data={data} />
+                    </Sample.Section>
+                    <Sample.Section title="Code">
+                        <Sample.Code>{`
+const Sample = () => {
+    return (
+        <Tree data={data} />
+    );
+};
+
+`}</Sample.Code>
+                    </Sample.Section>
                 </Layout>
             </Sample.Section>
         </Sample>
