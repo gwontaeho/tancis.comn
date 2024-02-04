@@ -359,3 +359,7 @@
 .react-datepicker-popper {
     z-index: 9999 !important;
 }
+
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+    left: -50% !important;
+}

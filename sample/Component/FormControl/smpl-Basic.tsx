@@ -6,7 +6,7 @@ import { useForm, TFormSchema, useResource } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnUtils } from "@/comn/utils";
 
-export const SampleFormControlText = () => {
+export const SampleFormControlBasic = () => {
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -110,105 +110,78 @@ export const SampleFormControlText = () => {
 
     return (
         <Sample
-            title="Form Control - Text"
-            description={<>폼에서 사용하는 Text 컴포넌트(&lt;input type="text" /&gt;에 대한 사용방법</>}
+            title="Form Control Basic"
+            description="폼에서 사용하는 컴포넌트(Input, Select, Textarea...)에 대한 기본 사용방법"
         >
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">
                 <Layout direction="col">
-                    <Sample.Section title="1.1 <FormControl />" description={<>- 사이즈 조절</>}>
+                    <Sample.Section
+                        title="1.1 <FormControl />"
+                        description={<>- 컴포넌트(Input, Select, Textarea...) 단독으로 사용</>}
+                    >
                         <Group>
                             <Group.Body>
-                                <Group.Section>
-                                    <Layout direction="col">
-                                        <FormControl type="text" value={"size 1"} size={1} />
-                                        <FormControl type="text" value={"size 4"} size={4} />
-                                        <FormControl type="text" value={"size 8"} size={8} />
-                                        <FormControl type="text" value={"size 12"} size={12} />
-                                        <FormControl type="text" value={"size fit"} size="fit" />
-                                        <FormControl type="text" value={"size full"} size="full" />
-                                    </Layout>
-                                </Group.Section>
-                                <Group.Section>
-                                    <Group.Row>
-                                        <Group.Control label="text" type="text" value={"size 1"} size={1} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control
-                                            label="text"
-                                            type="text"
-                                            value={"size 1"}
-                                            size={1}
-                                            controlSize={10}
-                                        />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control
-                                            label="text"
-                                            type="text"
-                                            value={"size 4"}
-                                            size={4}
-                                            controlSize={10}
-                                        />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control label="text" type="text" value={"size 8"} size={8} />
-                                        <Group.Control label="text" type="text" value={"size 12"} size={12} />
-                                    </Group.Row>
-                                    <Group.Row>
-                                        <Group.Control label="text" type="text" value={"size fit"} size={"fit"} />
-                                        <Group.Control label="text" type="text" value={"size full"} size={"full"} />
-                                    </Group.Row>
-                                </Group.Section>
+                                <FormControl type="text" value={"text"} size={5} />
+                                <FormControl
+                                    type="number"
+                                    value={"9999.999"}
+                                    thousandSeparator={true}
+                                    decimalScale={3}
+                                />
+                                <FormControl type="password" value={"password"} size={6} />
+                                <FormControl type="textarea" value={"textarea"} />
+                                <FormControl type="select" options={code} />
+                                <FormControl type="radio" options={code} />
+                                <FormControl type="checkbox" options={code} all={true} />
+                                <FormControl type="date" value={comnUtils.getDate()} />
+                                <FormControl type="time" value={comnUtils.getDate()} />
+                                <FormControl type="datetime" value={comnUtils.getDate()} />
+                                <FormControl type="daterange" />
+                                <FormControl type="timerange" />
+                                <FormControl
+                                    type="code"
+                                    area="comnCd"
+                                    comnCd="COM_0100"
+                                    value="A01"
+                                    size={4}
+                                    maxLength={3}
+                                />
+                                <FormControl type="file" />
                             </Group.Body>
                         </Group>
                         <Sample.Section title="Source Code">
                             <Sample.Code>{`
 const Sample = () => {
+    useResource({
+        defaultSchema: [{ area: "comnCd", comnCd: "COM_0100" }],
+    });
 
+    const code = [
+        { label: "Y", value: "Y" },
+        { label: "N", value: "N" },
+    ];
     return (
         <Group>
             <Group.Body>
-                <Group.Section>
-                    <Layout direction="col">
-                        <FormControl type="text" value={"size 1"} size={1} />
-                        <FormControl type="text" value={"size 4"} size={4} />
-                        <FormControl type="text" value={"size 8"} size={8} />
-                        <FormControl type="text" value={"size 12"} size={12} />
-                        <FormControl type="text" value={"size fit"} size="fit" />
-                        <FormControl type="text" value={"size full"} size="full" />
-                    </Layout>
-                </Group.Section>
-                <Group.Section>
-                    <Group.Row>
-                        <Group.Control label="text" type="text" value={"size 1"} size={1} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="text"
-                            type="text"
-                            value={"size 1"}
-                            size={1}
-                            controlSize={10}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control
-                            label="text"
-                            type="text"
-                            value={"size 4"}
-                            size={4}
-                            controlSize={10}
-                        />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="text" type="text" value={"size 8"} size={8} />
-                        <Group.Control label="text" type="text" value={"size 12"} size={12} />
-                    </Group.Row>
-                    <Group.Row>
-                        <Group.Control label="text" type="text" value={"size fit"} size={"fit"} />
-                        <Group.Control label="text" type="text" value={"size full"} size={"full"} />
-                    </Group.Row>
-                </Group.Section>
+                <FormControl type="text" value={"text"} size={5} />
+                <FormControl
+                    type="number"
+                    value={"9999.999"}
+                    thousandSeparator={true}
+                    decimalScale={3}
+                />
+                <FormControl type="password" value={"password"} size={6} />
+                <FormControl type="textarea" value={"textarea"} />
+                <FormControl type="select" options={code} />
+                <FormControl type="radio" options={code} />
+                <FormControl type="checkbox" options={code} all={true} />
+                <FormControl type="date" value={comnUtils.getDate()} />
+                <FormControl type="time" value={comnUtils.getDate()} />
+                <FormControl type="datetime" value={comnUtils.getDate()} />
+                <FormControl type="daterange" />
+                <FormControl type="timerange" />
+                <FormControl type="code" area="comnCd" comnCd="COM_0100" value="A01" size={4}  maxLength={3} />
+                <FormControl type="file" />
             </Group.Body>
         </Group>
     );

@@ -10,13 +10,13 @@ import classNames from "classnames";
 type SampleProps = {
     children?: React.ReactNode;
     title?: String;
-    description?: string;
+    description?: any;
 };
 
 type SampleSectionProps = {
     children?: React.ReactNode;
     title?: string;
-    description?: string;
+    description?: any;
 };
 type SampleDocProps = {
     name: string;

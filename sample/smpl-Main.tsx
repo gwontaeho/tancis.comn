@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Temp } from "./temp";
 import { SampleHome } from "./smpl-Home";
 
+import { SampleFormControlBasic } from "@/comn/sample/Component/FormControl/smpl-Basic";
 import { SampleFormControlText } from "@/comn/sample/Component/FormControl/smpl-Text";
 import { SampleFormControlNumber } from "@/comn/sample/Component/FormControl/smpl-Number";
 import { SampleFormControlPassword } from "@/comn/sample/Component/FormControl/smpl-Password";
@@ -66,6 +67,7 @@ export const SampleMain = () => {
 
             <Route path="/test999" element={<__Test />} />
 
+            <Route path="/components/FormControl/Basic" element={<SampleFormControlBasic />} />
             <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
             <Route path="/components/FormControl/Number" element={<SampleFormControlNumber />} />
             <Route path="/components/FormControl/Password" element={<SampleFormControlPassword />} />

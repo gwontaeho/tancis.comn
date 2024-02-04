@@ -76,6 +76,8 @@ export const useForm = (props: UseFormProps) => {
     };
     const setSchemaAll = (schema: any) => {
         _setSchema(schema.schema);
+
+        //_setValues(_getValues());
     };
     const resetSchema = () => {
         _setSchema(schema);

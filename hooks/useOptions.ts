@@ -37,6 +37,16 @@ export const useOptions = (props: UseOptionsProps) => {
         /** */
     }, [resource]);
 
+    React.useEffect(() => {
+        if (!area) return;
+
+        const key = utils.getResourceKey(area, comnCd, theme.lang);
+        if (!resource[key]) return;
+        getOptionsFromIDB(key);
+
+        /** */
+    }, [comnCd, area, options]);
+
     const getOptionsFromIDB = async (key: any) => {
         try {
             const resource = await idb.get("TANCIS", "RESOURCE", key);

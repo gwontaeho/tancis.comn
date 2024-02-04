@@ -16,6 +16,10 @@ export const SampleRoutes = [
                         base: "/FormControl",
                         children: [
                             {
+                                name: "Basic",
+                                to: "/comn/smpl/components/FormControl/Basic",
+                            },
+                            {
                                 name: "Text",
                                 to: "/comn/smpl/components/FormControl/Text",
                             },

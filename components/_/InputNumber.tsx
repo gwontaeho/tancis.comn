@@ -59,6 +59,10 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             _setValue(formatNumber(value, o));
         }, [value]);
 
+        React.useEffect(() => {
+            _setValue(formatNumber(value, o));
+        }, [decimalScale, thousandSeparator]);
+
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             _setValue(formatNumber(e.target.value, o));
 
