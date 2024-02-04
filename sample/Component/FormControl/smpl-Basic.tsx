@@ -110,7 +110,7 @@ export const SampleFormControlBasic = () => {
 
     return (
         <Sample
-            title="Form Control Basic"
+            title="Form Component Basic"
             description="폼에서 사용하는 컴포넌트(Input, Select, Textarea...)에 대한 기본 사용방법"
         >
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">

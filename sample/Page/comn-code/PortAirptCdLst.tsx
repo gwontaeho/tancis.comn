@@ -71,9 +71,15 @@ export const PortAirptCodeList = (props: any) => {
     }, []);
 
     return (
-        <Page>
-            {/* <Page.Navigation base={comnEnvs.base} nodes={[...BASE.nodes, { label: "T_PORT_AIRPT_CD_LST" }]} />
-            <Page.Header title={t("T_PORT_AIRPT_CD_LST")} description={t("T_PORT_AIRPT_CD_LST")} /> */}
+        <Page
+            id={pgeUid}
+            title={t("T_PORT_AIRPT_CD_LST")}
+            description={t("T_PORT_AIRPT_CD_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { label: "T_PORT_AIRPT_CD_LST" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>

@@ -11,6 +11,7 @@ type InputCodeProps = UseOptionsProps & {
 
     value?: any;
     name?: string;
+    placeholder?: string;
     readOnly?: boolean;
     disabled?: boolean;
     maxLength?: number;
@@ -68,6 +69,7 @@ export const InputCode = (props: InputCodeProps) => {
         readOnly,
         disabled,
         maxLength,
+        placeholder,
         onBlur,
         onFocus,
         onChange,
@@ -79,6 +81,7 @@ export const InputCode = (props: InputCodeProps) => {
             readOnly,
             disabled,
             maxLength,
+            placeholder,
             onBlur,
             onFocus,
         }).filter(([, value]) => value !== undefined),
@@ -129,6 +132,8 @@ export const InputCode = (props: InputCodeProps) => {
     }, 500);
 
     const handleClickSearch = () => {
+        if (disabled === true) return;
+
         const params = { ...utils.toValues(popupParams), comnCd };
         openPopup({
             params,

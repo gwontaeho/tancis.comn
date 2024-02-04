@@ -595,7 +595,7 @@ export const SCHEMA_GRID_ORG_CD: WijmoSchemaType = {
 
 export const SCHEMA_GRID_WRHS_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_WRHS_CD", binding: "coDclaCd", width: 150 }] },
         { cells: [{ header: "L_WRHS_NM", binding: "wrhsNm", width: "*" }] },
@@ -616,7 +616,7 @@ export const SCHEMA_GRID_WRHS_CD: TGridSchema = {
 
 export const SCHEMA_GRID_CO_DCLA_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_TIN", binding: "coTin", width: 200 }] },
         { cells: [{ header: "L_CO_NM", binding: "coNm", width: "*" }] },
@@ -645,7 +645,7 @@ export const SCHEMA_GRID_CO_DCLA_CD: TGridSchema = {
 
 export const SCHEMA_GRID_ORG_DEPT_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_DEPT_CD", binding: "deptCd", width: 200 }] },
         { cells: [{ header: "L_DEPT_NM", binding: "deptNm", width: 200 }] },
@@ -674,7 +674,7 @@ export const SCHEMA_GRID_ORG_DEPT_CD: TGridSchema = {
 
 export const SCHEMA_GRID_CSTM_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_CSTM_CD", binding: "cstmOfceCd", width: 150 }] },
         { cells: [{ header: "L_CSTM_TP_CD", binding: "cstmTpCd", width: 150 }] },
@@ -711,7 +711,7 @@ export const SCHEMA_GRID_CSTM_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_BODY_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_BODY_TP_CD", binding: "vhclBodyTpCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_BODY_TP_NM", binding: "vhclBodyTpNm", width: "*" }] },
@@ -732,7 +732,7 @@ export const SCHEMA_GRID_VHCL_BODY_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_CTGR_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_CTGR_CD", binding: "vhclCtgrCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_CTGR_NM", binding: "vhclCtgrNm", width: "*" }] },
@@ -753,7 +753,7 @@ export const SCHEMA_GRID_VHCL_CTGR_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_CLR_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_CLR_CD", binding: "vhclClrCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_CLR_NM", binding: "vhclClrNm", width: "*" }] },
@@ -774,7 +774,7 @@ export const SCHEMA_GRID_VHCL_CLR_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_FL_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_FL_TP_CD", binding: "vhclFlTpCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_FL_NM", binding: "vhclFlNm", width: "*" }] },
@@ -795,7 +795,7 @@ export const SCHEMA_GRID_VHCL_FL_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_IMP_CNTY_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_CNTY_CD", binding: "vhclCntyCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_CNTY_NM", binding: "vhclCntyNm", width: "*" }] },
@@ -816,7 +816,7 @@ export const SCHEMA_GRID_VHCL_IMP_CNTY_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_INSR_TP_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_INSR_TP_CD", binding: "vhclInsrTpCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_INSR_TP_NM", binding: "vhclInsrTpNm", width: "*" }] },
@@ -837,7 +837,7 @@ export const SCHEMA_GRID_VHCL_INSR_TP_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_MKER_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_MNFC_CD", binding: "vhclMnfcCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_MNFC_NM", binding: "vhclMnfcNm", width: "*" }] },
@@ -858,7 +858,7 @@ export const SCHEMA_GRID_VHCL_MKER_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_MDL_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_MDL_CD", binding: "vhclMdlCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_MDL_NM", binding: "vhclMdlNm", width: "*" }] },
@@ -879,7 +879,7 @@ export const SCHEMA_GRID_VHCL_MDL_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_MDL_NO_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_MDL_NO_CD", binding: "vhclMdlNoCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_MDL_NO_NM", binding: "vhclMdlNoNm", width: "*" }] },
@@ -900,7 +900,7 @@ export const SCHEMA_GRID_VHCL_MDL_NO_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_HLPN_CTGR_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_HLPN_CTGR_CD", binding: "vhclHlpnCtgrCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_HLPN_CTGR_NM", binding: "vhclHlpnCtgrNm", width: "*" }] },
@@ -921,7 +921,7 @@ export const SCHEMA_GRID_VHCL_HLPN_CTGR_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_PRPL_TP_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_PRPL_TP_CD", binding: "vhclPrplTpCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_PRPL_TP_NM", binding: "vhclPrplTpNm", width: "*" }] },
@@ -942,7 +942,7 @@ export const SCHEMA_GRID_VHCL_PRPL_TP_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_TRMSSN_TP_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_TRMSSN_TP_CD", binding: "vhclTrmssnTpCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_TRMSSN_TP_NM", binding: "vhclTrmssnTpNm", width: "*" }] },
@@ -963,7 +963,7 @@ export const SCHEMA_GRID_VHCL_TRMSSN_TP_CD: TGridSchema = {
 
 export const SCHEMA_GRID_VHCL_USE_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false },
+    options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_VHCL_USE_CD", binding: "vhclUseCd", width: 150 }] },
         { cells: [{ header: "L_VHCL_USE_NM", binding: "vhclUseNm", width: "*" }] },
