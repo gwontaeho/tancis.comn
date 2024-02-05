@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
+import { Page, Group, Layout, Text, Button } from "@/comn/components";
 import Prism from "prismjs";
 import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
@@ -46,7 +46,15 @@ export const SampleFormControlDateRange = () => {
     return (
         <Sample
             title="Form Control - DateRange"
-            description={<>폼에서 사용하는 DateRange 컴포넌트(&lt;input type="daterange" /&gt;에 대한 사용방법</>}
+            description={
+                <>
+                    폼에서 사용하는 DateRange 컴포넌트(&lt;input type="daterange" /&gt;에 대한 사용방법
+                    <br />
+                    <Text size="2xl" className="text-uf-warning">
+                        ※ rangeButton 이 존재하는 경우 controlSize 를 10 으로 사용(size option 제거)
+                    </Text>
+                </>
+            }
         >
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">
                 <Layout direction="col">
@@ -68,7 +76,6 @@ export const SampleFormControlDateRange = () => {
                                             type="daterange"
                                             start={{ name: "start", value: comnUtils.getDate() }}
                                             end={{ name: "end", value: comnUtils.getDate() }}
-                                            size={10}
                                             controlSize={10}
                                             rangeButton={0}
                                         />
@@ -79,7 +86,6 @@ export const SampleFormControlDateRange = () => {
                                             type="daterange"
                                             start={{ name: "start", value: comnUtils.getDate() }}
                                             end={{ name: "end", value: comnUtils.getDate() }}
-                                            size={8}
                                             controlSize={10}
                                             rangeButton={1}
                                         />
@@ -90,7 +96,6 @@ export const SampleFormControlDateRange = () => {
                                             type="daterange"
                                             start={{ name: "start", value: comnUtils.getDate() }}
                                             end={{ name: "end", value: comnUtils.getDate() }}
-                                            size={6}
                                             controlSize={10}
                                             rangeButton={2}
                                         />
@@ -148,7 +153,6 @@ const Sample = () => {
                             type="daterange"
                             start={{ name: "start", value: comnUtils.getDate() }}
                             end={{ name: "end", value: comnUtils.getDate() }}
-                            size={10}
                             controlSize={10}
                             rangeButton={0}
                         />
@@ -159,7 +163,6 @@ const Sample = () => {
                             type="daterange"
                             start={{ name: "start", value: comnUtils.getDate() }}
                             end={{ name: "end", value: comnUtils.getDate() }}
-                            size={8}
                             controlSize={10}
                             rangeButton={1}
                         />
@@ -170,7 +173,6 @@ const Sample = () => {
                             type="daterange"
                             start={{ name: "start", value: comnUtils.getDate() }}
                             end={{ name: "end", value: comnUtils.getDate() }}
-                            size={6}
                             controlSize={10}
                             rangeButton={2}
                         />
