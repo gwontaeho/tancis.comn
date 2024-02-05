@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
-import Prism from "prismjs";
+import { Group, Layout, FormControl, Button } from "@/comn/components";
 import { useForm, TFormSchema, useResource } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnUtils } from "@/comn/utils";
