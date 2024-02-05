@@ -6,7 +6,7 @@ import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 
-const SCHEMA_FORM: TFormSchema = {
+const SF_FORM: TFormSchema = {
     id: "form",
     schema: {
         field1: {
@@ -254,10 +254,18 @@ export const SampleFormControlCode = () => {
         ],
     });
 
-    const form = useForm({ defaultSchema: SCHEMA_FORM, defaultValues: {} });
+    const form = useForm({ defaultSchema: SF_FORM, defaultValues: {} });
 
     return (
-        <Sample title="Form Control - Code" description={<>폼에서 사용하는 Code 컴포넌트에 대한 사용방법</>}>
+        <Sample
+            title="Form Control - Code"
+            description={
+                <>
+                    - 폼에서 사용하는 Code 컴포넌트에 대한 사용방법
+                    <br />- 코드를 조회하고 자동완성하고 팝업으로 조회기능 제공
+                </>
+            }
+        >
             <Sample.Section title="Code 컴포넌트 지원 목록">
                 <Group>
                     <Group.Body>
@@ -468,6 +476,475 @@ export const SampleFormControlCode = () => {
                         </Group.Section>
                     </Group.Body>
                 </Group>
+                <Sample.Section title="Source Code">
+                    <Sample.Code>{`
+const Sample = () => {
+
+    const SF_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            field1: {
+                type: "code",
+                area: "cityCd",
+                label: "Region Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field2: {
+                type: "code",
+                area: "comnCd",
+                comnCd: "COM_0015",
+                label: "Common Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field3: {
+                type: "code",
+                area: "cntyCd",
+                label: "Country Code",
+                popupSize: "md",
+            },
+            field4: {
+                type: "code",
+                area: "currCd",
+                label: "Currency Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field5: {
+                type: "code",
+                area: "bnkCd",
+                label: "Bank Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field6: {
+                type: "code",
+                area: "portCd",
+                label: "Port Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field7: {
+                type: "code",
+                area: "airptCd",
+                label: "Airport Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field8: {
+                type: "code",
+                area: "portAirptCd",
+                label: "Port/Airport Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field9: {
+                type: "code",
+                area: "coCd",
+                label: "Company Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field10: {
+                type: "code",
+                area: "prcssStatCd",
+                label: "Processing Status Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field11: {
+                type: "code",
+                area: "orgCd",
+                label: "Organization Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field12: {
+                type: "code",
+                area: "wrhsCd",
+                label: "WareHouse Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field13: {
+                type: "code",
+                area: "coDclaCd",
+                label: "Company Declare Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+    
+            field14: {
+                type: "code",
+                area: "orgDeptCd",
+                label: "Organization Department Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field15: {
+                type: "code",
+                area: "cstmOfceCd",
+                label: "Customs Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field16: {
+                type: "code",
+                area: "vhclBodyCd",
+                label: "Vehicle Body Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field17: {
+                type: "code",
+                area: "vhclCtgrCd",
+                label: "Vehicle Category Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field18: {
+                type: "code",
+                area: "vhclClrCd",
+                label: "Vehicle Color Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field19: {
+                type: "code",
+                area: "vhclFlCd",
+                label: "Vehicle Fuel Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field20: {
+                type: "code",
+                area: "vhclMkerCd",
+                label: "Vehicle Maker Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field21: {
+                type: "code",
+                area: "vhclImpCntyCd",
+                label: "Vehicle Import Country Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field22: {
+                type: "code",
+                area: "vhclInsrTpCd",
+                label: "Vehicle Insurance Type Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field23: {
+                type: "code",
+                area: "vhclMdlCd",
+                label: "Vehicle Model Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field24: {
+                type: "code",
+                area: "vhclMdlNoCd",
+                label: "Vehicle Model Number Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field25: {
+                type: "code",
+                area: "vhclHlpnCtgrCd",
+                label: "Vehicle Holder Category Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field26: {
+                type: "code",
+                area: "vhclPrplTpCd",
+                label: "Vehicle Propeller Type Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field27: {
+                type: "code",
+                area: "vhclTrmssnTpCd",
+                label: "Vehicle Transmission Type Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field28: {
+                type: "code",
+                area: "vhclUseCd",
+                label: "Vehicle Use Code",
+                maxLength: 3,
+                popupSize: "md",
+            },
+            field29: {
+                type: "code",
+                area: "coCdDtl",
+                label: "Company Code Detail",
+                maxLength: 9,
+                popupSize: "md",
+            },
+        },
+    };
+    
+    export const SampleFormControlCode = () => {
+        useResource({
+            defaultSchema: [
+                { area: "cityCd" },
+                { area: "comnCd", comnCd: "COM_0100" },
+                { area: "comnCd", comnCd: "CAG_0018" },
+                { area: "comnCd", comnCd: "CAG_0006" },
+                { area: "comnCd", comnCd: "COM_0015" },
+                { area: "cntyCd" },
+                { area: "currCd" },
+                { area: "bnkCd" },
+                { area: "portCd" },
+                { area: "airptCd" },
+                { area: "portAirptCd" },
+                { area: "coCd" },
+                { area: "prcssStatCd" },
+                { area: "orgCd" },
+                { area: "wrhsCd" },
+                { area: "coDclaCd" },
+                { area: "orgDeptCd" },
+                { area: "cstmCd" },
+                { area: "vhclBodyCd" },
+                { area: "vhclCtgrCd" },
+                { area: "vhclClrCd" },
+                { area: "vhclFlCd" },
+                { area: "vhclMkerCd" },
+                { area: "vhclImpCntyCd" },
+                { area: "vhclInsrTpCd" },
+                { area: "vhclMdlCd" },
+                { area: "vhclMdlNoCd" },
+                { area: "vhclHlpnCtgrCd" },
+                { area: "vhclPrplTpCd" },
+                { area: "vhclTrmssnTpCd" },
+                { area: "vhclUseCd" },
+                { area: "coCdDtl" },
+            ],
+        });
+    
+        const form = useForm({ defaultSchema: SF_FORM, defaultValues: {} });
+
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field1}></Group.Control>
+                        <Group.Label label="지역 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/cntyCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field2}></Group.Control>
+                        <Group.Label label="공통 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/comnCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field3}></Group.Control>
+                        <Group.Label label="국가 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/cntyCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field4}></Group.Control>
+                        <Group.Label label="통화 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/currCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field5}></Group.Control>
+                        <Group.Label label="은행 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/bnkCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field6}></Group.Control>
+                        <Group.Label label="항구 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/portCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field7}></Group.Control>
+                        <Group.Label label="공항 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/airptCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field8}></Group.Control>
+                        <Group.Label label="항구/공항 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/portAirptCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field9}></Group.Control>
+                        <Group.Label label="회사 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/coCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field10}></Group.Control>
+                        <Group.Label label="처리상태 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/prcssStatPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field11}></Group.Control>
+                        <Group.Label label="기관 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/orgCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field12}></Group.Control>
+                        <Group.Label label="보세창고 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/wrhsCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field13}></Group.Control>
+                        <Group.Label label="업체신고 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/coDclaCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field14}></Group.Control>
+                        <Group.Label label="기관부서 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/orgDeptCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field15}></Group.Control>
+                        <Group.Label label="세관 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/cstmCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field16}></Group.Control>
+                        <Group.Label label="차량차체 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclBodyCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field17}></Group.Control>
+                        <Group.Label label="차량카테고리 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclCtgrCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field18}></Group.Control>
+                        <Group.Label label="차량색상 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclClrCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field19}></Group.Control>
+                        <Group.Label label="차량연료유형 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclFlCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field20}></Group.Control>
+                        <Group.Label label="차량제조사 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclMkerCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field21}></Group.Control>
+                        <Group.Label label="차량수입위치 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclImpCntyCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field22}></Group.Control>
+                        <Group.Label label="차량보험유형 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclInsrTpCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field23}></Group.Control>
+                        <Group.Label label="차량모델 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclMdlCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field24}></Group.Control>
+                        <Group.Label label="차량모델넘버 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclMdlNoCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field25}></Group.Control>
+                        <Group.Label label="차량소유자카테고리 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclHlpnCtgrCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field26}></Group.Control>
+                        <Group.Label label="차량추진기유형 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclPrplTpCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field27}></Group.Control>
+                        <Group.Label label="차량변속기유형 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclTrmssnTpCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field28}></Group.Control>
+                        <Group.Label label="차량사용 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/vhclUseCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field29}></Group.Control>
+                        <Group.Label label="업체상세정보 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/CoCdDtl</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                </Group.Section>
+            </Group.Body>
+        </Group>
+    );
+};
+
+`}</Sample.Code>
+                </Sample.Section>
             </Sample.Section>
             <Sample.Section title="1. 컴포넌트 사용방법(기본)">
                 <Layout direction="col">
