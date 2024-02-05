@@ -815,29 +815,22 @@ const reducer = (state: any, action: any) => {
 };
 
 /**
- * # Grid
- *
+ * ## Grid Initialize Hook
  */
-export const Grid = (props: any) => {
-    const { _grid, data, render, onCellClick, onRowClick } = props;
+const useInitailize = (props: any) => {
+    const { _grid, data } = props;
 
     const __t = data?.__t?.getTime();
-    const { t } = useTranslation();
-
     const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
-    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _test } = state;
 
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
         if (!Array.isArray(data.content)) return;
-        if (data.content.length === 0 && _test.length === 0) return;
+        if (data.content.length === 0 && state._test.length === 0) return;
 
         dispatch({ type: "setData", payload: { _grid, data } });
     }, [__t]);
 
-    /**
-     * Initialize
-     */
     React.useEffect(() => {
         _grid.current._setData = (data: any) => {
             dispatch({ type: "setData", payload: { _grid, data } });
@@ -885,16 +878,27 @@ export const Grid = (props: any) => {
             dispatch({ type: "group", payload: { _grid, groupKey, open } });
         };
         _grid.current._handleClickCel = (payload: any) => {
-            dispatch({
-                type: "handleClickCel",
-                payload: { _grid, ...payload },
-            });
+            dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
         };
 
         _grid.current._initialized = true;
 
         return () => {};
     }, []);
+
+    return { state, dispatch };
+};
+
+/**
+ * # Grid
+ */
+export const Grid = (props: any) => {
+    const { _grid, render, onCellClick, onRowClick } = props;
+
+    const { t } = useTranslation();
+    const { state } = useInitailize(props);
+
+    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _test } = state;
 
     return (
         <div className="flex flex-col w-full">
