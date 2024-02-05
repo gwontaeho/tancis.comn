@@ -18,29 +18,15 @@ const schema1: TGridSchema = {
         // edit: true,
         importExcel: true,
         exportExcel: true,
-        pagination: "out",
+        pagination: "in",
 
         // group: ["q", "w"],
     },
     head: [
-        { cells: [{ header: "L_RPRT_NO", binding: "rprtNo", rowspan: 2, width: 200 }] },
-        { cells: [{ header: "L_CRO_DT", binding: "croDt", rowspan: 2, width: 200 }] },
-        {
-            colspan: 2,
-            cells: [
-                { header: "L_CRO", colspan: 2, width: 400 },
-                { header: "L_QTY", binding: "qty", width: 200 },
-                { header: "L_WGHT", binding: "wght", width: 200 },
-            ],
-        },
-        { cells: [{ header: "L_CRO_BASE_NO", binding: "croBaseNo", rowspan: 2, width: "2*" }] },
+        { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
     ],
-    body: [
-        { cells: [{ binding: "rprtNo" }] },
-        { cells: [{ binding: "croDt" }] },
-        { colspan: 2, cells: [{ binding: "qty" }, { binding: "wght" }] },
-        { cells: [{ binding: "croBaseNo" }] },
-    ],
+    body: [{ cells: [{ binding: "q" }] }, { cells: [{ binding: "w" }] }],
 };
 
 type TData = {
@@ -54,15 +40,15 @@ type TData = {
 };
 
 export const Temp = () => {
-    const { resource } = useResource({
-        defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0015" },
-            { area: "currCd" },
-            { area: "cityCd" },
-            { area: "portAirptCd" },
-            { area: "test" },
-        ],
-    });
+    // const { resource } = useResource({
+    //     defaultSchema: [
+    //         { area: "comnCd", comnCd: "COM_0015" },
+    //         { area: "currCd" },
+    //         { area: "cityCd" },
+    //         { area: "portAirptCd" },
+    //         { area: "test" },
+    //     ],
+    // });
 
     const {
         grid,
@@ -87,7 +73,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => utils.getMockData({ totalElements: 999 }), []);
+    const data = useMemo(() => utils.getMockData({ totalElements: 7 }), []);
 
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
@@ -147,6 +133,8 @@ export const Temp = () => {
         },
     };
 
+    console.log("Page Rendered");
+
     return (
         <Page>
             <Group>
@@ -154,7 +142,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data2}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -198,60 +186,57 @@ export const Temp = () => {
             >
                 asdasd
             </button>
-            {/* <button
-                onClick={() => {
-                    const worksheet = xlsxUtils.json_to_sheet(getData());
-                    const workbook = xlsxUtils.book_new();
-                    xlsxUtils.book_append_sheet(workbook, worksheet, "test");
-                    console.log(worksheet);
 
-                    writeFile(workbook, "Presidents.xlsx", { compression: true });
-                }}
-            >
-                asdasd
-            </button> */}
+            <div className="flex flex-col gap-8">
+                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
+                    <button onClick={() => setData(data)}>set data</button>
+                    <button onClick={() => resetData()}>reset</button>
+                    <button onClick={() => addRow({ text: "added" })}>add row</button>
+                    <button onClick={() => setSize(30)}>setSize 30</button>
+                    <button onClick={() => setPage(2)}>setPage 2</button>
+                    <button onClick={() => setOption("height", 500)}>set height</button>
 
-            <Layout.Left direction="row" gap={8}>
-                <button onClick={() => setData(data)}>set data</button>
-                <button onClick={() => resetData()}>reset</button>
-                <button onClick={() => setSize(30)}>setSize 30</button>
-                <button onClick={() => setOption("edit", true)}>setOption edit true</button>
-                <button onClick={() => setOption("edit", false)}>setOption edit false</button>
-                <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
-                <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
-                <button onClick={() => deleteRow("radio")}>delete radio</button>
-                <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
-                <button onClick={() => setOption("index", true)}>setOption index true</button>
-                <button onClick={() => setOption("index", false)}>setOption index false</button>
-                <button onClick={() => setOption("checkbox", true)}>setOption checkbox true</button>
-                <button onClick={() => setOption("checkbox", false)}>setOption checkbox false</button>
-                <button onClick={() => setOption("radio", true)}>setOption radio true</button>
-                <button onClick={() => setOption("radio", false)}>setOption radio false</button>
-                <button onClick={() => console.log(getData())}>getData</button>
-                <button onClick={() => console.log(getOrigin())}>getOrigin</button>
-                <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
-                <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
-                <button
-                    onClick={() => {
-                        const cel = getSelectedCell();
-                        updateRow({ ...cel?.rowValues, q: "123123" });
-                        console.log(cel?.rowValues);
-                    }}
-                >
-                    셀 데이터 바꾸기
-                </button>
-                <button onClick={() => console.log(getChecked())}>getChecked</button>
-                <button onClick={() => addRow({ text: "added" })}>add row</button>
-                <button onClick={() => {}}>updateRow selected</button>
-                <button onClick={() => setEdit("column", "test", true)}>edit column true</button>
-                <button onClick={() => setEdit("column", "test", false)}>edit column false</button>
-                <button onClick={() => setEdit("cell", "ww", true)}>edit cell true</button>
-                <button onClick={() => setEdit("cell", "ww", false)}>edit cell false</button>
-                <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>
-                <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, false)}>edit row false</button>
-                <button onClick={() => setShow("column", "test1", true)}>show text</button>
-                <button onClick={() => setShow("column", "test1", false)}>hide text</button>
-            </Layout.Left>
+                    <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
+                    <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
+                    <button onClick={() => deleteRow("radio")}>delete radio</button>
+                    <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
+
+                    <button
+                        onClick={() => {
+                            const cel = getSelectedCell();
+                            updateRow({ ...cel?.rowValues, q: "123123" });
+                        }}
+                    >
+                        셀 데이터 바꾸기
+                    </button>
+                    <button onClick={() => console.log(getChecked())}>getChecked</button>
+                </div>
+                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
+                    <button onClick={() => setOption("edit", true)}>setOption edit true</button>
+                    <button onClick={() => setOption("edit", false)}>setOption edit false</button>
+                    <button onClick={() => setOption("index", true)}>setOption index true</button>
+                    <button onClick={() => setOption("index", false)}>setOption index false</button>
+                    <button onClick={() => setOption("checkbox", true)}>setOption checkbox true</button>
+                    <button onClick={() => setOption("checkbox", false)}>setOption checkbox false</button>
+                    <button onClick={() => setOption("radio", true)}>setOption radio true</button>
+                    <button onClick={() => setOption("radio", false)}>setOption radio false</button>
+                    <button onClick={() => setEdit("column", "test", true)}>edit column true</button>
+                    <button onClick={() => setEdit("column", "test", false)}>edit column false</button>
+                    <button onClick={() => setEdit("cell", "w", true)}>edit cell true</button>
+                    <button onClick={() => setEdit("cell", "w", false)}>edit cell false</button>
+                    <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>
+                    <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, false)}>edit row false</button>
+                    <button onClick={() => setShow("column", "test", true)}>show text</button>
+                    <button onClick={() => setShow("column", "test", false)}>hide text</button>
+                </div>
+                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
+                    <button onClick={() => console.log(getData())}>getData</button>
+                    <button onClick={() => console.log(getOrigin())}>getOrigin</button>
+                    <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
+                    <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
+                    <button onClick={() => console.log(getChecked())}>getChecked</button>
+                </div>
+            </div>
         </Page>
     );
 };

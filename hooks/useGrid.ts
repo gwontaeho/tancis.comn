@@ -79,6 +79,8 @@ export const useGrid = (props: UseGridProps) => {
         _paged: [],
         _selectedRow: null,
         _selectedCel: null,
+        _totalCount: 0,
+        _originTotalCount: 0,
 
         /** head ref for sync scroll */
         _head: null,
@@ -123,12 +125,36 @@ export const useGrid = (props: UseGridProps) => {
         // _setOption
         // _resetData
         // _handleUpdate
-        // _handleClickAdd
-        // _handleClickDelete
-        // _handleChangePage
-        // _handleChangeSize
+        // _handleAdd
+        // _handleDelete
+        // _handlePage
+        // _handleSize
     });
 
+    // Set
+    const setData = (data: any) => {
+        _grid.current._setData(data);
+    };
+    const resetData = () => {
+        _grid.current._resetData();
+    };
+    const setOption = (target: "add" | "delete" | "edit" | "index" | "radio" | "checkbox" | "height", value: any) => {
+        _grid.current._setOption(target, value);
+    };
+    const setEdit = (type: "column" | "cell" | "row", target: string | TRow, value: boolean) => {
+        _grid.current._setEdit(type, target, value);
+    };
+    const setShow = (type: "column", target: string, value: boolean) => {
+        _grid.current._setShow(type, target, value);
+    };
+    const setPage = (next: number) => {
+        _grid.current._handlePage(next);
+    };
+    const setSize = (next: number) => {
+        _grid.current._handleSize(next);
+    };
+
+    // Get
     const getData = () => {
         return _grid.current._content;
     };
@@ -144,35 +170,16 @@ export const useGrid = (props: UseGridProps) => {
     const getSelectedCell = () => {
         return _grid.current._selectedCel;
     };
-    const updateRow = (row: TRow) => {
-        _grid.current._handleUpdate(row);
-    };
+
+    // Control
     const addRow = (data?: Record<string, any>) => {
-        _grid.current._handleClickAdd?.(data);
+        _grid.current._handleAdd(data);
     };
     const deleteRow = (type: "radio" | "checkbox" | "all" | TRow | TRow[]) => {
-        _grid.current._handleClickDelete?.(type);
+        _grid.current._handleDelete(type);
     };
-    const setOption = (target: "add" | "delete" | "edit" | "index" | "radio" | "checkbox", value: any) => {
-        _grid.current._setOption?.(target, value);
-    };
-    const setEdit = (type: "column" | "cell" | "row", target: string | TRow, value: boolean) => {
-        _grid.current._setEdit?.(type, target, value);
-    };
-    const setShow = (type: "column", target: string, value: boolean) => {
-        _grid.current._setShow?.(type, target, value);
-    };
-    const setPage = (next: number) => {
-        _grid.current._handleChangePage(next);
-    };
-    const setSize = (next: number) => {
-        _grid.current._handleChangeSize(next);
-    };
-    const resetData = () => {
-        _grid.current._resetData();
-    };
-    const setData = (data: any) => {
-        _grid.current._setData(data);
+    const updateRow = (row: TRow) => {
+        _grid.current._handleUpdate(row);
     };
 
     return {
