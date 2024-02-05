@@ -18,8 +18,6 @@ const Toast = (props: ToastProps) => {
     const { t } = useTranslation();
     const setToast = useSetRecoilState(toastState);
 
-    console.log(type);
-
     const handleClose = () => {
         setToast((prev) => prev.filter((v) => id !== v.id));
     };

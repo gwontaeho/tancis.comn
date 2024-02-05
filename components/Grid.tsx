@@ -469,7 +469,7 @@ export const Grid = (props: any) => {
      */
     const handleClickAdd = React.useCallback((data?: any) => {
         if (_grid.current._pagination === "out") return;
-        _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added", ...data }];
+        _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
 
         __setGrid(_grid.current._content);
     }, []);
@@ -882,9 +882,6 @@ export const Grid = (props: any) => {
     };
 
     const gridTemplateColumns = getGridWidths();
-    console.log(gridTemplateColumns);
-
-    console.log(gridTemplateColumns);
 
     /** initialize */
     React.useEffect(() => {
