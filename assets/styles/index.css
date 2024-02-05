@@ -45,7 +45,7 @@
         --uf-sign-out-fill: #0f4f7e;
     }
 
-    :root[class~="tancis"] {
+    :root[class~="tanoga"] {
         --uf-layout-header: #007e41;
         --uf-background: #eef0f2;
         --uf-header: #f8f8f8;
@@ -61,7 +61,7 @@
         --uf-sign-out-fill: #005321;
     }
 
-    :root[class~="tanoga"] {
+    :root[class~="tancis"] {
         --uf-layout-header: #f6ab00;
         --uf-background: #eef0f2;
         --uf-header: #f8f8f8;
