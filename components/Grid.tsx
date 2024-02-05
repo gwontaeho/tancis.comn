@@ -1,8 +1,8 @@
+import dayjs from "dayjs";
 import React from "react";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
-import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
 
@@ -85,742 +85,11 @@ const fun = (schema: any) => {
 };
 
 /**
- * reducer
+ * ## Content Maker
+ *
  */
-// const initialArg = {};
-// const reducer = () => {};
-
-export const Grid = (props: any) => {
-    const {
-        /**  */
-        _grid,
-        data = { content: [], page: { totalElements: 0 } },
-        render,
-        onCellClick,
-        onRowClick,
-    } = props;
-
-    const __t = data?.__t?.getTime();
-    const { t } = useTranslation();
-
-    // const [state, dispatch] = React.useReducer<any>(reducer, initialArg);
-
-    const [_head, _setHead] = React.useState(() => {
-        return _grid.current._defaultSchema.head.map((_: any) => {
-            return {
-                ..._,
-                cells: _.cells.map((__: any) => {
-                    return { ...__, show: _.show === true ? true : _.show === false ? false : true };
-                }),
-            };
-        });
-    });
-
-    const [_body, _setBody] = React.useState(() => {
-        return _grid.current._defaultSchema.body.map((_: any, i: any) => {
-            return {
-                ..._,
-                id: _grid.current._defaultSchema.head[i]?.id,
-                show:
-                    _grid.current._defaultSchema.head[i]?.show === true
-                        ? true
-                        : _grid.current._defaultSchema.head[i]?.show === false
-                          ? false
-                          : true,
-                cells: _.cells.map((__: any) => {
-                    return {
-                        ...__,
-                        id: _grid.current._defaultSchema.head[i]?.id,
-                        show:
-                            _grid.current._defaultSchema.head[i]?.show === true
-                                ? true
-                                : _grid.current._defaultSchema.head[i]?.show === false
-                                  ? false
-                                  : true,
-                        edit:
-                            __.edit === true
-                                ? true
-                                : __.edit === false
-                                  ? false
-                                  : _.edit === true
-                                    ? true
-                                    : _.edit === false
-                                      ? false
-                                      : _grid.current._defaultSchema.options?.edit === true
-                                        ? true
-                                        : false,
-                    };
-                }),
-            };
-        });
-    });
-
-    const [_totalCount, _setTotalCount] = React.useState<number>(() => {
-        if (!data?.content) return 0;
-        return _grid.current._pagination === "in" ? data.content.length : data.page.totalElements;
-    });
-    const [_page, _setPage] = React.useState<number>(_grid.current._page);
-    const [_size, _setSize] = React.useState<number>(_grid.current._size);
-    const [_selectedRow, _setSelectedRow] = React.useState<Record<string, any> | null>(null);
-    const [_selectedCel, _setSelectedCel] = React.useState<any>(null);
-    const [_editingRow, _setEditingRow] = React.useState<any[]>([]);
-    const [_checked, _setChecked] = React.useState<any[]>([]);
-    const [_sort, _setSort] = React.useState<any | null>({});
-    const [_group, _setGroup] = React.useState<any | null>({});
-    const [_options, _setOptions] = React.useState({
-        index: _grid.current._index,
-        checkbox: _grid.current._checkbox,
-        radio: _grid.current._radio,
-        edit: _grid.current._edit,
-        add: _grid.current._add,
-        delete: _grid.current._delete,
-        exportExcel: _grid.current._exportExcel,
-        importExcel: _grid.current._importExcel,
-    });
-
-    /**
-     * initialize content
-     */
-    const [_test, _setTest] = React.useState<any[]>(() => {
-        if (!Array.isArray(data.content)) return [];
-
-        /**
-         * content setting
-         */
-        const _ = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-        _grid.current._dataCreated = data.__t;
-        _grid.current._dataUpdated = data.__t;
-        _grid.current._origin = _;
-        _grid.current._content = _;
-
-        let content = _;
-
-        /**
-         * grouping
-         */
-        if (!!_grid.current._group) {
-            const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
-                (a: any) => {
-                    return a[1].seq;
-                },
-            ]);
-
-            const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
-                if (!by) return data;
-
-                const depth = prevDepth + 1;
-                const parent = [...prevParent, by];
-
-                return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
-                    if (c[0] === "undefined") return c[1];
-
-                    const groupKey = prevGroupKey + "__" + c[0];
-
-                    _grid.current._groupStatus[groupKey] = { open: true };
-                    const row = {
-                        __key: uuid(),
-                        __type: "group",
-                        depth,
-                        groupKey,
-                        open: true,
-                        value: c[0],
-                        binding: by[0],
-                        count: c[1].length,
-                    };
-
-                    return [...p, row, ...getGrouped(c[1], groups[depth], depth, parent, groupKey)];
-                }, []);
-            };
-
-            content = getGrouped(content, groups[0], 0, [], "");
-        }
-
-        /**
-         * paging
-         */
-        if (_grid.current._pagination === "in") {
-            content = lodash.chunk(content, _grid.current._size)[_grid.current._page] || [];
-        }
-        _grid.current._paged = content;
-
-        return content;
-    });
-
-    /** set paged content */
-    React.useEffect(() => {
-        if (!_grid.current._initialized) return;
-        _grid.current._paged = _test;
-    }, [_test]);
-
-    /**
-     * on data changed
-     */
-    React.useEffect(() => {
-        if (!_grid.current._initialized) return;
-        if (!Array.isArray(data.content)) return;
-        if (data.content.length === 0 && _test.length === 0) return;
-
-        setData(data);
-    }, [__t]);
-
-    /**
-     * 240130
-     * set data
-     */
-    const setData = (d: any) => {
-        let content = (Array.isArray(d) ? d : Array.isArray(d.content) ? d.content : []).map((_: any) => ({
-            ..._,
-            __key: uuid(),
-            __type: "origin",
-        }));
-
-        _grid.current._dataUpdated = new Date();
-        _grid.current._origin = content;
-        _grid.current._content = content;
-
-        const total = _grid.current._pagination === "out" ? d?.page?.totalElements : undefined;
-
-        __setGrid(_grid.current._content, total);
-    };
-
-    /** set edit */
-    const setEdit = React.useCallback((type: any, target: any, value: any) => {
-        /**
-         * # type
-         * column
-         * cell
-         * row
-         *
-         * # target
-         * column id
-         * cell binding
-         * row
-         * row key
-         */
-
-        switch (type) {
-            case "column": {
-                _setBody((prev: any) => {
-                    const next = prev.map((_: any) => {
-                        if (_.id !== target) return _;
-                        return {
-                            ..._,
-                            cells: _.cells.map((__: any) => {
-                                return { ...__, edit: value };
-                            }),
-                        };
-                    });
-                    return next;
-                });
-                return;
-            }
-            case "cell": {
-                _setBody((prev: any) => {
-                    const next = prev.map((_: any) => {
-                        return {
-                            ..._,
-                            cells: _.cells.map((__: any) => {
-                                if (__.binding !== target) return __;
-                                return { ...__, edit: value };
-                            }),
-                        };
-                    });
-                    return next;
-                });
-                return;
-            }
-            /**
-             * 240129
-             */
-            case "row": {
-                const key =
-                    typeof target === "object" && !!target?.__key
-                        ? target.__key
-                        : typeof target === "string"
-                          ? target
-                          : undefined;
-
-                if (!key) return;
-
-                _setEditingRow((prev) => {
-                    /** to edit */
-                    if (value) {
-                        if (prev.find((r) => r.__key === key)) return prev;
-                        return [...prev, key];
-                    }
-                    /** to read */
-                    return prev.filter((r) => r !== key);
-                });
-
-                break;
-            }
-        }
-    }, []);
-
-    /** set show */
-    const setShow = React.useCallback((type: any, target: any, value: any) => {
-        /**
-         * # type
-         * column
-         *
-         * # target
-         * column id
-         */
-
-        switch (type) {
-            case "column": {
-                _setHead((prev: any) => {
-                    const next = prev.map((_: any) => {
-                        if (_.id !== target) return _;
-                        return {
-                            ..._,
-                            show: value,
-                            cells: _.cells.map((__: any) => {
-                                return { ...__, show: value };
-                            }),
-                        };
-                    });
-                    return next;
-                });
-                _setBody((prev: any) => {
-                    const next = prev.map((_: any) => {
-                        if (_.id !== target) return _;
-                        return {
-                            ..._,
-                            show: value,
-                            cells: _.cells.map((__: any) => {
-                                return { ...__, show: value };
-                            }),
-                        };
-                    });
-                    return next;
-                });
-                break;
-            }
-        }
-    }, []);
-
-    /** set option */
-    const setOption = React.useCallback((target: any, value: any) => {
-        _setOptions((prev) => {
-            _grid.current[target] = value;
-            return { ...prev, [target]: value };
-        });
-
-        if (target === "edit") {
-            _setBody((prev: any) => {
-                const next = prev.map((_: any) => {
-                    return {
-                        ..._,
-                        edit: value,
-                        cells: _.cells.map((__: any) => {
-                            return { ...__, edit: value };
-                        }),
-                    };
-                });
-                return next;
-            });
-        }
-    }, []);
-
-    /** reset data */
-    const resetData = () => {
-        // remove sort options
-
-        const o = _grid.current._origin;
-
-        _grid.current._content = o;
-
-        const paged =
-            _grid.current._pagination === "in" ? lodash.chunk(o, _grid.current._size)[_grid.current._page] : o;
-        _grid.current._paged = paged;
-
-        _setTotalCount(o.length);
-        _setTest(paged || []);
-    };
-
-    /** handle update */
-    const handleUpdate = React.useCallback((n: any) => {
-        if (!n?.__key) return;
-
-        _grid.current._content = _grid.current._content.map((_: any) => {
-            if (_.__key !== n.__key) return _;
-            const { __type, __key, ...rest } = n;
-            return {
-                ..._,
-                ...rest,
-                __type:
-                    _.__type === "origin" || _.__type === "updated"
-                        ? Object.keys(rest).some((k) => {
-                              return n[k] !== _grid.current._origin.find((o: any) => o.__key === n.__key)[k];
-                          })
-                            ? "updated"
-                            : "origin"
-                        : _.__type,
-            };
-        });
-
-        __setGrid(_grid.current._content);
-    }, []);
-
-    /**
-     * only pagination = in | false
-     * handle add
-     */
-    const handleClickAdd = React.useCallback((data?: any) => {
-        if (_grid.current._pagination === "out") return;
-        _grid.current._content = [..._grid.current._content, { __key: uuid(), __type: "added", ...data }];
-
-        __setGrid(_grid.current._content);
-    }, []);
-
-    /**
-     * only pagination = in | false
-     * handle delete
-     */
-    const handleClickDelete = React.useCallback((type: any) => {
-        if (_grid.current._pagination === "out") return;
-        if (!type) return;
-
-        /** row */
-        if (typeof type === "object" && type.__key) {
-            _grid.current._content = _grid.current._content
-                .map((_: any) => {
-                    if (_.__key === type.__key) {
-                        if (_.__type === "added") return undefined;
-                        return { ..._, __type: "deleted" };
-                    } else {
-                        return _;
-                    }
-                })
-                .filter((_: any) => _ !== undefined);
-
-            __setGrid(_grid.current._content);
-            return;
-        }
-        /** row array */
-        if (Array.isArray(type)) {
-            if (!type.length) return;
-            _grid.current._content = _grid.current._content
-                .map((_: any) => {
-                    if (type.map((_: any) => _.__key).includes(_.__key)) {
-                        if (_.__type === "added") return undefined;
-                        return { ..._, __type: "deleted" };
-                    } else {
-                        return _;
-                    }
-                })
-                .filter((_: any) => _ !== undefined);
-
-            __setGrid(_grid.current._content);
-            return;
-        }
-        /**
-         * both radio, checkbox
-         */
-        if (type === "all") {
-            const c = _grid.current._checked;
-            const s = _grid.current._selectedRow;
-            const a = [...c, s].filter((_) => _);
-
-            if (!a.length) return;
-
-            _grid.current._content = _grid.current._content
-                .map((_: any) => {
-                    if (a.map((_: any) => _.__key).includes(_.__key)) {
-                        if (_.__type === "added") return undefined;
-                        return { ..._, __type: "deleted" };
-                    } else {
-                        return _;
-                    }
-                })
-                .filter((_: any) => _ !== undefined);
-            _setSelectedRow(null);
-            _setChecked([]);
-
-            __setGrid(_grid.current._content);
-            return;
-        }
-        /** radio */
-        if (type === "radio") {
-            if (!_grid.current._selectedRow) return;
-            _grid.current._content = _grid.current._content
-                .map((_: any) => {
-                    if (_.__key === _grid.current._selectedRow.__key) {
-                        if (_.__type === "added") return undefined;
-                        return { ..._, __type: "deleted" };
-                    } else {
-                        return _;
-                    }
-                })
-                .filter((_: any) => _ !== undefined);
-            _setSelectedRow(null);
-
-            __setGrid(_grid.current._content);
-            return;
-        }
-        /** checkbox */
-        if (type === "checkbox") {
-            if (!_grid.current._checked.length) return;
-            _grid.current._content = _grid.current._content
-                .map((_: any) => {
-                    if (_grid.current._checked.map((_: any) => _.__key).includes(_.__key)) {
-                        if (_.__type === "added") return undefined;
-                        return { ..._, __type: "deleted" };
-                    } else {
-                        return _;
-                    }
-                })
-                .filter((_: any) => _ !== undefined);
-            _setChecked([]);
-
-            __setGrid(_grid.current._content);
-            return;
-        }
-    }, []);
-
-    /** handle page */
-    const handleChangePage = React.useCallback((next: any) => {
-        _grid.current._checked = [];
-        _grid.current._selectedRow = null;
-
-        _grid.current._page = next;
-
-        _setPage(next);
-        _setChecked([]);
-        _setSelectedRow(null);
-
-        if (_grid.current._pagination === "in") {
-            __setGrid(_grid.current._content);
-        }
-
-        if (_grid.current._pagination === "out") {
-            _grid.current._setPage(next);
-        }
-    }, []);
-
-    /** handle size */
-    const handleChangeSize = React.useCallback((next: any) => {
-        _grid.current._checked = [];
-        _grid.current._selectedRow = null;
-
-        _grid.current._page = 0;
-        _grid.current._size = next;
-        _setPage(0);
-        _setSize(next);
-        _setChecked([]);
-        _setSelectedRow(null);
-
-        if (_grid.current._pagination === "in") {
-            __setGrid(_grid.current._content);
-        }
-
-        if (_grid.current._pagination === "out") {
-            _grid.current._setPage(0);
-            _grid.current._setSize(next);
-        }
-    }, []);
-
-    /** handle check all */
-    const handleCheckAll = React.useCallback((e: any) => {
-        if (e.target.checked) {
-            _grid.current._checked = _grid.current._paged;
-            _setChecked(_grid.current._paged);
-        } else {
-            _grid.current._checked = [];
-            _setChecked([]);
-        }
-    }, []);
-
-    /** handle check */
-    const handleCheck = React.useCallback((e: any, rowProps: any) => {
-        if (e.target.checked) {
-            _setChecked((prev) => {
-                const next = [...prev, rowProps];
-                _grid.current._checked = next;
-                return next;
-            });
-        } else {
-            _setChecked((prev) => {
-                const next = prev.filter(({ __key }) => __key !== rowProps.__key);
-                _grid.current._checked = next;
-                return next;
-            });
-        }
-    }, []);
-
-    /** handle select */
-    const handleSelect = React.useCallback((e: any, rowProps: any) => {
-        if (e.target.checked) {
-            _grid.current._selectedRow = rowProps;
-            _setSelectedRow(rowProps);
-        } else {
-            _grid.current._selectedRow = null;
-            _setSelectedRow(null);
-        }
-    }, []);
-
-    /** handle sort */
-    const handleSort = React.useCallback((binding: any) => {
-        let _ = _grid.current._sort;
-
-        /** prev */
-        const prev = _[binding];
-
-        if (prev) {
-            const pval = prev.val;
-            const pseq = prev.seq;
-
-            if (pval === "asc") {
-                _[binding] = {
-                    seq: pseq,
-                    val: "desc",
-                };
-            }
-
-            if (pval === "desc") {
-                delete _[binding];
-            }
-        } else {
-            const seqs = Object.entries(_)
-                .map(([__, v]: any) => v?.seq)
-                .filter((_) => _ !== undefined);
-            const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
-            _[binding] = {
-                seq: nseq,
-                val: "asc",
-            };
-        }
-
-        _ = Object.fromEntries(
-            lodash
-                .sortBy(Object.entries(_), [
-                    (a: any) => {
-                        return a[1].seq;
-                    },
-                ])
-                .map(([k, v]: any, i: any) => {
-                    return [k, { ...v, seq: i }];
-                }),
-        );
-
-        _grid.current._sort = _;
-
-        _setSort(_grid.current._sort);
-        __setGrid(_grid.current._content);
-    }, []);
-
-    const __setGrid = (content: any, total?: any) => {
-        /**
-         * 삭제된 데이터 배열에서 제거
-         */
-        let view = content.filter(({ __type }: any) => __type !== "deleted");
-
-        /**
-         * 그룹화, 정렬
-         * Group & Sort
-         */
-        view = returnGrouped(view);
-
-        /**
-         *
-         */
-        _setTotalCount(total || view.length);
-
-        /**
-         *
-         */
-        view = returnPaged(view);
-
-        if (view) {
-            _setTest(view);
-            return;
-        } else {
-            if (_grid.current._page === 0) {
-                _setTest([]);
-                return;
-            }
-            const next = _grid.current._page - 1;
-            _grid.current._page = next;
-            _setPage(next);
-            return;
-        }
-    };
-
-    const returnGrouped = React.useCallback((d: any) => {
-        const hasGroup = !!_grid.current._group;
-
-        if (!hasGroup) {
-            return returnSorted(d);
-        }
-
-        if (hasGroup) {
-            const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
-                (o: any) => {
-                    return o[1].seq;
-                },
-            ]);
-
-            const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
-                if (!by) return returnSorted(data);
-
-                const depth = prevDepth + 1;
-                const parent = [...prevParent, by];
-
-                return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
-                    if (c[0] === "undefined") return c[1];
-
-                    const groupKey = prevGroupKey + "__" + c[0];
-
-                    if (_grid.current._groupStatus[groupKey] === undefined) {
-                        _grid.current._groupStatus[groupKey] = { open: true };
-                    }
-
-                    const open = _grid.current._groupStatus[groupKey].open;
-
-                    const row = {
-                        __key: uuid(),
-                        __type: "group",
-                        open,
-                        depth,
-                        groupKey,
-                        value: c[0],
-                        binding: by[0],
-                        count: c[1].length,
-                    };
-
-                    if (open) {
-                        return [...p, row, ...getGrouped(c[1], groups[depth], depth, parent, groupKey)];
-                    } else {
-                        return [...p, row];
-                    }
-                }, []);
-            };
-
-            return getGrouped(d, groups[0], 0, [], "");
-        }
-    }, []);
-
-    const toggleGroup = React.useCallback((groupKey: any, open: any) => {
-        _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
-        __setGrid(_grid.current._content);
-    }, []);
-
-    const returnPaged = React.useCallback((d: any) => {
-        if (_grid.current._pagination === "in") {
-            return lodash.chunk(d, _grid.current._size)[_grid.current._page] || [];
-        }
-
-        if (
-            _grid.current._pagination === "out" ||
-            _grid.current._pagination === false ||
-            _grid.current._pagination === undefined
-        ) {
-            return d;
-        }
-    }, []);
-
-    const returnSorted = React.useCallback((d: any) => {
+const createContent = (_grid: any) => {
+    const sort = (data: any) => {
         const [iteratees, orders] = lodash
             .sortBy(Object.entries(_grid.current._sort), [
                 (o: any) => {
@@ -837,34 +106,157 @@ export const Grid = (props: any) => {
                 [[], []],
             );
 
-        return lodash.orderBy(d, iteratees, orders);
-    }, []);
+        return lodash.orderBy(data, iteratees, orders);
+    };
 
-    const heads = fun(_head);
-    const bodies = fun(_body);
+    let filteredContent;
+    let filteredCount;
 
-    const getGridWidths = () => {
-        let w = Array(heads[0].length);
+    /**
+     * 1.
+     *
+     * Filtering
+     */
+    filteredContent = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+    filteredCount = filteredContent.length;
 
-        for (let i = 0; i < heads.length; i++) {
-            for (let j = 0; j < heads[i].length; j++) {
+    /**
+     * 2.
+     *
+     * Grouping & Sorting
+     */
+    if (Object.keys(_grid.current._group).length) {
+        const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
+            (o: any) => {
+                return o[1].seq;
+            },
+        ]);
+
+        const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
+            if (!by) return sort(data);
+
+            const depth = prevDepth + 1;
+            const parent = [...prevParent, by];
+
+            return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
+                if (c[0] === "undefined") return c[1];
+
+                const groupKey = prevGroupKey + "__" + c[0];
+
+                if (_grid.current._groupStatus[groupKey] === undefined) {
+                    _grid.current._groupStatus[groupKey] = { open: true };
+                }
+
+                const open = _grid.current._groupStatus[groupKey].open;
+
+                const row = {
+                    __key: uuid(),
+                    __type: "group",
+                    open,
+                    depth,
+                    groupKey,
+                    value: c[0],
+                    binding: by[0],
+                    count: c[1].length,
+                };
+
+                if (open) {
+                    return [...p, row, ...getGrouped(c[1], groups[depth], depth, parent, groupKey)];
+                } else {
+                    return [...p, row];
+                }
+            }, []);
+        };
+
+        filteredContent = getGrouped(filteredContent, groups[0], 0, [], "");
+    } else {
+        filteredContent = sort(filteredContent);
+    }
+
+    /**
+     * 3.
+     *
+     * Paging
+     */
+    if (_grid.current._pagination === "in") {
+        filteredContent = lodash.chunk(filteredContent, _grid.current._size)[_grid.current._page] || [];
+    }
+
+    _grid.current._paged = filteredContent;
+
+    return { filteredContent, filteredCount };
+};
+
+/**
+ * ## State Initializer
+ */
+const createInitialState = ({ _grid, data }: any) => {
+    const _head = _grid.current._defaultSchema.head.map((_: any) => {
+        return {
+            ..._,
+            cells: _.cells.map((__: any) => {
+                return { ...__, show: _.show === true ? true : _.show === false ? false : true };
+            }),
+        };
+    });
+    const _body = _grid.current._defaultSchema.body.map((_: any, i: any) => {
+        return {
+            ..._,
+            id: _grid.current._defaultSchema.head[i]?.id,
+            show:
+                _grid.current._defaultSchema.head[i]?.show === true
+                    ? true
+                    : _grid.current._defaultSchema.head[i]?.show === false
+                      ? false
+                      : true,
+            cells: _.cells.map((__: any) => {
+                return {
+                    ...__,
+                    id: _grid.current._defaultSchema.head[i]?.id,
+                    show:
+                        _grid.current._defaultSchema.head[i]?.show === true
+                            ? true
+                            : _grid.current._defaultSchema.head[i]?.show === false
+                              ? false
+                              : true,
+                    edit:
+                        __.edit === true
+                            ? true
+                            : __.edit === false
+                              ? false
+                              : _.edit === true
+                                ? true
+                                : _.edit === false
+                                  ? false
+                                  : _grid.current._defaultSchema.options?.edit === true
+                                    ? true
+                                    : false,
+                };
+            }),
+        };
+    });
+    const _headCells = fun(_head);
+    const _bodyCells = fun(_body);
+    const _template = (() => {
+        let w = Array(_headCells[0].length);
+        for (let i = 0; i < _headCells.length; i++) {
+            for (let j = 0; j < _headCells[i].length; j++) {
                 if (w[j] === undefined) w[j] = 100;
-                if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan !== undefined) {
-                    for (let k = j; k <= j + heads[i]?.[j]?.colspan; k++) {
-                        if (k < heads[0].length) {
-                            w[k] = heads[i]?.[j]?.width / heads[i]?.[j]?.colspan;
+                if (_headCells[i]?.[j]?.width !== undefined && _headCells[i]?.[j]?.colspan !== undefined) {
+                    for (let k = j; k <= j + _headCells[i]?.[j]?.colspan; k++) {
+                        if (k < _headCells[0].length) {
+                            w[k] = _headCells[i]?.[j]?.width / _headCells[i]?.[j]?.colspan;
                         }
                     }
                 }
-                if (heads[i]?.[j]?.width !== undefined && heads[i]?.[j]?.colspan === undefined) {
-                    w[j] = heads[i]?.[j].width;
+                if (_headCells[i]?.[j]?.width !== undefined && _headCells[i]?.[j]?.colspan === undefined) {
+                    w[j] = _headCells[i]?.[j].width;
                 }
-                if (heads[i]?.[j]?.show === false) {
+                if (_headCells[i]?.[j]?.show === false) {
                     w[j] = null;
                 }
             }
         }
-
         return w
             .filter((_: any) => _)
             .map((_: any) => {
@@ -879,36 +271,638 @@ export const Grid = (props: any) => {
                 }
             })
             .join(" ");
+    })();
+
+    /**
+     * Content Setting
+     */
+    let _test;
+    let __t;
+
+    if (!Array.isArray(data?.content)) {
+        _test = [];
+    } else {
+        _test = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+    }
+
+    if (!dayjs(data?.__t).isValid()) {
+        __t = dayjs(data?.__t).toDate();
+    } else {
+        __t = new Date();
+    }
+
+    _grid.current._dataCreated = __t;
+    _grid.current._dataUpdated = __t;
+    _grid.current._origin = _test;
+    _grid.current._content = _test;
+
+    const { filteredContent } = createContent(_grid);
+
+    let _totalCount = (_grid.current._pagination === "in" ? filteredContent.length : data?.page?.totalElements) || 0;
+    _grid.current._totalCount = _totalCount;
+    _grid.current._originTotalCount = _totalCount;
+
+    return {
+        _head,
+        _body,
+        _sort: {},
+        _group: {},
+        _headCells,
+        _bodyCells,
+        _template,
+        _totalCount,
+        _selectedRow: null,
+        _selectedCel: null,
+        _editingRow: [],
+        _checked: [],
+        _test: filteredContent,
+        _page: _grid.current._page,
+        _size: _grid.current._size,
+        _options: {
+            height: _grid.current._height,
+            index: _grid.current._index,
+            checkbox: _grid.current._checkbox,
+            radio: _grid.current._radio,
+            edit: _grid.current._edit,
+            add: _grid.current._add,
+            delete: _grid.current._delete,
+            exportExcel: _grid.current._exportExcel,
+            importExcel: _grid.current._importExcel,
+        },
     };
+};
 
-    const gridTemplateColumns = getGridWidths();
-    console.log(gridTemplateColumns);
+/**
+ * ## Reducer
+ */
+const reducer = (state: any, action: any) => {
+    switch (action.type) {
+        /**
+         * Set Data
+         */
+        case "setData": {
+            const { _grid, data } = action.payload;
 
-    console.log(gridTemplateColumns);
+            let content;
+            let _totalCount;
 
-    /** initialize */
+            if (Array.isArray(data)) {
+                content = data;
+            } else if (typeof data === "object" && Array.isArray(data.content)) {
+                content = data.content;
+            } else {
+                return state;
+            }
+
+            content = content.map((_: any) => ({
+                ..._,
+                __key: uuid(),
+                __type: "origin",
+            }));
+
+            _grid.current._dataUpdated = new Date();
+            _grid.current._origin = content;
+            _grid.current._content = content;
+
+            const { filteredContent, filteredCount } = createContent(_grid);
+
+            if (_grid.current._pagination === "out") {
+                _totalCount = data?.page?.totalElements || 0;
+            } else {
+                _totalCount = filteredCount;
+            }
+
+            _grid.current._totalCount = _totalCount;
+            _grid.current._originTotalCount = _totalCount;
+
+            return { ...state, _totalCount, _test: filteredContent };
+        }
+        /**
+         * Reset to Origin
+         *
+         */
+        case "resetData": {
+            const { _grid } = action.payload;
+
+            _grid.current._content = _grid.current._origin;
+            _grid.current._totalCount = _grid.current._originTotalCount;
+
+            return {
+                ...state,
+                _totalCount: _grid.current._originTotalCount,
+                _test: createContent(_grid).filteredContent,
+            };
+        }
+        /**
+         * Change Show
+         */
+        case "setShow": {
+            const { type, target, value } = action.payload;
+            switch (type) {
+                case "column": {
+                    let _head = state._head.map((_: any) => {
+                        if (_.id !== target) return _;
+                        return {
+                            ..._,
+                            show: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, show: value };
+                            }),
+                        };
+                    });
+
+                    let _body = state._body.map((_: any) => {
+                        if (_.id !== target) return _;
+                        return {
+                            ..._,
+                            show: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, show: value };
+                            }),
+                        };
+                    });
+
+                    return { ...state, _head, _body, _headCells: fun(_head), _bodyCells: fun(_body) };
+                }
+                default:
+                    return state;
+            }
+        }
+        /**
+         * Change Option
+         */
+        case "setOption": {
+            const { _grid, target, value } = action.payload;
+
+            let _options = { ...state._options, [target]: value };
+            let _body = [...state._body];
+
+            _grid.current[target] = value;
+
+            if (target === "edit") {
+                _body = _body.map((_: any) => {
+                    return {
+                        ..._,
+                        edit: value,
+                        cells: _.cells.map((__: any) => {
+                            return { ...__, edit: value };
+                        }),
+                    };
+                });
+            }
+
+            return { ...state, _options, _body, _bodyCells: fun(_body) };
+        }
+        /**
+         * Change Edit
+         */
+        case "setEdit": {
+            const { type, target, value } = action.payload;
+
+            switch (type) {
+                case "column": {
+                    const _body = state._body.map((_: any) => {
+                        if (_.id !== target) return _;
+                        return {
+                            ..._,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, edit: value };
+                            }),
+                        };
+                    });
+                    return { ...state, _body, _bodyCells: fun(_body) };
+                }
+                case "cell": {
+                    const _body = state._body.map((_: any) => {
+                        return {
+                            ..._,
+                            cells: _.cells.map((__: any) => {
+                                if (__.binding !== target) return __;
+                                return { ...__, edit: value };
+                            }),
+                        };
+                    });
+                    return { ...state, _body, _bodyCells: fun(_body) };
+                }
+                case "row": {
+                    const key =
+                        typeof target === "object" && !!target?.__key
+                            ? target.__key
+                            : typeof target === "string"
+                              ? target
+                              : undefined;
+
+                    if (!key) return { ...state };
+
+                    let _editingRow = [...state._editingRow];
+                    if (value) {
+                        if (!_editingRow.find((r: any) => r.__key === key)) {
+                            _editingRow = [..._editingRow, key];
+                        }
+                    } else {
+                        _editingRow = _editingRow.filter((r: any) => r !== key);
+                    }
+                    return { ...state, _editingRow };
+                }
+
+                default:
+                    return state;
+            }
+        }
+
+        /**
+         * Delete
+         *
+         */
+        case "delete": {
+            const { _grid, type } = action.payload;
+            if (_grid.current._pagination === "out" || !type) return state;
+
+            let nextState = { ...state };
+
+            if (type === "radio") {
+                if (!_grid.current._selectedRow) return state;
+                _grid.current._content = _grid.current._content
+                    .map((_: any) => {
+                        if (_.__key === _grid.current._selectedRow.__key) {
+                            if (_.__type === "added") return undefined;
+                            return { ..._, __type: "deleted" };
+                        } else {
+                            return _;
+                        }
+                    })
+                    .filter((_: any) => _ !== undefined);
+
+                _grid.current._selectedRow = null;
+                nextState = { ...nextState, _selectedRow: null };
+            }
+
+            if (type === "checkbox") {
+                if (!_grid.current._checked.length) return state;
+                _grid.current._content = _grid.current._content
+                    .map((_: any) => {
+                        if (_grid.current._checked.map((_: any) => _.__key).includes(_.__key)) {
+                            if (_.__type === "added") return undefined;
+                            return { ..._, __type: "deleted" };
+                        } else {
+                            return _;
+                        }
+                    })
+                    .filter((_: any) => _ !== undefined);
+
+                _grid.current._checked = [];
+                nextState = { ...nextState, checked: null };
+            }
+
+            if (type === "all") {
+                const c = _grid.current._checked;
+                const s = _grid.current._selectedRow;
+                const a = [...c, s].filter((_) => _);
+                if (!a.length) return state;
+
+                _grid.current._content = _grid.current._content
+                    .map((_: any) => {
+                        if (a.map((_: any) => _.__key).includes(_.__key)) {
+                            if (_.__type === "added") return undefined;
+                            return { ..._, __type: "deleted" };
+                        } else {
+                            return _;
+                        }
+                    })
+                    .filter((_: any) => _ !== undefined);
+
+                _grid.current._selectedRow = null;
+                _grid.current._checked = [];
+
+                nextState = { ...nextState, _selectedRow: null, _checked: [] };
+            }
+
+            if (typeof type === "object" && type.__key) {
+                _grid.current._content = _grid.current._content
+                    .map((_: any) => {
+                        if (_.__key === type.__key) {
+                            if (_.__type === "added") return undefined;
+                            return { ..._, __type: "deleted" };
+                        } else {
+                            return _;
+                        }
+                    })
+                    .filter((_: any) => _ !== undefined);
+
+                _grid.current._selectedRow = null;
+                _grid.current._checked = [];
+            }
+
+            if (Array.isArray(type)) {
+                _grid.current._content = _grid.current._content
+                    .map((_: any) => {
+                        if (type.map((_: any) => _.__key).includes(_.__key)) {
+                            if (_.__type === "added") return undefined;
+                            return { ..._, __type: "deleted" };
+                        } else {
+                            return _;
+                        }
+                    })
+                    .filter((_: any) => _ !== undefined);
+
+                _grid.current._selectedRow = null;
+                _grid.current._checked = [];
+            }
+
+            const { filteredContent, filteredCount } = createContent(_grid);
+
+            _grid.current._selectedCel = null;
+            _grid.current._totalCount = filteredCount;
+
+            nextState._selectedCel = null;
+            nextState._test = filteredContent;
+            nextState._totalCount = filteredCount;
+
+            return nextState;
+        }
+        /**
+         * Add
+         */
+        case "add": {
+            const { _grid, data } = action.payload;
+            if (_grid.current._pagination === "out") return state;
+
+            _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
+
+            const { filteredContent, filteredCount } = createContent(_grid);
+            _grid.current._totalCount = filteredCount;
+            return { ...state, _test: filteredContent, _totalCount: filteredCount };
+        }
+        /**
+         * Update Row Data
+         */
+        case "update": {
+            const { _grid, data } = action.payload;
+
+            if (!data?.__key) break;
+
+            _grid.current._content = _grid.current._content.map((_: any) => {
+                if (_.__key !== data.__key) return _;
+                const { __type, __key, ...rest } = data;
+                return {
+                    ..._,
+                    ...rest,
+                    __type:
+                        _.__type === "origin" || _.__type === "updated"
+                            ? Object.keys(rest).some((k) => {
+                                  return data[k] !== _grid.current._origin.find((o: any) => o.__key === data.__key)[k];
+                              })
+                                ? "updated"
+                                : "origin"
+                            : _.__type,
+                };
+            });
+
+            return { ...state, _test: createContent(_grid).filteredContent };
+        }
+        /**
+         * Toggle Group
+         */
+        case "group": {
+            const { _grid, groupKey, open } = action.payload;
+            _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
+
+            return { ...state, _test: createContent(_grid).filteredContent };
+        }
+        /**
+         * Sort
+         */
+        case "sort": {
+            const { _grid, binding } = action.payload;
+
+            let _sort = _grid.current._sort;
+
+            /** prev */
+            const prev = _sort[binding];
+
+            if (prev) {
+                const pval = prev.val;
+                const pseq = prev.seq;
+
+                if (pval === "asc") {
+                    _sort[binding] = {
+                        seq: pseq,
+                        val: "desc",
+                    };
+                }
+
+                if (pval === "desc") {
+                    delete _sort[binding];
+                }
+            } else {
+                const seqs = Object.entries(_sort)
+                    .map(([__, v]: any) => v?.seq)
+                    .filter((_) => _ !== undefined);
+                const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
+                _sort[binding] = {
+                    seq: nseq,
+                    val: "asc",
+                };
+            }
+
+            _sort = Object.fromEntries(
+                lodash
+                    .sortBy(Object.entries(_sort), [
+                        (a: any) => {
+                            return a[1].seq;
+                        },
+                    ])
+                    .map(([k, v]: any, i: any) => {
+                        return [k, { ...v, seq: i }];
+                    }),
+            );
+
+            _grid.current._sort = _sort;
+
+            return { ...state, _sort, _test: createContent(_grid).filteredContent };
+        }
+        /**
+         * Handler
+         *
+         */
+        case "handleClickCel": {
+            const { _grid, key, binding, value, formattedValue, rowValues, onCellClick } = action.payload;
+
+            if (onCellClick)
+                onCellClick({
+                    binding,
+                    value,
+                    formattedValue,
+                    rowValues,
+                });
+
+            _grid.current._selectedCel = {
+                binding,
+                value,
+                formattedValue,
+                rowValues,
+            };
+
+            return { ...state, _selectedCel: key };
+        }
+        case "handleCheck": {
+            const { _grid, event, rowProps } = action.payload;
+            let _checked = [...state._checked];
+
+            if (event.target.checked) {
+                _checked = [..._checked, rowProps];
+            } else {
+                _checked = _checked.filter(({ __key }: any) => __key !== rowProps.__key);
+            }
+
+            _grid.current._checked = _checked;
+            return { ...state, _checked };
+        }
+        case "handleCheckAll": {
+            const { _grid, event } = action.payload;
+
+            let _checked = event.target.checked ? _grid.current._paged : [];
+
+            _grid.current._checked = _checked;
+            return { ...state, _checked };
+        }
+        case "handleSelect": {
+            const { _grid, event, rowProps } = action.payload;
+            _grid.current._selectedRow = rowProps;
+
+            return { ...state, _selectedRow: rowProps };
+        }
+        case "handleChangePage": {
+            const { _grid, next } = action.payload;
+
+            if (_grid.current._pagination === "out") {
+                _grid.current._setPage(next);
+            }
+
+            _grid.current._page = next;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            let nextState = { ...state, _page: next, _checked: [], _selectedRow: null };
+            if (_grid.current._pagination === "in") {
+                nextState._test = createContent(_grid).filteredContent;
+            }
+            return nextState;
+        }
+        case "handleChangeSize": {
+            const { _grid, next } = action.payload;
+
+            if (_grid.current._pagination === "out") {
+                _grid.current._setPage(0);
+                _grid.current._setSize(next);
+            }
+
+            _grid.current._page = 0;
+            _grid.current._size = next;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            let nextState = { ...state, _page: 0, _size: next, _checked: [], _selectedRow: null };
+            if (_grid.current._pagination === "in") {
+                nextState._test = createContent(_grid).filteredContent;
+            }
+            return nextState;
+        }
+
+        default:
+            return state;
+    }
+};
+
+/**
+ * ## Grid Initialize Hook
+ */
+const useInitailize = (props: any) => {
+    const { _grid, data } = props;
+
+    const __t = data?.__t?.getTime();
+    const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
+
     React.useEffect(() => {
-        _grid.current._setData = setData;
-        _grid.current._setEdit = setEdit;
-        _grid.current._setShow = setShow;
-        _grid.current._setOption = setOption;
-        _grid.current._resetData = resetData;
-        _grid.current._handleCheck = handleCheck;
-        _grid.current._handleSelect = handleSelect;
-        _grid.current._handleUpdate = handleUpdate;
-        _grid.current._handleClickAdd = handleClickAdd;
-        _grid.current._handleClickDelete = handleClickDelete;
-        _grid.current._handleChangePage = handleChangePage;
-        _grid.current._handleChangeSize = handleChangeSize;
+        if (!_grid.current._initialized) return;
+        if (!Array.isArray(data.content)) return;
+        if (data.content.length === 0 && state._test.length === 0) return;
+
+        dispatch({ type: "setData", payload: { _grid, data } });
+    }, [__t]);
+
+    React.useEffect(() => {
+        _grid.current._setData = (data: any) => {
+            dispatch({ type: "setData", payload: { _grid, data } });
+        };
+        _grid.current._resetData = () => {
+            dispatch({ type: "resetData", payload: { _grid } });
+        };
+        _grid.current._setEdit = (type: any, target: any, value: any) => {
+            dispatch({ type: "setEdit", payload: { type, target, value } });
+        };
+        _grid.current._setShow = (type: any, target: any, value: any) => {
+            dispatch({ type: "setShow", payload: { type, target, value } });
+        };
+        _grid.current._setOption = (target: any, value: any) => {
+            dispatch({ type: "setOption", payload: { _grid, target, value } });
+        };
+        _grid.current._handleCheck = (event: any, rowProps: any) => {
+            dispatch({ type: "handleCheck", payload: { _grid, event, rowProps } });
+        };
+        _grid.current._handleCheckAll = (event: any) => {
+            dispatch({ type: "handleCheckAll", payload: { _grid, event } });
+        };
+        _grid.current._handleSelect = (event: any, rowProps: any) => {
+            dispatch({ type: "handleSelect", payload: { _grid, event, rowProps } });
+        };
+        _grid.current._handleUpdate = (data: any) => {
+            dispatch({ type: "update", payload: { _grid, data } });
+        };
+        _grid.current._handleAdd = (data: any) => {
+            dispatch({ type: "add", payload: { _grid, data } });
+        };
+        _grid.current._handleDelete = (type: any) => {
+            dispatch({ type: "delete", payload: { _grid, type } });
+        };
+        _grid.current._handlePage = (next: any) => {
+            dispatch({ type: "handleChangePage", payload: { _grid, next } });
+        };
+        _grid.current._handleSize = (next: any) => {
+            dispatch({ type: "handleChangeSize", payload: { _grid, next } });
+        };
+        _grid.current._handleSort = (binding: any) => {
+            dispatch({ type: "sort", payload: { _grid, binding } });
+        };
+        _grid.current._handleGroup = (groupKey: any, open: any) => {
+            dispatch({ type: "group", payload: { _grid, groupKey, open } });
+        };
+        _grid.current._handleClickCel = (payload: any) => {
+            dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
+        };
 
         _grid.current._initialized = true;
 
         return () => {};
     }, []);
 
+    return { state, dispatch };
+};
+
+/**
+ * # Grid
+ */
+export const Grid = (props: any) => {
+    const { _grid, render, onCellClick, onRowClick } = props;
+
+    const { t } = useTranslation();
+    const { state } = useInitailize(props);
+
+    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _test } = state;
+
     return (
         <div className="flex flex-col w-full">
-            {/* button */}
+            {/* Top Buttons */}
             <div className="flex justify-between">
                 <div className="flex gap-1 [&_*]:mb-2">
                     {_options.importExcel && <Button>Import</Button>}
@@ -916,20 +910,19 @@ export const Grid = (props: any) => {
                 </div>
 
                 <div className="flex gap-1 [&_*]:mb-2">
-                    {_options.add && <Button onClick={() => handleClickAdd()}>add</Button>}
-                    {_options.delete && <Button onClick={() => handleClickDelete("all")}>delete</Button>}
+                    {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
+                    {_options.delete && <Button onClick={() => _grid.current._handleDelete("all")}>Delete</Button>}
                 </div>
             </div>
 
+            {/* Grid Main */}
             <div className="w-full mb-2 flex flex-col bg-uf-border">
-                {/* head */}
+                {/* Head */}
                 <div
                     ref={(node) => (_grid.current._head = node)}
                     className="uf-grid-head flex w-full gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10 overflow-x-auto"
                 >
-                    {/* group */}
                     {Object.keys(_grid.current._groupStatus).length > 0 && <div className="uf-grid-option" />}
-                    {/* checkbox */}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
@@ -937,17 +930,14 @@ export const Grid = (props: any) => {
                                 checked={_test.every(({ __key }: any) =>
                                     _checked.some((row: any) => row.__key === __key),
                                 )}
-                                onChange={handleCheckAll}
+                                onChange={(event) => _grid.current._handleCheckAll(event)}
                             />
                         </div>
                     )}
-                    {/* radio */}
                     {_options.radio && <div className="uf-grid-option" />}
-                    {/* index */}
                     {_options.index && <div className="uf-grid-option" />}
-                    {/* header */}
-                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns }}>
-                        {heads.map((row: any, rowIndex: any) => {
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        {_headCells.map((row: any, rowIndex: any) => {
                             return row.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
@@ -976,6 +966,7 @@ export const Grid = (props: any) => {
                         })}
                     </div>
                 </div>
+                {/* Body */}
                 <List
                     ref={(ref) => (_grid.current._list = ref)}
                     outerRef={(node) => {
@@ -986,33 +977,14 @@ export const Grid = (props: any) => {
                         }
                     }}
                     itemCount={_test.length > _totalCount ? _totalCount : _test.length}
-                    height={_grid.current._height}
+                    height={_options.height}
                     width="100%"
                     itemData={{
                         _grid,
-                        /** option */
-                        ..._options,
-                        /** handler */
+                        state,
                         render,
                         onCellClick,
                         onRowClick,
-                        /** state */
-                        _test,
-                        bodies,
-                        _page,
-                        _size,
-                        _checked,
-                        _selectedRow,
-                        _selectedCel,
-                        _setSelectedCel,
-                        _editingRow,
-                        _totalCount,
-
-                        /** g */
-                        toggleGroup,
-                        gridTemplateColumns,
-                        /** grid */
-                        // _bo,
                     }}
                     itemSize={(index) =>
                         _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0
@@ -1027,8 +999,8 @@ export const Grid = (props: any) => {
                 <Pagination
                     page={_page}
                     size={_size}
-                    onChangePage={handleChangePage}
-                    onChangeSize={handleChangeSize}
+                    onChangePage={(next) => _grid.current._handlePage(next)}
+                    onChangeSize={(next) => _grid.current._handleSize(next)}
                     totalCount={_totalCount}
                 />
             )}
@@ -1040,31 +1012,21 @@ export const Grid = (props: any) => {
 const Row = React.memo((props: any) => {
     const { data, index: rowIndex, style } = props;
 
+    const { _grid, state, render, onCellClick, onRowClick } = data;
     const {
-        _grid,
-        /** option */
-        index,
-        checkbox,
-        radio,
-        /** handler */
-        render,
-        onCellClick,
-        onRowClick,
-        /** state */
         _test,
-        bodies,
-        _page,
-        _size,
+        _bodyCells,
+        _options,
         _checked,
         _selectedRow,
         _selectedCel,
-        _setSelectedCel,
-        _editingRow,
         _totalCount,
-        /** gtest */
-        toggleGroup,
-        gridTemplateColumns,
-    } = data;
+        _page,
+        _size,
+        _template,
+        _editingRow,
+    } = state;
+    const { checkbox, radio, index } = _options;
 
     const row = _test[rowIndex];
 
@@ -1077,7 +1039,7 @@ const Row = React.memo((props: any) => {
     React.useEffect(() => {
         _grid.current._rect[rowIndex] = ref.current.getBoundingClientRect();
         _grid.current._list.resetAfterIndex(rowIndex);
-    }, [_test, bodies]);
+    }, [_test, _bodyCells]);
 
     return (
         <div style={{ ...style }}>
@@ -1086,7 +1048,7 @@ const Row = React.memo((props: any) => {
                     {row.depth > 0 && <div style={{ width: `${row.depth * 2}rem` }} />}
                     <button
                         className="flex items-center justify-center w-[2rem] h-full"
-                        onClick={() => toggleGroup(row.groupKey, !row.open)}
+                        onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
                     >
                         <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
                     </button>
@@ -1125,7 +1087,7 @@ const Row = React.memo((props: any) => {
                             <input
                                 type="radio"
                                 checked={_selectedRow?.__key === row?.__key}
-                                onChange={(e) => _grid.current._handleSelect(e, row)}
+                                onChange={(event) => _grid.current._handleSelect(event, row)}
                             />
                         </div>
                     )}
@@ -1135,136 +1097,101 @@ const Row = React.memo((props: any) => {
                         </div>
                     )}
                     {/* body columns */}
-                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns }}>
-                        {bodies.map((_: any, rowIndex: any) => {
-                            return _.map((__: any, colIndex: any) => {
-                                if (!__) return null;
-                                if (__.show === false) return null;
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        {_bodyCells.map((_: any, rowIndex: any) => {
+                            return _.map((cel: any, colIndex: any) => {
+                                if (!cel) return null;
+                                if (cel.show === false) return null;
+
+                                const { binding, align, rowspan, colspan, edit, ...rest } = cel;
 
                                 const celKey = contentKey + ".gb." + rowIndex + "." + colIndex;
-                                const binding = __.binding;
                                 const value = row[binding];
-                                const ov = _grid.current._origin.find(({ __key }: any) => __key === contentKey)?.[
-                                    binding
-                                ];
-                                const o = {
-                                    type: __.type,
-                                    /** text */
-                                    mask: __.mask,
-                                    letterCase: __.letterCase,
-                                    /** */
-                                    rows: __.rows,
-                                    /** number */
-                                    decimalScale: __.decimalScale,
-                                    thousandSeparator: __.thousandSeparator,
-                                    /** code */
-                                    area: __.area,
-                                    comnCd: __.comnCd,
-                                    /** */
-                                    options: __.options,
-                                    /** rules */
-                                    min: __.min,
-                                    max: __.max,
-                                    minLength: __.minLength,
-                                    pattern: __.pattern,
-                                    validate: __.validate,
-                                    required: __.required,
-                                    maxLength: __.maxLength,
-                                    /** */
-                                    rightButton: __.rightButton && {
-                                        ...__.rightButton,
-                                        onClick:
-                                            __.rightButton.onClick &&
-                                            (() =>
-                                                __.rightButton.onClick({
-                                                    value: value,
-                                                    rowValues: row,
-                                                    binding: binding,
-                                                })),
+
+                                const fv = comnUtils.getFormattedValue(value, rest);
+                                const uv = comnUtils.getUnformattedValue(value, rest);
+                                const vldv = comnUtils.getValidatedValue(uv, rest);
+                                const isEdit = _editingRow.includes(contentKey) ? true : edit;
+
+                                const celContext = {
+                                    binding,
+                                    value: uv,
+                                    rowValues: row,
+                                    formattedValue: fv,
+                                };
+
+                                const formControlProps = {
+                                    ...rest,
+                                    rightButton: cel.rightButton && {
+                                        ...cel.rightButton,
+                                        onClick: cel.rightButton.onClick && (() => cel.rightButton.onClick(celContext)),
                                     },
-                                    leftButton: __.leftButton && {
-                                        ...__.leftButton,
-                                        onClick:
-                                            __.leftButton.onClick &&
-                                            (() =>
-                                                __.leftButton.onClick({
-                                                    value: value,
-                                                    rowValues: row,
-                                                    binding: binding,
-                                                })),
+                                    leftButton: cel.leftButton && {
+                                        ...cel.leftButton,
+                                        onClick: cel.leftButton.onClick && (() => cel.leftButton.onClick(celContext)),
                                     },
                                 };
-                                const vv = comnUtils.getViewValue(value, o);
-                                const fv = comnUtils.getFormattedValue(value, o);
-                                const uv = comnUtils.getUnformattedValue(value, o);
-                                const vldv = comnUtils.getValidatedValue(uv, o);
-                                const edit = _editingRow.includes(contentKey) ? true : __.edit;
 
                                 return (
                                     <div
                                         key={celKey}
                                         className={classNames(
                                             "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-selected:border-uf-info aria-[invalid=true]:border-uf-error",
-                                            (__.align === "start" || __.align === "left") && "justify-start",
-                                            (__.align === "end" || __.align === "right") && "justify-end",
-                                            (__.align === "center" || __.align === undefined) && "justify-center",
+                                            (align === "start" || align === "left") && "justify-start",
+                                            (align === "end" || align === "right") && "justify-end",
+                                            (align === "center" || align === undefined) && "justify-center",
                                         )}
                                         {...(vldv && { "aria-invalid": true })}
                                         {...(_selectedCel === celKey && { "aria-selected": true })}
                                         style={{
-                                            gridRow: `${rowIndex + 1} / span ${__.rowspan ?? 1}`,
-                                            gridColumn: `${colIndex + 1} / span ${__.colspan ?? 1}`,
+                                            gridRow: `${rowIndex + 1} / span ${rowspan ?? 1}`,
+                                            gridColumn: `${colIndex + 1} / span ${colspan ?? 1}`,
                                         }}
                                         onClick={() => {
-                                            _setSelectedCel(celKey);
-                                            _grid.current._selectedCel = {
-                                                binding: binding,
-                                                value: uv,
-                                                formattedValue: fv,
-                                                rowValues: row,
-                                            };
-
-                                            /** on cell click */
-                                            if (onCellClick?.[binding])
-                                                onCellClick?.[binding]({
-                                                    binding: binding,
-                                                    value: uv,
-                                                    formattedValue: fv,
-                                                    rowValues: row,
-                                                });
+                                            _grid.current._handleClickCel({
+                                                ...celContext,
+                                                key: celKey,
+                                                onCellClick: onCellClick?.[binding],
+                                            });
                                         }}
                                     >
-                                        {!edit &&
+                                        {!isEdit &&
                                             (render?.cell?.[binding]?.({
                                                 value: value,
                                                 rowValues: row,
                                                 binding: binding,
                                             }) || (
                                                 <FormControl
-                                                    {...o}
+                                                    {...formControlProps}
                                                     edit={false}
                                                     value={fv}
                                                     onChange={(v) => {
                                                         _grid.current._handleUpdate({
                                                             ...row,
-                                                            [binding]: comnUtils.getUnformattedValue(v, o),
+                                                            [binding]: comnUtils.getUnformattedValue(
+                                                                v,
+                                                                formControlProps,
+                                                            ),
                                                         });
                                                     }}
                                                 />
                                             ))}
-                                        {edit &&
+                                        {isEdit &&
                                             (render?.edit?.[binding]?.({
                                                 value: value,
                                                 rowValues: row,
                                                 binding: binding,
                                             }) || (
                                                 <FormControl
-                                                    {...o}
+                                                    {...formControlProps}
                                                     value={fv}
                                                     onChange={(v) => {
                                                         _grid.current._handleUpdate({
                                                             ...row,
-                                                            [binding]: comnUtils.getUnformattedValue(v, o),
+                                                            [binding]: comnUtils.getUnformattedValue(
+                                                                v,
+                                                                formControlProps,
+                                                            ),
                                                         });
                                                     }}
                                                 />
@@ -1279,42 +1206,3 @@ const Row = React.memo((props: any) => {
         </div>
     );
 }, areEqual);
-
-/** set width */
-// const setWidth = (col: any, diff: any) => {
-//     const rects = _grid.current._headRects;
-//     const rect = rects[col];
-//     const next = rect.width + diff < 80 ? 80 : rect.width + diff;
-
-//     _setHead((prev: any) => {
-//         return prev.map((_: any, index: any) => {
-//             if (!rects[index]) return _;
-//             const { flex, ...rest } = _;
-
-//             if (index !== col) {
-//                 const w = rects[index].width;
-//                 return { ...rest, width: w, minWidth: w, maxWidth: w };
-//             }
-
-//             if (index === col) {
-//                 return { ...rest, minWidth: next, width: next, maxWidth: next };
-//             }
-//         });
-//     });
-
-//     _setBody((prev: any) => {
-//         return prev.map((_: any, index: any) => {
-//             if (!rects[index]) return _;
-//             const { flex, ...rest } = _;
-
-//             if (index !== col) {
-//                 const w = rects[index].width;
-//                 return { ...rest, width: w, minWidth: w, maxWidth: w };
-//             }
-
-//             if (index === col) {
-//                 return { ...rest, minWidth: next, width: next, maxWidth: next };
-//             }
-//         });
-//     });
-// };

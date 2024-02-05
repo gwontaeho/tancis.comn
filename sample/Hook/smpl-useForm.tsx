@@ -162,12 +162,8 @@ export const SampleUseForm = () => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Any>
-                                    {text} - {number}
-                                </Group.Any>
-                                <Group.Any>{}</Group.Any>
-                                {/* <Group.Control {...schema.text} />
-                                <Group.Control {...schema.number} /> */}
+                                <Group.Control {...schema.text} />
+                                <Group.Control {...schema.number} />
                             </Group.Row>
                             <Group.Row>
                                 <Group.Control {...schema.password} />
