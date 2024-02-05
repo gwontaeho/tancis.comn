@@ -18,6 +18,8 @@ type TableCellProps = {
     required?: boolean;
     colSpan?: number;
     rowSpan?: number;
+    colspan?: number;
+    rowspan?: number;
     width?: string | number;
 };
 
@@ -46,9 +48,9 @@ const Tr = (props: TrProps) => {
 };
 
 const Th = (props: TableCellProps) => {
-    const { children, required, colSpan, rowSpan, width } = props;
+    const { children, required, colSpan, rowSpan, colspan, rowspan, width } = props;
     return (
-        <th className="relative" colSpan={colSpan} rowSpan={rowSpan} style={{ width }}>
+        <th className="relative" colSpan={colSpan || colspan} rowSpan={rowSpan || rowspan} style={{ width }}>
             {children}
             {required && (
                 <span
@@ -64,9 +66,9 @@ const Th = (props: TableCellProps) => {
 };
 
 const Td = (props: TableCellProps) => {
-    const { children, required, colSpan, rowSpan, width } = props;
+    const { children, required, colSpan, colspan, rowspan, rowSpan, width } = props;
     return (
-        <td className="relative" colSpan={colSpan} rowSpan={rowSpan} style={{ width }}>
+        <td className="relative" colSpan={colSpan || colspan} rowSpan={rowSpan || rowspan} style={{ width }}>
             {children}
             {required && (
                 <span
