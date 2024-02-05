@@ -2,7 +2,7 @@ import React from "react";
 
 type TTabSchema = any[];
 type TTabDefaultSchema = {
-    id: string;
+    id?: string;
     schema: TTabSchema;
 };
 type UseTabProps = {
