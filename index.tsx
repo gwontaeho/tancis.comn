@@ -14,8 +14,6 @@ type TRoute = { name: string; base?: string; to?: string; children?: TRoute[] };
 type TRoutes = TRoute[];
 
 const ScrollToTop = () => {
-    console.log("scroll");
-
     const { pathname } = useLocation();
 
     useEffect(() => {
