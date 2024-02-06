@@ -82,6 +82,10 @@ export const SampleRoutes = [
                         base: "/layout",
                         children: [
                             {
+                                name: "Basic",
+                                to: "/comn/smpl/components/Basic",
+                            },
+                            {
                                 name: "Text",
                                 to: "/comn/smpl/components/Text",
                             },

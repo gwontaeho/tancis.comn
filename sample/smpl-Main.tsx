@@ -19,6 +19,7 @@ import { SampleFormControlTimeRange } from "@/comn/sample/Component/FormControl/
 import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
 import { SampleFormControlCode } from "@/comn/sample/Component/FormControl/smpl-Code";
 
+import { SampleLayoutBasic } from "@/comn/sample/Component/smpl-LayoutBasic";
 import { SampleText } from "@/comn/sample/Component/smpl-Text";
 import { SamplePage } from "@/comn/sample/Component/smpl-Page";
 import { SampleIcon } from "@/comn/sample/Component/smpl-Icon";
@@ -85,6 +86,7 @@ export const SampleMain = () => {
             <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
             <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 
+            <Route path="/components/Basic" element={<SampleLayoutBasic />} />
             <Route path="/components/Text" element={<SampleText />} />
             <Route path="/components/Page" element={<SamplePage />} />
             <Route path="/components/Icon" element={<SampleIcon />} />
