@@ -47,7 +47,7 @@ export const SampleUseTab = () => {
                 <Sample.Section title="useTab(props: UseTabProps): UseTabReturn">
                     <Sample.Table
                         data={[
-                            ["Properties", "Type", "Default", "Description"],
+                            ["Parameters", "Type", "Default", "Description"],
                             ["props", "UseTabProps", "", ""],
                             ["- id", "", "", ""],
                             ["- url", "", "", ""],
@@ -67,7 +67,7 @@ openPopup({
                 <Sample.Section title="setActive(index: number): void">
                     <Sample.Table
                         data={[
-                            ["Arguments", "Type", "Default", "Description"],
+                            ["Parameters", "Type", "Default", "Description"],
                             ["index", "number", "", ""],
                         ]}
                     />
@@ -79,7 +79,7 @@ setActive(1);`}</Sample.Code>
                 <Sample.Section title="setDisabled(index: number, status: boolean): void">
                     <Sample.Table
                         data={[
-                            ["Arguments", "Type", "Default", "Description"],
+                            ["Parameters", "Type", "Default", "Description"],
                             ["index", "number", "", ""],
                             ["status", "boolean", "", ""],
                         ]}
@@ -95,7 +95,7 @@ setDisabled(2, false);`}</Sample.Code>
                 <Sample.Section title="setDisabled(index: number, status: boolean): void">
                     <Sample.Table
                         data={[
-                            ["Arguments", "Type", "Default", "Description"],
+                            ["Parameters", "Type", "Default", "Description"],
                             ["index", "number", "", ""],
                             ["status", "boolean", "", ""],
                         ]}
@@ -111,7 +111,7 @@ setVisible(2, false);`}</Sample.Code>
                 <Sample.Section title="setDisabled(index: number, status: boolean): void">
                     <Sample.Table
                         data={[
-                            ["Arguments", "Type", "Default", "Description"],
+                            ["Parameters", "Type", "Default", "Description"],
                             ["index", "number", "", ""],
                             ["status", "boolean", "", ""],
                         ]}

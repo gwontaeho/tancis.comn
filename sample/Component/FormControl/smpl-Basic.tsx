@@ -997,7 +997,7 @@ const Sample = () => {
                                         </Button>
                                         <Button
                                             onClick={() => {
-                                                form.setSchemaAll(SG_FORM_AFTER);
+                                                form.resetSchema(SG_FORM_AFTER);
                                             }}
                                         >
                                             스키마 변경(전체)
@@ -1226,7 +1226,7 @@ const Sample = () => {
                         </Button>
                         <Button
                             onClick={() => {
-                                form.setSchemaAll(SG_FORM_AFTER);
+                                form.resetSchema(SG_FORM_AFTER);
                             }}
                         >
                             스키마 변경(전체)

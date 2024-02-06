@@ -36,7 +36,7 @@ export const Sample = (props: SampleProps) => {
     const { children, title, description } = props;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 tracking-wide">
             <div>
                 {title && <div className="text-[1.8rem]">{title}</div>}
                 {description && <div className="text-[1.4rem]">{description}</div>}

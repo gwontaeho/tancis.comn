@@ -79,18 +79,23 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             const current = new Date();
 
             const data = isArray
-                ? res.map(({ data }: any) =>
-                      Object.fromEntries(
+                ? res.map((_: any) => {
+                      if (typeof _ !== "object") return _;
+                      const { data } = _;
+
+                      return Object.fromEntries(
                           Object.entries(data).map(([k, v]: any) => {
                               return [k, { ...v, __t: current }];
                           }),
-                      ),
-                  )
-                : Object.fromEntries(
-                      Object.entries(res.data).map(([k, v]: any) => {
-                          return [k, { ...v, __t: current }];
-                      }),
-                  );
+                      );
+                  })
+                : typeof res !== "object"
+                  ? res
+                  : Object.fromEntries(
+                        Object.entries(res.data).map(([k, v]: any) => {
+                            return [k, { ...v, __t: current }];
+                        }),
+                    );
 
             dispatch({ type: "success", payload: data });
 
