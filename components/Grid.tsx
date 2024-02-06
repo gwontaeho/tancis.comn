@@ -551,6 +551,7 @@ const reducer = (state: any, action: any) => {
 
             if (type === "checkbox") {
                 if (!_grid.current._checked.length) return state;
+
                 _grid.current._content = _grid.current._content
                     .map((_: any) => {
                         if (_grid.current._checked.map((_: any) => _.__key).includes(_.__key)) {
@@ -1010,6 +1011,11 @@ export const Grid = (props: any) => {
                             };
                         }
                     }}
+                    onItemsRendered={() => {
+                        if (_grid.current._autoHeight) {
+                            _grid.current._readjustHeight?.();
+                        }
+                    }}
                     itemCount={_test.length > _totalCount ? _totalCount : _test.length}
                     height={_options.height}
                     width="100%"
@@ -1078,7 +1084,6 @@ const Row = React.memo((props: any) => {
                     if (_grid.current._rect[rowIndex]?.height !== value.contentRect.height) {
                         _grid.current._rect[rowIndex] = value.contentRect;
                         _grid.current._list.resetAfterIndex(rowIndex);
-
                         if (_grid.current._autoHeight) {
                             _grid.current._readjustHeight();
                         }
