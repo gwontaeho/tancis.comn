@@ -128,3 +128,5 @@ export const SampleMain = () => {
         </Routes>
     );
 };
+
+export default SampleMain;

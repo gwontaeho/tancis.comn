@@ -434,10 +434,20 @@ const reducer = (state: any, action: any) => {
         case "setOption": {
             const { _grid, target, value } = action.payload;
 
-            let _options = { ...state._options, [target]: value };
+            let _options = { ...state._options };
             let _body = [...state._body];
 
-            _grid.current[target] = value;
+            if (target === "height") {
+                if (value === "auto") {
+                    _grid.current._height = _grid.current._listInner.clientHeight;
+                    _grid.current._autoHeight = true;
+                    _options.height = _grid.current._listInner.clientHeight;
+                } else {
+                    _grid.current._height = value;
+                    _grid.current._autoHeight = false;
+                    _options.height = value;
+                }
+            }
 
             if (target === "edit") {
                 _body = _body.map((_: any) => {
@@ -449,6 +459,8 @@ const reducer = (state: any, action: any) => {
                         }),
                     };
                 });
+                _grid.current._edit = value;
+                _options.edit = value;
             }
 
             return { ...state, _options, _body, _bodyCells: fun(_body) };
@@ -809,6 +821,14 @@ const reducer = (state: any, action: any) => {
             return nextState;
         }
 
+        /**
+         * Readjust Height
+         */
+        case "readjustHeight": {
+            const { value } = action.payload;
+            return { ...state, _options: { ...state._options, height: value } };
+        }
+
         default:
             return state;
     }
@@ -881,6 +901,13 @@ const useInitailize = (props: any) => {
             dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
         };
 
+        _grid.current._readjustHeight = lodash.debounce(() => {
+            if (_grid.current._height === _grid.current._listInner.clientHeight) return;
+
+            _grid.current._height = _grid.current._listInner.clientHeight;
+            dispatch({ type: "readjustHeight", payload: { value: _grid.current._listInner.clientHeight } });
+        }, 10);
+
         _grid.current._initialized = true;
 
         return () => {};
@@ -888,7 +915,6 @@ const useInitailize = (props: any) => {
 
     return { state, dispatch };
 };
-
 /**
  * # Grid
  */
@@ -968,9 +994,17 @@ export const Grid = (props: any) => {
                 </div>
                 {/* Body */}
                 <List
-                    ref={(ref) => (_grid.current._list = ref)}
+                    ref={(ref) => {
+                        _grid.current._list = ref;
+                    }}
+                    innerRef={(node) => {
+                        if (node) {
+                            _grid.current._listInner = node;
+                        }
+                    }}
                     outerRef={(node) => {
                         if (node) {
+                            _grid.current._listOuter = node;
                             node.onscroll = (event: any) => {
                                 _grid.current._head.scrollTo({ left: event.currentTarget.scrollLeft });
                             };
@@ -1012,7 +1046,7 @@ export const Grid = (props: any) => {
 const Row = React.memo((props: any) => {
     const { data, index: rowIndex, style } = props;
 
-    const { _grid, state, render, onCellClick, onRowClick } = data;
+    const { _grid, state, render, onCellClick, onRowClick, test22 } = data;
     const {
         _test,
         _bodyCells,
@@ -1037,9 +1071,28 @@ const Row = React.memo((props: any) => {
     const ref = React.useRef<any>();
 
     React.useEffect(() => {
-        _grid.current._rect[rowIndex] = ref.current.getBoundingClientRect();
-        _grid.current._list.resetAfterIndex(rowIndex);
-    }, [_test, _bodyCells]);
+        const ro = new ResizeObserver((entries) => {
+            requestAnimationFrame(() => {
+                entries.forEach((value) => {
+                    if (value.contentRect.height === 0) return;
+                    if (_grid.current._rect[rowIndex]?.height !== value.contentRect.height) {
+                        _grid.current._rect[rowIndex] = value.contentRect;
+                        _grid.current._list.resetAfterIndex(rowIndex);
+
+                        if (_grid.current._autoHeight) {
+                            _grid.current._readjustHeight();
+                        }
+                    }
+                });
+            });
+        });
+
+        ro.observe(ref.current);
+
+        return () => {
+            ro.disconnect();
+        };
+    }, []);
 
     return (
         <div style={{ ...style }}>
