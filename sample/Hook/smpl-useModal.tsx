@@ -1,139 +1,389 @@
-import axios from "axios";
-import { useModal } from "@/comn/hooks";
-import { Button, Table, Tree } from "@/comn/components";
+import { useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { useEffect, useState } from "react";
+import { Group, Layout, FormControl, Button, Page } from "@/comn/components";
+import { TFormSchema, useForm, useModal, useToast } from "@/comn/hooks";
+import "prismjs/themes/prism.css";
+import { comnUtils } from "@/comn/utils";
 
 export const SampleUseModal = () => {
-    const modal = useModal();
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
 
-    const withMessage = () => {
-        modal.openModal({ content: "Lorem Ipsum is simply dummy text of the printing and typesetting industry" });
+    return (
+        <Sample title="useModal" description="Modal Popup 창을 표시하기 위한 Hook">
+            <Sample.Section title="1. Hook 사용방법">
+                <Layout direction="col">
+                    <Sample.Section title="1.1 Import">
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+// useModal Hook import                             
+import { useModal } from "@/comn/hooks";
+                            `}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section title="1.2 선언">
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+                            `}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section title="1.3 사용" description={<>3.1 System Alert , Confirm 용도</>}>
+                        <Group>
+                            <Group.Body>
+                                <Button
+                                    onClick={() => {
+                                        // 닫기 버튼만 있는 Modal
+                                        modal.openModal({ content: "Modal Window" });
+                                    }}
+                                >
+                                    Modal Open(기본)
+                                </Button>
+
+                                <Button
+                                    onClick={() => {
+                                        // 닫기 버튼만 있는 Modal, 제목 변경
+                                        modal.openModal({ content: "Modal Window", title: "T_WARN" });
+                                    }}
+                                >
+                                    Modal Open(제목변경)
+                                </Button>
+
+                                <Button
+                                    onClick={() => {
+                                        // 닫기 버튼만 있는 Modal, 제목 변경, 배경 없음
+                                        modal.openModal({ content: "Modal Window", title: "T_WARN", backdrop: false });
+                                    }}
+                                >
+                                    Modal Open(제목변경, 배경없음)
+                                </Button>
+
+                                <Button
+                                    onClick={() => {
+                                        // 닫기 버튼만 있는 Modal, 제목 변경, 배경 없음 , 드래그 가능
+                                        modal.openModal({
+                                            content: "Modal Window",
+                                            title: "T_WARN",
+                                            backdrop: false,
+                                            draggable: true,
+                                        });
+                                    }}
+                                >
+                                    Modal Open(제목변경, 배경없음, 드래그 가능)
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        // 닫기 버튼 이벤트 연결
+                                        modal.openModal({
+                                            content: "Modal Window",
+                                            onCancel: () => {
+                                                console.log("cancel click");
+                                            },
+                                        });
+                                    }}
+                                >
+                                    Modal Open(닫기버튼 이벤트)
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        // 닫기 버튼 이벤트 연결
+                                        modal.openModal({
+                                            content: "Modal Window",
+                                            // 닫기버튼 클릭
+                                            onCancel: () => {
+                                                console.log("cancel click");
+                                            },
+                                            // 확인버튼 클릭
+                                            onConfirm: () => {
+                                                console.log("confirm click");
+                                            },
+                                        });
+                                    }}
+                                >
+                                    Modal Open(닫기, 확인 버튼)
+                                </Button>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+
+    return (<Group>
+        <Group.Body>
+            <Button
+                onClick={() => {
+                    // 닫기 버튼만 있는 Modal
+                    modal.openModal({ content: "Modal Window" });
+                }}
+            >
+                Modal Open(기본)
+            </Button>
+
+            <Button
+                onClick={() => {
+                    // 닫기 버튼만 있는 Modal, 제목 변경
+                    modal.openModal({ content: "Modal Window", title: "T_WARN" });
+                }}
+            >
+                Modal Open(제목변경)
+            </Button>
+
+            <Button
+                onClick={() => {
+                    // 닫기 버튼만 있는 Modal, 제목 변경, 배경 없음
+                    modal.openModal({ content: "Modal Window", title: "T_WARN", backdrop: false });
+                }}
+            >
+                Modal Open(제목변경, 배경없음)
+            </Button>
+
+            <Button
+                onClick={() => {
+                    // 닫기 버튼만 있는 Modal, 제목 변경, 배경 없음 , 드래그 가능
+                    modal.openModal({
+                        content: "Modal Window",
+                        title: "T_WARN",
+                        backdrop: false,
+                        draggable: true,
+                    });
+                }}
+            >
+                Modal Open(제목변경, 배경없음, 드래그 가능)
+            </Button>
+            <Button
+                onClick={() => {
+                    // 닫기 버튼 이벤트 연결
+                    modal.openModal({
+                        content: "Modal Window",
+                        onCancel: () => {
+                            console.log("cancel click");
+                        },
+                    });
+                }}
+            >
+                Modal Open(닫기버튼 이벤트)
+            </Button>
+            <Button
+                onClick={() => {
+                    // 닫기 버튼 이벤트 연결
+                    modal.openModal({
+                        content: "Modal Window",
+                        // 닫기버튼 클릭
+                        onCancel: () => {
+                            console.log("cancel click");
+                        },
+                        // 확인버튼 클릭
+                        onConfirm: () => {
+                            console.log("confirm click");
+                        },
+                    });
+                }}
+            >
+                Modal Open(닫기, 확인 버튼)
+            </Button>
+        </Group.Body>
+    </Group>);
+};
+
+                            `}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section
+                        title=""
+                        description={
+                            <>
+                                3.2 Modal Popup 용도
+                                <br />- Modal로 컴포넌트를 띄우고 값과 handler 를 주고 받는 Sample
+                            </>
+                        }
+                    >
+                        <Group>
+                            <Group.Body>
+                                <Button
+                                    onClick={() => {
+                                        const handleSave = (data: any) => {
+                                            // Modal 창에서 받은 데이터 확인
+                                            console.log(data);
+                                            // 모든 Modal 창 닫기
+                                            modal.closeModal();
+                                        };
+                                        modal.openModal({
+                                            content: (
+                                                <ModalSample
+                                                    data={{ text: "text", number: 9999 }}
+                                                    handleSave={handleSave}
+                                                />
+                                            ),
+                                            size: "lg",
+                                            draggable: true,
+                                        });
+                                    }}
+                                >
+                                    Modal Open(Window)
+                                </Button>
+                            </Group.Body>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+
+    return (<Group>
+        <Group.Body>
+            <Button
+                onClick={() => {
+                    const handleSave = (data: any) => {
+                        // Modal 창에서 받은 데이터 확인
+                        console.log(data);
+                        // 모든 Modal 창 닫기
+                        modal.closeModal();
+                    };
+                    modal.openModal({
+                        content: (
+                            <ModalSample
+                                data={{ text: "text", number: 9999 }}
+                                handleSave={handleSave}
+                            />
+                        ),
+                        size: "lg",
+                        draggable: true,
+                    });
+                }}
+            >
+                Modal Open(Window)
+            </Button>
+        </Group.Body>
+    </Group>);
+};
+
+// Modal로 띄울 컴포넌트
+export const ModalSample = (props: any) => {
+    const { data, handleSave } = props;
+
+    const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
+
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            text: { label: "text", type: "text" },
+            number: { label: "number", type: "number", thousandSeparator: true },
+        },
     };
 
-    const withOnConfirm = () => {
-        modal.openModal({ onConfirm: () => alert("confirm") });
-    };
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: { ...data },
+    });
 
-    const withOnCancel = () => {
-        modal.openModal({ onCancel: () => alert("cancel") });
-    };
-
-    const withoutBackdrop = () => {
-        modal.openModal({ backdrop: false });
-    };
-
-    const withSizeSm = () => {
-        modal.openModal({ size: "sm" });
-    };
-    const withSizeMd = () => {
-        modal.openModal({ size: "md" });
-    };
-    const withSizeLg = () => {
-        modal.openModal({ size: "lg" });
-    };
-    const withSizeXl = () => {
-        modal.openModal({ size: "xl" });
-    };
-
-    const withComponent = () => {
-        modal.openModal({ content: <div className="h-[2000px]">안녕123!1!</div> });
-    };
-    const widthDrag = () => {
-        modal.openModal({
-            content: <div>안녕123!1!</div>,
-            draggable: true,
-        });
+    const handler = {
+        saveSample: form.handleSubmit(
+            (data) => {
+                handleSave(data);
+            },
+            () => {
+                toast.showToast({ type: "warning", content: "msg.00002" });
+            },
+        ),
     };
 
     return (
-        <Sample title="useModal">
-            <Sample.Section title="useModal(): UseModalReturn">
-                <Sample.Table
-                    data={[
-                        ["Return", "Type", "Description"],
-                        ["openModal", "", "Description"],
-                        ["closeModal", "", "Description"],
-                    ]}
-                />
-            </Sample.Section>
-            <Sample.Section title="openModal(props: ModalProps): void">
-                <Sample.Table
-                    data={[
-                        ["Arguments", "Type", "Default", "Description"],
-                        ["props", "ModalProps", "", ""],
-                        ["- id", "string", "", ""],
-                        ["- content", "string", "", ""],
-                        ["- backdrop", "boolean", "", ""],
-                        ["- size", "", "", ""],
-                        ["- onConfirm", "() => void", "", ""],
-                        ["- onCancel", "() => void", "", ""],
-                    ]}
-                />
-                <Sample.Code exec={withMessage}>{`/* open */
+        <>
+            <Page title={"Modal Window"}>
+                <Group>
+                    <Group.Body>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.schema.text} />
+                                <Group.Control {...form.schema.number} />
+                            </Group.Row>
+                        </Group.Section>
+                    </Group.Body>
+                    <Group.Footer>
+                        <Layout>
+                            <Layout.Left></Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        handler.saveSample();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    </Group.Footer>
+                </Group>
+            </Page>
+        </>
+    );
+};
 
-openModal({
-    content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry'
-})`}</Sample.Code>
-                <Sample.Code exec={withOnConfirm}>{`/*  */
-
-openModal({
-    onConfirm: () => alert('confirm')
-})`}</Sample.Code>
-                <Sample.Code exec={withOnCancel}>{`/* */
-
-openModal({
-    onCancel: () => alert('cancel')
-})`}</Sample.Code>
-                <Sample.Code exec={withoutBackdrop}>{`/* */
-
-openModal({
-    backdrop: false
-})}`}</Sample.Code>
-                <Sample.Code exec={withSizeSm}>{`/* */
-
-openModal({
-    onCancel: () => alert('cancel')
-})`}</Sample.Code>
-                <Sample.Code exec={withComponent}>{`/* */
-
-openModal({
-    compo: () => alert('cancel')
-})`}</Sample.Code>
-                <Sample.Code exec={widthDrag}>{`/* */
-                
-openModal({
-    onCancel: () => alert('cancel')
-})`}</Sample.Code>
-            </Sample.Section>
-
-            <Sample.Section title="closeModal(): void">
-                <Sample.Code exec={() => modal.closeModal()}>{`closeModal()`}</Sample.Code>
+                            `}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                </Layout>
             </Sample.Section>
         </Sample>
     );
 };
 
-//     id?: string;
-//     content?: React.ReactNode;
-//     backdrop?: boolean;
-//     size?: keyof typeof MODAL_SIZES;
-//     onConfirm?: () => void;
-//     onCancel?: () => void;
+export const ModalSample = (props: any) => {
+    const { data, handleSave } = props;
 
-/* <div className="space-y-8">
-<Table></Table>
-<div>
-    <Button onClick={withMessage}>기본</Button>
-    <Button onClick={withOnConfirm}>onConfirm handler 추가</Button>
-    <Button onClick={withOnCancel}>onCancel handler 추가</Button>
-    <Button onClick={withoutBackdrop}>backdrop 제거</Button>
-    <Button onClick={withSizeSm}>size sm</Button>
-    <Button onClick={withSizeMd}>size md</Button>
-    <Button onClick={withSizeLg}>size lg</Button>
-    <Button onClick={withSizeXl}>size xl</Button>
-    <Button onClick={withComponent}>컴포넌트 모달</Button>
-</div>
+    const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
 
-<div className="text-[1.8rem]">useModal</div>
-</div> */
+    const SG_FORM: TFormSchema = {
+        id: "form",
+        schema: {
+            text: { label: "text", type: "text" },
+            number: { label: "number", type: "number", thousandSeparator: true },
+        },
+    };
+
+    const form = useForm({
+        defaultSchema: SG_FORM,
+        defaultValues: { ...data },
+    });
+
+    const handler = {
+        saveSample: form.handleSubmit(
+            (data) => {
+                handleSave(data);
+            },
+            () => {
+                toast.showToast({ type: "warning", content: "msg.00002" });
+            },
+        ),
+    };
+
+    return (
+        <>
+            <Page title={"Modal Window"}>
+                <Group>
+                    <Group.Body>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.schema.text} />
+                                <Group.Control {...form.schema.number} />
+                            </Group.Row>
+                        </Group.Section>
+                    </Group.Body>
+                    <Group.Footer>
+                        <Layout>
+                            <Layout.Left></Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        handler.saveSample();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    </Group.Footer>
+                </Group>
+            </Page>
+        </>
+    );
+};
