@@ -162,10 +162,6 @@ export const SampleRoutes = [
                         to: "/comn/smpl/hooks/useToast",
                     },
                     {
-                        name: "useWijmo",
-                        to: "/comn/smpl/hooks/useWijmo",
-                    },
-                    {
                         name: "useTab",
                         to: "/comn/smpl/hooks/useTab",
                     },
