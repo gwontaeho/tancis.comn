@@ -36,7 +36,7 @@ import { SampleUseForm } from "@/comn/sample/Hook/smpl-useForm";
 import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
 import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
-import { SampleUsePopupTarget } from "@/comn/sample/Hook/smpl-usePopup";
+import { SampleUsePopupWindow } from "@/comn/sample/Hook/smpl-usePopup";
 import { SampleUseWijmo } from "@/comn/sample/Hook/smpl-useWijmo";
 import { SampleUseTab } from "@/comn/sample/Hook/smpl-useTab";
 import { SampleUseTree } from "@/comn/sample/Hook/smpl-useTree";
@@ -102,7 +102,7 @@ export const SampleMain = () => {
             <Route path="/hooks/useModal" element={<SampleUseModal />} />
             <Route path="/hooks/useToast" element={<SampleUseToast />} />
             <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
-            <Route path="/hooks/usePopupTarget" element={<SampleUsePopupTarget />} />
+            <Route path="/hooks/usePopupWindow" element={<SampleUsePopupWindow />} />
             <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
             <Route path="/hooks/useTab" element={<SampleUseTab />} />
             <Route path="/hooks/useTree" element={<SampleUseTree />} />
