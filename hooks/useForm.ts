@@ -74,13 +74,9 @@ export const useForm = (props: UseFormProps) => {
             setSchema(name, schemas);
         });
     };
-    const setSchemaAll = (schema: any) => {
-        _setSchema(schema.schema);
 
-        //_setValues(_getValues());
-    };
-    const resetSchema = () => {
-        _setSchema(schema);
+    const resetSchema = (params?: any) => {
+        _setSchema(params?.schema || schema);
     };
 
     const _getValue = (name: string) => {
@@ -142,39 +138,6 @@ export const useForm = (props: UseFormProps) => {
                 onInvalid(error);
             },
         );
-    };
-
-    const getFormValues = (name?: string) => {
-        const _values = getValues();
-        const temp: { [key: string]: any } = _values;
-
-        Object.keys(_schema).forEach((name) => {
-            switch (_schema[name].type) {
-                case "daterange":
-                case "timerange": {
-                    temp[_schema[name].start?.name] = comnUtils.dateToString(
-                        _values[_schema[name].start?.name],
-                        _schema[name].type === "daterange" ? "date" : "time",
-                    );
-                    temp[_schema[name].end?.name] = comnUtils.dateToString(
-                        _values[_schema[name].end?.name],
-                        _schema[name].type === "daterange" ? "date" : "time",
-                    );
-                    break;
-                }
-                case "date":
-                case "time":
-                case "datetime": {
-                    temp[name] = comnUtils.dateToString(_values[name], _schema[name].type);
-                    break;
-                }
-                default: {
-                    temp[name] = _values[name];
-                }
-            }
-        });
-
-        return temp;
     };
 
     const _setFocus = (name: string) => {
@@ -243,13 +206,6 @@ export const useForm = (props: UseFormProps) => {
         );
     };
 
-    const setCheckAll = (name: string, check: boolean) => {
-        const s = _schema[name];
-        if (s === undefined || s.type !== "checkbox") {
-            return;
-        }
-    };
-
     const setErrors = (errors: any) => {
         if (errors === undefined || errors === null) return;
         Object.keys(_schema).forEach((name) => {
@@ -257,8 +213,6 @@ export const useForm = (props: UseFormProps) => {
             setError(name, { message: errors[name], type: "error" });
         });
     };
-
-    const view = (name: string) => {};
 
     return {
         schema: getSchema(_schema),
@@ -281,9 +235,5 @@ export const useForm = (props: UseFormProps) => {
         setError,
         setErrors,
         reset,
-        getFormValues,
-        setSchemaAll,
-        setCheckAll,
-        view,
     };
 };

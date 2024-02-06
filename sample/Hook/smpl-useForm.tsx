@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Sample } from "@/comn/components/_";
 import { Page, Group, Button, Table } from "@/comn/components";
 import { TFormSchema, TFormValues } from "@/comn/hooks";
 import { useForm, useResource } from "@/comn/hooks";
@@ -155,259 +156,297 @@ export const SampleUseForm = () => {
     };
 
     return (
-        <Page>
-            <Group>
-                <Group.Title title="Form" />
-                <form>
-                    <Group.Body>
-                        <Group.Section>
-                            <Group.Row>
-                                <Group.Control {...schema.text} />
-                                <Group.Control {...schema.number} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.password} />
-                                <Group.Control {...schema.textarea} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.select} />
-                                <Group.Control {...schema.checkbox} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.radio} options={OPTION} />
-                                <Group.Control {...schema.date} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.time} />
-                                <Group.Control {...schema.datetime} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.daterange} controlSize={10} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.timerange} controlSize={10} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Control {...schema.file} />
-                                <Group.Control {...schema.code} />
-                            </Group.Row>
-                            <Group.Row>
-                                <Group.Label label="combine" />
-                                <Group.Col combine={true}>
-                                    <Group.Control type="text" />
-                                    <Group.Control type="text" />
-                                    <Group.Control type="text" />
-                                    <Button>combine</Button>
-                                </Group.Col>
-                            </Group.Row>
-                        </Group.Section>
-                    </Group.Body>
-                    <button onClick={handleSubmit(onSubmit)}>asd</button>
-                    <button onClick={handleSubmit(onSubmit2)}>asdadasd</button>
-                </form>
-            </Group>
+        <Sample title="useForm">
+            <Sample.Section>
+                <Sample.Table
+                    data={[
+                        ["Parameters", "Description"],
+                        ["defaultSchema", ""],
+                        ["defaultValues", ""],
+                    ]}
+                />
+                <Sample.Table
+                    data={[
+                        ["Returns", "Description"],
+                        ["schema", "state"],
+                        ["handleSubmit", "function"],
+                        ["getValue", ""],
+                        ["getValues", ""],
+                        ["setValue", ""],
+                        ["setValues", ""],
+                        ["clearValues", ""],
+                        ["setSchema", ""],
+                        ["setSchemas", ""],
+                        ["resetSchema", ""],
+                        ["setEditable", ""],
+                        ["setFocus", ""],
+                        ["validate", ""],
+                        ["clearErrors", ""],
+                        ["watch", ""],
+                        ["errors", ""],
+                        ["isSubmitted", ""],
+                        ["setError", ""],
+                        ["setErrors", ""],
+                        ["reset", ""],
+                        ["resetSchema", ""],
+                    ]}
+                />
+            </Sample.Section>
 
-            <Table>
-                <Table.Tr>
-                    <Table.Th width={300}>
-                        <Button
-                            onClick={() => {
-                                console.log(getValues());
-                                // alert(JSON.stringify(getValues()))
-                            }}
-                        >
-                            <code>getValues()</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setValue("text", 12311231213);
-                            }}
-                        >
-                            <code>setValue()aaaaaaaaa</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setValue("code", "d");
-                            }}
-                        >
-                            <code>setValue() sdad</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setSchema("ggggggg", { comnCd: "COM_0015" });
-                            }}
-                        >
-                            <code>wwdqw()</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setValues({ text: "text", number: "1231231,23123", radio: "2" });
-                            }}
-                        >
-                            <code>{`setValues()`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                clearValues();
-                            }}
-                        >
-                            <code>{`clearValues()`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setEditable(true);
-                            }}
-                        >
-                            <code>setEditable(true)</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setEditable(false);
-                            }}
-                        >
-                            <code>setEditable(false)</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                setSchema("datetime", { disabled: true });
-                            }}
-                        >
-                            <code>{`setSchema("text", { disabled: true })`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                resetSchema();
-                            }}
-                        >
-                            <code>{`resetSchema()`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
+            <Page>
+                <Group>
+                    <Group.Title title="Form" />
+                    <form>
+                        <Group.Body>
+                            <Group.Section>
+                                <Group.Row>
+                                    <Group.Control {...schema.text} />
+                                    <Group.Control {...schema.number} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.password} />
+                                    <Group.Control {...schema.textarea} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.select} />
+                                    <Group.Control {...schema.checkbox} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.radio} options={OPTION} />
+                                    <Group.Control {...schema.date} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.time} />
+                                    <Group.Control {...schema.datetime} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.daterange} controlSize={10} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.timerange} controlSize={10} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...schema.file} />
+                                    <Group.Control {...schema.code} />
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Label label="combine" />
+                                    <Group.Col combine={true}>
+                                        <Group.Control type="text" />
+                                        <Group.Control type="text" />
+                                        <Group.Control type="text" />
+                                        <Button>combine</Button>
+                                    </Group.Col>
+                                </Group.Row>
+                            </Group.Section>
+                        </Group.Body>
+                        <button onClick={handleSubmit(onSubmit)}>asd</button>
+                        <button onClick={handleSubmit(onSubmit2)}>asdadasd</button>
+                    </form>
+                </Group>
 
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                validate();
-                            }}
-                        >
-                            <code>{`validate()`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                validate("text");
-                            }}
-                        >
-                            <code>{`validate("text")`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                clearErrors();
-                            }}
-                        >
-                            <code>{`clearErrors()`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button
-                            onClick={() => {
-                                clearErrors("text");
-                            }}
-                        >
-                            <code>{`clearErrors("text")`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button onClick={handleSubmit((e) => console.log(e))}>
-                            <code>{`handleSubmit(() => {})`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <Button onClick={() => reset()}>
-                            <code>{`reset()`}</code>
-                        </Button>
-                    </Table.Th>
-                    <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <code>{`const text = watch(["text"])`}</code>
-                    </Table.Th>
-                    <Table.Td>text : {text}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                    <Table.Th>
-                        <code>{`isSubmitted`}</code>
-                    </Table.Th>
-                    <Table.Td>isSubmitted : {String(isSubmitted)}</Table.Td>
-                </Table.Tr>
-            </Table>
-        </Page>
+                <Table>
+                    <Table.Tr>
+                        <Table.Th width={300}>
+                            <Button
+                                onClick={() => {
+                                    console.log(getValues());
+                                    // alert(JSON.stringify(getValues()))
+                                }}
+                            >
+                                <code>getValues()</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setValue("text", 12311231213);
+                                }}
+                            >
+                                <code>setValue()aaaaaaaaa</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setValue("code", "d");
+                                }}
+                            >
+                                <code>setValue() sdad</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setSchema("ggggggg", { comnCd: "COM_0015" });
+                                }}
+                            >
+                                <code>wwdqw()</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setValues({ text: "text", number: "1231231,23123", radio: "2" });
+                                }}
+                            >
+                                <code>{`setValues()`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    clearValues();
+                                }}
+                            >
+                                <code>{`clearValues()`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setEditable(true);
+                                }}
+                            >
+                                <code>setEditable(true)</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setEditable(false);
+                                }}
+                            >
+                                <code>setEditable(false)</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    setSchema("datetime", { disabled: true });
+                                }}
+                            >
+                                <code>{`setSchema("text", { disabled: true })`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    resetSchema();
+                                }}
+                            >
+                                <code>{`resetSchema()`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    validate();
+                                }}
+                            >
+                                <code>{`validate()`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    validate("text");
+                                }}
+                            >
+                                <code>{`validate("text")`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    clearErrors();
+                                }}
+                            >
+                                <code>{`clearErrors()`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button
+                                onClick={() => {
+                                    clearErrors("text");
+                                }}
+                            >
+                                <code>{`clearErrors("text")`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button onClick={handleSubmit((e) => console.log(e))}>
+                                <code>{`handleSubmit(() => {})`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <Button onClick={() => reset()}>
+                                <code>{`reset()`}</code>
+                            </Button>
+                        </Table.Th>
+                        <Table.Td></Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <code>{`const text = watch(["text"])`}</code>
+                        </Table.Th>
+                        <Table.Td>text : {text}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>
+                            <code>{`isSubmitted`}</code>
+                        </Table.Th>
+                        <Table.Td>isSubmitted : {String(isSubmitted)}</Table.Td>
+                    </Table.Tr>
+                </Table>
+            </Page>
+        </Sample>
     );
 };
 
