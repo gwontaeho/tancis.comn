@@ -215,6 +215,31 @@ const Sample = () => {
                     </Sample.Section>
                 </Layout>
             </Sample.Section>
+
+            <Sample.Section title="6. Disabled" description="">
+                <Layout direction="row">
+                    <Sample.Section title="Result">
+                        <div className="flex flex-wrap gap-4">
+                            <Button disabled={true} onClick={() => console.log("a")}>
+                                Disabled
+                            </Button>
+                        </div>
+                    </Sample.Section>
+                    <Sample.Section title="Code">
+                        <Sample.Code>{`
+const Sample = () => {
+    return (
+        <>
+            <Button icon="search" />
+            <Button icon="search">Search</Button>
+        </>
+    );
+};
+
+`}</Sample.Code>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
         </Sample>
     );
 };

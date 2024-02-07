@@ -15,6 +15,7 @@ type SampleProps = {
 
 type SampleSectionProps = {
     children?: React.ReactNode;
+    id?: string;
     title?: string;
     description?: any;
 };
@@ -55,10 +56,10 @@ const Button = (props: any) => {
 };
 
 const Section = (props: SampleSectionProps) => {
-    const { children, title, description } = props;
+    const { children, id, title, description } = props;
 
     return (
-        <div className="bg-uf-card-background p-4 flex flex-col flex-1 rounded gap-4">
+        <div id={id} className="bg-uf-card-background p-4 flex flex-col flex-1 rounded gap-4">
             {title && <div className="text-[1.2rem]">{title}</div>}
             {description && <div className="text-[1rem]">{description}</div>}
             {children}

@@ -4,8 +4,14 @@ export const SampleRoutes = [
         base: "/comn",
         children: [
             {
-                name: "temp",
-                base: "/smpl/temp",
+                name: "Sample",
+                base: "Sample",
+                children: [
+                    {
+                        name: "Repacking BL (with Item)",
+                        to: "/comn/smpl/sample/cgme0411001q",
+                    },
+                ],
             },
             {
                 name: "Component",
@@ -81,6 +87,10 @@ export const SampleRoutes = [
                         name: "Layout Component",
                         base: "/layout",
                         children: [
+                            {
+                                name: "Basic",
+                                to: "/comn/smpl/components/Basic",
+                            },
                             {
                                 name: "Text",
                                 to: "/comn/smpl/components/Text",
@@ -178,7 +188,6 @@ export const SampleRoutes = [
             {
                 name: "Common Page",
                 base: "/comn",
-
                 children: [
                     {
                         name: "Language Management",

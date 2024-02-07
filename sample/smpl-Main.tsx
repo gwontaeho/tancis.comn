@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
 import { Temp } from "./temp";
-import { SampleHome } from "./smpl-Home";
 
 import { SampleFormControlBasic } from "@/comn/sample/Component/FormControl/smpl-Basic";
 import { SampleFormControlText } from "@/comn/sample/Component/FormControl/smpl-Text";
@@ -19,6 +18,7 @@ import { SampleFormControlTimeRange } from "@/comn/sample/Component/FormControl/
 import { SampleFormControlFile } from "@/comn/sample/Component/FormControl/smpl-File";
 import { SampleFormControlCode } from "@/comn/sample/Component/FormControl/smpl-Code";
 
+import { SampleLayoutBasic } from "@/comn/sample/Component/smpl-LayoutBasic";
 import { SampleText } from "@/comn/sample/Component/smpl-Text";
 import { SamplePage } from "@/comn/sample/Component/smpl-Page";
 import { SampleIcon } from "@/comn/sample/Component/smpl-Icon";
@@ -43,10 +43,6 @@ import { SampleUseTree } from "@/comn/sample/Hook/smpl-useTree";
 import { SampleUseFetch } from "@/comn/sample/Hook/smpl-useFetch";
 import { SampleUseStore } from "@/comn/sample/Hook/smpl-useStore";
 
-import { SampleList } from "@/comn/sample/Page/smpl-List";
-import { SampleDetail } from "@/comn/sample/Page/smpl-Detail";
-import { SampleRegist } from "@/comn/sample/Page/smpl-Regist";
-import { SampleUpdate } from "@/comn/sample/Page/smpl-Update";
 import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
 import { CountryCodeList } from "@/comn/sample/Page/comn-code/CntyCdLst";
 import { CityCodeList } from "@/comn/sample/Page/comn-code/CityCdLst";
@@ -58,16 +54,15 @@ import { PortAirptCodeList } from "@/comn/sample/Page/comn-code/PortAirptCdLst";
 import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
 import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
 import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
-import { __Test } from "../components/__TEST";
+
+import { CGME0411001Q } from "@/comn/sample/Sample/CGME0411001Q";
+import { CGME0411002S } from "@/comn/sample/Sample/CGME0411002S";
+import { CGME0411003Q } from "@/comn/sample/Sample/CGME0411003Q";
 
 export const SampleMain = () => {
     return (
         <Routes>
-            <Route path="/" element={<SampleHome />} />
-
             <Route path="/temp" element={<Temp />} />
-
-            <Route path="/test999" element={<__Test />} />
 
             <Route path="/components/FormControl/Basic" element={<SampleFormControlBasic />} />
             <Route path="/components/FormControl/Text" element={<SampleFormControlText />} />
@@ -85,6 +80,7 @@ export const SampleMain = () => {
             <Route path="/components/FormControl/File" element={<SampleFormControlFile />} />
             <Route path="/components/FormControl/Code" element={<SampleFormControlCode />} />
 
+            <Route path="/components/Basic" element={<SampleLayoutBasic />} />
             <Route path="/components/Text" element={<SampleText />} />
             <Route path="/components/Page" element={<SamplePage />} />
             <Route path="/components/Icon" element={<SampleIcon />} />
@@ -109,11 +105,6 @@ export const SampleMain = () => {
             <Route path="/hooks/useFetch" element={<SampleUseFetch />} />
             <Route path="/hooks/useStore" element={<SampleUseStore />} />
 
-            <Route path="/pages/list" element={<SampleList />} />
-            <Route path="/pages/detail" element={<SampleDetail />} />
-            <Route path="/pages/update" element={<SampleUpdate />} />
-            <Route path="/pages/regist" element={<SampleRegist />} />
-
             <Route path="/pages/comnCdPpup" element={<CommonCodeList />} />
             <Route path="/pages/cntyCdPpup" element={<CountryCodeList />} />
             <Route path="/pages/cityCdPpup" element={<CityCodeList />} />
@@ -125,6 +116,13 @@ export const SampleMain = () => {
             <Route path="/pages/coCdPpup" element={<CompanyCodeList />} />
             <Route path="/pages/prcssStatPpup" element={<ProcessingStatusCodeList />} />
             <Route path="/pages/orgCdPpup" element={<OrganizationCodeList />} />
+
+            <Route path="/sample/cgme0411001q" element={<CGME0411001Q />} />
+            <Route path="/sample/cgme0411002s" element={<CGME0411002S />} />
+            <Route path="/sample/cgme0411002s/:dclrNo" element={<CGME0411002S />} />
+            <Route path="/sample/cgme0411003q" element={<CGME0411003Q />} />
         </Routes>
     );
 };
+
+export default SampleMain;

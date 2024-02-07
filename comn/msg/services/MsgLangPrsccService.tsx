@@ -1,7 +1,6 @@
 import { api } from "@/comn";
 import { comnEnvs, comnUtils } from "@/comn/utils";
-import { TFormSchema } from "@/comn/hooks";
-import { WijmoSchemaType } from "@/comn/hooks";
+import { TFormSchema, TGridSchema } from "@/comn/hooks";
 
 export const BASE = {
     path: `${comnEnvs.base_comn}/comn/msg`,
@@ -75,35 +74,35 @@ export const SF_MSG_LANG: TFormSchema = {
     },
 };
 
-export const SG_MSG_LANG_LIST: WijmoSchemaType = {
+export const SG_MSG_LANG_LIST: TGridSchema = {
     id: "grid_MsgLangList",
-    options: { pagination: "out", isReadOnly: true, checkbox: true },
+    options: { pagination: "out", checkbox: true },
     head: [
-        { cells: [{ header: "L_MSG_ID", binding: "msgId" }] },
-        { cells: [{ header: "L_MSG_CN_EN", binding: "msgCnEn" }] },
-        { cells: [{ header: "L_MSG_CN_TZ", binding: "msgCnTz" }] },
-        { cells: [{ header: "L_MSG_CN_KO", binding: "msgCnKo" }] },
-        { cells: [{ header: "L_FRST_REGST_ID", binding: "frstRegstId" }] },
-        { cells: [{ header: "L_FRST_RGSR_DTM", binding: "frstRgsrDtm" }] },
+        { cells: [{ header: "L_MSG_ID", binding: "msgId", width: 300 }] },
+        { cells: [{ header: "L_MSG_CN_EN", binding: "msgCnEn", width: 300 }] },
+        { cells: [{ header: "L_MSG_CN_TZ", binding: "msgCnTz", width: 300 }] },
+        { cells: [{ header: "L_MSG_CN_KO", binding: "msgCnKo", width: 300 }] },
+        { cells: [{ header: "L_FRST_REGST_ID", binding: "frstRegstId", width: 150 }] },
+        { cells: [{ header: "L_FRST_RGSR_DTM", binding: "frstRgsrDtm", width: 150 }] },
     ],
     body: [
         {
-            cells: [{ binding: "msgId", width: 200 }],
+            cells: [{ binding: "msgId" }],
         },
         {
-            cells: [{ binding: "msgCnEn", width: 200 }],
+            cells: [{ binding: "msgCnEn" }],
         },
         {
-            cells: [{ binding: "msgCnTz", width: 200 }],
+            cells: [{ binding: "msgCnTz" }],
         },
         {
-            cells: [{ binding: "msgCnKo", width: "*" }],
+            cells: [{ binding: "msgCnKo" }],
         },
         {
-            cells: [{ binding: "frstRegstId", width: 150 }],
+            cells: [{ binding: "frstRegstId" }],
         },
         {
-            cells: [{ binding: "frstRgsrDtm", width: 150 }],
+            cells: [{ binding: "frstRgsrDtm" }],
         },
     ],
 };

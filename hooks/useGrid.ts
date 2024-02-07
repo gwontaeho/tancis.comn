@@ -15,7 +15,7 @@ export type TGridSchema = {
         importExcel?: boolean;
         exportExcel?: boolean;
         pagination?: "in" | "out" | false;
-        height?: number;
+        height?: number | "auto";
     };
     head: {
         id?: string;
@@ -64,10 +64,10 @@ type UseGridProps = {
 };
 
 export const useGrid = (props: UseGridProps) => {
-    const { defaultSchema } = props;
+    const { defaultSchema, page = 0, size = 10 } = props;
 
-    const [_page, _setPage] = React.useState(0);
-    const [_size, _setSize] = React.useState(10);
+    const [_page, _setPage] = React.useState(page);
+    const [_size, _setSize] = React.useState(size);
 
     const _grid = React.useRef<any>({
         _initialized: false,
@@ -110,7 +110,8 @@ export const useGrid = (props: UseGridProps) => {
         _delete: defaultSchema.options?.delete,
         _exportExcel: defaultSchema.options?.exportExcel,
         _importExcel: defaultSchema.options?.importExcel,
-        _height: defaultSchema.options?.height || 400,
+        _height: defaultSchema.options?.height === "auto" ? 0 : defaultSchema.options?.height || 400,
+        _autoHeight: defaultSchema.options?.height === "auto",
 
         /** paging */
         _pagination: defaultSchema.options?.pagination,
@@ -170,6 +171,15 @@ export const useGrid = (props: UseGridProps) => {
     const getSelectedCell = () => {
         return _grid.current._selectedCel;
     };
+    const isChecked = () => {
+        return Boolean(_grid.current._checked.length);
+    };
+    const isSelectedRow = () => {
+        return Boolean(_grid.current._selectedRow);
+    };
+    const isSelectedCell = () => {
+        return Boolean(_grid.current._selectedCel);
+    };
 
     // Control
     const addRow = (data?: Record<string, any>) => {
@@ -201,5 +211,8 @@ export const useGrid = (props: UseGridProps) => {
         setSize,
         setData,
         resetData,
+        isChecked,
+        isSelectedRow,
+        isSelectedCell,
     };
 };

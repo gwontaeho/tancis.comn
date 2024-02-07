@@ -15,10 +15,11 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        // edit: true,
+        edit: true,
         importExcel: true,
         exportExcel: true,
-        pagination: "in",
+        height: "auto",
+        // pagination: "in",
 
         // group: ["q", "w"],
     },
@@ -26,7 +27,7 @@ const schema1: TGridSchema = {
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
     ],
-    body: [{ cells: [{ binding: "q" }] }, { cells: [{ binding: "w" }] }],
+    body: [{ cells: [{ binding: "q" }] }, { cells: [{ binding: "w", type: "textarea" }] }],
 };
 
 type TData = {
@@ -69,6 +70,9 @@ export const Temp = () => {
         setSize,
         resetData,
         setData,
+        isChecked,
+        isSelectedRow,
+        isSelectedCell,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -195,6 +199,7 @@ export const Temp = () => {
                     <button onClick={() => setSize(30)}>setSize 30</button>
                     <button onClick={() => setPage(2)}>setPage 2</button>
                     <button onClick={() => setOption("height", 500)}>set height</button>
+                    <button onClick={() => setOption("height", "auto")}>set height auto</button>
 
                     <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
                     <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
@@ -235,6 +240,9 @@ export const Temp = () => {
                     <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
                     <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
                     <button onClick={() => console.log(getChecked())}>getChecked</button>
+                    <button onClick={() => console.log(isChecked())}>isChecked</button>
+                    <button onClick={() => console.log(isSelectedRow())}>isSelectedRow</button>
+                    <button onClick={() => console.log(isSelectedCell())}>isSelectedCell</button>
                 </div>
             </div>
         </Page>

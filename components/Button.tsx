@@ -51,7 +51,7 @@ const BUTTON_ROLES = {
     delete: { text: "B_DEL", color: "error", variant: undefined },
     reset: { text: "B_RESET", color: "warning", variant: undefined },
     confirm: { text: "B_CFRM", color: "success", variant: undefined },
-    ok: { text: "B_OK", color: "success", variant: undefined },
+    ok: { text: "B_OK", color: "primary", variant: undefined },
     edit: { text: "B_EDIT", color: "primary", variant: undefined },
     new: { text: "B_NEW", color: "gray", variant: undefined },
     cancel: { text: "B_CNCL", color: "warning", variant: undefined },
@@ -100,7 +100,7 @@ export const Button = (props: ButtonProps) => {
             {..._color}
             type={type}
             className={classNames(
-                "max-w-full min-w-max flex items-center",
+                "max-w-full min-w-max flex items-center disabled:bg-uf-lightgray disabled:border-uf-lightgray disabled:pointer-events-none",
                 role && BUTTON_ROLES[role].variant !== undefined
                     ? BUTTON_ROLES[role].variant
                     : BUTTON_VARIANTS[variant].style,

@@ -1,11 +1,10 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
-import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useModal } from "@/comn/hooks";
+import { Page, Group, Layout, Button, Grid } from "@/comn/components";
+import { useForm, useFetch, usePopup, useStore, useToast, useModal, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_LBL_LANG_SRCH, SG_LBL_LANG_LIST } from "./services/LblLangPrsccService";
-import { useNavigate } from "react-router-dom";
 
 export const LblLangLst = (props: any) => {
     const pgeUid = "lblLangLst";
@@ -24,12 +23,14 @@ export const LblLangLst = (props: any) => {
     };
 
     const grid = {
-        lblLangLst: useWijmo({
+        lblLangLst: useGrid({
             defaultSchema: SG_LBL_LANG_LIST,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
+
+    console.log(pgeStore);
 
     const fetch = {
         getLblLangLst: useFetch({
@@ -153,7 +154,7 @@ export const LblLangLst = (props: any) => {
                         </Layout.Right>
                     </Layout>
                     <Group.Section>
-                        <Wijmo
+                        <Grid
                             {...grid.lblLangLst.grid}
                             data={fetch.getLblLangLst.data?.lblLangList}
                             onCellClick={handler.click_Grid_LblLangLst}
