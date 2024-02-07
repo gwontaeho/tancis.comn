@@ -37,7 +37,6 @@ import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
 import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
 import { SampleUsePopupWindow } from "@/comn/sample/Hook/smpl-usePopup";
-import { SampleUseWijmo } from "@/comn/sample/Hook/smpl-useWijmo";
 import { SampleUseTab } from "@/comn/sample/Hook/smpl-useTab";
 import { SampleUseTree } from "@/comn/sample/Hook/smpl-useTree";
 import { SampleUseFetch } from "@/comn/sample/Hook/smpl-useFetch";
@@ -99,7 +98,6 @@ export const SampleMain = () => {
             <Route path="/hooks/useToast" element={<SampleUseToast />} />
             <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
             <Route path="/hooks/usePopupWindow" element={<SampleUsePopupWindow />} />
-            <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
             <Route path="/hooks/useTab" element={<SampleUseTab />} />
             <Route path="/hooks/useTree" element={<SampleUseTree />} />
             <Route path="/hooks/useFetch" element={<SampleUseFetch />} />

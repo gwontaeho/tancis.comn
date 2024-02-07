@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Grid, Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, usePopup, useStore, useToast, useGrid } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CNTY_CD_SRCH, SCHEMA_GRID_CNTY_CD } from "./ComnCdService";

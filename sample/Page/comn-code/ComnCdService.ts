@@ -1,6 +1,6 @@
 import { api } from "@/comn";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { TGridSchema, WijmoSchemaType } from "@/comn/hooks";
+import { TGridSchema } from "@/comn/hooks";
 import { TFormSchema } from "@/comn/hooks";
 
 export const BASE = {

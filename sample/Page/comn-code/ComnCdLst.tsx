@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
-import { Grid, Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useToast, usePopup, useTheme, useStore, useGrid } from "@/comn/hooks";
+import { useForm, useFetch, useToast, usePopup, useTheme, useStore, useGrid } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_COMN_CD_SRCH, SCHEMA_GRID_COMN_CD } from "./ComnCdService";
 
 export const CommonCodeList = (props: any) => {

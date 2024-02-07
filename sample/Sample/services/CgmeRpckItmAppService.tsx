@@ -2,7 +2,6 @@ import { api } from "@/comn";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { cgmUtils, cgmEnvs } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
 import { TFormSchema, TGridSchema } from "@/comn/hooks";
-import { WijmoSchemaType } from "@/comn/hooks";
 
 /*
  * Repacking Item Declaration Service

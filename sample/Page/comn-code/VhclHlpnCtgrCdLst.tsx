@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Grid, Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth, useGrid } from "@/comn/hooks";
+import { useForm, useFetch, usePopup, useStore, useToast, useAuth, useGrid } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_VHCL_HLPN_CTGR_CD_SRCH, SCHEMA_GRID_VHCL_HLPN_CTGR_CD } from "./ComnCdService";
 
 export const VehicleHolderCategoryList = (props: any) => {
