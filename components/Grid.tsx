@@ -296,11 +296,13 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
-    const { filteredContent } = createContent(_grid);
+    const { filteredContent, filteredCount } = createContent(_grid);
 
-    let _totalCount = (_grid.current._pagination === "in" ? filteredContent.length : data?.page?.totalElements) || 0;
+    let _totalCount = (_grid.current._pagination === "in" ? filteredCount : data?.page?.totalElements) || 0;
     _grid.current._totalCount = _totalCount;
     _grid.current._originTotalCount = _totalCount;
+
+    console.log(_grid.current);
 
     return {
         _head,

@@ -77,7 +77,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => utils.getMockData({ totalElements: 7 }), []);
+    const data = useMemo(() => utils.getMockData({ totalElements: 60 }), []);
 
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
