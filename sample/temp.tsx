@@ -70,6 +70,9 @@ export const Temp = () => {
         setSize,
         resetData,
         setData,
+        isChecked,
+        isSelectedRow,
+        isSelectedCell,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -237,6 +240,9 @@ export const Temp = () => {
                     <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
                     <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
                     <button onClick={() => console.log(getChecked())}>getChecked</button>
+                    <button onClick={() => console.log(isChecked())}>isChecked</button>
+                    <button onClick={() => console.log(isSelectedRow())}>isSelectedRow</button>
+                    <button onClick={() => console.log(isSelectedCell())}>isSelectedCell</button>
                 </div>
             </div>
         </Page>

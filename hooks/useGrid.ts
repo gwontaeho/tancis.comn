@@ -171,6 +171,15 @@ export const useGrid = (props: UseGridProps) => {
     const getSelectedCell = () => {
         return _grid.current._selectedCel;
     };
+    const isChecked = () => {
+        return Boolean(_grid.current._checked.length);
+    };
+    const isSelectedRow = () => {
+        return Boolean(_grid.current._selectedRow);
+    };
+    const isSelectedCell = () => {
+        return Boolean(_grid.current._selectedCel);
+    };
 
     // Control
     const addRow = (data?: Record<string, any>) => {
@@ -202,5 +211,8 @@ export const useGrid = (props: UseGridProps) => {
         setSize,
         setData,
         resetData,
+        isChecked,
+        isSelectedRow,
+        isSelectedCell,
     };
 };

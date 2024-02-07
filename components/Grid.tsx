@@ -1006,6 +1006,7 @@ export const Grid = (props: any) => {
                     outerRef={(node) => {
                         if (node) {
                             _grid.current._listOuter = node;
+
                             node.onscroll = (event: any) => {
                                 _grid.current._head.scrollTo({ left: event.currentTarget.scrollLeft });
                             };

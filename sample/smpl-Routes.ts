@@ -8,7 +8,7 @@ export const SampleRoutes = [
                 base: "Sample",
                 children: [
                     {
-                        name: "cgme0411001q",
+                        name: "Repacking BL (with Item)",
                         to: "/comn/smpl/sample/cgme0411001q",
                     },
                 ],
