@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
 import { comnEnvs, comnUtils } from "@/comn/utils";
-import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
 import { Page, Group, Layout, Button, Grid, ExcelUpload, FormControl, Table } from "@/comn/components";
 import {
     useForm,

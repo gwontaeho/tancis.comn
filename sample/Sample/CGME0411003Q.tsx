@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/comn/components";
-import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { useForm, useToast, useFetch, useModal, useStore, useGrid, usePopup } from "@/comn/hooks";

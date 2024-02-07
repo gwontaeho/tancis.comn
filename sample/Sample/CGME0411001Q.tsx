@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유틸
-import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
 import { Page, Group, Layout, Button, FormControl } from "@/comn/components"; // 화면 구성 컴포넌트
 import { useForm, useFetch, useResource, useGrid, useModal, useStore, useToast, usePopup } from "@/comn/hooks"; // hook
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/CgmeRpckItmAppService"; // 서비스
