@@ -110,7 +110,7 @@ const SF_FORM: TFormSchema = {
         },
         field15: {
             type: "code",
-            area: "cstmOfceCd",
+            area: "cstmCd",
             label: "Customs Code",
             maxLength: 3,
             popupSize: "md",

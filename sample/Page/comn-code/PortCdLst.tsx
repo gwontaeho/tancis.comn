@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_PORT_CD_SRCH, SCHEMA_GRID_PORT_CD } from "./ComnCdService";
 
 export const PortCodeList = (props: any) => {
@@ -21,7 +21,7 @@ export const PortCodeList = (props: any) => {
     };
 
     const grid = {
-        portCdLst: useWijmo({
+        portCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_PORT_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -57,11 +57,26 @@ export const PortCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_PortCdLst: {
-            regnCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.regnNm });
-                close();
+    };
+
+    const render = {
+        grid_PortCdLst: {
+            cell: {
+                regnCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.regnNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -116,10 +131,10 @@ export const PortCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
+                    <Grid
                         {...grid.portCdLst.grid}
                         data={fetch.getPortCdLst.data?.regnCdList}
-                        onCellClick={handler.click_Grid_PortCdLst}
+                        render={render.grid_PortCdLst}
                     />
                 </Group.Body>
             </Group>

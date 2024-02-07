@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_BNK_CD_SRCH, SCHEMA_GRID_BNK_CD } from "./ComnCdService";
 
 export const BankCodeList = (props: any) => {
@@ -21,7 +21,7 @@ export const BankCodeList = (props: any) => {
     };
 
     const grid = {
-        bnkCdLst: useWijmo({
+        bnkCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_BNK_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -57,11 +57,26 @@ export const BankCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_BnkCdLst: {
-            cdVldVal: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
-                close();
+    };
+
+    const render = {
+        grid_BnkCdLst: {
+            cell: {
+                cdVldVal: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.cdVldValNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -115,10 +130,10 @@ export const BankCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
+                    <Grid
                         {...grid.bnkCdLst.grid}
                         data={fetch.getBnkCdLst.data?.comnCdList}
-                        onCellClick={handler.click_Grid_BnkCdLst}
+                        render={render.grid_BnkCdLst}
                     />
                 </Group.Body>
             </Group>

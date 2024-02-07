@@ -1,40 +1,65 @@
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_PORT_AIRPT_CD_SRCH, SCHEMA_GRID_PORT_AIRPT_CD } from "./ComnCdService";
 
 export const PortAirptCodeList = (props: any) => {
-    const pgeUid = "portAirptCdLst";
+    const pgeUid = "portPortAirptCdLst";
     const { t } = useTranslation();
-    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
+    const { pgeStore, setStore } = useStore({ pgeUid });
 
+    /**
+     * form 초기화
+     */
     const form = {
         portAirptCdSrch: useForm({
             defaultSchema: SCHEMA_FORM_PORT_AIRPT_CD_SRCH,
-            defaultValues: { ...pgeStore?.form } || {},
+            defaultValues: pgeStore?.form === undefined ? { regnNm: "", regnCd: "", cntyCd: "" } : pgeStore?.form,
         }),
     };
 
+    /* AAAAA */
+
+    /**
+     * grid 초기화
+     */
     const grid = {
-        portAirptCdLst: useWijmo({
+        portAirptCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_PORT_AIRPT_CD,
-            page: pgeStore?.page,
-            size: pgeStore?.size,
+            page: pgeStore?.page === undefined ? 0 : pgeStore?.page,
+            size: pgeStore?.size === undefined ? 10 : pgeStore?.size,
         }),
     };
 
+    /**
+     * api 초기화
+     */
     const fetch = {
         getPortAirptCdLst: useFetch({
-            api: (page = grid.portAirptCdLst.page) => {
-                return APIS.getPortAirptCdLst(form.portAirptCdSrch.getValues(), page, grid.portAirptCdLst.size);
-            },
-            enabled: comnUtils.isEmpty(form.portAirptCdSrch.errors) && form.portAirptCdSrch.isSubmitted,
+            /**
+             * fetching 시 실행되는 api
+             */
+            api: (page = grid.portAirptCdLst.page) =>
+                APIS.getPortAirptCdLst(form.portAirptCdSrch.getValues(), page, grid.portAirptCdLst.size),
+
+            /**
+             * api가 참조하는 key
+             */
             key: [grid.portAirptCdLst.page, grid.portAirptCdLst.size],
+
+            /**
+             * api가 key변화를 감지해 자동 실행되는 조건
+             * enabled=true 항상
+             */
+            enabled: true,
+
+            /**
+             * on success callback
+             */
             onSuccess: () => {
                 setStore(pgeUid, {
                     form: form.portAirptCdSrch.getValues(),
@@ -46,29 +71,49 @@ export const PortAirptCodeList = (props: any) => {
     };
 
     const handler = {
+        /**
+         * 검색 버튼 click event handler
+         */
         click_Btn_Srch: () => {
             form.portAirptCdSrch.handleSubmit(
+                /**
+                 * validation 성공 시
+                 */
                 () => {
-                    grid.portAirptCdLst.setPage(0);
                     fetch.getPortAirptCdLst.fetch(0);
+                    grid.portAirptCdLst.setPage(0);
                 },
+                /**
+                 * validation 실패 시
+                 */
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
         },
-        click_Grid_PortAirptCdLst: {
-            regnCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.regnNm });
-                close();
+    };
+
+    const render = {
+        grid_PortAirptCdLst: {
+            cell: {
+                regnCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.regnNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
-
-    useEffect(() => {
-        handler.click_Btn_Srch();
-    }, []);
 
     return (
         <Page
@@ -85,8 +130,7 @@ export const PortAirptCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.portAirptCdSrch.schema.cntyCd}></Group.Control>
-                                <Group.Control {...form.portAirptCdSrch.schema.portAirptTpCd}></Group.Control>
+                                <Group.Control {...form.portAirptCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
                             </Group.Row>
                             <Group.Row>
                                 <Group.Control {...form.portAirptCdSrch.schema.regnCd}></Group.Control>
@@ -119,10 +163,10 @@ export const PortAirptCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
+                    <Grid
                         {...grid.portAirptCdLst.grid}
                         data={fetch.getPortAirptCdLst.data?.regnCdList}
-                        onCellClick={handler.click_Grid_PortAirptCdLst}
+                        render={render.grid_PortAirptCdLst}
                     />
                 </Group.Body>
             </Group>

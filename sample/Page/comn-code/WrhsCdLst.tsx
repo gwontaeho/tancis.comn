@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid, Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useAuth, useGrid } from "@/comn/hooks";
+import { useForm, useFetch, usePopup, useStore, useToast, useGrid } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_WRHS_CD_SRCH, SCHEMA_GRID_WRHS_CD } from "./ComnCdService";
 
 export const WrhsCodeList = (props: any) => {
@@ -12,8 +12,6 @@ export const WrhsCodeList = (props: any) => {
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
-    const auth = useAuth();
-    auth.get("tin");
 
     const form = {
         wrhsCdSrch: useForm({
@@ -59,11 +57,26 @@ export const WrhsCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_WrhsCdLst: {
-            coDclaCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.wrhsNm });
-                close();
+    };
+
+    const render = {
+        grid_WrhsCdLst: {
+            cell: {
+                coDclaCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.wrhsNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -87,26 +100,28 @@ export const WrhsCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.wrhsCdSrch.schema.wrhsCd}></Group.Control>
+                                <Group.Control {...form.wrhsCdSrch.schema.coDclaCd}></Group.Control>
                                 <Group.Control {...form.wrhsCdSrch.schema.wrhsNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
                             <Layout.Left>
                                 <Button
-                                    role="reset"
                                     onClick={() => {
                                         form.wrhsCdSrch.reset();
                                     }}
-                                ></Button>
+                                >
+                                    {t("B_RESET")}
+                                </Button>
                             </Layout.Left>
                             <Layout.Right>
                                 <Button
-                                    role="search"
                                     onClick={() => {
                                         handler.click_Btn_Srch();
                                     }}
-                                ></Button>
+                                >
+                                    {t("B_SRCH")}
+                                </Button>
                             </Layout.Right>
                         </Layout>
                     </Group.Body>
@@ -115,18 +130,16 @@ export const WrhsCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Group.Section>
-                        <Grid
-                            {...grid.wrhsCdLst.grid}
-                            data={fetch.getWrhsCdLst.data?.wrhsList}
-                            onCellClick={handler.click_Grid_WrhsCdLst}
-                        />
-                    </Group.Section>
+                    <Grid
+                        {...grid.wrhsCdLst.grid}
+                        data={fetch.getWrhsCdLst.data?.wrhsList}
+                        render={render.grid_WrhsCdLst}
+                    />
                 </Group.Body>
             </Group>
             {comnUtils.isPopup() && (
                 <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
+                    <Button role="close" onClick={close}></Button>
                 </Layout.Right>
             )}
         </Page>

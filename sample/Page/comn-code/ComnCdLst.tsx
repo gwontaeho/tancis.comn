@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
-import { Wijmo } from "@/comn/components";
+import { Grid, Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useToast, usePopup, useTheme, useStore } from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, useToast, usePopup, useTheme, useStore, useGrid } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_COMN_CD_SRCH, SCHEMA_GRID_COMN_CD } from "./ComnCdService";
 
 export const CommonCodeList = (props: any) => {
@@ -24,7 +24,7 @@ export const CommonCodeList = (props: any) => {
     };
 
     const grid = {
-        comnCdLst: useWijmo({
+        comnCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_COMN_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -60,11 +60,26 @@ export const CommonCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_ComnCdLst: {
-            cdVldVal: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.cdVldValNm });
-                close();
+    };
+
+    const render = {
+        grid_ComnCdLst: {
+            cell: {
+                cdVldVal: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: rowValues.cdVldVal, label: rowValues.cdVldValNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -126,10 +141,10 @@ export const CommonCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Wijmo
+                        <Grid
                             {...grid.comnCdLst.grid}
                             data={fetch.getComnCdLst.data?.comnCdList}
-                            onCellClick={handler.click_Grid_ComnCdLst}
+                            render={render.grid_ComnCdLst}
                         />
                     </Group.Section>
                 </Group.Body>

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_PRCSS_STAT_CD_SRCH, SCHEMA_GRID_PRCSS_STAT_CD } from "./ComnCdService";
 
 export const ProcessingStatusCodeList = (props: any) => {
@@ -21,7 +21,7 @@ export const ProcessingStatusCodeList = (props: any) => {
     };
 
     const grid = {
-        prcssStatCdLst: useWijmo({
+        prcssStatCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_PRCSS_STAT_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -57,11 +57,26 @@ export const ProcessingStatusCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_PrcssStatCdLst: {
-            item: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.itemNm });
-                close();
+    };
+
+    const render = {
+        grid_PrcssStatCdLst: {
+            cell: {
+                item: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.itemNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -115,10 +130,10 @@ export const ProcessingStatusCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
+                    <Grid
                         {...grid.prcssStatCdLst.grid}
                         data={fetch.getPrcssStatCdLst.data?.prcssStatCdList}
-                        onCellClick={handler.click_Grid_PrcssStatCdLst}
+                        render={render.grid_PrcssStatCdLst}
                     />
                 </Group.Body>
             </Group>

@@ -302,20 +302,19 @@ export const APIS = {
     },
 };
 
-export const SCHEMA_GRID_COMN_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_COMN_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_COMN_CD", binding: "comnCd" }] },
-        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
-        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
+        { cells: [{ header: "L_COMN_CD", binding: "comnCd", width: 150 }] },
+        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal", width: 150 }] },
+        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm", width: "*" }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "comnCd",
-                    width: 150,
                 },
             ],
         },
@@ -323,272 +322,261 @@ export const SCHEMA_GRID_COMN_CD: WijmoSchemaType = {
             cells: [
                 {
                     binding: "cdVldVal",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "cdVldValNm", width: "*" }],
+            cells: [{ binding: "cdVldValNm" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_CNTY_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_CNTY_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
-        { cells: [{ header: "L_CNTY_NM", binding: "cntyNm" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: 150 }] },
+        { cells: [{ header: "L_CNTY_NM", binding: "cntyNm", width: "*" }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "cntyCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "cntyNm", width: "*" }],
+            cells: [{ binding: "cntyNm" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_CITY_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_CITY_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_REGN_CD", binding: "regnCd" }] },
-        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
-        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
-        { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd" }] },
+        { cells: [{ header: "L_REGN_CD", binding: "regnCd", width: 150 }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: 200 }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: "*" }] },
+        { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd", width: 150 }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "regnCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "regnNm", width: 200 }],
+            cells: [{ binding: "regnNm" }],
         },
         {
-            cells: [{ binding: "cntyCd", width: "*" }],
+            cells: [{ binding: "cntyCd" }],
         },
         {
-            cells: [{ binding: "cityStatCd", width: 150 }],
+            cells: [{ binding: "cityStatCd" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_PORT_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_PORT_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_PORT_CD", binding: "regnCd" }] },
-        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
-        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+        { cells: [{ header: "L_PORT_CD", binding: "regnCd", width: 150 }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: "*" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: 150 }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "regnCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "regnNm", width: "*" }],
+            cells: [{ binding: "regnNm" }],
         },
         {
-            cells: [{ binding: "cntyCd", width: 150 }],
+            cells: [{ binding: "cntyCd" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_AIRPT_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_AIRPT_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_AIRPT_CD", binding: "regnCd" }] },
-        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
-        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+        { cells: [{ header: "L_AIRPT_CD", binding: "regnCd", width: 150 }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: "*" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: 150 }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "regnCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "regnNm", width: "*" }],
+            cells: [{ binding: "regnNm" }],
         },
         {
-            cells: [{ binding: "cntyCd", width: 150 }],
+            cells: [{ binding: "cntyCd" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_PORT_AIRPT_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_PORT_AIRPT_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_PORT_AIRPT_CD", binding: "regnCd" }] },
-        { cells: [{ header: "L_REGN_NM", binding: "regnNm" }] },
-        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd" }] },
+        { cells: [{ header: "L_PORT_AIRPT_CD", binding: "regnCd", width: 150 }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: "*" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: 150 }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "regnCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "regnNm", width: "*" }],
+            cells: [{ binding: "regnNm" }],
         },
         {
-            cells: [{ binding: "cntyCd", width: 150 }],
+            cells: [{ binding: "cntyCd" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_CURR_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_CURR_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_CURR_CD", binding: "currCd" }] },
-        { cells: [{ header: "L_CURR_NM", binding: "currNm" }] },
+        { cells: [{ header: "L_CURR_CD", binding: "currCd", width: 150 }] },
+        { cells: [{ header: "L_CURR_NM", binding: "currNm", width: "*" }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "currCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "currNm", width: "*" }],
+            cells: [{ binding: "currNm" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_BNK_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_BNK_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "in", isReadOnly: true },
+    options: { pagination: "in", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal" }] },
-        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm" }] },
+        { cells: [{ header: "L_CD_VLD_VAL", binding: "cdVldVal", width: 200 }] },
+        { cells: [{ header: "L_CD_VLD_VAL_NM", binding: "cdVldValNm", width: "*" }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "cdVldVal",
-                    width: 200,
                 },
             ],
         },
         {
-            cells: [{ binding: "cdVldValNm", width: "*" }],
+            cells: [{ binding: "cdVldValNm" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_CO_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_CO_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_TIN", binding: "coTin" }] },
-        { cells: [{ header: "L_CO_NM", binding: "coNm" }] },
-        { cells: [{ header: "L_CO_ADDR", binding: "coAddr" }] },
-        { cells: [{ header: "L_CO_STAT", binding: "coStatCdNm" }] },
+        { cells: [{ header: "L_TIN", binding: "coTin", width: 150 }] },
+        { cells: [{ header: "L_CO_NM", binding: "coNm", width: 150 }] },
+        { cells: [{ header: "L_CO_ADDR", binding: "coAddr", width: "*" }] },
+        { cells: [{ header: "L_CO_STAT", binding: "coStatCdNm", width: 100 }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "coTin",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "coNm", width: 150 }],
+            cells: [{ binding: "coNm" }],
         },
         {
-            cells: [{ binding: "coAddr", width: "*" }],
+            cells: [{ binding: "coAddr" }],
         },
         {
-            cells: [{ binding: "coStatCdNm", width: 100 }],
+            cells: [{ binding: "coStatCdNm" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_PRCSS_STAT_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_PRCSS_STAT_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_BSOP_PRCSS_STAT", binding: "prcssStatCdNm" }] },
-        { cells: [{ header: "L_PRCSS_STAT_CD", binding: "item" }] },
-        { cells: [{ header: "L_PRCSS_STAT", binding: "itemNm" }] },
+        { cells: [{ header: "L_BSOP_PRCSS_STAT", binding: "prcssStatCdNm", width: 250 }] },
+        { cells: [{ header: "L_PRCSS_STAT_CD", binding: "item", width: 150 }] },
+        { cells: [{ header: "L_PRCSS_STAT", binding: "itemNm", width: "*" }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "prcssStatCdNm",
-                    width: 250,
                 },
             ],
         },
         {
-            cells: [{ binding: "item", width: 150 }],
+            cells: [{ binding: "item" }],
         },
         {
-            cells: [{ binding: "itemNm", width: "*" }],
+            cells: [{ binding: "itemNm" }],
         },
     ],
 };
 
-export const SCHEMA_GRID_ORG_CD: WijmoSchemaType = {
+export const SCHEMA_GRID_ORG_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_ORG_CD", binding: "orgCd" }] },
-        { cells: [{ header: "L_ORG_NM", binding: "orgNm" }] },
-        { cells: [{ header: "L_ORG_ADDR", binding: "orgAddr" }] },
-        { cells: [{ header: "L_RPRS_TLPN_NO", binding: "rprsTlphNo" }] },
+        { cells: [{ header: "L_ORG_CD", binding: "orgCd", width: 150 }] },
+        { cells: [{ header: "L_ORG_NM", binding: "orgNm", width: 200 }] },
+        { cells: [{ header: "L_ORG_ADDR", binding: "orgAddr", width: "*" }] },
+        { cells: [{ header: "L_RPRS_TLPN_NO", binding: "rprsTelno", width: 200 }] },
     ],
     body: [
         {
             cells: [
                 {
                     binding: "orgCd",
-                    width: 150,
                 },
             ],
         },
         {
-            cells: [{ binding: "orgNm", width: 200 }],
+            cells: [{ binding: "orgNm" }],
         },
         {
-            cells: [{ binding: "orgAddr", width: "*" }],
+            cells: [{ binding: "orgAddr" }],
         },
         {
-            cells: [{ binding: "rprsTlphNo", width: 200 }],
+            cells: [{ binding: "rprsTelno" }],
         },
     ],
 };
@@ -616,7 +604,7 @@ export const SCHEMA_GRID_WRHS_CD: TGridSchema = {
 
 export const SCHEMA_GRID_CO_DCLA_CD: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", edit: false, index: true },
+    options: { pagination: "out" },
     head: [
         { cells: [{ header: "L_TIN", binding: "coTin", width: 200 }] },
         { cells: [{ header: "L_CO_NM", binding: "coNm", width: "*" }] },
@@ -647,12 +635,15 @@ export const SCHEMA_GRID_ORG_DEPT_CD: TGridSchema = {
     id: "grid",
     options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_DEPT_CD", binding: "deptCd", width: 200 }] },
-        { cells: [{ header: "L_DEPT_NM", binding: "deptNm", width: 200 }] },
         { cells: [{ header: "L_ORG_NM", binding: "orgNm", width: 200 }] },
+        { cells: [{ header: "L_DEPT_CD", binding: "deptCd", width: 150 }] },
+        { cells: [{ header: "L_DEPT_NM", binding: "deptNm", width: 200 }] },
         { cells: [{ header: "L_DEPT_DESC", binding: "deptDesc", width: "*" }] },
     ],
     body: [
+        {
+            cells: [{ binding: "orgNm" }],
+        },
         {
             cells: [
                 {
@@ -662,9 +653,6 @@ export const SCHEMA_GRID_ORG_DEPT_CD: TGridSchema = {
         },
         {
             cells: [{ binding: "deptNm" }],
-        },
-        {
-            cells: [{ binding: "orgNm" }],
         },
         {
             cells: [{ binding: "deptDesc" }],
@@ -1274,7 +1262,7 @@ export const SCHEMA_CO_CD_DTL: TFormSchema = {
         coTpCdNm: { type: "text", label: "L_CO_TP_CD_NM" },
         coNm: { type: "text", label: "L_CO_NM" },
         coAddr: { type: "text", label: "L_CO_ADDR" },
-        rprsTlphNo: { type: "text", label: "L_RPRS_TELNO" },
+        rprsTelno: { type: "text", label: "L_RPRS_TELNO" },
         rRprsFaxNo: { type: "text", label: "L_RPRS_FAX_NO" },
         rprsEml: { type: "text", label: "L_RPRS_EML" },
         prcssStatCdNm: { type: "text", label: "L_PRCSS_STAT_CD_NM" },
