@@ -1,11 +1,10 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
-import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast, useModal } from "@/comn/hooks";
+import { Page, Group, Layout, Button, Grid } from "@/comn/components";
+import { useForm, useFetch, usePopup, useStore, useToast, useModal, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_MSG_LANG_SRCH, SG_MSG_LANG_LIST } from "./services/MsgLangPrsccService";
-import { useNavigate } from "react-router-dom";
 
 export const MsgLangLst = (props: any) => {
     const pgeUid = "msgLangLst";
@@ -24,7 +23,7 @@ export const MsgLangLst = (props: any) => {
     };
 
     const grid = {
-        msgLangLst: useWijmo({
+        msgLangLst: useGrid({
             defaultSchema: SG_MSG_LANG_LIST,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -153,7 +152,7 @@ export const MsgLangLst = (props: any) => {
                         </Layout.Right>
                     </Layout>
                     <Group.Section>
-                        <Wijmo
+                        <Grid
                             {...grid.msgLangLst.grid}
                             data={fetch.getMsgLangLst.data?.msgLangList}
                             onCellClick={handler.click_Grid_MsgLangLst}

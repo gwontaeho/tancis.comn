@@ -1195,9 +1195,9 @@ const Row = React.memo((props: any) => {
                                         key={celKey}
                                         className={classNames(
                                             "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-selected:border-uf-info aria-[invalid=true]:border-uf-error",
-                                            (align === "start" || align === "left") && "justify-start",
-                                            (align === "end" || align === "right") && "justify-end",
-                                            (align === "center" || align === undefined) && "justify-center",
+                                            (align === "start" || align === "left") && "justify-start text-left",
+                                            (align === "end" || align === "right") && "justify-end text-right",
+                                            (align === "center" || align === undefined) && "justify-center text-center",
                                         )}
                                         {...(vldv && { "aria-invalid": true })}
                                         {...(_selectedCel === celKey && { "aria-selected": true })}

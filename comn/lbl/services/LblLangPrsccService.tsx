@@ -1,7 +1,6 @@
 import { api } from "@/comn";
 import { comnEnvs, comnUtils } from "@/comn/utils";
-import { TFormSchema } from "@/comn/hooks";
-import { WijmoSchemaType } from "@/comn/hooks";
+import { TFormSchema, TGridSchema } from "@/comn/hooks";
 
 export const BASE = {
     path: `${comnEnvs.base_comn}/comn/lbl`,
@@ -87,35 +86,35 @@ export const SF_LBL_LANG: TFormSchema = {
     },
 };
 
-export const SG_LBL_LANG_LIST: WijmoSchemaType = {
+export const SG_LBL_LANG_LIST: TGridSchema = {
     id: "grid_LblLangList",
-    options: { pagination: "out", isReadOnly: true, checkbox: true },
+    options: { pagination: "out", checkbox: true },
     head: [
-        { cells: [{ header: "L_LBL_ID", binding: "lblId" }] },
-        { cells: [{ header: "L_LBL_NM_EN", binding: "lblNmEn" }] },
-        { cells: [{ header: "L_LBL_NM_TZ", binding: "lblNmTz" }] },
-        { cells: [{ header: "L_LBL_NM_KO", binding: "lblNmKo" }] },
-        { cells: [{ header: "L_FRST_REGST_ID", binding: "frstRegstId" }] },
-        { cells: [{ header: "L_FRST_RGSR_DTM", binding: "frstRgsrDtm" }] },
+        { cells: [{ header: "L_LBL_ID", binding: "lblId", width: 300 }] },
+        { cells: [{ header: "L_LBL_NM_EN", binding: "lblNmEn", width: 300 }] },
+        { cells: [{ header: "L_LBL_NM_TZ", binding: "lblNmTz", width: 300 }] },
+        { cells: [{ header: "L_LBL_NM_KO", binding: "lblNmKo", width: 300 }] },
+        { cells: [{ header: "L_FRST_REGST_ID", binding: "frstRegstId", width: 150 }] },
+        { cells: [{ header: "L_FRST_RGSR_DTM", binding: "frstRgsrDtm", width: 150 }] },
     ],
     body: [
         {
-            cells: [{ binding: "lblId", width: 200 }],
+            cells: [{ binding: "lblId" }],
         },
         {
-            cells: [{ binding: "lblNmEn", width: 200 }],
+            cells: [{ binding: "lblNmEn" }],
         },
         {
-            cells: [{ binding: "lblNmTz", width: 200 }],
+            cells: [{ binding: "lblNmTz" }],
         },
         {
-            cells: [{ binding: "lblNmKo", width: "*" }],
+            cells: [{ binding: "lblNmKo" }],
         },
         {
-            cells: [{ binding: "frstRegstId", width: 150 }],
+            cells: [{ binding: "frstRegstId" }],
         },
         {
-            cells: [{ binding: "frstRgsrDtm", width: 150 }],
+            cells: [{ binding: "frstRgsrDtm" }],
         },
     ],
 };
