@@ -128,12 +128,10 @@ export const useForm = (props: UseFormProps) => {
     const _handleSubmit = (onValid?: (data: any) => void, onInvalid?: (data: any) => void) => {
         return handleSubmit(
             (data) => {
-                console.log(data);
                 if (!onValid) return;
                 onValid(_getValues());
             },
             (error) => {
-                console.log(error);
                 if (!onInvalid) return;
                 onInvalid(error);
             },
@@ -141,7 +139,6 @@ export const useForm = (props: UseFormProps) => {
     };
 
     const _setFocus = (name: string) => {
-        console.log(control);
         setTimeout(() => setFocus(name), 0);
     };
 
