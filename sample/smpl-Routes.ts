@@ -4,8 +4,14 @@ export const SampleRoutes = [
         base: "/comn",
         children: [
             {
-                name: "temp",
-                base: "/smpl/temp",
+                name: "Sample",
+                base: "/smpl/hooks",
+                children: [
+                    {
+                        name: "cgme0411001q",
+                        to: "/comn/smpl/sample/cgme0411001q",
+                    },
+                ],
             },
             {
                 name: "Component",
@@ -182,7 +188,6 @@ export const SampleRoutes = [
             {
                 name: "Common Page",
                 base: "/comn",
-
                 children: [
                     {
                         name: "Language Management",

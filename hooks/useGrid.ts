@@ -64,10 +64,10 @@ type UseGridProps = {
 };
 
 export const useGrid = (props: UseGridProps) => {
-    const { defaultSchema } = props;
+    const { defaultSchema, page = 0, size = 10 } = props;
 
-    const [_page, _setPage] = React.useState(0);
-    const [_size, _setSize] = React.useState(10);
+    const [_page, _setPage] = React.useState(page);
+    const [_size, _setSize] = React.useState(size);
 
     const _grid = React.useRef<any>({
         _initialized: false,
