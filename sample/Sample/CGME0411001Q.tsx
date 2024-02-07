@@ -75,7 +75,7 @@ export const CGME0411001Q = (props: any) => {
         rpckItmAppSrch: useForm({
             defaultSchema: SF_RPCK_ITM_APP_SRCH,
             defaultValues: {
-                ...(pgeStore.form || {}),
+                ...(pgeStore?.form || {}),
             },
         }),
     };
