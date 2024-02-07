@@ -5,7 +5,7 @@ export const SampleRoutes = [
         children: [
             {
                 name: "Sample",
-                base: "/smpl/hooks",
+                base: "Sample",
                 children: [
                     {
                         name: "cgme0411001q",
