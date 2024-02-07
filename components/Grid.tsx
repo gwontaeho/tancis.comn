@@ -772,9 +772,21 @@ const reducer = (state: any, action: any) => {
             return { ...state, _checked };
         }
         case "handleCheckAll": {
-            const { _grid, event } = action.payload;
+            const { _grid, event, condition } = action.payload;
 
-            let _checked = event.target.checked ? _grid.current._paged : [];
+            let _checked;
+
+            if (event.target.checked) {
+                if (condition) {
+                    _checked = _grid.current._paged.filter((_: any) => {
+                        return condition(_);
+                    });
+                } else {
+                    _checked = _grid.current._paged;
+                }
+            } else {
+                _checked = [];
+            }
 
             _grid.current._checked = _checked;
             return { ...state, _checked };
@@ -839,7 +851,7 @@ const reducer = (state: any, action: any) => {
  * ## Grid Initialize Hook
  */
 const useInitailize = (props: any) => {
-    const { _grid, data } = props;
+    const { _grid, data, render } = props;
 
     const __t = data?.__t?.getTime();
     const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
@@ -872,7 +884,7 @@ const useInitailize = (props: any) => {
             dispatch({ type: "handleCheck", payload: { _grid, event, rowProps } });
         };
         _grid.current._handleCheckAll = (event: any) => {
-            dispatch({ type: "handleCheckAll", payload: { _grid, event } });
+            dispatch({ type: "handleCheckAll", payload: { _grid, event, condition: render?.checkbox } });
         };
         _grid.current._handleSelect = (event: any, rowProps: any) => {
             dispatch({ type: "handleSelect", payload: { _grid, event, rowProps } });
@@ -954,9 +966,14 @@ export const Grid = (props: any) => {
                         <div className="uf-grid-option">
                             <input
                                 type="checkbox"
-                                checked={_test.every(({ __key }: any) =>
-                                    _checked.some((row: any) => row.__key === __key),
-                                )}
+                                checked={(render?.checkbox
+                                    ? _test.filter((_: any) => {
+                                          return render.checkbox(_);
+                                      })
+                                    : _test
+                                ).every(({ __key }: any) => {
+                                    return _checked.some((row: any) => row.__key === __key);
+                                })}
                                 onChange={(event) => _grid.current._handleCheckAll(event)}
                             />
                         </div>
@@ -1135,6 +1152,7 @@ const Row = React.memo((props: any) => {
                     {checkbox && (
                         <div className="uf-grid-option">
                             <input
+                                disabled={render?.checkbox ? !render?.checkbox?.(row) || undefined : undefined}
                                 type="checkbox"
                                 checked={_checked.some(({ __key }: any) => __key === contentKey)}
                                 onChange={(e) => _grid.current._handleCheck(e, row)}
@@ -1144,6 +1162,7 @@ const Row = React.memo((props: any) => {
                     {radio && (
                         <div className="uf-grid-option">
                             <input
+                                disabled={render?.radio ? !render?.radio?.(row) || undefined : undefined}
                                 type="radio"
                                 checked={_selectedRow?.__key === row?.__key}
                                 onChange={(event) => _grid.current._handleSelect(event, row)}

@@ -18,8 +18,8 @@ const schema1: TGridSchema = {
         edit: true,
         importExcel: true,
         exportExcel: true,
-        height: "auto",
-        // pagination: "in",
+        height: 400,
+        pagination: "in",
 
         // group: ["q", "w"],
     },
@@ -82,6 +82,12 @@ export const Temp = () => {
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const _test = {
+        radio: (data: any) => {
+            return data.q === "Ken";
+        },
+        checkbox: (data: any) => {
+            return data.q === "Ken";
+        },
         // head: {
         //     a: (data: any) => {
         //         /**
