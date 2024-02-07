@@ -30,6 +30,8 @@ export const LblLangLst = (props: any) => {
         }),
     };
 
+    console.log(pgeStore);
+
     const fetch = {
         getLblLangLst: useFetch({
             api: (page = grid.lblLangLst.page) => {
