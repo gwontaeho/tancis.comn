@@ -371,97 +371,6 @@ export const CGME0411002S = () => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Table>
-                            <Table.Tr>
-                                <Table.Th width={"5%"}>No</Table.Th>
-                                <Table.Th width={"35%"}>Modify Item</Table.Th>
-                                <Table.Th width={"30%"}>Before Contents</Table.Th>
-                                <Table.Th width={"30%"}>After Contents</Table.Th>
-                            </Table.Tr>
-                            <Table.Tr>
-                                <Table.Th>1</Table.Th>
-                                <Table.Th>Cargo Type</Table.Th>
-                                <Table.Td>Import</Table.Td>
-                                <Table.Td>
-                                    <FormControl
-                                        type="select"
-                                        options={[
-                                            { label: "수입", value: "imp" },
-                                            { label: "수출", value: "exp" },
-                                        ]}
-                                    />
-                                </Table.Td>
-                            </Table.Tr>
-                            <Table.Tr>
-                                <Table.Th>1</Table.Th>
-                                <Table.Th>Cargo Type</Table.Th>
-                                <Table.Td>Import</Table.Td>
-                                <Table.Td>
-                                    <FormControl type="text" />
-                                </Table.Td>
-                            </Table.Tr>
-                        </Table>
-                    </Group.Section>
-                </Group.Body>
-            </Group>
-            <Group>
-                <Group.Body>
-                    <Group.Section>
-                        <Group.Row>
-                            <Group.Label label="No" labelSize={1} align="center"></Group.Label>
-                            <Group.Label
-                                label="Modify Item"
-                                labelSize={3}
-                                align="center"
-                                borderLeft={false}
-                            ></Group.Label>
-                            <Group.Label
-                                label="Before Contents"
-                                labelSize={4}
-                                align="center"
-                                borderLeft={false}
-                            ></Group.Label>
-                            <Group.Label
-                                label="After Content"
-                                labelSize={4}
-                                align="center"
-                                borderLeft={false}
-                            ></Group.Label>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Label label="1" labelSize={1} align="center"></Group.Label>
-                            <Group.Label
-                                label="Cargo Type"
-                                labelSize={3}
-                                align="center"
-                                borderLeft={false}
-                            ></Group.Label>
-                            <Group.Control type="text" edit={false} value="Import" borderRight={true} />
-                            <Group.Control
-                                type="select"
-                                options={[
-                                    { label: "수입", value: "imp" },
-                                    { label: "수출", value: "exp" },
-                                ]}
-                            />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Label label="2" labelSize={1} align="center"></Group.Label>
-                            <Group.Label
-                                label="Cargo Type"
-                                labelSize={3}
-                                align="center"
-                                borderLeft={false}
-                            ></Group.Label>
-                            <Group.Control type="text" edit={false} value="Import" borderRight={true} />
-                            <Group.Control type="text" />
-                        </Group.Row>
-                    </Group.Section>
-                </Group.Body>
-            </Group>
-            <Group>
-                <Group.Body>
-                    <Group.Section>
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.rprtNo} />
                             <Group.Control {...form.rpckItmApp.schema.prcssStatCd} />
@@ -470,22 +379,7 @@ export const CGME0411002S = () => {
                             <Group.Control {...form.rpckItmApp.schema.mblNo} />
                             <Group.Control {...form.rpckItmApp.schema.crn} align="" />
                         </Group.Row>
-                        <Group.Row>
-                            <Group.Col>
-                                <Link to="1111" className="underline">
-                                    <FormControl {...form.rpckItmApp.schema.mblNo} />
-                                </Link>
-                                <Button variant="primary" icon="search" size="xs">
-                                    검색
-                                </Button>
-                            </Group.Col>
-                        </Group.Row>
-                        <Group.Row borderLeft={false} borderRight={false}>
-                            <Group.Any align="right" anySize={2}>
-                                폼 중간에 글자 넣기 입니다
-                            </Group.Any>
-                            <Group.Control type="text" />
-                        </Group.Row>
+
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.cagClsfCd} />
                             <Group.Control {...form.rpckItmApp.schema.dstnPlcCd} />
@@ -718,23 +612,6 @@ export const CGME0411002S = () => {
                     ></Button>
                 </Layout.Left>
                 <Layout.Right>
-                    <Button
-                        onClick={() => {
-                            //form.rpckItmApp.setValue("mrn", "11111");
-                            excel.setEdit("excel1", false);
-                        }}
-                    >
-                        테스트
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            //form.rpckItmApp.setValue("mrn", "11111");
-                            //excel.setEdit("excel1", true);
-                            console.log(grid.rpckItmAppItmList.getData());
-                        }}
-                    >
-                        테스트
-                    </Button>
                     <Button role="save" onClick={handler.saveRpckItmApp}></Button>
                     <Button role="submit" onClick={handler.submitRpckItmApp}></Button>
                 </Layout.Right>

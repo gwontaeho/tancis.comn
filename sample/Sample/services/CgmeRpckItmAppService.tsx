@@ -18,8 +18,8 @@ import { WijmoSchemaType } from "@/comn/hooks";
  * @ nodes : 화면의 Page.Navigation 에서 사용하는 기본 결로 Array
  */
 export const BASE = {
-    path: `${cgmEnvs.base}/wrhs/rpck`,
-    api: `${process.env.REACT_APP_API_CGME}/api/v1/cgme/wrhs/rpck/rpck-itm-app`,
+    path: `${comnEnvs.base_comn}/smpl/sample`,
+    api: `${process.env.REACT_APP_API_SAMPLE}/api/v1/cgme/wrhs/rpck/rpck-itm-app`,
     nodes: [
         { path: "/", label: "L_CAG_MGMT" },
         { path: "/mnfs/wrhs/", label: "L_MNFS_MGMT" },
@@ -89,11 +89,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
         checkbox: true, //체크박스 보이기 숨기기, default : false
         pagination: "in", // 그리드 데이터 페이징 "out" : 데이터를 외부에서 페이징해서 가져오는 경우 , "in" : 데이터를 전체 가져와서 그리드 내부에서 페이징 및 편집
         index: true, // 그리드 번호  index : true ( asc )  , index : "DESC" ( desc 역순 )
-        add: true, // add 버튼 보이기/숨기기 , default : false
-        delete: true, // delete 버튼 보이기/숨기기 , default : false
         edit: false, // 그리드 편집 가능 여부 , default : false
-        importExcel: true, // 엑셀 import 버튼 보이기 숨기기 (기능 구현 예정) , default : false
-        exportExcel: true, // 엑셀 export 버튼 보이기 숨기기 (기능 구현 예정) , default : false
         height: 200,
     },
     head: [
@@ -170,7 +166,7 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
             rangeButton: 3,
             controlSize: 10,
         },
-        mrn: { type: "file", label: "L_MRN" },
+        mrn: { type: "text", label: "L_MRN" },
         prcssStatCd: {
             type: "checkbox",
             label: "L_PRCSS_STAT",
@@ -190,7 +186,6 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         rprtNo: {
             type: "text",
             label: "L_RPRT_NO",
-            edit: true,
             /*
              * 문자 "A"
              * 영어대문자 [A-Z]
