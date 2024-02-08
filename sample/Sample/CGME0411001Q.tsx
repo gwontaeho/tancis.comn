@@ -222,7 +222,7 @@ export const CGME0411001Q = (props: any) => {
             });
         },
         // Click Grid of Repacking Item Application List !== 재포장 품목 신청서 목록 그리드 클릭 ==!
-        click_Grid_RpckItmAppList: {
+        click_GridCell_RpckItmAppList: {
             wrhsCd: (props: any) => {
                 const { binding, rowValues, value } = props;
                 console.log(props);
@@ -365,9 +365,12 @@ export const CGME0411001Q = (props: any) => {
                         <Layout direction="row">
                             <Layout.Left size={6}>
                                 <Group.Title title={"L_CO"} titleSize={2}></Group.Title>
+                                {/*
                                 <FormControl {...form.rpckItmAppSrch.schema.text}></FormControl>
+                                */}
                             </Layout.Left>
                             <Layout.Right>
+                                {/*
                                 <FormControl {...form.rpckItmAppSrch.schema.check}></FormControl>
                                 <Button
                                     role="delete"
@@ -375,6 +378,7 @@ export const CGME0411001Q = (props: any) => {
                                         handler.deleteRpckItmApp();
                                     }}
                                 ></Button>
+                                */}
                             </Layout.Right>
                         </Layout>
                         <Group.Section>
@@ -436,7 +440,7 @@ export const CGME0411001Q = (props: any) => {
                         {...grid.rpckItmAppList.grid}
                         data={fetch.getRpckItmAppList.data?.rpckItmAppList}
                         render={render.grid_RpckItmAppList}
-                        onCellClick={handler.click_Grid_RpckItmAppList}
+                        onCellClick={handler.click_GridCell_RpckItmAppList}
                         onRowClick={handler.click_GridRow_RpckItmAppList}
                     />
                 </Group.Body>

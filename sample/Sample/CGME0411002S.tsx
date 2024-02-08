@@ -580,6 +580,12 @@ export const CGME0411002S = () => {
                             <Button
                                 role="gridAdd"
                                 onClick={() => {
+                                    grid.rpckItmAppItmList.addRow({ mrn: "123456" });
+                                }}
+                            ></Button>
+                            <Button
+                                role="gridAdd"
+                                onClick={() => {
                                     handler.click_Btn_AddGridRpckItmAppItmList();
                                 }}
                             ></Button>
@@ -614,6 +620,100 @@ export const CGME0411002S = () => {
                     <Button role="save" onClick={handler.saveRpckItmApp}></Button>
                     <Button role="submit" onClick={handler.submitRpckItmApp}></Button>
                 </Layout.Right>
+            </Layout>
+            <Layout>
+                <Layout.Left>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getData())}>getData()</Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getOrigin())}>getOrigin()</Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getSelectedRow())}>
+                        getSelectedRow()
+                    </Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getSelectedCell())}>
+                        getSelectedCell()
+                    </Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getChecked())}>getChecked()</Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getData())}>setData()</Button>
+                    <Button onClick={() => grid.rpckItmAppItmList.resetData()}>resetData()</Button>
+                    <Button onClick={() => grid.rpckItmAppItmList.addRow()}>addRow()</Button>
+                    <Button
+                        onClick={() =>
+                            grid.rpckItmAppItmList.updateRow({
+                                ...grid.rpckItmAppItmList.getSelectedCell()?.rowValues,
+                                text: "Changed",
+                            })
+                        }
+                    >
+                        updateRow()
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            grid.rpckItmAppItmList.setEdit("cell", "mrn", true);
+                        }}
+                    >
+                        setEdit("cell", "mrn", true)
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            grid.rpckItmAppItmList.setEdit("cell", "mrn", false);
+                        }}
+                    >
+                        setEdit("cell", "mrn", false)
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            grid.rpckItmAppItmList.setEdit("column", "mrn", true);
+                        }}
+                    >
+                        setEdit("column", "mrn", true)
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            grid.rpckItmAppItmList.setEdit("column", "mrn", true);
+                        }}
+                    >
+                        setEdit("column", "mrn", true)
+                    </Button>
+
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getData())}>setShow()</Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getData())}>setPage()</Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.getData())}>setSize()</Button>
+                    <Button onClick={() => grid.rpckItmAppItmList.setEdit("column", "id", true)}>
+                        setEdit("column", "id", true)
+                    </Button>
+                    <Button onClick={() => grid.rpckItmAppItmList.setEdit("cell", "text", true)}>
+                        setEdit("cell", "text", true)
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            grid.rpckItmAppItmList.setEdit("row", grid.rpckItmAppItmList.getSelectedRow(), true)
+                        }
+                    >
+                        setEdit("row", "id", true)
+                    </Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.deleteRow("radio"))}>
+                        deleteRow("radio")
+                    </Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.deleteRow("checkbox"))}>
+                        deleteRow("checkbox")
+                    </Button>
+                    <Button onClick={() => console.log(grid.rpckItmAppItmList.deleteRow("all"))}>
+                        deleteRow("all")
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            console.log(grid.rpckItmAppItmList.deleteRow(grid.rpckItmAppItmList.getSelectedRow()))
+                        }
+                    >
+                        deleteRow(getSelectedRow())
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            console.log(grid.rpckItmAppItmList.deleteRow(grid.rpckItmAppItmList.getChecked()))
+                        }
+                    >
+                        deleteRow(getChecked())
+                    </Button>
+                </Layout.Left>
             </Layout>
         </Page>
     );
