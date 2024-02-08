@@ -357,9 +357,9 @@ export const SCHEMA_GRID_CITY_CD: TGridSchema = {
     options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_REGN_CD", binding: "regnCd", width: 150 }] },
-        { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: 200 }] },
-        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: "*" }] },
-        { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd", width: 150 }] },
+        { cells: [{ header: "L_REGN_TP_CD", binding: "regnTpCdNm", width: 150 }] },
+        { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: "*" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: 200 }] },
     ],
     body: [
         {
@@ -370,13 +370,13 @@ export const SCHEMA_GRID_CITY_CD: TGridSchema = {
             ],
         },
         {
+            cells: [{ binding: "regnTpCdNm" }],
+        },
+        {
             cells: [{ binding: "regnNm" }],
         },
         {
             cells: [{ binding: "cntyCd" }],
-        },
-        {
-            cells: [{ binding: "cityStatCd" }],
         },
     ],
 };
@@ -1001,6 +1001,14 @@ export const SCHEMA_FORM_CITY_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cntyCd: { type: "code", label: "L_CNTY_CD", area: "cntyCd", popupSize: "sm" },
+        regnTpCd: {
+            type: "select",
+            label: "L_REGN_TP_CD",
+            options: [
+                { label: "IATA", value: "01" },
+                { label: "UN/LOCODE", value: "02" },
+            ],
+        },
         regnNm: { type: "text", label: "L_REGN_NM" },
         regnCd: {
             type: "text",
