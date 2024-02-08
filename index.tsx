@@ -40,6 +40,8 @@ const router = createBrowserRouter([
 ]);
 
 export const Base = () => {
+    console.log("==== BASE ====");
+
     return (
         <RecoilProvider>
             <AuthProvider />

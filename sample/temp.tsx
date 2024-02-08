@@ -83,7 +83,7 @@ export const Temp = () => {
 
     const _test = {
         radio: (data: any) => {
-            return false;
+            return true;
         },
         checkbox: (data: any) => {
             return false;
