@@ -472,7 +472,7 @@ export const comnUtils = {
     },
 
     getMockDataWithPaging: ({ data = {}, page = 0, size = 10 }: { data: any; page: number; size: number }) => {
-        return { ...data, content: lodash.chunk(data.content, size)[page] };
+        return { ...data, content: lodash.chunk(data.content, size)[page], __t: new Date() };
     },
     getMockOptions: (count = 3) => {
         return Array(count)

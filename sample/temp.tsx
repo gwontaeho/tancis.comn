@@ -19,7 +19,7 @@ const schema1: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         height: 400,
-        pagination: "in",
+        pagination: "out",
 
         // group: ["q", "w"],
     },
@@ -83,10 +83,10 @@ export const Temp = () => {
 
     const _test = {
         radio: (data: any) => {
-            return data.q === "Ken";
+            return false;
         },
         checkbox: (data: any) => {
-            return data.q === "Ken";
+            return false;
         },
         // head: {
         //     a: (data: any) => {
@@ -143,8 +143,6 @@ export const Temp = () => {
         },
     };
 
-    console.log("Page Rendered");
-
     return (
         <Page>
             <Group>
@@ -152,7 +150,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={data2}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -199,7 +197,7 @@ export const Temp = () => {
 
             <div className="flex flex-col gap-8">
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => setData(data)}>set data</button>
+                    <button onClick={() => setData(data2)}>set data</button>
                     <button onClick={() => resetData()}>reset</button>
                     <button onClick={() => addRow({ text: "added" })}>add row</button>
                     <button onClick={() => setSize(30)}>setSize 30</button>

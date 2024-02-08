@@ -302,8 +302,6 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._totalCount = _totalCount;
     _grid.current._originTotalCount = _totalCount;
 
-    console.log(_grid.current);
-
     return {
         _head,
         _body,
@@ -345,6 +343,7 @@ const reducer = (state: any, action: any) => {
         case "setData": {
             const { _grid, data } = action.payload;
 
+            let nextState = { ...state };
             let content;
             let _totalCount;
 
@@ -365,19 +364,33 @@ const reducer = (state: any, action: any) => {
             _grid.current._dataUpdated = new Date();
             _grid.current._origin = content;
             _grid.current._content = content;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            if (_grid.current._pagination === "out") {
+                nextState._page = _grid.current._page;
+            } else if (_grid.current._pagination === "in") {
+                _grid.current._page = 0;
+                nextState._page = 0;
+            }
 
             const { filteredContent, filteredCount } = createContent(_grid);
 
             if (_grid.current._pagination === "out") {
                 _totalCount = data?.page?.totalElements || 0;
-            } else {
+            } else if (_grid.current._pagination === "in") {
                 _totalCount = filteredCount;
             }
 
             _grid.current._totalCount = _totalCount;
             _grid.current._originTotalCount = _totalCount;
 
-            return { ...state, _totalCount, _test: filteredContent };
+            nextState._test = filteredContent;
+            nextState._totalCount = _totalCount;
+            nextState._checked = [];
+            nextState._selectedRow = null;
+
+            return nextState;
         }
         /**
          * Reset to Origin
@@ -802,37 +815,32 @@ const reducer = (state: any, action: any) => {
         case "handleChangePage": {
             const { _grid, next } = action.payload;
 
-            if (_grid.current._pagination === "out") {
-                _grid.current._setPage(next);
-            }
+            const { filteredContent } = createContent(_grid);
 
-            _grid.current._page = next;
-            _grid.current._checked = [];
-            _grid.current._selectedRow = null;
+            let nextState = {
+                ...state,
+                _test: filteredContent,
+                _page: next,
+                _checked: [],
+                _selectedRow: null,
+            };
 
-            let nextState = { ...state, _page: next, _checked: [], _selectedRow: null };
-            if (_grid.current._pagination === "in") {
-                nextState._test = createContent(_grid).filteredContent;
-            }
             return nextState;
         }
         case "handleChangeSize": {
             const { _grid, next } = action.payload;
 
-            if (_grid.current._pagination === "out") {
-                _grid.current._setPage(0);
-                _grid.current._setSize(next);
-            }
+            const { filteredContent } = createContent(_grid);
 
-            _grid.current._page = 0;
-            _grid.current._size = next;
-            _grid.current._checked = [];
-            _grid.current._selectedRow = null;
+            let nextState = {
+                ...state,
+                _test: filteredContent,
+                _page: 0,
+                _size: next,
+                _checked: [],
+                _selectedRow: null,
+            };
 
-            let nextState = { ...state, _page: 0, _size: next, _checked: [], _selectedRow: null };
-            if (_grid.current._pagination === "in") {
-                nextState._test = createContent(_grid).filteredContent;
-            }
             return nextState;
         }
 
@@ -901,10 +909,28 @@ const useInitailize = (props: any) => {
             dispatch({ type: "delete", payload: { _grid, type } });
         };
         _grid.current._handlePage = (next: any) => {
-            dispatch({ type: "handleChangePage", payload: { _grid, next } });
+            _grid.current._page = next;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            if (_grid.current._pagination === "out") {
+                _grid.current._setPage(next);
+            } else if (_grid.current._pagination === "in") {
+                dispatch({ type: "handleChangePage", payload: { _grid, next } });
+            }
         };
         _grid.current._handleSize = (next: any) => {
-            dispatch({ type: "handleChangeSize", payload: { _grid, next } });
+            _grid.current._page = 0;
+            _grid.current._size = next;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            if (_grid.current._pagination === "out") {
+                _grid.current._setPage(0);
+                _grid.current._setSize(next);
+            } else if (_grid.current._pagination === "in") {
+                dispatch({ type: "handleChangeSize", payload: { _grid, next } });
+            }
         };
         _grid.current._handleSort = (binding: any) => {
             dispatch({ type: "sort", payload: { _grid, binding } });

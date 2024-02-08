@@ -134,6 +134,7 @@ export const useGrid = (props: UseGridProps) => {
 
     // Set
     const setData = (data: any) => {
+        console.log(data);
         _grid.current._setData(data);
     };
     const resetData = () => {
