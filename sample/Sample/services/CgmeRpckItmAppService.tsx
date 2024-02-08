@@ -321,19 +321,19 @@ export const SF_RPCK_ITM_APP_ITM_SRCH: TFormSchema = {
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
 export const SG_RPCK_ITM_APP_ITM_LIST: TGridSchema = {
     id: "grid",
-    options: { pagination: "in", edit: false, checkbox: true },
+    options: { pagination: "in", edit: false, checkbox: true, radio: true, index: "ASC" },
     head: [
-        { cells: [{ header: "L_MRN", binding: "mrn", width: 150 }] },
-        { cells: [{ header: "L_MSN", binding: "msn", width: 150 }] },
-        { cells: [{ header: "L_HSN", binding: "hsn", width: 100 }] },
-        { cells: [{ header: "L_HS_CD", binding: "hsCd", width: 150 }] },
-        { cells: [{ header: "L_SPCD", binding: "spcd", width: 150 }] },
-        { cells: [{ header: "L_ORGN_QTY", binding: "orgnQty", width: 150 }] },
-        { cells: [{ header: "L_ORGN_WGHT", binding: "orgnWght", width: 150 }] },
-        { cells: [{ header: "L_ORGN_BOND_VAL", binding: "orgnBondVal", width: 150 }] },
-        { cells: [{ header: "L_ITM_QTY", binding: "itmQty", width: 100 }] },
-        { cells: [{ header: "L_ITM_WGHT", binding: "itmWght", width: 100 }] },
-        { cells: [{ header: "L_BOND_VAL", binding: "bondVal", width: "*" }] },
+        { cells: [{ header: "L_MRN", binding: "mrn", width: 150 }], id: "mrn" },
+        { cells: [{ header: "L_MSN", binding: "msn", width: 150 }], id: "msn" },
+        { cells: [{ header: "L_HSN", binding: "hsn", width: 100 }], id: "hsn" },
+        { cells: [{ header: "L_HS_CD", binding: "hsCd", width: 150 }], id: "hsCd" },
+        { cells: [{ header: "L_SPCD", binding: "spcd", width: 150 }], id: "spcd" },
+        { cells: [{ header: "L_ORGN_QTY", binding: "orgnQty", width: 150 }], id: "orgnQty" },
+        { cells: [{ header: "L_ORGN_WGHT", binding: "orgnWght", width: 150 }], id: "orgnWght" },
+        { cells: [{ header: "L_ORGN_BOND_VAL", binding: "orgnBondVal", width: 150 }], id: "orgnBondVal" },
+        { cells: [{ header: "L_ITM_QTY", binding: "itmQty", width: 100 }], id: "itmQty" },
+        { cells: [{ header: "L_ITM_WGHT", binding: "itmWght", width: 100 }], id: "itmWght" },
+        { cells: [{ header: "L_BOND_VAL", binding: "bondVal", width: "*" }], id: "bondVal" },
     ],
     body: [
         {
