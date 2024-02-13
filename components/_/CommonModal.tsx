@@ -111,7 +111,7 @@ const Modal = (props: ModalProps) => {
 
                     <div className="p-4 flex-1 overflow-auto">
                         {url ? (
-                            <iframe src={url} name={id} className="w-full h-[500px]" />
+                            <iframe src={url + "?ppup=Y"} name={id} className="w-full h-[500px]" />
                         ) : typeof content === "string" ? (
                             t(content)
                         ) : (
