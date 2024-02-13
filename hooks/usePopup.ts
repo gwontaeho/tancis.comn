@@ -87,8 +87,13 @@ export const usePopup = (): UsePopupReturn => {
     };
 
     const postMessage = (data: any) => {
-        if (!window.opener) return;
-        window.opener.postMessage(data);
+        if (window.opener) {
+            window.opener.postMessage(data);
+        }
+
+        if (window.parent) {
+            window.parent.postMessage(data);
+        }
     };
 
     const close = () => {

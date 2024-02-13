@@ -54,7 +54,7 @@ const POPUP_URLS: Record<string, string> = {
     coCdDtl: `/comn/comn/ppup/CoCdDtl`,
 };
 
-export const InputCode = (props: InputCodeProps) => {
+export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
     const {
         edit = true,
         popupSize = "sm",
@@ -94,7 +94,7 @@ export const InputCode = (props: InputCodeProps) => {
 
     /** 코드 값 */
     const [_value, _setValue] = React.useState<string>(formatCode(value));
-    const keywordInput = React.useRef<HTMLInputElement>(null);
+    const keywordInput = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
         if (!__t) return;
@@ -166,7 +166,14 @@ export const InputCode = (props: InputCodeProps) => {
                 <div className="w-full flex">
                     <input
                         {..._props}
-                        ref={keywordInput}
+                        ref={(node) => {
+                            if (node) {
+                                keywordInput.current = node;
+                                if (typeof ref === "function") {
+                                    ref(node);
+                                }
+                            }
+                        }}
                         defaultValue={_value}
                         onChange={handleChange}
                         className="input rounded-r-none flex-1"
@@ -184,7 +191,7 @@ export const InputCode = (props: InputCodeProps) => {
             </div>
         </div>
     );
-};
+});
 
 export const viewCode = (v: any, o?: any) => {
     if (!o?.options) return;

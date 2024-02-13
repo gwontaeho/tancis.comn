@@ -1,8 +1,9 @@
-import { TGridSchema, useStore } from "@/comn/hooks";
+import { TGridSchema, useForm, useModal, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { utils as xlsxUtils, writeFile } from "xlsx";
 import excel from "exceljs";
+import { comnUtils } from "@/comn/utils";
 
 import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
@@ -19,23 +20,19 @@ const schema1: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         height: 400,
-        pagination: "out",
+        pagination: "in",
 
         // group: ["q"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
-        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
-        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
-        { cells: [{ binding: "QWE!", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "e", rowspan: 2, width: 200 }] },
     ],
     body: [
         { cells: [{ binding: "q" }] },
         { cells: [{ binding: "w", type: "textarea" }] },
-        { cells: [{ binding: "w", type: "textarea" }] },
-        { cells: [{ binding: "w", type: "textarea" }] },
-        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "e", type: "select" }] },
     ],
 };
 
@@ -50,15 +47,31 @@ type TData = {
 };
 
 export const Temp = () => {
-    // const { resource } = useResource({
-    //     defaultSchema: [
-    //         { area: "comnCd", comnCd: "COM_0015" },
-    //         { area: "currCd" },
-    //         { area: "cityCd" },
-    //         { area: "portAirptCd" },
-    //         { area: "test" },
-    //     ],
-    // });
+    useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM_0015" },
+            { area: "currCd" },
+            { area: "cityCd" },
+            { area: "portAirptCd" },
+            { area: "test" },
+        ],
+    });
+
+    const modal = useModal();
+
+    const form = useForm({
+        defaultSchema: {
+            id: "test",
+            schema: {
+                text: {
+                    type: "text",
+                },
+                date: {
+                    type: "select",
+                },
+            },
+        },
+    });
 
     const {
         grid,
@@ -157,9 +170,32 @@ export const Temp = () => {
             <Group>
                 <Group.Body>
                     <Group.Section>
+                        <Group.Row>
+                            <Group.Control {...form.schema.text} />
+                            <Group.Control {...form.schema.date} />
+                        </Group.Row>
+                        <Group.Row>
+                            <button onClick={() => form.setFocus("date")}>asd</button>
+                            <button
+                                onClick={() =>
+                                    modal.openModal({
+                                        size: "xl",
+                                        url: "http://localhost:3000/comn/comn/ppup/cntyCdPpup?ppup=Y",
+                                        callback: (a) => {
+                                            console.log(a);
+                                        },
+                                    })
+                                }
+                            >
+                                poen
+                            </button>
+                        </Group.Row>
+                    </Group.Section>
+
+                    <Group.Section>
                         <Grid
                             {...grid}
-                            data={data2}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}

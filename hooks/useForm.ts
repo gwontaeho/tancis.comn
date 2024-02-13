@@ -138,9 +138,7 @@ export const useForm = (props: UseFormProps) => {
         );
     };
 
-    const _setFocus = (name: string) => {
-        setTimeout(() => setFocus(name), 0);
-    };
+    const _setFocus = (name: string) => {};
 
     /**
      *
@@ -223,7 +221,7 @@ export const useForm = (props: UseFormProps) => {
         setSchemas,
         resetSchema,
         setEditable,
-        setFocus: _setFocus,
+        setFocus,
         validate,
         clearErrors,
         watch,
