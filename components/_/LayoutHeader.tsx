@@ -150,7 +150,7 @@ export const Header = () => {
                         className="w-20 h-6 text-uf-white bg-uf-layout-header outline-none cursor-pointer [&>option]:bg-uf-layout-header"
                         value={theme.lang}
                         onChange={(e) => {
-                            // i18n.changeLanguage(e.target.value);
+                            i18n.changeLanguage(e.target.value);
                             setTheme((prev) => ({ ...prev, lang: e.target.value as "ko" | "en" | "tz" }));
                         }}
                     >
