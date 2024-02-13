@@ -8,6 +8,7 @@ import { Layout } from "@/comn/features/layouts";
 import { TancisRoutes } from "@/tra/tancis/Routes";
 import { CommonModal, CommonToast } from "@/comn/components/_";
 import { Main } from "@/tra/tancis/Main";
+export { default as api } from "@/comn/features/apis";
 
 type TRoute = { name: string; base?: string; to?: string; children?: TRoute[] };
 type TRoutes = TRoute[];
@@ -39,6 +40,8 @@ const router = createBrowserRouter([
     },
 ]);
 
+export const R: TRoutes = [...SampleRoutes, ...TancisRoutes];
+
 export const Base = () => {
     console.log("\n  %cCommon Base\n", "font-size:14px");
 
@@ -51,6 +54,3 @@ export const Base = () => {
         </RecoilProvider>
     );
 };
-
-export { default as api } from "@/comn/features/apis";
-export const R: TRoutes = [...SampleRoutes, ...TancisRoutes];

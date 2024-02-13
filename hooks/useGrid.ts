@@ -44,7 +44,7 @@ export type TGridSchema = {
             validate?: any;
             /** */
 
-            binding: string;
+            binding?: string;
             colspan?: number;
             rowspan?: number;
             align?: "start" | "end" | "left" | "right" | "center";
@@ -210,17 +210,48 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._handleUpdate(row);
     };
 
-    const validate = () => {};
+    const validate = () => {
+        const rule = _grid.current._defaultSchema.body
+            .flatMap(({ cells }: any) => cells)
+            .reduce((prev: any, curr: any) => {
+                let next = prev;
+
+                if (
+                    curr.min !== undefined ||
+                    curr.max !== undefined ||
+                    curr.minLength !== undefined ||
+                    curr.maxLength !== undefined ||
+                    curr.required !== undefined ||
+                    curr.pattern !== undefined ||
+                    curr.validate !== undefined
+                ) {
+                    next[curr.binding] = curr;
+                }
+
+                return next;
+            }, {});
+
+        console.log(
+            _grid.current._content.map((row: any) => {
+                return row;
+            }),
+        );
+    };
 
     return {
         grid: { _grid },
         page: _page,
         size: _size,
+
         getData,
         getOrigin,
+        getChecked,
         getSelectedRow,
         getSelectedCell,
-        getChecked,
+        isChecked,
+        isSelectedRow,
+        isSelectedCell,
+
         addRow,
         deleteRow,
         updateRow,
@@ -231,8 +262,6 @@ export const useGrid = (props: UseGridProps) => {
         setSize,
         setData,
         resetData,
-        isChecked,
-        isSelectedRow,
-        isSelectedCell,
+        validate,
     };
 };

@@ -199,6 +199,7 @@ export const comnUtils = {
     },
     getValidatedValue: (v: any, o?: any, resource?: any) => {
         const t = comnUtils.getValidateObject(o);
+
         if (o?.required) {
             if (!v) {
                 return { message: t.required.message, type: "required", schema: t };
@@ -234,7 +235,6 @@ export const comnUtils = {
                 return { message: t.validate.message, type: "validate", schema: t };
             }
         }
-
         if (o?.area && resource?.[t.area.value] && resource[t.area.value].options) {
             let index = lodash.findIndex(resource[t.area.value].options, { value: v });
             if (index === -1) {
