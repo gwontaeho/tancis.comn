@@ -369,6 +369,7 @@ const reducer = (state: any, action: any) => {
 
             if (_grid.current._pagination === "out") {
                 nextState._page = _grid.current._page;
+                nextState._size = _grid.current._size;
             } else if (_grid.current._pagination === "in") {
                 _grid.current._page = 0;
                 nextState._page = 0;
@@ -974,7 +975,7 @@ export const Grid = (props: {
 
     const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
 
-    console.log(_sort);
+    console.log(_size);
 
     return (
         <div className="flex flex-col w-full">

@@ -21,7 +21,7 @@ const schema1: TGridSchema = {
         height: 400,
         pagination: "out",
 
-        // group: ["q", "w"],
+        // group: ["q"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
