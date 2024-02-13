@@ -36,7 +36,7 @@ export const SampleLayoutBasic = () => {
         { label: "N", value: "N" },
     ];
 
-    const SG_FORM: TFormSchema = {
+    const SF_FORM: TFormSchema = {
         id: "form",
         schema: {
             text: { label: "text", type: "text", required: true },
@@ -70,7 +70,7 @@ export const SampleLayoutBasic = () => {
     };
 
     const form = useForm({
-        defaultSchema: SG_FORM,
+        defaultSchema: SF_FORM,
         defaultValues: {},
     });
 
@@ -150,13 +150,19 @@ const Sample = () => {
 
                     <Layout direction="col">
                         <Sample.Section
-                            title="1.2 <Group />"
+                            title="1.3 Group 컴포넌트 구성"
                             description={
                                 <>
-                                    - 라벨과 같이 사용 가능(label이 없을시 Form Control만 표시)
+                                    - Group.Header, Group.Body , Group.Footer 로 구성
                                     <br />
-                                    - 라벨, 폼컨트롤 사이즈 조절 가능(labelSize , controlSize)
-                                    <br />- 라벨 지정가능(label)
+                                    - Group.Title 컴포넌트로 제목글 표시(titleSize)
+                                    <br />- Group.Body 안에 영역별로 Group.Section 으로 구분
+                                    <br />- Group.Row 안에 Group.Control 로 컴포넌트 구성(라벨+폼컴포넌트)
+                                    <br />- label 속성이 undefined 인 경우 라벨 없이 컴포넌트만 구성
+                                    <br />- Label 과 컴포넌트 따로 구성이 필요한 경우 Group.Label , Group.Col 사용
+                                    <br />- Group.Col 의 combine 속성으로 컴포넌트 그룹화 가능
+                                    <br />- Layout 컴포넌트를 사용해 멀티 Row 형식으로 구성 가능
+                                    <br />- Tab, Tab.Panel 을 사용해 탭으로 구분 가능
                                 </>
                             }
                         >
@@ -184,10 +190,94 @@ const Sample = () => {
                                                 <Group.Control {...form.schema.text}></Group.Control>
                                                 <Group.Control {...form.schema.number}></Group.Control>
                                             </Group.Row>
+                                            <Group.Row>
+                                                <Group.Label
+                                                    label={<FormControl {...form.schema.select} />}
+                                                    required={true}
+                                                ></Group.Label>
+                                                <Group.Col>
+                                                    <FormControl {...form.schema.text} />
+                                                </Group.Col>
+                                                <Group.Label label={"L_MRN"} required={true}></Group.Label>
+                                                <Group.Col>
+                                                    <FormControl {...form.schema.text} />
+                                                    <Group.Any>-</Group.Any>
+                                                    <FormControl {...form.schema.select} />
+                                                    <Button icon="search">버튼</Button>
+                                                </Group.Col>
+                                            </Group.Row>
+                                            <Group.Row>
+                                                <Group.Label
+                                                    label={<FormControl {...form.schema.select} />}
+                                                    required={true}
+                                                ></Group.Label>
+                                                <Group.Col padding={0}>
+                                                    <Layout direction="col" gap={0}>
+                                                        <Layout direction="row" gap={0}>
+                                                            <Group.Control {...form.schema.text} label={undefined} />
+                                                            <Group.Control {...form.schema.select} label={undefined} />
+                                                            <Group.Any>
+                                                                <Button> 버튼</Button>
+                                                            </Group.Any>
+                                                        </Layout>
+                                                        <Layout direction="row" gap={0}>
+                                                            <Group.Control {...form.schema.text} label={undefined} />
+                                                            <Group.Control {...form.schema.select} label={undefined} />
+                                                            <Group.Any>
+                                                                <Button> 버튼</Button>
+                                                            </Group.Any>
+                                                        </Layout>
+                                                    </Layout>
+                                                </Group.Col>
+                                                <Group.Label label={"L_MRN"} required={true}></Group.Label>
+                                                <Group.Field combine={true}>
+                                                    <FormControl {...form.schema.text} />
+                                                    <Group.Any>-</Group.Any>
+                                                    <FormControl {...form.schema.select} />
+                                                    <Button icon="search">버튼</Button>
+                                                </Group.Field>
+                                            </Group.Row>
                                         </Group.Section>
+
+                                        <Group.Title title="Section 2" titleSize={2}></Group.Title>
                                         <Group.Section>
-                                            <Group.Title title="Section 2" titleSize={3}></Group.Title>
+                                            <Group.Row>
+                                                <Group.Control {...form.schema.text} controlSize={2}></Group.Control>
+                                                <Group.Control {...form.schema.number} controlSize={2}></Group.Control>
+                                                <Group.Control {...form.schema.select} controlSize={2}></Group.Control>
+                                            </Group.Row>
                                         </Group.Section>
+
+                                        <Group.Title title="Section 3" titleSize={2}></Group.Title>
+                                        <Tab schema={[{ label: "Tab 1" }, { label: "Tab 2" }, { label: "Tab 3" }]}>
+                                            <Tab.Panel>
+                                                <Group.Title title="Tab Section 1" titleSize={3}></Group.Title>
+                                                <Group.Section>
+                                                    <Group.Row>
+                                                        <Group.Control {...form.schema.text}></Group.Control>
+                                                        <Group.Control {...form.schema.number}></Group.Control>
+                                                    </Group.Row>
+                                                </Group.Section>
+                                            </Tab.Panel>
+                                            <Tab.Panel>
+                                                <Group.Title title="Tab Section 2" titleSize={3}></Group.Title>
+                                                <Group.Section>
+                                                    <Group.Row>
+                                                        <Group.Control {...form.schema.text}></Group.Control>
+                                                        <Group.Control {...form.schema.number}></Group.Control>
+                                                    </Group.Row>
+                                                </Group.Section>
+                                            </Tab.Panel>
+                                            <Tab.Panel>
+                                                <Group.Title title="Tab Section 3" titleSize={3}></Group.Title>
+                                                <Group.Section>
+                                                    <Group.Row>
+                                                        <Group.Control {...form.schema.text}></Group.Control>
+                                                        <Group.Control {...form.schema.number}></Group.Control>
+                                                    </Group.Row>
+                                                </Group.Section>
+                                            </Tab.Panel>
+                                        </Tab>
                                     </Group.Body>
                                     <Group.Footer>
                                         <Layout>
@@ -205,21 +295,22 @@ const Sample = () => {
                                 <Sample.Code>{`
 const Sample = () => {
     
-    const SG_FORM: TFormSchema = {
+    const SF_FORM: TFormSchema = {
         id: "form",
         schema: {
             text: { label: "text", type: "text", required: true },
             number: { label: "number", type: "number", thousandSeparator: true, decimalScale: 3, required: true },    
+            select: { label: "select", type: "select", options: code, required: true },
         },
     };
 
     const form = useForm({
-        defaultSchema: SG_FORM,
+        defaultSchema: SF_FORM,
         defaultValues: {},
     });
 
     return (
-        <Page
+            <Page
             id="화면 ID"
             title="화면명"
             description="화면 설명(필요시 기재)"
@@ -243,10 +334,94 @@ const Sample = () => {
                             <Group.Control {...form.schema.text}></Group.Control>
                             <Group.Control {...form.schema.number}></Group.Control>
                         </Group.Row>
+                        <Group.Row>
+                            <Group.Label
+                                label={<FormControl {...form.schema.select} />}
+                                required={true}
+                            ></Group.Label>
+                            <Group.Col>
+                                <FormControl {...form.schema.text} />
+                            </Group.Col>
+                            <Group.Label label={"L_MRN"} required={true}></Group.Label>
+                            <Group.Col>
+                                <FormControl {...form.schema.text} />
+                                <Group.Any>-</Group.Any>
+                                <FormControl {...form.schema.select} />
+                                <Button icon="search">버튼</Button>
+                            </Group.Col>
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Label
+                                label={<FormControl {...form.schema.select} />}
+                                required={true}
+                            ></Group.Label>
+                            <Group.Col padding={0}>
+                                <Layout direction="col" gap={0}>
+                                    <Layout direction="row" gap={0}>
+                                        <Group.Control {...form.schema.text} label={undefined} />
+                                        <Group.Control {...form.schema.select} label={undefined} />
+                                        <Group.Any>
+                                            <Button> 버튼</Button>
+                                        </Group.Any>
+                                    </Layout>
+                                    <Layout direction="row" gap={0}>
+                                        <Group.Control {...form.schema.text} label={undefined} />
+                                        <Group.Control {...form.schema.select} label={undefined} />
+                                        <Group.Any>
+                                            <Button> 버튼</Button>
+                                        </Group.Any>
+                                    </Layout>
+                                </Layout>
+                            </Group.Col>
+                            <Group.Label label={"L_MRN"} required={true}></Group.Label>
+                            <Group.Field combine={true}>
+                                <FormControl {...form.schema.text} />
+                                <Group.Any>-</Group.Any>
+                                <FormControl {...form.schema.select} />
+                                <Button icon="search">버튼</Button>
+                            </Group.Field>
+                        </Group.Row>
                     </Group.Section>
+
+                    <Group.Title title="Section 2" titleSize={2}></Group.Title>
                     <Group.Section>
-                        <Group.Title title="Section 2" titleSize={3}></Group.Title>
+                        <Group.Row>
+                            <Group.Control {...form.schema.text} controlSize={2}></Group.Control>
+                            <Group.Control {...form.schema.number} controlSize={2}></Group.Control>
+                            <Group.Control {...form.schema.select} controlSize={2}></Group.Control>
+                        </Group.Row>
                     </Group.Section>
+
+                    <Group.Title title="Section 3" titleSize={2}></Group.Title>
+                    <Tab schema={[{ label: "Tab 1" }, { label: "Tab 2" }, { label: "Tab 3" }]}>
+                        <Tab.Panel>
+                            <Group.Title title="Tab Section 1" titleSize={3}></Group.Title>
+                            <Group.Section>
+                                <Group.Row>
+                                    <Group.Control {...form.schema.text}></Group.Control>
+                                    <Group.Control {...form.schema.number}></Group.Control>
+                                </Group.Row>
+                            </Group.Section>
+                        </Tab.Panel>
+                        <Tab.Panel>
+                            <Group.Title title="Tab Section 2" titleSize={3}></Group.Title>
+                            <Group.Section>
+                                <Group.Row>
+                                    <Group.Control {...form.schema.text}></Group.Control>
+                                    <Group.Control {...form.schema.number}></Group.Control>
+                                </Group.Row>
+                            </Group.Section>
+                        </Tab.Panel>
+                        <Tab.Panel>
+                            <Group.Title title="Tab Section 3" titleSize={3}></Group.Title>
+                            <Group.Section>
+                                <Group.Row>
+                                    <Group.Control {...form.schema.text}></Group.Control>
+                                    <Group.Control {...form.schema.number}></Group.Control>
+                                </Group.Row>
+                            </Group.Section>
+                        </Tab.Panel>
+                    </Tab>
                 </Group.Body>
                 <Group.Footer>
                     <Layout>

@@ -12,7 +12,7 @@ export const SampleRoutes = [
                         to: "/comn/smpl/guide/Structure",
                     },
                     {
-                        name: "코드성 데이터(팝업) 사용",
+                        name: "코드데이터 사용",
                         to: "/comn/smpl/guide/Popup",
                     },
                 ],

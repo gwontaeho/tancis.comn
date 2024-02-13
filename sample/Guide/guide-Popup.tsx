@@ -46,7 +46,7 @@ export const GuidePopup = () => {
     });
 
     return (
-        <Sample title="코드데이터 팝업" description="코드데이터(코드팝업)에 대한 기본 사용방법">
+        <Sample title="코드데이터(팝업) 사용" description="코드데이터(코드팝업)에 대한 기본 사용방법">
             <Sample.Section title="사용가능 코드 데이터 목록">
                 <Sample.Table
                     data={[
