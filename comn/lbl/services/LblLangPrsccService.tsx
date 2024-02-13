@@ -88,12 +88,12 @@ export const SF_LBL_LANG: TFormSchema = {
 
 export const SG_LBL_LANG_LIST: TGridSchema = {
     id: "grid_LblLangList",
-    options: { pagination: "out", checkbox: true },
+    options: { pagination: "out", checkbox: true, index: true },
     head: [
         { cells: [{ header: "L_LBL_ID", binding: "lblId", width: 300 }] },
-        { cells: [{ header: "L_LBL_NM_EN", binding: "lblNmEn", width: 300 }] },
-        { cells: [{ header: "L_LBL_NM_TZ", binding: "lblNmTz", width: 300 }] },
-        { cells: [{ header: "L_LBL_NM_KO", binding: "lblNmKo", width: 300 }] },
+        { cells: [{ header: "L_LBL_NM_EN", binding: "lblNmEn", width: "*" }] },
+        { cells: [{ header: "L_LBL_NM_TZ", binding: "lblNmTz", width: "*" }] },
+        { cells: [{ header: "L_LBL_NM_KO", binding: "lblNmKo", width: "*" }] },
         { cells: [{ header: "L_FRST_REGST_ID", binding: "frstRegstId", width: 150 }] },
         { cells: [{ header: "L_FRST_RGSR_DTM", binding: "frstRgsrDtm", width: 150 }] },
     ],

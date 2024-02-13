@@ -4,6 +4,20 @@ export const SampleRoutes = [
         base: "/comn",
         children: [
             {
+                name: "Guide",
+                base: "Guide",
+                children: [
+                    {
+                        name: "기본 구조",
+                        to: "/comn/smpl/guide/Structure",
+                    },
+                    {
+                        name: "코드성 데이터(팝업) 사용",
+                        to: "/comn/smpl/guide/Popup",
+                    },
+                ],
+            },
+            {
                 name: "Sample",
                 base: "Sample",
                 children: [

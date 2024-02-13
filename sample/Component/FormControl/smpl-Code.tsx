@@ -274,7 +274,7 @@ export const SampleFormControlCode = () => {
                                 <Group.Control {...form.schema.field1}></Group.Control>
                                 <Group.Label label="지역 코드"></Group.Label>
                                 <Group.Col>
-                                    <Group.Any>/comn/comn/ppup/cntyCdPpup</Group.Any>
+                                    <Group.Any>/comn/comn/ppup/cityCdPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>

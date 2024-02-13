@@ -58,6 +58,9 @@ import { CGME0411001Q } from "@/comn/sample/Sample/CGME0411001Q";
 import { CGME0411002S } from "@/comn/sample/Sample/CGME0411002S";
 import { CGME0411003Q } from "@/comn/sample/Sample/CGME0411003Q";
 
+import { GuideBasic } from "@/comn/sample/Guide/guide-Basic";
+import { GuidePopup } from "@/comn/sample/Guide/guide-Popup";
+
 export const SampleMain = () => {
     return (
         <Routes>
@@ -118,6 +121,9 @@ export const SampleMain = () => {
             <Route path="/sample/cgme0411001q" element={<CGME0411001Q />} />
             <Route path="/sample/cgme0411002s" element={<CGME0411002S />} />
             <Route path="/sample/cgme0411003q" element={<CGME0411003Q />} />
+
+            <Route path="/guide/Structure" element={<GuideBasic />} />
+            <Route path="/guide/Popup" element={<GuidePopup />} />
         </Routes>
     );
 };

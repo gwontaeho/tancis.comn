@@ -18,6 +18,10 @@ import {
     unformatDatetime,
 } from "@/comn/components/_";
 
+type ValidateReturn = {
+    error?: { type: string; message: string; errors: Array<any> };
+};
+
 export const comnEnvs = {
     base: `${process.env.REACT_APP_BASE}`,
     base_comn: `${process.env.REACT_APP_BASE_COMN}`,
@@ -26,10 +30,37 @@ export const comnEnvs = {
         en: "en-TZ",
         tz: "sw-TZ",
     },
-};
-
-type ValidateReturn = {
-    error?: { type: string; message: string; errors: Array<any> };
+    popup: {
+        cityCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/cityCdPpup`,
+        comnCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/comnCdPpup`,
+        cntyCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/cntyCdPpup`,
+        currCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/currCdPpup`,
+        bnkCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/bnkCdPpup`,
+        portCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/portCdPpup`,
+        airptCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/airptCdPpup`,
+        portAirptCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/portAirptCdPpup`,
+        coCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/coCdPpup`,
+        prcssStat: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/prcssStatPpup`,
+        orgCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/orgCdPpup`,
+        wrhsCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/wrhsCdPpup`,
+        coDclaCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/coDclaCdPpup`,
+        orgDeptCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/orgDeptCdPpup`,
+        cstmCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/cstmCdPpup`,
+        vhclBodyCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclBodyCdPpup`,
+        vhclCtgrCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclCtgrCdPpup`,
+        vhclClrCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclClrCdPpup`,
+        vhclFlCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclFlCdPpup`,
+        vhclMkerCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclMkerCdPpup`,
+        vhclImpCntyCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclImpCntyCdPpup`,
+        vhclInsrTpCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclInsrTpCdPpup`,
+        vhclMdlCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclMdlCdPpup`,
+        vhclMdlNoCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclMdlNoCdPpup`,
+        vhclHlpnCtgrCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclHlpnCtgrCdPpup`,
+        vhclPrplTpCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclPrplTpCdPpup`,
+        vhclTrmssnTpCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclTrmssnTpCdPpup`,
+        vhclUseCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclUseCdPpup`,
+        CoCdDtl: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/CoCdDtl`,
+    },
 };
 
 export const comnUtils = {
