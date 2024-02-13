@@ -3,7 +3,7 @@ import { Sample } from "@/comn/components/_";
 import { Group, Layout, FormControl, Button } from "@/comn/components";
 import { useForm, TFormSchema, useResource, useModal } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
-import { comnUtils } from "@/comn/utils";
+import { comnEnvs, comnUtils } from "@/comn/utils";
 
 export const GuidePopup = () => {
     useResource({
@@ -50,7 +50,7 @@ export const GuidePopup = () => {
             <Sample.Section title="사용가능 코드 데이터 목록">
                 <Sample.Table
                     data={[
-                        ["번호", "데이터명", "area", "팝업창 주소"],
+                        ["번호", "데이터명", "area", "팝업창 주소(공통 변수 comnEnvs 사용)"],
                         ["1", "공통코드", "comnCd", "comnEnvs.popup.comnCd"],
                         ["2", "국가코드", "cntyCd", "comnEnvs.popup.cntyCd"],
                         ["3", "통화코드", "currCd", "comnEnvs.popup.currCd"],
@@ -60,10 +60,26 @@ export const GuidePopup = () => {
                         ["7", "공항코드", "airptCd", "comnEnvs.popup.airptCd"],
                         ["8", "도시코드", "cityCd", "comnEnvs.popup.cityCd"],
                         ["9", "업체코드", "coCd", "comnEnvs.popup.coCd"],
-                        ["9", "처리상태코드", "prcssStat", "comnEnvs.popup.prcssStat"],
-                        ["9", "기관정보", "orgCd", "comnEnvs.popup.orgCd"],
-                        ["9", "업체상세정보", "coDclaCd", "comnEnvs.popup.coDclaCd"],
-                        ["9", "업체신고코드", "coDclaCd", "comnEnvs.popup.coDclaCd"],
+                        ["10", "처리상태코드", "prcssStat", "comnEnvs.popup.prcssStat"],
+                        ["11", "기관정보", "orgCd", "comnEnvs.popup.orgCd"],
+                        ["12", "업체상세정보", "CoCdDtl", "comnEnvs.popup.CoCdDtl"],
+                        ["13", "업체신고코드", "coDclaCd", "comnEnvs.popup.coDclaCd"],
+                        ["14", "기관부서정보", "orgDeptCd", "comnEnvs.popup.orgDeptCd"],
+                        ["15", "창고정보", "wrhsCd", "comnEnvs.popup.wrhsCd"],
+                        ["16", "세관정보", "cstmCd", "comnEnvs.popup.cstmCd"],
+                        ["17", "차량차체정보", "vhclBodyCd", "comnEnvs.popup.vhclBodyCd"],
+                        ["18", "차량카테고리", "vhclCtgrCd", "comnEnvs.popup.vhclCtgrCd"],
+                        ["19", "차량색상", "vhclClrCd", "comnEnvs.popup.vhclClrCd"],
+                        ["20", "차량연료유형", "vhclFlCd", "comnEnvs.popup.vhclFlCd"],
+                        ["21", "차량수입위치", "vhclImpCntyCd", "comnEnvs.popup.vhclImpCntyCd"],
+                        ["22", "차량보험유형", "vhclInsrTpCd", "comnEnvs.popup.vhclInsrTpCd"],
+                        ["23", "차량제조사", "vhclMkerCd", "comnEnvs.popup.vhclMkerCd"],
+                        ["24", "차량모델", "vhclMdlCd", "comnEnvs.popup.vhclMdlCd"],
+                        ["25", "차량모델넘버", "vhclMdlNoCd", "comnEnvs.popup.vhclMdlNoCd"],
+                        ["26", "차량소유자카테고리", "vhclHlpnCtgrCd", "comnEnvs.popup.vhclHlpnCtgrCd"],
+                        ["27", "차량추진기유형", "vhclPrplTpCd", "comnEnvs.popup.vhclPrplTpCd"],
+                        ["28", "차량변속기유형", "vhclTrmssnTpCd", "comnEnvs.popup.vhclTrmssnTpCd"],
+                        ["29", "차량사용", "vhclUseCd", "comnEnvs.popup.vhclUseCd"],
                     ]}
                 />
             </Sample.Section>
@@ -88,7 +104,15 @@ export const GuidePopup = () => {
                                             {...form.schema.text}
                                             rightButton={{
                                                 icon: "search",
-                                                onClick: () => {},
+                                                onClick: () => {
+                                                    modal.openModal({
+                                                        url: comnEnvs.popup.wrhsCd,
+                                                        callback: (data) => {
+                                                            form.setValue("text", data.code);
+                                                            modal.closeModal();
+                                                        },
+                                                    });
+                                                },
                                             }}
                                         />
                                     </Group.Row>
@@ -109,6 +133,8 @@ export const GuidePopup = () => {
                         <Sample.Section title="Source Code">
                             <Sample.Code>{`
 const Sample = () => {
+
+    // 코드성 데이터 리소스 정의
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -118,11 +144,13 @@ const Sample = () => {
         ],
     });
 
+    // 사용자 코드 정의( options에 사용)
     const code = [
         { label: "Y", value: "Y" },
         { label: "N", value: "N" },
     ];
 
+    // form 스키마 정의 (area , comnCd 등을 정의)
     const SG_FORM: TFormSchema = {
         id: "form",
         schema: {

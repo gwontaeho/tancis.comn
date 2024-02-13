@@ -129,7 +129,7 @@ Sample.Table = (props: SampleTableProps) => {
                 <colgroup>
                     {props.data?.[0]?.map((_: any, i: number) => {
                         return (
-                            <col key={uuid()} className={classNames({ "w-60": i !== props.data?.[0].length - 1 })} />
+                            <col key={uuid()} className={classNames({ "w-auto": i !== props.data?.[0].length - 1 })} />
                         );
                     })}
                 </colgroup>
