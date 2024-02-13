@@ -7,12 +7,18 @@ import { motion } from "framer-motion";
 import Draggable from "react-draggable";
 import { IconButton, Button } from "@/comn/components";
 import { modalState } from "@/comn/features/recoil";
+import { v4 as uuid } from "uuid";
 
 const MODAL_SIZES = {
     sm: "max-w-sm",
     md: "max-w-lg",
     lg: "max-w-[70vw]",
     xl: "max-w-[90vw]",
+};
+
+const MODAL_LAYOUTS = {
+    popup: "?ppup=Y",
+    main: "",
 };
 
 export type ModalProps = {
@@ -23,6 +29,7 @@ export type ModalProps = {
     size?: keyof typeof MODAL_SIZES;
     title?: string;
     url?: string;
+    layout?: keyof typeof MODAL_LAYOUTS;
     callback?: (arg?: any) => void;
     onConfirm?: (arg?: any) => void;
     onCancel?: (arg?: any) => void;
@@ -30,13 +37,14 @@ export type ModalProps = {
 
 const Modal = (props: ModalProps) => {
     const {
-        id,
+        id = uuid(),
         url,
         title,
         content,
         draggable = false,
         backdrop = true,
         size = "lg",
+        layout = "popup",
         callback,
         onConfirm,
         onCancel,
@@ -111,7 +119,12 @@ const Modal = (props: ModalProps) => {
 
                     <div className="p-4 flex-1 overflow-auto">
                         {url ? (
-                            <iframe src={url + "?ppup=Y"} name={id} className="w-full h-[500px]" />
+                            <iframe
+                                src={url + MODAL_LAYOUTS[layout]}
+                                name={id}
+                                className="w-full h-[500px]"
+                                title={"modal" + id}
+                            />
                         ) : typeof content === "string" ? (
                             t(content)
                         ) : (

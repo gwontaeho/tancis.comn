@@ -70,7 +70,7 @@ export const WrhsCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                modal.postMessage({ code: value, label: rowValues.wrhsNm });
+                                modal.postMessage({ code: value, label: rowValues.wrhsNm, data: rowValues });
                             }}
                         >
                             {props.value}
@@ -137,11 +137,6 @@ export const WrhsCodeList = (props: any) => {
                     />
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button role="close" onClick={close}></Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };
