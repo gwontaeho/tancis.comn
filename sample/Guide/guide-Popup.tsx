@@ -22,7 +22,7 @@ export const GuidePopup = () => {
         { label: "N", value: "N" },
     ];
 
-    const SG_FORM: TFormSchema = {
+    const SF_FORM: TFormSchema = {
         id: "form",
         schema: {
             text: { label: "text", type: "text" },
@@ -41,7 +41,7 @@ export const GuidePopup = () => {
     };
 
     const form = useForm({
-        defaultSchema: SG_FORM,
+        defaultSchema: SF_FORM,
         defaultValues: {},
     });
 
