@@ -975,8 +975,6 @@ export const Grid = (props: {
 
     const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
 
-    console.log(_size);
-
     return (
         <div className="flex flex-col w-full">
             {/* Top Buttons */}
