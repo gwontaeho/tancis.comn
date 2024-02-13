@@ -19,7 +19,7 @@ type SelectProps = UseOptionsProps & {
     onChange?: (arg?: any) => void;
 };
 
-export const Select = (props: SelectProps) => {
+export const Select = React.forwardRef((props: SelectProps, ref: any) => {
     const {
         /** */
         all,
@@ -72,6 +72,7 @@ export const Select = (props: SelectProps) => {
                 <div className="relative flex w-full items-center">
                     <select
                         {..._props}
+                        ref={ref}
                         value={_value}
                         onChange={handleChange}
                         className={classNames("input appearance-none pr-5", readOnly && "pointer-events-none")}
@@ -91,7 +92,7 @@ export const Select = (props: SelectProps) => {
             </div>
         </div>
     );
-};
+});
 
 export const viewSelect = (v: any, o?: any) => {
     if (!o?.options) return;

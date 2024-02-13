@@ -152,7 +152,6 @@ export const useGrid = (props: UseGridProps) => {
 
     // Set
     const setData = (data: any) => {
-        console.log(data);
         _grid.current._setData(data);
     };
     const resetData = () => {
@@ -210,6 +209,8 @@ export const useGrid = (props: UseGridProps) => {
     const updateRow = (row: TRow) => {
         _grid.current._handleUpdate(row);
     };
+
+    const validate = () => {};
 
     return {
         grid: { _grid },

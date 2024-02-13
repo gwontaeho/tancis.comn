@@ -106,7 +106,9 @@ const createContent = (_grid: any) => {
                 [[], []],
             );
 
-        return lodash.orderBy(data, iteratees, orders);
+        return lodash.orderBy(data, iteratees, orders).map((_: any, i: any) => {
+            return { ..._, __index: i };
+        });
     };
 
     let filteredContent;
@@ -172,6 +174,8 @@ const createContent = (_grid: any) => {
     } else {
         filteredContent = sort(filteredContent);
     }
+
+    _grid.current._content = filteredContent;
 
     /**
      * 3.
@@ -755,22 +759,7 @@ const reducer = (state: any, action: any) => {
          *
          */
         case "handleClickCel": {
-            const { _grid, key, binding, value, formattedValue, rowValues, onCellClick } = action.payload;
-
-            if (onCellClick)
-                onCellClick({
-                    binding,
-                    value,
-                    formattedValue,
-                    rowValues,
-                });
-
-            _grid.current._selectedCel = {
-                binding,
-                value,
-                formattedValue,
-                rowValues,
-            };
+            const { key } = action.payload;
 
             return { ...state, _selectedCel: key };
         }
@@ -916,7 +905,27 @@ const useInitailize = (props: any) => {
             dispatch({ type: "group", payload: { _grid, groupKey, open } });
         };
         _grid.current._handleClickCel = (payload: any) => {
-            dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
+            const { key, binding, value, formattedValue, rowValues, onCellClick } = payload;
+
+            if (onCellClick)
+                onCellClick({
+                    binding,
+                    value,
+                    formattedValue,
+                    rowValues,
+                });
+
+            if (_grid.current._selectedCel?.__key !== key) {
+                _grid.current._selectedCel = {
+                    binding,
+                    value,
+                    formattedValue,
+                    rowValues,
+                    __key: key,
+                };
+
+                dispatch({ type: "handleClickCel", payload: { key } });
+            }
         };
         _grid.current._handlePage = (next: any) => {
             _grid.current._page = next;

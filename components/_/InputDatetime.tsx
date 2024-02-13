@@ -18,7 +18,7 @@ export type InputDateimeProps = {
     onChange?: (arg?: any) => void;
 };
 
-export const InputDatetime = (props: InputDateimeProps) => {
+export const InputDatetime = React.forwardRef((props: InputDateimeProps, ref: any) => {
     const {
         edit = true,
         /** input props */
@@ -65,6 +65,13 @@ export const InputDatetime = (props: InputDateimeProps) => {
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
                     <ReactDatePicker
                         {..._props}
+                        ref={(context: any) => {
+                            if (context) {
+                                if (typeof ref === "function") {
+                                    ref(context.input);
+                                }
+                            }
+                        }}
                         selected={_value}
                         onChange={handleChange}
                         dateFormat={constants.DATETIME_FORMAT_INPUT[theme.lang]}
@@ -79,7 +86,7 @@ export const InputDatetime = (props: InputDateimeProps) => {
             </div>
         </div>
     );
-};
+});
 
 export const localeDatetime = (v: any, l: "ko" | "en" | "tz") => {
     if (!v) return "";

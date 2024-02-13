@@ -47,5 +47,6 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
         value: field.value,
         onChange: field.onChange,
         onBlur: field.onBlur,
+        ref: field.ref,
     });
 };

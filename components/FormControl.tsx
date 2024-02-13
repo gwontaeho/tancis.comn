@@ -171,7 +171,7 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
                         case "textarea":
                             return <Textarea {...rest} ref={ref} />;
                         case "select":
-                            return <Select {...rest} />;
+                            return <Select {...rest} ref={ref} />;
                         case "radio":
                             return <Radio {...rest} />;
                         case "file":
@@ -179,17 +179,17 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
                         case "checkbox":
                             return <Checkbox {...rest} />;
                         case "date":
-                            return <InputDate {...rest} />;
+                            return <InputDate {...rest} ref={ref} />;
                         case "time":
-                            return <InputTime {...rest} />;
+                            return <InputTime {...rest} ref={ref} />;
                         case "datetime":
-                            return <InputDatetime {...rest} />;
+                            return <InputDatetime {...rest} ref={ref} />;
                         case "daterange":
                             return <InputDaterange {...rest} />;
                         case "timerange":
                             return <InputTimerange {...rest} />;
                         case "code":
-                            return <InputCode {...rest} />;
+                            return <InputCode {...rest} ref={ref} />;
                         case "boolean":
                             return <InputBoolean {...rest} />;
                         default:
