@@ -748,6 +748,16 @@ export const comnUtils = {
             }) || []
         );
     },
+
+    postMessage: (data: any) => {
+        if (window.opener) {
+            window.opener.postMessage(data);
+        }
+
+        if (window.parent) {
+            window.parent.postMessage(data);
+        }
+    },
 };
 
 type IdbReturn = { key: string; value: any; created: Date; updated: Date } | undefined;

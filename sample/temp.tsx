@@ -1,4 +1,4 @@
-import { TGridSchema, useForm, useStore } from "@/comn/hooks";
+import { TGridSchema, useForm, useModal, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { utils as xlsxUtils, writeFile } from "xlsx";
@@ -56,6 +56,8 @@ export const Temp = () => {
             { area: "test" },
         ],
     });
+
+    const modal = useModal();
 
     const form = useForm({
         defaultSchema: {
@@ -174,6 +176,19 @@ export const Temp = () => {
                         </Group.Row>
                         <Group.Row>
                             <button onClick={() => form.setFocus("date")}>asd</button>
+                            <button
+                                onClick={() =>
+                                    modal.openModal({
+                                        size: "xl",
+                                        url: "http://localhost:3000/comn/comn/ppup/cntyCdPpup?ppup=Y",
+                                        callback: (a) => {
+                                            console.log(a);
+                                        },
+                                    })
+                                }
+                            >
+                                poen
+                            </button>
                         </Group.Row>
                     </Group.Section>
 

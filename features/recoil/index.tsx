@@ -81,12 +81,12 @@ export const routeState = atom<string>({
 const DebugObserver = () => {
     const snapshot = useRecoilSnapshot();
 
-    React.useEffect(() => {
-        console.debug("The following atoms were modified:");
-        Array.from(snapshot.getNodes_UNSTABLE({ isModified: true })).forEach((node) => {
-            console.debug(node.key, snapshot.getLoadable(node));
-        });
-    }, [snapshot]);
+    // React.useEffect(() => {
+    //     console.debug("The following atoms were modified:");
+    //     Array.from(snapshot.getNodes_UNSTABLE({ isModified: true })).forEach((node) => {
+    //         console.debug(node.key, snapshot.getLoadable(node));
+    //     });
+    // }, [snapshot]);
 
     return null;
 };

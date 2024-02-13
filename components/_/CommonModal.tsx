@@ -22,17 +22,41 @@ export type ModalProps = {
     draggable?: boolean;
     size?: keyof typeof MODAL_SIZES;
     title?: string;
-    onConfirm?: () => void;
-    onCancel?: () => void;
+    url?: string;
+    callback?: (arg?: any) => void;
+    onConfirm?: (arg?: any) => void;
+    onCancel?: (arg?: any) => void;
 };
 
 const Modal = (props: ModalProps) => {
-    const { id, onConfirm, onCancel, content, draggable = false, backdrop = true, size = "sm", title } = props;
+    const {
+        id,
+        url,
+        title,
+        content,
+        draggable = false,
+        backdrop = true,
+        size = "sm",
+        callback,
+        onConfirm,
+        onCancel,
+    } = props;
 
     const ref = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();
-
     const setModal = useSetRecoilState(modalState);
+
+    useEffect(() => {
+        if (url) {
+            window.addEventListener("message", handleMessage);
+        }
+
+        return () => {
+            if (url) {
+                window.removeEventListener("message", handleMessage);
+            }
+        };
+    }, []);
 
     const handleClose = () => {
         setModal((prev) => prev.filter((v) => id !== v.id));
@@ -46,6 +70,12 @@ const Modal = (props: ModalProps) => {
     const handleConfirm = () => {
         if (onConfirm instanceof Function) onConfirm();
         handleClose();
+    };
+
+    const handleMessage = (event: any) => {
+        if (event.source.name !== id) return;
+        if (!callback) return;
+        callback(event.data);
     };
 
     return createPortal(
@@ -71,15 +101,25 @@ const Modal = (props: ModalProps) => {
                     )}
                 >
                     <div
-                        className={classNames("handle flex items-center justify-between px-4 h-16", {
+                        className={classNames("handle flex items-center justify-between px-4 h-12", {
                             "cursor-move": draggable,
                         })}
                     >
                         <div className="text-lg">{title ? t(title) : t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
-                    <div className="p-4 flex-1 overflow-auto">{typeof content === "string" ? t(content) : content}</div>
-                    <div className="p-4 flex space-x-2 justify-end">
+
+                    <div className="p-4 flex-1 overflow-auto">
+                        {url ? (
+                            <iframe src={url} name={id} className="w-full h-[500px]" />
+                        ) : typeof content === "string" ? (
+                            t(content)
+                        ) : (
+                            content
+                        )}
+                    </div>
+
+                    <div className="px-4 h-12 flex space-x-2 items-center justify-end">
                         <Button onClick={() => handleCancel()} role="close"></Button>
                         {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
                     </div>

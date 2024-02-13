@@ -22,5 +22,15 @@ export const useModal = () => {
         setModal([]);
     };
 
-    return { openModal, closeModal };
+    const postMessage = (data: any) => {
+        if (window.opener) {
+            window.opener.postMessage(data);
+        }
+
+        if (window.parent) {
+            window.parent.postMessage(data);
+        }
+    };
+
+    return { openModal, closeModal, postMessage };
 };
