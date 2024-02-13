@@ -71,6 +71,7 @@ export const WrhsCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
                                 modal.postMessage({ code: value, label: rowValues.wrhsNm, data: rowValues });
+                                close();
                             }}
                         >
                             {props.value}

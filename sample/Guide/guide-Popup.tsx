@@ -26,8 +26,8 @@ export const GuidePopup = () => {
         id: "form",
         schema: {
             text: { label: "text", type: "text" },
-            select1: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100" },
-            select2: { label: "select", type: "select", options: code },
+            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "COM_0100" },
+            select2: { label: "select 2", type: "select", options: code },
             radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CAG_0018" },
             checkbox: {
                 label: "checkbox",
@@ -46,7 +46,7 @@ export const GuidePopup = () => {
     });
 
     return (
-        <Sample title="코드 데이터 팝업" description="공통(코드데이터)팝업에 대한 기본 사용방법">
+        <Sample title="코드데이터 팝업" description="코드데이터(코드팝업)에 대한 기본 사용방법">
             <Sample.Section title="사용가능 코드 데이터 목록">
                 <Sample.Table
                     data={[
@@ -83,7 +83,7 @@ export const GuidePopup = () => {
                     ]}
                 />
             </Sample.Section>
-            <Sample.Section title="1. 컴포넌트 사용방법(기본)">
+            <Sample.Section title="1. 사용방법(기본)">
                 <Layout direction="col">
                     <Sample.Section
                         title="1.1 코드 데이터를 사용하는 컴포넌트에 area , comnCd 속성을 이용해 사용"
@@ -109,9 +109,11 @@ export const GuidePopup = () => {
                                                     modal.openModal({
                                                         url: comnEnvs.popup.wrhsCd,
                                                         draggable: true,
-                                                        size: "sm",
+                                                        // modal 창에서 postMessage 메서드 실행시 call back 함수
                                                         callback: (data) => {
+                                                            // form에 값 세팅
                                                             form.setValue("text", data.code);
+                                                            // modal 창 닫기
                                                             modal.closeModal();
                                                         },
                                                     });
@@ -154,12 +156,12 @@ const Sample = () => {
     ];
 
     // form 스키마 정의 (area , comnCd 등을 정의)
-    const SG_FORM: TFormSchema = {
+    const SF_FORM: TFormSchema = {
         id: "form",
         schema: {
             text: { label: "text", type: "text" },
-            select1: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100" },
-            select2: { label: "select", type: "select", options: code },
+            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "COM_0100" },
+            select2: { label: "select 2", type: "select", options: code },
             radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CAG_0018" },
             checkbox: {
                 label: "checkbox",
@@ -189,8 +191,11 @@ const Sample = () => {
                                     modal.openModal({
                                         url: comnEnvs.popup.wrhsCd,
                                         draggable: true,
+                                        // modal 창에서 postMessage 메서드 실행시 call back 함수
                                         callback: (data) => {
+                                            // form에 값 세팅
                                             form.setValue("text", data.code);
+                                            // modal 창 닫기
                                             modal.closeModal();
                                         },
                                     });
