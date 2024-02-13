@@ -107,9 +107,9 @@ export const GuidePopup = () => {
                                                 onClick: () => {
                                                     modal.openModal({
                                                         url: comnEnvs.popup.wrhsCd,
-                                                        size: "md",
                                                         callback: (data) => {
-                                                            console.log(data);
+                                                            form.setValue("text", data.code);
+                                                            modal.closeModal();
                                                         },
                                                     });
                                                 },

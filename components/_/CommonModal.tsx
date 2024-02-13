@@ -36,7 +36,7 @@ const Modal = (props: ModalProps) => {
         content,
         draggable = false,
         backdrop = true,
-        size = "sm",
+        size = "lg",
         callback,
         onConfirm,
         onCancel,
