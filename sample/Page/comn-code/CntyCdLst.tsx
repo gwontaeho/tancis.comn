@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, usePopup, useStore, useToast, useGrid } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CNTY_CD_SRCH, SCHEMA_GRID_CNTY_CD } from "./ComnCdService";
 
 export const CountryCodeList = (props: any) => {
@@ -21,7 +21,7 @@ export const CountryCodeList = (props: any) => {
     };
 
     const grid = {
-        cntyCdLst: useWijmo({
+        cntyCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_CNTY_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -57,11 +57,26 @@ export const CountryCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_CntyCdLst: {
-            cntyCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.cntyNm });
-                close();
+    };
+
+    const render = {
+        grid_CntyCdLst: {
+            cell: {
+                cntyCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.cntyNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -116,10 +131,10 @@ export const CountryCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     <Group.Section>
-                        <Wijmo
+                        <Grid
                             {...grid.cntyCdLst.grid}
                             data={fetch.getCntyCdLst.data?.cntyCdList}
-                            onCellClick={handler.click_Grid_CntyCdLst}
+                            render={render.grid_CntyCdLst}
                         />
                     </Group.Section>
                 </Group.Body>

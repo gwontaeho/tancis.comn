@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useStore, usePopup, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, useStore, usePopup, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CITY_CD_SRCH, SCHEMA_GRID_CITY_CD } from "./ComnCdService";
 
 export const CityCodeList = (props: any) => {
@@ -35,7 +35,7 @@ export const CityCodeList = (props: any) => {
      * 예) 도시코드( grid_CityCd )
      */
     const grid = {
-        cityCdLst: useWijmo({
+        cityCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_CITY_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -93,11 +93,26 @@ export const CityCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_CityCdLst: {
-            regnCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({ code: data.value, label: data.rowValues.regnNm });
-                close();
+    };
+
+    const render = {
+        grid_CityCdLst: {
+            cell: {
+                regnCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.regnNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -122,10 +137,11 @@ export const CityCodeList = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.cityCdSrch.schema.cntyCd}></Group.Control>
-                                <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnTpCd} select={true}></Group.Control>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.cityCdSrch.schema.regnNm} controlSize={10}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
@@ -154,10 +170,10 @@ export const CityCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
+                    <Grid
                         {...grid.cityCdLst.grid}
                         data={fetch.getCityCdLst.data?.regnCdList}
-                        onCellClick={handler.click_Grid_CityCdLst}
+                        render={render.grid_CityCdLst}
                     />
                 </Group.Body>
             </Group>

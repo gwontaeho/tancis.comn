@@ -4,7 +4,6 @@ export * from "./FormControl";
 export * from "./Group";
 export * from "./Tab";
 export * from "./Tree";
-export * from "./Wijmo/Wijmo";
 export * from "./Pagination";
 export * from "./Icon";
 export * from "./Layout";

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_ORG_CD_SRCH, SCHEMA_GRID_ORG_CD } from "./ComnCdService";
 
 export const OrganizationCodeList = (props: any) => {
@@ -21,7 +21,7 @@ export const OrganizationCodeList = (props: any) => {
     };
 
     const grid = {
-        orgCdLst: useWijmo({
+        orgCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_ORG_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -57,16 +57,26 @@ export const OrganizationCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_OrgCdLst: {
-            orgCd: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({
-                    code: data.value,
-                    label: data.rowValues.orgNm,
-                    orgAddr: data.rowValues.orgAddr,
-                    rprsTlphNo: data.rowValues.rprsTlphNo,
-                });
-                close();
+    };
+
+    const render = {
+        grid_OrgCdLst: {
+            cell: {
+                orgCd: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.orgNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -120,10 +130,10 @@ export const OrganizationCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
+                    <Grid
                         {...grid.orgCdLst.grid}
                         data={fetch.getOrgCdLst.data?.orgList}
-                        onCellClick={handler.click_Grid_OrgCdLst}
+                        render={render.grid_OrgCdLst}
                     />
                 </Group.Body>
             </Group>

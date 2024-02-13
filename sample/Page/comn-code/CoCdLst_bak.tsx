@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
+import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CO_CD_SRCH, SCHEMA_GRID_CO_CD } from "./ComnCdService";
 
 export const CompanyCodeList = (props: any) => {
@@ -21,7 +21,7 @@ export const CompanyCodeList = (props: any) => {
     };
 
     const grid = {
-        coCdLst: useWijmo({
+        coCdLst: useGrid({
             defaultSchema: SCHEMA_GRID_CO_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -57,17 +57,26 @@ export const CompanyCodeList = (props: any) => {
                 },
             )();
         },
-        click_Grid_CoCdLst: {
-            coTin: (data: any) => {
-                if (!comnUtils.isPopup()) return;
-                postMessage({
-                    code: data.value,
-                    label: data.rowValues.coNm,
-                    addr: data.rowValues.coAddr,
-                    status: data.rowValues.coStatCd,
-                    data: data.rowValues,
-                });
-                close();
+    };
+
+    const render = {
+        grid_CoCdLst: {
+            cell: {
+                coTin: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <a
+                            onClick={() => {
+                                if (!comnUtils.isPopup()) return;
+
+                                postMessage({ code: value, label: rowValues.coNm });
+                                close();
+                            }}
+                        >
+                            {props.value}
+                        </a>
+                    );
+                },
             },
         },
     };
@@ -125,11 +134,7 @@ export const CompanyCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Wijmo
-                        {...grid.coCdLst.grid}
-                        data={fetch.getCoCdLst.data?.coList}
-                        onCellClick={handler.click_Grid_CoCdLst}
-                    />
+                    <Grid {...grid.coCdLst.grid} data={fetch.getCoCdLst.data?.coList} render={render.grid_CoCdLst} />
                 </Group.Body>
             </Group>
             {comnUtils.isPopup() && (

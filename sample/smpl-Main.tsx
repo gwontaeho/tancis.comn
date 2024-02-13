@@ -37,7 +37,6 @@ import { SampleUseModal } from "@/comn/sample/Hook/smpl-useModal";
 import { SampleUseToast } from "@/comn/sample/Hook/smpl-useToast";
 import { SampleUsePopup } from "@/comn/sample/Hook/smpl-usePopup";
 import { SampleUsePopupWindow } from "@/comn/sample/Hook/smpl-usePopup";
-import { SampleUseWijmo } from "@/comn/sample/Hook/smpl-useWijmo";
 import { SampleUseTab } from "@/comn/sample/Hook/smpl-useTab";
 import { SampleUseTree } from "@/comn/sample/Hook/smpl-useTree";
 import { SampleUseFetch } from "@/comn/sample/Hook/smpl-useFetch";
@@ -54,10 +53,6 @@ import { PortAirptCodeList } from "@/comn/sample/Page/comn-code/PortAirptCdLst";
 import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
 import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
 import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
-
-import { CGME0411001Q } from "@/comn/sample/Sample/CGME0411001Q";
-import { CGME0411002S } from "@/comn/sample/Sample/CGME0411002S";
-import { CGME0411003Q } from "@/comn/sample/Sample/CGME0411003Q";
 
 export const SampleMain = () => {
     return (
@@ -99,7 +94,6 @@ export const SampleMain = () => {
             <Route path="/hooks/useToast" element={<SampleUseToast />} />
             <Route path="/hooks/usePopup" element={<SampleUsePopup />} />
             <Route path="/hooks/usePopupWindow" element={<SampleUsePopupWindow />} />
-            <Route path="/hooks/useWijmo" element={<SampleUseWijmo />} />
             <Route path="/hooks/useTab" element={<SampleUseTab />} />
             <Route path="/hooks/useTree" element={<SampleUseTree />} />
             <Route path="/hooks/useFetch" element={<SampleUseFetch />} />
@@ -116,11 +110,6 @@ export const SampleMain = () => {
             <Route path="/pages/coCdPpup" element={<CompanyCodeList />} />
             <Route path="/pages/prcssStatPpup" element={<ProcessingStatusCodeList />} />
             <Route path="/pages/orgCdPpup" element={<OrganizationCodeList />} />
-
-            <Route path="/sample/cgme0411001q" element={<CGME0411001Q />} />
-            <Route path="/sample/cgme0411002s" element={<CGME0411002S />} />
-            <Route path="/sample/cgme0411002s/:dclrNo" element={<CGME0411002S />} />
-            <Route path="/sample/cgme0411003q" element={<CGME0411003Q />} />
         </Routes>
     );
 };

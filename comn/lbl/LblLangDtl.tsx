@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useStore, useToast, useModal } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_LBL_LANG } from "./services/LblLangPrsccService";
