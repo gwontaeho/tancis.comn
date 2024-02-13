@@ -137,10 +137,11 @@ export const CityCodeList = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.cityCdSrch.schema.cntyCd}></Group.Control>
-                                <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnTpCd} select={true}></Group.Control>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.cityCdSrch.schema.regnNm} controlSize={10}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnCd}></Group.Control>
+                                <Group.Control {...form.cityCdSrch.schema.regnNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">

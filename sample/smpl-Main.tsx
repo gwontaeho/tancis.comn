@@ -117,7 +117,6 @@ export const SampleMain = () => {
 
             <Route path="/sample/cgme0411001q" element={<CGME0411001Q />} />
             <Route path="/sample/cgme0411002s" element={<CGME0411002S />} />
-            <Route path="/sample/cgme0411002s/:dclrNo" element={<CGME0411002S />} />
             <Route path="/sample/cgme0411003q" element={<CGME0411003Q />} />
         </Routes>
     );
