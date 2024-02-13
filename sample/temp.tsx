@@ -30,8 +30,12 @@ const schema1: TGridSchema = {
         { cells: [{ binding: "e", rowspan: 2, width: 200 }] },
     ],
     body: [
-        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "q", required: true }] },
+        { cells: [{ binding: "s", required: true }] },
+        { cells: [{ binding: "d", min: 5, required: true }] },
         { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "x", type: "textarea" }] },
+        { cells: [{ binding: "v", type: "select" }] },
         { cells: [{ binding: "e", type: "select" }] },
     ],
 };
@@ -95,6 +99,7 @@ export const Temp = () => {
         isChecked,
         isSelectedRow,
         isSelectedCell,
+        validate,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -266,6 +271,7 @@ export const Temp = () => {
                         셀 데이터 바꾸기
                     </button>
                     <button onClick={() => console.log(getChecked())}>getChecked</button>
+                    <button onClick={() => validate()}>validate</button>
                 </div>
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => setOption("edit", true)}>setOption edit true</button>
