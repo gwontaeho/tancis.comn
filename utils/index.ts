@@ -862,12 +862,6 @@ export const idb = {
      */
     update: (dname: string, sname: string, key: string, value: any) => {
         return new Promise<IdbReturn>(async (resolve, reject) => {
-            const dbs = await indexedDB.databases();
-
-            // if (!dbs.find(({ name }) => name === dname)) {
-            //     resolve(undefined);
-            //     return;
-            // }
             const request = indexedDB.open(dname);
 
             request.onupgradeneeded = () => {
@@ -898,11 +892,6 @@ export const idb = {
                 const getRecord = os.get(key);
                 getRecord.onsuccess = () => {
                     const current = new Date();
-                    // if (!getRecord.result) {
-                    //     console.log("f");
-                    //     resolve(undefined);
-                    //     return;
-                    // }
                     const record = { key, created: current, ...getRecord.result, value, updated: current };
                     const updateRecord = os.put(record);
                     updateRecord.onsuccess = () => {
