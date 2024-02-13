@@ -862,7 +862,8 @@ export const idb = {
      */
     update: (dname: string, sname: string, key: string, value: any) => {
         return new Promise<IdbReturn>(async (resolve, reject) => {
-            // const dbs = await indexedDB.databases();
+            const dbs = await indexedDB.databases();
+
             // if (!dbs.find(({ name }) => name === dname)) {
             //     resolve(undefined);
             //     return;
@@ -883,10 +884,10 @@ export const idb = {
                 /**
                  * store does not exist
                  */
-                // if (!db.objectStoreNames.contains(sname)) {
-                //     resolve(undefined);
-                //     return;
-                // }
+                if (!db.objectStoreNames.contains(sname)) {
+                    resolve(undefined);
+                    return;
+                }
 
                 const ts = db.transaction(sname, "readwrite");
                 const os = ts.objectStore(sname);
