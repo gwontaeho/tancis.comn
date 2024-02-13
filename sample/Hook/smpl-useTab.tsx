@@ -37,7 +37,12 @@ export const SampleUseTab = () => {
                     </Group.Body>
                 </Group>
 
-                <Tab {...tab}>
+                <Tab
+                    {...tab}
+                    onChange={(index) => {
+                        console.log(index);
+                    }}
+                >
                     <Tab.Panel>첫번째 탭</Tab.Panel>
                     <Tab.Panel>두번째 탭</Tab.Panel>
                     <Tab.Panel>세번째 탭</Tab.Panel>

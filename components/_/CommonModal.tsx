@@ -10,10 +10,10 @@ import { modalState } from "@/comn/features/recoil";
 import { v4 as uuid } from "uuid";
 
 const MODAL_SIZES = {
-    sm: "max-w-sm",
-    md: "max-w-lg",
-    lg: "max-w-[70vw]",
-    xl: "max-w-[90vw]",
+    sm: "max-w-[70vw] h-[50vh]",
+    md: "max-w-[70vw] h-[60vh]",
+    lg: "max-w-[70vw] h-[70vh]",
+    xl: "max-w-[90vw] h-[90vh]",
 };
 
 const MODAL_LAYOUTS = {
@@ -104,7 +104,7 @@ const Modal = (props: ModalProps) => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1 }}
                     className={classNames(
-                        "fixed flex flex-col top-1/2 left-1/2 w-full max-h-[90vh] border rounded bg-uf-background z-[9999]",
+                        "fixed flex flex-col top-1/2 left-1/2 w-full h-[90vh] max-h-[90vh] border rounded bg-uf-background z-[9999]",
                         MODAL_SIZES[size],
                     )}
                 >
@@ -113,7 +113,7 @@ const Modal = (props: ModalProps) => {
                             "cursor-move": draggable,
                         })}
                     >
-                        <div className="text-lg">{title ? t(title) : t("L_ALT")}</div>
+                        <div className="text-lg">{title ? t(title) : url ? "" : t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 

@@ -105,8 +105,11 @@ export const GuidePopup = () => {
                                             rightButton={{
                                                 icon: "search",
                                                 onClick: () => {
+                                                    // 팝업창을 호출하여 사용하는 경우
                                                     modal.openModal({
                                                         url: comnEnvs.popup.wrhsCd,
+                                                        draggable: true,
+                                                        size: "sm",
                                                         callback: (data) => {
                                                             form.setValue("text", data.code);
                                                             modal.closeModal();
@@ -182,7 +185,16 @@ const Sample = () => {
                             {...form.schema.text}
                             rightButton={{
                                 icon: "search",
-                                onClick: () => {},
+                                onClick: () => {
+                                    modal.openModal({
+                                        url: comnEnvs.popup.wrhsCd,
+                                        draggable: true,
+                                        callback: (data) => {
+                                            form.setValue("text", data.code);
+                                            modal.closeModal();
+                                        },
+                                    });
+                                },
                             }}
                         />
                     </Group.Row>
