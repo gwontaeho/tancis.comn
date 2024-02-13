@@ -54,6 +54,10 @@ import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
 import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
 import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
 
+import { CGME0411001Q } from "@/comn/sample/Sample/CGME0411001Q";
+import { CGME0411002S } from "@/comn/sample/Sample/CGME0411002S";
+import { CGME0411003Q } from "@/comn/sample/Sample/CGME0411003Q";
+
 export const SampleMain = () => {
     return (
         <Routes>
@@ -110,6 +114,10 @@ export const SampleMain = () => {
             <Route path="/pages/coCdPpup" element={<CompanyCodeList />} />
             <Route path="/pages/prcssStatPpup" element={<ProcessingStatusCodeList />} />
             <Route path="/pages/orgCdPpup" element={<OrganizationCodeList />} />
+
+            <Route path="/sample/cgme0411001q" element={<CGME0411001Q />} />
+            <Route path="/sample/cgme0411002s" element={<CGME0411002S />} />
+            <Route path="/sample/cgme0411003q" element={<CGME0411003Q />} />
         </Routes>
     );
 };
