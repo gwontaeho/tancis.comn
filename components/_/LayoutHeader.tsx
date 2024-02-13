@@ -60,16 +60,19 @@ const Logo = () => {
 
     const SRCS = {
         tanesw: {
-            light: "/imgs/logo_tanesw.svg",
-            dark: "/imgs/logo_tanesw_dark.svg",
+            logo: "/imgs/tanesw_logo.png",
+            light: "/imgs/tanesw_title.png",
+            dark: "/imgs/tanesw_title_dark.png",
         },
         tancis: {
-            light: "/imgs/logo_tancis.svg",
-            dark: "/imgs/logo_tancis_dark.svg",
+            logo: "/imgs/tanesw_logo.png",
+            light: "/imgs/tancis_title.png",
+            dark: "/imgs/tancis_title_dark.png",
         },
         tanoga: {
-            light: "/imgs/logo_tanoga.svg",
-            dark: "/imgs/logo_tanoga_dark.svg",
+            logo: "/imgs/tanoga_logo.png",
+            light: "/imgs/tanoga_title.png",
+            dark: "/imgs/tanoga_title_dark.png",
         },
     };
 
@@ -78,9 +81,10 @@ const Logo = () => {
     const name = process.env.REACT_APP_SYSTEM_GROUP_NAME;
 
     return (
-        <Link to="/">
-            <img src={src["light"]} alt={alt} title={name} hidden={theme.isDark === "true"} width={195} height={46} />
-            <img src={src["dark"]} alt={alt} title={name} hidden={theme.isDark === "false"} width={195} height={46} />
+        <Link to="/" className="flex items-center gap-2">
+            <img src={src["logo"]} alt={alt} title={name} width={40} />
+            <img src={src["light"]} alt={alt} title={name} hidden={theme.isDark === "true"} width={120} />
+            <img src={src["dark"]} alt={alt} title={name} hidden={theme.isDark === "false"} width={120} />
         </Link>
     );
 };
@@ -94,7 +98,7 @@ export const Header = () => {
     return (
         <header className="uf-header">
             {/*  */}
-            <div className="uf-header-logo">
+            <div className="uf-header-logo gap-4">
                 <Logo />
                 <button onClick={() => setOpen((prev) => !prev)}>
                     <Icon icon="menu" size="xl" />

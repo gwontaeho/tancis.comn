@@ -18,16 +18,25 @@ const schema1: TGridSchema = {
         edit: true,
         importExcel: true,
         exportExcel: true,
-        height: "auto",
-        // pagination: "in",
+        height: 400,
+        pagination: "out",
 
-        // group: ["q", "w"],
+        // group: ["q"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "QWE!", rowspan: 2, width: 200 }] },
     ],
-    body: [{ cells: [{ binding: "q" }] }, { cells: [{ binding: "w", type: "textarea" }] }],
+    body: [
+        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+    ],
 };
 
 type TData = {
@@ -77,11 +86,17 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => utils.getMockData({ totalElements: 7 }), []);
+    const data = useMemo(() => utils.getMockData({ totalElements: 60 }), []);
 
     const data2 = utils.getMockDataWithPaging({ data, page, size });
 
     const _test = {
+        radio: (data: any) => {
+            return true;
+        },
+        checkbox: (data: any) => {
+            return false;
+        },
         // head: {
         //     a: (data: any) => {
         //         /**
@@ -137,8 +152,6 @@ export const Temp = () => {
         },
     };
 
-    console.log("Page Rendered");
-
     return (
         <Page>
             <Group>
@@ -146,7 +159,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={data2}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -191,9 +204,11 @@ export const Temp = () => {
                 asdasd
             </button>
 
+            <button onClick={() => {}}>test1234</button>
+
             <div className="flex flex-col gap-8">
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => setData(data)}>set data</button>
+                    <button onClick={() => setData(data2)}>set data</button>
                     <button onClick={() => resetData()}>reset</button>
                     <button onClick={() => addRow({ text: "added" })}>add row</button>
                     <button onClick={() => setSize(30)}>setSize 30</button>

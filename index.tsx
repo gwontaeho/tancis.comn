@@ -40,6 +40,8 @@ const router = createBrowserRouter([
 ]);
 
 export const Base = () => {
+    console.log("\n  %cCommon Base\n", "font-size:14px");
+
     return (
         <RecoilProvider>
             <AuthProvider />

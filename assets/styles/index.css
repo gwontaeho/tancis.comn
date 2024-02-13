@@ -164,10 +164,14 @@
     }
 
     /* Grid */
+    .uf-grid-main {
+        @apply w-full mb-2 flex flex-col bg-uf-border;
+    }
     .uf-grid-option {
         @apply flex items-center justify-center min-w-[2rem] max-w-[2rem] bg-uf-card-header;
     }
     .uf-grid-head {
+        @apply flex w-full gap-[1px] border-b border-l border-l-uf-card-background bg-uf-border overflow-auto;
     }
     .uf-grid-head::-webkit-scrollbar {
         display: none;
@@ -179,7 +183,6 @@
     .uf-grid-cell {
         @apply flex-1 flex justify-center items-center h-full min-h-[2.5rem] p-1 transition overflow-hidden;
     }
-
     .uf-grid-cell a {
         @apply underline;
     }

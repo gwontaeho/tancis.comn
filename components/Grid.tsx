@@ -296,9 +296,9 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
-    const { filteredContent } = createContent(_grid);
+    const { filteredContent, filteredCount } = createContent(_grid);
 
-    let _totalCount = (_grid.current._pagination === "in" ? filteredContent.length : data?.page?.totalElements) || 0;
+    let _totalCount = (_grid.current._pagination === "in" ? filteredCount : data?.page?.totalElements) || 0;
     _grid.current._totalCount = _totalCount;
     _grid.current._originTotalCount = _totalCount;
 
@@ -343,6 +343,7 @@ const reducer = (state: any, action: any) => {
         case "setData": {
             const { _grid, data } = action.payload;
 
+            let nextState = { ...state };
             let content;
             let _totalCount;
 
@@ -363,19 +364,34 @@ const reducer = (state: any, action: any) => {
             _grid.current._dataUpdated = new Date();
             _grid.current._origin = content;
             _grid.current._content = content;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            if (_grid.current._pagination === "out") {
+                nextState._page = _grid.current._page;
+                nextState._size = _grid.current._size;
+            } else if (_grid.current._pagination === "in") {
+                _grid.current._page = 0;
+                nextState._page = 0;
+            }
 
             const { filteredContent, filteredCount } = createContent(_grid);
 
             if (_grid.current._pagination === "out") {
                 _totalCount = data?.page?.totalElements || 0;
-            } else {
+            } else if (_grid.current._pagination === "in") {
                 _totalCount = filteredCount;
             }
 
             _grid.current._totalCount = _totalCount;
             _grid.current._originTotalCount = _totalCount;
 
-            return { ...state, _totalCount, _test: filteredContent };
+            nextState._test = filteredContent;
+            nextState._totalCount = _totalCount;
+            nextState._checked = [];
+            nextState._selectedRow = null;
+
+            return nextState;
         }
         /**
          * Reset to Origin
@@ -772,9 +788,21 @@ const reducer = (state: any, action: any) => {
             return { ...state, _checked };
         }
         case "handleCheckAll": {
-            const { _grid, event } = action.payload;
+            const { _grid, event, condition } = action.payload;
 
-            let _checked = event.target.checked ? _grid.current._paged : [];
+            let _checked;
+
+            if (event.target.checked) {
+                if (condition) {
+                    _checked = _grid.current._paged.filter((_: any) => {
+                        return condition(_);
+                    });
+                } else {
+                    _checked = _grid.current._paged;
+                }
+            } else {
+                _checked = [];
+            }
 
             _grid.current._checked = _checked;
             return { ...state, _checked };
@@ -788,37 +816,32 @@ const reducer = (state: any, action: any) => {
         case "handleChangePage": {
             const { _grid, next } = action.payload;
 
-            if (_grid.current._pagination === "out") {
-                _grid.current._setPage(next);
-            }
+            const { filteredContent } = createContent(_grid);
 
-            _grid.current._page = next;
-            _grid.current._checked = [];
-            _grid.current._selectedRow = null;
+            let nextState = {
+                ...state,
+                _test: filteredContent,
+                _page: next,
+                _checked: [],
+                _selectedRow: null,
+            };
 
-            let nextState = { ...state, _page: next, _checked: [], _selectedRow: null };
-            if (_grid.current._pagination === "in") {
-                nextState._test = createContent(_grid).filteredContent;
-            }
             return nextState;
         }
         case "handleChangeSize": {
             const { _grid, next } = action.payload;
 
-            if (_grid.current._pagination === "out") {
-                _grid.current._setPage(0);
-                _grid.current._setSize(next);
-            }
+            const { filteredContent } = createContent(_grid);
 
-            _grid.current._page = 0;
-            _grid.current._size = next;
-            _grid.current._checked = [];
-            _grid.current._selectedRow = null;
+            let nextState = {
+                ...state,
+                _test: filteredContent,
+                _page: 0,
+                _size: next,
+                _checked: [],
+                _selectedRow: null,
+            };
 
-            let nextState = { ...state, _page: 0, _size: next, _checked: [], _selectedRow: null };
-            if (_grid.current._pagination === "in") {
-                nextState._test = createContent(_grid).filteredContent;
-            }
             return nextState;
         }
 
@@ -839,7 +862,7 @@ const reducer = (state: any, action: any) => {
  * ## Grid Initialize Hook
  */
 const useInitailize = (props: any) => {
-    const { _grid, data } = props;
+    const { _grid, data, render } = props;
 
     const __t = data?.__t?.getTime();
     const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
@@ -872,7 +895,7 @@ const useInitailize = (props: any) => {
             dispatch({ type: "handleCheck", payload: { _grid, event, rowProps } });
         };
         _grid.current._handleCheckAll = (event: any) => {
-            dispatch({ type: "handleCheckAll", payload: { _grid, event } });
+            dispatch({ type: "handleCheckAll", payload: { _grid, event, condition: render?.checkbox } });
         };
         _grid.current._handleSelect = (event: any, rowProps: any) => {
             dispatch({ type: "handleSelect", payload: { _grid, event, rowProps } });
@@ -886,12 +909,6 @@ const useInitailize = (props: any) => {
         _grid.current._handleDelete = (type: any) => {
             dispatch({ type: "delete", payload: { _grid, type } });
         };
-        _grid.current._handlePage = (next: any) => {
-            dispatch({ type: "handleChangePage", payload: { _grid, next } });
-        };
-        _grid.current._handleSize = (next: any) => {
-            dispatch({ type: "handleChangeSize", payload: { _grid, next } });
-        };
         _grid.current._handleSort = (binding: any) => {
             dispatch({ type: "sort", payload: { _grid, binding } });
         };
@@ -900,6 +917,30 @@ const useInitailize = (props: any) => {
         };
         _grid.current._handleClickCel = (payload: any) => {
             dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
+        };
+        _grid.current._handlePage = (next: any) => {
+            _grid.current._page = next;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            if (_grid.current._pagination === "out") {
+                _grid.current._setPage(next);
+            } else if (_grid.current._pagination === "in") {
+                dispatch({ type: "handleChangePage", payload: { _grid, next } });
+            }
+        };
+        _grid.current._handleSize = (next: any) => {
+            _grid.current._page = 0;
+            _grid.current._size = next;
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+
+            if (_grid.current._pagination === "out") {
+                _grid.current._setPage(0);
+                _grid.current._setSize(next);
+            } else if (_grid.current._pagination === "in") {
+                dispatch({ type: "handleChangeSize", payload: { _grid, next } });
+            }
         };
 
         _grid.current._readjustHeight = lodash.debounce(() => {
@@ -919,13 +960,20 @@ const useInitailize = (props: any) => {
 /**
  * # Grid
  */
-export const Grid = (props: any) => {
+export const Grid = (props: {
+    //
+    _grid?: any;
+    data?: any;
+    render?: any;
+    onCellClick?: any;
+    onRowClick?: any;
+}) => {
     const { _grid, render, onCellClick, onRowClick } = props;
 
     const { t } = useTranslation();
     const { state } = useInitailize(props);
 
-    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _test } = state;
+    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
 
     return (
         <div className="flex flex-col w-full">
@@ -943,20 +991,29 @@ export const Grid = (props: any) => {
             </div>
 
             {/* Grid Main */}
-            <div className="w-full mb-2 flex flex-col bg-uf-border">
+            <div className="uf-grid-main">
                 {/* Head */}
                 <div
-                    ref={(node) => (_grid.current._head = node)}
-                    className="uf-grid-head flex w-full gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10 overflow-x-auto"
+                    ref={(ref) => {
+                        if (ref) {
+                            _grid.current._head = ref;
+                        }
+                    }}
+                    className="uf-grid-head"
                 >
                     {Object.keys(_grid.current._groupStatus).length > 0 && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
                                 type="checkbox"
-                                checked={_test.every(({ __key }: any) =>
-                                    _checked.some((row: any) => row.__key === __key),
-                                )}
+                                checked={(render?.checkbox
+                                    ? _test.filter((_: any) => {
+                                          return render.checkbox(_);
+                                      })
+                                    : _test
+                                ).every(({ __key }: any) => {
+                                    return _checked.some((row: any) => row.__key === __key);
+                                })}
                                 onChange={(event) => _grid.current._handleCheckAll(event)}
                             />
                         </div>
@@ -972,7 +1029,7 @@ export const Grid = (props: any) => {
                                 return (
                                     <div
                                         key={_grid.current._key + ".gh." + rowIndex + "." + colIndex}
-                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center"
+                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center font-semibold"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
@@ -987,6 +1044,26 @@ export const Grid = (props: any) => {
                                             cel.binding}
 
                                         {cel.required && <span className="text-uf-error">*</span>}
+                                        <button
+                                            className="relative ml-0.5"
+                                            onClick={() => {
+                                                _grid.current._handleSort(cel.binding);
+                                            }}
+                                        >
+                                            <Icon
+                                                icon={
+                                                    _sort[cel.binding]?.val === "asc"
+                                                        ? "barsUp"
+                                                        : _sort[cel.binding]?.val === "desc"
+                                                          ? "barsDown"
+                                                          : "bars"
+                                                }
+                                                size="xs"
+                                            />
+                                            <span className="absolute text-[10px] bottom-0 right-0 translate-x-full">
+                                                {_sort[cel.binding]?.seq}
+                                            </span>
+                                        </button>
                                     </div>
                                 );
                             });
@@ -996,18 +1073,20 @@ export const Grid = (props: any) => {
                 {/* Body */}
                 <List
                     ref={(ref) => {
-                        _grid.current._list = ref;
-                    }}
-                    innerRef={(node) => {
-                        if (node) {
-                            _grid.current._listInner = node;
+                        if (ref) {
+                            _grid.current._list = ref;
                         }
                     }}
-                    outerRef={(node) => {
-                        if (node) {
-                            _grid.current._listOuter = node;
+                    innerRef={(ref) => {
+                        if (ref) {
+                            _grid.current._listInner = ref;
+                        }
+                    }}
+                    outerRef={(ref) => {
+                        if (ref) {
+                            _grid.current._listOuter = ref;
 
-                            node.onscroll = (event: any) => {
+                            ref.onscroll = (event: any) => {
                                 _grid.current._head.scrollTo({ left: event.currentTarget.scrollLeft });
                             };
                         }
@@ -1053,7 +1132,7 @@ export const Grid = (props: any) => {
 const Row = React.memo((props: any) => {
     const { data, index: rowIndex, style } = props;
 
-    const { _grid, state, render, onCellClick, onRowClick, test22 } = data;
+    const { _grid, state, render, onCellClick, onRowClick } = data;
     const {
         _test,
         _bodyCells,
@@ -1135,6 +1214,7 @@ const Row = React.memo((props: any) => {
                     {checkbox && (
                         <div className="uf-grid-option">
                             <input
+                                disabled={render?.checkbox ? !render?.checkbox?.(row) || undefined : undefined}
                                 type="checkbox"
                                 checked={_checked.some(({ __key }: any) => __key === contentKey)}
                                 onChange={(e) => _grid.current._handleCheck(e, row)}
@@ -1144,6 +1224,7 @@ const Row = React.memo((props: any) => {
                     {radio && (
                         <div className="uf-grid-option">
                             <input
+                                disabled={render?.radio ? !render?.radio?.(row) || undefined : undefined}
                                 type="radio"
                                 checked={_selectedRow?.__key === row?.__key}
                                 onChange={(event) => _grid.current._handleSelect(event, row)}
