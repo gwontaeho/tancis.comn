@@ -26,8 +26,17 @@ const schema1: TGridSchema = {
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
+        { cells: [{ binding: "QWE!", rowspan: 2, width: 200 }] },
     ],
-    body: [{ cells: [{ binding: "q" }] }, { cells: [{ binding: "w", type: "textarea" }] }],
+    body: [
+        { cells: [{ binding: "q" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+        { cells: [{ binding: "w", type: "textarea" }] },
+    ],
 };
 
 type TData = {

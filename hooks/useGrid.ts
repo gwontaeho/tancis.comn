@@ -9,13 +9,13 @@ export type TGridSchema = {
         edit?: boolean;
         delete?: boolean;
         group?: string[];
-        checkbox?: boolean;
         radio?: boolean;
+        checkbox?: boolean;
         index?: boolean | "DESC" | "ASC";
         importExcel?: boolean;
         exportExcel?: boolean;
-        pagination?: "in" | "out" | false;
         height?: number | "auto";
+        pagination?: "in" | "out" | false;
     };
     head: {
         id?: string;
@@ -63,6 +63,24 @@ type UseGridProps = {
     size?: number;
 };
 
+type TGridRef = {
+    _initialized: boolean;
+    _defaultSchema: TGridSchema;
+    _key: string;
+
+    _origin: any[];
+    _content: any[];
+    _checked: any[];
+    _paged: any[];
+    _selectedRow: any;
+    _selectedCel: any;
+    _totalCount: number;
+    _originTotalCount: number;
+
+    _head: any;
+    _list: any;
+};
+
 export const useGrid = (props: UseGridProps) => {
     const { defaultSchema, page = 0, size = 10 } = props;
 
@@ -73,6 +91,7 @@ export const useGrid = (props: UseGridProps) => {
         _initialized: false,
         _defaultSchema: defaultSchema,
         _key: uuid(),
+
         _origin: [],
         _content: [],
         _checked: [],
@@ -85,7 +104,6 @@ export const useGrid = (props: UseGridProps) => {
         /** head ref for sync scroll */
         _head: null,
         _list: null,
-        _headRects: [],
 
         /** rows rect */
         _rect: [],

@@ -908,6 +908,15 @@ const useInitailize = (props: any) => {
         _grid.current._handleDelete = (type: any) => {
             dispatch({ type: "delete", payload: { _grid, type } });
         };
+        _grid.current._handleSort = (binding: any) => {
+            dispatch({ type: "sort", payload: { _grid, binding } });
+        };
+        _grid.current._handleGroup = (groupKey: any, open: any) => {
+            dispatch({ type: "group", payload: { _grid, groupKey, open } });
+        };
+        _grid.current._handleClickCel = (payload: any) => {
+            dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
+        };
         _grid.current._handlePage = (next: any) => {
             _grid.current._page = next;
             _grid.current._checked = [];
@@ -932,15 +941,6 @@ const useInitailize = (props: any) => {
                 dispatch({ type: "handleChangeSize", payload: { _grid, next } });
             }
         };
-        _grid.current._handleSort = (binding: any) => {
-            dispatch({ type: "sort", payload: { _grid, binding } });
-        };
-        _grid.current._handleGroup = (groupKey: any, open: any) => {
-            dispatch({ type: "group", payload: { _grid, groupKey, open } });
-        };
-        _grid.current._handleClickCel = (payload: any) => {
-            dispatch({ type: "handleClickCel", payload: { _grid, ...payload } });
-        };
 
         _grid.current._readjustHeight = lodash.debounce(() => {
             if (_grid.current._height === _grid.current._listInner.clientHeight) return;
@@ -959,13 +959,22 @@ const useInitailize = (props: any) => {
 /**
  * # Grid
  */
-export const Grid = (props: any) => {
+export const Grid = (props: {
+    //
+    _grid?: any;
+    data?: any;
+    render?: any;
+    onCellClick?: any;
+    onRowClick?: any;
+}) => {
     const { _grid, render, onCellClick, onRowClick } = props;
 
     const { t } = useTranslation();
     const { state } = useInitailize(props);
 
-    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _test } = state;
+    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
+
+    console.log(_sort);
 
     return (
         <div className="flex flex-col w-full">
@@ -983,11 +992,15 @@ export const Grid = (props: any) => {
             </div>
 
             {/* Grid Main */}
-            <div className="w-full mb-2 flex flex-col bg-uf-border">
+            <div className="uf-grid-main">
                 {/* Head */}
                 <div
-                    ref={(node) => (_grid.current._head = node)}
-                    className="uf-grid-head flex w-full gap-[1px] border-b border-l border-l-uf-card-background sticky top-0 bg-uf-border z-10 overflow-x-auto"
+                    ref={(ref) => {
+                        if (ref) {
+                            _grid.current._head = ref;
+                        }
+                    }}
+                    className="uf-grid-head"
                 >
                     {Object.keys(_grid.current._groupStatus).length > 0 && <div className="uf-grid-option" />}
                     {_options.checkbox && (
@@ -1017,7 +1030,7 @@ export const Grid = (props: any) => {
                                 return (
                                     <div
                                         key={_grid.current._key + ".gh." + rowIndex + "." + colIndex}
-                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center"
+                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center font-semibold"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
@@ -1032,6 +1045,26 @@ export const Grid = (props: any) => {
                                             cel.binding}
 
                                         {cel.required && <span className="text-uf-error">*</span>}
+                                        <button
+                                            className="relative ml-0.5"
+                                            onClick={() => {
+                                                _grid.current._handleSort(cel.binding);
+                                            }}
+                                        >
+                                            <Icon
+                                                icon={
+                                                    _sort[cel.binding]?.val === "asc"
+                                                        ? "barsUp"
+                                                        : _sort[cel.binding]?.val === "desc"
+                                                          ? "barsDown"
+                                                          : "bars"
+                                                }
+                                                size="xs"
+                                            />
+                                            <span className="absolute text-[10px] bottom-0 right-0 translate-x-full">
+                                                {_sort[cel.binding]?.seq}
+                                            </span>
+                                        </button>
                                     </div>
                                 );
                             });
@@ -1041,18 +1074,20 @@ export const Grid = (props: any) => {
                 {/* Body */}
                 <List
                     ref={(ref) => {
-                        _grid.current._list = ref;
-                    }}
-                    innerRef={(node) => {
-                        if (node) {
-                            _grid.current._listInner = node;
+                        if (ref) {
+                            _grid.current._list = ref;
                         }
                     }}
-                    outerRef={(node) => {
-                        if (node) {
-                            _grid.current._listOuter = node;
+                    innerRef={(ref) => {
+                        if (ref) {
+                            _grid.current._listInner = ref;
+                        }
+                    }}
+                    outerRef={(ref) => {
+                        if (ref) {
+                            _grid.current._listOuter = ref;
 
-                            node.onscroll = (event: any) => {
+                            ref.onscroll = (event: any) => {
                                 _grid.current._head.scrollTo({ left: event.currentTarget.scrollLeft });
                             };
                         }
@@ -1098,7 +1133,7 @@ export const Grid = (props: any) => {
 const Row = React.memo((props: any) => {
     const { data, index: rowIndex, style } = props;
 
-    const { _grid, state, render, onCellClick, onRowClick, test22 } = data;
+    const { _grid, state, render, onCellClick, onRowClick } = data;
     const {
         _test,
         _bodyCells,
