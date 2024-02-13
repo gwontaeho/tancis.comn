@@ -180,7 +180,7 @@ export const Temp = () => {
                                 onClick={() =>
                                     modal.openModal({
                                         size: "xl",
-                                        url: "http://localhost:3000/comn/comn/ppup/cntyCdPpup?ppup=Y",
+                                        url: "http://localhost:3000/comn/comn/ppup/cntyCdPpup",
                                         callback: (a) => {
                                             console.log(a);
                                         },
