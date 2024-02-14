@@ -67,15 +67,20 @@ export const comnEnvs = {
  *
  */
 export const comnUtils = {
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     // Value
-    //////////////////////////////////////////////////////
-    getFormattedValue: (v: any, o?: any) => {
-        switch (o?.type) {
+    /////////////////////////////////////////////////////////////////////
+    /**
+     * @param v Value
+     * @param o Schema
+     * @returns
+     */
+    getFormattedValue: (v: any, s?: any) => {
+        switch (s?.type) {
             case "text":
-                return formatText(v, o);
+                return formatText(v, s);
             case "number":
-                return formatNumber(v, o);
+                return formatNumber(v, s);
             case "checkbox":
                 return formatCheckbox(v);
             case "date":
@@ -87,37 +92,47 @@ export const comnUtils = {
         }
         return v;
     },
-    getUnformattedValue: (v: any, o?: any) => {
-        switch (o?.type) {
+    /**
+     *
+     * @param v Value
+     * @param s Schema
+     * @returns
+     */
+    getUnformattedValue: (v: any, s?: any) => {
+        switch (s?.type) {
             case "text":
-                return unformatText(v, o);
+                return unformatText(v, s);
             case "number":
-                return unformatNumber(v, o);
+                return unformatNumber(v, s);
             case "checkbox":
-                return unformatCheckbox(v, o);
+                return unformatCheckbox(v, s);
             case "date":
-                return unformatDate(v, o);
+                return unformatDate(v, s);
             case "time":
-                return unformatTime(v, o);
+                return unformatTime(v, s);
             case "datetime":
-                return unformatDatetime(v, o);
+                return unformatDatetime(v, s);
         }
         return v;
     },
-
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     // Grid
-    //////////////////////////////////////////////////////
-    getGridData: (content: any) => {
+    /////////////////////////////////////////////////////////////////////
+    /**
+     *
+     * @param content Content
+     * @returns
+     */
+    getGridData: (content: Record<string, any>) => {
         return {
             content,
             __t: new Date(),
-            page: { totalElements: Array.isArray(content) ? content.length : 0 },
+            page: { totalElements: content.length },
         };
     },
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     // Locale
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     getLocale: () => {
         return localStorage.getItem("lang")?.toString() || "en";
     },
@@ -127,9 +142,9 @@ export const comnUtils = {
         else if (locale === "en") return comnEnvs.locale.en;
         else return comnEnvs.locale.ko;
     },
-    //////////////////////////////////////////////////////
-    // Empty
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    //
+    /////////////////////////////////////////////////////////////////////
     isUndefined: (arg: any) => {
         return arg === undefined;
     },
@@ -153,10 +168,9 @@ export const comnUtils = {
         if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) return replace;
         return arg;
     },
-
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     // Date
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number; h?: number; mi?: number } = {
             date: new Date(),
@@ -223,7 +237,6 @@ export const comnUtils = {
         if (a === b) return 0;
     },
     dateToString: (date: Date, format?: any | "date" | "time" | "datetime") => {
-        if (date === undefined || date === null) return date;
         return dayjs(date).format(
             format === undefined || format === "date" ? "YYYY-MM-DD" : format === "time" ? "HH:mm" : "YYYY-MM-DD HH:mm",
         );
@@ -280,10 +293,16 @@ export const comnUtils = {
             window.parent.postMessage(data);
         }
     },
-
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
     // Resource
-    //////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    /**
+     *
+     * @param area Area
+     * @param comnCd Common Code
+     * @param lang Locale
+     * @returns
+     */
     getResourceKey: (area: string, comnCd?: string, lang?: string) => {
         return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
     },
