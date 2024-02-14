@@ -544,7 +544,7 @@ export const CGME0411002S = () => {
                                     excel
                                         .excelToJson(file, 0)
                                         .then((data) => {
-                                            const validData = comnUtils.validateForGrid(
+                                            const validData = excel.validateForGrid(
                                                 data,
                                                 SG_RPCK_ITM_APP_ITM_LIST.body,
                                                 resource,
