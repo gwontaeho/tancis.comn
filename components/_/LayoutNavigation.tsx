@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useRecoilState } from "recoil";
 import { Collapse, Icon, Button } from "@/comn/components";
 
-import { R } from "@/comn";
+import { routes } from "@/comn";
 import { routeState } from "@/comn/features/recoil";
 
 type NavItemProps = {
@@ -83,7 +83,7 @@ const Menu = () => {
 
     const [route] = useRecoilState(routeState);
 
-    const depth_1 = R.find(({ base }) => route.startsWith(base || ""));
+    const depth_1 = routes.find(({ base }) => route.startsWith(base || ""));
     const depth_1_base = (depth_1?.base || "").startsWith("/") ? depth_1?.base || "" : "/" + (depth_1?.base || "");
     const depth_2 = depth_1?.children?.find(({ base }) =>
         route.startsWith(depth_1_base + ((base || "").startsWith("/") ? base || "" : "/" + (base || ""))),
