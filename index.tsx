@@ -17,12 +17,6 @@ export { routes } from "@/comn/features/router";
  * * System : "/*"
  *
  *
- * ## Common Source
- *
- * * Src        : "@"
- * * Component  : "@/comn/components"
- * * Hook       : "@/comn/hooks"
- * * Util       : "@/comn/utils"
  */
 export const Base = () => {
     console.log("\n  %cCommon Base\n", "font-size:14px");
