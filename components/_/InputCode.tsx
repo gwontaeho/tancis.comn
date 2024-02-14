@@ -1,6 +1,6 @@
 import React from "react";
 import lodash from "lodash";
-import { usePopup, useOptions, UseOptionsProps } from "@/comn/hooks";
+import { usePopup, useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
 
@@ -88,6 +88,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
     );
 
     const { openPopup } = usePopup();
+    const modal = useModal();
 
     const o = useOptions({ comnCd, area, options });
     const __t = o.__t?.getTime();
@@ -135,6 +136,19 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         if (disabled === true) return;
 
         const params = { ...utils.toValues(popupParams), comnCd };
+
+        modal.openModal({
+            params,
+            url: POPUP_URLS[area || "comnCd"],
+            size: "sm",
+            draggable: true,
+            callback: (data: any) => {
+                handleValueChange(data.code);
+                modal.closeModal();
+            },
+        });
+
+        /*
         openPopup({
             params,
             url: POPUP_URLS[area || "comnCd"],
@@ -143,6 +157,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
                 handleValueChange(data.code);
             },
         });
+        */
     };
 
     const handleValueChange = (v?: any) => {

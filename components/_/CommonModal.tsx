@@ -10,10 +10,10 @@ import { modalState } from "@/comn/features/recoil";
 import { v4 as uuid } from "uuid";
 
 const MODAL_SIZES = {
-    sm: "max-w-[70vw] h-[50vh]",
-    md: "max-w-[70vw] h-[60vh]",
-    lg: "max-w-[70vw] h-[70vh]",
-    xl: "max-w-[90vw] h-[90vh]",
+    sm: "max-w-[80vw] mix-h-[50vh]",
+    md: "max-w-[80vw] mix-h-[60vh]",
+    lg: "max-w-[80vw] mix-h-[70vh]",
+    xl: "max-w-[90vw] mix-h-[90vh]",
 };
 
 const MODAL_LAYOUTS = {
@@ -30,6 +30,7 @@ export type ModalProps = {
     title?: string;
     url?: string;
     layout?: keyof typeof MODAL_LAYOUTS;
+    params?: any;
     callback?: (arg?: any) => void;
     onConfirm?: (arg?: any) => void;
     onCancel?: (arg?: any) => void;
@@ -45,6 +46,7 @@ const Modal = (props: ModalProps) => {
         backdrop = true,
         size = "lg",
         layout = "popup",
+        params,
         callback,
         onConfirm,
         onCancel,
@@ -53,6 +55,8 @@ const Modal = (props: ModalProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();
     const setModal = useSetRecoilState(modalState);
+
+    const paramsQuery = params ? "params=" + encodeURIComponent(JSON.stringify(params)) : "";
 
     useEffect(() => {
         if (url) {
@@ -104,7 +108,7 @@ const Modal = (props: ModalProps) => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1 }}
                     className={classNames(
-                        "fixed flex flex-col top-1/2 left-1/2 w-full h-[90vh] max-h-[90vh] border rounded bg-uf-background z-[9999]",
+                        "fixed flex flex-col top-1/2 left-1/2 w-full h-auto border rounded bg-uf-background z-[9999]",
                         MODAL_SIZES[size],
                     )}
                 >
@@ -120,7 +124,7 @@ const Modal = (props: ModalProps) => {
                     <div className="p-4 flex-1 overflow-auto">
                         {url ? (
                             <iframe
-                                src={url + MODAL_LAYOUTS[layout]}
+                                src={url + MODAL_LAYOUTS[layout] + "&" + paramsQuery}
                                 name={id}
                                 className="w-full h-[500px]"
                                 title={"modal" + id}
