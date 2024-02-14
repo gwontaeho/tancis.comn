@@ -28,7 +28,7 @@
         --uf-input-background: #d8e0ea66;
         --uf-button-outlined-background: #ffffffe6;
     }
-
+    /* tanesw */
     :root {
         --uf-layout-header: #004f96;
         --uf-background: #f2f7fe;
@@ -44,7 +44,7 @@
         --uf-sign-out-background: #196296;
         --uf-sign-out-fill: #0f4f7e;
     }
-
+    /* tanoga */
     :root[class~="tanoga"] {
         --uf-layout-header: #007e41;
         --uf-background: #eef0f2;
@@ -60,7 +60,7 @@
         --uf-sign-out-background: #0e6f35;
         --uf-sign-out-fill: #005321;
     }
-
+    /* tancis */
     :root[class~="tancis"] {
         --uf-layout-header: #f6ab00;
         --uf-background: #eef0f2;
