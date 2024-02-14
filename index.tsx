@@ -1,7 +1,7 @@
-import { CommonModal, CommonToast } from "@/comn/components/_";
 import Router from "@/comn/features/router";
 import RecoilProvider from "@/comn/features/recoil";
 import AuthProvider from "@/comn/features/auth";
+import { CommonModal, CommonToast } from "@/comn/components/_";
 
 export { default as api } from "@/comn/features/apis";
 export { routes } from "@/comn/features/router";
@@ -16,7 +16,6 @@ export { routes } from "@/comn/features/router";
  * * Common : "/comn/comn/*"
  * * System : "/*"
  *
- *
  */
 export const Base = () => {
     console.log("\n  %cCommon Base\n", "font-size:14px");
@@ -25,6 +24,7 @@ export const Base = () => {
         <RecoilProvider>
             <AuthProvider />
             <Router />
+
             <CommonModal />
             <CommonToast />
         </RecoilProvider>

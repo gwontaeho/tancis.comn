@@ -100,6 +100,13 @@ export const useGrid = (props: UseGridProps) => {
          * _headRef
          * _listRef
          * _rect
+         *
+         *
+         *
+         *
+         *
+         *
+         *
          */
 
         /** group */
@@ -108,11 +115,6 @@ export const useGrid = (props: UseGridProps) => {
                   return { ...p, [c]: { seq } };
               }, {})
             : {},
-
-        _groupStatus: {},
-
-        /** sort */
-        _sort: {},
 
         /** options */
         _index: defaultSchema.options?.index,
@@ -125,20 +127,7 @@ export const useGrid = (props: UseGridProps) => {
         _importExcel: defaultSchema.options?.importExcel,
         _height: defaultSchema.options?.height === "auto" ? 0 : defaultSchema.options?.height || 400,
         _autoHeight: defaultSchema.options?.height === "auto",
-
-        /** paging */
         _pagination: defaultSchema.options?.pagination,
-
-        // _setData
-        // _setEdit
-        // _setShow
-        // _setOption
-        // _resetData
-        // _handleUpdate
-        // _handleAdd
-        // _handleDelete
-        // _handlePage
-        // _handleSize
     });
 
     // Set

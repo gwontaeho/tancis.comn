@@ -289,6 +289,8 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._selectedRow = null;
     _grid.current._selectedCel = null;
     _grid.current._rect = [];
+    _grid.current._groupStatus = {};
+    _grid.current._sort = {};
 
     const { filteredContent, filteredCount } = createContent(_grid);
 

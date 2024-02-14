@@ -7,34 +7,38 @@ import { ComnRoutes } from "./ComnRoutes";
 import { TancisRoutes } from "@/tra/tancis/Routes";
 import { Main } from "@/tra/tancis/Main";
 
-export const routes = [...ComnRoutes, ...TancisRoutes];
+/** temp */
+import { Temp } from "@/comn/sample/temp";
 
-const Router = () => (
-    <RouterProvider
-        router={createBrowserRouter([
+export const routes = [...ComnRoutes, ...TancisRoutes];
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Layout />,
+
+        children: [
             {
-                path: "/",
-                element: <Layout />,
-                children: [
-                    {
-                        path: "/comn/smpl/*",
-                        lazy: async () => {
-                            const { SampleMain } = await import("@/comn/sample/smpl-Main");
-                            return { Component: SampleMain };
-                        },
-                    },
-                    {
-                        path: "/comn/comn/*",
-                        element: <ComnMain />,
-                    },
-                    {
-                        path: "*",
-                        element: <Main />,
-                    },
-                ],
+                path: "/comn/comn/temp",
+                element: <Temp />,
             },
-        ])}
-    />
-);
+            {
+                path: "/comn/smpl/*",
+                lazy: async () => {
+                    const { SampleMain } = await import("@/comn/sample/smpl-Main");
+                    return { Component: SampleMain };
+                },
+            },
+            {
+                path: "/comn/comn/*",
+                element: <ComnMain />,
+            },
+            {
+                path: "*",
+                element: <Main />,
+            },
+        ],
+    },
+]);
+const Router = () => <RouterProvider router={router} />;
 
 export default Router;
