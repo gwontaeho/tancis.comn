@@ -14,7 +14,7 @@ export { routes } from "@/comn/features/router";
  *
  * * Sample : /comn/smpl/*
  * * Common : /comn/comn/*
- * * Part   : /*
+ * * System   : /*
  *
  */
 export const Base = () => {
