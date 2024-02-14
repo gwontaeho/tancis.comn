@@ -67,23 +67,9 @@ export const comnEnvs = {
  *
  */
 export const comnUtils = {
-    getViewValue: (v: any, o?: any, l?: any) => {
-        switch (o?.type) {
-            case "text":
-                return formatText(v, o);
-            case "number":
-                return formatNumber(v, o);
-            case "checkbox":
-                return unformatCheckbox(v, o);
-            case "date":
-                return unformatDate(v, o);
-            case "time":
-                return unformatTime(v, o);
-            case "datetime":
-                return unformatDatetime(v, o);
-        }
-        return v;
-    },
+    //////////////////////////////////////////////////////
+    // Value
+    //////////////////////////////////////////////////////
     getFormattedValue: (v: any, o?: any) => {
         switch (o?.type) {
             case "text":
@@ -119,9 +105,19 @@ export const comnUtils = {
         return v;
     },
 
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+    // Grid
+    //////////////////////////////////////////////////////
+    getGridData: (content: any) => {
+        return {
+            content,
+            __t: new Date(),
+            page: { totalElements: Array.isArray(content) ? content.length : 0 },
+        };
+    },
+    //////////////////////////////////////////////////////
     // Locale
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     getLocale: () => {
         return localStorage.getItem("lang")?.toString() || "en";
     },
@@ -131,10 +127,9 @@ export const comnUtils = {
         else if (locale === "en") return comnEnvs.locale.en;
         else return comnEnvs.locale.ko;
     },
-
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     // Empty
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     isUndefined: (arg: any) => {
         return arg === undefined;
     },
@@ -159,28 +154,9 @@ export const comnUtils = {
         return arg;
     },
 
-    getGridData: (content: any) => {
-        return {
-            content,
-            __t: new Date(),
-            page: { totalElements: Array.isArray(content) ? content.length : 0 },
-        };
-    },
-
-    /**
-     * Get Resource Key
-     * @param area
-     * @param comnCd
-     * @param lang
-     * @returns
-     */
-    getResourceKey: (area: string, comnCd?: string, lang?: string) => {
-        return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
-    },
-
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     // Date
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number; h?: number; mi?: number } = {
             date: new Date(),
@@ -252,7 +228,6 @@ export const comnUtils = {
             format === undefined || format === "date" ? "YYYY-MM-DD" : format === "time" ? "HH:mm" : "YYYY-MM-DD HH:mm",
         );
     },
-    ////////////////////////////////////////////////////////////////////
 
     findIndex: (array: Array<any>, obj: any) => {
         return lodash.findIndex(array, obj);
@@ -296,7 +271,22 @@ export const comnUtils = {
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second);
     },
+    postMessage: (data: any) => {
+        if (window.opener) {
+            window.opener.postMessage(data);
+        }
 
+        if (window.parent) {
+            window.parent.postMessage(data);
+        }
+    },
+
+    //////////////////////////////////////////////////////
+    // Resource
+    //////////////////////////////////////////////////////
+    getResourceKey: (area: string, comnCd?: string, lang?: string) => {
+        return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
+    },
     getCode: async (args: {
         comnCd?: string;
         keyword?: string;
@@ -565,16 +555,6 @@ export const comnUtils = {
                 return { label: comnUtils.getCodeLabel(area, code), value: comnUtils.getCodeValue(area, code) };
             }) || []
         );
-    },
-
-    postMessage: (data: any) => {
-        if (window.opener) {
-            window.opener.postMessage(data);
-        }
-
-        if (window.parent) {
-            window.parent.postMessage(data);
-        }
     },
 };
 
