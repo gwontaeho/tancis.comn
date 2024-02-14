@@ -91,22 +91,16 @@ export const useGrid = (props: UseGridProps) => {
         _initialized: false,
         _defaultSchema: defaultSchema,
         _key: uuid(),
+        _page,
+        _size,
+        _setPage,
+        _setSize,
 
-        _origin: [],
-        _content: [],
-        _checked: [],
-        _paged: [],
-        _selectedRow: null,
-        _selectedCel: null,
-        _totalCount: 0,
-        _originTotalCount: 0,
-
-        /** head ref for sync scroll */
-        _head: null,
-        _list: null,
-
-        /** rows rect */
-        _rect: [],
+        /**
+         * _headRef
+         * _listRef
+         * _rect
+         */
 
         /** group */
         _group: Array.isArray(defaultSchema.options?.group)
@@ -114,6 +108,7 @@ export const useGrid = (props: UseGridProps) => {
                   return { ...p, [c]: { seq } };
               }, {})
             : {},
+
         _groupStatus: {},
 
         /** sort */
@@ -133,10 +128,6 @@ export const useGrid = (props: UseGridProps) => {
 
         /** paging */
         _pagination: defaultSchema.options?.pagination,
-        _page,
-        _size,
-        _setPage,
-        _setSize,
 
         // _setData
         // _setEdit
