@@ -8,14 +8,6 @@ type TTabDefaultSchema = {
 type UseTabProps = {
     defaultSchema: TTabDefaultSchema;
 };
-type useTabReturn = {
-    tab: any;
-    value: any;
-    setActive: any;
-    setDisabled: any;
-    setVisible: any;
-    setLabel: any;
-};
 
 export const useTab = (props: UseTabProps) => {
     const { defaultSchema } = props;
