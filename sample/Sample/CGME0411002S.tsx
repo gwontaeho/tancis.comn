@@ -555,6 +555,7 @@ export const CGME0411002S = () => {
                                                 },
                                             );
 
+                                            console.log(validData);
                                             if (validData.result === "fail") {
                                                 modal.openModal({
                                                     content: <CommonErrors {...validData.error} />,

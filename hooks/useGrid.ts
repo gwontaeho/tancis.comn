@@ -211,31 +211,61 @@ export const useGrid = (props: UseGridProps) => {
     };
 
     const validate = () => {
-        const rule = _grid.current._defaultSchema.body
+        const fieldRuleObject = _grid.current._defaultSchema.body
             .flatMap(({ cells }: any) => cells)
             .reduce((prev: any, curr: any) => {
                 let next = prev;
-
-                if (
-                    curr.min !== undefined ||
-                    curr.max !== undefined ||
-                    curr.minLength !== undefined ||
-                    curr.maxLength !== undefined ||
-                    curr.required !== undefined ||
-                    curr.pattern !== undefined ||
-                    curr.validate !== undefined
-                ) {
-                    next[curr.binding] = curr;
+                const ary = getValidationArray(curr);
+                if (ary.length) {
+                    next[curr.binding] = ary;
                 }
-
                 return next;
             }, {});
 
-        console.log(
-            _grid.current._content.map((row: any) => {
-                return row;
-            }),
-        );
+        return _grid.current._content.reduce((prev: any, row: any) => {
+            for (const binding in fieldRuleObject) {
+                const bindingValue = row[binding];
+                const rowIndex = row["__index"];
+                const rules = fieldRuleObject[binding];
+
+                for (let i = 0; i < rules.length; i++) {
+                    let invalid = false;
+                    const { value, type } = rules[i];
+
+                    switch (type) {
+                        case "required":
+                            invalid = !bindingValue;
+                            break;
+                        case "min":
+                            invalid = bindingValue < value;
+                            break;
+                        case "max":
+                            invalid = bindingValue > value;
+                            break;
+                        case "minLength":
+                            invalid = bindingValue.length < value;
+                            break;
+                        case "maxLength":
+                            invalid = bindingValue.length > value;
+                            break;
+                        case "pattern":
+                            invalid = !value.test(bindingValue);
+                            break;
+                        case "validate":
+                            invalid = !value(bindingValue);
+                            break;
+                        case "resource":
+                            break;
+                    }
+
+                    if (invalid) {
+                        prev.push({ ...rules[i], binding, rowIndex, bindingValue });
+                    }
+                }
+            }
+
+            return prev;
+        }, []);
     };
 
     return {
@@ -265,3 +295,125 @@ export const useGrid = (props: UseGridProps) => {
         validate,
     };
 };
+
+const getValidationArray = (o: any) => {
+    return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"]
+        .map((type) => {
+            if (!o[type]) return;
+
+            let value;
+            let message;
+
+            if (typeof o[type] === "object") {
+                if (o[type].hasOwnProperty("value")) {
+                    value = o[type].value;
+                } else value = o[type];
+
+                if (o[type].hasOwnProperty("message")) {
+                    message = o[type].message;
+                }
+            } else {
+                value = o[type];
+            }
+
+            if (!message) {
+                switch (type) {
+                    case "required":
+                        if (o[type] === "string") message = o[type];
+                        else message = "msg.com.00005";
+                        break;
+                    case "min":
+                        message = "msg.com.00006";
+                        break;
+                    case "max":
+                        message = "msg.com.00007";
+                        break;
+                    case "minLength":
+                        message = "msg.com.00008";
+                        break;
+                    case "maxLength":
+                        message = "msg.com.00009";
+                        break;
+                    case "pattern":
+                        message = "msg.com.000010";
+                        break;
+                    case "validate":
+                        message = "msg.com.000011";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (type === "area") {
+                value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
+                message = "msg.com.00017";
+                type = "resource";
+            }
+
+            return { type, value, message };
+        })
+        .filter(Boolean);
+};
+
+// const getValidationObject = (o: any) => {
+//     return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"].reduce(
+//         (prev: any, type: any) => {
+//             if (o[type]) {
+//                 let value;
+//                 let message;
+
+//                 if (typeof o[type] === "object") {
+//                     if (o[type].hasOwnProperty("value")) {
+//                         value = o[type].value;
+//                     } else value = o[type];
+
+//                     if (o[type].hasOwnProperty("message")) {
+//                         message = o[type].message;
+//                     }
+//                 } else {
+//                     value = o[type];
+//                 }
+
+//                 if (!message) {
+//                     switch (type) {
+//                         case "required":
+//                             if (o[type] === "string") message = o[type];
+//                             else message = "msg.com.00005";
+//                             break;
+//                         case "min":
+//                             message = "msg.com.00006";
+//                             break;
+//                         case "max":
+//                             message = "msg.com.00007";
+//                             break;
+//                         case "minLength":
+//                             message = "msg.com.00008";
+//                             break;
+//                         case "maxLength":
+//                             message = "msg.com.00009";
+//                             break;
+//                         case "pattern":
+//                             message = "msg.com.000010";
+//                             break;
+//                         case "validate":
+//                             message = "msg.com.000011";
+//                             break;
+//                         default:
+//                             break;
+//                     }
+//                 }
+
+//                 if (type === "area") {
+//                     type = "resource";
+//                     value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
+//                     message = "msg.com.00017";
+//                 }
+
+//                 prev[type] = { type, value, message };
+//             }
+//             return prev;
+//         },
+//         {},
+//     );
+// };

@@ -1,15 +1,14 @@
 import lodash from "lodash";
 import dayjs from "dayjs";
+
 import { api } from "@/comn";
 import {
-    /**  */
     formatText,
     formatNumber,
     formatCheckbox,
     formatDate,
     formatTime,
     formatDatetime,
-    /** */
     unformatText,
     unformatNumber,
     unformatCheckbox,
@@ -18,10 +17,10 @@ import {
     unformatDatetime,
 } from "@/comn/components/_";
 
-type ValidateReturn = {
-    error?: { type: string; message: string; errors: Array<any> };
-};
-
+/**
+ * # Common Environment Variables
+ *
+ */
 export const comnEnvs = {
     base: `${process.env.REACT_APP_BASE}`,
     base_comn: `${process.env.REACT_APP_BASE_COMN}`,
@@ -63,6 +62,10 @@ export const comnEnvs = {
     },
 };
 
+/**
+ * # Common Utility Functions
+ *
+ */
 export const comnUtils = {
     keyMapping: (row: any, item: any, keys: any) => {
         if (row === undefined || row == null) return row;
@@ -76,7 +79,6 @@ export const comnUtils = {
 
         return row;
     },
-
     validateBySchema: (data: any, schema: any, resource: any, keys?: any) => {
         let errors: Array<any> = [];
         let _data = data.data;
@@ -202,43 +204,43 @@ export const comnUtils = {
 
         if (o?.required) {
             if (!v) {
-                return { message: t.required.message, type: "required", schema: t };
+                return { type: "required", message: t.required.message, schema: t };
             }
         }
         if (o?.min) {
             if (v < t.min.value) {
-                return { message: t.min.message, type: "min", schema: t };
+                return { type: "min", message: t.min.message, schema: t };
             }
         }
         if (o?.max) {
             if (v > t.max.value) {
-                return { message: t.max.message, type: "max", schema: t };
+                return { type: "max", message: t.max.message, schema: t };
             }
         }
         if (o?.minLength) {
             if (v?.length < t.minLength.value) {
-                return { message: t.minLength.message, type: "minLength", schema: t };
+                return { type: "minLength", message: t.minLength.message, schema: t };
             }
         }
         if (o?.maxLength) {
             if (v?.length > t.maxLength.value) {
-                return { message: t.maxLength.message, type: "maxLength", schema: t };
+                return { type: "maxLength", message: t.maxLength.message, schema: t };
             }
         }
         if (o?.pattern) {
             if (!t.pattern.value.test(v)) {
-                return { message: t.pattern.message, type: "pattern", schema: t };
+                return { type: "pattern", message: t.pattern.message, schema: t };
             }
         }
         if (o?.validate) {
             if (!t.validate.value(v)) {
-                return { message: t.validate.message, type: "validate", schema: t };
+                return { type: "validate", message: t.validate.message, schema: t };
             }
         }
         if (o?.area && resource?.[t.area.value] && resource[t.area.value].options) {
             let index = lodash.findIndex(resource[t.area.value].options, { value: v });
             if (index === -1) {
-                return { message: t.area.message, type: "resource", schema: t };
+                return { type: "resource", message: t.area.message, schema: t };
             }
         }
     },
@@ -310,7 +312,10 @@ export const comnUtils = {
 
         return t;
     },
-    //#region locale
+
+    ////////////////////////////////////////////////////////////////////
+    // Locale
+    ////////////////////////////////////////////////////////////////////
     getLocale: () => {
         return localStorage.getItem("lang")?.toString() || "en";
     },
@@ -320,9 +325,11 @@ export const comnUtils = {
         else if (locale === "en") return comnEnvs.locale.en;
         else return comnEnvs.locale.ko;
     },
-    //#endregion
+    ////////////////////////////////////////////////////////////////////
 
-    //#region empty
+    ////////////////////////////////////////////////////////////////////
+    // Empty
+    ////////////////////////////////////////////////////////////////////
     isUndefined: (arg: any) => {
         return arg === undefined;
     },
@@ -338,25 +345,38 @@ export const comnUtils = {
     isEmptyObject: (arg: any) => {
         return lodash.isEmpty(arg);
     },
-    //#endregion
+    isEmpty: (arg: any) => {
+        if (typeof arg === "number") return false;
+        return lodash.isEmpty(arg);
+    },
+    replaceEmpty: (arg: any, replace: any = "") => {
+        if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) return replace;
+        return arg;
+    },
+    ////////////////////////////////////////////////////////////////////
 
     getGridData: (content: any) => {
         return {
-            //
             content,
             __t: new Date(),
             page: { totalElements: Array.isArray(content) ? content.length : 0 },
         };
     },
+
+    /**
+     * Get Resource Key
+     * @param area
+     * @param comnCd
+     * @param lang
+     * @returns
+     */
     getResourceKey: (area: string, comnCd?: string, lang?: string) => {
         return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
     },
-    replaceEmpty: (arg: any, replace: any = "") => {
-        if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
-            return replace;
-        }
-        return arg;
-    },
+
+    ////////////////////////////////////////////////////////////////////
+    // Date
+    ////////////////////////////////////////////////////////////////////
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number; h?: number; mi?: number } = {
             date: new Date(),
@@ -422,15 +442,18 @@ export const comnUtils = {
         if (a < b) return 1;
         if (a === b) return 0;
     },
-    findIndex: (array: Array<any>, obj: any) => {
-        return lodash.findIndex(array, obj);
-    },
     dateToString: (date: Date, format?: any | "date" | "time" | "datetime") => {
         if (date === undefined || date === null) return date;
         return dayjs(date).format(
             format === undefined || format === "date" ? "YYYY-MM-DD" : format === "time" ? "HH:mm" : "YYYY-MM-DD HH:mm",
         );
     },
+    ////////////////////////////////////////////////////////////////////
+
+    findIndex: (array: Array<any>, obj: any) => {
+        return lodash.findIndex(array, obj);
+    },
+
     toGetParams: (obj: any) => {
         if (lodash.isEmpty(obj)) return obj;
 
@@ -461,9 +484,7 @@ export const comnUtils = {
     setValuesFromParams: (form: any, params: any) => {
         form.setValues(params, false);
     },
-    isEmpty: (obj: any) => {
-        return lodash.isEmpty(obj);
-    },
+
     isPopup: () => {
         const search = new URLSearchParams(window.location.search);
         return search.get("ppup") === "Y" ? true : window.opener ? true : false;
@@ -471,45 +492,7 @@ export const comnUtils = {
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second);
     },
-    getMockData: ({ totalElements = 99 }) => {
-        return {
-            page: {
-                totalElements,
-                page: 0,
-                size: 10,
-            },
-            content: Array(totalElements)
-                .fill(null)
-                .map((_, i) => ({
-                    index: i,
-                    q: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
-                    w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
-                    ww: ["77", "22"][Math.floor(Math.random() * 2)],
-                    id: new Date().getTime() + i,
-                    a: "a" + Math.random() * 1000,
-                    b: "b" + Math.random() * 1000,
-                    c: "c" + Math.random() * 1000,
-                    d: "d" + Math.random() * 1000,
-                    e: "e" + Math.random() * 1000,
-                    f: "f" + Math.random() * 1000,
-                    g: "g" + Math.random() * 1000,
-                    text: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
-                    number: Math.ceil(Math.random() * 1000),
-                    date: "2022-10-10",
-                    time: "11:20:10",
-                    datetime: "2022-10-10 10:30:20",
-                })),
-        };
-    },
 
-    getMockDataWithPaging: ({ data = {}, page = 0, size = 10 }: { data: any; page: number; size: number }) => {
-        return { ...data, content: lodash.chunk(data.content, size)[page], __t: new Date() };
-    },
-    getMockOptions: (count = 3) => {
-        return Array(count)
-            .fill(null)
-            .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }));
-    },
     getCode: async (args: {
         comnCd?: string;
         keyword?: string;
@@ -792,6 +775,9 @@ export const comnUtils = {
 };
 
 type IdbReturn = { key: string; value: any; created: Date; updated: Date } | undefined;
+/**
+ * # Indexed DB
+ */
 export const idb = {
     /**
      * idb select

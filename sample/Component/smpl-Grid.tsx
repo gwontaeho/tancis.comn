@@ -135,6 +135,37 @@ const sch3: TGridSchema = {
     ],
 };
 
+const getMockData = ({ totalElements = 99 }) => {
+    return {
+        page: {
+            totalElements,
+            page: 0,
+            size: 10,
+        },
+        content: Array(totalElements)
+            .fill(null)
+            .map((_, i) => ({
+                index: i,
+                q: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
+                w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
+                ww: ["77", "22"][Math.floor(Math.random() * 2)],
+                id: new Date().getTime() + i,
+                a: "a" + Math.random() * 1000,
+                b: "b" + Math.random() * 1000,
+                c: "c" + Math.random() * 1000,
+                d: "d" + Math.random() * 1000,
+                e: "e" + Math.random() * 1000,
+                f: "f" + Math.random() * 1000,
+                g: "g" + Math.random() * 1000,
+                text: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
+                number: Math.ceil(Math.random() * 1000),
+                date: "2022-10-10",
+                time: "11:20:10",
+                datetime: "2022-10-10 10:30:20",
+            })),
+    };
+};
+
 export const SampleGrid = () => {
     // const [sch, setSch] = useState(sch1);
 
@@ -142,7 +173,7 @@ export const SampleGrid = () => {
     const s2 = useGrid({ defaultSchema: sch2 });
     const s3 = useGrid({ defaultSchema: sch3 });
 
-    const data = useMemo(() => utils.getMockData({ totalElements: 7 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 7 }), []);
 
     // 단순한 그리드
     // 복잡한 그리드
