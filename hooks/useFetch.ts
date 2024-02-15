@@ -50,12 +50,15 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     const _showToast = useRef(showToast);
 
     const isArray = Array.isArray(api);
-    const initialData = isArray ? Array(api.length).fill(undefined) : undefined;
 
     const keyRef = useRef<any>({});
     const statusRef = useRef({ isLoading: false, isSuccess: false, isError: false });
 
-    const [{ data, isLoading, isSuccess, isError }, dispatch] = useReducer(reducer, initializerArg(initialData));
+    const [{ data, isLoading, isSuccess, isError }, dispatch] = useReducer(
+        reducer,
+        isArray ? Array(api.length).fill(undefined) : undefined,
+        initializerArg,
+    );
 
     useEffect(() => {
         if (!enabled) return;

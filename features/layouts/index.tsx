@@ -15,7 +15,7 @@ const ScrollToTop = () => {
     return null;
 };
 
-export const Layout = () => {
+const Layout = () => {
     const [searchParams] = useSearchParams();
 
     const ppup = searchParams.get("ppup");
@@ -35,3 +35,5 @@ export const Layout = () => {
         </MainLayout>
     );
 };
+
+export default Layout;
