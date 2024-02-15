@@ -2,15 +2,12 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { Layout } from "@/comn/features/layouts";
 import { ComnMain } from "@/comn/comn/comn-Main";
-import { ComnRoutes } from "./ComnRoutes";
 
-import { TancisRoutes } from "@/tra/tancis/Routes";
 import { Main } from "@/tra/tancis/Main";
 
 /** temp */
 import { Temp } from "@/comn/sample/temp";
 
-export const routes: any = [...ComnRoutes, ...TancisRoutes];
 const router = createBrowserRouter([
     {
         path: "/",
