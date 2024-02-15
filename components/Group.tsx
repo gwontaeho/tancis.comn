@@ -1,37 +1,8 @@
 import React, { forwardRef } from "react";
-import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { FormControl, FormControlProps } from "@/comn/components";
-
-const SIZES = {
-    1: "col-span-1",
-    2: "col-span-2",
-    3: "col-span-3",
-    4: "col-span-4",
-    5: "col-span-5",
-    6: "col-span-6",
-    7: "col-span-7",
-    8: "col-span-8",
-    9: "col-span-9",
-    10: "col-span-10",
-    11: "col-span-11",
-    12: "col-span-12",
-};
-
-const FLEXES = {
-    1: "flex-[1]",
-    2: "flex-[2]",
-    3: "flex-[3]",
-    4: "flex-[4]",
-    5: "flex-[5]",
-    6: "flex-[6]",
-    7: "flex-[7]",
-    8: "flex-[8]",
-    9: "flex-[9]",
-    10: "flex-[10]",
-    11: "flex-[11]",
-    12: "flex-[12]",
-};
+import classNames from "classnames";
+import { FormControl, FormControlProps } from "./FormControl";
+import { COL_SPAN, FLEX } from "../features/foundation";
 
 const ALIGNS = {
     left: "text-left",
@@ -48,7 +19,7 @@ const ALIGNS_FLEX = {
 type GroupProps = {
     children?: React.ReactNode;
     bgColor?: boolean;
-    flex?: keyof typeof FLEXES;
+    flex?: keyof typeof FLEX;
 };
 
 type GroupHeaderProps = {
@@ -84,12 +55,12 @@ type GroupRowProps = {
 type GroupAnyProps = {
     children?: React.ReactNode;
     align?: keyof typeof ALIGNS;
-    anySize?: keyof typeof SIZES;
+    anySize?: keyof typeof COL_SPAN;
 };
 
 type GroupLabelProps = FormControlProps & {
     label?: React.ReactNode;
-    labelSize?: keyof typeof SIZES;
+    labelSize?: keyof typeof COL_SPAN;
     required?: boolean | string;
     align?: keyof typeof ALIGNS_FLEX;
     borderTop?: boolean;
@@ -99,7 +70,7 @@ type GroupLabelProps = FormControlProps & {
 };
 
 export type GroupControlProps = GroupLabelProps & {
-    controlSize?: keyof typeof SIZES;
+    controlSize?: keyof typeof COL_SPAN;
     only?: "control" | "label";
     "data-parent"?: string;
     borderTop?: boolean;
@@ -110,29 +81,27 @@ export type GroupControlProps = GroupLabelProps & {
 
 type GroupColProps = GroupLabelProps & {
     children?: React.ReactNode;
-    colSize?: keyof typeof SIZES;
+    colSize?: keyof typeof COL_SPAN;
     combine?: boolean;
     padding?: number;
 };
 
 /**
  *
- *
- * Group
- * - Header
- * - Title
- * - Body
- * - Row
- * - Label
- * - Control
- * - Col
- *
- *
+ * # Group
+ * * Header
+ * * Title
+ * * Body
+ * * Row
+ * * Label
+ * * Control
+ * * Col
+ * @param props GroupProps
+ * @returns
  */
-
 export const Group = (props: GroupProps) => {
     const { children, flex } = props;
-    return <div className={classNames("uf-group", flex && FLEXES[flex])}>{children}</div>;
+    return <div className={classNames("uf-group", flex && FLEX[flex])}>{children}</div>;
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {
@@ -203,7 +172,7 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
         <div
             className={classNames(
                 "uf-group-label",
-                SIZES[labelSize],
+                COL_SPAN[labelSize],
                 ALIGNS_FLEX[align],
                 borderLeft === false && "border-l-0",
                 borderRight === false && "border-r-0",
@@ -235,7 +204,7 @@ const GroupAny = (props: GroupAnyProps) => {
                     "flex",
                     "items-center",
                     "space-x-1",
-                    anySize === undefined ? "min-w-fit" : SIZES[anySize],
+                    anySize === undefined ? "min-w-fit" : COL_SPAN[anySize],
                 )}
                 {...rest}
             >
@@ -269,7 +238,7 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
                 <div
                     className={classNames(
                         "uf-group-col",
-                        SIZES[controlSize],
+                        COL_SPAN[controlSize],
                         borderLeft === false ? "border-l-0" : "border-l-[1px]",
                         borderRight === false ? "border-r-0" : "border-r-[1px]",
                         borderTop === false ? "border-t-0" : "border-t-[1px]",
@@ -290,7 +259,7 @@ const GroupCol = (props: GroupColProps) => {
             {label && <GroupLabel required={required} label={label} labelSize={labelSize} />}
 
             {combine ? (
-                <div className={classNames("uf-group-col", SIZES[colSize])}>
+                <div className={classNames("uf-group-col", COL_SPAN[colSize])}>
                     <div className="flex border rounded divide-x overflow-hidden">
                         {React.Children.map(children, (child: any) => {
                             return (
@@ -302,7 +271,7 @@ const GroupCol = (props: GroupColProps) => {
                     </div>
                 </div>
             ) : (
-                <div className={classNames("p-" + padding + " flex items-center space-x-1", SIZES[colSize])}>
+                <div className={classNames("p-" + padding + " flex items-center space-x-1", COL_SPAN[colSize])}>
                     {React.Children.map(children, (child: any) => {
                         if (typeof child === "string") return child;
                         if (child) return React.cloneElement(child, { "data-parent": "group_col" });
