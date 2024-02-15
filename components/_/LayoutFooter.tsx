@@ -1,4 +1,4 @@
-export const Footer = () => {
+const Footer = () => {
     return (
         <footer className="uf-footer">
             <span>TANCIS | 2023 © Tanzania Revenue Authority</span>
@@ -6,3 +6,5 @@ export const Footer = () => {
         </footer>
     );
 };
+
+export default Footer;
