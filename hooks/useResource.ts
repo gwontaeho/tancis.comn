@@ -35,6 +35,7 @@ export const useResource = (props: UseOptionsProps) => {
             let keys: any = [];
             const e = Object.entries(_resource).map(([_, v]: any) => utils.getCode({ area: v.area, comnCd: v.comnCd }));
             const r = await Promise.allSettled(e);
+
             const next = Object.fromEntries(
                 Object.entries(_resource).map(([_, v]: any, i) => {
                     let data = [];
@@ -44,7 +45,7 @@ export const useResource = (props: UseOptionsProps) => {
                     const status = r[i].status;
                     if (status === "fulfilled") {
                         keys.push(_);
-                        data = Object.values<any>((r[i] as PromiseFulfilledResult<any>).value.data)[0].content;
+                        data = Object.values<any>((r[i] as PromiseFulfilledResult<any>).value.data)[0].content || [];
                         options = data.map((code: any) => ({
                             label: utils.getCodeLabel(v.area, code),
                             value: utils.getCodeValue(v.area, code),
