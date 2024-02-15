@@ -83,9 +83,9 @@ const Menu = () => {
 
     const [route] = useRecoilState(routeState);
 
-    const depth_1 = routes.find(({ base }) => route.startsWith(base || ""));
+    const depth_1 = routes.find(({ base }: any) => route.startsWith(base || ""));
     const depth_1_base = (depth_1?.base || "").startsWith("/") ? depth_1?.base || "" : "/" + (depth_1?.base || "");
-    const depth_2 = depth_1?.children?.find(({ base }) =>
+    const depth_2 = depth_1?.children?.find(({ base }: any) =>
         route.startsWith(depth_1_base + ((base || "").startsWith("/") ? base || "" : "/" + (base || ""))),
     );
 
@@ -122,7 +122,7 @@ const Menu = () => {
         <nav className="p-2">
             {depth_1 && depth_2 && (
                 <ul className="p-2 flex flex-col gap-2">
-                    {depth_2?.children?.map((child) => {
+                    {depth_2?.children?.map((child: any) => {
                         return (
                             <NavItem
                                 key={depth_1.name + "." + child.name}

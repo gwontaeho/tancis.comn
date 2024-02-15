@@ -109,7 +109,7 @@ export const Header = () => {
             <div className="uf-header-main">
                 <nav className="uf-header-navigation">
                     <ul className="flex gap-8">
-                        {routes.map((child) => {
+                        {routes.map((child: any) => {
                             return <NavItem key={uuid()} {...child} />;
                         })}
                     </ul>

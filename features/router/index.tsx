@@ -10,7 +10,7 @@ import { Main } from "@/tra/tancis/Main";
 /** temp */
 import { Temp } from "@/comn/sample/temp";
 
-export const routes = [...ComnRoutes, ...TancisRoutes];
+export const routes: any = [...ComnRoutes, ...TancisRoutes];
 const router = createBrowserRouter([
     {
         path: "/",
