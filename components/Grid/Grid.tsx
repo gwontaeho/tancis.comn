@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
+import { utils, writeFile } from "xlsx";
 
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
@@ -16,7 +17,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 
-    const { _headCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
+    const { _headCells, _bodyCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
 
     return (
         <div className="flex flex-col w-full">
@@ -24,7 +25,13 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             <div className="uf-grid-top">
                 <div>
                     {_options.importExcel && <Button>Import</Button>}
-                    {_options.exportExcel && <Button>Export</Button>}
+                    {_options.exportExcel && (
+                        <Button
+                        // onClick={_grid.current._export}
+                        >
+                            Export
+                        </Button>
+                    )}
                 </div>
                 <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
@@ -162,6 +169,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                     totalCount={_totalCount}
                 />
             )}
+
+            {/* <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} render={render} /> */}
         </div>
     );
 };
@@ -384,3 +393,95 @@ const Row = React.memo((props: any) => {
         </div>
     );
 }, areEqual);
+
+const Table = (props: any) => {
+    const { _grid, _headCells, _bodyCells, render } = props;
+
+    const [exporting, setExporting] = React.useState(false);
+
+    useEffect(() => {
+        _grid.current._export = () => {
+            if (_grid.current._exporting) return;
+            console.log("asd");
+
+            _grid.current._exporting = true;
+            setExporting(true);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (exporting) {
+            const ws = utils.table_to_sheet(_grid.current._table);
+            ws["!cols"] = [{ width: 20 }, { width: 20 }, { width: 20 }];
+            const wb = utils.book_new();
+            utils.book_append_sheet(wb, ws, "est");
+            _grid.current._wb = wb;
+            writeFile(wb, "SheetJSTable.xlsx");
+
+            _grid.current._exporting = false;
+            setExporting(false);
+        }
+    }, [exporting]);
+
+    if (!exporting) return null;
+
+    return (
+        <table
+            ref={(ref) => {
+                if (ref) {
+                    _grid.current._table = ref;
+
+                    // const ws = utils.table_to_sheet(ref);
+                    // ws["!cols"] = [{ width: 20 }, { width: 20 }, { width: 20 }];
+                    // const wb = utils.book_new();
+                    // utils.book_append_sheet(wb, ws, "est");
+                    // _grid.current._wb = wb;
+                    // writeFile(wb, "SheetJSTable.xlsx");
+
+                    // _grid.current._exporting = false;
+                    // setExporting(false);
+                }
+            }}
+            className="hidden"
+        >
+            <thead className="[&_th]:border">
+                {_headCells.map((cols: any) => {
+                    return (
+                        <tr>
+                            {cols.map((cel: any) => {
+                                if (!cel) return null;
+                                return (
+                                    <th rowSpan={cel.rowspan} colSpan={cel.colspan}>
+                                        {cel.binding}
+                                    </th>
+                                );
+                            })}
+                        </tr>
+                    );
+                })}
+            </thead>
+            <tbody>
+                {_grid.current._content.map((row: any) => {
+                    return _bodyCells.map((cols: any) => {
+                        return (
+                            <tr>
+                                {cols.map((cel: any) => {
+                                    if (!cel) return null;
+                                    return (
+                                        <th rowSpan={cel.rowspan} colSpan={cel.colspan}>
+                                            {render?.cell?.[cel.binding]?.({
+                                                value: row[cel.binding],
+                                                rowValues: row,
+                                                binding: cel.binding,
+                                            }) || row[cel.binding]}
+                                        </th>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    });
+                })}
+            </tbody>
+        </table>
+    );
+};

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { TGridSchema, useForm, useModal, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
@@ -58,7 +59,7 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        edit: false,
         importExcel: true,
         exportExcel: true,
         height: 400,
@@ -68,19 +69,23 @@ const schema1: TGridSchema = {
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
-        { cells: [{ binding: "w", rowspan: 2, width: 200 }] },
-        { cells: [{ binding: "e", rowspan: 2, width: 200 }] },
+        {
+            cells: [
+                { binding: "w", width: 200 },
+                { binding: "w", width: 200 },
+            ],
+        },
+        {
+            cells: [
+                { binding: "e", width: 200 },
+                { binding: "w", width: 200 },
+            ],
+        },
     ],
     body: [
-        { cells: [{ required: true }] },
-        { cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd" }] },
+        { cells: [{ binding: "q", required: true }] },
+        { cells: [{ binding: "w", required: true, validate: (data: any) => data === "asd" }] },
         { cells: [{ binding: "d", min: 5, required: true }] },
-        { cells: [{ binding: "w", type: "textarea", required: true }] },
-        { cells: [{ binding: "x", type: "textarea", required: true }] },
-        { cells: [{ binding: "v", type: "select", required: true }] },
-        { cells: [{ binding: "e", type: "select", area: "comnCd", comnCd: "COM_0015" }] },
-        { cells: [{ binding: "e", type: "select", area: "comnCd", comnCd: "COM_0015" }] },
-        { cells: [{ binding: "e", type: "select", area: "comnCd", comnCd: "COM_0015" }] },
     ],
 };
 
@@ -95,6 +100,8 @@ type TData = {
 };
 
 export const Temp = () => {
+    const tbl = useRef<any | null>(null);
+
     const { resource } = useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0015" },
@@ -148,7 +155,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 60 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 9999 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
@@ -175,15 +182,21 @@ export const Temp = () => {
         //     },
         // },
         cell: {
-            // text: (data: any) => {
-            //     /**
-            //      * # data
-            //      * value
-            //      * rowValues
-            //      * binding
-            //      */
-            //     return <Layout>*custom* {data.value}</Layout>;
-            // },
+            q: (data: any) => {
+                /**
+                 * # data
+                 * value
+                 * rowValues
+                 * binding
+                 */
+                return (
+                    <Layout>
+                        <div>{data.rowValues.q}-</div>
+                        <div>{data.rowValues.q}-</div>
+                        <div>{data.rowValues.q}</div>
+                    </Layout>
+                );
+            },
         },
         edit: {
             // text: (data: any) => {
@@ -254,6 +267,46 @@ export const Temp = () => {
             </Group>
 
             {/* exportExcel(data, {},[a+b,name+id]) */}
+            {/* 
+            <table ref={tbl} className="[&_*]:border">
+                <tbody>
+                    {Array(60)
+                        .fill("as")
+                        .map(() => {
+                            return (
+                                <tr>
+                                    <td className="w-40">
+                                        <div className="flex">
+                                            <div>asd-</div>
+                                            <div>asd</div>
+                                            <div>asd-</div>
+                                            <div>asd</div>
+                                        </div>
+                                    </td>
+                                    <td>a</td>
+                                    <td>a</td>
+                                    <td>a</td>
+                                </tr>
+                            );
+                        })}
+                </tbody>
+            </table> */}
+
+            <button
+                className="p-2"
+                onClick={() => {
+                    const ws = xlsxUtils.table_to_sheet(tbl.current);
+                    ws["!cols"] = [{ width: 20 }];
+
+                    const wb = xlsxUtils.book_new();
+
+                    xlsxUtils.book_append_sheet(wb, ws, "est");
+
+                    writeFile(wb, "SheetJSTable.xlsx");
+                }}
+            >
+                export
+            </button>
 
             <button
                 onClick={() => {

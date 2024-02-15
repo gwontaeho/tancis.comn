@@ -445,8 +445,6 @@ export const comnUtils = {
         if (size) url += `&size=${size}`;
         if (page) url += `&page=${page}`;
 
-        console.log(url, comnCd);
-
         return api.get(url);
     },
     getCodeLabel: (area?: string, code?: any) => {
