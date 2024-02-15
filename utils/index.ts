@@ -1,15 +1,14 @@
 import lodash from "lodash";
 import dayjs from "dayjs";
+
 import { api } from "@/comn";
 import {
-    /**  */
     formatText,
     formatNumber,
     formatCheckbox,
     formatDate,
     formatTime,
     formatDatetime,
-    /** */
     unformatText,
     unformatNumber,
     unformatCheckbox,
@@ -18,10 +17,10 @@ import {
     unformatDatetime,
 } from "@/comn/components/_";
 
-type ValidateReturn = {
-    error?: { type: string; message: string; errors: Array<any> };
-};
-
+/**
+ * # Common Environment Variables
+ *
+ */
 export const comnEnvs = {
     base: `${process.env.REACT_APP_BASE}`,
     base_comn: `${process.env.REACT_APP_BASE_COMN}`,
@@ -63,112 +62,25 @@ export const comnEnvs = {
     },
 };
 
+/**
+ * # Common Utility Functions
+ *
+ */
 export const comnUtils = {
-    keyMapping: (row: any, item: any, keys: any) => {
-        if (row === undefined || row == null) return row;
-        if (keys === undefined || keys == null) return row;
-
-        if (keys.key1 !== undefined) row.key1 = item[keys.key1.binding];
-        if (keys.key2 !== undefined) row.key2 = item[keys.key2.binding];
-        if (keys.key3 !== undefined) row.key3 = item[keys.key3.binding];
-        if (keys.key4 !== undefined) row.key4 = item[keys.key4.binding];
-        if (keys.key5 !== undefined) row.key5 = item[keys.key5.binding];
-
-        return row;
-    },
-
-    validateBySchema: (data: any, schema: any, resource: any, keys?: any) => {
-        let errors: Array<any> = [];
-        let _data = data.data;
-        let _labels = data.schema.labels;
-
-        //console.log(keys);
-
-        _data.forEach((item: any, index: number) => {
-            Object.entries(item).forEach(([k, v]: any) => {
-                let r: any = comnUtils.getValidatedValue(v, schema[k], resource);
-                if (r !== undefined)
-                    errors.push({
-                        row: index + 1,
-                        label: _labels[k],
-                        ...comnUtils.keyMapping(r, item, keys),
-                    });
-            });
-        });
-
-        return errors;
-    },
-    setSchemaMatrix: (schema: any) => {
-        if (schema === undefined || comnUtils.isEmpty(schema) || comnUtils.isEmptyObject(schema)) {
-            return null;
-        }
-
-        let t: { [key: string]: any } = {};
-        if (lodash.isArray(schema)) {
-            schema.forEach((item: any) => {
-                if (item.cells === undefined || comnUtils.isEmptyArray(item)) return false;
-                item.cells.forEach((cell: any) => {
-                    if (cell.binding === undefined || comnUtils.isEmpty(cell.binding)) return false;
-                    t[cell.binding] = {};
-                    if (cell.required !== undefined) t[cell.binding].required = cell.required;
-                    if (cell.min !== undefined) t[cell.binding].min = cell.min;
-                    if (cell.max !== undefined) t[cell.binding].max = cell.max;
-                    if (cell.minLength !== undefined) t[cell.binding].minLength = cell.minLength;
-                    if (cell.maxLength !== undefined) t[cell.binding].maxLength = cell.maxLength;
-                    if (cell.pattern !== undefined) t[cell.binding].pattern = cell.pattern;
-                    if (cell.validate !== undefined) t[cell.binding].validate = cell.validate;
-                    if (cell.area !== undefined) t[cell.binding].area = cell.area;
-                    if (cell.comnCd !== undefined) t[cell.binding].comnCd = cell.comnCd;
-                });
-            });
-        }
-        return t;
-    },
-    validateForGrid: (data: any, schema: any, resource: any, keys?: any) => {
-        let _schema = comnUtils.setSchemaMatrix(schema);
-        if (_schema === null || comnUtils.isEmptyObject(_schema)) {
-            return {
-                result: "fail",
-                error: { type: "no-schema", message: "msg.com.00003", errors: [] },
-            };
-        }
-
-        const errors = comnUtils.validateBySchema(data, _schema, resource, keys);
-        if (comnUtils.isEmptyArray(errors)) {
-            return {
-                result: "success",
-                error: { type: "success", message: "msg.com.00016", errors: [] },
-            };
-        } else {
-            return {
-                result: "fail",
-                error: { type: "fail-validation", message: "msg.com.00014", errors: errors, head: keys },
-            };
-        }
-    },
-    getViewValue: (v: any, o?: any, l?: any) => {
-        switch (o?.type) {
+    /////////////////////////////////////////////////////////////////////
+    // Value
+    /////////////////////////////////////////////////////////////////////
+    /**
+     * @param v Value
+     * @param o Schema
+     * @returns
+     */
+    getFormattedValue: (v: any, s?: any) => {
+        switch (s?.type) {
             case "text":
-                return formatText(v, o);
+                return formatText(v, s);
             case "number":
-                return formatNumber(v, o);
-            case "checkbox":
-                return unformatCheckbox(v, o);
-            case "date":
-                return unformatDate(v, o);
-            case "time":
-                return unformatTime(v, o);
-            case "datetime":
-                return unformatDatetime(v, o);
-        }
-        return v;
-    },
-    getFormattedValue: (v: any, o?: any) => {
-        switch (o?.type) {
-            case "text":
-                return formatText(v, o);
-            case "number":
-                return formatNumber(v, o);
+                return formatNumber(v, s);
             case "checkbox":
                 return formatCheckbox(v);
             case "date":
@@ -180,137 +92,47 @@ export const comnUtils = {
         }
         return v;
     },
-    getUnformattedValue: (v: any, o?: any) => {
-        switch (o?.type) {
+    /**
+     *
+     * @param v Value
+     * @param s Schema
+     * @returns
+     */
+    getUnformattedValue: (v: any, s?: any) => {
+        switch (s?.type) {
             case "text":
-                return unformatText(v, o);
+                return unformatText(v, s);
             case "number":
-                return unformatNumber(v, o);
+                return unformatNumber(v, s);
             case "checkbox":
-                return unformatCheckbox(v, o);
+                return unformatCheckbox(v, s);
             case "date":
-                return unformatDate(v, o);
+                return unformatDate(v, s);
             case "time":
-                return unformatTime(v, o);
+                return unformatTime(v, s);
             case "datetime":
-                return unformatDatetime(v, o);
+                return unformatDatetime(v, s);
         }
         return v;
     },
-    getValidatedValue: (v: any, o?: any, resource?: any) => {
-        const t = comnUtils.getValidateObject(o);
-
-        if (o?.required) {
-            if (!v) {
-                return { message: t.required.message, type: "required", schema: t };
-            }
-        }
-        if (o?.min) {
-            if (v < t.min.value) {
-                return { message: t.min.message, type: "min", schema: t };
-            }
-        }
-        if (o?.max) {
-            if (v > t.max.value) {
-                return { message: t.max.message, type: "max", schema: t };
-            }
-        }
-        if (o?.minLength) {
-            if (v?.length < t.minLength.value) {
-                return { message: t.minLength.message, type: "minLength", schema: t };
-            }
-        }
-        if (o?.maxLength) {
-            if (v?.length > t.maxLength.value) {
-                return { message: t.maxLength.message, type: "maxLength", schema: t };
-            }
-        }
-        if (o?.pattern) {
-            if (!t.pattern.value.test(v)) {
-                return { message: t.pattern.message, type: "pattern", schema: t };
-            }
-        }
-        if (o?.validate) {
-            if (!t.validate.value(v)) {
-                return { message: t.validate.message, type: "validate", schema: t };
-            }
-        }
-        if (o?.area && resource?.[t.area.value] && resource[t.area.value].options) {
-            let index = lodash.findIndex(resource[t.area.value].options, { value: v });
-            if (index === -1) {
-                return { message: t.area.message, type: "resource", schema: t };
-            }
-        }
+    /////////////////////////////////////////////////////////////////////
+    // Grid
+    /////////////////////////////////////////////////////////////////////
+    /**
+     *
+     * @param content Content
+     * @returns
+     */
+    getGridData: (content: Record<string, any>) => {
+        return {
+            content,
+            __t: new Date(),
+            page: { totalElements: content.length },
+        };
     },
-    //#endregion
-    getValidateObject: (o?: any) => {
-        let t: any = {};
-
-        if (o === undefined || o === null) return o;
-        if (o.required !== undefined && typeof o.required !== "object") {
-            t.required = {
-                value: o.required,
-                message: "msg.com.00005",
-                type: "required",
-            };
-        }
-        if (o.min !== undefined && typeof o.min !== "object") {
-            t.min = {
-                value: o.min,
-                message: "msg.com.00006",
-                type: "min",
-            };
-        }
-        if (o.max !== undefined && typeof o.max !== "object") {
-            t.max = {
-                value: o.max,
-                message: "msg.com.00007",
-                type: "max",
-            };
-        }
-        if (o.minLength !== undefined && typeof o.minLength !== "object") {
-            t.minLength = {
-                value: o.minLength,
-                message: "msg.com.00008",
-                type: "minLength",
-            };
-        }
-
-        if (o.maxLength !== undefined && typeof o.maxLength !== "object") {
-            t.maxLength = {
-                value: o.maxLength,
-                message: "msg.com.00009",
-                type: "maxLength",
-            };
-        }
-
-        if (o.pattern !== undefined && o.pattern instanceof RegExp) {
-            t.pattern = {
-                value: o.pattern,
-                message: "msg.com.00010",
-                type: "pattern",
-            };
-        }
-
-        if (o.validate !== undefined && typeof o.validate !== "object") {
-            t.validate = {
-                value: o.validate,
-                message: "msg.com.00011",
-                type: "validate",
-            };
-        }
-
-        if (o.area !== undefined && typeof o.area !== "object") {
-            t.area = {
-                value: o.area + (o.comnCd ? ":" + o.comnCd : ""),
-                message: "msg.com.00017",
-                type: "resource",
-            };
-        }
-
-        return t;
-    },
-    //#region locale
+    /////////////////////////////////////////////////////////////////////
+    // Locale
+    /////////////////////////////////////////////////////////////////////
     getLocale: () => {
         return localStorage.getItem("lang")?.toString() || "en";
     },
@@ -320,9 +142,9 @@ export const comnUtils = {
         else if (locale === "en") return comnEnvs.locale.en;
         else return comnEnvs.locale.ko;
     },
-    //#endregion
-
-    //#region empty
+    /////////////////////////////////////////////////////////////////////
+    //
+    /////////////////////////////////////////////////////////////////////
     isUndefined: (arg: any) => {
         return arg === undefined;
     },
@@ -338,25 +160,17 @@ export const comnUtils = {
     isEmptyObject: (arg: any) => {
         return lodash.isEmpty(arg);
     },
-    //#endregion
-
-    getGridData: (content: any) => {
-        return {
-            //
-            content,
-            __t: new Date(),
-            page: { totalElements: Array.isArray(content) ? content.length : 0 },
-        };
-    },
-    getResourceKey: (area: string, comnCd?: string, lang?: string) => {
-        return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
+    isEmpty: (arg: any) => {
+        if (typeof arg === "number") return false;
+        return lodash.isEmpty(arg);
     },
     replaceEmpty: (arg: any, replace: any = "") => {
-        if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) {
-            return replace;
-        }
+        if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) return replace;
         return arg;
     },
+    /////////////////////////////////////////////////////////////////////
+    // Date
+    /////////////////////////////////////////////////////////////////////
     getDate: (
         args: string | { date?: Date; y?: number; m?: number; d?: number; h?: number; mi?: number } = {
             date: new Date(),
@@ -422,15 +236,16 @@ export const comnUtils = {
         if (a < b) return 1;
         if (a === b) return 0;
     },
-    findIndex: (array: Array<any>, obj: any) => {
-        return lodash.findIndex(array, obj);
-    },
     dateToString: (date: Date, format?: any | "date" | "time" | "datetime") => {
-        if (date === undefined || date === null) return date;
         return dayjs(date).format(
             format === undefined || format === "date" ? "YYYY-MM-DD" : format === "time" ? "HH:mm" : "YYYY-MM-DD HH:mm",
         );
     },
+
+    findIndex: (array: Array<any>, obj: any) => {
+        return lodash.findIndex(array, obj);
+    },
+
     toGetParams: (obj: any) => {
         if (lodash.isEmpty(obj)) return obj;
 
@@ -461,9 +276,7 @@ export const comnUtils = {
     setValuesFromParams: (form: any, params: any) => {
         form.setValues(params, false);
     },
-    isEmpty: (obj: any) => {
-        return lodash.isEmpty(obj);
-    },
+
     isPopup: () => {
         const search = new URLSearchParams(window.location.search);
         return search.get("ppup") === "Y" ? true : window.opener ? true : false;
@@ -471,44 +284,27 @@ export const comnUtils = {
     equals: (first: object, second: object) => {
         return lodash.isEqual(first, second);
     },
-    getMockData: ({ totalElements = 99 }) => {
-        return {
-            page: {
-                totalElements,
-                page: 0,
-                size: 10,
-            },
-            content: Array(totalElements)
-                .fill(null)
-                .map((_, i) => ({
-                    index: i,
-                    q: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
-                    w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
-                    ww: ["77", "22"][Math.floor(Math.random() * 2)],
-                    id: new Date().getTime() + i,
-                    a: "a" + Math.random() * 1000,
-                    b: "b" + Math.random() * 1000,
-                    c: "c" + Math.random() * 1000,
-                    d: "d" + Math.random() * 1000,
-                    e: "e" + Math.random() * 1000,
-                    f: "f" + Math.random() * 1000,
-                    g: "g" + Math.random() * 1000,
-                    text: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
-                    number: Math.ceil(Math.random() * 1000),
-                    date: "2022-10-10",
-                    time: "11:20:10",
-                    datetime: "2022-10-10 10:30:20",
-                })),
-        };
-    },
+    postMessage: (data: any) => {
+        if (window.opener) {
+            window.opener.postMessage(data);
+        }
 
-    getMockDataWithPaging: ({ data = {}, page = 0, size = 10 }: { data: any; page: number; size: number }) => {
-        return { ...data, content: lodash.chunk(data.content, size)[page], __t: new Date() };
+        if (window.parent) {
+            window.parent.postMessage(data);
+        }
     },
-    getMockOptions: (count = 3) => {
-        return Array(count)
-            .fill(null)
-            .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }));
+    /////////////////////////////////////////////////////////////////////
+    // Resource
+    /////////////////////////////////////////////////////////////////////
+    /**
+     *
+     * @param area Area
+     * @param comnCd Common Code
+     * @param lang Locale
+     * @returns
+     */
+    getResourceKey: (area: string, comnCd?: string, lang?: string) => {
+        return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
     },
     getCode: async (args: {
         comnCd?: string;
@@ -779,19 +575,12 @@ export const comnUtils = {
             }) || []
         );
     },
-
-    postMessage: (data: any) => {
-        if (window.opener) {
-            window.opener.postMessage(data);
-        }
-
-        if (window.parent) {
-            window.parent.postMessage(data);
-        }
-    },
 };
 
 type IdbReturn = { key: string; value: any; created: Date; updated: Date } | undefined;
+/**
+ * # Indexed DB
+ */
 export const idb = {
     /**
      * idb select

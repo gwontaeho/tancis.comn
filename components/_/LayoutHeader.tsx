@@ -8,7 +8,7 @@ import i18n from "@/comn/features/locales/i18n";
 
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-import { R } from "@/comn";
+import { routes } from "@/comn";
 
 type NavItemProps = {
     children?: any[];
@@ -109,7 +109,7 @@ export const Header = () => {
             <div className="uf-header-main">
                 <nav className="uf-header-navigation">
                     <ul className="flex gap-8">
-                        {R.map((child) => {
+                        {routes.map((child: any) => {
                             return <NavItem key={uuid()} {...child} />;
                         })}
                     </ul>

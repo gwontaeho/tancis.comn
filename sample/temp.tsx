@@ -8,6 +8,48 @@ import { comnUtils } from "@/comn/utils";
 import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
+import lodash from "lodash";
+import dayjs from "dayjs";
+
+const getMockData = ({ totalElements = 99 }) => {
+    return {
+        page: {
+            totalElements,
+            page: 0,
+            size: 10,
+        },
+        content: Array(totalElements)
+            .fill(null)
+            .map((_, i) => ({
+                index: i,
+                q: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
+                w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
+                ww: ["77", "22"][Math.floor(Math.random() * 2)],
+                id: new Date().getTime() + i,
+                a: "a" + Math.random() * 1000,
+                b: "b" + Math.random() * 1000,
+                c: "c" + Math.random() * 1000,
+                d: "d" + Math.random() * 1000,
+                e: "e" + Math.random() * 1000,
+                f: "f" + Math.random() * 1000,
+                g: "g" + Math.random() * 1000,
+                text: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
+                number: Math.ceil(Math.random() * 1000),
+                date: "2022-10-10",
+                time: "11:20:10",
+                datetime: "2022-10-10 10:30:20",
+            })),
+    };
+};
+
+const getMockDataWithPaging = ({ data = {}, page = 0, size = 10 }: { data: any; page: number; size: number }) => {
+    return { ...data, content: lodash.chunk(data.content, size)[page], __t: new Date() };
+};
+const getMockOptions = (count = 3) => {
+    return Array(count)
+        .fill(null)
+        .map(() => ({ label: (Math.random() * 1000).toFixed(), value: (Math.random() * 1000).toFixed() }));
+};
 
 const schema1: TGridSchema = {
     options: {
@@ -30,13 +72,15 @@ const schema1: TGridSchema = {
         { cells: [{ binding: "e", rowspan: 2, width: 200 }] },
     ],
     body: [
-        { cells: [{ binding: "q", required: true }] },
-        { cells: [{ binding: "s", required: true }] },
+        { cells: [{ required: true }] },
+        { cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd" }] },
         { cells: [{ binding: "d", min: 5, required: true }] },
-        { cells: [{ binding: "w", type: "textarea" }] },
-        { cells: [{ binding: "x", type: "textarea" }] },
-        { cells: [{ binding: "v", type: "select" }] },
-        { cells: [{ binding: "e", type: "select" }] },
+        { cells: [{ binding: "w", type: "textarea", required: true }] },
+        { cells: [{ binding: "x", type: "textarea", required: true }] },
+        { cells: [{ binding: "v", type: "select", required: true }] },
+        { cells: [{ binding: "e", type: "select", area: "comnCd", comnCd: "COM_0015" }] },
+        { cells: [{ binding: "e", type: "select", area: "comnCd", comnCd: "COM_0015" }] },
+        { cells: [{ binding: "e", type: "select", area: "comnCd", comnCd: "COM_0015" }] },
     ],
 };
 
@@ -51,7 +95,7 @@ type TData = {
 };
 
 export const Temp = () => {
-    useResource({
+    const { resource } = useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0015" },
             { area: "currCd" },
@@ -104,9 +148,9 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => utils.getMockData({ totalElements: 60 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 60 }), []);
 
-    const data2 = utils.getMockDataWithPaging({ data, page, size });
+    const data2 = getMockDataWithPaging({ data, page, size });
 
     const _test = {
         radio: (data: any) => {
@@ -271,7 +315,7 @@ export const Temp = () => {
                         셀 데이터 바꾸기
                     </button>
                     <button onClick={() => console.log(getChecked())}>getChecked</button>
-                    <button onClick={() => validate()}>validate</button>
+                    <button onClick={() => console.log(validate())}>validate</button>
                 </div>
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => setOption("edit", true)}>setOption edit true</button>

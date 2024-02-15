@@ -86,7 +86,6 @@ const fun = (schema: any) => {
 
 /**
  * ## Content Maker
- *
  */
 const createContent = (_grid: any) => {
     const sort = (data: any) => {
@@ -114,19 +113,11 @@ const createContent = (_grid: any) => {
     let filteredContent;
     let filteredCount;
 
-    /**
-     * 1.
-     *
-     * Filtering
-     */
+    // Filtering
     filteredContent = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
     filteredCount = filteredContent.length;
 
-    /**
-     * 2.
-     *
-     * Grouping & Sorting
-     */
+    // Grouping & Sorting
     if (Object.keys(_grid.current._group).length) {
         const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
             (o: any) => {
@@ -174,18 +165,12 @@ const createContent = (_grid: any) => {
     } else {
         filteredContent = sort(filteredContent);
     }
-
     _grid.current._content = filteredContent;
 
-    /**
-     * 3.
-     *
-     * Paging
-     */
+    // Paging
     if (_grid.current._pagination === "in") {
         filteredContent = lodash.chunk(filteredContent, _grid.current._size)[_grid.current._page] || [];
     }
-
     _grid.current._paged = filteredContent;
 
     return { filteredContent, filteredCount };
@@ -299,6 +284,13 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._dataUpdated = __t;
     _grid.current._origin = _test;
     _grid.current._content = _test;
+
+    _grid.current._checked = [];
+    _grid.current._selectedRow = null;
+    _grid.current._selectedCel = null;
+    _grid.current._rect = [];
+    _grid.current._groupStatus = {};
+    _grid.current._sort = {};
 
     const { filteredContent, filteredCount } = createContent(_grid);
 
@@ -1005,7 +997,7 @@ export const Grid = (props: {
                 <div
                     ref={(ref) => {
                         if (ref) {
-                            _grid.current._head = ref;
+                            _grid.current._headRef = ref;
                         }
                     }}
                     className="uf-grid-head"
@@ -1083,7 +1075,7 @@ export const Grid = (props: {
                 <List
                     ref={(ref) => {
                         if (ref) {
-                            _grid.current._list = ref;
+                            _grid.current._listRef = ref;
                         }
                     }}
                     innerRef={(ref) => {
@@ -1096,7 +1088,7 @@ export const Grid = (props: {
                             _grid.current._listOuter = ref;
 
                             ref.onscroll = (event: any) => {
-                                _grid.current._head.scrollTo({ left: event.currentTarget.scrollLeft });
+                                _grid.current._headRef.scrollTo({ left: event.currentTarget.scrollLeft });
                             };
                         }
                     }}
@@ -1172,7 +1164,7 @@ const Row = React.memo((props: any) => {
                     if (value.contentRect.height === 0) return;
                     if (_grid.current._rect[rowIndex]?.height !== value.contentRect.height) {
                         _grid.current._rect[rowIndex] = value.contentRect;
-                        _grid.current._list.resetAfterIndex(rowIndex);
+                        _grid.current._listRef.resetAfterIndex(rowIndex);
                         if (_grid.current._autoHeight) {
                             _grid.current._readjustHeight();
                         }
@@ -1259,7 +1251,7 @@ const Row = React.memo((props: any) => {
 
                                 const fv = comnUtils.getFormattedValue(value, rest);
                                 const uv = comnUtils.getUnformattedValue(value, rest);
-                                const vldv = comnUtils.getValidatedValue(uv, rest);
+                                // const vldv = comnUtils.getValidatedValue(uv, rest);
                                 const isEdit = _editingRow.includes(contentKey) ? true : edit;
 
                                 const celContext = {
@@ -1290,7 +1282,7 @@ const Row = React.memo((props: any) => {
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
                                         )}
-                                        {...(vldv && { "aria-invalid": true })}
+                                        // {...(vldv && { "aria-invalid": true })}
                                         {...(_selectedCel === celKey && { "aria-selected": true })}
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${rowspan ?? 1}`,

@@ -42,18 +42,6 @@ import { SampleUseTree } from "@/comn/sample/Hook/smpl-useTree";
 import { SampleUseFetch } from "@/comn/sample/Hook/smpl-useFetch";
 import { SampleUseStore } from "@/comn/sample/Hook/smpl-useStore";
 
-import { CommonCodeList } from "@/comn/sample/Page/comn-code/ComnCdLst";
-import { CountryCodeList } from "@/comn/sample/Page/comn-code/CntyCdLst";
-import { CityCodeList } from "@/comn/sample/Page/comn-code/CityCdLst";
-import { CurrencyCodeList } from "@/comn/sample/Page/comn-code/CurrCdLst";
-import { BankCodeList } from "@/comn/sample/Page/comn-code/BnkCdLst";
-import { PortCodeList } from "@/comn/sample/Page/comn-code/PortCdLst";
-import { AirptCodeList } from "@/comn/sample/Page/comn-code/AirptCdLst";
-import { PortAirptCodeList } from "@/comn/sample/Page/comn-code/PortAirptCdLst";
-import { CompanyCodeList } from "@/comn/sample/Page/comn-code/CoCdLst";
-import { ProcessingStatusCodeList } from "@/comn/sample/Page/comn-code/PrcssStatCdLst";
-import { OrganizationCodeList } from "@/comn/sample/Page/comn-code/OrgCdLst";
-
 import { CGME0411001Q } from "@/comn/sample/Sample/CGME0411001Q";
 import { CGME0411002S } from "@/comn/sample/Sample/CGME0411002S";
 import { CGME0411003Q } from "@/comn/sample/Sample/CGME0411003Q";
@@ -105,18 +93,6 @@ export const SampleMain = () => {
             <Route path="/hooks/useTree" element={<SampleUseTree />} />
             <Route path="/hooks/useFetch" element={<SampleUseFetch />} />
             <Route path="/hooks/useStore" element={<SampleUseStore />} />
-
-            <Route path="/pages/comnCdPpup" element={<CommonCodeList />} />
-            <Route path="/pages/cntyCdPpup" element={<CountryCodeList />} />
-            <Route path="/pages/cityCdPpup" element={<CityCodeList />} />
-            <Route path="/pages/currCdPpup" element={<CurrencyCodeList />} />
-            <Route path="/pages/bnkCdPpup" element={<BankCodeList />} />
-            <Route path="/pages/portCdPpup" element={<PortCodeList />} />
-            <Route path="/pages/portAirptCdPpup" element={<PortAirptCodeList />} />
-            <Route path="/pages/airptCdPpup" element={<AirptCodeList />} />
-            <Route path="/pages/coCdPpup" element={<CompanyCodeList />} />
-            <Route path="/pages/prcssStatPpup" element={<ProcessingStatusCodeList />} />
-            <Route path="/pages/orgCdPpup" element={<OrganizationCodeList />} />
 
             <Route path="/sample/cgme0411001q" element={<CGME0411001Q />} />
             <Route path="/sample/cgme0411002s" element={<CGME0411002S />} />
