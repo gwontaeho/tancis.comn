@@ -1,45 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import { Layout } from "@/comn/features/layouts";
-import { ComnMain } from "@/comn/comn/comn-Main";
-import { Main } from "@/tra/tancis/Main";
-import { Temp } from "@/comn/sample/temp";
-
 import RecoilProvider from "@/comn/features/recoil";
-import AuthProvider from "@/comn/features/auth";
+import Router from "@/comn/features/router";
 import { CommonModal, CommonToast } from "@/comn/components/_";
 
 export { default as api } from "@/comn/features/apis";
-
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Layout />,
-
-        children: [
-            {
-                path: "/comn/comn/temp",
-                element: <Temp />,
-            },
-            {
-                path: "/comn/smpl/*",
-                lazy: async () => {
-                    const { SampleMain } = await import("@/comn/sample/smpl-Main");
-                    return { Component: SampleMain };
-                },
-            },
-            {
-                path: "/comn/comn/*",
-                element: <ComnMain />,
-            },
-            {
-                path: "*",
-                element: <Main />,
-            },
-        ],
-    },
-]);
-const Router = () => <RouterProvider router={router} />;
 
 /**
  * # Common Base
@@ -59,7 +22,6 @@ export const Base = () => {
 
     return (
         <RecoilProvider>
-            <AuthProvider />
             <Router />
 
             <CommonModal />
