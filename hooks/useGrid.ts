@@ -101,23 +101,6 @@ export const useGrid = (props: UseGridProps) => {
          * _listRef
          * _rect
          *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         *
          */
 
         /** group */

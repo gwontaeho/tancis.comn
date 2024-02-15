@@ -1,3 +1,4 @@
+export * from "./Grid/Grid";
 export * from "./Button";
 export * from "./Collapse";
 export * from "./FormControl";
@@ -14,6 +15,5 @@ export * from "./Page";
 export * from "./Divider";
 export * from "./Text";
 export * from "./Badge";
-export * from "./Grid";
 export * from "./ExcelUpload";
 export * from "./CommonError";
