@@ -8,5 +8,5 @@ xcopy "src\comn\.root" ".\" /E /Y
 xcopy "src\comn\.src" ".\src" /E /Y
 
 echo node package install...
-npm install
+npm install --lagacy-peer-deps
 
