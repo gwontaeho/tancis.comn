@@ -85,7 +85,7 @@ export const CGME0411001Q = (props: any) => {
      * @ 기본 변수명은 메타 단어 조합 카멜 표기법을 따름
      * @ 그리드 변수명 뒤에 List (List) 를 붙여 구분
      * @ const grid = {
-     *      [grid 이름] : useWijmo({
+     *      [grid 이름] : useGrid({
      *          defaultSchema: [grid의 schema 구조],
      *          page: [페이지 번호, 기본 0부터 시작],
                 size: [한 페이지에 보여줄 데이터 갯수],
