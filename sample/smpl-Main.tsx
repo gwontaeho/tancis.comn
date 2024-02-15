@@ -48,6 +48,9 @@ import { CGME0411003Q } from "@/comn/sample/Sample/CGME0411003Q";
 
 import { GuideBasic } from "@/comn/sample/Guide/guide-Basic";
 import { GuidePopup } from "@/comn/sample/Guide/guide-Popup";
+import { GuideValidation } from "@/comn/sample/Guide/guide-Validation";
+import { GuideApi } from "@/comn/sample/Guide/guide-Api";
+import { GuideRouter } from "@/comn/sample/Guide/guide-Router";
 
 export const SampleMain = () => {
     return (
@@ -101,6 +104,9 @@ export const SampleMain = () => {
 
             <Route path="/guide/Structure" element={<GuideBasic />} />
             <Route path="/guide/Popup" element={<GuidePopup />} />
+            <Route path="/guide/Validation" element={<GuideValidation />} />
+            <Route path="/guide/Api" element={<GuideApi />} />
+            <Route path="/guide/Router" element={<GuideRouter />} />
         </Routes>
     );
 };

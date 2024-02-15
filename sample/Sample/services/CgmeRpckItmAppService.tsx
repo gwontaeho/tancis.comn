@@ -104,7 +104,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             ],
         },
         { cells: [{ header: "L_MBL_NO", binding: "mblNo", width: 200 }] },
-        { cells: [{ header: "L_GODS_DESC", binding: "godsDesc", width: 200 }] },
+        { cells: [{ header: "L_GODS_DESC", binding: "godsDesc", width: "*" }] },
         { cells: [{ header: "L_PCKG_NO", binding: "blPckgNo", width: 200 }] },
         { cells: [{ header: "L_GWGHT", binding: "blGwght", width: 200 }] },
         { cells: [{ header: "L_PRCSS_STAT", binding: "prcssStatCd", width: 200 }] },
