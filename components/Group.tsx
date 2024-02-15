@@ -117,19 +117,17 @@ type GroupColProps = GroupLabelProps & {
 
 /**
  *
- *
- * Group
- * - Header
- * - Title
- * - Body
- * - Row
- * - Label
- * - Control
- * - Col
- *
- *
+ * # Group
+ * * Header
+ * * Title
+ * * Body
+ * * Row
+ * * Label
+ * * Control
+ * * Col
+ * @param props GroupProps
+ * @returns
  */
-
 export const Group = (props: GroupProps) => {
     const { children, flex } = props;
     return <div className={classNames("uf-group", flex && FLEXES[flex])}>{children}</div>;

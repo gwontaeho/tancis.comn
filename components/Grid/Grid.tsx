@@ -21,13 +21,12 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
     return (
         <div className="flex flex-col w-full">
             {/* Top Buttons */}
-            <div className="flex justify-between">
-                <div className="flex gap-1 [&_*]:mb-2">
+            <div className="uf-grid-top">
+                <div>
                     {_options.importExcel && <Button>Import</Button>}
                     {_options.exportExcel && <Button>Export</Button>}
                 </div>
-
-                <div className="flex gap-1 [&_*]:mb-2">
+                <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
                     {_options.delete && <Button onClick={() => _grid.current._handleDelete("all")}>Delete</Button>}
                 </div>
@@ -38,9 +37,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                 {/* Head */}
                 <div
                     ref={(ref) => {
-                        if (ref) {
-                            _grid.current._headRef = ref;
-                        }
+                        if (ref) _grid.current._headRef = ref;
                     }}
                     className="uf-grid-head"
                 >
@@ -63,6 +60,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                     )}
                     {_options.radio && <div className="uf-grid-option" />}
                     {_options.index && <div className="uf-grid-option" />}
+
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
                         {_headCells.map((row: any, rowIndex: any) => {
                             return row.map((cel: any, colIndex: any) => {
@@ -113,17 +111,14 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                         })}
                     </div>
                 </div>
+
                 {/* Body */}
                 <List
                     ref={(ref) => {
-                        if (ref) {
-                            _grid.current._listRef = ref;
-                        }
+                        if (ref) _grid.current._listRef = ref;
                     }}
                     innerRef={(ref) => {
-                        if (ref) {
-                            _grid.current._listInner = ref;
-                        }
+                        if (ref) _grid.current._listInner = ref;
                     }}
                     outerRef={(ref) => {
                         if (ref) {

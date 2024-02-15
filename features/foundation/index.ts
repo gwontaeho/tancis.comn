@@ -1,3 +1,8 @@
+const DIRECTION = {
+    col: "flex-col",
+    row: "flex-row",
+};
+
 const WIDTH = {
     0: "",
     1: "w-1/12",
@@ -96,4 +101,4 @@ const COLOR_TEXT = {
     warning: "text-uf-warning",
 };
 
-export { WIDTH, COL_SPAN, FLEX, GAP, COLOR_BACKGROUND, COLOR_BORDER, COLOR_TEXT };
+export { DIRECTION, WIDTH, COL_SPAN, FLEX, GAP, COLOR_BACKGROUND, COLOR_BORDER, COLOR_TEXT };

@@ -176,6 +176,9 @@
     .uf-grid-head::-webkit-scrollbar {
         display: none;
     }
+    .uf-grid-top {
+        @apply flex justify-between [&>div]:flex [&>div]:gap-1 [&>div>*]:mb-2;
+    }
     .uf-grid-body {
     }
     .uf-grid-row {
@@ -243,7 +246,6 @@
     .uf-layout-right {
         @apply flex flex-1 flex-wrap justify-end;
     }
-
     .uf-layout-left > .uf-form-control,
     .uf-layout-right > .uf-form-control {
         @apply w-auto;
