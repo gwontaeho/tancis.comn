@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useRecoilState } from "recoil";
 import { Collapse, Icon, Button } from "@/comn/components";
 
-import { routes } from "@/comn";
+import { routes } from "@/comn/features/router";
 import { routeState } from "@/comn/features/recoil";
 
 type NavItemProps = {

@@ -9,11 +9,7 @@ import RecoilProvider from "@/comn/features/recoil";
 import AuthProvider from "@/comn/features/auth";
 import { CommonModal, CommonToast } from "@/comn/components/_";
 
-import { ComnRoutes } from "@/comn/features/router/ComnRoutes";
-import { TancisRoutes } from "@/tra/tancis/Routes";
-
 export { default as api } from "@/comn/features/apis";
-export const routes: any = [...ComnRoutes, ...TancisRoutes];
 
 const router = createBrowserRouter([
     {

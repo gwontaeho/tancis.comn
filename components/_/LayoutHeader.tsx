@@ -1,4 +1,6 @@
 import { useLayoutEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { routeState } from "@/comn/features/recoil";
@@ -6,9 +8,7 @@ import { useTheme } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
 
-import { Link } from "react-router-dom";
-import { v4 as uuid } from "uuid";
-import { routes } from "@/comn";
+import { routes } from "@/comn/features/router";
 
 type NavItemProps = {
     children?: any[];
