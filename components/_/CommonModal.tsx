@@ -11,7 +11,7 @@ import { v4 as uuid } from "uuid";
 
 const MODAL_SIZES = {
     sm: "max-w-[40vw] mix-h-[50vh]",
-    md: "max-w-[80vw] mix-h-[60vh]",
+    md: "max-w-[70vw] mix-h-[60vh]",
     lg: "max-w-[80vw] mix-h-[70vh]",
     xl: "max-w-[90vw] mix-h-[90vh]",
 };

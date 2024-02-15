@@ -140,7 +140,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         modal.openModal({
             params,
             url: POPUP_URLS[area || "comnCd"],
-            size: "sm",
+            size: "md",
             draggable: true,
             callback: (data: any) => {
                 handleValueChange(data.code);
