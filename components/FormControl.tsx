@@ -1,9 +1,12 @@
 import "react-datepicker/dist/react-datepicker.css";
+
 import React from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { Icon, IconsType, Tooltip } from "@/comn/components";
-
+import { Icon, IconsType } from "./Icon";
+import { TOption } from "../hooks";
+import { Tooltip } from "./Tooltip";
+import { WIDTH } from "../features/foundation";
 import {
     InputText,
     InputNumber,
@@ -22,8 +25,7 @@ import {
     InputCode,
     InputBoolean,
     ControllerWrapper,
-} from "@/comn/components/_";
-import { TOption } from "@/comn/hooks";
+} from "./_";
 
 export type FormControlType =
     | "text"
@@ -41,23 +43,6 @@ export type FormControlType =
     | "code"
     | "file"
     | "boolean";
-
-const SIZES = {
-    1: "w-1/12",
-    2: "w-2/12",
-    3: "w-3/12",
-    4: "w-4/12",
-    5: "w-5/12",
-    6: "w-6/12",
-    7: "w-7/12",
-    8: "w-8/12",
-    9: "w-9/12",
-    10: "w-10/12",
-    11: "w-11/12",
-    12: "w-full",
-    fit: "w-fit",
-    full: "w-full",
-};
 
 type FormControlGroupProps = {
     children?: React.ReactNode;
@@ -133,7 +118,7 @@ export type FormControlProps = InputDaterangeProps & {
     invalid?: any;
 
     /** form control */
-    size?: keyof typeof SIZES;
+    size?: keyof typeof WIDTH;
     control?: any;
     message?: string;
 };
@@ -214,7 +199,7 @@ export const FormControl = Object.assign(
         const { t } = useTranslation();
 
         return (
-            <div className={classNames("uf-form-control", props.edit !== false ? SIZES[size] : null)}>
+            <div className={classNames("uf-form-control", props.edit !== false ? WIDTH[size] : null)}>
                 <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
                     {props.control ? (
                         <ControllerWrapper {...rest}>
