@@ -10,10 +10,10 @@ import { modalState } from "@/comn/features/recoil";
 import { v4 as uuid } from "uuid";
 
 const MODAL_SIZES = {
-    sm: "max-w-[40vw]",
-    md: "max-w-[70vw] min-h-[60vh]",
-    lg: "max-w-[80vw] min-h-[70vh]",
-    xl: "max-w-[90vw] min-h-[90vh]",
+    sm: "max-w-[30vw]",
+    md: "max-w-[70vw] max-h-[70vh] min-h-[60vh]",
+    lg: "max-w-[80vw] max-h-[80vh] min-h-[70vh]",
+    xl: "max-w-[90vw] max-h-[90vh] min-h-[80vh]",
 };
 
 const MODAL_LAYOUTS = {
@@ -134,7 +134,7 @@ const Modal = (props: ModalProps) => {
                         ) : typeof content === "string" ? (
                             t(content)
                         ) : (
-                            content
+                            <div className="flex-1">{content}</div>
                         )}
                     </div>
 

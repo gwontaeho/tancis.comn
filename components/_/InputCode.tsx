@@ -33,7 +33,6 @@ const POPUP_URLS: Record<string, string> = {
     prcssStatCd: `/comn/comn/ppup/prcssStatPpup`,
     orgCd: `/comn/comn/ppup/orgCdPpup`,
     wrhsCd: `/comn/comn/ppup/wrhsCdPpup`,
-
     coDtlCd: `/comn/comn/ppup/coDtlCdPpup`,
     coDclaCd: `/comn/comn/ppup/coDclaCdPpup`,
     orgDeptCd: `/comn/comn/ppup/orgDeptCdPpup`,
