@@ -16,3 +16,4 @@ export * from "./Text";
 export * from "./Badge";
 export * from "./Grid";
 export * from "./ExcelUpload";
+export * from "./CommonError";

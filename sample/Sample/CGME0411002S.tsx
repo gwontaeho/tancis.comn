@@ -17,7 +17,7 @@ import {
     useExcel,
 } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP, SG_RPCK_ITM_APP_ITM_LIST } from "./services/CgmeRpckItmAppService";
-import { CommonErrors } from "@/comn/components/_";
+import { CommonErrors } from "@/comn/components";
 
 /*
  * @ 화면 컴포넌트 주석
