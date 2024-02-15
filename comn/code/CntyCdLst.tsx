@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, usePopup, useStore, useToast, useGrid } from "@/comn/hooks";
+import { useForm, useFetch, usePopup, useStore, useToast, useGrid, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CNTY_CD_SRCH, SCHEMA_GRID_CNTY_CD } from "./services/ComnCdService";
 
 export const CountryCodeList = (props: any) => {
@@ -12,6 +12,7 @@ export const CountryCodeList = (props: any) => {
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
     const { close, postMessage } = usePopup();
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
 
     const form = {
         cntyCdSrch: useForm({
@@ -69,8 +70,7 @@ export const CountryCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.cntyNm });
-                                close();
+                                modal.postMessage({ code: value, label: rowValues.cntyNm });
                             }}
                         >
                             {props.value}

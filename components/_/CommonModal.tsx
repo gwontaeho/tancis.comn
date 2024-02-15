@@ -10,10 +10,10 @@ import { modalState } from "@/comn/features/recoil";
 import { v4 as uuid } from "uuid";
 
 const MODAL_SIZES = {
-    sm: "max-w-[40vw] mix-h-[50vh]",
-    md: "max-w-[70vw] mix-h-[60vh]",
-    lg: "max-w-[80vw] mix-h-[70vh]",
-    xl: "max-w-[90vw] mix-h-[90vh]",
+    sm: "max-w-[40vw]",
+    md: "max-w-[70vw] min-h-[60vh]",
+    lg: "max-w-[80vw] min-h-[70vh]",
+    xl: "max-w-[90vw] min-h-[90vh]",
 };
 
 const MODAL_LAYOUTS = {
@@ -121,14 +121,16 @@ const Modal = (props: ModalProps) => {
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 
-                    <div className="p-4 flex-1 overflow-auto">
+                    <div className="p-4 flex-1 overflow-auto h-full flex">
                         {url ? (
-                            <iframe
-                                src={url + MODAL_LAYOUTS[layout] + "&" + paramsQuery}
-                                name={id}
-                                className="w-full h-[500px]"
-                                title={"modal" + id}
-                            />
+                            <div className="flex-1">
+                                <iframe
+                                    src={url + MODAL_LAYOUTS[layout] + "&" + paramsQuery}
+                                    name={id}
+                                    className="w-full min-h-full"
+                                    title={"modal" + id}
+                                />
+                            </div>
                         ) : typeof content === "string" ? (
                             t(content)
                         ) : (
