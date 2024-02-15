@@ -434,6 +434,9 @@ export const comnUtils = {
             case "coCdDtl":
                 url = `/api/v1/ptli/intptl/comnppup/co/${keyword}`;
                 break;
+            case "cgmePrcdCd":
+                url = `${process.env.REACT_APP_API_CGME}/api/v1/cgme/comn/cd?area=cgmePrcdCd&comnCd=${comnCd}`;
+                break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
@@ -441,6 +444,8 @@ export const comnUtils = {
 
         if (size) url += `&size=${size}`;
         if (page) url += `&page=${page}`;
+
+        console.log(url, comnCd);
 
         return api.get(url);
     },
