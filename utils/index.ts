@@ -326,7 +326,7 @@ export const comnUtils = {
         const {
             comnCd,
             area,
-            size,
+            size = 9999,
             page = 0,
             keyword = "",
             keywordName = "",
