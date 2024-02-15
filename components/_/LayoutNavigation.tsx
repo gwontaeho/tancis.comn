@@ -154,7 +154,7 @@ const Auth = () => {
     );
 };
 
-export const Navigation = () => {
+const Navigation = () => {
     return (
         <div className="uf-navigation">
             <div className="uf-navigation-container">
@@ -164,3 +164,5 @@ export const Navigation = () => {
         </div>
     );
 };
+
+export default Navigation;

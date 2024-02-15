@@ -1,5 +1,7 @@
 import React from "react";
-import { Header, Navigation, Footer } from "@/comn/components/_";
+import Header from "@/comn/components/_/LayoutHeader";
+import Footer from "@/comn/components/_/LayoutFooter";
+import Navigation from "@/comn/components/_/LayoutNavigation";
 
 export const MainLayout = ({ children }: { children?: React.ReactNode }) => {
     return (

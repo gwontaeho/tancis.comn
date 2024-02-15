@@ -89,7 +89,7 @@ const Logo = () => {
     );
 };
 
-export const Header = () => {
+const Header = () => {
     const { theme, setTheme } = useTheme();
     const { t } = useTranslation();
 
@@ -193,3 +193,5 @@ export const Header = () => {
         </header>
     );
 };
+
+export default Header;
