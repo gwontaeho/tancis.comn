@@ -345,6 +345,7 @@ export const ModalSample = (props: any) => {
                                 전송
                                 <br />- 팝업 창에서는 const modal = useModal(); 로 Modal 관련 Hook 선언
                                 <br />- modal.postMessage( 부모창으로 보낼 데이터 )
+                                <br />- 화면 컴포넌트의 닫기 버튼은 삭제
                             </>
                         }
                     >
