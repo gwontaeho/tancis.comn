@@ -184,10 +184,15 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._handleUpdate(row);
     };
 
-    const importExcel = () => {};
-
+    /** Excel */
+    const getExcel = () => {};
+    const selectExcel = () => {
+        return _grid.current._selectExcel();
+    };
+    const importExcel = (file?: any) => {
+        return _grid.current._importExcel(file);
+    };
     const exportExcel = () => {};
-
     const validate = (content?: any) => {
         return _grid.current._validate(content);
     };
@@ -217,6 +222,10 @@ export const useGrid = (props: UseGridProps) => {
         setData,
         resetData,
         validate,
+
+        selectExcel,
+        importExcel,
+        exportExcel,
     };
 };
 

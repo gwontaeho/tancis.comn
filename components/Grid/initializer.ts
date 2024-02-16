@@ -192,8 +192,8 @@ const useInitialize = (props: any) => {
             });
         };
 
-        _grid.current._importExcel = () => {
-            const file = _grid.current._excel;
+        _grid.current._importExcel = (f: any) => {
+            const file = f || _grid.current._excel;
 
             if (!file?.buffer) {
                 /* alert no excel */
