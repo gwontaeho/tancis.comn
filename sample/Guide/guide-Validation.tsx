@@ -11,6 +11,7 @@ export const GuideValidation = () => {
             { area: "comnCd", comnCd: "COM_0100" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
+            { area: "cgmePrcdCd", comnCd: "MER" },
             { area: "wrhsCd" },
         ],
     });
@@ -20,7 +21,17 @@ export const GuideValidation = () => {
     const SF_SMPL: TFormSchema = {
         id: "smpl",
         schema: {
-            text: { label: "text", type: "text", required: true },
+            text: {
+                label: "text",
+                type: "text",
+                required: true,
+                /*
+                validate: (v: any) => {
+                    if (v === "1") return true;
+                    return "유효하지 않은 값";
+                },
+                */
+            },
             number: { label: "number", type: "number", required: true },
             password: { label: "password", type: "password", required: true },
             select: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100", required: true },
@@ -28,12 +39,12 @@ export const GuideValidation = () => {
             checkbox: {
                 label: "checkbox",
                 type: "checkbox",
-                area: "comnCd",
-                comnCd: "COM_0100",
+                area: "cgmePrcdCd",
+                comnCd: "MER",
                 all: true,
                 required: true,
             },
-            code: { label: "code", type: "code", area: "wrhsCd", maxLength: 5, required: true },
+            code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100", maxLength: 3, required: true },
             date: { label: "date", type: "date", required: true },
             daterange: {
                 label: "date range",
@@ -73,7 +84,7 @@ export const GuideValidation = () => {
                     data={[
                         ["속성", "파라메터", "기본값", "사용 방법"],
                         ["required", "boolean", "false", ""],
-                        ["required", "boolean", "false", ""],
+                        ["min", "boolean", "false", ""],
                     ]}
                 />
             </Sample.Section>
@@ -94,7 +105,13 @@ export const GuideValidation = () => {
                             <Group.Body>
                                 <Group.Section>
                                     <Group.Row>
-                                        <Group.Control {...form.smpl.schema.text} />
+                                        <Group.Control
+                                            {...form.smpl.schema.text}
+                                            validate={(v: any) => {
+                                                if (v === "1") return true;
+                                                return "유효하지 않은 값";
+                                            }}
+                                        />
                                         <Group.Control {...form.smpl.schema.number} />
                                     </Group.Row>
                                     <Group.Row>

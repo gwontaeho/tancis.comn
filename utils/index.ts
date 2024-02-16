@@ -505,6 +505,8 @@ export const comnUtils = {
                 return code.vhclTrmssnTpNm;
             case "vhclUseCd":
                 return code.vhclUseNm;
+            case "cgmePrcdCd":
+                return code.comnCdLbl;
             default:
                 return code.cdVldValNm;
         }
@@ -567,6 +569,8 @@ export const comnUtils = {
                 return code.vhclTrmssnTpCd;
             case "vhclUseCd":
                 return code.vhclUseCd;
+            case "cgmePrcdCd":
+                return code.comnCdVal;
             default:
                 return code.cdVldVal;
         }
