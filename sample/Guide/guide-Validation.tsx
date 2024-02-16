@@ -167,6 +167,7 @@ export const GuideValidation = () => {
                             <Sample.Code>{`
 const Sample = () => {
 
+    /* 코드성 데이터 리소스 사용 선언 */
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -179,23 +180,29 @@ const Sample = () => {
 
     const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
 
+    /* 폼 스키마 선언(오류검증) */
     const SF_SMPL: TFormSchema = {
         id: "smpl",
         schema: {
             text: {
                 label: "text",
                 type: "text",
+                // 필수값 오류검증
                 required: true,
+                // 함수형 오류검증
                 validate: (value: any) => {
                     if (value === "A01") return true;
                     return \`[\${value}]값이 유효하지 않습니다.\`;
                 },
+                // 최소자리수 오류검증
                 minLength: 3,
             },
             email: {
                 label: "email",
                 type: "text",
+                // 필수값 오류검증
                 required: true,
+                // 정규식 오류검증(이메일)
                 pattern: { value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, message: "이메일 형식이 올바르지 않습니다" },
                 controlSize: 10,
             },
