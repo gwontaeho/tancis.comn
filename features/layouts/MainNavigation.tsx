@@ -198,7 +198,7 @@ const Auth = () => {
                         onClick={() => setOpen(false)}
                     >
                         <div
-                            className="flex items-center justify-center p-4 top-1/2 left-1/2 w-[600px] h-[400px] border rounded bg-uf-background z-[9999]"
+                            className="flex items-center justify-center p-4 top-1/2 left-1/2 w-[450px] h-[250px] border rounded bg-uf-background z-[9999]"
                             onClick={(event) => event.stopPropagation()}
                         >
                             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -206,11 +206,13 @@ const Auth = () => {
                                     className="h-12 border outline-none px-4 w-[400px]"
                                     onChange={(event) => setId(event.target.value)}
                                     value={id}
+                                    placeholder="id"
                                 />
                                 <input
                                     className="h-12 border outline-none px-4 w-[400px]"
                                     onChange={(event) => setTin(event.target.value)}
                                     value={tin}
+                                    placeholder="tin"
                                 />
                                 <button className="border h-12 w-[400px]">Sign In</button>
                             </form>
