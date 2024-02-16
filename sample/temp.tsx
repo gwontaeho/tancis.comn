@@ -2,11 +2,11 @@ import { useRef } from "react";
 import { TGridSchema, useForm, useModal, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
-import { utils as xlsxUtils, writeFile } from "xlsx";
+import { utils as xlsxUtils, writeFile, read } from "xlsx";
 import excel from "exceljs";
 import { comnUtils } from "@/comn/utils";
 
-import { Page, Group, FormControl, Grid, Layout } from "@/comn/components";
+import { Page, Group, FormControl, Grid, Layout, ExcelUpload } from "@/comn/components";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import lodash from "lodash";
@@ -99,7 +99,52 @@ type TData = {
     };
 };
 
+const useExcel = () => {
+    const _file = useRef<any>();
+
+    const importFile = (file: any) => {
+        const { buffer } = file;
+
+        const wb = read(buffer);
+        /* SheetNames[0] get first worksheet */
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const raw = xlsxUtils.sheet_to_json(ws);
+        const header = raw.shift() || {};
+
+        const key = Object.keys(header);
+        const label = Object.values(header);
+
+        return raw;
+    };
+
+    const selectFile = async () => {
+        return new Promise((resolve) => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.onchange = async () => {
+                if (!input.files) return;
+
+                const file = input.files[0];
+                const name = file.name;
+                const buffer = await file.arrayBuffer();
+
+                _file.current = { file, name, buffer };
+                resolve({ file, name, buffer });
+            };
+            input.click();
+        });
+    };
+
+    const getFile = () => {
+        return _file.current;
+    };
+
+    return { selectFile, importFile, getFile };
+};
+
 export const Temp = () => {
+    const { selectFile, importFile, getFile } = useExcel();
+
     const tbl = useRef<any | null>(null);
 
     const { resource } = useResource({
@@ -229,6 +274,10 @@ export const Temp = () => {
 
     return (
         <Page>
+            <button onClick={selectFile}>select</button>
+            <button onClick={() => console.log(getFile())}>get</button>
+            <button onClick={() => console.log(importFile(getFile()))}>import</button>
+
             <Group>
                 <Group.Body>
                     <Group.Section>

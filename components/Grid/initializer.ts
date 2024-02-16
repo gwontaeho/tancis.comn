@@ -1,5 +1,6 @@
 import React from "react";
 import lodash from "lodash";
+import { read, utils } from "xlsx";
 
 import { reducer, createInitialState } from "./reducer";
 
@@ -10,6 +11,7 @@ const useInitialize = (props: any) => {
     const { _grid, data, render } = props;
 
     const __t = data?.__t?.getTime();
+
     const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
 
     React.useEffect(() => {
@@ -115,6 +117,102 @@ const useInitialize = (props: any) => {
             dispatch({ type: "readjustHeight", payload: { value: _grid.current._listInner.clientHeight } });
         }, 10);
 
+        _grid.current._validate = (content: any) => {
+            const fieldRuleObject = _grid.current._defaultSchema.body
+                .flatMap(({ cells }: any) => cells)
+                .reduce((prev: any, curr: any) => {
+                    let next = prev;
+                    const ary = getValidationArray(curr);
+                    if (ary.length) {
+                        next[curr.binding] = ary;
+                    }
+                    return next;
+                }, {});
+
+            const errors = content.reduce((prev: any, row: any) => {
+                for (const binding in fieldRuleObject) {
+                    const bindingValue = row[binding];
+                    const rules = fieldRuleObject[binding];
+                    for (let i = 0; i < rules.length; i++) {
+                        let invalid = false;
+                        const { value, type } = rules[i];
+                        switch (type) {
+                            case "required":
+                                invalid = !bindingValue;
+                                break;
+                            case "min":
+                                invalid = bindingValue < value;
+                                break;
+                            case "max":
+                                invalid = bindingValue > value;
+                                break;
+                            case "minLength":
+                                invalid = bindingValue.length < value;
+                                break;
+                            case "maxLength":
+                                invalid = bindingValue.length > value;
+                                break;
+                            case "pattern":
+                                invalid = !value.test(bindingValue);
+                                break;
+                            case "validate":
+                                invalid = !value(bindingValue);
+                                break;
+                            case "resource":
+                                break;
+                        }
+                        if (invalid) {
+                            prev.push({ ...rules[i], binding, bindingValue });
+                        }
+                    }
+                }
+                return prev;
+            }, []);
+
+            return { errors };
+        };
+
+        _grid.current._selectExcel = () => {
+            return new Promise((resolve) => {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.onchange = async () => {
+                    if (!input.files) return;
+
+                    const file = input.files[0];
+                    const name = file.name;
+                    const buffer = await file.arrayBuffer();
+
+                    _grid.current._excel = { file, name, buffer };
+                    resolve({ file, name, buffer });
+                };
+                input.click();
+            });
+        };
+
+        _grid.current._importExcel = () => {
+            const file = _grid.current._excel;
+
+            if (!file?.buffer) {
+                /* alert no excel */
+                return;
+            }
+
+            const { buffer } = file;
+            const wb = read(buffer);
+            /* SheetNames[0] get first worksheet */
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const raw = utils.sheet_to_json(ws);
+            const header = raw.shift() || {};
+
+            const key = Object.keys(header);
+            const label = Object.values(header);
+
+            return raw;
+        };
+
+        _grid.current._exportExcel = () => {};
+
         _grid.current._initialized = true;
 
         return () => {};
@@ -123,4 +221,101 @@ const useInitialize = (props: any) => {
     return { state, dispatch };
 };
 
+// const importFile = (file: any) => {
+//     const { buffer } = file;
+
+//     const wb = read(buffer);
+//     /* SheetNames[0] get first worksheet */
+//     const ws = wb.Sheets[wb.SheetNames[0]];
+//     const raw = utils.sheet_to_json(ws);
+//     const header = raw.shift() || {};
+
+//     const key = Object.keys(header);
+//     const label = Object.values(header);
+
+//     return raw;
+// };
+
+// const selectFile = async () => {
+//     return new Promise((resolve) => {
+//         const input = document.createElement("input");
+//         input.type = "file";
+//         input.onchange = async () => {
+//             if (!input.files) return;
+
+//             const file = input.files[0];
+//             const name = file.name;
+//             const buffer = await file.arrayBuffer();
+
+//             _file.current = { file, name, buffer };
+//             resolve({ file, name, buffer });
+//         };
+//         input.click();
+//     });
+// };
+
+// const getFile = () => {
+//     return _file.current;
+// };
+
 export { useInitialize };
+
+const getValidationArray = (o: any) => {
+    return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"]
+        .map((type) => {
+            if (!o[type]) return;
+
+            let value;
+            let message;
+
+            if (typeof o[type] === "object") {
+                if (o[type].hasOwnProperty("value")) {
+                    value = o[type].value;
+                } else value = o[type];
+
+                if (o[type].hasOwnProperty("message")) {
+                    message = o[type].message;
+                }
+            } else {
+                value = o[type];
+            }
+
+            if (!message) {
+                switch (type) {
+                    case "required":
+                        if (o[type] === "string") message = o[type];
+                        else message = "msg.com.00005";
+                        break;
+                    case "min":
+                        message = "msg.com.00006";
+                        break;
+                    case "max":
+                        message = "msg.com.00007";
+                        break;
+                    case "minLength":
+                        message = "msg.com.00008";
+                        break;
+                    case "maxLength":
+                        message = "msg.com.00009";
+                        break;
+                    case "pattern":
+                        message = "msg.com.000010";
+                        break;
+                    case "validate":
+                        message = "msg.com.000011";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (type === "area") {
+                value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
+                message = "msg.com.00017";
+                type = "resource";
+            }
+
+            return { type, value, message };
+        })
+        .filter(Boolean);
+};

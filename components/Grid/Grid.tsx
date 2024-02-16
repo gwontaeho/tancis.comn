@@ -11,8 +11,15 @@ import { useInitialize } from "./initializer";
 /**
  * # Grid
  */
-export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick?: any; onRowClick?: any }) => {
-    const { _grid, render, onCellClick, onRowClick } = props;
+export const Grid = (props: {
+    _grid?: any;
+    data?: any;
+    render?: any;
+    onCellClick?: any;
+    onRowClick?: any;
+    onImportEnd?: any;
+}) => {
+    const { _grid, render, onCellClick, onRowClick, onImportEnd } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
@@ -24,14 +31,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             {/* Top Buttons */}
             <div className="uf-grid-top">
                 <div>
-                    {_options.importExcel && <Button>Import</Button>}
-                    {_options.exportExcel && (
-                        <Button
-                        // onClick={_grid.current._export}
-                        >
-                            Export
-                        </Button>
-                    )}
+                    {/* {_options.importExcel && <ImportButton _grid={_grid} onImportEnd={onImportEnd} />}
+                    {_options.exportExcel && <Button onClick={_grid.current._export}>Export</Button>} */}
                 </div>
                 <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
@@ -170,7 +171,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                 />
             )}
 
-            {/* <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} render={render} /> */}
+            <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} render={render} />
         </div>
     );
 };
@@ -394,6 +395,33 @@ const Row = React.memo((props: any) => {
     );
 }, areEqual);
 
+const ImportButton = (props: any) => {
+    const { _grid } = props;
+
+    const [file, setFile] = React.useState<any>();
+
+    const handleClickSelect = async () => {
+        const excel = await _grid.current._selectExcel();
+        _grid.current._excel = excel;
+        setFile(excel);
+    };
+    const handleClickImport = () => {
+        _grid.current._importExcel(_grid.current._excel);
+    };
+
+    return (
+        <div className="flex">
+            <button className="bg-uf-blue px-3 rounded-l text-uf-white" onClick={handleClickSelect}>
+                <Icon icon="search" size="xs" />
+            </button>
+            <span className="px-1.5 items-center flex font-mono border-y min-w-[4rem]">{file?.name}</span>
+            <button className="bg-uf-blue px-3 rounded-r text-uf-white" onClick={handleClickImport}>
+                Import
+            </button>
+        </div>
+    );
+};
+
 const Table = (props: any) => {
     const { _grid, _headCells, _bodyCells, render } = props;
 
@@ -402,7 +430,6 @@ const Table = (props: any) => {
     useEffect(() => {
         _grid.current._export = () => {
             if (_grid.current._exporting) return;
-            console.log("asd");
 
             _grid.current._exporting = true;
             setExporting(true);
