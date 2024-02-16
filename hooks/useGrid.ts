@@ -188,7 +188,9 @@ export const useGrid = (props: UseGridProps) => {
 
     const exportExcel = () => {};
 
-    const validate = () => {};
+    const validate = (content?: any) => {
+        return _grid.current._validate(content);
+    };
 
     return {
         grid: { _grid },

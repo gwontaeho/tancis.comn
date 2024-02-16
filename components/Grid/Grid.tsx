@@ -31,8 +31,8 @@ export const Grid = (props: {
             {/* Top Buttons */}
             <div className="uf-grid-top">
                 <div>
-                    {/* {_options.importExcel && <ImportButton _grid={_grid} onImportEnd={onImportEnd} />}
-                    {_options.exportExcel && <Button onClick={_grid.current._export}>Export</Button>} */}
+                    {_options.importExcel && <ImportButton _grid={_grid} onImportEnd={onImportEnd} />}
+                    {_options.exportExcel && <Button onClick={_grid.current._export}>Export</Button>}
                 </div>
                 <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
