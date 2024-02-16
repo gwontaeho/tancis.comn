@@ -157,11 +157,10 @@ const createContent = (_grid: any) => {
         filteredContent = sort(filteredContent);
     }
     _grid.current._content = filteredContent;
-    filteredContent = _grid.current._content
-        .filter(({ __type }: any) => __type !== "deleted")
-        .map((_: any, i: any) => {
-            return { ..._, __index: i };
-        });
+    filteredContent = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+    // .map((_: any, i: any) => {
+    //     return { ..._, __index: i };
+    // });
 
     // Paging
     if (_grid.current._pagination === "in") {
