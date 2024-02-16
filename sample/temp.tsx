@@ -68,7 +68,7 @@ const schema1: TGridSchema = {
         // group: ["q"],
     },
     head: [
-        { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
+        { id: "test", cells: [{ binding: "q", rowspan: 2, width: "50%" }] },
         {
             cells: [
                 { binding: "w", width: 200 },

@@ -252,6 +252,10 @@ const createInitialState = ({ _grid, data }: any) => {
                         let t: any = _.slice(0, -1) || 1;
                         return `minmax( ${t * 100}px , ${t}fr)`;
                     }
+
+                    if (_.endsWith("%")) {
+                        return _;
+                    }
                 }
             })
             .join(" ");
