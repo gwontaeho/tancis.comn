@@ -98,16 +98,14 @@ const createContent = (_grid: any) => {
                 [[], []],
             );
 
-        return lodash.orderBy(data, iteratees, orders).map((_: any, i: any) => {
-            return { ..._, __index: i };
-        });
+        return lodash.orderBy(data, iteratees, orders);
     };
 
     let filteredContent;
     let filteredCount;
 
     // Filtering
-    filteredContent = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+    filteredContent = _grid.current._content;
     filteredCount = filteredContent.length;
 
     // Grouping & Sorting
@@ -159,6 +157,11 @@ const createContent = (_grid: any) => {
         filteredContent = sort(filteredContent);
     }
     _grid.current._content = filteredContent;
+    filteredContent = _grid.current._content
+        .filter(({ __type }: any) => __type !== "deleted")
+        .map((_: any, i: any) => {
+            return { ..._, __index: i };
+        });
 
     // Paging
     if (_grid.current._pagination === "in") {
