@@ -92,7 +92,7 @@ export const localeDatetime = (v: any, l: "ko" | "en" | "tz") => {
     if (!v) return "";
     if (!dayjs(v).isValid()) return "";
 
-    return dayjs(v).format(constants.TIME_FORMAT_DAYJS[l]);
+    return dayjs(v).format(constants.DATETIME_FORMAT_DAYJS[l]);
 };
 
 export const formatDatetime = (v: any) => {
@@ -106,5 +106,5 @@ export const unformatDatetime = (v: any, o?: any) => {
     if (!v) return undefined;
     if (!dayjs(v).isValid()) return undefined;
 
-    return dayjs(v).format(constants.TIME_FORMAT);
+    return dayjs(v).format(constants.DATETIME_FORMAT);
 };
