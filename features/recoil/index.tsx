@@ -1,6 +1,6 @@
 import React from "react";
 import Cookies from "js-cookie";
-import { RecoilRoot, atom, useRecoilSnapshot } from "recoil";
+import { RecoilRoot, atom } from "recoil";
 import { ModalProps, ToastProps } from "@/comn/components/_";
 
 export const themeState = atom<{ isDark: "true" | "false"; lang: "en" | "ko" | "tz" }>({
@@ -78,26 +78,8 @@ export const routeState = atom<string>({
     ],
 });
 
-const DebugObserver = () => {
-    const snapshot = useRecoilSnapshot();
-
-    // React.useEffect(() => {
-    //     console.debug("The following atoms were modified:");
-    //     Array.from(snapshot.getNodes_UNSTABLE({ isModified: true })).forEach((node) => {
-    //         console.debug(node.key, snapshot.getLoadable(node));
-    //     });
-    // }, [snapshot]);
-
-    return null;
-};
-
 const RecoilProvider = ({ children }: { children?: React.ReactNode }) => {
-    return (
-        <RecoilRoot>
-            <DebugObserver />
-            {children}
-        </RecoilRoot>
-    );
+    return <RecoilRoot>{children}</RecoilRoot>;
 };
 
 export default RecoilProvider;

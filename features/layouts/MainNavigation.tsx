@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import { useRecoilState } from "recoil";
+
+import { useModal } from "@/comn/hooks";
 import { Collapse, Icon, Button } from "@/comn/components";
 
 import { routes } from "@/comn/features/router";
 import { routeState } from "@/comn/features/recoil";
+import { createPortal } from "react-dom";
+import axios from "axios";
 
 type NavItemProps = {
     children?: any[];
@@ -139,18 +143,82 @@ const Menu = () => {
 };
 
 const Auth = () => {
+    const [open, setOpen] = useState(false);
+
+    const [id, setId] = useState("");
+    const [tin, setTin] = useState("");
+
+    useEffect(() => {
+        if (open) document.body.style.overflow = "hidden";
+        else document.body.style.overflow = "auto";
+    }, [open]);
+
+    /** 임시 */
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+
+        if (!id || !tin) return;
+
+        try {
+            const res1 = await axios.post("http://localhost:9700/ptl/api/v1/ptl/comn/comn/login", { id, tin });
+            console.log(res1);
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            const res2 = await axios.post("http://localhost:9400/ptl/api/v1/ptl/comn/comn/login", { id, tin });
+            console.log(res2);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
-        <div className="bg-uf-auth m-4 p-4 rounded space-y-2">
-            <Button width="full" height="lg">
-                login
-            </Button>
-            <Button variant="outlined" width="full" height="lg">
-                regist
-            </Button>
-            <Button variant="underlined" width="full">
-                Forgot your ID or Password?
-            </Button>
-        </div>
+        <>
+            <div className="bg-uf-auth m-4 p-4 rounded space-y-2">
+                <Button width="full" height="lg" onClick={handleClick}>
+                    login
+                </Button>
+                <Button variant="outlined" width="full" height="lg">
+                    regist
+                </Button>
+                <Button variant="underlined" width="full">
+                    Forgot your ID or Password?
+                </Button>
+            </div>
+
+            {open &&
+                createPortal(
+                    <div
+                        className="fixed w-screen h-screen z-[9998] top-0 left-0 flex items-center justify-center bg-black/40"
+                        onClick={() => setOpen(false)}
+                    >
+                        <div
+                            className="flex items-center justify-center p-4 top-1/2 left-1/2 w-[600px] h-[400px] border rounded bg-uf-background z-[9999]"
+                            onClick={(event) => event.stopPropagation()}
+                        >
+                            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                                <input
+                                    className="h-12 border outline-none px-4 w-[400px]"
+                                    onChange={(event) => setId(event.target.value)}
+                                    value={id}
+                                />
+                                <input
+                                    className="h-12 border outline-none px-4 w-[400px]"
+                                    onChange={(event) => setTin(event.target.value)}
+                                    value={tin}
+                                />
+                                <button className="border h-12 w-[400px]">Sign In</button>
+                            </form>
+                        </div>
+                    </div>,
+                    document.body,
+                )}
+        </>
     );
 };
 

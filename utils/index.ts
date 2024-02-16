@@ -598,44 +598,42 @@ export const idb = {
      */
     get: (dname: string, sname: string, key: string) => {
         return new Promise<IdbReturn>(async (resolve, reject) => {
-            const dbs = await indexedDB.databases();
-            if (!dbs.find(({ name }) => name === dname)) {
-                resolve(undefined);
-                return;
-            }
-
-            const request = indexedDB.open(dname);
-
-            /**
-             * db connected
-             */
-            request.onsuccess = () => {
-                const db = request.result;
+            try {
+                const request = indexedDB.open(dname);
 
                 /**
-                 * store does not exist
+                 * db connected
                  */
-                if (!db.objectStoreNames.contains(sname)) {
-                    resolve(undefined);
-                    return;
-                }
+                request.onsuccess = () => {
+                    const db = request.result;
 
-                const ts = db.transaction(sname, "readwrite");
-                const os = ts.objectStore(sname);
-
-                /**
-                 * request get record
-                 */
-                const getRecord = os.get(key);
-                getRecord.onsuccess = () => {
-                    if (getRecord.result) {
-                        resolve(getRecord.result);
+                    /**
+                     * store does not exist
+                     */
+                    if (!db.objectStoreNames.contains(sname)) {
+                        resolve(undefined);
                         return;
                     }
-                    resolve(undefined);
-                    return;
+
+                    const ts = db.transaction(sname, "readwrite");
+                    const os = ts.objectStore(sname);
+
+                    /**
+                     * request get record
+                     */
+                    const getRecord = os.get(key);
+                    getRecord.onsuccess = () => {
+                        if (getRecord.result) {
+                            resolve(getRecord.result);
+                            return;
+                        }
+                        resolve(undefined);
+                        return;
+                    };
                 };
-            };
+            } catch (error) {
+                console.log(error);
+            }
         });
     },
     /**

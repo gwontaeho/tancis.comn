@@ -184,57 +184,12 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._handleUpdate(row);
     };
 
-    const validate = () => {
-        // const fieldRuleObject = _grid.current._defaultSchema.body
-        //     .flatMap(({ cells }: any) => cells)
-        //     .reduce((prev: any, curr: any) => {
-        //         let next = prev;
-        //         const ary = getValidationArray(curr);
-        //         if (ary.length) {
-        //             next[curr.binding] = ary;
-        //         }
-        //         return next;
-        //     }, {});
-        // return _grid.current._content.reduce((prev: any, row: any) => {
-        //     for (const binding in fieldRuleObject) {
-        //         const bindingValue = row[binding];
-        //         const rowIndex = row["__index"];
-        //         const rules = fieldRuleObject[binding];
-        //         for (let i = 0; i < rules.length; i++) {
-        //             let invalid = false;
-        //             const { value, type } = rules[i];
-        //             switch (type) {
-        //                 case "required":
-        //                     invalid = !bindingValue;
-        //                     break;
-        //                 case "min":
-        //                     invalid = bindingValue < value;
-        //                     break;
-        //                 case "max":
-        //                     invalid = bindingValue > value;
-        //                     break;
-        //                 case "minLength":
-        //                     invalid = bindingValue.length < value;
-        //                     break;
-        //                 case "maxLength":
-        //                     invalid = bindingValue.length > value;
-        //                     break;
-        //                 case "pattern":
-        //                     invalid = !value.test(bindingValue);
-        //                     break;
-        //                 case "validate":
-        //                     invalid = !value(bindingValue);
-        //                     break;
-        //                 case "resource":
-        //                     break;
-        //             }
-        //             if (invalid) {
-        //                 prev.push({ ...rules[i], binding, rowIndex, bindingValue });
-        //             }
-        //         }
-        //     }
-        //     return prev;
-        // }, []);
+    const importExcel = () => {};
+
+    const exportExcel = () => {};
+
+    const validate = (content?: any) => {
+        return _grid.current._validate(content);
     };
 
     return {
