@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Sample } from "@/comn/components/_";
 import { Group, Layout, FormControl, Button } from "@/comn/components";
-import { useForm, TFormSchema, useResource, useModal } from "@/comn/hooks";
+import { useForm, TFormSchema, useResource, useToast } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 
@@ -15,35 +15,56 @@ export const GuideValidation = () => {
         ],
     });
 
-    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+    const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
 
-    const code = [
-        { label: "Y", value: "Y" },
-        { label: "N", value: "N" },
-    ];
-
-    const SF_FORM: TFormSchema = {
-        id: "form",
+    const SF_SMPL: TFormSchema = {
+        id: "smpl",
         schema: {
-            text: { label: "text", type: "text" },
-            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "COM_0100" },
-            select2: { label: "select 2", type: "select", options: code },
-            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CAG_0018" },
+            text: { label: "text", type: "text", required: true },
+            number: { label: "number", type: "number", required: true },
+            password: { label: "password", type: "password", required: true },
+            select: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100", required: true },
+            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "COM_0100", required: true },
             checkbox: {
                 label: "checkbox",
                 type: "checkbox",
                 area: "comnCd",
-                comnCd: "CAG_0006",
+                comnCd: "COM_0100",
                 all: true,
+                required: true,
             },
-            code: { label: "code", type: "code", area: "wrhsCd", maxLength: 5 },
+            code: { label: "code", type: "code", area: "wrhsCd", maxLength: 5, required: true },
+            date: { label: "date", type: "date", required: true },
+            daterange: {
+                label: "date range",
+                type: "daterange",
+                start: { name: "start", required: true },
+                end: { name: "end", required: true },
+                required: true,
+                rangeButton: 0,
+                controlSize: 10,
+            },
         },
     };
 
-    const form = useForm({
-        defaultSchema: SF_FORM,
-        defaultValues: {},
-    });
+    const form = {
+        smpl: useForm({
+            defaultSchema: SF_SMPL,
+            defaultValues: {},
+        }),
+    };
+
+    const handler = {
+        saveSmpl: form.smpl.handleSubmit(
+            (data) => {
+                console.log(data);
+            },
+            (err) => {
+                console.log(err);
+                toast.showToast({ type: "warning", content: "msg.00002" });
+            },
+        ),
+    };
 
     return (
         <Sample title="오류검증" description="Form, Grid Schema에 의한 오류검증 기본 사용방법">
@@ -51,7 +72,8 @@ export const GuideValidation = () => {
                 <Sample.Table
                     data={[
                         ["속성", "파라메터", "기본값", "사용 방법"],
-                        ["required", "false", "true", "comnCd", "comnEnvs.popup.comnCd"],
+                        ["required", "boolean", "false", ""],
+                        ["required", "boolean", "false", ""],
                     ]}
                 />
             </Sample.Section>
@@ -72,40 +94,39 @@ export const GuideValidation = () => {
                             <Group.Body>
                                 <Group.Section>
                                     <Group.Row>
-                                        <Group.Control
-                                            {...form.schema.text}
-                                            rightButton={{
-                                                icon: "search",
-                                                onClick: () => {
-                                                    // 팝업창을 호출하여 사용하는 경우
-                                                    modal.openModal({
-                                                        url: comnEnvs.popup.wrhsCd,
-                                                        draggable: true,
-                                                        // modal 창에서 postMessage 메서드 실행시 call back 함수
-                                                        callback: (data) => {
-                                                            // form에 값 세팅
-                                                            form.setValue("text", data.code);
-                                                            // modal 창 닫기
-                                                            modal.closeModal();
-                                                        },
-                                                    });
-                                                },
-                                            }}
-                                        />
+                                        <Group.Control {...form.smpl.schema.text} />
+                                        <Group.Control {...form.smpl.schema.number} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.select1} />
-                                        <Group.Control {...form.schema.select2} />
+                                        <Group.Control {...form.smpl.schema.password} />
+                                        <Group.Control {...form.smpl.schema.select} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.radio} />
-                                        <Group.Control {...form.schema.checkbox} />
+                                        <Group.Control {...form.smpl.schema.radio} />
+                                        <Group.Control {...form.smpl.schema.checkbox} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.code} />
+                                        <Group.Control {...form.smpl.schema.code} />
+                                        <Group.Control {...form.smpl.schema.date} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.smpl.schema.daterange} />
                                     </Group.Row>
                                 </Group.Section>
                             </Group.Body>
+                            <Group.Footer>
+                                <Layout>
+                                    <Layout.Left>
+                                        <Button
+                                            onClick={() => {
+                                                handler.saveSmpl();
+                                            }}
+                                        >
+                                            오류검증
+                                        </Button>
+                                    </Layout.Left>
+                                </Layout>
+                            </Group.Footer>
                         </Group>
                         <Sample.Section title="Source Code">
                             <Sample.Code>{`
