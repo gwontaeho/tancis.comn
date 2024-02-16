@@ -30,6 +30,8 @@ export const useForm = (props: UseFormProps) => {
         formState: { errors, isSubmitted },
     } = reacthookform.useForm<TFormValues>({
         criteriaMode: "all",
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues:
             /** set default values */
             defaultValues &&
