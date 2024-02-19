@@ -1,6 +1,6 @@
 import React from "react";
 import { v4 as uuid } from "uuid";
-import { FormControlProps } from "@/comn/components";
+import { FormControlProps } from "../components";
 
 export type TGridSchema = {
     id?: string;
@@ -63,62 +63,27 @@ type UseGridProps = {
     size?: number;
 };
 
-type TGridRef = {
-    _initialized: boolean;
-    _defaultSchema: TGridSchema;
-    _key: string;
-
-    _origin: any[];
-    _content: any[];
-    _checked: any[];
-    _paged: any[];
-    _selectedRow: any;
-    _selectedCel: any;
-    _totalCount: number;
-    _originTotalCount: number;
-
-    _head: any;
-    _list: any;
-};
-
 export const useGrid = (props: UseGridProps) => {
     const { defaultSchema, page = 0, size = 10 } = props;
 
     const [_page, _setPage] = React.useState(page);
     const [_size, _setSize] = React.useState(size);
 
-    const _grid = React.useRef<any>({
-        _initialized: false,
-        _defaultSchema: defaultSchema,
-        _key: uuid(),
+    const _grid = React.useRef<any>(null);
+    if (_grid.current === null) {
+        _grid.current = {
+            _initialized: false,
+            _defaultSchema: defaultSchema,
+            _key: uuid(),
 
-        _page,
-        _size,
-        _setPage,
-        _setSize,
+            _page,
+            _size,
+            _setPage,
+            _setSize,
+        };
+    }
 
-        /** group */
-        _group: Array.isArray(defaultSchema.options?.group)
-            ? defaultSchema.options?.group.reduce((p: any, c: any, seq: any) => {
-                  return { ...p, [c]: { seq } };
-              }, {})
-            : {},
-
-        /** options */
-        _index: defaultSchema.options?.index,
-        _checkbox: defaultSchema.options?.checkbox,
-        _radio: defaultSchema.options?.radio,
-        _edit: defaultSchema.options?.edit,
-        _add: defaultSchema.options?.add,
-        _delete: defaultSchema.options?.delete,
-        _exportExcel: defaultSchema.options?.exportExcel,
-        _importExcel: defaultSchema.options?.importExcel,
-        _height: defaultSchema.options?.height === "auto" ? 0 : defaultSchema.options?.height || 400,
-        _autoHeight: defaultSchema.options?.height === "auto",
-        _pagination: defaultSchema.options?.pagination,
-    });
-
-    // Set
+    /* SET */
     const setData = (data: any) => {
         _grid.current._setData(data);
     };
@@ -141,7 +106,7 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._handleSize(next);
     };
 
-    // Get
+    /* GET */
     const getData = () => {
         return _grid.current._content;
     };
@@ -167,7 +132,7 @@ export const useGrid = (props: UseGridProps) => {
         return Boolean(_grid.current._selectedCel);
     };
 
-    // Control
+    /* CONTROL */
     const addRow = (data?: Record<string, any>) => {
         _grid.current._handleAdd(data);
     };
@@ -177,9 +142,11 @@ export const useGrid = (props: UseGridProps) => {
     const updateRow = (row: TRow) => {
         _grid.current._handleUpdate(row);
     };
+    const validate = (content?: any) => {
+        return _grid.current._validate(content);
+    };
 
-    /** Excel */
-    const getExcel = () => {};
+    /* EXCEL */
     const selectExcel = () => {
         return _grid.current._selectExcel();
     };
@@ -187,9 +154,6 @@ export const useGrid = (props: UseGridProps) => {
         return _grid.current._importExcel(file);
     };
     const exportExcel = () => {};
-    const validate = (content?: any) => {
-        return _grid.current._validate(content);
-    };
 
     return {
         grid: { _grid },

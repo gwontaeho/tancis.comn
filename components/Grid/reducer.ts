@@ -175,6 +175,32 @@ const createContent = (_grid: any) => {
  * ## State Initializer
  */
 const createInitialState = ({ _grid, data }: any) => {
+    const options = _grid.current._defaultSchema.options || {};
+
+    _grid.current._sort = {};
+    _grid.current._rect = [];
+    _grid.current._checked = [];
+    _grid.current._groupStatus = {};
+    _grid.current._selectedRow = null;
+    _grid.current._selectedCel = null;
+
+    _grid.current._add = options.add;
+    _grid.current._edit = options.edit;
+    _grid.current._index = options.index;
+    _grid.current._radio = options.radio;
+    _grid.current._delete = options.delete;
+    _grid.current._checkbox = options.checkbox;
+    _grid.current._pagination = options.pagination;
+    _grid.current._exportExcel = options.exportExcel;
+    _grid.current._importExcel = options.importExcel;
+    _grid.current._autoHeight = options.height === "auto";
+    _grid.current._height = options.height === "auto" ? 0 : options.height || 400;
+    _grid.current._group = Array.isArray(options.group)
+        ? options.group.reduce((p: any, c: any, seq: any) => {
+              return { ...p, [c]: { seq } };
+          }, {})
+        : {};
+
     const _head = _grid.current._defaultSchema.head.map((_: any) => {
         const show = _.show === true ? true : _.show === false ? false : true;
         const cells = _.cells.map((__: any) => {
@@ -182,7 +208,6 @@ const createInitialState = ({ _grid, data }: any) => {
         });
         return { ..._, show, cells };
     });
-
     const _body = _grid.current._defaultSchema.body.map((_: any, i: any) => {
         const head = _grid.current._defaultSchema.head[i];
         const id = head?.id;
@@ -205,10 +230,8 @@ const createInitialState = ({ _grid, data }: any) => {
         });
         return { ..._, id, show, cells };
     });
-
     const _headCells = fun(_head);
     const _bodyCells = fun(_body);
-
     const _template = (() => {
         let w = Array(_headCells[0].length);
         for (let i = 0; i < _headCells.length; i++) {
@@ -272,13 +295,6 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
-    _grid.current._checked = [];
-    _grid.current._selectedRow = null;
-    _grid.current._selectedCel = null;
-    _grid.current._rect = [];
-    _grid.current._groupStatus = {};
-    _grid.current._sort = {};
-
     const { filteredContent, filteredCount } = createContent(_grid);
 
     let _totalCount = (_grid.current._pagination === "in" ? filteredCount : data?.page?.totalElements) || 0;
@@ -288,27 +304,26 @@ const createInitialState = ({ _grid, data }: any) => {
     return {
         _head,
         _body,
-        _sort: {},
-        _group: {},
         _headCells,
         _bodyCells,
         _template,
         _totalCount,
-        _selectedRow: null,
-        _selectedCel: null,
-        _editingRow: [],
-        _checked: [],
         _test: filteredContent,
+        _editingRow: [],
         _page: _grid.current._page,
         _size: _grid.current._size,
+        _sort: _grid.current._sort,
+        _checked: _grid.current._checked,
+        _selectedRow: _grid.current._selectedRow,
+        _selectedCel: _grid.current._selectedCel,
         _options: {
-            height: _grid.current._height,
-            index: _grid.current._index,
-            checkbox: _grid.current._checkbox,
-            radio: _grid.current._radio,
-            edit: _grid.current._edit,
             add: _grid.current._add,
+            edit: _grid.current._edit,
+            index: _grid.current._index,
+            radio: _grid.current._radio,
             delete: _grid.current._delete,
+            height: _grid.current._height,
+            checkbox: _grid.current._checkbox,
             exportExcel: _grid.current._exportExcel,
             importExcel: _grid.current._importExcel,
         },
