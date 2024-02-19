@@ -36,7 +36,7 @@ type GroupBodyProps = {
     children?: React.ReactNode;
 };
 
-type GroupSectionProps = {
+type GroupSectionProps = GroupTitleProps & {
     children?: React.ReactNode;
 };
 
@@ -129,8 +129,17 @@ const GroupBody = (props: GroupBodyProps) => {
 };
 
 const GroupSection = (props: GroupSectionProps) => {
-    const { children } = props;
-    return <div className="uf-group-section">{children}</div>;
+    const { children, title, description, titleSize = 1 } = props;
+    const { t } = useTranslation();
+    const sizes = { 3: "text-lg", 2: "text-xl", 1: "text-2xl" };
+
+    return (
+        <div className="uf-group-section">
+            {title && <div className={classNames("font-semibold mb-2", sizes[titleSize])}>{t(title)}</div>}
+            {description && <p className="mb-2">{t(description)}</p>}
+            <div>{children}</div>
+        </div>
+    );
 };
 
 const GroupFooter = (props: GroupFooterProps) => {

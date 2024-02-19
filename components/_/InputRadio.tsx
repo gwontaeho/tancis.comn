@@ -7,6 +7,7 @@ import { useOptions, UseOptionsProps } from "@/comn/hooks";
 /** */
 type RadioProps = UseOptionsProps & {
     edit?: boolean;
+    viewType?: "label" | "value" | "both";
 
     name?: string;
     value?: any;
@@ -19,6 +20,7 @@ type RadioProps = UseOptionsProps & {
 export const Radio = (props: RadioProps) => {
     const {
         edit = true,
+        viewType = "both",
         /** useOptions props */
         area,
         comnCd,
@@ -62,7 +64,11 @@ export const Radio = (props: RadioProps) => {
     return (
         <div className="w-full">
             {/* view text */}
-            {!edit && <div>{viewRadio(value, { options: o.options })}</div>}
+            {!edit && (
+                <div title={viewRadio(value, { options: o.options, viewType })}>
+                    {viewRadio(value, { options: o.options, viewType })}
+                </div>
+            )}
 
             <div hidden={!edit}>
                 <div className={classNames("flex flex-wrap w-fit", readOnly && "pointer-events-none")}>
@@ -94,10 +100,13 @@ export const viewRadio = (v: any, o?: any) => {
 
     if (!option) return;
 
-    const vt = option.value ? `[${option.value}] ` : "";
-    const lt = option.label;
+    const vt = option.value || "";
+    const lt = option.label || "";
+    const vtWithBracket = option.value ? `[${option.value}] ` : "";
 
-    return vt + lt;
+    const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
+
+    return view;
 };
 
 export const formatRadio = (v: any) => {

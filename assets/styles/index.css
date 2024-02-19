@@ -224,7 +224,7 @@
         @apply p-4 rounded-b bg-uf-card-header;
     }
     .uf-group-section {
-        @apply w-full;
+        @apply w-full flex flex-col;
     }
     .uf-group-row {
         @apply w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12;

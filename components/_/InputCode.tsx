@@ -8,6 +8,7 @@ type InputCodeProps = UseOptionsProps & {
     edit?: boolean;
     popupSize?: "sm" | "md" | "lg";
     popupParams?: any;
+    viewType?: "label" | "value" | "both";
 
     value?: any;
     name?: string;
@@ -58,6 +59,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         edit = true,
         popupSize = "sm",
         popupParams,
+        viewType = "both",
         /** useOptions props */
         area,
         comnCd,
@@ -175,7 +177,11 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{viewCode(_value, { options: o.options })}</div>}
+            {!edit && (
+                <div title={viewCode(_value, { options: o.options, viewType })}>
+                    {viewCode(_value, { options: o.options, viewType })}
+                </div>
+            )}
             <div hidden={!edit}>
                 <div className="w-full flex">
                     <input
@@ -214,10 +220,13 @@ export const viewCode = (v: any, o?: any) => {
 
     if (!option) return;
 
-    const vt = option.value ? `[${option.value}] ` : "";
-    const lt = option.label;
+    const vt = option.value || "";
+    const lt = option.label || "";
+    const vtWithBracket = option.value ? `[${option.value}] ` : "";
 
-    return vt + lt;
+    const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
+
+    return view;
 };
 
 export const formatCode = (v: any, o?: any) => {

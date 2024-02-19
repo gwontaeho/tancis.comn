@@ -10,6 +10,7 @@ type SelectProps = UseOptionsProps & {
     edit?: boolean;
     all?: boolean;
     select?: boolean;
+    viewType?: "label" | "value" | "both";
 
     name?: string;
     value?: any;
@@ -25,6 +26,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
         all,
         edit = true,
         select = true,
+        viewType = "both",
         /** useOptions props */
         area,
         comnCd,
@@ -66,7 +68,9 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
         <div className="w-full">
             {/* view text */}
             {!edit && (
-                <div title={viewSelect(value, { options: o.options })}>{viewSelect(value, { options: o.options })}</div>
+                <div title={viewSelect(value, { viewType, options: o.options })}>
+                    {viewSelect(value, { viewType, options: o.options })}
+                </div>
             )}
             <div hidden={!edit}>
                 <div className="relative flex w-full items-center">
@@ -101,10 +105,13 @@ export const viewSelect = (v: any, o?: any) => {
 
     if (!option) return;
 
-    const vt = option.value ? `[${option.value}] ` : "";
-    const lt = option.label;
+    const vt = option.value || "";
+    const lt = option.label || "";
+    const vtWithBracket = option.value ? `[${option.value}] ` : "";
 
-    return vt + lt;
+    const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
+
+    return view;
 };
 
 export const formatSelect = (v: any) => {

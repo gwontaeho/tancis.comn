@@ -147,9 +147,9 @@ export const Temp = () => {
 
     const tbl = useRef<any | null>(null);
 
-    const { resource } = useResource({
+    useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0015" },
+            { area: "comnCd", comnCd: "COM_0100" },
             { area: "currCd" },
             { area: "cityCd" },
             { area: "portAirptCd" },
@@ -163,12 +163,18 @@ export const Temp = () => {
         defaultSchema: {
             id: "test",
             schema: {
-                text: {
-                    type: "text",
+                text: { label: "text", type: "text" },
+                date: { label: "date", type: "date" },
+                select: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100", viewType: "label" },
+                radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "COM_0100", viewType: "value" },
+                checkbox: {
+                    label: "checkbox",
+                    type: "checkbox",
+                    area: "comnCd",
+                    comnCd: "COM_0100",
+                    viewType: "label",
                 },
-                date: {
-                    type: "select",
-                },
+                code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100" },
             },
         },
     });
@@ -280,26 +286,22 @@ export const Temp = () => {
 
             <Group>
                 <Group.Body>
-                    <Group.Section>
+                    <Group.Section title="asd" description="asd">
                         <Group.Row>
                             <Group.Control {...form.schema.text} />
                             <Group.Control {...form.schema.date} />
                         </Group.Row>
                         <Group.Row>
-                            <button onClick={() => form.setFocus("date")}>asd</button>
-                            <button
-                                onClick={() =>
-                                    modal.openModal({
-                                        size: "xl",
-                                        url: "http://localhost:3000/comn/comn/ppup/cntyCdPpup",
-                                        callback: (a) => {
-                                            console.log(a);
-                                        },
-                                    })
-                                }
-                            >
-                                poen
-                            </button>
+                            <Group.Control {...form.schema.select} />
+                            <Group.Control {...form.schema.radio} />
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form.schema.checkbox} />
+                            <Group.Control {...form.schema.code} />
+                        </Group.Row>
+                        <Group.Row>
+                            <button onClick={() => form.setEditable(true)}>setEdit true</button>
+                            <button onClick={() => form.setEditable(false)}>setEdit false</button>
                         </Group.Row>
                     </Group.Section>
 

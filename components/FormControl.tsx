@@ -75,6 +75,9 @@ export type FormControlProps = InputDaterangeProps & {
     comnCd?: string;
     options?: TOption[];
 
+    /** with option */
+    viewType?: string;
+
     /** text */
     mask?: string | any[];
     exact?: boolean;

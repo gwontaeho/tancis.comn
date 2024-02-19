@@ -9,6 +9,7 @@ import { useOptions, UseOptionsProps } from "@/comn/hooks";
 type CheckboxProps = UseOptionsProps & {
     edit?: boolean;
     all?: boolean;
+    viewType?: "label" | "value" | "both";
 
     name?: string;
     value?: any[];
@@ -23,6 +24,7 @@ export const Checkbox = (props: CheckboxProps) => {
         /** */
         all,
         edit = true,
+        viewType = "both",
         /** useOptions props */
         area,
         comnCd,
@@ -133,6 +135,22 @@ export const Checkbox = (props: CheckboxProps) => {
             </div>
         </div>
     );
+};
+
+export const viewCheckbox = (v: any, o?: any) => {
+    if (!o?.options) return;
+
+    const option = o.options?.find(({ value }: any) => value === v);
+
+    if (!option) return;
+
+    const vt = option.value || "";
+    const lt = option.label || "";
+    const vtWithBracket = option.value ? `[${option.value}] ` : "";
+
+    const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
+
+    return view;
 };
 
 export const formatCheckbox = (v: any) => {
