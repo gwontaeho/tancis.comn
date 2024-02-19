@@ -89,15 +89,8 @@ export const Checkbox = (props: CheckboxProps) => {
         <div className="w-full">
             {/* view text */}
             {!edit && (
-                <div>
-                    {o.options
-                        .filter(({ value }) => {
-                            return _value.includes(value);
-                        })
-                        .map(({ label, value }) => {
-                            return "[" + value + "] " + label;
-                        })
-                        .join(", ")}
+                <div title={viewCheckbox(value, { viewType, options: o.options })}>
+                    {viewCheckbox(value, { viewType, options: o.options })}
                 </div>
             )}
             <div hidden={!edit}>
@@ -139,16 +132,21 @@ export const Checkbox = (props: CheckboxProps) => {
 
 export const viewCheckbox = (v: any, o?: any) => {
     if (!o?.options) return;
+    if (!v) return;
 
-    const option = o.options?.find(({ value }: any) => value === v);
+    const view = o.options
+        .filter(({ value }: any) => {
+            return v.includes(value);
+        })
+        .map(({ label, value }: any) => {
+            const vt = value || "";
+            const lt = label || "";
+            const vtWithBracket = value ? `[${value}] ` : "";
+            const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
 
-    if (!option) return;
-
-    const vt = option.value || "";
-    const lt = option.label || "";
-    const vtWithBracket = option.value ? `[${option.value}] ` : "";
-
-    const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
+            return view;
+        })
+        .join(", ");
 
     return view;
 };

@@ -172,7 +172,7 @@ export const Temp = () => {
                     type: "checkbox",
                     area: "comnCd",
                     comnCd: "COM_0100",
-                    viewType: "label",
+                    viewType: "both",
                 },
                 code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100" },
             },
