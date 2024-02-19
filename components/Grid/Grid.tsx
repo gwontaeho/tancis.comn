@@ -100,7 +100,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                                 return (
                                     <div
                                         key={_grid.current._key + ".gh." + rowIndex + "." + colIndex}
-                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center font-semibold"
+                                        className="p-1 bg-uf-card-header min-h-[2.5rem] flex items-center justify-center text-center font-semibold"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
