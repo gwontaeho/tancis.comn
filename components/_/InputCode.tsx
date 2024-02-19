@@ -100,20 +100,16 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
 
     React.useEffect(() => {
         if (!__t) return;
-        if (typeof value !== "string") return;
         if (value === _value) return;
 
-        const next = o.options.find((_) => _.value === value.toUpperCase());
+        let next = "";
 
-        if (!next) {
-            handleValueChange("");
-
-            return;
+        if (typeof value === "string") {
+            const option = o.options.find((_) => _.value === value.toUpperCase());
+            next = option?.value || "";
         }
 
-        if (next) {
-            handleValueChange(next.value);
-        }
+        handleValueChange("");
     }, [value, __t]);
 
     /**

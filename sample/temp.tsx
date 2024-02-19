@@ -174,7 +174,7 @@ export const Temp = () => {
                     comnCd: "COM_0100",
                     viewType: "both",
                 },
-                code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100" },
+                code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100", maxLength: 3 },
             },
         },
     });
@@ -300,8 +300,11 @@ export const Temp = () => {
                             <Group.Control {...form.schema.code} />
                         </Group.Row>
                         <Group.Row>
+                            <button onClick={() => console.log(form.getValues())}>get values</button>
                             <button onClick={() => form.setEditable(true)}>setEdit true</button>
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
+                            <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
+                            <button onClick={() => form.setValue("code", null)}>set value</button>
                         </Group.Row>
                     </Group.Section>
 

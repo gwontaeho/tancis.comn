@@ -15,6 +15,7 @@ import {
     unformatDate,
     unformatTime,
     unformatDatetime,
+    unformatCode,
 } from "@/comn/components/_";
 
 /**
@@ -112,6 +113,8 @@ export const comnUtils = {
                 return unformatTime(v, s);
             case "datetime":
                 return unformatDatetime(v, s);
+            case "code":
+                return unformatCode(v, s);
         }
         return v;
     },

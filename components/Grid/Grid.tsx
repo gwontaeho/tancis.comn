@@ -162,6 +162,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                 >
                     {Row}
                 </List>
+
+                {/*  */}
             </div>
 
             {/* Pagination */}
