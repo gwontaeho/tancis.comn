@@ -116,7 +116,7 @@ const GroupTitle = (props: GroupTitleProps) => {
     const sizes = { 3: "text-lg", 2: "text-xl", 1: "text-2xl" };
 
     return (
-        <div className="">
+        <div>
             {title && <div className={sizes[titleSize] + " font-semibold"}>{t(title)}</div>}
             {description && <p>{t(description)}</p>}
         </div>
@@ -129,17 +129,9 @@ const GroupBody = (props: GroupBodyProps) => {
 };
 
 const GroupSection = (props: GroupSectionProps) => {
-    const { children, title, description, titleSize = 1 } = props;
-    const { t } = useTranslation();
-    const sizes = { 3: "text-lg", 2: "text-xl", 1: "text-2xl" };
+    const { children } = props;
 
-    return (
-        <div className="uf-group-section">
-            {title && <div className={classNames("font-semibold mb-2", sizes[titleSize])}>{t(title)}</div>}
-            {description && <p className="mb-2">{t(description)}</p>}
-            <div>{children}</div>
-        </div>
-    );
+    return <div className="uf-group-section">{children}</div>;
 };
 
 const GroupFooter = (props: GroupFooterProps) => {
