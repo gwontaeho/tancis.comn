@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import { useRecoilState } from "recoil";
+import Cookies from "js-cookie";
 
-import { useModal } from "@/comn/hooks";
+import { authState } from "@/comn/features/recoil";
+
+import { useModal, useAuth } from "@/comn/hooks";
 import { Collapse, Icon, Button } from "@/comn/components";
 
 import { routes } from "@/comn/features/router";
@@ -143,8 +146,13 @@ const Menu = () => {
 };
 
 const Auth = () => {
-    const [open, setOpen] = useState(false);
+    /**
+     * 로그인 로직
+     * 임시 구현
+     */
+    const [auth, setAuth] = useRecoilState(authState);
 
+    const [open, setOpen] = useState(false);
     const [id, setId] = useState("");
     const [tin, setTin] = useState("");
 
@@ -161,17 +169,42 @@ const Auth = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
 
-        if (!id || !tin) return;
+        if (!id && !tin) return;
+
+        let b: any = {};
+        if (id) b.id = id;
+        if (tin) b.tin = tin;
 
         try {
-            const res1 = await axios.post("http://localhost:9700/ptl/api/v1/ptl/comn/comn/login", { id, tin });
-            console.log(res1);
+            const res = await axios.post("http://localhost:9700/ptl/api/v1/ptl/comn/comn/login", { id, tin });
+            const content = res.data.result.content;
+            const { accessToken, refreshToken, userInfo } = content;
+
+            if (accessToken)
+                Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken);
+
+            setAuth({ isSignedIn: true, userInfo });
+
+            console.groupCollapsed("INT ; User Below Signed In");
+            console.table(userInfo);
+            console.groupEnd();
         } catch (error) {
             console.log(error);
         }
+
         try {
-            const res2 = await axios.post("http://localhost:9400/ptl/api/v1/ptl/comn/comn/login", { id, tin });
-            console.log(res2);
+            const res = await axios.post("http://localhost:9400/ptl/api/v1/ptl/comn/comn/login", { id, tin });
+            const content = res.data.result.content;
+            const { accessToken, refreshToken, userInfo } = content;
+
+            if (accessToken)
+                Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken);
+
+            setAuth({ isSignedIn: true, userInfo });
+
+            console.groupCollapsed("EXT ; User Below Signed In");
+            console.table(userInfo);
+            console.groupEnd();
         } catch (error) {
             console.log(error);
         }
@@ -193,26 +226,31 @@ const Auth = () => {
 
             {open &&
                 createPortal(
-                    <div
-                        className="fixed w-screen h-screen z-[9998] top-0 left-0 flex items-center justify-center bg-black/40"
-                        onClick={() => setOpen(false)}
-                    >
-                        <div
-                            className="flex items-center justify-center p-4 top-1/2 left-1/2 w-[450px] h-[250px] border rounded bg-uf-background z-[9999]"
-                            onClick={(event) => event.stopPropagation()}
-                        >
+                    <div className="fixed w-screen h-screen z-[9998] top-0 left-0 flex items-center justify-center bg-black/40">
+                        <div className="flex flex-col items-center justify-center p-4 top-1/2 left-1/2 w-[450px] h-[250px] border rounded bg-uf-background z-[9999]">
+                            <button className="mb-4 border px-4 self-end" onClick={() => setOpen(false)}>
+                                닫기
+                            </button>
                             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                                 <input
                                     className="h-12 border outline-none px-4 w-[400px]"
-                                    onChange={(event) => setId(event.target.value)}
+                                    onChange={(event) => {
+                                        setId(event.target.value);
+                                        setTin("");
+                                    }}
                                     value={id}
                                     placeholder="id"
+                                    disabled={!!tin}
                                 />
                                 <input
                                     className="h-12 border outline-none px-4 w-[400px]"
-                                    onChange={(event) => setTin(event.target.value)}
+                                    onChange={(event) => {
+                                        setTin(event.target.value);
+                                        setId("");
+                                    }}
                                     value={tin}
                                     placeholder="tin"
+                                    disabled={!!id}
                                 />
                                 <button className="border h-12 w-[400px]">Sign In</button>
                             </form>

@@ -1,13 +1,12 @@
-import { useLayoutEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import { Link } from "react-router-dom";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
-import { routeState } from "@/comn/features/recoil";
+import { authState, routeState } from "@/comn/features/recoil";
 import { useTheme } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
-
 import { routes } from "@/comn/features/router";
 
 type NavItemProps = {
@@ -92,8 +91,14 @@ const Logo = () => {
 const Header = () => {
     const { theme, setTheme } = useTheme();
     const { t } = useTranslation();
+    const resetAuth = useResetRecoilState(authState);
 
     const [open, setOpen] = useState(false);
+
+    const signOut = () => {
+        console.log("Sign Out");
+        resetAuth();
+    };
 
     return (
         <header className="uf-header">
@@ -163,7 +168,7 @@ const Header = () => {
                 {/* signout */}
                 <div className="uf-header-sign-out">
                     <div className="bg-uf-sign-out-fill rounded-full w-8 h-8 flex items-center justify-center">
-                        <IconButton icon="out" className="text-uf-white rotate-90" size="sm" />
+                        <IconButton icon="out" className="text-uf-white rotate-90" size="sm" onClick={signOut} />
                     </div>
                 </div>
             </div>

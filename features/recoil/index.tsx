@@ -60,8 +60,8 @@ export const storeState = atom<Record<string, any>>({
 export const authState = atom<Record<string, any>>({
     key: "authState",
     default: {
-        user: "",
-        isSignedIn: !!Cookies.get("accessToken"),
+        userInfo: {},
+        isSignedIn: false,
     },
 });
 

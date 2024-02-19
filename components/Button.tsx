@@ -100,7 +100,7 @@ export const Button = (props: ButtonProps) => {
             {..._color}
             type={type}
             className={classNames(
-                "max-w-full min-w-max flex items-center disabled:bg-uf-lightgray disabled:border-uf-lightgray disabled:pointer-events-none",
+                "max-w-full min-w-max flex justify-center items-center disabled:bg-uf-lightgray disabled:border-uf-lightgray disabled:pointer-events-none",
                 role && BUTTON_ROLES[role].variant !== undefined
                     ? BUTTON_ROLES[role].variant
                     : BUTTON_VARIANTS[variant].style,
