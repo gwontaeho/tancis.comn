@@ -117,7 +117,7 @@ const GroupTitle = (props: GroupTitleProps) => {
 
     return (
         <div>
-            {title && <div className={sizes[titleSize] + " font-semibold"}>{t(title)}</div>}
+            {title && <div className={classNames("font-semibold", sizes[titleSize])}>{t(title)}</div>}
             {description && <p>{t(description)}</p>}
         </div>
     );
