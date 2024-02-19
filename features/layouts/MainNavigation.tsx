@@ -176,7 +176,20 @@ const Auth = () => {
         if (tin) b.tin = tin;
 
         try {
-            const res = await axios.post("http://localhost:9700/ptl/api/v1/ptl/comn/comn/login", { id, tin });
+            let url;
+            let type;
+
+            if (process.env.REACT_APP_SYSTEM_GROUP === "tanesw") {
+                url = "http://localhost:9400/ptl/api/v1/ptl/comn/comn/login";
+                type = "TANESW";
+            } else if (process.env.REACT_APP_SYSTEM_GROUP === "tancis") {
+                url = "http://localhost:9700/ptl/api/v1/ptl/comn/comn/login";
+                type = "TANCIS";
+            } else {
+                return;
+            }
+
+            const res = await axios.post(url, { id, tin });
             const content = res.data.result.content;
             const { accessToken, refreshToken, userInfo } = content;
 
@@ -185,24 +198,7 @@ const Auth = () => {
 
             setAuth({ isSignedIn: true, userInfo });
 
-            console.groupCollapsed("INT ; User Below Signed In");
-            console.table(userInfo);
-            console.groupEnd();
-        } catch (error) {
-            console.log(error);
-        }
-
-        try {
-            const res = await axios.post("http://localhost:9400/ptl/api/v1/ptl/comn/comn/login", { id, tin });
-            const content = res.data.result.content;
-            const { accessToken, refreshToken, userInfo } = content;
-
-            if (accessToken)
-                Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken);
-
-            setAuth({ isSignedIn: true, userInfo });
-
-            console.groupCollapsed("EXT ; User Below Signed In");
+            console.groupCollapsed(type + " ; User Below Signed In");
             console.table(userInfo);
             console.groupEnd();
         } catch (error) {
