@@ -6,6 +6,11 @@ import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 
+/*
+value + 라벨 
+="label +"
+*/
+
 const SF_FORM: TFormSchema = {
     id: "form",
     schema: {
