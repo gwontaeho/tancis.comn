@@ -200,7 +200,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 8 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 9999 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
@@ -314,84 +314,6 @@ export const Temp = () => {
                     </Group.Section>
                 </Group.Body>
             </Group>
-
-            {/* exportExcel(data, {},[a+b,name+id]) */}
-            {/* 
-            <table ref={tbl} className="[&_*]:border">
-                <tbody>
-                    {Array(60)
-                        .fill("as")
-                        .map(() => {
-                            return (
-                                <tr>
-                                    <td className="w-40">
-                                        <div className="flex">
-                                            <div>asd-</div>
-                                            <div>asd</div>
-                                            <div>asd-</div>
-                                            <div>asd</div>
-                                        </div>
-                                    </td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                </tr>
-                            );
-                        })}
-                </tbody>
-            </table> */}
-
-            <button
-                className="p-2"
-                onClick={() => {
-                    const ws = xlsxUtils.table_to_sheet(tbl.current);
-                    ws["!cols"] = [{ width: 20 }];
-
-                    const wb = xlsxUtils.book_new();
-
-                    xlsxUtils.book_append_sheet(wb, ws, "est");
-
-                    writeFile(wb, "SheetJSTable.xlsx");
-                }}
-            >
-                export
-            </button>
-
-            <button
-                onClick={() => {
-                    const workbook = new excel.Workbook();
-                    const sheet = workbook.addWorksheet("My Sheet");
-                    sheet.columns = [
-                        { header: "Id", key: "id", width: 10 },
-                        { header: "Name", key: "name", width: 32 },
-                        { header: "D.O.B.", key: "dob", width: 10, outlineLevel: 1 },
-                    ];
-
-                    for (let i = 0; i < 77; i++) {
-                        sheet.addRow({ id: 1, name: `${3 + 5} - 4 `, dob: new Date(1970, 1, 1) });
-                        const currentRowIdx = sheet.rowCount;
-                        const endColumnIdx = sheet.columnCount;
-
-                        sheet.mergeCells(currentRowIdx, 0, currentRowIdx + 1, 0);
-                        sheet.mergeCells(currentRowIdx, 2, currentRowIdx, 3);
-                    }
-
-                    workbook.xlsx.writeBuffer().then((b) => {
-                        let a = new Blob([b]);
-                        let url = window.URL.createObjectURL(a);
-
-                        let elem = document.createElement("a");
-                        elem.href = url;
-                        elem.download = "테스트.xlsx";
-                        elem.click();
-                        elem.remove();
-                    });
-                }}
-            >
-                asdasd
-            </button>
-
-            <button onClick={() => {}}>test1234</button>
 
             <div className="flex flex-col gap-8">
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useCallback, useEffect, memo, useRef, useState } from "react";
 import classNames from "classnames";
+import { utils, writeFile } from "xlsx";
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
-import { utils, writeFile } from "xlsx";
 
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
@@ -11,28 +11,55 @@ import { useInitialize } from "./initializer";
 /**
  * # Grid
  */
-export const Grid = (props: {
-    _grid?: any;
-    data?: any;
-    render?: any;
-    onCellClick?: any;
-    onRowClick?: any;
-    onImportEnd?: any;
-}) => {
-    const { _grid, render, onCellClick, onRowClick, onImportEnd } = props;
+export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick?: any; onRowClick?: any }) => {
+    const { _grid, render, onCellClick, onRowClick } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 
     const { _headCells, _bodyCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
 
+    const headRef = useCallback((ref: any) => {
+        if (!ref) return;
+        _grid.current._headRef = ref;
+    }, []);
+    const listRef = useCallback((ref: any) => {
+        if (!ref) return;
+        _grid.current._listRef = ref;
+    }, []);
+    const listInnerRef = useCallback((ref: any) => {
+        if (!ref) return;
+        _grid.current._listInner = ref;
+    }, []);
+    const listOuterRef = useCallback((ref: any) => {
+        if (!ref) return;
+        _grid.current._listOuter = ref;
+        ref.onscroll = (event: any) => {
+            _grid.current._headRef.scrollTo({ left: event.currentTarget.scrollLeft });
+        };
+    }, []);
+
+    const onItemsRendered = useCallback(() => {
+        if (!_grid.current._autoHeight) return;
+        _grid.current._readjustHeight?.();
+    }, []);
+    const itemSize = useCallback((index: any) => {
+        return _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0;
+    }, []);
+    const handleChangePage = useCallback((next: any) => {
+        _grid.current._handlePage(next);
+    }, []);
+    const handleChangeSize = useCallback((next: any) => {
+        _grid.current._handleSize(next);
+    }, []);
+
     return (
         <div className="flex flex-col w-full">
             {/* Top Buttons */}
             <div className="uf-grid-top">
                 <div>
-                    {_options.importExcel && <ImportButton _grid={_grid} onImportEnd={onImportEnd} />}
-                    {_options.exportExcel && <Button onClick={_grid.current._export}>Export</Button>}
+                    {_options.importExcel && <ImportButton _grid={_grid} />}
+                    {_options.exportExcel && <Button onClick={() => _grid.current._export()}>Export</Button>}
                 </div>
                 <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
@@ -43,12 +70,7 @@ export const Grid = (props: {
             {/* Grid Main */}
             <div className="uf-grid-main">
                 {/* Head */}
-                <div
-                    ref={(ref) => {
-                        if (ref) _grid.current._headRef = ref;
-                    }}
-                    className="uf-grid-head"
-                >
+                <div ref={headRef} className="uf-grid-head">
                     {Object.keys(_grid.current._groupStatus).length > 0 && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
@@ -122,26 +144,11 @@ export const Grid = (props: {
 
                 {/* Body */}
                 <List
-                    ref={(ref) => {
-                        if (ref) _grid.current._listRef = ref;
-                    }}
-                    innerRef={(ref) => {
-                        if (ref) _grid.current._listInner = ref;
-                    }}
-                    outerRef={(ref) => {
-                        if (ref) {
-                            _grid.current._listOuter = ref;
-
-                            ref.onscroll = (event: any) => {
-                                _grid.current._headRef.scrollTo({ left: event.currentTarget.scrollLeft });
-                            };
-                        }
-                    }}
-                    onItemsRendered={() => {
-                        if (_grid.current._autoHeight) {
-                            _grid.current._readjustHeight?.();
-                        }
-                    }}
+                    ref={listRef}
+                    innerRef={listInnerRef}
+                    outerRef={listOuterRef}
+                    onItemsRendered={onItemsRendered}
+                    itemSize={itemSize}
                     itemCount={_test.length > _totalCount ? _totalCount : _test.length}
                     height={_options.height}
                     width="100%"
@@ -152,9 +159,6 @@ export const Grid = (props: {
                         onCellClick,
                         onRowClick,
                     }}
-                    itemSize={(index) =>
-                        _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0
-                    }
                 >
                     {Row}
                 </List>
@@ -165,8 +169,8 @@ export const Grid = (props: {
                 <Pagination
                     page={_page}
                     size={_size}
-                    onChangePage={(next) => _grid.current._handlePage(next)}
-                    onChangeSize={(next) => _grid.current._handleSize(next)}
+                    onChangePage={handleChangePage}
+                    onChangeSize={handleChangeSize}
                     totalCount={_totalCount}
                 />
             )}
@@ -177,7 +181,7 @@ export const Grid = (props: {
 };
 
 /** row */
-const Row = React.memo((props: any) => {
+const Row = memo((props: any) => {
     const { data, index: rowIndex, style } = props;
 
     const { _grid, state, render, onCellClick, onRowClick } = data;
@@ -202,9 +206,9 @@ const Row = React.memo((props: any) => {
     const rowType = row?.__type;
     const contentKey = row?.__key;
 
-    const ref = React.useRef<any>();
+    const ref = useRef<any>();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const ro = new ResizeObserver((entries) => {
             requestAnimationFrame(() => {
                 entries.forEach((value) => {
@@ -398,7 +402,7 @@ const Row = React.memo((props: any) => {
 const ImportButton = (props: any) => {
     const { _grid } = props;
 
-    const [file, setFile] = React.useState<any>();
+    const [file, setFile] = useState<any>();
 
     const handleClickSelect = async () => {
         const excel = await _grid.current._selectExcel();
@@ -425,7 +429,7 @@ const ImportButton = (props: any) => {
 const Table = (props: any) => {
     const { _grid, _headCells, _bodyCells, render } = props;
 
-    const [exporting, setExporting] = React.useState(false);
+    const [exporting, setExporting] = useState(false);
 
     useEffect(() => {
         _grid.current._export = () => {
@@ -450,35 +454,27 @@ const Table = (props: any) => {
         }
     }, [exporting]);
 
+    const tableRef = useCallback((ref: any) => {
+        if (!ref) return;
+        _grid.current._table = ref;
+    }, []);
+
     if (!exporting) return null;
 
     return (
-        <table
-            ref={(ref) => {
-                if (ref) {
-                    _grid.current._table = ref;
-
-                    // const ws = utils.table_to_sheet(ref);
-                    // ws["!cols"] = [{ width: 20 }, { width: 20 }, { width: 20 }];
-                    // const wb = utils.book_new();
-                    // utils.book_append_sheet(wb, ws, "est");
-                    // _grid.current._wb = wb;
-                    // writeFile(wb, "SheetJSTable.xlsx");
-
-                    // _grid.current._exporting = false;
-                    // setExporting(false);
-                }
-            }}
-            className="hidden"
-        >
+        <table ref={tableRef} className="hidden">
             <thead className="[&_th]:border">
-                {_headCells.map((cols: any) => {
+                {_headCells.map((cols: any, rowIndex: any) => {
                     return (
-                        <tr>
-                            {cols.map((cel: any) => {
+                        <tr key={_grid.current._key + ".thr." + rowIndex}>
+                            {cols.map((cel: any, celIndex: any) => {
                                 if (!cel) return null;
                                 return (
-                                    <th rowSpan={cel.rowspan} colSpan={cel.colspan}>
+                                    <th
+                                        key={_grid.current._key + ".th." + rowIndex + "." + celIndex}
+                                        rowSpan={cel.rowspan}
+                                        colSpan={cel.colspan}
+                                    >
                                         {cel.binding}
                                     </th>
                                 );
@@ -488,20 +484,24 @@ const Table = (props: any) => {
                 })}
             </thead>
             <tbody>
-                {_grid.current._content.map((row: any) => {
+                {_grid.current._content.map((row: any, rowIndex: any) => {
                     return _bodyCells.map((cols: any) => {
                         return (
-                            <tr>
-                                {cols.map((cel: any) => {
+                            <tr key={_grid.current._key + ".tbr." + rowIndex}>
+                                {cols.map((cel: any, celIndex: any) => {
                                     if (!cel) return null;
                                     return (
-                                        <th rowSpan={cel.rowspan} colSpan={cel.colspan}>
+                                        <td
+                                            key={_grid.current._key + ".td." + rowIndex + "." + celIndex}
+                                            rowSpan={cel.rowspan}
+                                            colSpan={cel.colspan}
+                                        >
                                             {render?.cell?.[cel.binding]?.({
                                                 value: row[cel.binding],
                                                 rowValues: row,
                                                 binding: cel.binding,
                                             }) || row[cel.binding]}
-                                        </th>
+                                        </td>
                                     );
                                 })}
                             </tr>

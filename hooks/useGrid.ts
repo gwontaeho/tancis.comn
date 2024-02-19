@@ -91,17 +91,11 @@ export const useGrid = (props: UseGridProps) => {
         _initialized: false,
         _defaultSchema: defaultSchema,
         _key: uuid(),
+
         _page,
         _size,
         _setPage,
         _setSize,
-
-        /**
-         * _headRef
-         * _listRef
-         * _rect
-         *
-         */
 
         /** group */
         _group: Array.isArray(defaultSchema.options?.group)

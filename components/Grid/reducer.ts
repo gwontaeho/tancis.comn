@@ -176,51 +176,39 @@ const createContent = (_grid: any) => {
  */
 const createInitialState = ({ _grid, data }: any) => {
     const _head = _grid.current._defaultSchema.head.map((_: any) => {
-        return {
-            ..._,
-            cells: _.cells.map((__: any) => {
-                return { ...__, show: _.show === true ? true : _.show === false ? false : true };
-            }),
-        };
+        const show = _.show === true ? true : _.show === false ? false : true;
+        const cells = _.cells.map((__: any) => {
+            return { ...__, show };
+        });
+        return { ..._, show, cells };
     });
+
     const _body = _grid.current._defaultSchema.body.map((_: any, i: any) => {
-        return {
-            ..._,
-            id: _grid.current._defaultSchema.head[i]?.id,
-            show:
-                _grid.current._defaultSchema.head[i]?.show === true
+        const head = _grid.current._defaultSchema.head[i];
+        const id = head?.id;
+        const show = head?.show;
+
+        const cells = _.cells.map((__: any) => {
+            const edit =
+                __.edit === true
                     ? true
-                    : _grid.current._defaultSchema.head[i]?.show === false
+                    : __.edit === false
                       ? false
-                      : true,
-            cells: _.cells.map((__: any) => {
-                return {
-                    ...__,
-                    id: _grid.current._defaultSchema.head[i]?.id,
-                    show:
-                        _grid.current._defaultSchema.head[i]?.show === true
+                      : _.edit === true
+                        ? true
+                        : _.edit === false
+                          ? false
+                          : _grid.current._defaultSchema.options?.edit === true
                             ? true
-                            : _grid.current._defaultSchema.head[i]?.show === false
-                              ? false
-                              : true,
-                    edit:
-                        __.edit === true
-                            ? true
-                            : __.edit === false
-                              ? false
-                              : _.edit === true
-                                ? true
-                                : _.edit === false
-                                  ? false
-                                  : _grid.current._defaultSchema.options?.edit === true
-                                    ? true
-                                    : false,
-                };
-            }),
-        };
+                            : false;
+            return { ...__, id, show, edit };
+        });
+        return { ..._, id, show, cells };
     });
+
     const _headCells = fun(_head);
     const _bodyCells = fun(_body);
+
     const _template = (() => {
         let w = Array(_headCells[0].length);
         for (let i = 0; i < _headCells.length; i++) {
