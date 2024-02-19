@@ -8,6 +8,7 @@ import { useTheme } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
 import { routes } from "@/comn/features/router";
+import Cookies from "js-cookie";
 
 type NavItemProps = {
     children?: any[];
@@ -97,6 +98,7 @@ const Header = () => {
 
     const signOut = () => {
         console.log("Sign Out");
+        Cookies.remove("accessToken");
         resetAuth();
     };
 

@@ -269,10 +269,10 @@ export const ComnRoutes = [
                                 name: "Company Code Popup",
                                 to: "/comn/comn/ppup/coCdPpup",
                             },
-                            {
-                                name: "Process Status Code Popup",
-                                to: "/comn/comn/ppup/prcssStatPpup",
-                            },
+                            // {
+                            //     name: "Process Status Code Popup",
+                            //     to: "/comn/comn/ppup/prcssStatPpup",
+                            // },
                             {
                                 name: "Organization Code Popup",
                                 to: "/comn/comn/ppup/orgCdPpup",

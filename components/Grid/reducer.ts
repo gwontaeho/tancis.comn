@@ -101,12 +101,7 @@ const createContent = (_grid: any) => {
         return lodash.orderBy(data, iteratees, orders);
     };
 
-    let filteredContent;
-    let filteredCount;
-
-    // Filtering
-    filteredContent = _grid.current._content;
-    filteredCount = filteredContent.length;
+    let viewContent = [..._grid.current._content];
 
     // Grouping & Sorting
     if (Object.keys(_grid.current._group).length) {
@@ -122,53 +117,53 @@ const createContent = (_grid: any) => {
             const depth = prevDepth + 1;
             const parent = [...prevParent, by];
 
-            return Object.entries(lodash.groupBy(data, by[0])).reduce((p: any, c: any) => {
-                if (c[0] === "undefined") return c[1];
+            return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
+                if (curr[0] === "undefined") return curr[1];
 
-                const groupKey = prevGroupKey + "__" + c[0];
+                const groupKey = prevGroupKey + "__" + curr[0];
 
                 if (_grid.current._groupStatus[groupKey] === undefined) {
                     _grid.current._groupStatus[groupKey] = { open: true };
                 }
 
                 const open = _grid.current._groupStatus[groupKey].open;
-
                 const row = {
                     __key: uuid(),
                     __type: "group",
                     open,
                     depth,
                     groupKey,
-                    value: c[0],
+                    value: curr[0],
                     binding: by[0],
-                    count: c[1].length,
+                    count: curr[1].length,
                 };
 
                 if (open) {
-                    return [...p, row, ...getGrouped(c[1], groups[depth], depth, parent, groupKey)];
+                    return [...prev, row, ...getGrouped(curr[1], groups[depth], depth, parent, groupKey)];
                 } else {
-                    return [...p, row];
+                    return [...prev, row];
                 }
             }, []);
         };
 
-        filteredContent = getGrouped(filteredContent, groups[0], 0, [], "");
+        viewContent = getGrouped(_grid.current._content, groups[0], 0, [], "");
     } else {
-        filteredContent = sort(filteredContent);
+        viewContent = sort(viewContent);
+        _grid.current._content = viewContent;
     }
-    _grid.current._content = filteredContent;
-    filteredContent = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-    // .map((_: any, i: any) => {
-    //     return { ..._, __index: i };
-    // });
+
+    /*  */
+    viewContent = viewContent.filter(({ __type }: any) => __type !== "deleted");
+
+    let viewCount = viewContent.length;
 
     // Paging
     if (_grid.current._pagination === "in") {
-        filteredContent = lodash.chunk(filteredContent, _grid.current._size)[_grid.current._page] || [];
+        viewContent = lodash.chunk(viewContent, _grid.current._size)[_grid.current._page] || [];
     }
-    _grid.current._paged = filteredContent;
+    _grid.current._paged = viewContent;
 
-    return { filteredContent, filteredCount };
+    return { viewContent, viewCount };
 };
 
 /**
@@ -295,9 +290,9 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
-    const { filteredContent, filteredCount } = createContent(_grid);
+    const { viewContent, viewCount } = createContent(_grid);
 
-    let _totalCount = (_grid.current._pagination === "in" ? filteredCount : data?.page?.totalElements) || 0;
+    let _totalCount = (_grid.current._pagination === "in" ? viewCount : data?.page?.totalElements) || 0;
     _grid.current._totalCount = _totalCount;
     _grid.current._originTotalCount = _totalCount;
 
@@ -308,7 +303,7 @@ const createInitialState = ({ _grid, data }: any) => {
         _bodyCells,
         _template,
         _totalCount,
-        _test: filteredContent,
+        _test: viewContent,
         _editingRow: [],
         _page: _grid.current._page,
         _size: _grid.current._size,
@@ -373,18 +368,18 @@ const reducer = (state: any, action: any) => {
                 nextState._page = 0;
             }
 
-            const { filteredContent, filteredCount } = createContent(_grid);
+            const { viewContent, viewCount } = createContent(_grid);
 
             if (_grid.current._pagination === "out") {
                 _totalCount = data?.page?.totalElements || 0;
             } else if (_grid.current._pagination === "in") {
-                _totalCount = filteredCount;
+                _totalCount = viewCount;
             }
 
             _grid.current._totalCount = _totalCount;
             _grid.current._originTotalCount = _totalCount;
 
-            nextState._test = filteredContent;
+            nextState._test = viewContent;
             nextState._totalCount = _totalCount;
             nextState._checked = [];
             nextState._selectedRow = null;
@@ -404,7 +399,7 @@ const reducer = (state: any, action: any) => {
             return {
                 ...state,
                 _totalCount: _grid.current._originTotalCount,
-                _test: createContent(_grid).filteredContent,
+                _test: createContent(_grid).viewContent,
             };
         }
         /**
@@ -636,14 +631,14 @@ const reducer = (state: any, action: any) => {
                 _grid.current._checked = [];
             }
 
-            const { filteredContent, filteredCount } = createContent(_grid);
+            const { viewContent, viewCount } = createContent(_grid);
 
             _grid.current._selectedCel = null;
-            _grid.current._totalCount = filteredCount;
+            _grid.current._totalCount = viewCount;
 
             nextState._selectedCel = null;
-            nextState._test = filteredContent;
-            nextState._totalCount = filteredCount;
+            nextState._test = viewContent;
+            nextState._totalCount = viewCount;
 
             return nextState;
         }
@@ -656,9 +651,9 @@ const reducer = (state: any, action: any) => {
 
             _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
 
-            const { filteredContent, filteredCount } = createContent(_grid);
-            _grid.current._totalCount = filteredCount;
-            return { ...state, _test: filteredContent, _totalCount: filteredCount };
+            const { viewContent, viewCount } = createContent(_grid);
+            _grid.current._totalCount = viewCount;
+            return { ...state, _test: viewContent, _totalCount: viewCount };
         }
         /**
          * Update Row Data
@@ -685,7 +680,7 @@ const reducer = (state: any, action: any) => {
                 };
             });
 
-            return { ...state, _test: createContent(_grid).filteredContent };
+            return { ...state, _test: createContent(_grid).viewContent };
         }
         /**
          * Toggle Group
@@ -694,7 +689,7 @@ const reducer = (state: any, action: any) => {
             const { _grid, groupKey, open } = action.payload;
             _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
 
-            return { ...state, _test: createContent(_grid).filteredContent };
+            return { ...state, _test: createContent(_grid).viewContent };
         }
         /**
          * Sort
@@ -746,7 +741,7 @@ const reducer = (state: any, action: any) => {
 
             _grid.current._sort = _sort;
 
-            return { ...state, _sort, _test: createContent(_grid).filteredContent };
+            return { ...state, _sort, _test: createContent(_grid).viewContent };
         }
         /**
          * Handler
@@ -799,11 +794,11 @@ const reducer = (state: any, action: any) => {
         case "handleChangePage": {
             const { _grid, next } = action.payload;
 
-            const { filteredContent } = createContent(_grid);
+            const { viewContent } = createContent(_grid);
 
             let nextState = {
                 ...state,
-                _test: filteredContent,
+                _test: viewContent,
                 _page: next,
                 _checked: [],
                 _selectedRow: null,
@@ -814,11 +809,11 @@ const reducer = (state: any, action: any) => {
         case "handleChangeSize": {
             const { _grid, next } = action.payload;
 
-            const { filteredContent } = createContent(_grid);
+            const { viewContent } = createContent(_grid);
 
             let nextState = {
                 ...state,
-                _test: filteredContent,
+                _test: viewContent,
                 _page: 0,
                 _size: next,
                 _checked: [],

@@ -80,6 +80,16 @@ export const useGrid = (props: UseGridProps) => {
             _size,
             _setPage,
             _setSize,
+
+            /**
+             * _dataCreated         : data created time
+             * _dataUpdated         : data updated time
+             * _origin              : original data
+             * _content             : current data
+             * _originTotalCount    : original total count
+             * _totalCount          : current total count
+             *
+             */
         };
     }
 
