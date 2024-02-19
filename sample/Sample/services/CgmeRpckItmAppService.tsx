@@ -139,7 +139,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: "blGwght", align: "right", type: "number", thousandSeparator: true }],
         },
         {
-            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "COM_0100" }],
+            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "COM_0100", viewType: "label" }],
         },
     ],
 };
@@ -172,6 +172,7 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
             controlSize: 10,
             comnCd: "COM_0100",
             all: true,
+            viewType: "both",
         },
         text: { type: "text" },
         check: { type: "checkbox", options: [{ label: "Y", value: "Y" }] },

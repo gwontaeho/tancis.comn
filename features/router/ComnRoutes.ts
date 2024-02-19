@@ -20,7 +20,7 @@ export const ComnRoutes = [
                         to: "/comn/smpl/guide/Validation",
                     },
                     {
-                        name: "백앤드 호출",
+                        name: "Back-End 호출",
                         to: "/comn/smpl/guide/Api",
                     },
                     {
