@@ -369,7 +369,10 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.schema.field13}></Group.Control>
+                                <Group.Control
+                                    {...form.schema.field13}
+                                    popupParams={{ coDclaTpCd: "AL" }}
+                                ></Group.Control>
                                 <Group.Label label="업체신고 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/coDclaCdPpup</Group.Any>

@@ -11,7 +11,8 @@ export const CompanyDeclareCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage } = usePopup();
+    const { close, postMessage, getParams } = usePopup();
+    const params = getParams();
 
     const form = {
         coDclaCdSrch: useForm({
@@ -67,10 +68,11 @@ export const CompanyDeclareCodeList = (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
+                            href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coDclaTpNm });
+                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coNm });
                                 close();
                             }}
                         >
@@ -83,6 +85,10 @@ export const CompanyDeclareCodeList = (props: any) => {
     };
 
     useEffect(() => {
+        if (params.coDclaTpCd) {
+            form.coDclaCdSrch.setValue("coDclaTpCd", params.coDclaTpCd);
+            form.coDclaCdSrch.setSchema("coDclaTpCd", { readOnly: true });
+        }
         handler.click_Btn_Srch();
     }, []);
 
