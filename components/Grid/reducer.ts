@@ -136,32 +136,40 @@ const group = (_grid: any, content: any) => {
     return getGrouped(content, groups[0], 0, [], "");
 };
 
-/**
- * ## Content Maker
- */
+/** ## Content Maker */
 const createContent = (_grid: any) => {
-    let viewContent = [..._grid.current._content];
+    /*
+        Set Below
+        _content, _view, _totalCount, _viewCount
+     */
+
+    let content = [..._grid.current._content];
+    let view;
+    let totalCount;
+    let viewCount;
 
     if (Object.keys(_grid.current._group).length) {
-        viewContent = group(_grid, _grid.current._content);
+        /* grouped  */
+        content = group(_grid, _grid.current._content);
     } else {
-        viewContent = sort(_grid, viewContent);
-        console.log(viewContent);
-        _grid.current._content = viewContent;
+        /* not grouped */
+        content = sort(_grid, content);
+        console.log(content);
+        _grid.current._content = content;
     }
 
     /*  */
-    viewContent = viewContent.filter(({ __type }: any) => __type !== "deleted");
+    content = content.filter(({ __type }: any) => __type !== "deleted");
 
-    let viewCount = viewContent.length;
+    viewCount = content.length;
 
     // Paging
     if (_grid.current._pagination === "in") {
-        viewContent = lodash.chunk(viewContent, _grid.current._size)[_grid.current._page] || [];
+        content = lodash.chunk(content, _grid.current._size)[_grid.current._page] || [];
     }
-    _grid.current._paged = viewContent;
+    _grid.current._view = content;
 
-    return { viewContent, viewCount };
+    return { viewContent: content, viewCount };
 };
 
 /**
@@ -283,8 +291,6 @@ const createInitialState = ({ _grid, data }: any) => {
         __t = new Date();
     }
 
-    _grid.current._dataCreated = __t;
-    _grid.current._dataUpdated = __t;
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
@@ -352,7 +358,6 @@ const reducer = (state: any, action: any) => {
                 __type: "origin",
             }));
 
-            _grid.current._dataUpdated = new Date();
             _grid.current._origin = content;
             _grid.current._content = content;
             _grid.current._checked = [];
@@ -684,12 +689,12 @@ const reducer = (state: any, action: any) => {
             let _checked = [];
             if (event.target.checked) {
                 _checked = condition
-                    ? _grid.current._paged
+                    ? _grid.current._view
                           .filter((_: any) => {
                               return condition(_);
                           })
                           .map(({ __key }: any) => __key)
-                    : _grid.current._paged.map(({ __key }: any) => __key);
+                    : _grid.current._view.map(({ __key }: any) => __key);
             }
             _grid.current._checked = _checked;
             return { ...state, _checked };

@@ -82,8 +82,6 @@ export const useGrid = (props: UseGridProps) => {
             _setSize,
 
             /**
-             * _dataCreated
-             * _dataUpdated
              * _origin
              * _content
              * _originTotalCount
