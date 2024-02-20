@@ -72,7 +72,7 @@ export const CompanyDeclareCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coDclaTpNm });
+                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coNm });
                                 close();
                             }}
                         >

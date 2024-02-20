@@ -477,7 +477,7 @@ export const comnUtils = {
             case "wrhsCd":
                 return code.wrhsNm;
             case "coDclaCd":
-                return code.coDclaTpNm;
+                return code.coNm;
             case "orgDeptCd":
                 return code.deptNm;
             case "cstmCd":
