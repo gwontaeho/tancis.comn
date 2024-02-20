@@ -5,7 +5,7 @@ export const useAuth = () => {
     const [auth, setAuth] = useRecoilState(authState);
 
     const get = (key: string): any => {
-        return auth[key];
+        return auth?.userInfo?.[key];
     };
     return { get };
 };

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { TGridSchema, useForm, useModal, useStore } from "@/comn/hooks";
+import { TGridSchema, useAuth, useForm, useModal, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { utils as xlsxUtils, writeFile, read } from "xlsx";
@@ -68,7 +68,7 @@ const schema1: TGridSchema = {
         group: ["q"],
     },
     head: [
-        { id: "test", cells: [{ binding: "q", rowspan: 2, width: "50%" }] },
+        { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         {
             cells: [
                 { binding: "w", width: 200 },
@@ -165,8 +165,8 @@ export const Temp = () => {
             schema: {
                 text: { label: "text", type: "text" },
                 date: { label: "date", type: "date" },
-                select: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100", viewType: "label" },
-                radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "COM_0100", viewType: "value" },
+                select: { label: "select", type: "select", area: "currCd", viewType: "label" },
+                radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
                 checkbox: {
                     label: "checkbox",
                     type: "checkbox",
@@ -174,7 +174,7 @@ export const Temp = () => {
                     comnCd: "COM_0100",
                     viewType: "both",
                 },
-                code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100", maxLength: 3 },
+                code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
             },
         },
     });
@@ -211,27 +211,6 @@ export const Temp = () => {
     const data2 = getMockDataWithPaging({ data, page, size });
 
     const _test = {
-        radio: (data: any) => {
-            return true;
-        },
-        checkbox: (data: any) => {
-            return false;
-        },
-        // head: {
-        //     a: (data: any) => {
-        //         /**
-        //          * # data
-        //          * id
-        //          * header
-        //          * binding
-        //          */
-        //         return (
-        //             <Layout>
-        //                 <FormControl />
-        //             </Layout>
-        //         );
-        //     },
-        // },
         cell: {
             q: (data: any) => {
                 /**
@@ -304,7 +283,7 @@ export const Temp = () => {
                             <button onClick={() => form.setEditable(true)}>setEdit true</button>
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
-                            <button onClick={() => form.setValue("code", null)}>set value</button>
+                            <button onClick={() => form.setValue("code", "aud")}>set value</button>
                         </Group.Row>
                     </Group.Section>
 
@@ -324,7 +303,7 @@ export const Temp = () => {
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => setData(data2)}>set data</button>
                     <button onClick={() => resetData()}>reset</button>
-                    <button onClick={() => addRow({ text: "added" })}>add row</button>
+                    <button onClick={() => addRow({ text: "added", q: "asd" })}>add row</button>
                     <button onClick={() => setSize(30)}>setSize 30</button>
                     <button onClick={() => setPage(2)}>setPage 2</button>
                     <button onClick={() => setOption("height", 500)}>set height</button>

@@ -82,12 +82,29 @@ export const useGrid = (props: UseGridProps) => {
             _setSize,
 
             /**
-             * _dataCreated         : data created time
-             * _dataUpdated         : data updated time
-             * _origin              : original data
-             * _content             : current data
-             * _originTotalCount    : original total count
-             * _totalCount          : current total count
+             * _origin
+             * _content
+             * _originTotalCount
+             * _totalCount
+             * _sort
+             * _rect
+             * _checked
+             * _groupStatus
+             * _selectedRow
+             * _selectedCel
+             *
+             * _add
+             * _edit
+             * _index
+             * _radio
+             * _delete
+             * _checkbox
+             * _pagination
+             * _exportExcel
+             * _importExcel
+             * _autoHeight
+             * _height
+             * _group
              *
              */
         };
@@ -124,10 +141,15 @@ export const useGrid = (props: UseGridProps) => {
         return _grid.current._origin;
     };
     const getChecked = () => {
-        return _grid.current._checked;
+        return _grid.current._checked.length
+            ? _grid.current._content.filter(({ __key }: any) => _grid.current._checked.includes(__key))
+            : [];
     };
     const getSelectedRow = () => {
-        return _grid.current._selectedRow;
+        return (
+            _grid.current._selectedRow &&
+            _grid.current._content.find(({ __key }: any) => __key === _grid.current._selectedRow)
+        );
     };
     const getSelectedCell = () => {
         return _grid.current._selectedCel;

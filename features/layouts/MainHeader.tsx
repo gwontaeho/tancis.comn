@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { authState, routeState } from "@/comn/features/recoil";
-import { useTheme } from "@/comn/hooks";
+import { useTheme, useToast } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
 import { routes } from "@/comn/features/router";
@@ -92,14 +92,20 @@ const Logo = () => {
 const Header = () => {
     const { theme, setTheme } = useTheme();
     const { t } = useTranslation();
-    const resetAuth = useResetRecoilState(authState);
+    const setAuth = useSetRecoilState(authState);
+    const { showToast } = useToast();
 
     const [open, setOpen] = useState(false);
 
     const signOut = () => {
         console.log("Sign Out");
         Cookies.remove("accessToken");
-        resetAuth();
+        setAuth({
+            userInfo: {},
+            isSignedIn: false,
+            signedAt: null,
+        });
+        showToast({ content: "Sign Out" });
     };
 
     return (

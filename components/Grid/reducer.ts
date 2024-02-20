@@ -77,93 +77,99 @@ const fun = (schema: any) => {
     return tt;
 };
 
-/**
- * ## Content Maker
- */
-const createContent = (_grid: any) => {
-    const sort = (data: any) => {
-        const [iteratees, orders] = lodash
-            .sortBy(Object.entries(_grid.current._sort), [
-                (o: any) => {
-                    return o[1].seq;
-                },
-            ])
-            .reduce(
-                (p: any, c: any) => {
-                    return [
-                        [...p[0], c[0]],
-                        [...p[1], c[1].val],
-                    ];
-                },
-                [[], []],
-            );
-
-        return lodash.orderBy(data, iteratees, orders);
-    };
-
-    let viewContent = [..._grid.current._content];
-
-    // Grouping & Sorting
-    if (Object.keys(_grid.current._group).length) {
-        const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [
+const sort = (_grid: any, content: any) => {
+    const [iteratees, orders] = lodash
+        .sortBy(Object.entries(_grid.current._sort), [
             (o: any) => {
                 return o[1].seq;
             },
-        ]);
+        ])
+        .reduce(
+            (p: any, c: any) => {
+                return [
+                    [...p[0], c[0]],
+                    [...p[1], c[1].val],
+                ];
+            },
+            [[], []],
+        );
 
-        const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
-            if (!by) return sort(data);
+    return lodash.orderBy(content, iteratees, orders);
+};
 
-            const depth = prevDepth + 1;
-            const parent = [...prevParent, by];
+const group = (_grid: any, content: any) => {
+    const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
 
-            return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
-                if (curr[0] === "undefined") return curr[1];
+    const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
+        if (!by) return sort(_grid, data);
 
-                const groupKey = prevGroupKey + "__" + curr[0];
+        const depth = prevDepth + 1;
+        const parent = [...prevParent, by];
 
-                if (_grid.current._groupStatus[groupKey] === undefined) {
-                    _grid.current._groupStatus[groupKey] = { open: true };
-                }
+        return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
+            const groupKey = prevGroupKey + "__" + curr[0];
 
-                const open = _grid.current._groupStatus[groupKey].open;
-                const row = {
-                    __key: uuid(),
-                    __type: "group",
-                    open,
-                    depth,
-                    groupKey,
-                    value: curr[0],
-                    binding: by[0],
-                    count: curr[1].length,
-                };
+            if (_grid.current._groupStatus[groupKey] === undefined) {
+                _grid.current._groupStatus[groupKey] = { open: true };
+            }
 
-                if (open) {
-                    return [...prev, row, ...getGrouped(curr[1], groups[depth], depth, parent, groupKey)];
-                } else {
-                    return [...prev, row];
-                }
-            }, []);
-        };
+            const open = _grid.current._groupStatus[groupKey].open;
+            const row = {
+                __key: uuid(),
+                __type: "group",
+                open,
+                depth,
+                groupKey,
+                value: curr[0],
+                binding: by[0],
+                count: curr[1].length,
+            };
 
-        viewContent = getGrouped(_grid.current._content, groups[0], 0, [], "");
+            if (open) {
+                return [...prev, row, ...getGrouped(curr[1], groups[depth], depth, parent, groupKey)];
+            } else {
+                return [...prev, row];
+            }
+        }, []);
+    };
+
+    return getGrouped(content, groups[0], 0, [], "");
+};
+
+/** ## Content Maker */
+const createContent = (_grid: any) => {
+    /*
+        Set Below
+        _content, _view, _totalCount, _viewCount
+     */
+
+    let content = [..._grid.current._content];
+    let view;
+    let totalCount;
+    let viewCount;
+
+    if (Object.keys(_grid.current._group).length) {
+        /* grouped  */
+        content = group(_grid, _grid.current._content);
     } else {
-        viewContent = sort(viewContent);
-        _grid.current._content = viewContent;
+        /* not grouped */
+        content = sort(_grid, content);
+        console.log(content);
+        _grid.current._content = content;
     }
 
     /*  */
-    viewContent = viewContent.filter(({ __type }: any) => __type !== "deleted");
+    content = content.filter(({ __type }: any) => __type !== "deleted");
 
-    let viewCount = viewContent.length;
+    viewCount = content.length;
 
     // Paging
     if (_grid.current._pagination === "in") {
-        viewContent = lodash.chunk(viewContent, _grid.current._size)[_grid.current._page] || [];
+        content = lodash.chunk(content, _grid.current._size)[_grid.current._page] || [];
     }
-    _grid.current._paged = viewContent;
+    _grid.current._view = content;
 
-    return { viewContent, viewCount };
+    return { viewContent: content, viewCount };
 };
 
 /**
@@ -285,8 +291,6 @@ const createInitialState = ({ _grid, data }: any) => {
         __t = new Date();
     }
 
-    _grid.current._dataCreated = __t;
-    _grid.current._dataUpdated = __t;
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
@@ -354,7 +358,6 @@ const reducer = (state: any, action: any) => {
                 __type: "origin",
             }));
 
-            _grid.current._dataUpdated = new Date();
             _grid.current._origin = content;
             _grid.current._content = content;
             _grid.current._checked = [];
@@ -386,10 +389,8 @@ const reducer = (state: any, action: any) => {
 
             return nextState;
         }
-        /**
-         * Reset to Origin
-         *
-         */
+
+        /* Set Data Origin */
         case "resetData": {
             const { _grid } = action.payload;
 
@@ -402,9 +403,7 @@ const reducer = (state: any, action: any) => {
                 _test: createContent(_grid).viewContent,
             };
         }
-        /**
-         * Change Show
-         */
+        /* Set Show Option */
         case "setShow": {
             const { type, target, value } = action.payload;
             switch (type) {
@@ -437,39 +436,45 @@ const reducer = (state: any, action: any) => {
                     return state;
             }
         }
-        /**
-         * Change Option
-         */
+
+        /* Set Option */
         case "setOption": {
             const { _grid, target, value } = action.payload;
 
             let _options = { ...state._options };
             let _body = [...state._body];
 
-            if (target === "height") {
-                if (value === "auto") {
-                    _grid.current._height = _grid.current._listInner.clientHeight;
-                    _grid.current._autoHeight = true;
-                    _options.height = _grid.current._listInner.clientHeight;
-                } else {
-                    _grid.current._height = value;
-                    _grid.current._autoHeight = false;
-                    _options.height = value;
+            switch (target) {
+                case "height": {
+                    if (value === "auto") {
+                        _grid.current._height = _grid.current._listInner.clientHeight;
+                        _grid.current._autoHeight = true;
+                        _options.height = _grid.current._listInner.clientHeight;
+                    } else {
+                        _grid.current._height = value;
+                        _grid.current._autoHeight = false;
+                        _options.height = value;
+                    }
+                    break;
                 }
-            }
-
-            if (target === "edit") {
-                _body = _body.map((_: any) => {
-                    return {
-                        ..._,
-                        edit: value,
-                        cells: _.cells.map((__: any) => {
-                            return { ...__, edit: value };
-                        }),
-                    };
-                });
-                _grid.current._edit = value;
-                _options.edit = value;
+                case "edit": {
+                    _body = _body.map((_: any) => {
+                        return {
+                            ..._,
+                            edit: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, edit: value };
+                            }),
+                        };
+                    });
+                    _grid.current._edit = value;
+                    _options.edit = value;
+                    break;
+                }
+                default:
+                    _grid.current[target] = value;
+                    _options[target] = value;
+                    break;
             }
 
             return { ...state, _options, _body, _bodyCells: fun(_body) };
@@ -531,137 +536,76 @@ const reducer = (state: any, action: any) => {
             }
         }
 
-        /**
-         * Delete
-         *
-         */
+        /* Delete Row */
         case "delete": {
             const { _grid, type } = action.payload;
             if (_grid.current._pagination === "out" || !type) return state;
-
             let nextState = { ...state };
-
+            let toBeDeleted: any[] = [];
+            /* Selected Row */
             if (type === "radio") {
                 if (!_grid.current._selectedRow) return state;
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (_.__key === _grid.current._selectedRow.__key) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                nextState = { ...nextState, _selectedRow: null };
+                toBeDeleted.push(_grid.current._selectedRow);
             }
-
+            /* Checked Row */
             if (type === "checkbox") {
                 if (!_grid.current._checked.length) return state;
-
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (_grid.current._checked.map((_: any) => _.__key).includes(_.__key)) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._checked = [];
-                nextState = { ...nextState, checked: null };
+                toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
             }
-
+            /* Selected & Checked Row */
             if (type === "all") {
-                const c = _grid.current._checked;
-                const s = _grid.current._selectedRow;
-                const a = [...c, s].filter((_) => _);
-                if (!a.length) return state;
-
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (a.map((_: any) => _.__key).includes(_.__key)) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                _grid.current._checked = [];
-
-                nextState = { ...nextState, _selectedRow: null, _checked: [] };
+                if (!_grid.current._selectedRow && !_grid.current._checked.length) return state;
+                if (_grid.current._selectedRow) toBeDeleted.push(_grid.current._selectedRow);
+                if (_grid.current._checked.length) toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
             }
-
+            /* One Row */
             if (typeof type === "object" && type.__key) {
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (_.__key === type.__key) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                _grid.current._checked = [];
+                toBeDeleted.push(type.__key);
             }
-
+            /* Multiple Row */
             if (Array.isArray(type)) {
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (type.map((_: any) => _.__key).includes(_.__key)) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                _grid.current._checked = [];
+                toBeDeleted = [...toBeDeleted, ...type.map(({ __key }) => __key)];
             }
+
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (toBeDeleted.includes(_.__key)) {
+                        if (_.type === "added") return;
+                        return { ..._, __type: "deleted" };
+                    } else return _;
+                })
+                .filter((_: any) => _ !== undefined);
 
             const { viewContent, viewCount } = createContent(_grid);
 
+            _grid.current._checked = [];
             _grid.current._selectedCel = null;
+            _grid.current._selectedRow = null;
             _grid.current._totalCount = viewCount;
-
+            nextState._checked = [];
             nextState._selectedCel = null;
-            nextState._test = viewContent;
+            nextState._selectedRow = null;
             nextState._totalCount = viewCount;
-
+            nextState._test = viewContent;
             return nextState;
         }
-        /**
-         * Add
-         */
+
+        /* Add Row  */
         case "add": {
             const { _grid, data } = action.payload;
             if (_grid.current._pagination === "out") return state;
-
             _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
 
             const { viewContent, viewCount } = createContent(_grid);
+
             _grid.current._totalCount = viewCount;
             return { ...state, _test: viewContent, _totalCount: viewCount };
         }
-        /**
-         * Update Row Data
-         */
+
+        /* Update Row */
         case "update": {
             const { _grid, data } = action.payload;
-
-            if (!data?.__key) break;
+            if (!data?.__key) return state;
 
             _grid.current._content = _grid.current._content.map((_: any) => {
                 if (_.__key !== data.__key) return _;
@@ -682,37 +626,23 @@ const reducer = (state: any, action: any) => {
 
             return { ...state, _test: createContent(_grid).viewContent };
         }
-        /**
-         * Toggle Group
-         */
+        /* Group */
         case "group": {
             const { _grid, groupKey, open } = action.payload;
             _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
-
             return { ...state, _test: createContent(_grid).viewContent };
         }
-        /**
-         * Sort
-         */
+        /* Sort */
         case "sort": {
             const { _grid, binding } = action.payload;
-
             let _sort = _grid.current._sort;
-
-            /** prev */
             const prev = _sort[binding];
-
             if (prev) {
                 const pval = prev.val;
                 const pseq = prev.seq;
-
                 if (pval === "asc") {
-                    _sort[binding] = {
-                        seq: pseq,
-                        val: "desc",
-                    };
+                    _sort[binding] = { seq: pseq, val: "desc" };
                 }
-
                 if (pval === "desc") {
                     delete _sort[binding];
                 }
@@ -721,79 +651,57 @@ const reducer = (state: any, action: any) => {
                     .map(([__, v]: any) => v?.seq)
                     .filter((_) => _ !== undefined);
                 const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
-                _sort[binding] = {
-                    seq: nseq,
-                    val: "asc",
-                };
+                _sort[binding] = { seq: nseq, val: "asc" };
             }
-
             _sort = Object.fromEntries(
                 lodash
-                    .sortBy(Object.entries(_sort), [
-                        (a: any) => {
-                            return a[1].seq;
-                        },
-                    ])
-                    .map(([k, v]: any, i: any) => {
-                        return [k, { ...v, seq: i }];
-                    }),
+                    .sortBy(Object.entries(_sort), [(a: any) => a[1].seq])
+                    .map(([k, v]: any, i: any) => [k, { ...v, seq: i }]),
             );
 
             _grid.current._sort = _sort;
-
-            return { ...state, _sort, _test: createContent(_grid).viewContent };
+            const { viewContent } = createContent(_grid);
+            return { ...state, _sort, _test: viewContent };
         }
-        /**
-         * Handler
-         *
-         */
+
+        /* Handle Select Cell  */
         case "handleClickCel": {
             const { key } = action.payload;
-
             return { ...state, _selectedCel: key };
         }
+        /* Handle Select Row (Radio) */
+        case "handleSelect": {
+            const { _grid, event, rowKey } = action.payload;
+            _grid.current._selectedRow = rowKey;
+            return { ...state, _selectedRow: rowKey };
+        }
+        /* Handle Check Row (Checkbox) */
         case "handleCheck": {
-            const { _grid, event, rowProps } = action.payload;
+            const { _grid, event, rowKey } = action.payload;
             let _checked = [...state._checked];
-
-            if (event.target.checked) {
-                _checked = [..._checked, rowProps];
-            } else {
-                _checked = _checked.filter(({ __key }: any) => __key !== rowProps.__key);
-            }
-
+            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey.__key);
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
+        /* Handle Check All Row (Checkbox) */
         case "handleCheckAll": {
             const { _grid, event, condition } = action.payload;
-
-            let _checked;
-
+            let _checked = [];
             if (event.target.checked) {
-                if (condition) {
-                    _checked = _grid.current._paged.filter((_: any) => {
-                        return condition(_);
-                    });
-                } else {
-                    _checked = _grid.current._paged;
-                }
-            } else {
-                _checked = [];
+                _checked = condition
+                    ? _grid.current._view
+                          .filter((_: any) => {
+                              return condition(_);
+                          })
+                          .map(({ __key }: any) => __key)
+                    : _grid.current._view.map(({ __key }: any) => __key);
             }
-
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
-        case "handleSelect": {
-            const { _grid, event, rowProps } = action.payload;
-            _grid.current._selectedRow = rowProps;
 
-            return { ...state, _selectedRow: rowProps };
-        }
         case "handleChangePage": {
             const { _grid, next } = action.payload;
-
             const { viewContent } = createContent(_grid);
 
             let nextState = {
@@ -808,7 +716,6 @@ const reducer = (state: any, action: any) => {
         }
         case "handleChangeSize": {
             const { _grid, next } = action.payload;
-
             const { viewContent } = createContent(_grid);
 
             let nextState = {
@@ -823,9 +730,7 @@ const reducer = (state: any, action: any) => {
             return nextState;
         }
 
-        /**
-         * Readjust Height
-         */
+        /* Readjust Row Height */
         case "readjustHeight": {
             const { value } = action.payload;
             return { ...state, _options: { ...state._options, height: value } };
