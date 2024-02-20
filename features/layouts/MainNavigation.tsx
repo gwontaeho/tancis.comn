@@ -6,13 +6,14 @@ import Cookies from "js-cookie";
 
 import { authState } from "@/comn/features/recoil";
 
-import { useModal, useAuth } from "@/comn/hooks";
+import { useModal, useAuth, useToast } from "@/comn/hooks";
 import { Collapse, Icon, Button } from "@/comn/components";
 
 import { routes } from "@/comn/features/router";
 import { routeState } from "@/comn/features/recoil";
 import { createPortal } from "react-dom";
 import axios from "axios";
+import dayjs from "dayjs";
 
 type NavItemProps = {
     children?: any[];
@@ -156,6 +157,8 @@ const Auth = () => {
     const [id, setId] = useState("");
     const [tin, setTin] = useState("");
 
+    const { showToast } = useToast();
+
     useEffect(() => {
         if (open) document.body.style.overflow = "hidden";
         else document.body.style.overflow = "auto";
@@ -196,7 +199,9 @@ const Auth = () => {
             if (accessToken)
                 Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken);
 
-            setAuth({ isSignedIn: true, userInfo });
+            setAuth({ isSignedIn: true, userInfo, signedAt: new Date() });
+            setOpen(false);
+            showToast({ content: "Sign In" });
 
             console.groupCollapsed(type + " ; User Below Signed In");
             console.table(userInfo);
@@ -208,17 +213,27 @@ const Auth = () => {
 
     return (
         <>
-            <div className="bg-uf-auth m-4 p-4 rounded space-y-2">
-                <Button width="full" height="lg" onClick={handleClick}>
-                    login
-                </Button>
-                <Button variant="outlined" width="full" height="lg">
-                    regist
-                </Button>
-                <Button variant="underlined" width="full">
-                    Forgot your ID or Password?
-                </Button>
-            </div>
+            {auth.isSignedIn ? (
+                <div className="bg-uf-auth m-4 p-4 rounded space-y-1">
+                    <p>tin : {auth?.userInfo?.tin}</p>
+                    <p>userId : {auth?.userInfo?.userId}</p>
+                    <p>userName : {auth?.userInfo?.userName}</p>
+                    <p>userStatus : {auth?.userInfo?.userStatus}</p>
+                    <p>signed : {dayjs(auth?.signedAt).format("YYYY-MM-DD HH:mm")}</p>
+                </div>
+            ) : (
+                <div className="bg-uf-auth m-4 p-4 rounded space-y-2">
+                    <Button width="full" height="lg" onClick={handleClick}>
+                        login
+                    </Button>
+                    <Button variant="outlined" width="full" height="lg">
+                        regist
+                    </Button>
+                    <Button variant="underlined" width="full">
+                        Forgot your ID or Password?
+                    </Button>
+                </div>
+            )}
 
             {open &&
                 createPortal(

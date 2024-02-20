@@ -59,10 +59,20 @@ export const storeState = atom<Record<string, any>>({
 
 export const authState = atom<Record<string, any>>({
     key: "authState",
-    default: {
-        userInfo: {},
-        isSignedIn: false,
-    },
+    default: localStorage.getItem("auth")
+        ? JSON.parse(localStorage.getItem("auth") as string)
+        : {
+              userInfo: {},
+              isSignedIn: false,
+              signedAt: null,
+          },
+    effects: [
+        ({ onSet }) => {
+            onSet((n, o) => {
+                localStorage.setItem("auth", JSON.stringify(n));
+            });
+        },
+    ],
 });
 
 // 임시
