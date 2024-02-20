@@ -119,6 +119,7 @@ const group = (_grid: any, content: any) => {
                 binding: by[0],
                 count: curr[1].length,
             };
+
             if (open) {
                 return [...prev, row, ...getGrouped(curr[1], groups[depth], depth, parent, groupKey)];
             } else {
@@ -137,14 +138,9 @@ const group = (_grid: any, content: any) => {
  */
 const createView = (_grid: any) => {
     let view = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-    if (Object.keys(_grid.current._group).length) {
-        view = group(_grid, view);
-    } else {
-        view = sort(_grid, view);
-    }
-    if (_grid.current._pagination === "in") {
-        view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
-    }
+    if (Object.keys(_grid.current._group).length) view = group(_grid, view);
+    else view = sort(_grid, view);
+    if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     _grid.current._view = view;
     return view;
 };
@@ -393,7 +389,7 @@ const reducer = (state: any, action: any) => {
             _grid.current._content = _grid.current._content
                 .map((_: any) => {
                     if (toBeDeleted.includes(_.__key)) {
-                        if (_.type === "added") return;
+                        if (_.__type === "added") return;
                         return { ..._, __type: "deleted" };
                     } else return _;
                 })

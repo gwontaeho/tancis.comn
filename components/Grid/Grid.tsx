@@ -235,14 +235,25 @@ const Row = memo((props: any) => {
         <div style={{ ...style }}>
             {/* Group */}
             {rowType === "group" && (
-                <div ref={rowRefCallback} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
-                    <button
+                <div
+                    ref={rowRefCallback}
+                    className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
+                >
+                    {_options.checkbox && <div className="uf-grid-option bg-uf-border" />}
+                    {_options.radio && <div className="uf-grid-option bg-uf-border" />}
+                    {_options.index && <div className="uf-grid-option bg-uf-border" />}
+
+                    {/* <button
                         className="flex items-center justify-center w-[2rem] h-full"
                         onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
                     >
                         <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
-                    </button>
-                    <div className="px-1">{`${row.binding}가 ${row.value}이고 ${row.count}개`}</div>
+                    </button> */}
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        <div className="flex items-center justify-end px-1">a</div>
+                        <div className="flex items-center justify-end px-1">a</div>
+                        <div className="flex items-center justify-end px-1">a</div>
+                    </div>
                 </div>
             )}
 
