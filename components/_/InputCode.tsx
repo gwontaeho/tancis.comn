@@ -109,7 +109,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
             next = option?.value || "";
         }
 
-        handleValueChange("");
+        handleValueChange(next);
     }, [value, __t]);
 
     /**
