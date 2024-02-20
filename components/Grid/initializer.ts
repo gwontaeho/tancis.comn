@@ -51,22 +51,7 @@ const useInitialize = (props: any) => {
         _grid.current._handleCheckAll = (event: any) => {
             dispatch({ type: "handleCheckAll", payload: { _grid, event, condition: render?.checkbox } });
         };
-
-        _grid.current._handleUpdate = (data: any) => {
-            dispatch({ type: "update", payload: { _grid, data } });
-        };
-        _grid.current._handleAdd = (data: any) => {
-            dispatch({ type: "add", payload: { _grid, data } });
-        };
-        _grid.current._handleDelete = (type: any) => {
-            dispatch({ type: "delete", payload: { _grid, type } });
-        };
-        _grid.current._handleSort = (binding: any) => {
-            dispatch({ type: "sort", payload: { _grid, binding } });
-        };
-        _grid.current._handleGroup = (groupKey: any, open: any) => {
-            dispatch({ type: "group", payload: { _grid, groupKey, open } });
-        };
+        /* Handle Click Cell */
         _grid.current._handleClickCel = (payload: any) => {
             const { key, binding, value, formattedValue, rowValues, onCellClick } = payload;
 
@@ -90,6 +75,27 @@ const useInitialize = (props: any) => {
                 dispatch({ type: "handleClickCel", payload: { key } });
             }
         };
+
+        _grid.current._handleUpdate = (data: any) => {
+            dispatch({ type: "update", payload: { _grid, data } });
+        };
+
+        /* Handle Add Row */
+        _grid.current._handleAdd = (data: any) => {
+            dispatch({ type: "add", payload: { _grid, data } });
+        };
+        /* Handle Delete Row */
+        _grid.current._handleDelete = (type: any) => {
+            dispatch({ type: "delete", payload: { _grid, type } });
+        };
+
+        _grid.current._handleSort = (binding: any) => {
+            dispatch({ type: "sort", payload: { _grid, binding } });
+        };
+        _grid.current._handleGroup = (groupKey: any, open: any) => {
+            dispatch({ type: "group", payload: { _grid, groupKey, open } });
+        };
+
         _grid.current._handlePage = (next: any) => {
             _grid.current._page = next;
             _grid.current._checked = [];

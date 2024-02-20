@@ -203,10 +203,11 @@ const Row = memo((props: any) => {
     const rowKey = row?.__key;
     const rowType = row?.__type;
 
-    const ref = useRef<any>();
+    const resizeObserverRef = useRef<any>(null);
+    const rowRefCallback = useCallback((ref: any) => {
+        if (!ref) return;
 
-    useEffect(() => {
-        const ro = new ResizeObserver((entries) => {
+        resizeObserverRef.current = new ResizeObserver((entries) => {
             requestAnimationFrame(() => {
                 entries.forEach((value) => {
                     if (value.contentRect.height === 0) return;
@@ -220,10 +221,13 @@ const Row = memo((props: any) => {
                 });
             });
         });
-        ro.observe(ref.current);
 
+        resizeObserverRef.current.observe(ref);
+    }, []);
+
+    useEffect(() => {
         return () => {
-            ro.disconnect();
+            resizeObserverRef.current.disconnect();
         };
     }, []);
 
@@ -231,7 +235,7 @@ const Row = memo((props: any) => {
         <div style={{ ...style }}>
             {/* Group */}
             {rowType === "group" && (
-                <div ref={ref} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
+                <div ref={rowRefCallback} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
                     <button
                         className="flex items-center justify-center w-[2rem] h-full"
                         onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
@@ -245,7 +249,7 @@ const Row = memo((props: any) => {
             {/* Row */}
             {rowType !== "group" && (
                 <div
-                    ref={ref}
+                    ref={rowRefCallback}
                     onClick={() => {
                         if (onRowClick) onRowClick(row);
                     }}

@@ -538,21 +538,20 @@ const reducer = (state: any, action: any) => {
             }
         }
 
-        /**
-         * Delete
-         *
-         */
+        /* Delete Row
+           type: radio | checkbox | all | object | array
+        */
         case "delete": {
             const { _grid, type } = action.payload;
             if (_grid.current._pagination === "out" || !type) return state;
-
             let nextState = { ...state };
+            let toBeDeleted = [];
 
             if (type === "radio") {
                 if (!_grid.current._selectedRow) return state;
                 _grid.current._content = _grid.current._content
                     .map((_: any) => {
-                        if (_.__key === _grid.current._selectedRow.__key) {
+                        if (_.__key === _grid.current._selectedRow) {
                             if (_.__type === "added") return undefined;
                             return { ..._, __type: "deleted" };
                         } else {
@@ -567,10 +566,9 @@ const reducer = (state: any, action: any) => {
 
             if (type === "checkbox") {
                 if (!_grid.current._checked.length) return state;
-
                 _grid.current._content = _grid.current._content
                     .map((_: any) => {
-                        if (_grid.current._checked.map((_: any) => _.__key).includes(_.__key)) {
+                        if (_grid.current._checked.includes(_.__key)) {
                             if (_.__type === "added") return undefined;
                             return { ..._, __type: "deleted" };
                         } else {
@@ -649,9 +647,8 @@ const reducer = (state: any, action: any) => {
 
             return nextState;
         }
-        /**
-         * Add
-         */
+
+        /* Add Row  */
         case "add": {
             const { _grid, data } = action.payload;
             if (_grid.current._pagination === "out") return state;
@@ -760,7 +757,6 @@ const reducer = (state: any, action: any) => {
         case "handleSelect": {
             const { _grid, event, rowKey } = action.payload;
             _grid.current._selectedRow = rowKey;
-
             return { ...state, _selectedRow: rowKey };
         }
         /* Handle Check Row (Checkbox) */
