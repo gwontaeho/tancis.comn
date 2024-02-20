@@ -283,7 +283,7 @@ export const Temp = () => {
                             <button onClick={() => form.setEditable(true)}>setEdit true</button>
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
-                            <button onClick={() => form.setValue("code", "AUD")}>set value</button>
+                            <button onClick={() => form.setValue("code", "aud")}>set value</button>
                         </Group.Row>
                     </Group.Section>
 

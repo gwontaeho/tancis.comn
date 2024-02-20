@@ -545,105 +545,52 @@ const reducer = (state: any, action: any) => {
             const { _grid, type } = action.payload;
             if (_grid.current._pagination === "out" || !type) return state;
             let nextState = { ...state };
-            let toBeDeleted = [];
+            let toBeDeleted: any[] = [];
 
             if (type === "radio") {
                 if (!_grid.current._selectedRow) return state;
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (_.__key === _grid.current._selectedRow) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                nextState = { ...nextState, _selectedRow: null };
+                toBeDeleted.push(_grid.current._selectedRow);
             }
-
             if (type === "checkbox") {
                 if (!_grid.current._checked.length) return state;
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (_grid.current._checked.includes(_.__key)) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._checked = [];
-                nextState = { ...nextState, checked: null };
+                toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
             }
-
             if (type === "all") {
-                const c = _grid.current._checked;
-                const s = _grid.current._selectedRow;
-                const a = [...c, s].filter((_) => _);
-                if (!a.length) return state;
-
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (a.map((_: any) => _.__key).includes(_.__key)) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                _grid.current._checked = [];
-
-                nextState = { ...nextState, _selectedRow: null, _checked: [] };
+                if (!_grid.current._selectedRow && !_grid.current._checked.length) return state;
+                if (_grid.current._selectedRow) toBeDeleted.push(_grid.current._selectedRow);
+                if (_grid.current._checked.length) toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
             }
-
             if (typeof type === "object" && type.__key) {
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (_.__key === type.__key) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                _grid.current._checked = [];
+                toBeDeleted.push(type.__key);
             }
-
             if (Array.isArray(type)) {
-                _grid.current._content = _grid.current._content
-                    .map((_: any) => {
-                        if (type.map((_: any) => _.__key).includes(_.__key)) {
-                            if (_.__type === "added") return undefined;
-                            return { ..._, __type: "deleted" };
-                        } else {
-                            return _;
-                        }
-                    })
-                    .filter((_: any) => _ !== undefined);
-
-                _grid.current._selectedRow = null;
-                _grid.current._checked = [];
+                toBeDeleted = [...toBeDeleted, ...type.map(({ __key }) => __key)];
             }
+
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (toBeDeleted.includes(_.__key)) {
+                        if (_.type === "added") return;
+                        return { ..._, __type: "deleted" };
+                    } else {
+                        return _;
+                    }
+                })
+                .filter((_: any) => _ !== undefined);
 
             const { viewContent, viewCount } = createContent(_grid);
 
+            _grid.current._checked = [];
             _grid.current._selectedCel = null;
+            _grid.current._selectedRow = null;
             _grid.current._totalCount = viewCount;
 
+            nextState._checked = [];
             nextState._selectedCel = null;
-            nextState._test = viewContent;
+            nextState._selectedRow = null;
             nextState._totalCount = viewCount;
+
+            nextState._test = viewContent;
 
             return nextState;
         }

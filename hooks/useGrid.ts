@@ -143,10 +143,15 @@ export const useGrid = (props: UseGridProps) => {
         return _grid.current._origin;
     };
     const getChecked = () => {
-        return _grid.current._content.filter(({ __key }: any) => _grid.current._checked.includes(__key));
+        return _grid.current._checked.length
+            ? _grid.current._content.filter(({ __key }: any) => _grid.current._checked.includes(__key))
+            : [];
     };
     const getSelectedRow = () => {
-        return _grid.current._selectedRow;
+        return (
+            _grid.current._selectedRow &&
+            _grid.current._content.find(({ __key }: any) => __key === _grid.current._selectedRow)
+        );
     };
     const getSelectedCell = () => {
         return _grid.current._selectedCel;
