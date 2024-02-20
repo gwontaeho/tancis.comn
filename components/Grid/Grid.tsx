@@ -71,7 +71,6 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             <div className="uf-grid-main">
                 {/* Head */}
                 <div ref={headRef} className="uf-grid-head">
-                    {Object.keys(_grid.current._groupStatus).length > 0 && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
@@ -82,7 +81,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                                       })
                                     : _test
                                 ).every(({ __key }: any) => {
-                                    return _checked.some((row: any) => row.__key === __key);
+                                    return _checked.some((_: any) => _ === __key);
                                 })}
                                 onChange={(event) => _grid.current._handleCheckAll(event)}
                             />
@@ -184,8 +183,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 
 /** row */
 const Row = memo((props: any) => {
-    const { data, index: rowIndex, style } = props;
-
+    const { data, index, style } = props;
     const { _grid, state, render, onCellClick, onRowClick } = data;
     const {
         _test,
@@ -200,13 +198,10 @@ const Row = memo((props: any) => {
         _template,
         _editingRow,
     } = state;
-    const { checkbox, radio, index } = _options;
 
-    const row = _test[rowIndex];
-
-    const rowKey = _grid.current._key + "." + rowIndex;
+    const row = _test[index];
+    const rowKey = row?.__key;
     const rowType = row?.__type;
-    const contentKey = row?.__key;
 
     const ref = useRef<any>();
 
@@ -215,9 +210,9 @@ const Row = memo((props: any) => {
             requestAnimationFrame(() => {
                 entries.forEach((value) => {
                     if (value.contentRect.height === 0) return;
-                    if (_grid.current._rect[rowIndex]?.height !== value.contentRect.height) {
-                        _grid.current._rect[rowIndex] = value.contentRect;
-                        _grid.current._listRef.resetAfterIndex(rowIndex);
+                    if (_grid.current._rect[index]?.height !== value.contentRect.height) {
+                        _grid.current._rect[index] = value.contentRect;
+                        _grid.current._listRef.resetAfterIndex(index);
                         if (_grid.current._autoHeight) {
                             _grid.current._readjustHeight();
                         }
@@ -225,7 +220,6 @@ const Row = memo((props: any) => {
                 });
             });
         });
-
         ro.observe(ref.current);
 
         return () => {
@@ -235,9 +229,9 @@ const Row = memo((props: any) => {
 
     return (
         <div style={{ ...style }}>
+            {/* Group */}
             {rowType === "group" && (
                 <div ref={ref} className="flex items-center h-[2.5rem] border-l border-l-uf-card-background">
-                    {row.depth > 0 && <div style={{ width: `${row.depth * 2}rem` }} />}
                     <button
                         className="flex items-center justify-center w-[2rem] h-full"
                         onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
@@ -247,6 +241,8 @@ const Row = memo((props: any) => {
                     <div className="px-1">{`${row.binding}가 ${row.value}이고 ${row.count}개`}</div>
                 </div>
             )}
+
+            {/* Row */}
             {rowType !== "group" && (
                 <div
                     ref={ref}
@@ -262,35 +258,40 @@ const Row = memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
-                    {Object.keys(_grid.current._groupStatus).length > 0 && (
-                        <div className="min-w-[2rem] max-w-[2rem]" />
-                    )}
-                    {checkbox && (
+                    {/* Checkbox */}
+                    {_options?.checkbox && (
                         <div className="uf-grid-option">
                             <input
-                                disabled={render?.checkbox ? !render?.checkbox?.(row) || undefined : undefined}
                                 type="checkbox"
-                                checked={_checked.some(({ __key }: any) => __key === contentKey)}
-                                onChange={(e) => _grid.current._handleCheck(e, row)}
+                                disabled={render?.checkbox ? !render?.checkbox?.(row) || undefined : undefined}
+                                checked={_checked.some((_: any) => _ === rowKey)}
+                                onChange={(event) => _grid.current._handleCheck(event, rowKey)}
                             />
                         </div>
                     )}
-                    {radio && (
+
+                    {/* Radio */}
+                    {_options?.radio && (
                         <div className="uf-grid-option">
                             <input
-                                disabled={render?.radio ? !render?.radio?.(row) || undefined : undefined}
                                 type="radio"
-                                checked={_selectedRow?.__key === row?.__key}
-                                onChange={(event) => _grid.current._handleSelect(event, row)}
+                                disabled={render?.radio ? !render?.radio?.(row) || undefined : undefined}
+                                checked={_selectedRow === rowKey}
+                                onChange={(event) => _grid.current._handleSelect(event, rowKey)}
                             />
                         </div>
                     )}
-                    {index && (
+
+                    {/* Index */}
+                    {_options?.index && (
                         <div className="uf-grid-option font-semibold">
-                            {index === "DESC" ? _totalCount - (_page * _size + rowIndex) : _page * _size + rowIndex + 1}
+                            {_options?.index === "DESC"
+                                ? _totalCount - (_page * _size + index)
+                                : _page * _size + index + 1}
                         </div>
                     )}
-                    {/* body columns */}
+
+                    {/* Body */}
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
                         {_bodyCells.map((_: any, rowIndex: any) => {
                             return _.map((cel: any, colIndex: any) => {
@@ -299,13 +300,13 @@ const Row = memo((props: any) => {
 
                                 const { binding, align, rowspan, colspan, edit, ...rest } = cel;
 
-                                const celKey = contentKey + ".gb." + rowIndex + "." + colIndex;
+                                const celKey = rowKey + ".gb." + rowIndex + "." + colIndex;
                                 const value = row[binding];
 
                                 const fv = comnUtils.getFormattedValue(value, rest);
                                 const uv = comnUtils.getUnformattedValue(value, rest);
                                 // const vldv = comnUtils.getValidatedValue(uv, rest);
-                                const isEdit = _editingRow.includes(contentKey) ? true : edit;
+                                const isEdit = _editingRow.includes(rowKey) ? true : edit;
 
                                 const celContext = {
                                     binding,

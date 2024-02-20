@@ -143,7 +143,7 @@ export const useGrid = (props: UseGridProps) => {
         return _grid.current._origin;
     };
     const getChecked = () => {
-        return _grid.current._checked;
+        return _grid.current._content.filter(({ __key }: any) => _grid.current._checked.includes(__key));
     };
     const getSelectedRow = () => {
         return _grid.current._selectedRow;

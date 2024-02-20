@@ -65,10 +65,10 @@ const schema1: TGridSchema = {
         height: 400,
         pagination: "in",
 
-        // group: ["q"],
+        group: ["q"],
     },
     head: [
-        { id: "test", cells: [{ binding: "q", rowspan: 2, width: "50%" }] },
+        { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         {
             cells: [
                 { binding: "w", width: 200 },
@@ -211,27 +211,6 @@ export const Temp = () => {
     const data2 = getMockDataWithPaging({ data, page, size });
 
     const _test = {
-        radio: (data: any) => {
-            return true;
-        },
-        checkbox: (data: any) => {
-            return false;
-        },
-        // head: {
-        //     a: (data: any) => {
-        //         /**
-        //          * # data
-        //          * id
-        //          * header
-        //          * binding
-        //          */
-        //         return (
-        //             <Layout>
-        //                 <FormControl />
-        //             </Layout>
-        //         );
-        //     },
-        // },
         cell: {
             q: (data: any) => {
                 /**

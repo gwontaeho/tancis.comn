@@ -750,54 +750,44 @@ const reducer = (state: any, action: any) => {
 
             return { ...state, _sort, _test: createContent(_grid).viewContent };
         }
-        /**
-         * Handler
-         *
-         */
+
+        /* Handle Select Cell  */
         case "handleClickCel": {
             const { key } = action.payload;
-
             return { ...state, _selectedCel: key };
         }
+        /* Handle Select Row (Radio) */
+        case "handleSelect": {
+            const { _grid, event, rowKey } = action.payload;
+            _grid.current._selectedRow = rowKey;
+
+            return { ...state, _selectedRow: rowKey };
+        }
+        /* Handle Check Row (Checkbox) */
         case "handleCheck": {
-            const { _grid, event, rowProps } = action.payload;
+            const { _grid, event, rowKey } = action.payload;
             let _checked = [...state._checked];
-
-            if (event.target.checked) {
-                _checked = [..._checked, rowProps];
-            } else {
-                _checked = _checked.filter(({ __key }: any) => __key !== rowProps.__key);
-            }
-
+            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey.__key);
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
+        /* Handle Check All Row (Checkbox) */
         case "handleCheckAll": {
             const { _grid, event, condition } = action.payload;
-
-            let _checked;
-
+            let _checked = [];
             if (event.target.checked) {
-                if (condition) {
-                    _checked = _grid.current._paged.filter((_: any) => {
-                        return condition(_);
-                    });
-                } else {
-                    _checked = _grid.current._paged;
-                }
-            } else {
-                _checked = [];
+                _checked = condition
+                    ? _grid.current._paged
+                          .filter((_: any) => {
+                              return condition(_);
+                          })
+                          .map(({ __key }: any) => __key)
+                    : _grid.current._paged.map(({ __key }: any) => __key);
             }
-
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
-        case "handleSelect": {
-            const { _grid, event, rowProps } = action.payload;
-            _grid.current._selectedRow = rowProps;
 
-            return { ...state, _selectedRow: rowProps };
-        }
         case "handleChangePage": {
             const { _grid, next } = action.payload;
 

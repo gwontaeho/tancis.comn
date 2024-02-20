@@ -38,15 +38,20 @@ const useInitialize = (props: any) => {
         _grid.current._setOption = (target: any, value: any) => {
             dispatch({ type: "setOption", payload: { _grid, target, value } });
         };
-        _grid.current._handleCheck = (event: any, rowProps: any) => {
-            dispatch({ type: "handleCheck", payload: { _grid, event, rowProps } });
+
+        /* Handle Select Row (Radio)  */
+        _grid.current._handleSelect = (event: any, rowKey: any) => {
+            dispatch({ type: "handleSelect", payload: { _grid, event, rowKey } });
         };
+        /* Handle Check Row (Checkbox) */
+        _grid.current._handleCheck = (event: any, rowKey: any) => {
+            dispatch({ type: "handleCheck", payload: { _grid, event, rowKey } });
+        };
+        /* Handle Check All Row (Checkbox) */
         _grid.current._handleCheckAll = (event: any) => {
             dispatch({ type: "handleCheckAll", payload: { _grid, event, condition: render?.checkbox } });
         };
-        _grid.current._handleSelect = (event: any, rowProps: any) => {
-            dispatch({ type: "handleSelect", payload: { _grid, event, rowProps } });
-        };
+
         _grid.current._handleUpdate = (data: any) => {
             dispatch({ type: "update", payload: { _grid, data } });
         };
