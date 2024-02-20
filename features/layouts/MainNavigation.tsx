@@ -157,6 +157,8 @@ const Auth = () => {
     const [id, setId] = useState("");
     const [tin, setTin] = useState("");
 
+    const [er, setEr] = useState(false);
+
     const { showToast } = useToast();
 
     useEffect(() => {
@@ -202,12 +204,17 @@ const Auth = () => {
             setAuth({ isSignedIn: true, userInfo, signedAt: new Date() });
             setOpen(false);
             showToast({ content: "Sign In" });
+            setId("");
+            setTin("");
+            setEr(false);
 
             console.groupCollapsed(type + " ; User Below Signed In");
             console.table(userInfo);
             console.groupEnd();
         } catch (error) {
             console.log(error);
+            showToast({ content: "401", type: "error" });
+            setEr(true);
         }
     };
 
@@ -238,24 +245,27 @@ const Auth = () => {
             {open &&
                 createPortal(
                     <div className="fixed w-screen h-screen z-[9998] top-0 left-0 flex items-center justify-center bg-black/40">
-                        <div className="flex flex-col items-center justify-center p-4 top-1/2 left-1/2 w-[450px] h-[250px] border rounded bg-uf-background z-[9999]">
+                        <div className="flex flex-col items-center justify-center p-4 top-1/2 left-1/2 w-[450px] h-[300px] border rounded bg-uf-background z-[9999]">
                             <button className="mb-4 border px-4 self-end" onClick={() => setOpen(false)}>
                                 닫기
                             </button>
                             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                                 <input
-                                    className="h-12 border outline-none px-4 w-[400px]"
+                                    className="h-12 border outline-none px-4 w-[400px] aria-[invalid=true]:border-uf-error"
                                     onChange={(event) => {
+                                        setEr(false);
                                         setId(event.target.value);
                                         setTin("");
                                     }}
+                                    aria-invalid={er}
                                     value={id}
                                     placeholder="id"
                                     disabled={!!tin}
                                 />
                                 <input
-                                    className="h-12 border outline-none px-4 w-[400px]"
+                                    className="h-12 border outline-none px-4 w-[400px] aria-[invalid=true]:border-uf-error"
                                     onChange={(event) => {
+                                        setEr(false);
                                         setTin(event.target.value);
                                         setId("");
                                     }}
@@ -263,6 +273,7 @@ const Auth = () => {
                                     placeholder="tin"
                                     disabled={!!id}
                                 />
+                                <span>ID 또는 TIN을 입력해주세요</span>
                                 <button className="border h-12 w-[400px]">Sign In</button>
                             </form>
                         </div>
