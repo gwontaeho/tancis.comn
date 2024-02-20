@@ -33,3 +33,4 @@ tsconfig.paths.json
 .gitignore
 setting.bat
 .prettierrc
+.eslintignore
