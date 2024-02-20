@@ -606,7 +606,7 @@ const reducer = (state: any, action: any) => {
         case "handleCheck": {
             const { _grid, event, rowKey } = action.payload;
             let _checked = [...state._checked];
-            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey.__key);
+            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey);
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
@@ -616,11 +616,7 @@ const reducer = (state: any, action: any) => {
             let _checked = [];
             if (event.target.checked) {
                 _checked = condition
-                    ? _grid.current._view
-                          .filter((_: any) => {
-                              return condition(_);
-                          })
-                          .map(({ __key }: any) => __key)
+                    ? _grid.current._view.filter((_: any) => condition(_)).map(({ __key }: any) => __key)
                     : _grid.current._view.map(({ __key }: any) => __key);
             }
             _grid.current._checked = _checked;
