@@ -54,8 +54,8 @@ const getMockOptions = (count = 3) => {
 
 const schema1: TGridSchema = {
     options: {
-        index: true,
-        radio: true,
+        // index: true,
+        // radio: true,
         checkbox: true,
         add: true,
         delete: true,
@@ -65,7 +65,7 @@ const schema1: TGridSchema = {
         height: 400,
         pagination: "in",
 
-        group: ["q"],
+        // group: ["q"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: "50%" }] },

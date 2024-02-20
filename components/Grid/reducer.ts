@@ -446,30 +446,37 @@ const reducer = (state: any, action: any) => {
             let _options = { ...state._options };
             let _body = [...state._body];
 
-            if (target === "height") {
-                if (value === "auto") {
-                    _grid.current._height = _grid.current._listInner.clientHeight;
-                    _grid.current._autoHeight = true;
-                    _options.height = _grid.current._listInner.clientHeight;
-                } else {
-                    _grid.current._height = value;
-                    _grid.current._autoHeight = false;
-                    _options.height = value;
+            switch (target) {
+                case "height": {
+                    if (value === "auto") {
+                        _grid.current._height = _grid.current._listInner.clientHeight;
+                        _grid.current._autoHeight = true;
+                        _options.height = _grid.current._listInner.clientHeight;
+                    } else {
+                        _grid.current._height = value;
+                        _grid.current._autoHeight = false;
+                        _options.height = value;
+                    }
+                    break;
                 }
-            }
-
-            if (target === "edit") {
-                _body = _body.map((_: any) => {
-                    return {
-                        ..._,
-                        edit: value,
-                        cells: _.cells.map((__: any) => {
-                            return { ...__, edit: value };
-                        }),
-                    };
-                });
-                _grid.current._edit = value;
-                _options.edit = value;
+                case "edit": {
+                    _body = _body.map((_: any) => {
+                        return {
+                            ..._,
+                            edit: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, edit: value };
+                            }),
+                        };
+                    });
+                    _grid.current._edit = value;
+                    _options.edit = value;
+                    break;
+                }
+                default:
+                    _grid.current[target] = value;
+                    _options[target] = value;
+                    break;
             }
 
             return { ...state, _options, _body, _bodyCells: fun(_body) };

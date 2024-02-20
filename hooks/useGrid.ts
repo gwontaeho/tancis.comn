@@ -82,12 +82,31 @@ export const useGrid = (props: UseGridProps) => {
             _setSize,
 
             /**
-             * _dataCreated         : data created time
-             * _dataUpdated         : data updated time
-             * _origin              : original data
-             * _content             : current data
-             * _originTotalCount    : original total count
-             * _totalCount          : current total count
+             * _dataCreated
+             * _dataUpdated
+             * _origin
+             * _content
+             * _originTotalCount
+             * _totalCount
+             * _sort
+             * _rect
+             * _checked
+             * _groupStatus
+             * _selectedRow
+             * _selectedCel
+             *
+             * _add
+             * _edit
+             * _index
+             * _radio
+             * _delete
+             * _checkbox
+             * _pagination
+             * _exportExcel
+             * _importExcel
+             * _autoHeight
+             * _height
+             * _group
              *
              */
         };
