@@ -52,6 +52,8 @@ export type ErrorUnitProps = {
     label?: string;
     message?: string;
     type?: string;
+    value?: any;
+    binding?: string;
     sheet?: string | number;
     key?: any;
     option?: string;
@@ -59,7 +61,7 @@ export type ErrorUnitProps = {
 
 export const CommonErrors = (props: ErrorProps) => {
     const { type, message, errors = [], head = {} } = props;
-    console.log(props);
+    //console.log(props);
     const pgeUid = "ERRORS"; // Page Unique identifier !== 화면 고유 식별자 ==!
     const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
 
