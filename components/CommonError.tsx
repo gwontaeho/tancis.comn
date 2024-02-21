@@ -52,6 +52,8 @@ export type ErrorUnitProps = {
     label?: string;
     message?: string;
     type?: string;
+    value?: any;
+    binding?: string;
     sheet?: string | number;
     key?: any;
     option?: string;
