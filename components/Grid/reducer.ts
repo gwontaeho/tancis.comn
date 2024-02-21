@@ -320,6 +320,7 @@ const reducer = (state: any, action: any) => {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
             _grid.current._data = data;
+
             const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
             if (_grid.current._pagination === "out") {
                 nextState._page = _grid.current._page;
@@ -328,10 +329,10 @@ const reducer = (state: any, action: any) => {
                 _grid.current._page = 0;
                 nextState._page = 0;
             }
+            _grid.current._content = content;
+            _grid.current._origin = content;
             const view = createView(_grid);
             const count = getCount(_grid);
-            _grid.current._origin = content;
-            _grid.current._content = content;
             _grid.current._checked = [];
             _grid.current._selectedRow = null;
             _grid.current._selectedCel = null;
