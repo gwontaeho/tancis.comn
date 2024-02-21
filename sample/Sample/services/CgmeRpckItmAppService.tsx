@@ -85,7 +85,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
     options: {
         radio: true, // 라디오 버튼 보이기/숨기기 , default : false
         checkbox: true, //체크박스 보이기 숨기기, default : false
-        pagination: "in", // 그리드 데이터 페이징 "out" : 데이터를 외부에서 페이징해서 가져오는 경우 , "in" : 데이터를 전체 가져와서 그리드 내부에서 페이징 및 편집
+        pagination: "out", // 그리드 데이터 페이징 "out" : 데이터를 외부에서 페이징해서 가져오는 경우 , "in" : 데이터를 전체 가져와서 그리드 내부에서 페이징 및 편집
         index: true, // 그리드 번호  index : true ( asc )  , index : "DESC" ( desc 역순 )
         edit: false, // 그리드 편집 가능 여부 , default : false
         height: 200,
