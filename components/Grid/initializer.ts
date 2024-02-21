@@ -105,7 +105,7 @@ const useInitialize = (props: any) => {
             _grid.current._page = next;
             _grid.current._checked = [];
             _grid.current._selectedRow = null;
-
+            _grid.current._selectedCel = null;
             if (_grid.current._pagination === "out") {
                 _grid.current._setPage(next);
             } else if (_grid.current._pagination === "in") {
@@ -117,7 +117,7 @@ const useInitialize = (props: any) => {
             _grid.current._size = next;
             _grid.current._checked = [];
             _grid.current._selectedRow = null;
-
+            _grid.current._selectedCel = null;
             if (_grid.current._pagination === "out") {
                 _grid.current._setPage(0);
                 _grid.current._setSize(next);

@@ -320,15 +320,14 @@ const reducer = (state: any, action: any) => {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
             _grid.current._data = data;
-
-            const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-            if (_grid.current._pagination === "out") {
-                nextState._page = _grid.current._page;
-                nextState._size = _grid.current._size;
-            } else if (_grid.current._pagination === "in") {
+            if (_grid.current._pagination === "in") {
                 _grid.current._page = 0;
                 nextState._page = 0;
+            } else if (_grid.current._pagination === "out") {
+                nextState._page = _grid.current._page;
+                nextState._size = _grid.current._size;
             }
+            const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
             _grid.current._content = content;
             _grid.current._origin = content;
             const view = createView(_grid);
