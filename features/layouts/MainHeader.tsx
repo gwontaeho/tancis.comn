@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { authState, routeState } from "@/comn/features/recoil";
 import { useTheme, useToast } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
-// import i18n from "@/comn/features/locales/i18n";
+import i18n from "@/comn/features/locales/i18n";
 import { routes } from "@/comn/features/router";
 import Cookies from "js-cookie";
 
@@ -163,7 +163,7 @@ const Header = () => {
                         className="w-20 h-6 text-uf-white bg-uf-layout-header outline-none cursor-pointer [&>option]:bg-uf-layout-header"
                         value={theme.lang}
                         onChange={(e) => {
-                            // i18n.changeLanguage(e.target.value);
+                            i18n.changeLanguage(e.target.value);
                             setTheme((prev) => ({ ...prev, lang: e.target.value as "ko" | "en" | "tz" }));
                         }}
                     >
