@@ -93,7 +93,6 @@ const sort = (_grid: any, content: any) => {
             },
             [[], []],
         );
-
     return lodash.orderBy(content, iteratees, orders);
 };
 
@@ -102,17 +101,13 @@ const group = (_grid: any, content: any) => {
 
     const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
         if (!by) return sort(_grid, data);
-
         const depth = prevDepth + 1;
         const parent = [...prevParent, by];
-
         return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
             const groupKey = prevGroupKey + "__" + curr[0];
-
             if (_grid.current._groupStatus[groupKey] === undefined) {
                 _grid.current._groupStatus[groupKey] = { open: true };
             }
-
             const open = _grid.current._groupStatus[groupKey].open;
             const row = {
                 __key: uuid(),
@@ -136,48 +131,43 @@ const group = (_grid: any, content: any) => {
     return getGrouped(content, groups[0], 0, [], "");
 };
 
-/** ## Content Maker */
-const createContent = (_grid: any) => {
-    /*
-        Set Below
-        _content, _view, _totalCount, _viewCount
-     */
+/**
+ * ## View Creator
+ * @param _grid
+ * @returns
+ */
+const createView = (_grid: any) => {
+    let view = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+    if (Object.keys(_grid.current._group).length) view = group(_grid, view);
+    else view = sort(_grid, view);
+    if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
+    _grid.current._view = view;
+    return view;
+};
 
-    let content = [..._grid.current._content];
-    let view;
-    let totalCount;
-    let viewCount;
-
-    if (Object.keys(_grid.current._group).length) {
-        /* grouped  */
-        content = group(_grid, _grid.current._content);
-    } else {
-        /* not grouped */
-        content = sort(_grid, content);
-        console.log(content);
-        _grid.current._content = content;
-    }
-
-    /*  */
-    content = content.filter(({ __type }: any) => __type !== "deleted");
-
-    viewCount = content.length;
-
-    // Paging
-    if (_grid.current._pagination === "in") {
-        content = lodash.chunk(content, _grid.current._size)[_grid.current._page] || [];
-    }
-    _grid.current._view = content;
-
-    return { viewContent: content, viewCount };
+/**
+ * ## Count Getter
+ * @param _grid
+ * @returns
+ */
+const getCount = (_grid: any) => {
+    const count =
+        _grid.current._pagination === "out"
+            ? _grid.current._data.page.totalElements
+            : _grid.current._content.filter(({ __type }: any) => __type !== "deleted").length;
+    _grid.current._totalCount = count;
+    return count;
 };
 
 /**
  * ## State Initializer
+ * @param param0
+ * @returns
  */
 const createInitialState = ({ _grid, data }: any) => {
     const options = _grid.current._defaultSchema.options || {};
 
+    _grid.current._data = data;
     _grid.current._sort = {};
     _grid.current._rect = [];
     _grid.current._checked = [];
@@ -273,11 +263,7 @@ const createInitialState = ({ _grid, data }: any) => {
             .join(" ");
     })();
 
-    /**
-     * Content Setting
-     */
     let _test;
-    let __t;
 
     if (!Array.isArray(data?.content)) {
         _test = [];
@@ -285,19 +271,11 @@ const createInitialState = ({ _grid, data }: any) => {
         _test = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
     }
 
-    if (!dayjs(data?.__t).isValid()) {
-        __t = dayjs(data?.__t).toDate();
-    } else {
-        __t = new Date();
-    }
-
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
-    const { viewContent, viewCount } = createContent(_grid);
-
-    let _totalCount = (_grid.current._pagination === "in" ? viewCount : data?.page?.totalElements) || 0;
-    _grid.current._totalCount = _totalCount;
+    const view = createView(_grid);
+    const _totalCount = getCount(_grid);
     _grid.current._originTotalCount = _totalCount;
 
     return {
@@ -307,7 +285,7 @@ const createInitialState = ({ _grid, data }: any) => {
         _bodyCells,
         _template,
         _totalCount,
-        _test: viewContent,
+        _test: view,
         _editingRow: [],
         _page: _grid.current._page,
         _size: _grid.current._size,
@@ -331,78 +309,156 @@ const createInitialState = ({ _grid, data }: any) => {
 
 /**
  * ## Reducer
+ * @param state
+ * @param action
+ * @returns
  */
 const reducer = (state: any, action: any) => {
     switch (action.type) {
-        /**
-         * Set Data
-         */
+        /* Set data  */
         case "setData": {
             const { _grid, data } = action.payload;
-
             let nextState = { ...state };
-            let content;
-            let _totalCount;
-
-            if (Array.isArray(data)) {
-                content = data;
-            } else if (typeof data === "object" && Array.isArray(data.content)) {
-                content = data.content;
-            } else {
-                return state;
-            }
-
-            content = content.map((_: any) => ({
-                ..._,
-                __key: uuid(),
-                __type: "origin",
-            }));
-
-            _grid.current._origin = content;
-            _grid.current._content = content;
-            _grid.current._checked = [];
-            _grid.current._selectedRow = null;
-
-            if (_grid.current._pagination === "out") {
-                nextState._page = _grid.current._page;
-                nextState._size = _grid.current._size;
-            } else if (_grid.current._pagination === "in") {
+            _grid.current._data = data;
+            if (_grid.current._pagination === "in") {
                 _grid.current._page = 0;
                 nextState._page = 0;
+            } else if (_grid.current._pagination === "out") {
+                nextState._page = _grid.current._page;
+                nextState._size = _grid.current._size;
             }
-
-            const { viewContent, viewCount } = createContent(_grid);
-
-            if (_grid.current._pagination === "out") {
-                _totalCount = data?.page?.totalElements || 0;
-            } else if (_grid.current._pagination === "in") {
-                _totalCount = viewCount;
-            }
-
-            _grid.current._totalCount = _totalCount;
-            _grid.current._originTotalCount = _totalCount;
-
-            nextState._test = viewContent;
-            nextState._totalCount = _totalCount;
+            const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+            _grid.current._content = content;
+            _grid.current._origin = content;
+            const view = createView(_grid);
+            const count = getCount(_grid);
+            _grid.current._checked = [];
+            _grid.current._selectedRow = null;
+            _grid.current._selectedCel = null;
+            _grid.current._originTotalCount = count;
+            nextState._test = view;
+            nextState._totalCount = count;
             nextState._checked = [];
             nextState._selectedRow = null;
-
+            nextState._selectedCel = null;
+            return nextState;
+        }
+        /* Set data to origin */
+        case "resetData": {
+            const { _grid } = action.payload;
+            let nextState = { ...state };
+            const originTotalCount = _grid.current._originTotalCount;
+            _grid.current._content = _grid.current._origin;
+            _grid.current._totalCount = originTotalCount;
+            nextState._test = createView(_grid);
+            nextState._totalCount = originTotalCount;
+            return nextState;
+        }
+        /* Add row  */
+        case "add": {
+            const { _grid, data } = action.payload;
+            let nextState = { ...state };
+            _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
+            nextState._test = createView(_grid);
+            nextState._totalCount = getCount(_grid);
+            return nextState;
+        }
+        /* Delete row */
+        case "delete": {
+            const { _grid, type } = action.payload;
+            let nextState = { ...state };
+            let toBeDeleted: any[] = [];
+            if (type === "radio") {
+                if (!_grid.current._selectedRow) return state;
+                toBeDeleted.push(_grid.current._selectedRow);
+            }
+            if (type === "checkbox") {
+                if (!_grid.current._checked.length) return state;
+                toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
+            }
+            if (type === "all") {
+                if (!_grid.current._selectedRow && !_grid.current._checked.length) return state;
+                if (_grid.current._selectedRow) toBeDeleted.push(_grid.current._selectedRow);
+                if (_grid.current._checked.length) toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
+            }
+            if (typeof type === "object" && type.__key) {
+                toBeDeleted.push(type.__key);
+            }
+            if (Array.isArray(type)) {
+                toBeDeleted = [...toBeDeleted, ...type.map(({ __key }) => __key)];
+            }
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (toBeDeleted.includes(_.__key)) {
+                        if (_.__type === "added") return;
+                        return { ..._, __type: "deleted" };
+                    } else return _;
+                })
+                .filter((_: any) => _ !== undefined);
+            _grid.current._checked = [];
+            _grid.current._selectedCel = null;
+            _grid.current._selectedRow = null;
+            nextState._checked = [];
+            nextState._selectedCel = null;
+            nextState._selectedRow = null;
+            nextState._test = createView(_grid);
+            nextState._totalCount = getCount(_grid);
+            return nextState;
+        }
+        /* Update row */
+        case "update": {
+            const { _grid, data } = action.payload;
+            let nextState = { ...state };
+            _grid.current._content = _grid.current._content.map((_: any) => {
+                if (_.__key !== data.__key) return _;
+                const { __type, __key, ...rest } = data;
+                let type = _.__type;
+                if (type === "origin" || type === "updated") {
+                    const origin = _grid.current._origin.find((o: any) => o.__key === __key);
+                    type = Object.keys(rest).some((k) => data[k] !== origin[k]) ? "updated" : "origin";
+                }
+                return { ..._, ...rest, __type: type };
+            });
+            nextState._test = createView(_grid);
+            return nextState;
+        }
+        /* Sort */
+        case "sort": {
+            const { _grid, binding } = action.payload;
+            let nextState = { ...state };
+            let _sort = _grid.current._sort;
+            const prev = _sort[binding];
+            if (prev) {
+                const pval = prev.val;
+                const pseq = prev.seq;
+                if (pval === "asc") _sort[binding] = { seq: pseq, val: "desc" };
+                if (pval === "desc") delete _sort[binding];
+            } else {
+                const seqs = Object.entries(_sort)
+                    .map(([__, v]: any) => v?.seq)
+                    .filter((_) => _ !== undefined);
+                const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
+                _sort[binding] = { seq: nseq, val: "asc" };
+            }
+            _sort = Object.fromEntries(
+                lodash
+                    .sortBy(Object.entries(_sort), [(a: any) => a[1].seq])
+                    .map(([k, v]: any, i: any) => [k, { ...v, seq: i }]),
+            );
+            _grid.current._sort = _sort;
+            nextState._sort = _sort;
+            nextState._test = createView(_grid);
+            return nextState;
+        }
+        /* Group */
+        case "group": {
+            const { _grid, groupKey, open } = action.payload;
+            let nextState = { ...state };
+            _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
+            nextState._test = createView(_grid);
             return nextState;
         }
 
-        /* Set Data Origin */
-        case "resetData": {
-            const { _grid } = action.payload;
-
-            _grid.current._content = _grid.current._origin;
-            _grid.current._totalCount = _grid.current._originTotalCount;
-
-            return {
-                ...state,
-                _totalCount: _grid.current._originTotalCount,
-                _test: createContent(_grid).viewContent,
-            };
-        }
         /* Set Show Option */
         case "setShow": {
             const { type, target, value } = action.payload;
@@ -536,134 +592,6 @@ const reducer = (state: any, action: any) => {
             }
         }
 
-        /* Delete Row */
-        case "delete": {
-            const { _grid, type } = action.payload;
-            if (_grid.current._pagination === "out" || !type) return state;
-            let nextState = { ...state };
-            let toBeDeleted: any[] = [];
-            /* Selected Row */
-            if (type === "radio") {
-                if (!_grid.current._selectedRow) return state;
-                toBeDeleted.push(_grid.current._selectedRow);
-            }
-            /* Checked Row */
-            if (type === "checkbox") {
-                if (!_grid.current._checked.length) return state;
-                toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
-            }
-            /* Selected & Checked Row */
-            if (type === "all") {
-                if (!_grid.current._selectedRow && !_grid.current._checked.length) return state;
-                if (_grid.current._selectedRow) toBeDeleted.push(_grid.current._selectedRow);
-                if (_grid.current._checked.length) toBeDeleted = [...toBeDeleted, ..._grid.current._checked];
-            }
-            /* One Row */
-            if (typeof type === "object" && type.__key) {
-                toBeDeleted.push(type.__key);
-            }
-            /* Multiple Row */
-            if (Array.isArray(type)) {
-                toBeDeleted = [...toBeDeleted, ...type.map(({ __key }) => __key)];
-            }
-
-            _grid.current._content = _grid.current._content
-                .map((_: any) => {
-                    if (toBeDeleted.includes(_.__key)) {
-                        if (_.type === "added") return;
-                        return { ..._, __type: "deleted" };
-                    } else return _;
-                })
-                .filter((_: any) => _ !== undefined);
-
-            const { viewContent, viewCount } = createContent(_grid);
-
-            _grid.current._checked = [];
-            _grid.current._selectedCel = null;
-            _grid.current._selectedRow = null;
-            _grid.current._totalCount = viewCount;
-            nextState._checked = [];
-            nextState._selectedCel = null;
-            nextState._selectedRow = null;
-            nextState._totalCount = viewCount;
-            nextState._test = viewContent;
-            return nextState;
-        }
-
-        /* Add Row  */
-        case "add": {
-            const { _grid, data } = action.payload;
-            if (_grid.current._pagination === "out") return state;
-            _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
-
-            const { viewContent, viewCount } = createContent(_grid);
-
-            _grid.current._totalCount = viewCount;
-            return { ...state, _test: viewContent, _totalCount: viewCount };
-        }
-
-        /* Update Row */
-        case "update": {
-            const { _grid, data } = action.payload;
-            if (!data?.__key) return state;
-
-            _grid.current._content = _grid.current._content.map((_: any) => {
-                if (_.__key !== data.__key) return _;
-                const { __type, __key, ...rest } = data;
-                return {
-                    ..._,
-                    ...rest,
-                    __type:
-                        _.__type === "origin" || _.__type === "updated"
-                            ? Object.keys(rest).some((k) => {
-                                  return data[k] !== _grid.current._origin.find((o: any) => o.__key === data.__key)[k];
-                              })
-                                ? "updated"
-                                : "origin"
-                            : _.__type,
-                };
-            });
-
-            return { ...state, _test: createContent(_grid).viewContent };
-        }
-        /* Group */
-        case "group": {
-            const { _grid, groupKey, open } = action.payload;
-            _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
-            return { ...state, _test: createContent(_grid).viewContent };
-        }
-        /* Sort */
-        case "sort": {
-            const { _grid, binding } = action.payload;
-            let _sort = _grid.current._sort;
-            const prev = _sort[binding];
-            if (prev) {
-                const pval = prev.val;
-                const pseq = prev.seq;
-                if (pval === "asc") {
-                    _sort[binding] = { seq: pseq, val: "desc" };
-                }
-                if (pval === "desc") {
-                    delete _sort[binding];
-                }
-            } else {
-                const seqs = Object.entries(_sort)
-                    .map(([__, v]: any) => v?.seq)
-                    .filter((_) => _ !== undefined);
-                const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
-                _sort[binding] = { seq: nseq, val: "asc" };
-            }
-            _sort = Object.fromEntries(
-                lodash
-                    .sortBy(Object.entries(_sort), [(a: any) => a[1].seq])
-                    .map(([k, v]: any, i: any) => [k, { ...v, seq: i }]),
-            );
-
-            _grid.current._sort = _sort;
-            const { viewContent } = createContent(_grid);
-            return { ...state, _sort, _test: viewContent };
-        }
-
         /* Handle Select Cell  */
         case "handleClickCel": {
             const { key } = action.payload;
@@ -679,7 +607,7 @@ const reducer = (state: any, action: any) => {
         case "handleCheck": {
             const { _grid, event, rowKey } = action.payload;
             let _checked = [...state._checked];
-            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey.__key);
+            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey);
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
@@ -689,44 +617,33 @@ const reducer = (state: any, action: any) => {
             let _checked = [];
             if (event.target.checked) {
                 _checked = condition
-                    ? _grid.current._view
-                          .filter((_: any) => {
-                              return condition(_);
-                          })
-                          .map(({ __key }: any) => __key)
+                    ? _grid.current._view.filter((_: any) => condition(_)).map(({ __key }: any) => __key)
                     : _grid.current._view.map(({ __key }: any) => __key);
             }
             _grid.current._checked = _checked;
             return { ...state, _checked };
         }
-
+        /* Handle Change Page */
         case "handleChangePage": {
             const { _grid, next } = action.payload;
-            const { viewContent } = createContent(_grid);
-
-            let nextState = {
-                ...state,
-                _test: viewContent,
-                _page: next,
-                _checked: [],
-                _selectedRow: null,
-            };
-
+            let nextState = { ...state };
+            nextState._test = createView(_grid);
+            nextState._page = next;
+            nextState._checked = [];
+            nextState._selectedRow = null;
+            nextState._selectedCel = null;
             return nextState;
         }
+        /* Handle Change Size */
         case "handleChangeSize": {
             const { _grid, next } = action.payload;
-            const { viewContent } = createContent(_grid);
-
-            let nextState = {
-                ...state,
-                _test: viewContent,
-                _page: 0,
-                _size: next,
-                _checked: [],
-                _selectedRow: null,
-            };
-
+            let nextState = { ...state };
+            nextState._test = createView(_grid);
+            nextState._page = 0;
+            nextState._size = next;
+            nextState._checked = [];
+            nextState._selectedRow = null;
+            nextState._selectedCel = null;
             return nextState;
         }
 
@@ -741,4 +658,4 @@ const reducer = (state: any, action: any) => {
     }
 };
 
-export { createContent, createInitialState, reducer };
+export { createView, createInitialState, reducer };
