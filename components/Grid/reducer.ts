@@ -319,6 +319,7 @@ const reducer = (state: any, action: any) => {
         case "setData": {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
+            _grid.current._data = data;
             const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
             if (_grid.current._pagination === "out") {
                 nextState._page = _grid.current._page;
