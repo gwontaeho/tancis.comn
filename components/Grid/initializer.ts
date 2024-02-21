@@ -82,6 +82,7 @@ const useInitialize = (props: any) => {
 
         /* Handle Add Row */
         _grid.current._handleAdd = (data: any) => {
+            if (typeof data !== "object") return;
             if (_grid.current._pagination === "out") return;
             _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
             dispatch({ type: "add", payload: { _grid, data } });
@@ -146,45 +147,49 @@ const useInitialize = (props: any) => {
                     return next;
                 }, {});
 
-            const errors = _grid.current._content.reduce((prev: any, row: any, index: any) => {
-                for (const binding in fieldRuleObject) {
-                    const bindingValue = row[binding];
-                    const rules = fieldRuleObject[binding];
-                    for (let i = 0; i < rules.length; i++) {
-                        let invalid = false;
-                        const { value, type } = rules[i];
-                        switch (type) {
-                            case "required":
-                                invalid = !bindingValue;
-                                break;
-                            case "min":
-                                invalid = bindingValue < value;
-                                break;
-                            case "max":
-                                invalid = bindingValue > value;
-                                break;
-                            case "minLength":
-                                invalid = bindingValue.length < value;
-                                break;
-                            case "maxLength":
-                                invalid = bindingValue.length > value;
-                                break;
-                            case "pattern":
-                                invalid = !value.test(bindingValue);
-                                break;
-                            case "validate":
-                                invalid = !value(bindingValue);
-                                break;
-                            case "resource":
-                                break;
-                        }
-                        if (invalid) {
-                            prev.push({ ...rules[i], binding, value: bindingValue, row: index });
+            const errors = _grid.current._content
+                .filter((_: any) => {
+                    return _.__type !== "deleted";
+                })
+                .reduce((prev: any, row: any, index: any) => {
+                    for (const binding in fieldRuleObject) {
+                        const bindingValue = row[binding];
+                        const rules = fieldRuleObject[binding];
+                        for (let i = 0; i < rules.length; i++) {
+                            let invalid = false;
+                            const { value, type } = rules[i];
+                            switch (type) {
+                                case "required":
+                                    invalid = !bindingValue;
+                                    break;
+                                case "min":
+                                    invalid = bindingValue < value;
+                                    break;
+                                case "max":
+                                    invalid = bindingValue > value;
+                                    break;
+                                case "minLength":
+                                    invalid = bindingValue.length < value;
+                                    break;
+                                case "maxLength":
+                                    invalid = bindingValue.length > value;
+                                    break;
+                                case "pattern":
+                                    invalid = !value.test(bindingValue);
+                                    break;
+                                case "validate":
+                                    invalid = !value(bindingValue);
+                                    break;
+                                case "resource":
+                                    break;
+                            }
+                            if (invalid) {
+                                prev.push({ ...rules[i], binding, value: bindingValue, row: index });
+                            }
                         }
                     }
-                }
-                return prev;
-            }, []);
+                    return prev;
+                }, []);
 
             return { errors };
         };

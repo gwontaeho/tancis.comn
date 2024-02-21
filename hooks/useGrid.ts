@@ -127,10 +127,10 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._setShow(type, target, value);
     };
     const setPage = (next: number) => {
-        _grid.current._handlePage(next);
+        _grid.current._handlePage?.(next);
     };
     const setSize = (next: number) => {
-        _grid.current._handleSize(next);
+        _grid.current._handleSize?.(next);
     };
 
     /* GET */
