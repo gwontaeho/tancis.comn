@@ -65,7 +65,7 @@ const schema1: TGridSchema = {
         height: 400,
         pagination: "in",
 
-        // group: ["q"],
+        group: ["q"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
@@ -206,7 +206,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 4 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 66 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 

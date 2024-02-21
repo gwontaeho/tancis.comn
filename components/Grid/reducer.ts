@@ -163,6 +163,7 @@ const reducer = (state: any, action: any) => {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
             _grid.current._data = data;
+            console.log(data);
             if (_grid.current._pagination === "in") {
                 _grid.current._page = 0;
                 nextState._page = 0;

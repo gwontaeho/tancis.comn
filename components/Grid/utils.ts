@@ -83,21 +83,15 @@ const fun = (schema: any) => {
  * @returns
  */
 const sort = (_grid: any, content: any) => {
-    const [iteratees, orders] = lodash
-        .sortBy(Object.entries(_grid.current._sort), [
-            (o: any) => {
-                return o[1].seq;
-            },
-        ])
-        .reduce(
-            (p: any, c: any) => {
-                return [
-                    [...p[0], c[0]],
-                    [...p[1], c[1].val],
-                ];
-            },
-            [[], []],
-        );
+    const [iteratees, orders] = lodash.sortBy(Object.entries(_grid.current._sort), [([, { seq }]: any) => seq]).reduce(
+        (prev: any, curr: any) => {
+            return [
+                [...prev[0], curr[0]],
+                [...prev[1], curr[1].val],
+            ];
+        },
+        [[], []],
+    );
     return lodash.orderBy(content, iteratees, orders);
 };
 
@@ -110,7 +104,8 @@ const sort = (_grid: any, content: any) => {
 const group = (_grid: any, content: any) => {
     const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
     const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
-        if (!by) return sort(_grid, data);
+        // if (!by) return sort(_grid, data);
+        if (!by) return data;
         const depth = prevDepth + 1;
         const parent = [...prevParent, by];
         return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
@@ -146,9 +141,10 @@ const group = (_grid: any, content: any) => {
  * @returns
  */
 const getView = (_grid: any) => {
-    let view = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+    let view = sort(_grid, _grid.current._content);
+    _grid.current._content = view;
+    view = view.filter(({ __type }: any) => __type !== "deleted");
     if (Object.keys(_grid.current._group).length) view = group(_grid, view);
-    else view = sort(_grid, view);
     if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     _grid.current._view = view;
     return view;
