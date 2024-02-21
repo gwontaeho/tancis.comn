@@ -101,10 +101,6 @@ const sort = (_grid: any, content: any) => {
  */
 const group = (_grid: any, content: any) => {
     const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
-
-    console.log(_grid.current._group);
-    console.log(groups);
-
     const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
         if (!by) return data;
         const depth = prevDepth + 1;
@@ -142,30 +138,6 @@ const group = (_grid: any, content: any) => {
  * @param _grid
  * @returns
  */
-// const getView = (_grid: any) => {
-//     let test = sort(_grid, _grid.current._content);
-//     const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
-
-//     const abcd = groups.reduce((prev, curr, index) => {
-//         let next = { ...prev };
-
-//         if (index === 0) {
-//             next = lodash.groupBy(test, curr[0]);
-//         } else {
-
-//         }
-
-//         return next;
-//     }, {});
-
-//     console.log(abcd);
-
-//     console.log(lodash.groupBy(test, groups[0][0]));
-//     console.log(groups);
-
-//     return [];
-// };
-
 const getView = (_grid: any) => {
     let view;
     let content = sort(_grid, _grid.current._content);
@@ -177,10 +149,6 @@ const getView = (_grid: any) => {
     if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     _grid.current._content = content;
     _grid.current._view = view;
-
-    console.log(_grid.current._groupStatus);
-    console.log(view);
-    console.log(content);
     return view;
 };
 
