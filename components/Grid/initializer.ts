@@ -141,9 +141,8 @@ const useInitialize = (props: any) => {
                 .reduce((prev: any, curr: any) => {
                     let next = prev;
                     const ary = getValidationArray(curr);
-                    if (ary.length) {
-                        next[curr.binding] = ary;
-                    }
+                    if (ary.length) next[curr.binding] = ary;
+
                     return next;
                 }, {});
 
@@ -180,7 +179,7 @@ const useInitialize = (props: any) => {
                                 break;
                         }
                         if (invalid) {
-                            prev.push({ ...rules[i], binding, bindingValue });
+                            prev.push({ ...rules[i], binding, value: bindingValue });
                         }
                     }
                 }

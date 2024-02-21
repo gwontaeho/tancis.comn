@@ -1,163 +1,6 @@
-import dayjs from "dayjs";
 import lodash from "lodash";
 import { v4 as uuid } from "uuid";
-
-const fun = (schema: any) => {
-    let t = [];
-
-    for (let i = 0; i < schema.length; i++) {
-        if (schema[i].show === false) {
-            continue;
-        }
-        let rowIndex = -1;
-        let colspan = schema[i].colspan || 1;
-        let _current = 0;
-
-        let head = [];
-
-        for (let col = 0; col < schema[i].cells.length; col++) {
-            const cell = schema[i].cells[col];
-            let isAdd = true;
-
-            if (_current === 0) {
-                rowIndex++;
-                if (!head[rowIndex]) head[rowIndex] = Array(colspan);
-            }
-            if (head[rowIndex][_current] === null) {
-                for (let i = _current; i < colspan; i++) {
-                    if (head[rowIndex][i] === null) {
-                        _current++;
-                        if (_current > col - 1) {
-                            isAdd = false;
-                        }
-                    } else break;
-                }
-            }
-
-            if (isAdd === false) {
-                _current = 0;
-                col--;
-                continue;
-            }
-            if (_current > colspan - 1) {
-                _current = 0;
-                continue;
-            }
-
-            head[rowIndex][_current] = cell;
-            if (cell.colspan !== undefined) {
-                for (let i = _current + 1; i < _current + cell.colspan; i++) {
-                    head[rowIndex][i] = null;
-                }
-            }
-            if (cell?.rowspan !== undefined) {
-                for (let i = rowIndex + 1; i < rowIndex + cell.rowspan; i++) {
-                    if (!head[i]) head[i] = Array(colspan);
-                    head[i][_current] = null;
-                }
-            }
-
-            _current += cell.colspan === undefined ? 1 : cell.colspan;
-            if (_current > colspan - 1) {
-                _current = 0;
-            }
-        }
-
-        t.push(head);
-    }
-
-    let tt = t[0];
-
-    for (let i = 1; i < t.length; i++) {
-        for (let j = 0; j < tt.length; j++) {
-            tt[j] = [...tt[j], ...(t[i]?.[j] || [])];
-        }
-    }
-
-    return tt;
-};
-
-const sort = (_grid: any, content: any) => {
-    const [iteratees, orders] = lodash
-        .sortBy(Object.entries(_grid.current._sort), [
-            (o: any) => {
-                return o[1].seq;
-            },
-        ])
-        .reduce(
-            (p: any, c: any) => {
-                return [
-                    [...p[0], c[0]],
-                    [...p[1], c[1].val],
-                ];
-            },
-            [[], []],
-        );
-    return lodash.orderBy(content, iteratees, orders);
-};
-
-const group = (_grid: any, content: any) => {
-    const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
-
-    const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
-        if (!by) return sort(_grid, data);
-        const depth = prevDepth + 1;
-        const parent = [...prevParent, by];
-        return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
-            const groupKey = prevGroupKey + "__" + curr[0];
-            if (_grid.current._groupStatus[groupKey] === undefined) {
-                _grid.current._groupStatus[groupKey] = { open: true };
-            }
-            const open = _grid.current._groupStatus[groupKey].open;
-            const row = {
-                __key: uuid(),
-                __type: "group",
-                open,
-                depth,
-                groupKey,
-                value: curr[0],
-                binding: by[0],
-                count: curr[1].length,
-            };
-
-            if (open) {
-                return [...prev, row, ...getGrouped(curr[1], groups[depth], depth, parent, groupKey)];
-            } else {
-                return [...prev, row];
-            }
-        }, []);
-    };
-
-    return getGrouped(content, groups[0], 0, [], "");
-};
-
-/**
- * ## View Creator
- * @param _grid
- * @returns
- */
-const createView = (_grid: any) => {
-    let view = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-    if (Object.keys(_grid.current._group).length) view = group(_grid, view);
-    else view = sort(_grid, view);
-    if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
-    _grid.current._view = view;
-    return view;
-};
-
-/**
- * ## Count Getter
- * @param _grid
- * @returns
- */
-const getCount = (_grid: any) => {
-    const count =
-        _grid.current._pagination === "out"
-            ? _grid.current._data.page.totalElements
-            : _grid.current._content.filter(({ __type }: any) => __type !== "deleted").length;
-    _grid.current._totalCount = count;
-    return count;
-};
+import { getCount, getView, fun } from "./utils";
 
 /**
  * ## State Initializer
@@ -274,7 +117,7 @@ const createInitialState = ({ _grid, data }: any) => {
     _grid.current._origin = _test;
     _grid.current._content = _test;
 
-    const view = createView(_grid);
+    const view = getView(_grid);
     const _totalCount = getCount(_grid);
     _grid.current._originTotalCount = _totalCount;
 
@@ -330,7 +173,7 @@ const reducer = (state: any, action: any) => {
             const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
             _grid.current._content = content;
             _grid.current._origin = content;
-            const view = createView(_grid);
+            const view = getView(_grid);
             const count = getCount(_grid);
             _grid.current._checked = [];
             _grid.current._selectedRow = null;
@@ -350,7 +193,7 @@ const reducer = (state: any, action: any) => {
             const originTotalCount = _grid.current._originTotalCount;
             _grid.current._content = _grid.current._origin;
             _grid.current._totalCount = originTotalCount;
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             nextState._totalCount = originTotalCount;
             return nextState;
         }
@@ -359,7 +202,7 @@ const reducer = (state: any, action: any) => {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
             _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             nextState._totalCount = getCount(_grid);
             return nextState;
         }
@@ -401,10 +244,11 @@ const reducer = (state: any, action: any) => {
             nextState._checked = [];
             nextState._selectedCel = null;
             nextState._selectedRow = null;
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             nextState._totalCount = getCount(_grid);
             return nextState;
         }
+
         /* Update row */
         case "update": {
             const { _grid, data } = action.payload;
@@ -419,9 +263,10 @@ const reducer = (state: any, action: any) => {
                 }
                 return { ..._, ...rest, __type: type };
             });
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             return nextState;
         }
+
         /* Sort */
         case "sort": {
             const { _grid, binding } = action.payload;
@@ -447,15 +292,16 @@ const reducer = (state: any, action: any) => {
             );
             _grid.current._sort = _sort;
             nextState._sort = _sort;
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             return nextState;
         }
-        /* Group */
+
+        /* Group Toggle */
         case "group": {
             const { _grid, groupKey, open } = action.payload;
             let nextState = { ...state };
             _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             return nextState;
         }
 
@@ -627,7 +473,7 @@ const reducer = (state: any, action: any) => {
         case "handleChangePage": {
             const { _grid, next } = action.payload;
             let nextState = { ...state };
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             nextState._page = next;
             nextState._checked = [];
             nextState._selectedRow = null;
@@ -638,7 +484,7 @@ const reducer = (state: any, action: any) => {
         case "handleChangeSize": {
             const { _grid, next } = action.payload;
             let nextState = { ...state };
-            nextState._test = createView(_grid);
+            nextState._test = getView(_grid);
             nextState._page = 0;
             nextState._size = next;
             nextState._checked = [];
@@ -658,4 +504,4 @@ const reducer = (state: any, action: any) => {
     }
 };
 
-export { createView, createInitialState, reducer };
+export { createInitialState, reducer };

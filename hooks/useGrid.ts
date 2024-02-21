@@ -219,65 +219,65 @@ export const useGrid = (props: UseGridProps) => {
     };
 };
 
-const getValidationArray = (o: any) => {
-    return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"]
-        .map((type) => {
-            if (!o[type]) return;
+// const getValidationArray = (o: any) => {
+//     return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"]
+//         .map((type) => {
+//             if (!o[type]) return;
 
-            let value;
-            let message;
+//             let value;
+//             let message;
 
-            if (typeof o[type] === "object") {
-                if (o[type].hasOwnProperty("value")) {
-                    value = o[type].value;
-                } else value = o[type];
+//             if (typeof o[type] === "object") {
+//                 if (o[type].hasOwnProperty("value")) {
+//                     value = o[type].value;
+//                 } else value = o[type];
 
-                if (o[type].hasOwnProperty("message")) {
-                    message = o[type].message;
-                }
-            } else {
-                value = o[type];
-            }
+//                 if (o[type].hasOwnProperty("message")) {
+//                     message = o[type].message;
+//                 }
+//             } else {
+//                 value = o[type];
+//             }
 
-            if (!message) {
-                switch (type) {
-                    case "required":
-                        if (o[type] === "string") message = o[type];
-                        else message = "msg.com.00005";
-                        break;
-                    case "min":
-                        message = "msg.com.00006";
-                        break;
-                    case "max":
-                        message = "msg.com.00007";
-                        break;
-                    case "minLength":
-                        message = "msg.com.00008";
-                        break;
-                    case "maxLength":
-                        message = "msg.com.00009";
-                        break;
-                    case "pattern":
-                        message = "msg.com.000010";
-                        break;
-                    case "validate":
-                        message = "msg.com.000011";
-                        break;
-                    default:
-                        break;
-                }
-            }
+//             if (!message) {
+//                 switch (type) {
+//                     case "required":
+//                         if (o[type] === "string") message = o[type];
+//                         else message = "msg.com.00005";
+//                         break;
+//                     case "min":
+//                         message = "msg.com.00006";
+//                         break;
+//                     case "max":
+//                         message = "msg.com.00007";
+//                         break;
+//                     case "minLength":
+//                         message = "msg.com.00008";
+//                         break;
+//                     case "maxLength":
+//                         message = "msg.com.00009";
+//                         break;
+//                     case "pattern":
+//                         message = "msg.com.000010";
+//                         break;
+//                     case "validate":
+//                         message = "msg.com.000011";
+//                         break;
+//                     default:
+//                         break;
+//                 }
+//             }
 
-            if (type === "area") {
-                value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
-                message = "msg.com.00017";
-                type = "resource";
-            }
+//             if (type === "area") {
+//                 value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
+//                 message = "msg.com.00017";
+//                 type = "resource";
+//             }
 
-            return { type, value, message };
-        })
-        .filter(Boolean);
-};
+//             return { type, value, message };
+//         })
+//         .filter(Boolean);
+// };
 
 // const getValidationObject = (o: any) => {
 //     return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"].reduce(
