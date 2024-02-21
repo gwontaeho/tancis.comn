@@ -1,20 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Group, Layout, FormControl, Button } from "@/comn/components";
-import { useForm, TFormSchema, useResource, useToast } from "@/comn/hooks";
+import { Group, Layout, FormControl, Button, Grid } from "@/comn/components";
+import { useForm, TFormSchema, useResource, useToast, TGridSchema, useGrid } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnEnvs, comnUtils } from "@/comn/utils";
+import { api } from "@/comn";
+
+export const APIS = {
+    // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
+    getRpckItmAppList: (data: any, page: number, size: number) => {
+        return api.get(
+            `${process.env.REACT_APP_API_SAMPLE}/api/v1/cgme/wrhs/rpck/rpck-itm-app?page=${page}&size=${size}`,
+            {
+                params: comnUtils.toGetParams(data),
+            },
+        );
+    },
+};
+
+const code = [
+    { label: "Y", value: "Y" },
+    { label: "N", value: "N" },
+];
+
+export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
+    id: "grid",
+    options: {
+        checkbox: true, //체크박스 보이기 숨기기, default : false
+        pagination: "in", // 그리드 데이터 페이징 "out" : 데이터를 외부에서 페이징해서 가져오는 경우 , "in" : 데이터를 전체 가져와서 그리드 내부에서 페이징 및 편집
+        index: true, // 그리드 번호  index : true ( asc )  , index : "DESC" ( desc 역순 )
+        edit: true, // 그리드 편집 가능 여부 , default : false
+        height: 300,
+    },
+    head: [
+        { cells: [{ header: "text", binding: "text", required: true, width: 150 }] },
+        { cells: [{ header: "number", binding: "number", required: true, width: 150 }] },
+        { cells: [{ header: "date", binding: "date", required: true, width: 150 }] },
+        { cells: [{ header: "select", binding: "select", required: true, width: 150 }] },
+        { cells: [{ header: "checkbox", binding: "checkbox", required: true, width: 150 }] },
+        { cells: [{ header: "radio", binding: "radio", required: true, width: 150 }] },
+        { cells: [{ header: "code", binding: "code", required: true, width: "2*" }] },
+    ],
+    body: [
+        { cells: [{ binding: "text", type: "text", required: true }] },
+        { cells: [{ binding: "number", type: "number" }] },
+        { cells: [{ binding: "date", type: "date" }] },
+        { cells: [{ binding: "select", type: "select", options: code }] },
+        { cells: [{ binding: "checkbox", type: "checkbox", options: code }] },
+        { cells: [{ binding: "radio", type: "radio", options: code }] },
+        { cells: [{ binding: "code", type: "code", area: "comnCd", comnCd: "CGM0055" }] },
+    ],
+};
 
 export const GuideValidation = () => {
     useResource({
-        defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
-            { area: "comnCd", comnCd: "CAG_0018" },
-            { area: "comnCd", comnCd: "CAG_0006" },
-            { area: "cgmePrcdCd", comnCd: "MER" },
-            { area: "wrhsCd" },
-        ],
+        defaultSchema: [{ area: "comnCd", comnCd: "CGM0055" }, { area: "wrhsCd" }],
     });
+
+    const [gridData, setGridData] = useState(comnUtils.getGridData([{}, {}, {}]));
+
+    const grid = {
+        // Repacking Item Application List !== 재포장 품목 신청서 목록 ==!
+        sample: useGrid({
+            defaultSchema: SG_RPCK_ITM_APP_LIST,
+        }),
+    };
 
     const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
 
@@ -40,17 +90,17 @@ export const GuideValidation = () => {
             },
             number: { label: "number", type: "number", required: true },
             password: { label: "password", type: "password", required: true },
-            select: { label: "select", type: "select", area: "comnCd", comnCd: "COM_0100", required: true },
-            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "COM_0100", required: true },
+            select: { label: "select", type: "select", area: "comnCd", comnCd: "CGM0055", required: true },
+            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CGM0055", required: true },
             checkbox: {
                 label: "checkbox",
                 type: "checkbox",
-                area: "cgmePrcdCd",
-                comnCd: "MER",
+                area: "comnCd",
+                comnCd: "CGM0055",
                 all: true,
                 required: true,
             },
-            code: { label: "code", type: "code", area: "comnCd", comnCd: "COM_0100", maxLength: 3, required: true },
+            code: { label: "code", type: "code", area: "comnCd", comnCd: "CGM0055", maxLength: 3, required: true },
             date: { label: "date", type: "date", required: true },
             daterange: {
                 label: "date range",
@@ -83,6 +133,10 @@ export const GuideValidation = () => {
             },
         ),
     };
+
+    useEffect(() => {
+        //
+    }, []);
 
     return (
         <Sample title="오류검증" description="Form, Grid Schema에 의한 오류검증 기본 사용방법">
@@ -119,8 +173,10 @@ export const GuideValidation = () => {
             <Sample.Section title="1. 사용방법(기본)">
                 <Layout direction="col">
                     <Sample.Section
-                        title="1.1 오류검증 설정을 스카마에 정의 후 폼의 handleSubmit 메소드를 이용하여 오류검증 실행"
-                        description={<>-</>}
+                        title="1.1 Form 오류검증"
+                        description={
+                            <>- 오류검증 설정을 스카마에 정의 후 폼의 handleSubmit 메소드를 이용하여 오류검증 실행</>
+                        }
                     >
                         <Group>
                             <Group.Body>
@@ -295,6 +351,35 @@ const Sample = () => {
             </Group.Footer>
         </Group>
     );
+};
+
+`}</Sample.Code>
+                        </Sample.Section>
+                    </Sample.Section>
+                    <Sample.Section title="1.2 그리드 오류검증" description={<>-</>}>
+                        <Group>
+                            <Group.Body>
+                                <Grid {...grid.sample.grid} data={gridData} />
+                            </Group.Body>
+                            <Group.Footer>
+                                <Layout>
+                                    <Layout.Left>
+                                        <Button
+                                            onClick={() => {
+                                                console.log(grid.sample.validate());
+                                            }}
+                                        >
+                                            오류검증
+                                        </Button>
+                                    </Layout.Left>
+                                </Layout>
+                            </Group.Footer>
+                        </Group>
+                        <Sample.Section title="Source Code">
+                            <Sample.Code>{`
+const Sample = () => {
+
+    
 };
 
 `}</Sample.Code>
