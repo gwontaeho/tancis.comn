@@ -107,19 +107,23 @@ const createInitialState = ({ _grid, data }: any) => {
     })();
 
     let _test;
+    let view;
+    let _totalCount;
 
-    if (!Array.isArray(data?.content)) {
-        _test = [];
-    } else {
-        _test = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+    if (data) {
+        if (!Array.isArray(data?.content)) {
+            _test = [];
+        } else {
+            _test = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+        }
+
+        _grid.current._origin = _test;
+        _grid.current._content = _test;
+
+        view = getView(_grid);
+        _totalCount = getCount(_grid);
+        _grid.current._originTotalCount = _totalCount;
     }
-
-    _grid.current._origin = _test;
-    _grid.current._content = _test;
-
-    const view = getView(_grid);
-    const _totalCount = getCount(_grid);
-    _grid.current._originTotalCount = _totalCount;
 
     return {
         _head,
