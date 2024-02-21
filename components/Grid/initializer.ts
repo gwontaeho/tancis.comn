@@ -133,9 +133,7 @@ const useInitialize = (props: any) => {
             dispatch({ type: "readjustHeight", payload: { value: _grid.current._listInner.clientHeight } });
         }, 10);
 
-        _grid.current._validate = (content: any) => {
-            if (content !== undefined && !Array.isArray(content)) return;
-
+        _grid.current._validate = () => {
             const fieldRuleObject = _grid.current._defaultSchema.body
                 .flatMap(({ cells }: any) => cells)
                 .reduce((prev: any, curr: any) => {
@@ -146,7 +144,7 @@ const useInitialize = (props: any) => {
                     return next;
                 }, {});
 
-            const errors = (content || _grid.current._content).reduce((prev: any, row: any) => {
+            const errors = _grid.current._content.reduce((prev: any, row: any) => {
                 for (const binding in fieldRuleObject) {
                     const bindingValue = row[binding];
                     const rules = fieldRuleObject[binding];

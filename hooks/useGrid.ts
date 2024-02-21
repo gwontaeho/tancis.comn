@@ -174,8 +174,8 @@ export const useGrid = (props: UseGridProps) => {
     const updateRow = (row: TRow) => {
         _grid.current._handleUpdate(row);
     };
-    const validate = (content?: any) => {
-        return _grid.current._validate(content);
+    const validate = () => {
+        return _grid.current._validate();
     };
 
     /* EXCEL */
