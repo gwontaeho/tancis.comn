@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Sample } from "@/comn/components/_";
 import { Group, Layout, FormControl, Button } from "@/comn/components";
-import { useForm, TFormSchema, useResource, useModal } from "@/comn/hooks";
+import { useForm, TFormSchema, useResource, useModal, TOption } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 
 export const GuidePopup = () => {
     useResource({
-        defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
-            { area: "comnCd", comnCd: "CAG_0018" },
-            { area: "comnCd", comnCd: "CAG_0006" },
-            { area: "wrhsCd" },
-        ],
+        defaultSchema: [{ area: "comnCd", comnCd: "CGM0055" }, { area: "wrhsCd" }],
     });
 
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
@@ -26,15 +21,64 @@ export const GuidePopup = () => {
         id: "form",
         schema: {
             text: { label: "text", type: "text" },
-            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "COM_0100" },
+            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "CGM0055" },
             select2: { label: "select 2", type: "select", options: code },
-            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CAG_0018" },
-            checkbox: {
+            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CGM0055" },
+            checkbox1: {
                 label: "checkbox",
                 type: "checkbox",
                 area: "comnCd",
-                comnCd: "CAG_0006",
+                comnCd: "CGM0055",
                 all: true,
+            },
+            checkbox2: {
+                label: "checkbox(excludes)",
+                type: "checkbox",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                /* 
+                    코드 데이터 제외
+                    제외할 코드 value 를 배열로 기재
+                */
+                excludes: ["AP", "ER"],
+                all: true,
+                controlSize: 10,
+            },
+            checkbox3: {
+                label: "checkbox(includes)",
+                type: "checkbox",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                /* 
+                    코드 데이터 추가
+                    추가할 코드 데이터를 배열{ label , value }의 형태로 지정
+                */
+                includes: [
+                    { value: "01", label: "추가 코드 01 " },
+                    { value: "02", label: "추가 코드 02 " },
+                ],
+                all: true,
+                controlSize: 10,
+            },
+            checkbox4: {
+                label: "checkbox(filter)",
+                type: "checkbox",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                all: true,
+                controlSize: 10,
+                /* 
+                    코드 데이터 필터링
+                    코드 데이터를 필터링할 함수를 선언 (import 추가 필요)
+                    return 이 false 이면 코드데이터에서 제외하고 보여줌
+                    import { TOption } from "@/comn/hooks"; 
+                    filter : ( item : TOption ) => {                        
+                        return boolean 
+                    }
+                */
+                filter: (item: TOption) => {
+                    return item.value.startsWith("A");
+                },
             },
             code: { label: "code", type: "code", area: "wrhsCd", maxLength: 5 },
         },
@@ -93,6 +137,9 @@ export const GuidePopup = () => {
                                 <br />- comnCd : area 가 comnCd(공통코드)인 경우 공통코드 그룹ID를 추가로 기재하여 사용
                                 <br />- useResource : 컴포넌트 상단에 코드 재사용을 위해 컴포넌트에서 사용하는 모든
                                 코드성 데이터 선언
+                                <br />- excludes : 코드 데이터에서 제외할 코드(value)를 지정 가능
+                                <br />- includes : 코드 데이터에 추가할 코드( &#123; label, value &#125; )를 지정 가능
+                                <br />- filter : 함수의 return 을 통하여 제외할 코드를 지정 가능
                             </>
                         }
                     >
@@ -127,7 +174,16 @@ export const GuidePopup = () => {
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control {...form.schema.radio} />
-                                        <Group.Control {...form.schema.checkbox} />
+                                        <Group.Control {...form.schema.checkbox1} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.checkbox2} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.checkbox3} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.checkbox4} />
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control {...form.schema.code} />
@@ -139,45 +195,89 @@ export const GuidePopup = () => {
                             <Sample.Code>{`
 const Sample = () => {
 
-    // 코드성 데이터 리소스 정의
     useResource({
-        defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
-            { area: "comnCd", comnCd: "CAG_0018" },
-            { area: "comnCd", comnCd: "CAG_0006" },
-            { area: "wrhsCd" },
-        ],
+        defaultSchema: [{ area: "comnCd", comnCd: "CGM0055" }, { area: "wrhsCd" }],
     });
 
-    // 사용자 코드 정의( options에 사용)
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+
     const code = [
         { label: "Y", value: "Y" },
         { label: "N", value: "N" },
     ];
 
-    // form 스키마 정의 (area , comnCd 등을 정의)
     const SF_FORM: TFormSchema = {
         id: "form",
         schema: {
             text: { label: "text", type: "text" },
-            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "COM_0100" },
+            select1: { label: "select 1", type: "select", area: "comnCd", comnCd: "CGM0055" },
             select2: { label: "select 2", type: "select", options: code },
-            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CAG_0018" },
-            checkbox: {
+            radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CGM0055" },
+            checkbox1: {
                 label: "checkbox",
                 type: "checkbox",
                 area: "comnCd",
-                comnCd: "CAG_0006",
+                comnCd: "CGM0055",
                 all: true,
+            },
+            checkbox2: {
+                label: "checkbox(excludes)",
+                type: "checkbox",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                /* 
+                    코드 데이터 제외
+                    제외할 코드 value 를 배열로 기재
+                */
+                excludes: ["AP", "ER"],
+                all: true,
+                controlSize: 10,
+            },
+            checkbox3: {
+                label: "checkbox(includes)",
+                type: "checkbox",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                /* 
+                    코드 데이터 추가
+                    추가할 코드 데이터를 배열{ label , value }의 형태로 지정
+                */
+                includes: [
+                    { value: "01", label: "추가 코드 01 " },
+                    { value: "02", label: "추가 코드 02 " },
+                ],
+                all: true,
+                controlSize: 10,
+            },
+            checkbox4: {
+                label: "checkbox(filter)",
+                type: "checkbox",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                all: true,
+                controlSize: 10,
+                /* 
+                    코드 데이터 필터링
+                    코드 데이터를 필터링할 함수를 선언 (import 추가 필요)
+                    return 이 false 이면 코드데이터에서 제외하고 보여줌
+                    import { TOption } from "@/comn/hooks"; 
+                    filter : ( item : TOption ) => {                        
+                        return boolean 
+                    }
+                */
+                filter: (item: TOption) => {
+                    return item.value.startsWith("A");
+                },
             },
             code: { label: "code", type: "code", area: "wrhsCd", maxLength: 5 },
         },
     };
 
     const form = useForm({
-        defaultSchema: SG_FORM,
+        defaultSchema: SF_FORM,
         defaultValues: {},
     });
+    
     return (
         <Group>
             <Group.Body>
@@ -209,7 +309,16 @@ const Sample = () => {
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.radio} />
-                        <Group.Control {...form.schema.checkbox} />
+                        <Group.Control {...form.schema.checkbox1} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.checkbox2} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.checkbox3} />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.checkbox4} />
                     </Group.Row>
                     <Group.Row>
                         <Group.Control {...form.schema.code} />

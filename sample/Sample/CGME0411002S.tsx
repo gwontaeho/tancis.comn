@@ -41,6 +41,7 @@ export const CGME0411002S = () => {
         defaultSchema: [
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "prcssStatCd" },
             { area: "portCd" },
             { area: "cityCd" },
@@ -372,7 +373,12 @@ export const CGME0411002S = () => {
                     <Group.Section>
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.rprtNo} />
-                            <Group.Control {...form.rpckItmApp.schema.prcssStatCd} />
+                            <Group.Label label="처리상태"></Group.Label>
+                            <Group.Field>
+                                <Group.Control {...form.rpckItmApp.schema.prcssStatCd} viewType="label" />
+                                [<Group.Control {...form.rpckItmApp.schema.prcssStatCd} viewType="label" />] &nbsp;[
+                                {fetch.getRpckItmApp.data?.rpckItmAppInfo.content.mrn}]
+                            </Group.Field>
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.mblNo} />

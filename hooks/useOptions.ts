@@ -30,7 +30,7 @@ type UseOptionsReturn = {
 };
 
 export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
-    const { comnCd, area, options = [], excludes } = props;
+    const { comnCd, area, options = [], excludes, includes, filter } = props;
 
     const ref = React.useRef<{ base: string; key?: string }>({ base: uuid() });
     const { theme } = useTheme();
@@ -69,16 +69,24 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
             ref.current.key = resource.key;
             __setT(new Date());
 
+            let t = [...resource.value.options];
+
             if (excludes) {
-                resource.value.options.filter((item: any) => {
-                    console.log(lodash.indexOf(excludes, item.value) === -1);
+                t = t.filter((item: any) => {
                     return lodash.indexOf(excludes, item.value) === -1;
                 });
             }
 
-            console.log(resource.value.options);
+            if (includes) {
+                t = t.concat(includes);
+            }
 
-            _setOptions(resource.value.options);
+            if (filter) {
+                t = t.filter((item: any) => {
+                    return filter(item);
+                });
+            }
+            _setOptions(t);
         } catch (error) {
             console.log(error);
         }

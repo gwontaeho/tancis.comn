@@ -31,6 +31,9 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
         area,
         comnCd,
         options,
+        excludes,
+        includes,
+        filter,
         /** input props */
         name,
         value,
@@ -50,7 +53,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
     );
 
     const { t } = useTranslation();
-    const o = useOptions({ comnCd, area, options });
+    const o = useOptions({ comnCd, area, options, excludes, includes, filter });
 
     const [_value, _setValue] = React.useState<any>(formatSelect(value));
 
