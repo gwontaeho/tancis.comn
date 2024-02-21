@@ -222,7 +222,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         dclrYy: { type: "text", label: "L_DCLR_YY" },
         prcsTpCd: { type: "text", label: "L_PRCS_TP_CD" },
         dclrSrno: { type: "text", label: "L_DCLR_SRNO" },
-        prcssStatCd: { type: "code", label: "L_PRCSS_STAT", edit: false, area: "prcssStatCd" },
+        prcssStatCd: { type: "code", label: "L_PRCSS_STAT", edit: false, area: "comnCd", comnCd: "CGM0055" },
         prcssDt: { type: "text", label: "L_PRCSS_DT" },
         prcssId: { type: "text", label: "L_PRCSS_ID" },
         cstmOfceCd: { type: "text", label: "L_CSTM_OFCE_CD" },

@@ -16,6 +16,7 @@ type InputCodeProps = UseOptionsProps & {
     readOnly?: boolean;
     disabled?: boolean;
     maxLength?: number;
+    callback?: (arg?: any) => void;
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
@@ -74,6 +75,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         onBlur,
         onFocus,
         onChange,
+        callback,
     } = props;
 
     const _props = Object.fromEntries(
@@ -141,6 +143,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
             draggable: true,
             callback: (data: any) => {
                 handleValueChange(data.code);
+                if (callback) callback(data);
                 modal.closeModal();
             },
         });

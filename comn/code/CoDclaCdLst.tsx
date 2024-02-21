@@ -50,7 +50,6 @@ export const CompanyDeclareCodeList = (props: any) => {
         click_Btn_Srch: () => {
             form.coDclaCdSrch.handleSubmit(
                 () => {
-                    console.log("a");
                     grid.coDclaCdLst.setPage(0);
                     fetch.getCoDclaCdLst.fetch(0);
                 },
@@ -72,7 +71,7 @@ export const CompanyDeclareCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coNm });
+                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coNm, data: rowValues });
                                 close();
                             }}
                         >

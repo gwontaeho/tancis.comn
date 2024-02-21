@@ -374,7 +374,9 @@ export const SampleFormControlCode = () => {
                             <Group.Row>
                                 <Group.Control
                                     {...form.schema.field13}
-                                    popupParams={{ coDclaTpCd: "AL" }}
+                                    callback={(data) => {
+                                        console.log(data);
+                                    }}
                                 ></Group.Control>
                                 <Group.Label label="업체신고 코드"></Group.Label>
                                 <Group.Col>

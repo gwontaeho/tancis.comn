@@ -25,6 +25,9 @@ export const Radio = (props: RadioProps) => {
         area,
         comnCd,
         options,
+        excludes,
+        includes,
+        filter,
         /** */
         name,
         value,
@@ -47,7 +50,7 @@ export const Radio = (props: RadioProps) => {
     const [_value, _setValue] = React.useState<any>(value);
 
     const { t } = useTranslation();
-    const o = useOptions({ comnCd, area, options });
+    const o = useOptions({ comnCd, area, options, excludes, includes, filter });
 
     React.useEffect(() => {
         if (value === _value) return;

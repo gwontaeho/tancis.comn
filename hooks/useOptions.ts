@@ -6,6 +6,7 @@ import { resourceState } from "@/comn/features/recoil";
 import { utils, idb } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
 import { TFunction } from "i18next";
+import lodash from "lodash";
 
 export type TOption = {
     label: string;
@@ -29,7 +30,7 @@ type UseOptionsReturn = {
 };
 
 export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
-    const { comnCd, area, options = [] } = props;
+    const { comnCd, area, options = [], excludes, includes, filter } = props;
 
     const ref = React.useRef<{ base: string; key?: string }>({ base: uuid() });
     const { theme } = useTheme();
@@ -67,7 +68,25 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
 
             ref.current.key = resource.key;
             __setT(new Date());
-            _setOptions(resource.value.options);
+
+            let t = [...resource.value.options];
+
+            if (excludes) {
+                t = t.filter((item: any) => {
+                    return lodash.indexOf(excludes, item.value) === -1;
+                });
+            }
+
+            if (includes) {
+                t = t.concat(includes);
+            }
+
+            if (filter) {
+                t = t.filter((item: any) => {
+                    return filter(item);
+                });
+            }
+            _setOptions(t);
         } catch (error) {
             console.log(error);
         }
