@@ -106,7 +106,7 @@ const createInitialState = ({ _grid, data }: any) => {
             .join(" ");
     })();
 
-    let _test;
+    let _test = [];
     let view;
     let _totalCount;
 
