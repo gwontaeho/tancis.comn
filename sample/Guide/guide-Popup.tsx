@@ -266,6 +266,7 @@ const Sample = () => {
                     }
                 */
                 filter: (item: TOption) => {
+                    // A 로 시작하는 코드를 제외하고 보여줌
                     return item.value.startsWith("A");
                 },
             },
