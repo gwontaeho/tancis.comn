@@ -16,7 +16,7 @@ export const APIS = {
             size: size,
             keyword: data.wrhsCd,
             keywordName: data.wrhsNm,
-            coDclaTpCd: data.coDclaTpCd,
+            wrhsOprtTpCd: data.wrhsOprtTpCd,
         });
     },
 

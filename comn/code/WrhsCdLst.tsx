@@ -84,9 +84,9 @@ export const WrhsCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        if (params.coDclaTpCd) {
-            console.log(params.coDclaTpCd);
-            form.wrhsCdSrch.setValue("coDclaTpCd", params.coDclaTpCd);
+        if (params.wrhsOprtTpCd) {
+            console.log(params.wrhsOprtTpCd);
+            form.wrhsCdSrch.setValue("wrhsOprtTpCd", params.wrhsOprtTpCd);
         }
         handler.click_Btn_Srch();
     }, []);

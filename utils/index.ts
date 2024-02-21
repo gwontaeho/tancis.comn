@@ -325,7 +325,7 @@ export const comnUtils = {
         cstmTpCd?: string;
         vhclMnfcCd?: string;
         vhclMdlCd?: string;
-        coDclaTpCd?: string;
+        wrhsOprtTpCd?: string;
     }) => {
         const {
             comnCd,
@@ -343,7 +343,7 @@ export const comnUtils = {
             cstmTpCd = "",
             vhclMnfcCd = "",
             vhclMdlCd = "",
-            coDclaTpCd = "",
+            wrhsOprtTpCd = "",
         } = args;
 
         let url = "";
@@ -383,7 +383,7 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/org?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
                 break;
             case "wrhsCd":
-                url = `/api/v1/ptli/intptl/comnppup/wrhs?wrhsOprtTpCd=&coDclaCd=${keyword}&wrhsNm=${keywordName}&coDclaTpCd=${coDclaTpCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/wrhs?wrhsOprtTpCd=&coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}`;
                 break;
             case "test":
                 url = `/api/v1/ptli/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
