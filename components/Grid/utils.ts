@@ -142,6 +142,30 @@ const group = (_grid: any, content: any) => {
  * @param _grid
  * @returns
  */
+// const getView = (_grid: any) => {
+//     let test = sort(_grid, _grid.current._content);
+//     const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
+
+//     const abcd = groups.reduce((prev, curr, index) => {
+//         let next = { ...prev };
+
+//         if (index === 0) {
+//             next = lodash.groupBy(test, curr[0]);
+//         } else {
+
+//         }
+
+//         return next;
+//     }, {});
+
+//     console.log(abcd);
+
+//     console.log(lodash.groupBy(test, groups[0][0]));
+//     console.log(groups);
+
+//     return [];
+// };
+
 const getView = (_grid: any) => {
     let view;
     let content = sort(_grid, _grid.current._content);
