@@ -399,7 +399,7 @@ export const CGME0411001Q = (props: any) => {
                             </Group.Row>
                             <Group.Row>
                                 {/* Processing Status !== 처리상태 ==!  */}
-                                <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd} />
+                                <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd} excludes={["AP"]} />
                             </Group.Row>
                         </Group.Section>
 
