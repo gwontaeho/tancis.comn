@@ -144,7 +144,7 @@ const useInitialize = (props: any) => {
                     return next;
                 }, {});
 
-            const errors = _grid.current._content.reduce((prev: any, row: any) => {
+            const errors = _grid.current._content.reduce((prev: any, row: any, index: any) => {
                 for (const binding in fieldRuleObject) {
                     const bindingValue = row[binding];
                     const rules = fieldRuleObject[binding];
@@ -177,7 +177,7 @@ const useInitialize = (props: any) => {
                                 break;
                         }
                         if (invalid) {
-                            prev.push({ ...rules[i], binding, value: bindingValue });
+                            prev.push({ ...rules[i], binding, value: bindingValue, row: index });
                         }
                     }
                 }
