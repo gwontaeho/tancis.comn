@@ -1,12 +1,11 @@
 import React from "react";
 import lodash from "lodash";
 import { read, utils } from "xlsx";
+
 import { reducer, createInitialState } from "./reducer";
 
 /**
  * ## Grid Initialize Hook
- * @param props
- * @returns
  */
 const useInitialize = (props: any) => {
     const { _grid, data, render } = props;
@@ -17,16 +16,14 @@ const useInitialize = (props: any) => {
 
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
-        if (!Array.isArray(data?.content)) return;
-        if (data.content.length === 0 && _grid.current._content.length === 0) return;
+        if (!Array.isArray(data.content)) return;
+        if (data.content.length === 0 && state._test.length === 0) return;
 
         dispatch({ type: "setData", payload: { _grid, data } });
     }, [__t]);
 
     React.useEffect(() => {
-        /* Set Data */
         _grid.current._setData = (data: any) => {
-            if (!Array.isArray(data?.content)) return;
             dispatch({ type: "setData", payload: { _grid, data } });
         };
         _grid.current._resetData = () => {
@@ -79,19 +76,17 @@ const useInitialize = (props: any) => {
             }
         };
 
+        _grid.current._handleUpdate = (data: any) => {
+            dispatch({ type: "update", payload: { _grid, data } });
+        };
+
         /* Handle Add Row */
         _grid.current._handleAdd = (data: any) => {
-            if (_grid.current._pagination === "out") return;
             dispatch({ type: "add", payload: { _grid, data } });
         };
         /* Handle Delete Row */
         _grid.current._handleDelete = (type: any) => {
-            if (_grid.current._pagination === "out" || !type) return;
             dispatch({ type: "delete", payload: { _grid, type } });
-        };
-        _grid.current._handleUpdate = (data: any) => {
-            if (!data?.__key) return;
-            dispatch({ type: "update", payload: { _grid, data } });
         };
 
         _grid.current._handleSort = (binding: any) => {
