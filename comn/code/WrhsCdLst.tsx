@@ -11,8 +11,9 @@ export const WrhsCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage } = usePopup();
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+    const { close, postMessage, getParams } = usePopup();
+    const params = getParams();
 
     const form = {
         wrhsCdSrch: useForm({
@@ -83,6 +84,10 @@ export const WrhsCodeList = (props: any) => {
     };
 
     useEffect(() => {
+        if (params.coDclaTpCd) {
+            console.log(params.coDclaTpCd);
+            form.wrhsCdSrch.setValue("coDclaTpCd", params.coDclaTpCd);
+        }
         handler.click_Btn_Srch();
     }, []);
 

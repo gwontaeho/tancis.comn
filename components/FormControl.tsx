@@ -74,6 +74,9 @@ export type FormControlProps = InputDaterangeProps & {
     area?: string;
     comnCd?: string;
     options?: TOption[];
+    excludes?: string[];
+    includes?: { label: string; value: string }[];
+    filter?: (arg?: any) => boolean;
 
     /** with option */
     viewType?: string;

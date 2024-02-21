@@ -42,7 +42,7 @@ export const CGME0411001Q = (props: any) => {
      */
 
     useResource({
-        defaultSchema: [{ area: "comnCd", comnCd: "COM_0100" }, { area: "wrhsCd" }],
+        defaultSchema: [{ area: "comnCd", comnCd: "CGM0055" }, { area: "wrhsCd" }],
     });
 
     const pgeUid = "UI-CGME-0411-001Q"; // Page Unique identifier !== 화면 고유 식별자 ==!
@@ -389,15 +389,15 @@ export const CGME0411001Q = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 {/* Registration Date !== 등록일자 ==!  */}
-                                <Group.Control {...form.rpckItmAppSrch.schema.frstRgsrDtmRnge}></Group.Control>
+                                <Group.Control {...form.rpckItmAppSrch.schema.frstRgsrDtmRnge} />
                             </Group.Row>
                             <Group.Row>
                                 {/* MRN !== MRN ==!  */}
-                                <Group.Control {...form.rpckItmAppSrch.schema.mrn}></Group.Control>
+                                <Group.Control {...form.rpckItmAppSrch.schema.mrn} />
                             </Group.Row>
                             <Group.Row>
                                 {/* Processing Status !== 처리상태 ==!  */}
-                                <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd}></Group.Control>
+                                <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd} />
                             </Group.Row>
                         </Group.Section>
 

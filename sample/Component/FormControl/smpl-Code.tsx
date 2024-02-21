@@ -24,7 +24,7 @@ const SF_FORM: TFormSchema = {
         field2: {
             type: "code",
             area: "comnCd",
-            comnCd: "COM_0015",
+            comnCd: "CGM0055",
             label: "Common Code",
             maxLength: 3,
             popupSize: "md",
@@ -362,7 +362,10 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.schema.field12}></Group.Control>
+                                <Group.Control
+                                    {...form.schema.field12}
+                                    popupParams={{ coDclaTpCd: ["WT", "WI", "TO"] }}
+                                ></Group.Control>
                                 <Group.Label label="보세창고 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/wrhsCdPpup</Group.Any>

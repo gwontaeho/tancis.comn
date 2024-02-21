@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { resourceState } from "@/comn/features/recoil";
 import { utils, idb } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
+import { TFunction } from "i18next";
 
 export type TOption = {
     label: string;
@@ -15,6 +16,9 @@ export type UseOptionsProps = {
     area?: string;
     comnCd?: string;
     options?: TOption[];
+    excludes?: string[];
+    includes?: { label: string; value: string }[];
+    filter?: (arg?: any) => boolean;
 };
 
 type UseOptionsReturn = {

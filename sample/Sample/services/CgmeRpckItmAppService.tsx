@@ -139,7 +139,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: "blGwght", align: "right", type: "number", thousandSeparator: true }],
         },
         {
-            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "COM_0100", viewType: "label" }],
+            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "CGM0055", viewType: "label" }],
         },
     ],
 };
@@ -170,7 +170,7 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
             label: "L_PRCSS_STAT",
             area: "comnCd",
             controlSize: 10,
-            comnCd: "COM_0100",
+            comnCd: "CGM0055",
             all: true,
             viewType: "both",
         },
@@ -382,7 +382,7 @@ export const SG_RPCK_ITM_APP_ITM_LIST: TGridSchema = {
             cells: [{ binding: "itmWght" }],
         },
         {
-            cells: [{ binding: "bondVal", area: "comnCd", comnCd: "CAG_0018" }],
+            cells: [{ binding: "bondVal", area: "comnCd", comnCd: "CGM0055" }],
         },
     ],
 };
