@@ -206,7 +206,6 @@ const reducer = (state: any, action: any) => {
         case "add": {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
-            _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
             nextState._test = getView(_grid);
             nextState._totalCount = getCount(_grid);
             return nextState;

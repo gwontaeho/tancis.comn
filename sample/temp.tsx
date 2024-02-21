@@ -303,7 +303,14 @@ export const Temp = () => {
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => setData(data2)}>set data</button>
                     <button onClick={() => resetData()}>reset</button>
-                    <button onClick={() => addRow({ text: "added", q: "asd" })}>add row</button>
+                    <button
+                        onClick={() => {
+                            addRow({ text: "added", q: "asd" });
+                            console.log(getData());
+                        }}
+                    >
+                        add row
+                    </button>
                     <button onClick={() => setSize(30)}>setSize 30</button>
                     <button onClick={() => setPage(2)}>setPage 2</button>
                     <button onClick={() => setOption("height", 500)}>set height</button>
