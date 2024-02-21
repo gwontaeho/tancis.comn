@@ -167,7 +167,6 @@ const reducer = (state: any, action: any) => {
             const { _grid, data } = action.payload;
             let nextState = { ...state };
             _grid.current._data = data;
-            console.log(data);
             if (_grid.current._pagination === "in") {
                 _grid.current._page = 0;
                 nextState._page = 0;
@@ -204,7 +203,7 @@ const reducer = (state: any, action: any) => {
         }
         /* Add row  */
         case "add": {
-            const { _grid, data } = action.payload;
+            const { _grid } = action.payload;
             let nextState = { ...state };
             nextState._test = getView(_grid);
             nextState._totalCount = getCount(_grid);

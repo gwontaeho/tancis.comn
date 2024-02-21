@@ -22,7 +22,6 @@ const getMockData = ({ totalElements = 99 }) => {
         content: Array(totalElements)
             .fill(null)
             .map((_, i) => ({
-                index: i,
                 q: ["Maru", "Sam", "Tom", "Ken"][Math.floor(Math.random() * 4)],
                 w: ["005", "011", "414"][Math.floor(Math.random() * 3)],
                 ww: ["77", "22"][Math.floor(Math.random() * 2)],
@@ -65,7 +64,7 @@ const schema1: TGridSchema = {
         height: 400,
         pagination: "in",
 
-        group: ["q"],
+        group: ["q", "w"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
@@ -206,7 +205,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 66 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 24 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 

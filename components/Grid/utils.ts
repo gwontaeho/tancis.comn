@@ -84,12 +84,10 @@ const fun = (schema: any) => {
  */
 const sort = (_grid: any, content: any) => {
     const [iteratees, orders] = lodash.sortBy(Object.entries(_grid.current._sort), [([, { seq }]: any) => seq]).reduce(
-        (prev: any, curr: any) => {
-            return [
-                [...prev[0], curr[0]],
-                [...prev[1], curr[1].val],
-            ];
-        },
+        (prev: any, curr: any) => [
+            [...prev[0], curr[0]],
+            [...prev[1], curr[1].val],
+        ],
         [[], []],
     );
     return lodash.orderBy(content, iteratees, orders);
@@ -104,10 +102,10 @@ const sort = (_grid: any, content: any) => {
 const group = (_grid: any, content: any) => {
     const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
     const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
-        // if (!by) return sort(_grid, data);
         if (!by) return data;
         const depth = prevDepth + 1;
         const parent = [...prevParent, by];
+
         return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
             const groupKey = prevGroupKey + "__" + curr[0];
             if (_grid.current._groupStatus[groupKey] === undefined) {
@@ -141,11 +139,15 @@ const group = (_grid: any, content: any) => {
  * @returns
  */
 const getView = (_grid: any) => {
-    let view = sort(_grid, _grid.current._content);
-    _grid.current._content = view;
+    let view;
+    let content = sort(_grid, _grid.current._content);
+    if (Object.keys(_grid.current._group).length) {
+        view = group(_grid, content);
+        content = view.filter(({ __type }: any) => __type !== "group");
+    } else view = content;
     view = view.filter(({ __type }: any) => __type !== "deleted");
-    if (Object.keys(_grid.current._group).length) view = group(_grid, view);
     if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
+    _grid.current._content = content;
     _grid.current._view = view;
     return view;
 };
