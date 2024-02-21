@@ -107,7 +107,7 @@ const createInitialState = ({ _grid, data }: any) => {
     })();
 
     let _test = [];
-    let view;
+    let view: any[] = [];
     let _totalCount;
 
     if (data) {
