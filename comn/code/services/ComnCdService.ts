@@ -611,6 +611,7 @@ export const SCHEMA_GRID_CO_DCLA_CD: TGridSchema = {
         { cells: [{ header: "L_CO_NM", binding: "coNm", width: "*" }] },
         { cells: [{ header: "L_CO_DCLA_CD", binding: "coDclaCd", width: 200 }] },
         { cells: [{ header: "L_CO_DCLA_TP_NM", binding: "coDclaTpNm", width: 200 }] },
+        { cells: [{ header: "L_RPRS_TELNO", binding: "rprsTelno", width: 200 }] },
     ],
     body: [
         {
@@ -628,6 +629,9 @@ export const SCHEMA_GRID_CO_DCLA_CD: TGridSchema = {
         },
         {
             cells: [{ binding: "coDclaTpNm" }],
+        },
+        {
+            cells: [{ binding: "rprsTelno" }],
         },
     ],
 };
