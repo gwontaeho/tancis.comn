@@ -149,10 +149,10 @@ const validateValue = (v: any, r: any) => {
                 invalid = !v;
                 break;
             case "min":
-                invalid = v < value;
+                if (typeof v === "number") invalid = v < value;
                 break;
             case "max":
-                invalid = v > value;
+                if (typeof v === "number") invalid = v > value;
                 break;
             case "minLength":
                 if (typeof v === "string") invalid = v.length < value;
