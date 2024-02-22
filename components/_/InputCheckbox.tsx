@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import lodash from "lodash";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { useOptions, UseOptionsProps } from "@/comn/hooks";
 type CheckboxProps = UseOptionsProps & {
     edit?: boolean;
     all?: boolean;
+    checkAll?: boolean;
     viewType?: "label" | "value" | "both";
 
     name?: string;
@@ -23,6 +24,7 @@ export const Checkbox = (props: CheckboxProps) => {
     const {
         /** */
         all,
+        checkAll,
         edit = true,
         viewType = "both",
         /** useOptions props */
@@ -54,6 +56,7 @@ export const Checkbox = (props: CheckboxProps) => {
 
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options, excludes, includes, filter });
+    const _checkAll = useRef(checkAll);
 
     const [_value, _setValue] = React.useState<any[]>(formatCheckbox(value));
 
@@ -63,6 +66,14 @@ export const Checkbox = (props: CheckboxProps) => {
 
         _setValue(formatCheckbox(value));
     }, [value]);
+
+    React.useEffect(() => {
+        if (_checkAll.current === true && o.options.length > 0) {
+            let t = o.options.map((item) => item.value);
+            _setValue(formatCheckbox(t));
+            _checkAll.current = false;
+        }
+    }, [o]);
 
     /** handle change */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
