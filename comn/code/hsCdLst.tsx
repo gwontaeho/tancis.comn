@@ -13,6 +13,7 @@ export const HsCodeList = (props: any) => {
     const toast = useToast();
     const modal = useModal();
     const { close, postMessage, getParams } = usePopup();
+    const params = getParams(); /* * */
     /*
      * 명명 규칙 (useForm)
      * prefix : "form_"
@@ -94,6 +95,8 @@ export const HsCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
         click_Btn_Apply: () => {
             const list: any[] = grid.hsCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
@@ -131,6 +134,10 @@ export const HsCodeList = (props: any) => {
 
     useEffect(() => {
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.hsCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -178,16 +185,19 @@ export const HsCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    <Layout>
-                        <Layout.Right>
-                            <Button
-                                role="apply"
-                                onClick={() => {
-                                    handler.click_Btn_Apply();
-                                }}
-                            ></Button>
-                        </Layout.Right>
-                    </Layout>
+                    {/* * */}
+                    {params.multiple === true && (
+                        <Layout>
+                            <Layout.Right>
+                                <Button
+                                    role="apply"
+                                    onClick={() => {
+                                        handler.click_Btn_Apply();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    )}
                     <Grid
                         {...grid.hsCdLst.grid}
                         data={fetch.getHsCdLst.data?.clriHsMgmtDto}

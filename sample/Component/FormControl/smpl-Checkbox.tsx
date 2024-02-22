@@ -10,7 +10,7 @@ export const SampleFormControlCheckbox = () => {
     const { openPopup } = usePopup();
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -33,13 +33,15 @@ export const SampleFormControlCheckbox = () => {
                 type: "checkbox",
                 options: code,
                 required: true,
+                editType: "both",
             },
             checkbox2: {
                 label: "checkbox2",
                 type: "checkbox",
                 area: "comnCd",
-                comnCd: "COM_0100",
+                comnCd: "CGM0055",
                 required: true,
+                editType: "both",
             },
             checkbox3: {
                 label: "checkbox3",
@@ -47,6 +49,7 @@ export const SampleFormControlCheckbox = () => {
                 options: code,
                 area: "cntyCd",
                 required: true,
+                editType: "both",
             },
         },
     };
@@ -873,7 +876,7 @@ const Sample = () => {
                                             label="checkbox"
                                             type="checkbox"
                                             area="comnCd"
-                                            comnCd="COM_0100"
+                                            comnCd="CGM0055"
                                             all={true}
                                         />
                                     </Group.Row>
@@ -901,7 +904,7 @@ const Sample = () => {
 
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -918,7 +921,7 @@ const Sample = () => {
                             label="checkbox"
                             type="checkbox"
                             area="comnCd"
-                            comnCd="COM_0100"
+                            comnCd="CGM0055"
                             all={true}
                         />
                     </Group.Row>
@@ -1200,7 +1203,7 @@ const Sample = () => {
 
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -1226,7 +1229,7 @@ const Sample = () => {
                 label: "checkbox2",
                 type: "checkbox",
                 area: "comnCd",
-                comnCd: "COM_0100",
+                comnCd: "CGM0055",
                 required: true,
             },
             checkbox3: {

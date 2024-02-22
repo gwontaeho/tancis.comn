@@ -45,7 +45,7 @@ const Modal = (props: ModalProps) => {
         content,
         draggable = false,
         backdrop = true,
-        size = url ? "lg" : "xs",
+        size = url ? "xl" : "xs",
         layout = "popup",
         params,
         callback,
@@ -133,7 +133,7 @@ const Modal = (props: ModalProps) => {
                                 />
                             </div>
                         ) : typeof content === "string" ? (
-                            t(content)
+                            <pre>{t(content)}</pre>
                         ) : (
                             <div className="flex-1">{content}</div>
                         )}
