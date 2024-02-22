@@ -58,7 +58,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
         getOptionsFromIDB(key);
 
         /** */
-    }, [comnCd, area, options]);
+    }, [comnCd, area]);
 
     const getOptionsFromIDB = async (key: string) => {
         try {
