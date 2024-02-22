@@ -1132,7 +1132,7 @@ export const SCHEMA_FORM_CO_DCLA_CD_SRCH: TFormSchema = {
         coNm: { type: "text", label: "L_CO_NM" },
         coDclaTpCd: {
             all: true,
-            type: "select",
+            type: "checkbox",
             label: "L_CO_DCLA_TP_CD",
             options: [
                 { label: "L_AE", value: "AE" },
