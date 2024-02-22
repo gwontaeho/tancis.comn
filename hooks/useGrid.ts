@@ -81,6 +81,8 @@ export const useGrid = (props: UseGridProps) => {
             _setPage,
             _setSize,
 
+            _content: [],
+
             /**
              * _origin
              * _content

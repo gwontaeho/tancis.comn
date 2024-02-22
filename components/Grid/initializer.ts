@@ -83,6 +83,7 @@ const useInitialize = (props: any) => {
         /* Handle Add Row */
         _grid.current._handleAdd = (data?: any) => {
             if (_grid.current._pagination === "out") return;
+
             _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
             dispatch({ type: "add", payload: { _grid, data } });
         };
