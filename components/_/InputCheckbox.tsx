@@ -11,6 +11,7 @@ type CheckboxProps = UseOptionsProps & {
     all?: boolean;
     checkAll?: boolean;
     viewType?: "label" | "value" | "both";
+    editType?: "label" | "value" | "both";
 
     name?: string;
     value?: any[];
@@ -27,6 +28,7 @@ export const Checkbox = (props: CheckboxProps) => {
         checkAll,
         edit = true,
         viewType = "both",
+        editType = "label",
         /** useOptions props */
         area,
         comnCd,
@@ -137,7 +139,9 @@ export const Checkbox = (props: CheckboxProps) => {
                                         onChange={handleChange}
                                         checked={_value.some((_) => _ === option.value)}
                                     />
-                                    {option.label && <div>{t(option.label)}</div>}
+                                    {option.label && (
+                                        <div> {editCheckbox(option.value, t(option.label), editType)}</div>
+                                    )}
                                 </label>
                             );
                         })}
@@ -165,6 +169,11 @@ export const viewCheckbox = (v: any, o?: any) => {
         })
         .join(", ");
 
+    return view;
+};
+
+export const editCheckbox = (value: string, label: string, editType: string) => {
+    const view = editType === "label" ? label : editType === "value" ? value : "[" + value + "] " + label;
     return view;
 };
 

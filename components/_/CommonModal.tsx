@@ -45,7 +45,7 @@ const Modal = (props: ModalProps) => {
         content,
         draggable = false,
         backdrop = true,
-        size = url ? "lg" : "xs",
+        size = url ? "xl" : "xs",
         layout = "popup",
         params,
         callback,

@@ -10,7 +10,7 @@ export const SampleFormControlRadio = () => {
     const { openPopup } = usePopup();
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -33,13 +33,15 @@ export const SampleFormControlRadio = () => {
                 type: "radio",
                 options: code,
                 required: true,
+                editType: "both",
             },
             radio2: {
                 label: "radio2",
                 type: "radio",
                 area: "comnCd",
-                comnCd: "COM_0100",
+                comnCd: "CGM0055",
                 required: true,
+                editType: "both",
             },
             radio3: {
                 label: "radio3",
@@ -47,6 +49,7 @@ export const SampleFormControlRadio = () => {
                 options: code,
                 area: "cntyCd",
                 required: true,
+                editType: "both",
             },
         },
     };
@@ -748,7 +751,7 @@ const Sample = () => {
                             <Group.Body>
                                 <Group.Section>
                                     <Group.Row>
-                                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="COM_0100" />
+                                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="CGM0055" />
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control label="radio" type="radio" area="comnCd" comnCd="CAG_0018" />
@@ -768,7 +771,7 @@ const Sample = () => {
 
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -781,7 +784,7 @@ const Sample = () => {
             <Group.Body>
                 <Group.Section>
                     <Group.Row>
-                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="COM_0100" />
+                        <Group.Control label="radio" type="radio" area="comnCd" comnCd="CGM0055" />
                     </Group.Row>
                     <Group.Row>
                         <Group.Control label="radio" type="radio" area="comnCd" comnCd="CAG_0018" />
@@ -983,7 +986,7 @@ const Sample = () => {
 
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -1009,7 +1012,7 @@ const Sample = () => {
                 label: "radio2",
                 type: "radio",
                 area: "comnCd",
-                comnCd: "COM_0100",
+                comnCd: "CGM0055",
                 required: true,
             },
             radio3: {
