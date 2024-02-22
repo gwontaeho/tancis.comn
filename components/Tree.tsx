@@ -16,6 +16,7 @@ type TreeItemProps = {
 type TreeProps = {
     data?: any;
     onClick?: (...args: any) => void;
+    height?: string | number;
 };
 
 const TreeItem = (props: TreeItemProps) => {
@@ -78,7 +79,7 @@ const TreeItem = (props: TreeItemProps) => {
 };
 
 export const Tree = (props: TreeProps) => {
-    const { data, onClick } = props;
+    const { data, onClick, height } = props;
 
     const dataWithKey = (data: any, parent: any = []) => {
         return data.map((_: any) => {
@@ -92,7 +93,7 @@ export const Tree = (props: TreeProps) => {
     };
 
     return (
-        <ul className="w-fit">
+        <ul className="w-fit overflow-auto p-4" style={{ height }}>
             {dataWithKey(data)?.map((child: any) => {
                 return <TreeItem _key={child.key} onClick={onClick} {...child} />;
             })}

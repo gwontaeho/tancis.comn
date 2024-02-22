@@ -38,7 +38,6 @@ export const Radio = (props: RadioProps) => {
     } = props;
 
     const name = useId();
-
     const _props = Object.fromEntries(
         Object.entries({
             /** */
