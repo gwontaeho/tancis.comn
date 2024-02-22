@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef, useId } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { v4 as uuid } from "uuid";
 
 import { useOptions, UseOptionsProps } from "@/comn/hooks";
 
@@ -29,7 +30,6 @@ export const Radio = (props: RadioProps) => {
         includes,
         filter,
         /** */
-        name,
         value,
         readOnly,
         disabled,
@@ -37,10 +37,11 @@ export const Radio = (props: RadioProps) => {
         onChange,
     } = props;
 
+    const name = useId();
+
     const _props = Object.fromEntries(
         Object.entries({
             /** */
-            name,
             readOnly,
             disabled,
             onBlur,
@@ -81,6 +82,7 @@ export const Radio = (props: RadioProps) => {
                                 <label key={o.base + "." + i} className="flex items-center h-7 space-x-1 mr-3">
                                     <input
                                         {..._props}
+                                        name={name}
                                         type="radio"
                                         value={option.value}
                                         checked={option.value === _value}
