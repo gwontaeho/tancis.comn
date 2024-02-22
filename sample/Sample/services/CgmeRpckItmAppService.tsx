@@ -44,7 +44,7 @@ export const APIS = {
     // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
     getRpckItmAppList: (data: any, page: number, size: number) => {
         return api.get(`${BASE.api}?page=${page}&size=${size}`, {
-            params: comnUtils.toGetParams(data),
+            params: data,
         });
     },
     // Get Repacking Item Application Item List !== 재포장 품목 신청서 품목 목록 조회 ==!

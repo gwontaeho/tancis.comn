@@ -6,6 +6,7 @@ import { VariableSizeList as List, areEqual } from "react-window";
 
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
+import { validateValue } from "./utils";
 import { useInitialize } from "./initializer";
 
 /**
@@ -321,6 +322,9 @@ const Row = memo((props: any) => {
                                 const fv = comnUtils.getFormattedValue(value, rest);
                                 const uv = comnUtils.getUnformattedValue(value, rest);
                                 // const vldv = comnUtils.getValidatedValue(uv, rest);
+
+                                const abc = validateValue(value, _grid.current._rule[binding]);
+
                                 const isEdit = _editingRow.includes(rowKey) ? true : edit;
 
                                 const celContext = {
@@ -351,7 +355,7 @@ const Row = memo((props: any) => {
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
                                         )}
-                                        // {...(vldv && { "aria-invalid": true })}
+                                        {...(abc.isError && { "aria-invalid": true })}
                                         {...(_selectedCel === celKey && { "aria-selected": true })}
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${rowspan ?? 1}`,

@@ -9,6 +9,7 @@ import { useOptions, UseOptionsProps } from "@/comn/hooks";
 type RadioProps = UseOptionsProps & {
     edit?: boolean;
     viewType?: "label" | "value" | "both";
+    editType?: "label" | "value" | "both";
 
     name?: string;
     value?: any;
@@ -22,6 +23,7 @@ export const Radio = (props: RadioProps) => {
     const {
         edit = true,
         viewType = "both",
+        editType = "label",
         /** useOptions props */
         area,
         comnCd,
@@ -87,7 +89,7 @@ export const Radio = (props: RadioProps) => {
                                         checked={option.value === _value}
                                         onChange={handleChange}
                                     />
-                                    {option.label && <div> {t(option.label)}</div>}
+                                    {option.label && <div> {editRadio(option.value, t(option.label), editType)}</div>}
                                 </label>
                             );
                         })}
@@ -110,6 +112,11 @@ export const viewRadio = (v: any, o?: any) => {
 
     const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
 
+    return view;
+};
+
+export const editRadio = (value: string, label: string, editType: string) => {
+    const view = editType === "label" ? label : editType === "value" ? value : "[" + value + "] " + label;
     return view;
 };
 

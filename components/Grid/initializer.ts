@@ -136,24 +136,15 @@ const useInitialize = (props: any) => {
         }, 10);
 
         _grid.current._validate = () => {
-            const fieldRuleObject = _grid.current._defaultSchema.body
-                .flatMap(({ cells }: any) => cells)
-                .reduce((prev: any, curr: any) => {
-                    let next = prev;
-                    const ary = getValidationArray(curr);
-                    if (ary.length) next[curr.binding] = ary;
-
-                    return next;
-                }, {});
-
             const errors = _grid.current._content
                 .filter((_: any) => {
                     return _.__type !== "deleted";
                 })
                 .reduce((prev: any, row: any, index: any) => {
-                    for (const binding in fieldRuleObject) {
+                    for (const binding in _grid.current._rule) {
                         const bindingValue = row[binding];
-                        const rules = fieldRuleObject[binding];
+                        const rules = _grid.current._rule[binding];
+
                         for (let i = 0; i < rules.length; i++) {
                             let invalid = false;
                             const { value, type } = rules[i];
