@@ -321,8 +321,6 @@ const Row = memo((props: any) => {
 
                                 const fv = comnUtils.getFormattedValue(value, rest);
                                 const uv = comnUtils.getUnformattedValue(value, rest);
-                                // const vldv = comnUtils.getValidatedValue(uv, rest);
-
                                 const abc = validateValue(value, _grid.current._rule[binding]);
 
                                 const isEdit = _editingRow.includes(rowKey) ? true : edit;
@@ -350,7 +348,8 @@ const Row = memo((props: any) => {
                                     <div
                                         key={celKey}
                                         className={classNames(
-                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-selected:border-uf-info aria-[invalid=true]:border-uf-error",
+                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-[invalid=true]:border-uf-error aria-[selected=true]:border-uf-info ",
+
                                             (align === "start" || align === "left") && "justify-start text-left",
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",

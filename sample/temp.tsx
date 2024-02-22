@@ -58,7 +58,7 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        edit: false,
         importExcel: true,
         exportExcel: true,
         height: 400,
