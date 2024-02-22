@@ -340,7 +340,7 @@ export const CGME0411001Q = (props: any) => {
      */
     useEffect(() => {
         handler.getRpckItmAppList();
-        console.log(getStore(pgeUid)?.form?.prcssStatCd);
+        console.log(form.rpckItmAppSrch.getValues());
     }, []);
 
     /*

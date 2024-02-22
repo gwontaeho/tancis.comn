@@ -54,6 +54,8 @@ export const Checkbox = (props: CheckboxProps) => {
         }).filter(([, value]) => value !== undefined),
     );
 
+    //console.log(value);
+
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options, excludes, includes, filter });
     const _checkAll = useRef(checkAll);
@@ -68,8 +70,8 @@ export const Checkbox = (props: CheckboxProps) => {
     }, [value]);
 
     React.useEffect(() => {
-        //console.log(_value);
-        if (lodash.isEmpty(_value) && _checkAll.current === true && o.options.length > 0) {
+        console.log(value);
+        if (value === undefined && _checkAll.current === true && o.options.length > 0) {
             let t = o.options.map((item) => item.value);
             _setValue(formatCheckbox(t));
             _checkAll.current = false;
@@ -177,7 +179,7 @@ export const unformatCheckbox = (v: any, o?: any) => {
     /** not array */
     if (!Array.isArray(v)) return undefined;
     /** empty array */
-    if (v.length === 0) return undefined;
+    if (v.length === 0) return [];
 
     return v;
 };
