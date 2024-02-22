@@ -10,7 +10,7 @@ export const SampleFormControlSelect = () => {
     const { openPopup } = usePopup();
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -33,13 +33,14 @@ export const SampleFormControlSelect = () => {
                 type: "select",
                 options: code,
                 required: true,
+                editType: "both",
             },
             select2: {
                 label: "select2",
                 type: "select",
-                area: "comnCd",
-                comnCd: "COM_0100",
+                area: "cntyCd",
                 required: true,
+                editType: "label",
             },
             select3: {
                 label: "select3",
@@ -47,6 +48,7 @@ export const SampleFormControlSelect = () => {
                 options: code,
                 area: "cntyCd",
                 required: true,
+                editType: "value",
             },
         },
     };
@@ -748,7 +750,7 @@ const Sample = () => {
                             <Group.Body>
                                 <Group.Section>
                                     <Group.Row>
-                                        <Group.Control label="select" type="select" area="comnCd" comnCd="COM_0100" />
+                                        <Group.Control label="select" type="select" area="comnCd" comnCd="CGM0055" />
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control label="select" type="select" area="comnCd" comnCd="CAG_0018" />
@@ -768,7 +770,7 @@ const Sample = () => {
 
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -781,7 +783,7 @@ const Sample = () => {
             <Group.Body>
                 <Group.Section>
                     <Group.Row>
-                        <Group.Control label="select" type="select" area="comnCd" comnCd="COM_0100" />
+                        <Group.Control label="select" type="select" area="comnCd" comnCd="CGM0055" />
                     </Group.Row>
                     <Group.Row>
                         <Group.Control label="select" type="select" area="comnCd" comnCd="CAG_0018" />
@@ -1145,7 +1147,7 @@ const Sample = () => {
 
     useResource({
         defaultSchema: [
-            { area: "comnCd", comnCd: "COM_0100" },
+            { area: "comnCd", comnCd: "CGM0055" },
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "cntyCd" },
@@ -1171,7 +1173,7 @@ const Sample = () => {
                 label: "select2",
                 type: "select",
                 area: "comnCd",
-                comnCd: "COM_0100",
+                comnCd: "CGM0055",
                 required: true,
             },
             select3: {

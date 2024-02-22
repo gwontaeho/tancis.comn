@@ -11,6 +11,7 @@ type SelectProps = UseOptionsProps & {
     all?: boolean;
     select?: boolean;
     viewType?: "label" | "value" | "both";
+    editType?: "label" | "value" | "both";
 
     name?: string;
     value?: any;
@@ -27,6 +28,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
         edit = true,
         select = true,
         viewType = "both",
+        editType = "label",
         /** useOptions props */
         area,
         comnCd,
@@ -89,7 +91,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
                             o.options.map(({ label, value }, i) => {
                                 return (
                                     <option key={o.base + "." + i} value={value}>
-                                        {t(label)}
+                                        {editSelect(value, t(label), editType)}
                                     </option>
                                 );
                             })}
@@ -114,6 +116,11 @@ export const viewSelect = (v: any, o?: any) => {
 
     const view = o?.viewType === "value" ? vt : o?.viewType === "label" ? lt : vtWithBracket + lt;
 
+    return view;
+};
+
+export const editSelect = (value: string, label: string, editType: string) => {
+    const view = editType === "label" ? label : editType === "value" ? value : "[" + value + "] " + label;
     return view;
 };
 

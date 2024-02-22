@@ -97,7 +97,7 @@ export const HsCodeList = (props: any) => {
         click_Btn_Apply: () => {
             const list: any[] = grid.hsCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
-                modal.openModal({ content: "msg.00004" });
+                modal.openModal({ content: "에러\n에러\n" });
                 return;
             }
 
