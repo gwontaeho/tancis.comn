@@ -315,6 +315,9 @@ export const Temp = () => {
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
                             <button onClick={() => form.setValue("code", "aud")}>set value</button>
+                            <button onClick={() => form.setSchema("radio", { options: [{ label: "a", value: "b" }] })}>
+                                set value
+                            </button>
                         </Group.Row>
                     </Group.Section>
 
