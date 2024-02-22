@@ -64,7 +64,7 @@ const schema1: TGridSchema = {
         height: 400,
         pagination: "in",
 
-        group: ["q", "w"],
+        // group: ["q", "w"],
     },
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
@@ -166,6 +166,7 @@ export const Temp = () => {
                 date: { label: "date", type: "date" },
                 select: { label: "select", type: "select", area: "currCd", viewType: "label" },
                 radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
+
                 checkbox: {
                     label: "checkbox",
                     type: "checkbox",
@@ -175,6 +176,33 @@ export const Temp = () => {
                 },
                 code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
             },
+        },
+        defaultValues: {
+            radio: "KRW",
+        },
+    });
+
+    const form2 = useForm({
+        defaultSchema: {
+            id: "test",
+            schema: {
+                text: { label: "text", type: "text" },
+                date: { label: "date", type: "date" },
+                select: { label: "select", type: "select", area: "currCd", viewType: "label" },
+                radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
+
+                checkbox: {
+                    label: "checkbox",
+                    type: "checkbox",
+                    area: "comnCd",
+                    comnCd: "COM_0100",
+                    viewType: "both",
+                },
+                code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
+            },
+        },
+        defaultValues: {
+            radio: "KRW",
         },
     });
 
@@ -272,6 +300,10 @@ export const Temp = () => {
                         <Group.Row>
                             <Group.Control {...form.schema.select} />
                             <Group.Control {...form.schema.radio} />
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form2.schema.select} />
+                            <Group.Control {...form2.schema.radio} />
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...form.schema.checkbox} />
