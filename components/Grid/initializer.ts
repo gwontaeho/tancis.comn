@@ -129,6 +129,10 @@ const useInitialize = (props: any) => {
             }
         };
 
+        _grid.current._scrollToRow = (row: any) => {
+            _grid.current._listRef.scrollToItem(row, "center");
+        };
+
         _grid.current._readjustHeight = lodash.debounce(() => {
             if (_grid.current._height === _grid.current._listInner.clientHeight) return;
 

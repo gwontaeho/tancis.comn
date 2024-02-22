@@ -187,6 +187,9 @@ export const useGrid = (props: UseGridProps) => {
     const validate = () => {
         return _grid.current._validate();
     };
+    const scrollToRow = (row: any) => {
+        return _grid.current._scrollToRow(row);
+    };
 
     /* EXCEL */
     const selectExcel = () => {
@@ -222,6 +225,7 @@ export const useGrid = (props: UseGridProps) => {
         setData,
         resetData,
         validate,
+        scrollToRow,
 
         selectExcel,
         importExcel,

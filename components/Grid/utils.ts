@@ -191,6 +191,7 @@ const getView = (_grid: any) => {
         content = view.filter(({ __type }: any) => __type !== "group");
     } else view = content;
     view = view.filter(({ __type }: any) => __type !== "deleted");
+
     if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     _grid.current._content = content;
     _grid.current._view = view;
