@@ -81,6 +81,7 @@ export type FormControlProps = InputDaterangeProps & {
 
     /** with option */
     viewType?: string;
+    editType?: string;
 
     /** text */
     mask?: string | any[];

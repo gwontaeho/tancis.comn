@@ -133,7 +133,7 @@ const Modal = (props: ModalProps) => {
                                 />
                             </div>
                         ) : typeof content === "string" ? (
-                            t(content)
+                            <pre>{t(content)}</pre>
                         ) : (
                             <div className="flex-1">{content}</div>
                         )}
