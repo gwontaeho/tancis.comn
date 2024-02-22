@@ -134,6 +134,47 @@ const group = (_grid: any, content: any) => {
 };
 
 /**
+ *
+ * @param v
+ * @param r
+ * @returns
+ */
+const validateValue = (v: any, r: any) => {
+    let errors = [];
+    for (let i = 0; i < r.length; i++) {
+        let invalid;
+        const { value, type, message } = r[i];
+        switch (type) {
+            case "required":
+                invalid = !v;
+                break;
+            case "min":
+                invalid = v < value;
+                break;
+            case "max":
+                invalid = v > value;
+                break;
+            case "minLength":
+                invalid = v.length < value;
+                break;
+            case "maxLength":
+                invalid = v.length > value;
+                break;
+            case "pattern":
+                invalid = !value.test(v);
+                break;
+            case "validate":
+                invalid = !value(v);
+                break;
+            case "resource":
+                break;
+        }
+        if (invalid) errors.push({ type, message, bindingValue: v });
+    }
+    return { errors, isError: !!errors.length };
+};
+
+/**
  * ## Create View Content
  * @param _grid
  * @returns
@@ -166,4 +207,4 @@ const getCount = (_grid: any) => {
     return count;
 };
 
-export { getView, getCount, fun };
+export { getView, getCount, validateValue, fun };

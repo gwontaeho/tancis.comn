@@ -58,7 +58,7 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: false,
+        edit: true,
         importExcel: true,
         exportExcel: true,
         height: 400,
@@ -301,10 +301,10 @@ export const Temp = () => {
                             <Group.Control {...form.schema.select} />
                             <Group.Control {...form.schema.radio} />
                         </Group.Row>
-                        <Group.Row>
+                        {/* <Group.Row>
                             <Group.Control {...form2.schema.select} />
                             <Group.Control {...form2.schema.radio} />
-                        </Group.Row>
+                        </Group.Row> */}
                         <Group.Row>
                             <Group.Control {...form.schema.checkbox} />
                             <Group.Control {...form.schema.code} />
