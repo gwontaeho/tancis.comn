@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CURR_CD_SRCH, SCHEMA_GRID_CURR_CD } from "./services/ComnCdService";
 
 export const CurrencyCodeList = (props: any) => {
@@ -11,7 +11,9 @@ export const CurrencyCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage } = usePopup();
+    const modal = useModal();
+    const { close, postMessage, getParams } = usePopup();
+    const params = getParams(); /* * */
 
     const form = {
         currCdSrch: useForm({
@@ -57,6 +59,18 @@ export const CurrencyCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.currCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -83,6 +97,10 @@ export const CurrencyCodeList = (props: any) => {
 
     useEffect(() => {
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.currCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -130,6 +148,19 @@ export const CurrencyCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
+                    {/* * */}
+                    {params.multiple === true && (
+                        <Layout>
+                            <Layout.Right>
+                                <Button
+                                    role="apply"
+                                    onClick={() => {
+                                        handler.click_Btn_Apply();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    )}
                     <Group.Section>
                         <Grid
                             {...grid.currCdLst.grid}

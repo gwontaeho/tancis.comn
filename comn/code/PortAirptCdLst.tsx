@@ -1,16 +1,19 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useGrid, usePopup, useStore, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_PORT_AIRPT_CD_SRCH, SCHEMA_GRID_PORT_AIRPT_CD } from "./services/ComnCdService";
 
 export const PortAirptCodeList = (props: any) => {
     const pgeUid = "portPortAirptCdLst";
     const { t } = useTranslation();
-    const toast = useToast();
-    const { close, postMessage } = usePopup();
     const { pgeStore, setStore } = useStore({ pgeUid });
+    const toast = useToast();
+    const modal = useModal();
+    const { close, postMessage, getParams } = usePopup();
+    const params = getParams(); /* * */
 
     /**
      * form 초기화
@@ -91,6 +94,18 @@ export const PortAirptCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.portAirptCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -114,6 +129,14 @@ export const PortAirptCodeList = (props: any) => {
             },
         },
     };
+
+    useEffect(() => {
+        handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.portAirptCdLst.setOption("checkbox", true);
+        }
+    }, []);
 
     return (
         <Page
@@ -163,6 +186,19 @@ export const PortAirptCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
+                    {/* * */}
+                    {params.multiple === true && (
+                        <Layout>
+                            <Layout.Right>
+                                <Button
+                                    role="apply"
+                                    onClick={() => {
+                                        handler.click_Btn_Apply();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    )}
                     <Grid
                         {...grid.portAirptCdLst.grid}
                         data={fetch.getPortAirptCdLst.data?.regnCdList}

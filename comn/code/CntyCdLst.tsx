@@ -11,8 +11,9 @@ export const CountryCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage } = usePopup();
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+    const { close, getParams } = usePopup();
+    const params = getParams(); /* * */
 
     const form = {
         cntyCdSrch: useForm({
@@ -58,6 +59,18 @@ export const CountryCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.cntyCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -83,6 +96,10 @@ export const CountryCodeList = (props: any) => {
 
     useEffect(() => {
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.cntyCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -131,6 +148,19 @@ export const CountryCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     <Group.Section>
+                        {/* * */}
+                        {params.multiple === true && (
+                            <Layout>
+                                <Layout.Right>
+                                    <Button
+                                        role="apply"
+                                        onClick={() => {
+                                            handler.click_Btn_Apply();
+                                        }}
+                                    ></Button>
+                                </Layout.Right>
+                            </Layout>
+                        )}
                         <Grid
                             {...grid.cntyCdLst.grid}
                             data={fetch.getCntyCdLst.data?.cntyCdList}
