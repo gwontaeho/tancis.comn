@@ -13,7 +13,7 @@ export const WrhsCodeList = (props: any) => {
     const toast = useToast();
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
     const { close, postMessage, getParams } = usePopup();
-    const params = getParams();
+    const params = getParams(); /* * */
 
     const form = {
         wrhsCdSrch: useForm({
@@ -59,6 +59,18 @@ export const WrhsCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.wrhsCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -89,6 +101,10 @@ export const WrhsCodeList = (props: any) => {
             form.wrhsCdSrch.setValue("wrhsOprtTpCd", params.wrhsOprtTpCd);
         }
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.wrhsCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -136,6 +152,19 @@ export const WrhsCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
+                    {/* * */}
+                    {params.multiple === true && (
+                        <Layout>
+                            <Layout.Right>
+                                <Button
+                                    role="apply"
+                                    onClick={() => {
+                                        handler.click_Btn_Apply();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    )}
                     <Grid
                         {...grid.wrhsCdLst.grid}
                         data={fetch.getWrhsCdLst.data?.wrhsList}

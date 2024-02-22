@@ -3,7 +3,7 @@ import { comnUtils, comnEnvs } from "@/comn/utils";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useToast, usePopup, useTheme, useStore, useGrid } from "@/comn/hooks";
+import { useForm, useFetch, useToast, usePopup, useTheme, useStore, useGrid, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_COMN_CD_SRCH, SCHEMA_GRID_COMN_CD } from "./services/ComnCdService";
 
 export const CommonCodeList = (props: any) => {
@@ -11,8 +11,9 @@ export const CommonCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
+    const modal = useModal();
     const { close, postMessage, getParams } = usePopup();
-    const params = getParams();
+    const params = getParams(); /* * */
     const { theme } = useTheme();
 
     const form = {
@@ -60,6 +61,17 @@ export const CommonCodeList = (props: any) => {
                 },
             )();
         },
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.comnCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -89,6 +101,10 @@ export const CommonCodeList = (props: any) => {
             form.comnCdSrch.setSchema("comnCd", { readOnly: true });
         }
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.comnCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -141,6 +157,19 @@ export const CommonCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     <Group.Section>
+                        {/* * */}
+                        {params.multiple === true && (
+                            <Layout>
+                                <Layout.Right>
+                                    <Button
+                                        role="apply"
+                                        onClick={() => {
+                                            handler.click_Btn_Apply();
+                                        }}
+                                    ></Button>
+                                </Layout.Right>
+                            </Layout>
+                        )}
                         <Grid
                             {...grid.comnCdLst.grid}
                             data={fetch.getComnCdLst.data?.comnCdList}

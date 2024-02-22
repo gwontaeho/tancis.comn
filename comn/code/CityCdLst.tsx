@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useGrid, useStore, usePopup, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, useStore, usePopup, useToast, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CITY_CD_SRCH, SCHEMA_GRID_CITY_CD } from "./services/ComnCdService";
 
 export const CityCodeList = (props: any) => {
@@ -11,7 +11,10 @@ export const CityCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
+    const modal = useModal();
     const { close, postMessage, getParams } = usePopup();
+    const params = getParams(); /* * */
+
     /*
      * 명명 규칙 (useForm)
      * prefix : "form_"
@@ -93,6 +96,18 @@ export const CityCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.cityCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -119,6 +134,10 @@ export const CityCodeList = (props: any) => {
 
     useEffect(() => {
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.cityCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -170,6 +189,19 @@ export const CityCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
+                    {/* * */}
+                    {params.multiple === true && (
+                        <Layout>
+                            <Layout.Right>
+                                <Button
+                                    role="apply"
+                                    onClick={() => {
+                                        handler.click_Btn_Apply();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
+                    )}
                     <Grid
                         {...grid.cityCdLst.grid}
                         data={fetch.getCityCdLst.data?.regnCdList}
