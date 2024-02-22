@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useGrid, useStore, usePopup, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, useStore, usePopup, useToast, useModal } from "@/comn/hooks";
 import { BASE, APIS, SG_HS_CD_LST, SF_HS_CD_SRCH } from "./services/ComnCdService";
 
 export const HsCodeList = (props: any) => {
@@ -11,6 +11,7 @@ export const HsCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
+    const modal = useModal();
     const { close, postMessage, getParams } = usePopup();
     /*
      * 명명 규칙 (useForm)
@@ -93,6 +94,16 @@ export const HsCodeList = (props: any) => {
                 },
             )();
         },
+        click_Btn_Apply: () => {
+            const list: any[] = grid.hsCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "msg.00004" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -106,7 +117,7 @@ export const HsCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.hsDesc });
+                                postMessage({ code: value, label: rowValues.hsDesc, data: rowValues });
                                 close();
                             }}
                         >
@@ -167,6 +178,16 @@ export const HsCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
+                    <Layout>
+                        <Layout.Right>
+                            <Button
+                                role="apply"
+                                onClick={() => {
+                                    handler.click_Btn_Apply();
+                                }}
+                            ></Button>
+                        </Layout.Right>
+                    </Layout>
                     <Grid
                         {...grid.hsCdLst.grid}
                         data={fetch.getHsCdLst.data?.clriHsMgmtDto}

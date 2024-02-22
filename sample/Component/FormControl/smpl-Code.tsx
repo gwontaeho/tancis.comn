@@ -510,8 +510,13 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.schema.field31}></Group.Control>
-                                <Group.Label label="업체상세정보 코드"></Group.Label>
+                                <Group.Control
+                                    {...form.schema.field31}
+                                    callback={(data) => {
+                                        console.log(data);
+                                    }}
+                                ></Group.Control>
+                                <Group.Label label="HS 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/hsCdPpup</Group.Any>
                                 </Group.Col>
