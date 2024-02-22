@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, usePopup, useStore, useToast, useAuth, useGrid } from "@/comn/hooks";
+import { useForm, useFetch, usePopup, useStore, useToast, useAuth, useGrid, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_VHCL_CLR_CD_SRCH, SCHEMA_GRID_VHCL_CLR_CD } from "./services/ComnCdService";
 
 export const VehicleColorCodeList = (props: any) => {
@@ -11,7 +11,9 @@ export const VehicleColorCodeList = (props: any) => {
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage } = usePopup();
+    const modal = useModal();
+    const { close, postMessage, getParams } = usePopup();
+    const params = getParams(); /* * */
 
     const form = {
         vhclClrCdSrch: useForm({
@@ -57,6 +59,18 @@ export const VehicleColorCodeList = (props: any) => {
                 },
             )();
         },
+
+        /* * */
+        click_Btn_Apply: () => {
+            const list: any[] = grid.vhclClrCdLst.getChecked() || [];
+            if (comnUtils.isEmpty(list)) {
+                modal.openModal({ content: "에러\n에러\n" });
+                return;
+            }
+
+            postMessage({ data: list });
+            close();
+        },
     };
 
     const render = {
@@ -82,6 +96,10 @@ export const VehicleColorCodeList = (props: any) => {
 
     useEffect(() => {
         handler.click_Btn_Srch();
+        /* * */
+        if (params.multiple === true) {
+            grid.vhclClrCdLst.setOption("checkbox", true);
+        }
     }, []);
 
     return (
@@ -128,6 +146,19 @@ export const VehicleColorCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     <Group.Section>
+                        {/* * */}
+                        {params.multiple === true && (
+                            <Layout>
+                                <Layout.Right>
+                                    <Button
+                                        role="apply"
+                                        onClick={() => {
+                                            handler.click_Btn_Apply();
+                                        }}
+                                    ></Button>
+                                </Layout.Right>
+                            </Layout>
+                        )}
                         <Grid
                             {...grid.vhclClrCdLst.grid}
                             data={fetch.getVhclClrCdLst.data?.vhclClrList}
