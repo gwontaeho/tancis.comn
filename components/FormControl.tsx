@@ -96,6 +96,7 @@ export type FormControlProps = InputDaterangeProps & {
 
     /** checkbox */
     all?: boolean;
+    checkAll?: boolean;
 
     /** select */
     select?: boolean;

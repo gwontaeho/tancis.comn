@@ -19,7 +19,7 @@ const useInitialize = (props: any) => {
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
         if (!Array.isArray(data?.content)) return;
-        if (data.content.length === 0 && _grid.current._content.length === 0) return;
+        if (data.content.length === 0 && _grid.current._content?.length === 0) return;
 
         dispatch({ type: "setData", payload: { _grid, data } });
     }, [__t]);

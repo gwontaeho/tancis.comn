@@ -340,6 +340,7 @@ export const CGME0411001Q = (props: any) => {
      */
     useEffect(() => {
         handler.getRpckItmAppList();
+        console.log(form.rpckItmAppSrch.getValues());
     }, []);
 
     /*
@@ -397,12 +398,7 @@ export const CGME0411001Q = (props: any) => {
                             </Group.Row>
                             <Group.Row>
                                 {/* Processing Status !== 처리상태 ==!  */}
-                                <Group.Control
-                                    {...form.rpckItmAppSrch.schema.prcssStatCd}
-                                    filter={(item: TOption) => {
-                                        return item.value.startsWith("A");
-                                    }}
-                                />
+                                <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd} checkAll={true} />
                             </Group.Row>
                         </Group.Section>
 
