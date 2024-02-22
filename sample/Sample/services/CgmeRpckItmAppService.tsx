@@ -114,30 +114,6 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [
                 {
                     binding: `dclrNo`,
-                    mask: [
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        "-",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        "-",
-                        /\d/,
-                        "-",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                    ],
                 },
             ],
         },
@@ -151,6 +127,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [
                 {
                     binding: "msn",
+                    mask: [/\d/, /\d/, "-", /\d/, /\d/],
                 },
             ],
         },
