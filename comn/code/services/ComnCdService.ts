@@ -1310,7 +1310,7 @@ export const SF_HS_CD_SRCH: TFormSchema = {
 
 export const SG_HS_CD_LST: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", index: true, checkbox: true },
+    options: { pagination: "out", index: true },
     head: [
         { cells: [{ header: "L_HS_CD", binding: "hsCd", width: 150 }] },
         { cells: [{ header: "L_VERSION", binding: "histSrno", width: 100 }] },
