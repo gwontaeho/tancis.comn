@@ -68,7 +68,8 @@ export const Checkbox = (props: CheckboxProps) => {
     }, [value]);
 
     React.useEffect(() => {
-        if (_checkAll.current === true && o.options.length > 0) {
+        //console.log(_value);
+        if (lodash.isEmpty(_value) && _checkAll.current === true && o.options.length > 0) {
             let t = o.options.map((item) => item.value);
             _setValue(formatCheckbox(t));
             _checkAll.current = false;
