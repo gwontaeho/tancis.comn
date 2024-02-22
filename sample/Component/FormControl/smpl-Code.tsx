@@ -226,6 +226,12 @@ const SF_FORM: TFormSchema = {
             maxLength: 3,
             popupSize: "md",
         },
+        field31: {
+            type: "code",
+            area: "hsCd",
+            label: "HS Code",
+            popupSize: "md",
+        },
     },
 };
 
@@ -264,6 +270,7 @@ export const SampleFormControlCode = () => {
             { area: "vhclTrmssnTpCd" },
             { area: "vhclUseCd" },
             { area: "coCdDtl" },
+            { area: "hsCd" },
             { area: "cgmePrcdCd", comnCd: "CGM0100" },
         ],
     });
@@ -500,6 +507,13 @@ export const SampleFormControlCode = () => {
                                 <Group.Label label="업체상세정보 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/CoCdDtl</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.field31}></Group.Control>
+                                <Group.Label label="업체상세정보 코드"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/hsCdPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                         </Group.Section>

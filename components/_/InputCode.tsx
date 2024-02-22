@@ -53,6 +53,7 @@ const POPUP_URLS: Record<string, string> = {
     vhclTrmssnTpCd: `/comn/comn/ppup/vhclTrmssnTpCdPpup`,
     vhclUseCd: `/comn/comn/ppup/vhclUseCdPpup`,
     coCdDtl: `/comn/comn/ppup/CoCdDtl`,
+    hsCd: `/comn/comn/ppup/hsCdPpup`,
 };
 
 export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {

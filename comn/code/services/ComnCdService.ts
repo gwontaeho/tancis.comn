@@ -301,6 +301,16 @@ export const APIS = {
             keyword: data.coTin,
         });
     },
+
+    getHsCdLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "hsCd",
+            page: page,
+            size: size,
+            keyword: data.hsCd,
+            keywordName: data.hsDesc,
+        });
+    },
 };
 
 export const SCHEMA_GRID_COMN_CD: TGridSchema = {
@@ -1280,4 +1290,49 @@ export const SCHEMA_CO_CD_DTL: TFormSchema = {
         rprsEml: { type: "text", label: "L_RPRS_EML" },
         prcssStatCdNm: { type: "text", label: "L_PRCSS_STAT_CD_NM" },
     },
+};
+
+export const SF_HS_CD_SRCH: TFormSchema = {
+    id: "form_HsCdSrch",
+    schema: {
+        hsCd: {
+            type: "text",
+            label: "L_HS",
+            area: "hsCd",
+            controlSize: 4,
+            rightButton: { icon: "search" },
+            placeholder: "0000.00.00.0000",
+            mask: [/\d/, /\d/, /\d/, /\d/, ".", /\d/, /\d/, ".", /\d/, /\d/, ".", /\d/, /\d/, /\d/, /\d/],
+        },
+        hsDesc: { type: "text", label: "L_HS_DESC", area: "hsDesc", controlSize: 4 },
+    },
+};
+
+export const SG_HS_CD_LST: TGridSchema = {
+    id: "grid",
+    options: { pagination: "out", index: true },
+    head: [
+        { cells: [{ header: "L_HS_CD", binding: "hsCd", width: 150 }] },
+        { cells: [{ header: "L_VERSION", binding: "histSrno", width: 100 }] },
+        { cells: [{ header: "L_HS_DESC", binding: "hsDesc", width: "*" }] },
+        { cells: [{ header: "L_QTY", binding: "itmQtyUtCd", width: 150 }] },
+        { cells: [{ header: "L_APPD_YN", binding: "useYn", width: 80 }] },
+    ],
+    body: [
+        {
+            cells: [{ binding: "hsCd" }],
+        },
+        {
+            cells: [{ binding: "histSrno" }],
+        },
+        {
+            cells: [{ binding: "hsDesc" }],
+        },
+        {
+            cells: [{ binding: "itmQtyUtCd" }],
+        },
+        {
+            cells: [{ binding: "useYn" }],
+        },
+    ],
 };
