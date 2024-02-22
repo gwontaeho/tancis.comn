@@ -155,10 +155,10 @@ const validateValue = (v: any, r: any) => {
                 invalid = v > value;
                 break;
             case "minLength":
-                invalid = v.length < value;
+                invalid = v?.length < value;
                 break;
             case "maxLength":
-                invalid = v.length > value;
+                invalid = v?.length > value;
                 break;
             case "pattern":
                 invalid = !value.test(v);
