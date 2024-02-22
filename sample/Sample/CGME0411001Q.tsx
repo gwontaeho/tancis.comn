@@ -418,6 +418,24 @@ export const CGME0411001Q = (props: any) => {
                                         handler.getRpckItmAppList();
                                     }}
                                 ></Button>
+                                <Button
+                                    onClick={() => {
+                                        form.rpckItmAppSrch.setSchema("prcssStatCd", {
+                                            options: [{ label: "1", value: "1" }],
+                                        });
+                                    }}
+                                >
+                                    테스트
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        form.rpckItmAppSrch.setSchema("prcssStatCd", {
+                                            options: [{ label: "2", value: "2" }],
+                                        });
+                                    }}
+                                >
+                                    테스트
+                                </Button>
                             </Layout.Right>
                         </Layout>
                     </Group.Body>
