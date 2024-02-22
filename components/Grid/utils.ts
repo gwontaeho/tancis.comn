@@ -141,7 +141,7 @@ const group = (_grid: any, content: any) => {
  */
 const validateValue = (v: any, r: any) => {
     let errors = [];
-    for (let i = 0; i < r.length; i++) {
+    for (let i = 0; i < r?.length; i++) {
         let invalid;
         const { value, type, message } = r[i];
         switch (type) {
