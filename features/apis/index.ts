@@ -22,12 +22,15 @@ api.interceptors.request.use(
 
 api.defaults.paramsSerializer = (paramObj) => {
     const params = new URLSearchParams();
+
     for (const key in paramObj) {
         if (paramObj[key] !== undefined) {
             if (Array.isArray(paramObj[key])) {
                 paramObj[key].map((item: any) => {
                     params.append(key, item);
                 });
+            } else if (paramObj[key] === null) {
+                params.append(key, "");
             } else {
                 params.append(key, paramObj[key]);
             }

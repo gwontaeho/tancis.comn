@@ -27,6 +27,7 @@ export type ModalProps = {
     content?: React.ReactNode;
     backdrop?: boolean;
     draggable?: boolean;
+    close?: boolean;
     size?: keyof typeof MODAL_SIZES;
     title?: string;
     url?: string;
@@ -48,6 +49,7 @@ const Modal = (props: ModalProps) => {
         size = url ? "xl" : "xs",
         layout = "popup",
         params,
+        close = true,
         callback,
         onConfirm,
         onCancel,
@@ -138,11 +140,12 @@ const Modal = (props: ModalProps) => {
                             <div className="flex-1">{content}</div>
                         )}
                     </div>
-
-                    <div className="px-4 h-12 flex space-x-2 items-center justify-end">
-                        <Button onClick={() => handleCancel()} role="close"></Button>
-                        {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
-                    </div>
+                    {(close !== false || onConfirm !== undefined) && (
+                        <div className="px-4 h-12 flex space-x-2 items-center justify-end">
+                            {close !== false && <Button onClick={() => handleCancel()} role="close"></Button>}
+                            {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
+                        </div>
+                    )}
                 </motion.div>
             </Draggable>
         </Fragment>,
