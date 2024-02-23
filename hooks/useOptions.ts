@@ -89,5 +89,5 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
 
     const o = options.length ? options : area ? _options : options;
 
-    return { base: ref.current.base, __t, options: o, hasOption: _options.length > 0 };
+    return { base: ref.current.base, __t, options: o, hasOption: o.length > 0 };
 };
