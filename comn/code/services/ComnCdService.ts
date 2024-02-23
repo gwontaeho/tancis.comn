@@ -14,7 +14,7 @@ export const APIS = {
             area: "wrhsCd",
             page: page,
             size: size,
-            keyword: data.wrhsCd,
+            keyword: data.coDclaCd,
             keywordName: data.wrhsNm,
             wrhsOprtTpCd: data.wrhsOprtTpCd,
         });
@@ -1120,7 +1120,7 @@ export const SCHEMA_FORM_ORG_CD_SRCH: TFormSchema = {
 export const SCHEMA_FORM_WRHS_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
-        wrhsCd: { type: "text", label: "L_WRHS_CD" },
+        coDclaCd: { type: "text", label: "L_WRHS_CD" },
         wrhsNm: { type: "text", label: "L_WRHS_NM" },
     },
 };
