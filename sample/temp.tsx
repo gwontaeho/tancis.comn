@@ -291,6 +291,12 @@ export const Temp = () => {
             <button onClick={() => console.log(getFile())}>get</button>
             <button onClick={() => console.log(importFile(getFile()))}>import</button>
 
+            <div>
+                <FormControl type="text" value="asd" edit={false} />
+                <FormControl type="text" value="asd" edit={false} />
+                <FormControl type="text" value="asd" edit={false} />
+            </div>
+
             <Group>
                 <Group.Body>
                     <Group.Section title="asd" description="asd">
