@@ -124,7 +124,7 @@ const Modal = (props: ModalProps) => {
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 
-                    <div className="p-1 flex-1 overflow-auto h-full flex">
+                    <div className={typeof content === "string" ? "p-3" : "p-1" + " flex-1 overflow-auto h-full flex"}>
                         {url ? (
                             <div className="flex-1">
                                 <iframe

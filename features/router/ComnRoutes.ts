@@ -216,6 +216,16 @@ export const ComnRoutes = [
                 base: "/comn",
                 children: [
                     {
+                        name: "게시판",
+                        base: "/smpl/board",
+                        children: [
+                            {
+                                name: "개발자 게시판",
+                                to: "/comn/comn/bltbrd/bltbrdLst",
+                            },
+                        ],
+                    },
+                    {
                         name: "Language Management",
                         base: "/smpl/locale",
                         children: [
