@@ -61,8 +61,8 @@ const schema1: TGridSchema = {
         edit: false,
         importExcel: true,
         exportExcel: true,
-        height: "auto",
-        pagination: "in",
+        height: 400,
+        pagination: "out",
 
         // group: ["q", "w"],
     },
@@ -344,7 +344,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={data2}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}

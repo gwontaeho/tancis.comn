@@ -14,15 +14,13 @@ const useInitialize = (props: any) => {
     const { _grid, data, render } = props;
 
     const __t = data?.__t?.getTime();
-
     const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
 
     React.useEffect(() => {
         if (!_grid.current._initialized) return;
         if (!Array.isArray(data?.content)) return;
-        if (data.content.length === 0 && _grid.current._content?.length === 0) return;
-
-        dispatch({ type: "setData", payload: { _grid, data } });
+        if (data.content.length === 0 && _grid.current._content.length === 0) return;
+        _grid.current._setData(data);
     }, [__t]);
 
     React.useEffect(() => {
