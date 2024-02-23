@@ -203,6 +203,7 @@ const Row = memo((props: any) => {
     const row = _test[index];
     const rowKey = row?.__key;
     const rowType = row?.__type;
+    const rowIndex = row?.__index;
 
     const resizeObserverRef = useRef<any>(null);
     const rowRefCallback = useCallback((ref: any) => {
@@ -301,9 +302,10 @@ const Row = memo((props: any) => {
                     {/* Index */}
                     {_options?.index && (
                         <div className="uf-grid-option font-semibold">
-                            {_options?.index === "DESC"
+                            {/* {_options?.index === "DESC"
                                 ? _totalCount - (_page * _size + index)
-                                : _page * _size + index + 1}
+                                : _page * _size + index + 1} */}
+                            {rowIndex + 1}
                         </div>
                     )}
 

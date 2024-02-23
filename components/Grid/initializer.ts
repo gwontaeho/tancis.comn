@@ -145,7 +145,7 @@ const useInitialize = (props: any) => {
                 .filter((_: any) => {
                     return _.__type !== "deleted";
                 })
-                .reduce((prev: any, row: any, index: any) => {
+                .reduce((prev: any, row: any) => {
                     for (const binding in _grid.current._rule) {
                         const bindingValue = row[binding];
                         const rules = _grid.current._rule[binding];
@@ -179,7 +179,7 @@ const useInitialize = (props: any) => {
                                     break;
                             }
                             if (invalid) {
-                                prev.push({ ...rules[i], binding, value: bindingValue, row: index });
+                                prev.push({ ...rules[i], binding, value: bindingValue, row: row.__index });
                             }
                         }
                     }
