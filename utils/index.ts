@@ -366,7 +366,7 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/curr-cd?currCd=${keyword}&currNm=${keywordName}`;
                 break;
             case "bnkCd":
-                url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=CO012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=COM0012&cdVldVal=${keyword}&cdVldValNm=${keywordName}`;
                 break;
             case "portAirptCd":
                 url = `/api/v1/ptli/intptl/comnppup/regn/port-airpt-cd?portAirptTpCd=${portAirptTpCd}&regnCd=${keyword}&regnNm=${keywordName}&cntyCd=${cntyCd}`;
@@ -384,7 +384,7 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/org?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
                 break;
             case "wrhsCd":
-                url = `/api/v1/ptli/intptl/comnppup/wrhs?wrhsOprtTpCd=&coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/wrhs?coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}`;
                 break;
             case "test":
                 url = `/api/v1/ptli/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;

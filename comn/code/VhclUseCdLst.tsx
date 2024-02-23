@@ -63,7 +63,7 @@ export const VehicleUseCodeList = (props: any) => {
         click_Btn_Apply: () => {
             const list: any[] = grid.vhclUseCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
-                modal.openModal({ content: "에러\n에러\n" });
+                modal.openModal({ content: "msg.com.00086" });
                 return;
             }
 
@@ -79,6 +79,7 @@ export const VehicleUseCodeList = (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
+                            href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
                                 postMessage({ code: value, label: rowValues.vhclUseNm });
