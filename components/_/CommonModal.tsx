@@ -114,7 +114,7 @@ const Modal = (props: ModalProps) => {
                     )}
                 >
                     <div
-                        className={classNames("handle flex items-center justify-between px-4 h-12", {
+                        className={classNames("handle flex items-center justify-between px-1 py-1", {
                             "cursor-move": draggable,
                         })}
                     >
@@ -122,7 +122,7 @@ const Modal = (props: ModalProps) => {
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 
-                    <div className="p-4 flex-1 overflow-auto h-full flex">
+                    <div className="p-1 flex-1 overflow-auto h-full flex">
                         {url ? (
                             <div className="flex-1">
                                 <iframe
