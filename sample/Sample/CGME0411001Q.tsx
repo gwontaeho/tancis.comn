@@ -263,7 +263,7 @@ export const CGME0411001Q = (props: any) => {
                             <Link
                                 to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
                             >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
-                            <Layout direction="row">
+                            <Layout direction="row" align="center">
                                 [
                                 <FormControl
                                     value={rowValues.dcltTin}

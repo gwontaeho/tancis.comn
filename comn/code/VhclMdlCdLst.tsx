@@ -64,7 +64,7 @@ export const VehicleModelCodeList = (props: any) => {
         click_Btn_Apply: () => {
             const list: any[] = grid.vhclMdlCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
-                modal.openModal({ content: "에러\n에러\n" });
+                modal.openModal({ content: "msg.com.00086" });
                 return;
             }
 

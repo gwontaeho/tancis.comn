@@ -80,7 +80,7 @@ export const GuidePopup = () => {
                     return item.value.startsWith("A");
                 },
             },
-            code: { label: "code", type: "code", area: "wrhsCd", maxLength: 5 },
+            code: { label: "code", type: "code", area: "cityCd", maxLength: 5 },
         },
     };
 
@@ -154,13 +154,14 @@ export const GuidePopup = () => {
                                                 onClick: () => {
                                                     // 팝업창을 호출하여 사용하는 경우
                                                     modal.openModal({
-                                                        url: comnEnvs.popup.hsCd,
+                                                        url: comnEnvs.popup.cityCd,
                                                         draggable: true,
                                                         params: { multiple: true },
                                                         // modal 창에서 postMessage 메서드 실행시 call back 함수
                                                         callback: (data) => {
                                                             // form에 값 세팅
                                                             form.setValue("text", data.code);
+                                                            console.log(data);
                                                             // modal 창 닫기
                                                             modal.closeModal();
                                                         },
@@ -187,7 +188,7 @@ export const GuidePopup = () => {
                                         <Group.Control {...form.schema.checkbox4} />
                                     </Group.Row>
                                     <Group.Row>
-                                        <Group.Control {...form.schema.code} />
+                                        <Group.Control {...form.schema.code} popupParams={{ multiple: true }} />
                                     </Group.Row>
                                 </Group.Section>
                             </Group.Body>

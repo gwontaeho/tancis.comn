@@ -73,7 +73,7 @@ export const VehicleTransmissionTypeCodeList = (props: any) => {
         click_Btn_Apply: () => {
             const list: any[] = grid.vhclTrmssnTpCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
-                modal.openModal({ content: "에러\n에러\n" });
+                modal.openModal({ content: "msg.com.00086" });
                 return;
             }
 
