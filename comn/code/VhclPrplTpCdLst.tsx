@@ -97,7 +97,7 @@ export const VehiclePropellerTypeCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.vhclPrplTpCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -147,7 +147,7 @@ export const VehiclePropellerTypeCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         {/* * */}
-                        {params.multiple === true && (
+                        {params?.multiple === true && (
                             <Layout>
                                 <Layout.Right>
                                     <Button

@@ -97,7 +97,7 @@ export const VehicleCategoryCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.vhclCtgrCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -147,7 +147,7 @@ export const VehicleCategoryCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         {/* * */}
-                        {params.multiple === true && (
+                        {params?.multiple === true && (
                             <Layout>
                                 <Layout.Right>
                                     <Button

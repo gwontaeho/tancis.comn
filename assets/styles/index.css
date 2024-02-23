@@ -264,7 +264,7 @@
 
     /* Input */
     .uf-form-control {
-        @apply flex flex-col;
+        @apply inline-flex flex-col;
     }
     .uf-form-control-main {
         @apply flex w-full;

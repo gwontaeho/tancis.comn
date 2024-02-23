@@ -216,6 +216,7 @@ export const Temp = () => {
         getChecked,
         addRow,
         deleteRow,
+        scrollToRow,
         updateRow,
         page,
         size,
@@ -233,7 +234,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 24 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 80 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
@@ -256,20 +257,20 @@ export const Temp = () => {
             },
         },
         edit: {
-            // text: (data: any) => {
-            //     /**
-            //      * # data
-            //      * value
-            //      * rowValues
-            //      * binding
-            //      */
-            //     return (
-            //         <Layout direction="row" gap={1}>
-            //             <FormControl />
-            //             <FormControl />
-            //         </Layout>
-            //     );
-            // },
+            q: (data: any) => {
+                /**
+                 * # data
+                 * value
+                 * rowValues
+                 * binding
+                 */
+                return (
+                    <Layout direction="row" gap={1}>
+                        <FormControl type="radio" options={[{ label: "a", value: "a" }]} />
+                        <FormControl type="radio" />
+                    </Layout>
+                );
+            },
         },
     };
 
@@ -289,6 +290,18 @@ export const Temp = () => {
             <button onClick={selectFile}>select</button>
             <button onClick={() => console.log(getFile())}>get</button>
             <button onClick={() => console.log(importFile(getFile()))}>import</button>
+
+            <div>
+                <FormControl type="text" value="asd" edit={false} />
+                <FormControl type="text" value="asd" edit={false} />
+                <FormControl type="text" value="asd" edit={false} />
+            </div>
+
+            <Layout align="center">
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+            </Layout>
 
             <Group>
                 <Group.Body>
@@ -315,6 +328,9 @@ export const Temp = () => {
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
                             <button onClick={() => form.setValue("code", "aud")}>set value</button>
+                            <button onClick={() => form.setSchema("radio", { options: [{ label: "a", value: "b" }] })}>
+                                set value
+                            </button>
                         </Group.Row>
                     </Group.Section>
 
@@ -332,6 +348,7 @@ export const Temp = () => {
 
             <div className="flex flex-col gap-8">
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
+                    <button onClick={() => scrollToRow(50)}>scroll</button>
                     <button onClick={() => setData(data2)}>set data</button>
                     <button onClick={() => resetData()}>reset</button>
                     <button

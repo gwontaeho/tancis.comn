@@ -5,7 +5,6 @@ import { useRecoilState } from "recoil";
 import { resourceState } from "@/comn/features/recoil";
 import { utils, idb } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
-import { TFunction } from "i18next";
 import lodash from "lodash";
 
 export type TOption = {
@@ -31,34 +30,30 @@ type UseOptionsReturn = {
 
 export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
     const { comnCd, area, options = [], excludes, includes, filter } = props;
-
     const ref = React.useRef<{ base: string; key?: string }>({ base: uuid() });
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
-    const [_options, _setOptions] = React.useState<TOption[]>(options);
+    const [_options, _setOptions] = React.useState<TOption[]>([]);
 
-    /**  */
     const [__t, __setT] = React.useState<any>();
 
     React.useEffect(() => {
+        if (options.length) return;
         if (!area) return;
 
         const key = utils?.getResourceKey(area, comnCd, theme.lang);
         if (!resource[key]) return;
         getOptionsFromIDB(key);
-
-        /** */
-    }, [resource]);
+    }, [options, resource]);
 
     React.useEffect(() => {
+        if (options.length) return;
         if (!area) return;
 
         const key = utils.getResourceKey(area, comnCd, theme.lang);
         if (!resource[key]) return;
         getOptionsFromIDB(key);
-
-        /** */
-    }, [comnCd, area, options]);
+    }, [options, comnCd, area]);
 
     const getOptionsFromIDB = async (key: string) => {
         try {
@@ -92,5 +87,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
         }
     };
 
-    return { base: ref.current.base, __t, options: _options, hasOption: _options.length > 0 };
+    const o = options.length ? options : area ? _options : options;
+
+    return { base: ref.current.base, __t, options: o, hasOption: o.length > 0 };
 };

@@ -133,7 +133,7 @@ export const PortAirptCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.portAirptCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -187,7 +187,7 @@ export const PortAirptCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     {/* * */}
-                    {params.multiple === true && (
+                    {params?.multiple === true && (
                         <Layout>
                             <Layout.Right>
                                 <Button

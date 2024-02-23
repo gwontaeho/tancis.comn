@@ -98,7 +98,7 @@ export const PortCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.portCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -150,7 +150,7 @@ export const PortCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     {/* * */}
-                    {params.multiple === true && (
+                    {params?.multiple === true && (
                         <Layout>
                             <Layout.Right>
                                 <Button

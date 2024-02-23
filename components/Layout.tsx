@@ -1,13 +1,14 @@
 import React from "react";
 import classNames from "classnames";
 import { Button } from "./Button";
-import { DIRECTION, GAP, WIDTH } from "../features/foundation";
+import { JUSTIFY_CONTENT, DIRECTION, GAP, WIDTH } from "../features/foundation";
 
 type LayoutProps = {
     children?: React.ReactNode;
-    direction?: keyof typeof DIRECTION;
-    size?: keyof typeof WIDTH;
     gap?: keyof typeof GAP;
+    size?: keyof typeof WIDTH;
+    direction?: keyof typeof DIRECTION;
+    align?: keyof typeof JUSTIFY_CONTENT;
 };
 
 /**
@@ -20,10 +21,20 @@ type LayoutProps = {
  * @returns
  */
 export const Layout = (props: LayoutProps) => {
-    const { children, direction = "row", gap = 1, size } = props;
+    const { children, direction = "row", gap = 1, size, align = "start" } = props;
 
     return (
-        <div className={classNames("uf-layout", size && WIDTH[size], GAP[gap], DIRECTION[direction])}>{children}</div>
+        <div
+            className={classNames(
+                "uf-layout",
+                GAP[gap],
+                size && WIDTH[size],
+                DIRECTION[direction],
+                direction === "row" && JUSTIFY_CONTENT[align],
+            )}
+        >
+            {children}
+        </div>
     );
 };
 
