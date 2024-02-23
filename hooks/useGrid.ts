@@ -71,6 +71,8 @@ export const useGrid = (props: UseGridProps) => {
 
     const _grid = React.useRef<any>(null);
     if (_grid.current === null) {
+        const { options = {}, head, body } = defaultSchema;
+
         _grid.current = {
             _initialized: false,
             _defaultSchema: defaultSchema,
@@ -81,34 +83,38 @@ export const useGrid = (props: UseGridProps) => {
             _setPage,
             _setSize,
 
+            _data: null,
+            _origin: [],
             _content: [],
+            _view: [],
+            _originTotalCount: 0,
+            _totalCount: 0,
+            _sort: {},
+            _rect: [],
+            _checked: [],
+            _groupStatus: {},
+            _selectedRow: null,
+            _selectedCel: null,
+            _editingRow: [],
 
-            /**
-             * _origin
-             * _content
-             * _originTotalCount
-             * _totalCount
-             * _sort
-             * _rect
-             * _checked
-             * _groupStatus
-             * _selectedRow
-             * _selectedCel
-             *
-             * _add
-             * _edit
-             * _index
-             * _radio
-             * _delete
-             * _checkbox
-             * _pagination
-             * _exportExcel
-             * _importExcel
-             * _autoHeight
-             * _height
-             * _group
-             *
-             */
+            _add: options.add,
+            _edit: options.edit,
+            _index: options.index,
+            _radio: options.radio,
+            _delete: options.delete,
+            _checkbox: options.checkbox,
+            _pagination: options.pagination,
+            _exportExcel: options.exportExcel,
+            _importExcel: options.importExcel,
+            _autoHeight: options.height === "auto",
+            _height: options.height === "auto" ? 0 : options.height || 400,
+            _cols: head.length,
+
+            _group: Array.isArray(options.group)
+                ? options.group.reduce((p: any, c: any, seq: any) => {
+                      return { ...p, [c]: { seq } };
+                  }, {})
+                : {},
 
             _rule: defaultSchema.body
                 .flatMap(({ cells }: any) => cells)
@@ -117,6 +123,36 @@ export const useGrid = (props: UseGridProps) => {
                     if (ary.length) prev[curr.binding] = ary;
                     return prev;
                 }, {}),
+
+            _head: head.map((_: any) => {
+                const show = _.show === true ? true : _.show === false ? false : true;
+                const cells = _.cells.map((__: any) => {
+                    return { ...__, show };
+                });
+                return { ..._, show, cells };
+            }),
+            _body: body.map((_: any, i: any) => {
+                const col = head[i];
+                const id = col?.id;
+                const show = col?.show;
+
+                const cells = _.cells.map((__: any) => {
+                    const edit =
+                        __.edit === true
+                            ? true
+                            : __.edit === false
+                              ? false
+                              : _.edit === true
+                                ? true
+                                : _.edit === false
+                                  ? false
+                                  : options?.edit === true
+                                    ? true
+                                    : false;
+                    return { ...__, id, show, edit };
+                });
+                return { ..._, id, show, cells };
+            }),
         };
     }
 
@@ -198,7 +234,9 @@ export const useGrid = (props: UseGridProps) => {
     const importExcel = (file?: any) => {
         return _grid.current._importExcel(file);
     };
-    const exportExcel = () => {};
+    const exportExcel = () => {
+        return _grid.current._exportExcel();
+    };
 
     return {
         grid: { _grid },

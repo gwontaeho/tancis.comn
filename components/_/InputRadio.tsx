@@ -7,6 +7,7 @@ import { useOptions, UseOptionsProps } from "@/comn/hooks";
 
 /** */
 type RadioProps = UseOptionsProps & {
+    all?: boolean;
     edit?: boolean;
     viewType?: "label" | "value" | "both";
     editType?: "label" | "value" | "both";
@@ -21,6 +22,7 @@ type RadioProps = UseOptionsProps & {
 
 export const Radio = (props: RadioProps) => {
     const {
+        all,
         edit = true,
         viewType = "both",
         editType = "label",
@@ -77,6 +79,20 @@ export const Radio = (props: RadioProps) => {
 
             <div hidden={!edit}>
                 <div className={classNames("flex flex-wrap w-fit", readOnly && "pointer-events-none")}>
+                    {o.hasOption && all && (
+                        <label className="flex items-center h-7 space-x-1 mr-3">
+                            <input
+                                {..._props}
+                                name={name}
+                                type="radio"
+                                value=""
+                                checked={_value === ""}
+                                onChange={handleChange}
+                            />
+                            <div>{t(`L_AL`)}</div>
+                        </label>
+                    )}
+
                     {o.hasOption &&
                         o.options.map((option, i) => {
                             return (

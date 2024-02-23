@@ -187,29 +187,17 @@ const getView = (_grid: any) => {
     let base = sort(_grid, _grid.current._content);
     let view;
     let content;
-
-    if (Object.keys(_grid.current._group).length) {
-        base = group(_grid, base);
-    }
-
+    if (Object.keys(_grid.current._group).length) base = group(_grid, base);
     let __index = 0;
     base = base.map((_: any) => {
         let next = _;
-        if (_.__type === "group" || _.__type === "deleted") {
-            next.__index = -1;
-        } else {
-            next.__index = __index++;
-        }
+        if (_.__type === "group" || _.__type === "deleted") next.__index = -1;
+        else next.__index = __index++;
         return next;
     });
-
     content = base.filter(({ __type }: any) => __type !== "group");
     view = base.filter(({ __type }: any) => __type !== "deleted");
-
-    if (_grid.current._pagination === "in") {
-        view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
-    }
-
+    if (_grid.current._pagination === "in") view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     _grid.current._content = content;
     _grid.current._view = view;
 

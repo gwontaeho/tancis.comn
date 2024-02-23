@@ -58,11 +58,11 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        edit: false,
         importExcel: true,
         exportExcel: true,
         height: 400,
-        pagination: "in",
+        pagination: "out",
 
         // group: ["q", "w"],
     },
@@ -70,6 +70,7 @@ const schema1: TGridSchema = {
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         {
             cells: [
+                { binding: "w", width: 200 },
                 { binding: "w", width: 200 },
                 { binding: "w", width: 200 },
             ],
@@ -230,11 +231,12 @@ export const Temp = () => {
         isSelectedRow,
         isSelectedCell,
         validate,
+        exportExcel,
     } = useGrid({
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 80 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 2000 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
@@ -285,8 +287,13 @@ export const Temp = () => {
         },
     };
 
+    const handleTest = (e: any) => {
+        console.log(e.target.files[0]);
+    };
+
     return (
         <Page>
+            <input type="file" onChange={handleTest} />
             <button onClick={selectFile}>select</button>
             <button onClick={() => console.log(getFile())}>get</button>
             <button onClick={() => console.log(importFile(getFile()))}>import</button>
@@ -312,7 +319,7 @@ export const Temp = () => {
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...form.schema.select} />
-                            <Group.Control {...form.schema.radio} />
+                            <Group.Control {...form.schema.radio} all={true} />
                         </Group.Row>
                         {/* <Group.Row>
                             <Group.Control {...form2.schema.select} />
@@ -337,7 +344,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={data2}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -399,7 +406,7 @@ export const Temp = () => {
                     <button onClick={() => setShow("column", "test", false)}>hide text</button>
                 </div>
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => console.table(getData())}>getData</button>
+                    <button onClick={() => console.log(getData())}>getData</button>
                     <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                     <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
                     <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
@@ -407,6 +414,7 @@ export const Temp = () => {
                     <button onClick={() => console.log(isChecked())}>isChecked</button>
                     <button onClick={() => console.log(isSelectedRow())}>isSelectedRow</button>
                     <button onClick={() => console.log(isSelectedCell())}>isSelectedCell</button>
+                    <button onClick={() => exportExcel()}>export</button>
                 </div>
             </div>
         </Page>
