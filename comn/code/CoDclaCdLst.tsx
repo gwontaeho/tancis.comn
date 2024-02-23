@@ -103,7 +103,7 @@ export const CompanyDeclareCodeList = (props: any) => {
         }
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.coDclaCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -156,7 +156,7 @@ export const CompanyDeclareCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         {/* * */}
-                        {params.multiple === true && (
+                        {params?.multiple === true && (
                             <Layout>
                                 <Layout.Right>
                                     <Button
