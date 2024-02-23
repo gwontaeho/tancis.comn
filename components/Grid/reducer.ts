@@ -7,24 +7,21 @@ import { getCount, getView } from "./utils";
  * @returns
  */
 const createInitialState = ({ _grid, data }: any) => {
-    let _test: any[] = [];
-    let _totalCount = 0;
-
     if (Array.isArray(data?.content)) {
         _grid.current._data = data;
         const origin = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
         _grid.current._origin = origin;
         _grid.current._content = origin;
-        _test = getView(_grid);
-        _totalCount = getCount(_grid);
-        _grid.current._originTotalCount = _totalCount;
+        getView(_grid);
+        getCount(_grid);
+        _grid.current._originTotalCount = _grid.current._totalCount;
     }
 
     return {
         _head: _grid.current._head,
         _body: _grid.current._body,
-        _test,
-        _totalCount,
+        _test: _grid.current._view,
+        _totalCount: _grid.current._totalCount,
         _editingRow: [],
         _page: _grid.current._page,
         _size: _grid.current._size,

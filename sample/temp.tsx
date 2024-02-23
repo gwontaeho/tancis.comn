@@ -231,11 +231,12 @@ export const Temp = () => {
         isSelectedRow,
         isSelectedCell,
         validate,
+        exportExcel,
     } = useGrid({
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 80 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 2000 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
@@ -413,6 +414,7 @@ export const Temp = () => {
                     <button onClick={() => console.log(isChecked())}>isChecked</button>
                     <button onClick={() => console.log(isSelectedRow())}>isSelectedRow</button>
                     <button onClick={() => console.log(isSelectedCell())}>isSelectedCell</button>
+                    <button onClick={() => exportExcel()}>export</button>
                 </div>
             </div>
         </Page>

@@ -103,7 +103,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             <div className="uf-grid-top">
                 <div>
                     {_options.importExcel && <ImportButton _grid={_grid} />}
-                    {_options.exportExcel && <Button onClick={() => _grid.current._export()}>Export</Button>}
+                    {_options.exportExcel && <ExportButton _grid={_grid} />}
                 </div>
                 <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
@@ -496,35 +496,33 @@ const ImportButton = (props: any) => {
     );
 };
 
+const ExportButton = (props: any) => {
+    const { _grid } = props;
+
+    return <Button onClick={() => _grid.current._exportExcel()}>Export</Button>;
+};
+
 const Table = (props: any) => {
     const { _grid, _headCells, _bodyCells, render } = props;
-
     const [exporting, setExporting] = useState(false);
 
     useEffect(() => {
-        _grid.current._export = () => {
+        _grid.current._exportExcel = () => {
             if (_grid.current._exporting) return;
             _grid.current._exporting = true;
             setExporting(true);
         };
     }, []);
 
-    useEffect(() => {
-        if (exporting) {
-            const ws = utils.table_to_sheet(_grid.current._table);
-            ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
-            const wb = utils.book_new();
-            utils.book_append_sheet(wb, ws, "est");
-            _grid.current._wb = wb;
-            writeFile(wb, "SheetJSTable.xlsx");
-            _grid.current._exporting = false;
-            setExporting(false);
-        }
-    }, [exporting]);
-
     const tableRef = useCallback((ref: any) => {
         if (!ref) return;
-        _grid.current._table = ref;
+        const ws = utils.table_to_sheet(ref);
+        ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
+        const wb = utils.book_new();
+        utils.book_append_sheet(wb, ws, "est");
+        writeFile(wb, "SheetJSTable.xlsx");
+        _grid.current._exporting = false;
+        setExporting(false);
     }, []);
 
     if (!exporting) return null;
