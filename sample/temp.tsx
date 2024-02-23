@@ -319,7 +319,7 @@ export const Temp = () => {
                         </Group.Row>
                         <Group.Row>
                             <Group.Control {...form.schema.select} />
-                            <Group.Control {...form.schema.radio} />
+                            <Group.Control {...form.schema.radio} all={true} />
                         </Group.Row>
                         {/* <Group.Row>
                             <Group.Control {...form2.schema.select} />
