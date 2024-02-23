@@ -53,7 +53,7 @@ const getMockOptions = (count = 3) => {
 
 const schema1: TGridSchema = {
     options: {
-        index: true,
+        index: "DESC",
         radio: true,
         checkbox: true,
         add: true,
@@ -323,7 +323,7 @@ export const Temp = () => {
                             <Group.Control {...form.schema.code} />
                         </Group.Row>
                         <Group.Row>
-                            <button onClick={() => console.log(form.getValues())}>get values</button>
+                            <button onClick={() => console.table(form.getValues())}>get values</button>
                             <button onClick={() => form.setEditable(true)}>setEdit true</button>
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
@@ -399,7 +399,7 @@ export const Temp = () => {
                     <button onClick={() => setShow("column", "test", false)}>hide text</button>
                 </div>
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => console.log(getData())}>getData</button>
+                    <button onClick={() => console.table(getData())}>getData</button>
                     <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                     <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
                     <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
