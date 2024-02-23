@@ -356,7 +356,7 @@ export const Temp = () => {
             <div className="flex flex-col gap-8">
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => scrollToRow(50)}>scroll</button>
-                    <button onClick={() => setData(data2)}>set data</button>
+                    <button onClick={() => setData(data)}>set data</button>
                     <button onClick={() => resetData()}>reset</button>
                     <button
                         onClick={() => {
