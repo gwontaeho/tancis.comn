@@ -263,9 +263,17 @@ export const CGME0411001Q = (props: any) => {
                             <Link
                                 to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
                             >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
-                            <Link
-                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
-                            >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
+                            <Layout direction="row">
+                                [
+                                <FormControl
+                                    value={rowValues.dcltTin}
+                                    onChange={(v) => {
+                                        grid.rpckItmAppList.updateRow({ ...rowValues, dcltTin: v });
+                                    }}
+                                    edit={false}
+                                />
+                                ]
+                            </Layout>
                         </Layout>
                     );
                 },
