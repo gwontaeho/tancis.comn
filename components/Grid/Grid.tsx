@@ -6,7 +6,7 @@ import { VariableSizeList as List, areEqual } from "react-window";
 
 import { Button, FormControl, Pagination, Icon } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
-import { validateValue } from "./utils";
+import { validateValue, fun } from "./utils";
 import { useInitialize } from "./initializer";
 
 /**
@@ -18,7 +18,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 
-    const { _headCells, _bodyCells, _template, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
+    const { _head, _body, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
 
     const headRef = useCallback((ref: any) => {
         if (!ref) return;
@@ -54,6 +54,49 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
         _grid.current._handleSize(next);
     }, []);
 
+    const _headCells = fun(_grid.current._head);
+    const _bodyCells = fun(_grid.current._body);
+
+    const _template = (() => {
+        let w = Array(_headCells[0].length);
+        for (let i = 0; i < _headCells.length; i++) {
+            for (let j = 0; j < _headCells[i].length; j++) {
+                if (w[j] === undefined) w[j] = 100;
+                if (_headCells[i]?.[j]?.width !== undefined && _headCells[i]?.[j]?.colspan !== undefined) {
+                    for (let k = j; k <= j + _headCells[i]?.[j]?.colspan; k++) {
+                        if (k < _headCells[0].length) {
+                            w[k] = _headCells[i]?.[j]?.width / _headCells[i]?.[j]?.colspan;
+                        }
+                    }
+                }
+                if (_headCells[i]?.[j]?.width !== undefined && _headCells[i]?.[j]?.colspan === undefined) {
+                    w[j] = _headCells[i]?.[j].width;
+                }
+                if (_headCells[i]?.[j]?.show === false) {
+                    w[j] = null;
+                }
+            }
+        }
+        return w
+            .filter((_: any) => _)
+            .map((_: any) => {
+                if (typeof _ === "number") {
+                    return `${_}px`;
+                }
+                if (typeof _ === "string") {
+                    if (_.endsWith("*")) {
+                        let t: any = _.slice(0, -1) || 1;
+                        return `minmax( ${t * 100}px , ${t}fr)`;
+                    }
+
+                    if (_.endsWith("%")) {
+                        return _;
+                    }
+                }
+            })
+            .join(" ");
+    })();
+
     return (
         <div className="flex flex-col w-full">
             {/* Top Buttons */}
@@ -71,7 +114,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             {/* Grid Main */}
             <div className="uf-grid-main">
                 {/* Head */}
-                <div ref={headRef} className="uf-grid-head">
+                <div ref={headRef} className="uf-grid-head relative">
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
@@ -141,6 +184,21 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                         })}
                     </div>
                 </div>
+                {/* {!state._test.length && (
+                    <div className="uf-grid-head absolute left-0 top-full">
+                        {_options.checkbox && <div className="uf-grid-option" />}
+                        {_options.radio && <div className="uf-grid-option" />}
+                        {_options.index && <div className="uf-grid-option" />}
+                        <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                            <div
+                                className="h-[2.5rem] flex items-center justify-center bg-uf-white"
+                                style={{ gridColumn: "1 / -1" }}
+                            >
+                                {t("msg.com.00034")}
+                            </div>
+                        </div>
+                    </div>
+                )} */}
 
                 {/* Body */}
                 <List
@@ -155,6 +213,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                     itemData={{
                         _grid,
                         state,
+                        _bodyCells,
+                        _template,
                         render,
                         onCellClick,
                         onRowClick,
@@ -185,20 +245,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, state, render, onCellClick, onRowClick } = data;
-    const {
-        _test,
-        _bodyCells,
-        _options,
-        _checked,
-        _selectedRow,
-        _selectedCel,
-        _totalCount,
-        _page,
-        _size,
-        _template,
-        _editingRow,
-    } = state;
+    const { _grid, state, render, onCellClick, onRowClick, _bodyCells, _template } = data;
+    const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow } = state;
 
     const row = _test[index];
     const rowKey = row?.__key;
@@ -322,7 +370,9 @@ const Row = memo((props: any) => {
                                 const uv = comnUtils.getUnformattedValue(value, rest);
                                 const abc = validateValue(value, _grid.current._rule[binding]);
 
-                                const isEdit = _editingRow.includes(rowKey) ? true : edit;
+                                const rowEdit = _grid.current._editingRow.find((r: any) => r.key === rowKey);
+
+                                const isEdit = rowEdit ? rowEdit.edit : edit;
 
                                 const celContext = {
                                     binding,
@@ -354,7 +404,7 @@ const Row = memo((props: any) => {
                                             (align === "center" || align === undefined) && "justify-center text-center",
                                         )}
                                         {...(abc.isError && { "aria-invalid": true })}
-                                        {...(_selectedCel === celKey && { "aria-selected": true })}
+                                        {...(_selectedCel?.__key === celKey && { "aria-selected": true })}
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${colspan ?? 1}`,
@@ -454,7 +504,6 @@ const Table = (props: any) => {
     useEffect(() => {
         _grid.current._export = () => {
             if (_grid.current._exporting) return;
-
             _grid.current._exporting = true;
             setExporting(true);
         };
@@ -463,12 +512,11 @@ const Table = (props: any) => {
     useEffect(() => {
         if (exporting) {
             const ws = utils.table_to_sheet(_grid.current._table);
-            ws["!cols"] = [{ width: 20 }, { width: 20 }, { width: 20 }];
+            ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
             const wb = utils.book_new();
             utils.book_append_sheet(wb, ws, "est");
             _grid.current._wb = wb;
             writeFile(wb, "SheetJSTable.xlsx");
-
             _grid.current._exporting = false;
             setExporting(false);
         }

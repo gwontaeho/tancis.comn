@@ -415,6 +415,7 @@ export const CGME0411002S = () => {
                             </Group.Col>
                             <Group.Control {...form.rpckItmApp.schema.blGwght} />
                         </Group.Row>
+
                         <Group.Row>
                             <Group.Label label={"L_PCKG_NO"} required={true} />
                             <Group.Col combine={true}>
@@ -425,6 +426,7 @@ export const CGME0411002S = () => {
                             </Group.Col>
                             <Group.Control {...form.rpckItmApp.schema.blGwght} />
                         </Group.Row>
+
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.pckgTpCd} />
                             <Group.Control {...form.rpckItmApp.schema.blNwght} />

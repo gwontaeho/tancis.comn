@@ -2,6 +2,7 @@ import React from "react";
 import lodash from "lodash";
 import { read, utils } from "xlsx";
 import { v4 as uuid } from "uuid";
+import { getView, getCount } from "./utils";
 import { reducer, createInitialState } from "./reducer";
 
 /**
@@ -25,40 +26,228 @@ const useInitialize = (props: any) => {
     }, [__t]);
 
     React.useEffect(() => {
-        /* Set Data */
+        /* Set data  */
         _grid.current._setData = (data: any) => {
             if (!Array.isArray(data?.content)) return;
-            dispatch({ type: "setData", payload: { _grid, data } });
+            _grid.current._data = data;
+            const content = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+            if (_grid.current._pagination === "in") _grid.current._page = 0;
+            _grid.current._content = content;
+            _grid.current._origin = content;
+            getView(_grid);
+            const count = getCount(_grid);
+            _grid.current._originTotalCount = count;
+            dispatch({ type: "setData", payload: { _grid } });
         };
+        /* Set data to origin */
         _grid.current._resetData = () => {
+            _grid.current._content = _grid.current._origin;
+            _grid.current._totalCount = _grid.current._originTotalCount;
+            _grid.current._view = getView(_grid);
             dispatch({ type: "resetData", payload: { _grid } });
         };
+        /* Handle add row */
+        _grid.current._handleAdd = (data?: any) => {
+            if (_grid.current._pagination === "out") return;
+            _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
+            getView(_grid);
+            getCount(_grid);
+            dispatch({ type: "add", payload: { _grid } });
+        };
+        /* Handle delete row */
+        _grid.current._handleDelete = (type: any) => {
+            if (_grid.current._pagination === "out" || !type) return;
+            let targets: any[] = [];
+            switch (type) {
+                case "radio":
+                    if (!_grid.current._selectedRow) return;
+                    targets.push(_grid.current._selectedRow);
+                    break;
+                case "checkbox":
+                    if (!_grid.current._checked.length) return;
+                    targets = [...targets, ..._grid.current._checked];
+                    break;
+                case "all":
+                    if (!_grid.current._selectedRow && !_grid.current._checked.length) return;
+                    if (_grid.current._selectedRow) targets.push(_grid.current._selectedRow);
+                    if (_grid.current._checked.length) targets = [...targets, ..._grid.current._checked];
+                    break;
+                default:
+                    if (typeof type === "object" && type.__key) targets.push(type.__key);
+                    if (Array.isArray(type)) targets = [...targets, ...type.map(({ __key }: any) => __key)];
+            }
+            _grid.current._content = _grid.current._content
+                .map((_: any) => {
+                    if (targets.includes(_.__key)) {
+                        if (_.__type === "added") return;
+                        return { ..._, __type: "deleted" };
+                    } else return _;
+                })
+                .filter((_: any) => _ !== undefined);
+            _grid.current._checked = [];
+            _grid.current._selectedCel = null;
+            _grid.current._selectedRow = null;
+            getView(_grid);
+            getCount(_grid);
+            dispatch({ type: "delete", payload: { _grid, type } });
+        };
+        /* Handle update row */
+        _grid.current._handleUpdate = (data: any) => {
+            if (!data?.__key) return;
+            _grid.current._content = _grid.current._content.map((_: any) => {
+                if (_.__key !== data.__key) return _;
+                const { __type, __key, ...rest } = data;
+                let type = _.__type;
+                if (type === "origin" || type === "updated") {
+                    const origin = _grid.current._origin.find((o: any) => o.__key === __key);
+                    type = Object.keys(rest).some((k) => data[k] !== origin[k]) ? "updated" : "origin";
+                }
+                return { ..._, ...rest, __type: type };
+            });
+            getView(_grid);
+            dispatch({ type: "update", payload: { _grid } });
+        };
+        /* Handle Sort */
+        _grid.current._handleSort = (binding: any) => {
+            if (!binding) return;
+            let _sort = _grid.current._sort;
+            const prev = _sort[binding];
+            if (prev) {
+                const pval = prev.val;
+                const pseq = prev.seq;
+                if (pval === "asc") _sort[binding] = { seq: pseq, val: "desc" };
+                if (pval === "desc") delete _sort[binding];
+            } else {
+                const seqs = Object.entries(_sort)
+                    .map(([__, v]: any) => v?.seq)
+                    .filter((_) => _ !== undefined);
+                const nseq = seqs.length === 0 ? 0 : Math.max(...seqs) + 1;
+                _sort[binding] = { seq: nseq, val: "asc" };
+            }
+            _sort = Object.fromEntries(
+                lodash
+                    .sortBy(Object.entries(_sort), [(a: any) => a[1].seq])
+                    .map(([k, v]: any, i: any) => [k, { ...v, seq: i }]),
+            );
+            _grid.current._sort = _sort;
+            getView(_grid);
+            dispatch({ type: "sort", payload: { _grid, binding } });
+        };
+        /* Handle Group */
+        _grid.current._handleGroup = (groupKey: string, open: boolean) => {
+            if (!groupKey) return;
+            _grid.current._groupStatus[groupKey] = { ..._grid.current._groupStatus[groupKey], open };
+            getView(_grid);
+            dispatch({ type: "group", payload: { _grid } });
+        };
+        /* Set edit */
         _grid.current._setEdit = (type: any, target: any, value: any) => {
-            dispatch({ type: "setEdit", payload: { type, target, value } });
-        };
-        _grid.current._setShow = (type: any, target: any, value: any) => {
-            dispatch({ type: "setShow", payload: { type, target, value } });
-        };
-        _grid.current._setOption = (target: any, value: any) => {
-            dispatch({ type: "setOption", payload: { _grid, target, value } });
-        };
+            switch (type) {
+                case "column":
+                    _grid.current._body = _grid.current._body.map((_: any) => {
+                        if (_.id !== target) return _;
+                        const cells = _.cells.map((__: any) => {
+                            return { ...__, edit: value };
+                        });
+                        return { ..._, cells };
+                    });
+                    break;
+                case "cell":
+                    _grid.current._body = _grid.current._body.map((_: any) => {
+                        const cells = _.cells.map((__: any) => {
+                            if (__.binding !== target) return __;
+                            return { ...__, edit: value };
+                        });
+                        return { ..._, cells };
+                    });
+                    break;
+                case "row": {
+                    const key =
+                        typeof target === "object" && !!target?.__key
+                            ? target.__key
+                            : typeof target === "string"
+                              ? target
+                              : undefined;
 
-        /* Handle Select Row (Radio)  */
-        _grid.current._handleSelect = (event: any, rowKey: any) => {
-            dispatch({ type: "handleSelect", payload: { _grid, event, rowKey } });
+                    if (key) {
+                        const row = _grid.current._editingRow.find((r: any) => r.key === key);
+                        if (typeof value === "boolean") {
+                            _grid.current._editingRow = row
+                                ? _grid.current._editingRow.map((_: any) => {
+                                      if (_.key !== key) return _;
+                                      return { ..._, edit: value };
+                                  })
+                                : [..._grid.current._editingRow, { key, edit: value }];
+                        }
+                    }
+                    break;
+                }
+            }
+            dispatch({ type: "setEdit", payload: { _grid } });
         };
-        /* Handle Check Row (Checkbox) */
-        _grid.current._handleCheck = (event: any, rowKey: any) => {
-            dispatch({ type: "handleCheck", payload: { _grid, event, rowKey } });
+        /* Set show */
+        _grid.current._setShow = (type: any, target: any, value: any) => {
+            switch (type) {
+                case "column": {
+                    _grid.current._head = _grid.current._head.map((_: any) => {
+                        if (_.id !== target) return _;
+                        return {
+                            ..._,
+                            show: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, show: value };
+                            }),
+                        };
+                    });
+                    _grid.current._body = _grid.current._body.map((_: any) => {
+                        if (_.id !== target) return _;
+                        return {
+                            ..._,
+                            show: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, show: value };
+                            }),
+                        };
+                    });
+                }
+            }
+            dispatch({ type: "setShow", payload: { _grid } });
         };
-        /* Handle Check All Row (Checkbox) */
-        _grid.current._handleCheckAll = (event: any) => {
-            dispatch({ type: "handleCheckAll", payload: { _grid, event, condition: render?.checkbox } });
+        /* Set option */
+        _grid.current._setOption = (target: any, value: any) => {
+            switch (target) {
+                case "height": {
+                    if (value === "auto") {
+                        _grid.current._height = _grid.current._listInner.clientHeight;
+                        _grid.current._autoHeight = true;
+                    } else {
+                        _grid.current._height = value;
+                        _grid.current._autoHeight = false;
+                    }
+                    break;
+                }
+                case "edit": {
+                    _grid.current._edit = value;
+                    _grid.current._body = _grid.current._body.map((_: any) => {
+                        return {
+                            ..._,
+                            edit: value,
+                            cells: _.cells.map((__: any) => {
+                                return { ...__, edit: value };
+                            }),
+                        };
+                    });
+                    break;
+                }
+                default:
+                    _grid.current[target] = value;
+                    break;
+            }
+            dispatch({ type: "setOption", payload: { _grid, target } });
         };
         /* Handle Click Cell */
         _grid.current._handleClickCel = (payload: any) => {
             const { key, binding, value, formattedValue, rowValues, onCellClick } = payload;
-
             if (onCellClick)
                 onCellClick({
                     binding,
@@ -66,44 +255,41 @@ const useInitialize = (props: any) => {
                     formattedValue,
                     rowValues,
                 });
-
             if (_grid.current._selectedCel?.__key !== key) {
                 _grid.current._selectedCel = {
-                    binding,
                     value,
-                    formattedValue,
+                    binding,
                     rowValues,
+                    formattedValue,
                     __key: key,
                 };
-
-                dispatch({ type: "handleClickCel", payload: { key } });
+                dispatch({ type: "handleClickCel", payload: { _grid } });
             }
         };
-
-        /* Handle Add Row */
-        _grid.current._handleAdd = (data?: any) => {
-            if (_grid.current._pagination === "out") return;
-
-            _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
-            dispatch({ type: "add", payload: { _grid, data } });
+        /* Handle Select Row (Radio)  */
+        _grid.current._handleSelect = (event: any, rowKey: any) => {
+            _grid.current._selectedRow = rowKey;
+            dispatch({ type: "handleSelect", payload: { _grid } });
         };
-        /* Handle Delete Row */
-        _grid.current._handleDelete = (type: any) => {
-            if (_grid.current._pagination === "out" || !type) return;
-            dispatch({ type: "delete", payload: { _grid, type } });
+        /* Handle Check Row (Checkbox) */
+        _grid.current._handleCheck = (event: any, rowKey: any) => {
+            let _checked = [..._grid.current._checked];
+            _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey);
+            _grid.current._checked = _checked;
+            dispatch({ type: "handleCheck", payload: { _grid } });
         };
-        _grid.current._handleUpdate = (data: any) => {
-            if (!data?.__key) return;
-            dispatch({ type: "update", payload: { _grid, data } });
+        /* Handle Check All Row (Checkbox) */
+        _grid.current._handleCheckAll = (event: any) => {
+            let _checked = [];
+            if (event.target.checked) {
+                _checked = render?.checkbox
+                    ? _grid.current._view.filter((_: any) => render?.checkbox(_)).map(({ __key }: any) => __key)
+                    : _grid.current._view.map(({ __key }: any) => __key);
+            }
+            _grid.current._checked = _checked;
+            dispatch({ type: "handleCheckAll", payload: { _grid } });
         };
-
-        _grid.current._handleSort = (binding: any) => {
-            dispatch({ type: "sort", payload: { _grid, binding } });
-        };
-        _grid.current._handleGroup = (groupKey: any, open: any) => {
-            dispatch({ type: "group", payload: { _grid, groupKey, open } });
-        };
-
+        /* Handle Change Page */
         _grid.current._handlePage = (next: any) => {
             _grid.current._page = next;
             _grid.current._checked = [];
@@ -112,9 +298,11 @@ const useInitialize = (props: any) => {
             if (_grid.current._pagination === "out") {
                 _grid.current._setPage(next);
             } else if (_grid.current._pagination === "in") {
-                dispatch({ type: "handleChangePage", payload: { _grid, next } });
+                getView(_grid);
+                dispatch({ type: "handleChangePage", payload: { _grid } });
             }
         };
+        /* Handle Change Size */
         _grid.current._handleSize = (next: any) => {
             _grid.current._page = 0;
             _grid.current._size = next;
@@ -125,20 +313,20 @@ const useInitialize = (props: any) => {
                 _grid.current._setPage(0);
                 _grid.current._setSize(next);
             } else if (_grid.current._pagination === "in") {
-                dispatch({ type: "handleChangeSize", payload: { _grid, next } });
+                getView(_grid);
+                dispatch({ type: "handleChangeSize", payload: { _grid } });
             }
         };
-
-        _grid.current._scrollToRow = (row: any) => {
-            _grid.current._listRef.scrollToItem(row, "center");
-        };
-
+        /* Readjust */
         _grid.current._readjustHeight = lodash.debounce(() => {
             if (_grid.current._height === _grid.current._listInner.clientHeight) return;
-
             _grid.current._height = _grid.current._listInner.clientHeight;
-            dispatch({ type: "readjustHeight", payload: { value: _grid.current._listInner.clientHeight } });
+            dispatch({ type: "readjustHeight", payload: { _grid } });
         }, 10);
+
+        // _grid.current._scrollToRow = (row: any) => {
+        //     _grid.current._listRef.scrollToItem(row, "center");
+        // };
 
         _grid.current._validate = () => {
             const errors = _grid.current._content
