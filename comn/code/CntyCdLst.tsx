@@ -80,6 +80,7 @@ export const CountryCodeList = (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
+                            href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 

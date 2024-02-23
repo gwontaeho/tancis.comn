@@ -80,6 +80,7 @@ export const VehicleManufactureCodeList = (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
+                            href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
                                 postMessage({ code: value, label: rowValues.vhclMnfcNm });
