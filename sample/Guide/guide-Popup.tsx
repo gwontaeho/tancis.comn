@@ -140,6 +140,8 @@ export const GuidePopup = () => {
                                 <br />- excludes : 코드 데이터에서 제외할 코드(value)를 지정 가능
                                 <br />- includes : 코드 데이터에 추가할 코드( &#123; label, value &#125; )를 지정 가능
                                 <br />- filter : 함수의 return 을 통하여 제외할 코드를 지정 가능
+                                <br />- 코드성 데이터 팝업창 useModal로 직접 사용할 경우 params: {` multiple: true `},
+                                로 다중선택 가능
                             </>
                         }
                     >
@@ -156,6 +158,29 @@ export const GuidePopup = () => {
                                                     modal.openModal({
                                                         url: comnEnvs.popup.cityCd,
                                                         draggable: true,
+                                                        callback: (data) => {
+                                                            // form에 값 세팅
+                                                            form.setValue("text", data.code);
+                                                            console.log(data);
+                                                            // modal 창 닫기
+                                                            modal.closeModal();
+                                                        },
+                                                    });
+                                                },
+                                            }}
+                                        />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control
+                                            {...form.schema.text}
+                                            rightButton={{
+                                                icon: "search",
+                                                onClick: () => {
+                                                    // 팝업창을 호출하여 사용하는 경우
+                                                    modal.openModal({
+                                                        url: comnEnvs.popup.cityCd,
+                                                        draggable: true,
+                                                        // 코드성 팝업창에서 여러개의 데이터를 선택가능하게 파라메터 설정
                                                         params: { multiple: true },
                                                         // modal 창에서 postMessage 메서드 실행시 call back 함수
                                                         callback: (data) => {
@@ -291,13 +316,39 @@ const Sample = () => {
                             rightButton={{
                                 icon: "search",
                                 onClick: () => {
+                                    // 팝업창을 호출하여 사용하는 경우
                                     modal.openModal({
-                                        url: comnEnvs.popup.wrhsCd,
+                                        url: comnEnvs.popup.cityCd,
                                         draggable: true,
+                                        callback: (data) => {
+                                            // form에 값 세팅
+                                            form.setValue("text", data.code);
+                                            console.log(data);
+                                            // modal 창 닫기
+                                            modal.closeModal();
+                                        },
+                                    });
+                                },
+                            }}
+                        />
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.text}
+                            rightButton={{
+                                icon: "search",
+                                onClick: () => {
+                                    // 팝업창을 호출하여 사용하는 경우
+                                    modal.openModal({
+                                        url: comnEnvs.popup.cityCd,
+                                        draggable: true,
+                                        // 코드성 팝업창에서 여러개의 데이터를 선택가능하게 파라메터 설정
+                                        params: { multiple: true },
                                         // modal 창에서 postMessage 메서드 실행시 call back 함수
                                         callback: (data) => {
                                             // form에 값 세팅
                                             form.setValue("text", data.code);
+                                            console.log(data);
                                             // modal 창 닫기
                                             modal.closeModal();
                                         },
@@ -324,7 +375,7 @@ const Sample = () => {
                         <Group.Control {...form.schema.checkbox4} />
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control {...form.schema.code} />
+                        <Group.Control {...form.schema.code} popupParams={{ multiple: true }} />
                     </Group.Row>
                 </Group.Section>
             </Group.Body>

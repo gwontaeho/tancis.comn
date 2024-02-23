@@ -443,6 +443,15 @@ export const comnUtils = {
             case "cgmePrcdCd":
                 url = `${process.env.REACT_APP_API_CGME}/api/v1/cgme/comn/cd?area=cgmePrcdCd&comnCd=${comnCd}`;
                 break;
+            case "cgmiPrcdCd":
+                url = `${process.env.REACT_APP_API_CGMI}/api/v1/cgmi/comn/cd?area=cgmiPrcdCd&comnCd=${comnCd}`;
+                break;
+            case "cgmeLstCd":
+                url = `${process.env.REACT_APP_API_CGME}/api/v1/cgme/comn/cd?area=cgmeLstCd&comnCd=${comnCd}`;
+                break;
+            case "cgmiLstCd":
+                url = `${process.env.REACT_APP_API_CGMI}/api/v1/cgmi/comn/cd?area=cgmiLstCd&comnCd=${comnCd}`;
+                break;
             case "hsCd":
                 url = `${process.env.REACT_APP_API_CLRI}/api/v1/clri/tm/hs/hs-mgmt?hsCd=${keyword}&hsDesc=${keywordName}`;
                 break;
@@ -515,6 +524,9 @@ export const comnUtils = {
             case "vhclUseCd":
                 return code.vhclUseNm;
             case "cgmePrcdCd":
+            case "cgmiPrcdCd":
+            case "cgmeLstCd":
+            case "cgmiLstCd":
                 return code.comnCdLbl;
             case "hsCd":
                 return code.hsDesc;
@@ -581,6 +593,9 @@ export const comnUtils = {
             case "vhclUseCd":
                 return code.vhclUseCd;
             case "cgmePrcdCd":
+            case "cgmiPrcdCd":
+            case "cgmeLstCd":
+            case "cgmiLstCd":
                 return code.comnCdVal;
             case "hsCd":
                 return code.hsCd;
