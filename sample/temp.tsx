@@ -53,7 +53,7 @@ const getMockOptions = (count = 3) => {
 
 const schema1: TGridSchema = {
     options: {
-        index: true,
+        index: "DESC",
         radio: true,
         checkbox: true,
         add: true,

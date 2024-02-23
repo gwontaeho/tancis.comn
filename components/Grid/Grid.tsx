@@ -302,10 +302,7 @@ const Row = memo((props: any) => {
                     {/* Index */}
                     {_options?.index && (
                         <div className="uf-grid-option font-semibold">
-                            {/* {_options?.index === "DESC"
-                                ? _totalCount - (_page * _size + index)
-                                : _page * _size + index + 1} */}
-                            {rowIndex + 1}
+                            {_options?.index === "DESC" ? _totalCount - rowIndex : rowIndex + 1}
                         </div>
                     )}
 
