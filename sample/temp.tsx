@@ -297,6 +297,12 @@ export const Temp = () => {
                 <FormControl type="text" value="asd" edit={false} />
             </div>
 
+            <Layout align="start">
+                <div>a</div>
+                <div>a</div>
+                <div>a</div>
+            </Layout>
+
             <Group>
                 <Group.Body>
                     <Group.Section title="asd" description="asd">

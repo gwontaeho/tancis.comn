@@ -19,6 +19,7 @@ const WIDTH = {
     12: "w-full",
     fit: "w-fit",
     full: "w-full",
+    auto: "w-auto",
 };
 
 const COL_SPAN = {
@@ -51,6 +52,18 @@ const FLEX = {
     10: "flex-[10]",
     11: "flex-[11]",
     12: "flex-[12]",
+};
+
+const JUSTIFY_CONTENT = {
+    start: "justify-start",
+    center: "justify-center",
+    end: "justify-end",
+};
+
+const ALIGN_ITEMS = {
+    start: "items-start",
+    center: "items-center",
+    end: "items-end",
 };
 
 const GAP = {
@@ -101,4 +114,15 @@ const COLOR_TEXT = {
     warning: "text-uf-warning",
 };
 
-export { DIRECTION, WIDTH, COL_SPAN, FLEX, GAP, COLOR_BACKGROUND, COLOR_BORDER, COLOR_TEXT };
+export {
+    DIRECTION,
+    WIDTH,
+    COL_SPAN,
+    FLEX,
+    GAP,
+    COLOR_BACKGROUND,
+    COLOR_BORDER,
+    COLOR_TEXT,
+    JUSTIFY_CONTENT,
+    ALIGN_ITEMS,
+};
