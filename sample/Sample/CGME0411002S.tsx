@@ -395,21 +395,17 @@ export const CGME0411002S = () => {
                         </Group.Row>
                         <Group.Row>
                             <Group.Label label={"L_PCKG_NO"} required={true} />
-                            <Group.Col padding={0}>
-                                <Layout direction="col" gap={0}>
-                                    <Layout direction="row" gap={0}>
-                                        <Group.Control {...form.rpckItmApp.schema.blPckgNo} />
-                                        <Group.Control {...form.rpckItmApp.schema.pckgUtCd} />
-                                        <Group.Any>
-                                            <Button> 버튼</Button>
-                                        </Group.Any>
+                            <Group.Col padding={1}>
+                                <Layout direction="col" gap={1}>
+                                    <Layout direction="row" gap={1}>
+                                        <FormControl {...form.rpckItmApp.schema.blPckgNo} />
+                                        <FormControl {...form.rpckItmApp.schema.pckgUtCd} />
+                                        <Button> 버튼</Button>
                                     </Layout>
-                                    <Layout direction="row" gap={0}>
-                                        <Group.Control {...form.rpckItmApp.schema.blPckgNo} />
-                                        <Group.Control {...form.rpckItmApp.schema.pckgUtCd} />
-                                        <Group.Any>
-                                            <Button> 버튼</Button>
-                                        </Group.Any>
+                                    <Layout direction="row" gap={1}>
+                                        <FormControl {...form.rpckItmApp.schema.blPckgNo} />
+                                        <FormControl {...form.rpckItmApp.schema.pckgUtCd} />
+                                        <Button> 버튼</Button>
                                     </Layout>
                                 </Layout>
                             </Group.Col>

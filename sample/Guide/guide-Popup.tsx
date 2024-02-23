@@ -140,8 +140,8 @@ export const GuidePopup = () => {
                                 <br />- excludes : 코드 데이터에서 제외할 코드(value)를 지정 가능
                                 <br />- includes : 코드 데이터에 추가할 코드( &#123; label, value &#125; )를 지정 가능
                                 <br />- filter : 함수의 return 을 통하여 제외할 코드를 지정 가능
-                                <br />- 코드성 데이터 팝업창 useModal로 직접 사용할 경우 params: {` multiple: true `},
-                                로 다중선택 가능
+                                <br />- 코드성 데이터 팝업창 useModal로 직접 사용할 경우 params: {` { multiple: true }`}
+                                , 로 다중선택 가능
                             </>
                         }
                     >
