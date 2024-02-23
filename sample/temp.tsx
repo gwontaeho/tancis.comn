@@ -297,7 +297,7 @@ export const Temp = () => {
                 <FormControl type="text" value="asd" edit={false} />
             </div>
 
-            <Layout align="start">
+            <Layout align="center">
                 <div>a</div>
                 <div>a</div>
                 <div>a</div>
