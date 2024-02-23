@@ -97,7 +97,7 @@ export const VehicleColorCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.vhclClrCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -147,7 +147,7 @@ export const VehicleColorCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         {/* * */}
-                        {params.multiple === true && (
+                        {params?.multiple === true && (
                             <Layout>
                                 <Layout.Right>
                                     <Button

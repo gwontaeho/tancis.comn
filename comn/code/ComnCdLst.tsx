@@ -102,7 +102,7 @@ export const CommonCodeList = (props: any) => {
         }
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.comnCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -158,7 +158,7 @@ export const CommonCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         {/* * */}
-                        {params.multiple === true && (
+                        {params?.multiple === true && (
                             <Layout>
                                 <Layout.Right>
                                     <Button

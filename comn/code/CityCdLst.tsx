@@ -135,7 +135,7 @@ export const CityCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.cityCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -190,7 +190,7 @@ export const CityCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     {/* * */}
-                    {params.multiple === true && (
+                    {params?.multiple === true && (
                         <Layout>
                             <Layout.Right>
                                 <Button

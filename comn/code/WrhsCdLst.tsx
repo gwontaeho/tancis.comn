@@ -102,7 +102,7 @@ export const WrhsCodeList = (props: any) => {
         }
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.wrhsCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -153,7 +153,7 @@ export const WrhsCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     {/* * */}
-                    {params.multiple === true && (
+                    {params?.multiple === true && (
                         <Layout>
                             <Layout.Right>
                                 <Button

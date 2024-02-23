@@ -154,8 +154,9 @@ export const GuidePopup = () => {
                                                 onClick: () => {
                                                     // 팝업창을 호출하여 사용하는 경우
                                                     modal.openModal({
-                                                        url: comnEnvs.popup.wrhsCd,
+                                                        url: comnEnvs.popup.hsCd,
                                                         draggable: true,
+                                                        params: { multiple: true },
                                                         // modal 창에서 postMessage 메서드 실행시 call back 함수
                                                         callback: (data) => {
                                                             // form에 값 세팅

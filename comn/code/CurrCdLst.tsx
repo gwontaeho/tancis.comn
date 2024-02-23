@@ -98,7 +98,7 @@ export const CurrencyCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.currCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -149,7 +149,7 @@ export const CurrencyCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     {/* * */}
-                    {params.multiple === true && (
+                    {params?.multiple === true && (
                         <Layout>
                             <Layout.Right>
                                 <Button

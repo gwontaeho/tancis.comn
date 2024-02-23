@@ -97,7 +97,7 @@ export const VehicleFuelCodeList = (props: any) => {
     useEffect(() => {
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.vhclFlCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -147,7 +147,7 @@ export const VehicleFuelCodeList = (props: any) => {
                 <Group.Body>
                     <Group.Section>
                         {/* * */}
-                        {params.multiple === true && (
+                        {params?.multiple === true && (
                             <Layout>
                                 <Layout.Right>
                                     <Button

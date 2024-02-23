@@ -99,7 +99,7 @@ export const CompanyCodeList = (props: any) => {
         form.coCdSrch.setValue("coTpCd", "C");
         handler.click_Btn_Srch();
         /* * */
-        if (params.multiple === true) {
+        if (params?.multiple === true) {
             grid.coCdLst.setOption("checkbox", true);
         }
     }, []);
@@ -153,7 +153,7 @@ export const CompanyCodeList = (props: any) => {
             <Group>
                 <Group.Body>
                     {/* * */}
-                    {params.multiple === true && (
+                    {params?.multiple === true && (
                         <Layout>
                             <Layout.Right>
                                 <Button
