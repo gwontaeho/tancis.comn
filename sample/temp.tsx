@@ -58,7 +58,7 @@ const schema1: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: false,
+        edit: true,
         importExcel: true,
         exportExcel: true,
         height: 400,
@@ -257,20 +257,20 @@ export const Temp = () => {
             },
         },
         edit: {
-            // text: (data: any) => {
-            //     /**
-            //      * # data
-            //      * value
-            //      * rowValues
-            //      * binding
-            //      */
-            //     return (
-            //         <Layout direction="row" gap={1}>
-            //             <FormControl />
-            //             <FormControl />
-            //         </Layout>
-            //     );
-            // },
+            q: (data: any) => {
+                /**
+                 * # data
+                 * value
+                 * rowValues
+                 * binding
+                 */
+                return (
+                    <Layout direction="row" gap={1}>
+                        <FormControl type="radio" options={[{ label: "a", value: "a" }]} />
+                        <FormControl type="radio" />
+                    </Layout>
+                );
+            },
         },
     };
 
