@@ -53,7 +53,7 @@ const getMockOptions = (count = 3) => {
 
 const schema1: TGridSchema = {
     options: {
-        index: true,
+        index: "DESC",
         radio: true,
         checkbox: true,
         add: true,
@@ -62,7 +62,7 @@ const schema1: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         height: 400,
-        pagination: "in",
+        pagination: "out",
 
         // group: ["q", "w"],
     },
@@ -343,7 +343,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={data2}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}

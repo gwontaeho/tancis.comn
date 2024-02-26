@@ -229,7 +229,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 const Row = memo((props: any) => {
     const { data, index, style } = props;
     const { _grid, _state, render, onCellClick, onRowClick, _bodyCells, _template } = data;
-    const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow } = _state;
+    const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow, _page, _size } = _state;
 
     const row = _test[index];
     const rowKey = row?.__key;
@@ -352,7 +352,13 @@ const Row = memo((props: any) => {
                     {/* Index */}
                     {_options?.index && (
                         <div className="uf-grid-option font-semibold">
-                            {_options?.index === "DESC" ? _totalCount - rowIndex : rowIndex + 1}
+                            {_options.pagination === "out"
+                                ? _options?.index === "DESC"
+                                    ? _totalCount - rowIndex - _page * _size
+                                    : rowIndex + 1 + _page * _size
+                                : _options?.index === "DESC"
+                                  ? _totalCount - rowIndex
+                                  : rowIndex + 1}
                         </div>
                     )}
 

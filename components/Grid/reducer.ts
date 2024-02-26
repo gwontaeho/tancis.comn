@@ -39,6 +39,7 @@ const createInitialState = ({ _grid, data }: any) => {
             checkbox: _grid.current._checkbox,
             exportExcel: _grid.current._exportExcel,
             importExcel: _grid.current._importExcel,
+            pagination: _grid.current._pagination,
         },
     };
 };
