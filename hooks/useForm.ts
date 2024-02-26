@@ -99,10 +99,8 @@ export const useForm = (props: UseFormProps) => {
     const _setValues = (values: TFormValues, part?: boolean) => {
         Object.keys(_fields).forEach((name) => {
             if (part === true && values[name] === undefined) return;
-
             let value = values[name];
             if (value === undefined) value = null;
-
             _setValue(name, value);
         });
     };

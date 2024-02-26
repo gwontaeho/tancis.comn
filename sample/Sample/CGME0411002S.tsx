@@ -275,7 +275,7 @@ export const CGME0411002S = () => {
         // Submit Repacking Item Application !== 재포장 품목 신청서 전송 ==!
         submitRpckItmApp: form.rpckItmApp.handleSubmit(
             (data) => {
-                fetch.saveRpckItmApp.fetch(data);
+                fetch.saveRpckItmApp.fetch({ ...fetch.getRpckItmApp.data, ...data });
             },
             () => {
                 toast.showToast({ type: "warning", content: "msg.00002" });
