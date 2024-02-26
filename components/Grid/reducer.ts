@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { getCount, getView } from "./utils";
+import { getView } from "./utils";
 
 /**
  * ## State Initializer
@@ -13,15 +13,17 @@ const createInitialState = ({ _grid, data }: any) => {
         _grid.current._origin = origin;
         _grid.current._content = origin;
         getView(_grid);
-        getCount(_grid);
         _grid.current._originTotalCount = _grid.current._totalCount;
     }
 
     return {
+        _cols: _grid.current._head.length,
         _head: _grid.current._head,
         _body: _grid.current._body,
+        _groupSchema: _grid.current._groupSchema,
         _test: _grid.current._view,
         _totalCount: _grid.current._totalCount,
+        _totalItemCount: _grid.current._totalItemCount,
         _editingRow: [],
         _page: _grid.current._page,
         _size: _grid.current._size,

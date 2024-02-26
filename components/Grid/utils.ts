@@ -121,6 +121,16 @@ const group = (_grid: any, content: any) => {
                 value: curr[0],
                 binding: by[0],
                 count: curr[1].length,
+                aggregate: curr[1].reduce((pp: any, cc: any) => {
+                    for (const property in cc) {
+                        const prevValue = isNaN(pp[property]) ? 0 : pp[property];
+                        const value = cc[property];
+                        if (typeof value === "number") {
+                            pp[property] = prevValue + value;
+                        }
+                    }
+                    return pp;
+                }, {}),
             };
 
             if (open) {
@@ -187,6 +197,8 @@ const getView = (_grid: any) => {
     let base = sort(_grid, _grid.current._content);
     let view;
     let content;
+    let count;
+    let itemCount;
     if (Object.keys(_grid.current._group).length) base = group(_grid, base);
     let __index = 0;
     base = base.map((_: any) => {
@@ -197,42 +209,24 @@ const getView = (_grid: any) => {
     });
     content = base.filter(({ __type }: any) => __type !== "group");
     view = base.filter(({ __type }: any) => __type !== "deleted");
-
-    // if (typeof _grid.current._render?.row === "function") {
-    //     view = view.filter((_: any) => {
-    //         return _grid.current._render.row(_);
-    //     });
-    // }
+    itemCount = view.length;
 
     if (_grid.current._pagination === "in") {
         view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     }
-
-    _grid.current._content = content;
-    _grid.current._view = view;
-
-    return view;
-};
-
-/**
- * ## Get Count
- * @param _grid
- * @returns
- */
-const getCount = (_grid: any) => {
-    let count;
     if (_grid.current._pagination === "out") {
         count = _grid.current._data.page.totalElements;
     } else {
         let content = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-        // if (typeof _grid.current._render?.row === "function") {
-        //     content = content.filter((_: any) => _grid.current._render.row(_));
-        // }
         count = content.length;
     }
 
+    _grid.current._content = content;
+    _grid.current._view = view;
     _grid.current._totalCount = count;
-    return count;
+    _grid.current._totalItemCount = itemCount;
+
+    return view;
 };
 
-export { getView, getCount, validateValue, fun };
+export { getView, validateValue, fun };

@@ -63,13 +63,24 @@ const schema1: TGridSchema = {
         exportExcel: true,
         height: 400,
         pagination: "in",
-
-        // group: ["q", "w"],
+        group: ["q"],
     },
+    group: [
+        { cells: [{ binding: "id" }] },
+        {
+            colspan: 2,
+            cells: [{ binding: "w" }, { binding: "w" }],
+        },
+        {
+            cells: [{ binding: "e" }],
+        },
+    ],
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         {
+            colspan: 2,
             cells: [
+                { binding: "w", width: 200, colspan: 2 },
                 { binding: "w", width: 200 },
                 { binding: "w", width: 200 },
             ],
@@ -83,7 +94,7 @@ const schema1: TGridSchema = {
     ],
     body: [
         { cells: [{ binding: "q", required: true }] },
-        { cells: [{ binding: "w", required: true, validate: (data: any) => data === "asd" }] },
+        { colspan: 2, cells: [{ binding: "w", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
         { cells: [{ binding: "d", min: 5, required: true }] },
     ],
 };
@@ -234,7 +245,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 2000 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 66 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
