@@ -301,7 +301,14 @@ const Row = memo((props: any) => {
                     ref={rowRefCallback}
                     className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
                 >
-                    {_groupCells && <div className="uf-grid-option bg-uf-card-background" />}
+                    {_groupCells && (
+                        <div
+                            className="uf-grid-option bg-uf-card-background"
+                            onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
+                        >
+                            <Icon icon="right" size="xs" className=" rotate-45" />
+                        </div>
+                    )}
                     {_options.checkbox && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.radio && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.index && <div className="uf-grid-option bg-uf-card-background" />}
@@ -318,8 +325,10 @@ const Row = memo((props: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
 
-                                const { binding } = cel;
-                                const aggregate = row.aggregate[binding];
+                                const { binding, aggregate } = cel;
+                                const ag = row.aggregate.find((_: any) => {
+                                    return _.binding === binding && _.aggregate === aggregate;
+                                });
 
                                 const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
                                 return (
@@ -331,7 +340,7 @@ const Row = memo((props: any) => {
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
                                     >
-                                        {aggregate}
+                                        {ag.value}
                                     </div>
                                 );
                             });
