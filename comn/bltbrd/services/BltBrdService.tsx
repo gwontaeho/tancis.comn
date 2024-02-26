@@ -57,7 +57,7 @@ export const SF_BLTBRD: TFormSchema = {
     id: "form_bltbrd",
     schema: {
         ttle: { type: "text", label: "L_TTLE", required: true },
-        cn: { type: "editor", label: "L_CN", required: true },
+        cn: { type: "editor", label: "L_CN", required: true, height: 300 },
         selcNo: { type: "number", label: "L_SELC_NO", edit: false },
         frstRegstId: { type: "text", label: "L_FRST_REGST_ID", edit: false },
         frstRgsrDtm: { type: "text", label: "L_FRST_RGSR_DTM", edit: false },
