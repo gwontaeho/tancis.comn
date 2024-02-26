@@ -76,10 +76,7 @@ export const BltbrdRgsr = (props: any) => {
                                 <Group.Control {...form.bltbrd.schema.ttle} controlSize={10}></Group.Control>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Label label="내용"></Group.Label>
-                                <Group.Col colSize={10}>
-                                    <Editor />
-                                </Group.Col>
+                                <Group.Control {...form.bltbrd.schema.cn} controlSize={10}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
@@ -96,6 +93,19 @@ export const BltbrdRgsr = (props: any) => {
                                     role="save"
                                     onClick={() => {
                                         handler.saveBltbrd();
+                                    }}
+                                ></Button>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        form.bltbrd.setValue("cn", "111111");
+                                    }}
+                                ></Button>
+
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        console.log(form.bltbrd.getValues());
                                     }}
                                 ></Button>
                             </Layout.Right>

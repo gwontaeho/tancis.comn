@@ -275,7 +275,7 @@ export const CGME0411002S = () => {
         // Submit Repacking Item Application !== 재포장 품목 신청서 전송 ==!
         submitRpckItmApp: form.rpckItmApp.handleSubmit(
             (data) => {
-                fetch.saveRpckItmApp.fetch({ ...fetch.getRpckItmApp.data, ...data });
+                fetch.saveRpckItmApp.fetch(data);
             },
             () => {
                 toast.showToast({ type: "warning", content: "msg.00002" });
@@ -408,6 +408,15 @@ export const CGME0411002S = () => {
                                         <Button> 버튼</Button>
                                     </Layout>
                                 </Layout>
+                            </Group.Col>
+                            <Group.Control {...form.rpckItmApp.schema.blGwght} />
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Label label={"L_PCKG_NO"} required={true} />
+                            <Group.Col padding={1}>
+                                <FormControl {...form.rpckItmApp.schema.blPckgNo} />
+                                <Group.Any>-</Group.Any>
+                                <FormControl {...form.rpckItmApp.schema.pckgUtCd} />
                             </Group.Col>
                             <Group.Control {...form.rpckItmApp.schema.blGwght} />
                         </Group.Row>
