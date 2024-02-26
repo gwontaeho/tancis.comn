@@ -72,7 +72,6 @@ const schema1: TGridSchema = {
             cells: [
                 { binding: "w", width: 200 },
                 { binding: "w", width: 200 },
-                { binding: "w", width: 200 },
             ],
         },
         {
@@ -344,7 +343,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            // data={data}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -402,6 +401,12 @@ export const Temp = () => {
                     <button onClick={() => setEdit("cell", "w", false)}>edit cell false</button>
                     <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>
                     <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, false)}>edit row false</button>
+                    <button onClick={() => setEdit("rowCell", { row: getSelectedCell()?.rowValues, cell: "w" }, true)}>
+                        edit rowcell true
+                    </button>
+                    <button onClick={() => setEdit("rowCell", { row: getSelectedCell()?.rowValues, cell: "w" }, false)}>
+                        edit rowcell false
+                    </button>
                     <button onClick={() => setShow("column", "test", true)}>show text</button>
                     <button onClick={() => setShow("column", "test", false)}>hide text</button>
                 </div>

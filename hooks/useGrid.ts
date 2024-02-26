@@ -166,7 +166,11 @@ export const useGrid = (props: UseGridProps) => {
     const setOption = (target: "add" | "delete" | "edit" | "index" | "radio" | "checkbox" | "height", value: any) => {
         _grid.current._setOption(target, value);
     };
-    const setEdit = (type: "column" | "cell" | "row", target: string | TRow, value: boolean) => {
+    const setEdit = (
+        type: "column" | "cell" | "row" | "rowCell",
+        target: string | TRow | { row: string | TRow; cell: string },
+        value: boolean,
+    ) => {
         _grid.current._setEdit(type, target, value);
     };
     const setShow = (type: "column", target: string, value: boolean) => {
