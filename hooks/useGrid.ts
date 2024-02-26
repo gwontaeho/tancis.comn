@@ -232,9 +232,6 @@ export const useGrid = (props: UseGridProps) => {
     };
 
     /* EXCEL */
-    const selectExcel = () => {
-        return _grid.current._selectExcel();
-    };
     const importExcel = (file?: any) => {
         return _grid.current._importExcel(file);
     };
@@ -269,7 +266,6 @@ export const useGrid = (props: UseGridProps) => {
         validate,
         scrollToRow,
 
-        selectExcel,
         importExcel,
         exportExcel,
     };

@@ -57,10 +57,17 @@ export const storeState = atom<Record<string, any>>({
     default: {},
 });
 
+/** 임시 */
 export const authState = atom<Record<string, any>>({
     key: "authState",
-    default: localStorage.getItem("auth")
-        ? JSON.parse(localStorage.getItem("auth") as string)
+    default: Cookies.get("accessToken")
+        ? localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth") as string)
+            : {
+                  userInfo: {},
+                  isSignedIn: false,
+                  signedAt: null,
+              }
         : {
               userInfo: {},
               isSignedIn: false,
