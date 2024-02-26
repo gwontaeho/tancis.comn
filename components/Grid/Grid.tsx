@@ -18,7 +18,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 
-    const { _head, _body, _options, _checked, _page, _size, _totalCount, _sort, _test } = state;
+    const _state = { ...state, _test: state._test.length ? state._test : [{ __type: "empty" }] };
+    const { _head, _body, _options, _checked, _page, _size, _totalCount, _sort, _test } = _state;
 
     const headRef = useCallback((ref: any) => {
         if (!ref) return;
@@ -54,9 +55,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
         _grid.current._handleSize(next);
     }, []);
 
-    const _headCells = fun(_grid.current._head);
-    const _bodyCells = fun(_grid.current._body);
-
+    const _headCells = fun(_head);
+    const _bodyCells = fun(_body);
     const _template = (() => {
         let w = Array(_headCells[0].length);
         for (let i = 0; i < _headCells.length; i++) {
@@ -184,21 +184,6 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                         })}
                     </div>
                 </div>
-                {/* {!state._test.length && (
-                    <div className="uf-grid-head absolute left-0 top-full">
-                        {_options.checkbox && <div className="uf-grid-option" />}
-                        {_options.radio && <div className="uf-grid-option" />}
-                        {_options.index && <div className="uf-grid-option" />}
-                        <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                            <div
-                                className="h-[2.5rem] flex items-center justify-center bg-uf-white"
-                                style={{ gridColumn: "1 / -1" }}
-                            >
-                                {t("msg.com.00034")}
-                            </div>
-                        </div>
-                    </div>
-                )} */}
 
                 {/* Body */}
                 <List
@@ -212,7 +197,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                     width="100%"
                     itemData={{
                         _grid,
-                        state,
+                        _state,
                         _bodyCells,
                         _template,
                         render,
@@ -222,8 +207,6 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                 >
                     {Row}
                 </List>
-
-                {/*  */}
             </div>
 
             {/* Pagination */}
@@ -245,14 +228,15 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, state, render, onCellClick, onRowClick, _bodyCells, _template } = data;
-    const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow } = state;
+    const { _grid, _state, render, onCellClick, onRowClick, _bodyCells, _template } = data;
+    const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow } = _state;
 
     const row = _test[index];
     const rowKey = row?.__key;
     const rowType = row?.__type;
     const rowIndex = row?.__index;
 
+    const { t } = useTranslation();
     const resizeObserverRef = useRef<any>(null);
     const rowRefCallback = useCallback((ref: any) => {
         if (!ref) return;
@@ -283,6 +267,26 @@ const Row = memo((props: any) => {
 
     return (
         <div style={{ ...style }}>
+            {/* Empty */}
+            {rowType === "empty" && (
+                <div
+                    ref={rowRefCallback}
+                    className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
+                >
+                    {_options.checkbox && <div className="uf-grid-option" />}
+                    {_options.radio && <div className="uf-grid-option" />}
+                    {_options.index && <div className="uf-grid-option" />}
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        <div
+                            className="bg-uf-card-background flex items-center justify-center"
+                            style={{ gridColumn: "1 / -1" }}
+                        >
+                            {t("msg.com.00034")}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Group */}
             {rowType === "group" && (
                 <div
@@ -301,14 +305,12 @@ const Row = memo((props: any) => {
                     </button> */}
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
                         <div className="flex items-center justify-end px-1">a</div>
-                        <div className="flex items-center justify-end px-1">a</div>
-                        <div className="flex items-center justify-end px-1">a</div>
                     </div>
                 </div>
             )}
 
             {/* Row */}
-            {rowType !== "group" && (
+            {rowType !== "group" && rowType !== "empty" && (
                 <div
                     ref={rowRefCallback}
                     onClick={() => {
