@@ -222,6 +222,7 @@ const getView = (_grid: any) => {
         itemCount = count;
     } else {
         let content = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
+
         count = content.length;
         itemCount = view.length;
     }

@@ -62,6 +62,7 @@ const reducer = (prev: any, action: any) => {
             next._size = _grid.current._size;
             next._test = _grid.current._view;
             next._totalCount = _grid.current._totalCount;
+            next._totalItemCount = _grid.current._totalItemCount;
             next._checked = [];
             next._selectedRow = null;
             next._selectedCel = null;
@@ -72,6 +73,7 @@ const reducer = (prev: any, action: any) => {
             const { _grid } = action.payload;
             next._test = _grid.current._view;
             next._totalCount = _grid.current._totalCount;
+            next._totalItemCount = _grid.current._totalItemCount;
             return next;
         }
         /* Add row  */
@@ -79,6 +81,7 @@ const reducer = (prev: any, action: any) => {
             const { _grid } = action.payload;
             next._test = _grid.current._view;
             next._totalCount = _grid.current._totalCount;
+            next._totalItemCount = _grid.current._totalItemCount;
             return next;
         }
         /* Delete row */
@@ -86,6 +89,7 @@ const reducer = (prev: any, action: any) => {
             const { _grid } = action.payload;
             next._test = _grid.current._view;
             next._totalCount = _grid.current._totalCount;
+            next._totalItemCount = _grid.current._totalItemCount;
             next._checked = _grid.current._checked;
             next._selectedCel = _grid.current._selectedCel;
             next._selectedRow = _grid.current._selectedRow;
