@@ -267,8 +267,6 @@ const Row = memo((props: any) => {
         };
     }, []);
 
-    console.log(row);
-
     return (
         <div style={{ ...style }}>
             {/* Empty */}
@@ -312,6 +310,8 @@ const Row = memo((props: any) => {
                             return row.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
+
+                                const { binding } = cel;
 
                                 const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
                                 return (
