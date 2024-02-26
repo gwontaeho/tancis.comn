@@ -166,16 +166,34 @@ const useInitialize = (props: any) => {
                             : typeof target === "string"
                               ? target
                               : undefined;
-
                     if (key) {
-                        const row = _grid.current._editingRow.find((r: any) => r.key === key);
+                        const row = _grid.current._editingRow.find((r: any) => r.key === key && r.cell === undefined);
                         if (typeof value === "boolean") {
                             _grid.current._editingRow = row
                                 ? _grid.current._editingRow.map((_: any) => {
                                       if (_.key !== key) return _;
+                                      if (_.cell !== undefined) return _;
                                       return { ..._, edit: value };
                                   })
                                 : [..._grid.current._editingRow, { key, edit: value }];
+                        }
+                    }
+                    break;
+                }
+                case "rowCell": {
+                    const { row, cell } = target;
+                    const rowKey =
+                        typeof row === "object" && !!row?.__key ? row.__key : typeof row === "string" ? row : undefined;
+                    if (rowKey) {
+                        const row = _grid.current._editingRow.find((r: any) => r.key === rowKey && r.cell === cell);
+                        if (typeof value === "boolean") {
+                            _grid.current._editingRow = row
+                                ? _grid.current._editingRow.map((_: any) => {
+                                      if (_.key !== rowKey) return _;
+                                      if (_.cell !== cell) return _;
+                                      return { ..._, edit: value };
+                                  })
+                                : [..._grid.current._editingRow, { key: rowKey, edit: value, cell }];
                         }
                     }
                     break;

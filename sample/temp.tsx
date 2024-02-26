@@ -53,7 +53,7 @@ const getMockOptions = (count = 3) => {
 
 const schema1: TGridSchema = {
     options: {
-        index: "DESC",
+        index: true,
         radio: true,
         checkbox: true,
         add: true,
@@ -70,7 +70,6 @@ const schema1: TGridSchema = {
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         {
             cells: [
-                { binding: "w", width: 200 },
                 { binding: "w", width: 200 },
                 { binding: "w", width: 200 },
             ],
@@ -344,7 +343,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            // data={data}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
@@ -402,6 +401,18 @@ export const Temp = () => {
                     <button onClick={() => setEdit("cell", "w", false)}>edit cell false</button>
                     <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, true)}>edit row true</button>
                     <button onClick={() => setEdit("row", getSelectedCell()?.rowValues, false)}>edit row false</button>
+                    <button onClick={() => setEdit("rowCell", { row: getSelectedCell()?.rowValues, cell: "w" }, true)}>
+                        edit rowcell true w
+                    </button>
+                    <button onClick={() => setEdit("rowCell", { row: getSelectedCell()?.rowValues, cell: "w" }, false)}>
+                        edit rowcell false w
+                    </button>
+                    <button onClick={() => setEdit("rowCell", { row: getSelectedCell()?.rowValues, cell: "q" }, true)}>
+                        edit rowcell true q
+                    </button>
+                    <button onClick={() => setEdit("rowCell", { row: getSelectedCell()?.rowValues, cell: "q" }, false)}>
+                        edit rowcell false q
+                    </button>
                     <button onClick={() => setShow("column", "test", true)}>show text</button>
                     <button onClick={() => setShow("column", "test", false)}>hide text</button>
                 </div>

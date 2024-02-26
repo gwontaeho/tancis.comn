@@ -372,9 +372,15 @@ const Row = memo((props: any) => {
                                 const uv = comnUtils.getUnformattedValue(value, rest);
                                 const abc = validateValue(value, _grid.current._rule[binding]);
 
-                                const rowEdit = _grid.current._editingRow.find((r: any) => r.key === rowKey);
+                                const rowEdit = _editingRow.find((r: any) => r.key === rowKey && r.cell === undefined);
+                                const cellEdit = _editingRow.find((r: any) => r.key === rowKey && r.cell === binding);
 
-                                const isEdit = rowEdit ? rowEdit.edit : edit;
+                                const isEdit =
+                                    cellEdit !== undefined
+                                        ? cellEdit.edit
+                                        : rowEdit !== undefined
+                                          ? rowEdit.edit
+                                          : edit;
 
                                 const celContext = {
                                     binding,
