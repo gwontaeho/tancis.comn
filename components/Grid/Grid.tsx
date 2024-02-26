@@ -121,6 +121,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             <div className="uf-grid-main">
                 {/* Head */}
                 <div ref={headRef} className="uf-grid-head relative">
+                    {_groupCells && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
@@ -300,6 +301,7 @@ const Row = memo((props: any) => {
                     ref={rowRefCallback}
                     className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
                 >
+                    {_groupCells && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.checkbox && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.radio && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.index && <div className="uf-grid-option bg-uf-card-background" />}
@@ -310,8 +312,8 @@ const Row = memo((props: any) => {
                     >
                         <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
                     </button> */}
-                    {/* <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                        {_groupCells.map((schemaRow: any, rowIndex: any) => {
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        {_groupCells?.map((schemaRow: any, rowIndex: any) => {
                             return schemaRow.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
@@ -334,7 +336,7 @@ const Row = memo((props: any) => {
                                 );
                             });
                         })}
-                    </div> */}
+                    </div>
                 </div>
             )}
 
@@ -354,7 +356,7 @@ const Row = memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
-                    {<div className="uf-grid-option bg-uf-card-background" />}
+                    {_groupCells && <div className="uf-grid-option bg-uf-card-background" />}
 
                     {/* Checkbox */}
                     {_options?.checkbox && (
