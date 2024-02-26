@@ -144,8 +144,6 @@ const useExcel = () => {
 export const Temp = () => {
     const { selectFile, importFile, getFile } = useExcel();
 
-    const tbl = useRef<any | null>(null);
-
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -231,6 +229,7 @@ export const Temp = () => {
         isSelectedCell,
         validate,
         exportExcel,
+        importExcel,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -240,6 +239,10 @@ export const Temp = () => {
     const data2 = getMockDataWithPaging({ data, page, size });
 
     const _test = {
+        row: (data: any) => {
+            console.log(data);
+            return data.q === "Tom";
+        },
         cell: {
             q: (data: any) => {
                 /**
@@ -334,6 +337,7 @@ export const Temp = () => {
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
                             <button onClick={() => form.setValue("code", "aud")}>set value</button>
+                            <button onClick={() => form.setValue("asdasdw", "aud")}>set qwdqwdvalue</button>
                             <button onClick={() => form.setSchema("radio", { options: [{ label: "a", value: "b" }] })}>
                                 set value
                             </button>
@@ -426,6 +430,7 @@ export const Temp = () => {
                     <button onClick={() => console.log(isSelectedRow())}>isSelectedRow</button>
                     <button onClick={() => console.log(isSelectedCell())}>isSelectedCell</button>
                     <button onClick={() => exportExcel()}>export</button>
+                    <button onClick={async () => console.log(await importExcel())}>importExcel</button>
                 </div>
             </div>
         </Page>

@@ -199,7 +199,9 @@ const Auth = () => {
             const { accessToken, refreshToken, userInfo } = content;
 
             if (accessToken)
-                Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken);
+                Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken, {
+                    expires: 30,
+                });
 
             setAuth({ isSignedIn: true, userInfo, signedAt: new Date() });
             setOpen(false);
