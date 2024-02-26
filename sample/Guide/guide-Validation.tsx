@@ -210,7 +210,16 @@ export const GuideValidation = () => {
                                     <Layout.Left>
                                         <Button
                                             onClick={() => {
-                                                handler.saveSmpl();
+                                                form.smpl.setValues({ test: "111111" });
+                                                //handler.saveSmpl();
+                                            }}
+                                        >
+                                            오류검증
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                console.log(form.smpl.getValues());
+                                                //handler.saveSmpl();
                                             }}
                                         >
                                             오류검증

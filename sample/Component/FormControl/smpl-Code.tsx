@@ -18,7 +18,6 @@ const SF_FORM: TFormSchema = {
             type: "code",
             area: "cityCd",
             label: "Region Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field2: {
@@ -26,7 +25,6 @@ const SF_FORM: TFormSchema = {
             area: "comnCd",
             comnCd: "CGM0055",
             label: "Common Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field3: {
@@ -39,70 +37,60 @@ const SF_FORM: TFormSchema = {
             type: "code",
             area: "currCd",
             label: "Currency Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field5: {
             type: "code",
             area: "bnkCd",
             label: "Bank Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field6: {
             type: "code",
             area: "portCd",
             label: "Port Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field7: {
             type: "code",
             area: "airptCd",
             label: "Airport Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field8: {
             type: "code",
             area: "portAirptCd",
             label: "Port/Airport Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field9: {
             type: "code",
             area: "coCd",
             label: "Company Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field10: {
             type: "code",
             area: "prcssStatCd",
             label: "Processing Status Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field11: {
             type: "code",
             area: "orgCd",
             label: "Organization Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field12: {
             type: "code",
             area: "wrhsCd",
             label: "WareHouse Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field13: {
             type: "code",
             area: "coDclaCd",
             label: "Company Declare Code",
-            maxLength: 3,
             popupSize: "md",
         },
 
@@ -110,112 +98,96 @@ const SF_FORM: TFormSchema = {
             type: "code",
             area: "orgDeptCd",
             label: "Organization Department Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field15: {
             type: "code",
             area: "cstmCd",
             label: "Customs Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field16: {
             type: "code",
             area: "vhclBodyCd",
             label: "Vehicle Body Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field17: {
             type: "code",
             area: "vhclCtgrCd",
             label: "Vehicle Category Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field18: {
             type: "code",
             area: "vhclClrCd",
             label: "Vehicle Color Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field19: {
             type: "code",
             area: "vhclFlCd",
             label: "Vehicle Fuel Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field20: {
             type: "code",
             area: "vhclMkerCd",
             label: "Vehicle Maker Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field21: {
             type: "code",
             area: "vhclImpCntyCd",
             label: "Vehicle Import Country Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field22: {
             type: "code",
             area: "vhclInsrTpCd",
             label: "Vehicle Insurance Type Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field23: {
             type: "code",
             area: "vhclMdlCd",
             label: "Vehicle Model Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field24: {
             type: "code",
             area: "vhclMdlNoCd",
             label: "Vehicle Model Number Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field25: {
             type: "code",
             area: "vhclHlpnCtgrCd",
             label: "Vehicle Holder Category Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field26: {
             type: "code",
             area: "vhclPrplTpCd",
             label: "Vehicle Propeller Type Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field27: {
             type: "code",
             area: "vhclTrmssnTpCd",
             label: "Vehicle Transmission Type Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field28: {
             type: "code",
             area: "vhclUseCd",
             label: "Vehicle Use Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field29: {
             type: "code",
             area: "coCdDtl",
             label: "Company Code Detail",
-            maxLength: 9,
             popupSize: "md",
         },
         field30: {
@@ -223,7 +195,6 @@ const SF_FORM: TFormSchema = {
             area: "cgmePrcdCd",
             comnCd: "CGM001",
             label: "Cargo Code",
-            maxLength: 3,
             popupSize: "md",
         },
         field31: {
@@ -535,7 +506,7 @@ const Sample = () => {
                 type: "code",
                 area: "cityCd",
                 label: "Region Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field2: {
@@ -543,7 +514,7 @@ const Sample = () => {
                 area: "comnCd",
                 comnCd: "COM_0015",
                 label: "Common Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field3: {
@@ -556,70 +527,70 @@ const Sample = () => {
                 type: "code",
                 area: "currCd",
                 label: "Currency Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field5: {
                 type: "code",
                 area: "bnkCd",
                 label: "Bank Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field6: {
                 type: "code",
                 area: "portCd",
                 label: "Port Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field7: {
                 type: "code",
                 area: "airptCd",
                 label: "Airport Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field8: {
                 type: "code",
                 area: "portAirptCd",
                 label: "Port/Airport Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field9: {
                 type: "code",
                 area: "coCd",
                 label: "Company Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field10: {
                 type: "code",
                 area: "prcssStatCd",
                 label: "Processing Status Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field11: {
                 type: "code",
                 area: "orgCd",
                 label: "Organization Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field12: {
                 type: "code",
                 area: "wrhsCd",
                 label: "WareHouse Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field13: {
                 type: "code",
                 area: "coDclaCd",
                 label: "Company Declare Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
     
@@ -627,105 +598,105 @@ const Sample = () => {
                 type: "code",
                 area: "orgDeptCd",
                 label: "Organization Department Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field15: {
                 type: "code",
                 area: "cstmOfceCd",
                 label: "Customs Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field16: {
                 type: "code",
                 area: "vhclBodyCd",
                 label: "Vehicle Body Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field17: {
                 type: "code",
                 area: "vhclCtgrCd",
                 label: "Vehicle Category Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field18: {
                 type: "code",
                 area: "vhclClrCd",
                 label: "Vehicle Color Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field19: {
                 type: "code",
                 area: "vhclFlCd",
                 label: "Vehicle Fuel Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field20: {
                 type: "code",
                 area: "vhclMkerCd",
                 label: "Vehicle Maker Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field21: {
                 type: "code",
                 area: "vhclImpCntyCd",
                 label: "Vehicle Import Country Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field22: {
                 type: "code",
                 area: "vhclInsrTpCd",
                 label: "Vehicle Insurance Type Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field23: {
                 type: "code",
                 area: "vhclMdlCd",
                 label: "Vehicle Model Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field24: {
                 type: "code",
                 area: "vhclMdlNoCd",
                 label: "Vehicle Model Number Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field25: {
                 type: "code",
                 area: "vhclHlpnCtgrCd",
                 label: "Vehicle Holder Category Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field26: {
                 type: "code",
                 area: "vhclPrplTpCd",
                 label: "Vehicle Propeller Type Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field27: {
                 type: "code",
                 area: "vhclTrmssnTpCd",
                 label: "Vehicle Transmission Type Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field28: {
                 type: "code",
                 area: "vhclUseCd",
                 label: "Vehicle Use Code",
-                maxLength: 3,
+                
                 popupSize: "md",
             },
             field29: {
