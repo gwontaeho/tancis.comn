@@ -145,8 +145,6 @@ export const useForm = (props: UseFormProps) => {
         );
     };
 
-    const _setFocus = (name: string) => {};
-
     /**
      *
      * @param s
