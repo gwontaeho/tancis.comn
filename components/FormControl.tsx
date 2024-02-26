@@ -132,6 +132,9 @@ export type FormControlProps = InputDaterangeProps & {
     size?: keyof typeof WIDTH;
     control?: any;
     message?: string;
+
+    /** editor */
+    height?: number;
 };
 
 const FormControlGroup = (props: FormControlGroupProps) => {
