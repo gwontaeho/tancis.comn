@@ -396,41 +396,22 @@ const useInitialize = (props: any) => {
             return { errors };
         };
 
-        _grid.current._selectExcel = () => {
+        _grid.current._importExcel = () => {
             return new Promise((resolve) => {
                 const input = document.createElement("input");
                 input.type = "file";
                 input.onchange = async () => {
                     if (!input.files) return;
                     const file = input.files[0];
-                    const name = file.name;
                     const buffer = await file.arrayBuffer();
-                    _grid.current._excel = { file, name, buffer };
-                    resolve({ file, name, buffer });
+                    const wb = read(buffer);
+                    const ws = wb.Sheets[wb.SheetNames[0]];
+                    const raw = utils.sheet_to_json(ws).map(({ __rowNum__, ..._ }: any) => _);
+                    const header = raw.shift() || {};
+                    resolve(raw);
                 };
                 input.click();
             });
-        };
-
-        _grid.current._importExcel = (f: any) => {
-            try {
-                const file = f || _grid.current._excel;
-                if (!file?.buffer) {
-                    /* alert no excel */
-                    return;
-                }
-
-                const { buffer } = file;
-                const wb = read(buffer);
-                const ws = wb.Sheets[wb.SheetNames[0]];
-                const raw = utils.sheet_to_json(ws).map(({ __rowNum__, ..._ }: any) => _);
-                const header = raw.shift() || {};
-
-                const key = Object.keys(header);
-                const label = Object.values(header);
-
-                return raw;
-            } catch (error) {}
         };
 
         /* Initialize Grid */

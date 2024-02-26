@@ -229,6 +229,7 @@ export const Temp = () => {
         isSelectedCell,
         validate,
         exportExcel,
+        importExcel,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -429,6 +430,7 @@ export const Temp = () => {
                     <button onClick={() => console.log(isSelectedRow())}>isSelectedRow</button>
                     <button onClick={() => console.log(isSelectedCell())}>isSelectedCell</button>
                     <button onClick={() => exportExcel()}>export</button>
+                    <button onClick={async () => console.log(await importExcel())}>importExcel</button>
                 </div>
             </div>
         </Page>

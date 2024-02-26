@@ -102,8 +102,8 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             {/* Top Buttons */}
             <div className="uf-grid-top">
                 <div>
-                    {_options.importExcel && <ImportButton _grid={_grid} />}
-                    {_options.exportExcel && <ExportButton _grid={_grid} />}
+                    {/* {_options.importExcel && <ImportButton _grid={_grid} />}
+                    {_options.exportExcel && <ExportButton _grid={_grid} />} */}
                 </div>
                 <div>
                     {_options.add && <Button onClick={() => _grid.current._handleAdd()}>Add</Button>}
@@ -488,20 +488,20 @@ const ImportButton = (props: any) => {
 
     const [file, setFile] = useState<any>();
 
-    const handleClickSelect = async () => {
-        const excel = await _grid.current._selectExcel();
-        _grid.current._excel = excel;
-        setFile(excel);
-    };
-    const handleClickImport = () => {
-        _grid.current._importExcel(_grid.current._excel);
+    // const handleClickSelect = async () => {
+    //     const excel = await _grid.current._selectExcel();
+    //     _grid.current._excel = excel;
+    //     setFile(excel);
+    // };
+    const handleClickImport = async () => {
+        console.log(await _grid.current._importExcel());
     };
 
     return (
         <div className="flex">
-            <button className="bg-uf-blue px-3 rounded-l text-uf-white" onClick={handleClickSelect}>
+            {/* <button className="bg-uf-blue px-3 rounded-l text-uf-white" onClick={handleClickSelect}>
                 <Icon icon="search" size="xs" />
-            </button>
+            </button> */}
             <span className="px-1.5 items-center flex font-mono border-y min-w-[4rem]">{file?.name}</span>
             <button className="bg-uf-blue px-3 rounded-r text-uf-white" onClick={handleClickImport}>
                 Import
