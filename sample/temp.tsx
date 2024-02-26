@@ -53,7 +53,7 @@ const getMockOptions = (count = 3) => {
 
 const schema1: TGridSchema = {
     options: {
-        index: "DESC",
+        index: true,
         radio: true,
         checkbox: true,
         add: true,
@@ -62,7 +62,7 @@ const schema1: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         height: 400,
-        pagination: "out",
+        pagination: "in",
 
         // group: ["q", "w"],
     },
@@ -143,8 +143,6 @@ const useExcel = () => {
 
 export const Temp = () => {
     const { selectFile, importFile, getFile } = useExcel();
-
-    const tbl = useRef<any | null>(null);
 
     useResource({
         defaultSchema: [
@@ -240,6 +238,10 @@ export const Temp = () => {
     const data2 = getMockDataWithPaging({ data, page, size });
 
     const _test = {
+        row: (data: any) => {
+            console.log(data);
+            return data.q === "Tom";
+        },
         cell: {
             q: (data: any) => {
                 /**
@@ -334,6 +336,7 @@ export const Temp = () => {
                             <button onClick={() => form.setEditable(false)}>setEdit false</button>
                             <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
                             <button onClick={() => form.setValue("code", "aud")}>set value</button>
+                            <button onClick={() => form.setValue("asdasdw", "aud")}>set qwdqwdvalue</button>
                             <button onClick={() => form.setSchema("radio", { options: [{ label: "a", value: "b" }] })}>
                                 set value
                             </button>
@@ -343,7 +346,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data2}
+                            data={data}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}

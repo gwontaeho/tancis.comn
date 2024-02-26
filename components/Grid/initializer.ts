@@ -12,6 +12,9 @@ import { reducer, createInitialState } from "./reducer";
  */
 const useInitialize = (props: any) => {
     const { _grid, data, render } = props;
+    if (_grid.current._render === undefined) {
+        _grid.current._render = render;
+    }
 
     const __t = data?.__t?.getTime();
     const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
