@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ReactQuill from "react-quill";
+
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Page, Group, Layout, Button, Grid } from "@/comn/components";
+import { Page, Group, Layout, Button, Grid, Editor } from "@/comn/components";
 import { useForm, useFetch, useStore, useToast, useModal, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_BLTBRD, SG_BLTBRD_LIST } from "./services/BltBrdService";
 
@@ -76,7 +76,10 @@ export const BltbrdRgsr = (props: any) => {
                                 <Group.Control {...form.bltbrd.schema.ttle} controlSize={10}></Group.Control>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.bltbrd.schema.cn}></Group.Control>
+                                <Group.Label label="내용"></Group.Label>
+                                <Group.Col colSize={10}>
+                                    <Editor />
+                                </Group.Col>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">

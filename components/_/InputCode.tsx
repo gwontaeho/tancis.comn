@@ -65,6 +65,9 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         /** useOptions props */
         area,
         comnCd,
+        excludes,
+        includes,
+        filter,
         options,
         /** */
         value,
@@ -94,7 +97,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
     const { openPopup } = usePopup();
     const modal = useModal();
 
-    const o = useOptions({ comnCd, area, options });
+    const o = useOptions({ comnCd, area, options, excludes, includes, filter });
     const __t = o.__t?.getTime();
 
     /** 코드 값 */
@@ -121,14 +124,16 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
     const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
         /** 값 세팅 조건 */
         if (maxLength !== e.target.value.length) {
-            handleValueChange("");
-            return;
+            //handleValueChange("");
+            //return;
         }
 
         const next = o.options.find(({ value }) => value === e.target.value.toUpperCase());
 
         if (next) {
             handleValueChange(next.value);
+        } else {
+            handleValueChange(e.target.value);
         }
     }, 500);
 
