@@ -198,11 +198,11 @@ const getView = (_grid: any) => {
     content = base.filter(({ __type }: any) => __type !== "group");
     view = base.filter(({ __type }: any) => __type !== "deleted");
 
-    if (typeof _grid.current._render?.row === "function") {
-        view = view.filter((_: any) => {
-            return _grid.current._render.row(_);
-        });
-    }
+    // if (typeof _grid.current._render?.row === "function") {
+    //     view = view.filter((_: any) => {
+    //         return _grid.current._render.row(_);
+    //     });
+    // }
 
     if (_grid.current._pagination === "in") {
         view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
@@ -225,10 +225,10 @@ const getCount = (_grid: any) => {
         count = _grid.current._data.page.totalElements;
     } else {
         let content = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-        if (typeof _grid.current._render?.row === "function") {
-            content = content.filter((_: any) => _grid.current._render.row(_));
-            count = content.length;
-        }
+        // if (typeof _grid.current._render?.row === "function") {
+        //     content = content.filter((_: any) => _grid.current._render.row(_));
+        // }
+        count = content.length;
     }
 
     _grid.current._totalCount = count;
