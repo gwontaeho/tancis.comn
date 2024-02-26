@@ -67,18 +67,23 @@ export const Checkbox = (props: CheckboxProps) => {
     React.useEffect(() => {
         /** is equal */
         if (lodash.isEqual(value, _value)) return;
-
         _setValue(formatCheckbox(value));
     }, [value]);
 
+    /*
     React.useEffect(() => {
         if (value === undefined && _checkAll.current === true && o.options.length > 0) {
-            let t = o.options.map((item) => item.value);
-            console.log();
-            _setValue(formatCheckbox(t));
+            let t = o.options.map((item) => item.value);            
+            const next = o.options.map(({ value }) => value);            
+            _setValue(next);
+            if (onChange) {
+                onChange(next);
+            }
+
             _checkAll.current = false;
         }
     }, [o]);
+    */
 
     /** handle change */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -90,7 +90,14 @@ export const GuideValidation = () => {
             },
             number: { label: "number", type: "number", required: true },
             password: { label: "password", type: "password", required: true },
-            select: { label: "select", type: "select", area: "comnCd", comnCd: "CGM0055", required: true },
+            select: {
+                label: "select",
+                type: "select",
+                area: "comnCd",
+                comnCd: "CGM0055",
+                required: true,
+                editType: "both",
+            },
             radio: { label: "radio", type: "radio", area: "comnCd", comnCd: "CGM0055", required: true },
             checkbox: {
                 label: "checkbox",
