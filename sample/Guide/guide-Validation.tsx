@@ -108,8 +108,6 @@ export const GuideValidation = () => {
                 start: { name: "start", required: true },
                 end: { name: "end", required: true },
                 required: true,
-                rangeButton: 0,
-                controlSize: 10,
             },
         },
     };
@@ -202,6 +200,7 @@ export const GuideValidation = () => {
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control {...form.smpl.schema.daterange} />
+                                        <Group.Control {...form.smpl.schema.daterange} />
                                     </Group.Row>
                                 </Group.Section>
                             </Group.Body>
@@ -210,7 +209,8 @@ export const GuideValidation = () => {
                                     <Layout.Left>
                                         <Button
                                             onClick={() => {
-                                                form.smpl.setValues({ test: "111111" });
+                                                form.smpl.setValues({ start: "2020-01-01", end: "2020-01-01" });
+                                                form.smpl.setEditable(false);
                                                 //handler.saveSmpl();
                                             }}
                                         >

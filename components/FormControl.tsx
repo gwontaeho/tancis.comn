@@ -26,6 +26,7 @@ import {
     InputBoolean,
     ControllerWrapper,
 } from "./_";
+import { Editor } from "@/comn/components";
 
 export type FormControlType =
     | "text"
@@ -42,7 +43,8 @@ export type FormControlType =
     | "timerange"
     | "code"
     | "file"
-    | "boolean";
+    | "boolean"
+    | "editor";
 
 type FormControlGroupProps = {
     children?: React.ReactNode;
@@ -186,6 +188,8 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
                             return <InputCode {...rest} ref={ref} />;
                         case "boolean":
                             return <InputBoolean {...rest} />;
+                        case "editor":
+                            return <Editor {...rest} />;
                         default:
                             return <InputText {...rest} ref={ref} />;
                     }

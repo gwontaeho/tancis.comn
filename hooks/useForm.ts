@@ -97,6 +97,10 @@ export const useForm = (props: UseFormProps) => {
         setValue(name, comnUtils.getFormattedValue(value, _schema[name]) ?? null, { shouldValidate: isSubmitted });
     };
     const _setValues = (values: TFormValues, part?: boolean) => {
+        Object.keys(values).forEach((name) => {
+            //console.log(name, values);
+        });
+
         Object.keys(_fields).forEach((name) => {
             if (part === true && values[name] === undefined) return;
             let value = values[name];

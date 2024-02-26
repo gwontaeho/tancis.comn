@@ -74,6 +74,7 @@ export const Checkbox = (props: CheckboxProps) => {
     React.useEffect(() => {
         if (value === undefined && _checkAll.current === true && o.options.length > 0) {
             let t = o.options.map((item) => item.value);
+            console.log();
             _setValue(formatCheckbox(t));
             _checkAll.current = false;
         }
