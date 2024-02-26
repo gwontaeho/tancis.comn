@@ -19,7 +19,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
     const { state } = useInitialize(props);
 
     const _state = { ...state, _test: state._test.length ? state._test : [{ __type: "empty" }] };
-    const { _head, _body, _options, _checked, _page, _size, _totalCount, _sort, _test } = _state;
+    const { _head, _body, _options, _checked, _page, _size, _totalItemCount, _sort, _test, _groupSchema } = _state;
 
     const headRef = useCallback((ref: any) => {
         if (!ref) return;
@@ -57,6 +57,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 
     const _headCells = fun(_head);
     const _bodyCells = fun(_body);
+    const _groupCells = fun(_groupSchema);
     const _template = (() => {
         let w = Array(_headCells[0].length);
         for (let i = 0; i < _headCells.length; i++) {
@@ -199,6 +200,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                         _grid,
                         _state,
                         _bodyCells,
+                        _groupCells,
                         _template,
                         render,
                         onCellClick,
@@ -216,7 +218,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
                     size={_size}
                     onChangePage={handleChangePage}
                     onChangeSize={handleChangeSize}
-                    totalCount={_totalCount}
+                    totalCount={_totalItemCount}
                 />
             )}
 
@@ -228,7 +230,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, _state, render, onCellClick, onRowClick, _bodyCells, _template } = data;
+    const { _grid, _state, render, onCellClick, onRowClick, _bodyCells, _template, _groupCells } = data;
     const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow, _page, _size } = _state;
 
     const row = _test[index];
@@ -264,6 +266,8 @@ const Row = memo((props: any) => {
             resizeObserverRef.current.disconnect();
         };
     }, []);
+
+    console.log(row);
 
     return (
         <div style={{ ...style }}>
@@ -304,7 +308,24 @@ const Row = memo((props: any) => {
                         <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
                     </button> */}
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                        <div className="flex items-center justify-end px-1">a</div>
+                        {_groupCells.map((row: any, rowIndex: any) => {
+                            return row.map((cel: any, colIndex: any) => {
+                                if (!cel) return null;
+                                if (cel.show === false) return null;
+
+                                const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
+                                return (
+                                    <div
+                                        key={celKey}
+                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-center text-center font-semibold"
+                                        style={{
+                                            gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
+                                            gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
+                                        }}
+                                    ></div>
+                                );
+                            });
+                        })}
                     </div>
                 </div>
             )}

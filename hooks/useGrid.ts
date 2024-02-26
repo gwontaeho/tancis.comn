@@ -17,6 +17,17 @@ export type TGridSchema = {
         height?: number | "auto";
         pagination?: "in" | "out" | false;
     };
+    group?: {
+        colspan?: number;
+        cells: {
+            width?: string | number;
+            header?: string;
+            binding?: string;
+            required?: boolean;
+            colspan?: number;
+            rowspan?: number;
+        }[];
+    }[];
     head: {
         id?: string;
         show?: boolean;
@@ -43,7 +54,6 @@ export type TGridSchema = {
             pattern?: any;
             validate?: any;
             /** */
-
             binding?: string;
             colspan?: number;
             rowspan?: number;
@@ -71,7 +81,7 @@ export const useGrid = (props: UseGridProps) => {
 
     const _grid = React.useRef<any>(null);
     if (_grid.current === null) {
-        const { options = {}, head, body } = defaultSchema;
+        const { options = {}, head, body, group } = defaultSchema;
 
         _grid.current = {
             _initialized: false,
@@ -115,7 +125,6 @@ export const useGrid = (props: UseGridProps) => {
                       return { ...p, [c]: { seq } };
                   }, {})
                 : {},
-
             _rule: defaultSchema.body
                 .flatMap(({ cells }: any) => cells)
                 .reduce((prev: any, curr: any) => {
@@ -123,7 +132,6 @@ export const useGrid = (props: UseGridProps) => {
                     if (ary.length) prev[curr.binding] = ary;
                     return prev;
                 }, {}),
-
             _head: head.map((_: any) => {
                 const show = _.show === true ? true : _.show === false ? false : true;
                 const cells = _.cells.map((__: any) => {
@@ -153,6 +161,7 @@ export const useGrid = (props: UseGridProps) => {
                 });
                 return { ..._, id, show, cells };
             }),
+            _groupSchema: group,
         };
     }
 

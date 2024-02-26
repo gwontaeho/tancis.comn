@@ -2,7 +2,7 @@ import React from "react";
 import lodash from "lodash";
 import { read, utils } from "xlsx";
 import { v4 as uuid } from "uuid";
-import { getView, getCount } from "./utils";
+import { getView } from "./utils";
 import { reducer, createInitialState } from "./reducer";
 
 /**
@@ -36,8 +36,7 @@ const useInitialize = (props: any) => {
             _grid.current._content = content;
             _grid.current._origin = content;
             getView(_grid);
-            const count = getCount(_grid);
-            _grid.current._originTotalCount = count;
+            _grid.current._originTotalCount = _grid.current._totalCount;
             dispatch({ type: "setData", payload: { _grid } });
         };
         /* Set data to origin */
@@ -52,7 +51,6 @@ const useInitialize = (props: any) => {
             if (_grid.current._pagination === "out") return;
             _grid.current._content = [..._grid.current._content, { ...data, __key: uuid(), __type: "added" }];
             getView(_grid);
-            getCount(_grid);
             dispatch({ type: "add", payload: { _grid } });
         };
         /* Handle delete row */
@@ -89,7 +87,6 @@ const useInitialize = (props: any) => {
             _grid.current._selectedCel = null;
             _grid.current._selectedRow = null;
             getView(_grid);
-            getCount(_grid);
             dispatch({ type: "delete", payload: { _grid, type } });
         };
         /* Handle update row */
