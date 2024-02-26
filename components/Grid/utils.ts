@@ -112,22 +112,48 @@ const group = (_grid: any, content: any) => {
                 _grid.current._groupStatus[groupKey] = { open: true };
             }
             const open = _grid.current._groupStatus[groupKey].open;
-            const aggregateFunction = _grid.current._groupSchema.flatMap(({ cells }: any) => cells);
-            // const aggregateKey =
-
-            const aggregate = curr[1].reduce((pp: any, cc: any) => {
-                for (const property in cc) {
-                    const prevValue = isNaN(pp[property]) ? 0 : pp[property];
-                    const value = cc[property];
-                    if (typeof value === "number") {
-                        pp[property] = prevValue + value;
+            const aggregateFunction = _grid.current._groupSchema
+                ?.flatMap(({ cells }: any) => cells)
+                .reduce((prev: any, curr: any) => {
+                    if (curr.binding && curr.aggregate) {
+                        if (
+                            !prev.find(
+                                ({ binding, aggregate }: any) =>
+                                    binding === curr.binding && aggregate === curr.aggregate,
+                            )
+                        ) {
+                            prev.push(curr);
+                        }
                     }
-                }
-                return pp;
-            }, {});
 
-            // console.log(aggregateFunction);
-            // console.log(aggregate);
+                    return prev;
+                }, []);
+
+            const aggregate = aggregateFunction.map((_: any) => {
+                const d = curr[1];
+
+                let value;
+                switch (_.aggregate) {
+                    case "SUM":
+                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0);
+                        break;
+                    case "AVERAGE":
+                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0) / d.length;
+                        break;
+                    case "MIN":
+                        value = Math.min(...d.map((__: any) => __[_.binding]));
+                        break;
+                    case "MAX":
+                        value = Math.max(...d.map((__: any) => __[_.binding]));
+                        break;
+                    case "COUNT":
+                        value = d.length;
+                        break;
+                }
+
+                return { ..._, value };
+            });
+
             const row = {
                 __key: uuid(),
                 __type: "group",
@@ -222,7 +248,6 @@ const getView = (_grid: any) => {
         itemCount = count;
     } else {
         let content = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-
         count = content.length;
         itemCount = view.length;
     }

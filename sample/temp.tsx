@@ -63,23 +63,23 @@ const schema1: TGridSchema = {
         exportExcel: true,
         height: 400,
         pagination: "in",
-        // group: ["q"],
+        group: ["q"],
     },
-    // group: [
-    //     { cells: [{ binding: "id", aggregate: "SUM" }] },
-    //     {
-    //         colspan: 2,
-    //         cells: [
-    //             { binding: "id", aggregate: "MIN" },
-    //             { binding: "id", aggregate: "MAX" },
-    //         ],
-    //     },
-    //     {
-    //         cells: [{ binding: "e" }],
-    //     },
-    // ],
+    group: [
+        { cells: [{ binding: "number", aggregate: "SUM" }] },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "number", aggregate: "AVERAGE" },
+                { binding: "number", aggregate: "MAX" },
+            ],
+        },
+        {
+            cells: [{ binding: "number", aggregate: "COUNT" }],
+        },
+    ],
     head: [
-        { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
+        { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
             colspan: 2,
             cells: [
@@ -96,7 +96,7 @@ const schema1: TGridSchema = {
         },
     ],
     body: [
-        { cells: [{ binding: "q", required: true }] },
+        { cells: [{ type: "number", binding: "number", required: true }] },
         { colspan: 2, cells: [{ binding: "w", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
         { cells: [{ binding: "d", min: 5, required: true }] },
     ],
@@ -248,7 +248,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 66 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 7 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
