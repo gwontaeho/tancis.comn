@@ -65,16 +65,16 @@ const schema1: TGridSchema = {
         pagination: "in",
         group: ["q"],
     },
-    group: [
-        { cells: [{ binding: "id" }] },
-        {
-            colspan: 2,
-            cells: [{ binding: "w" }, { binding: "w" }],
-        },
-        {
-            cells: [{ binding: "e" }],
-        },
-    ],
+    // group: [
+    //     { cells: [{ binding: "id" }] },
+    //     {
+    //         colspan: 2,
+    //         cells: [{ binding: "w" }, { binding: "w" }],
+    //     },
+    //     {
+    //         cells: [{ binding: "e" }],
+    //     },
+    // ],
     head: [
         { id: "test", cells: [{ binding: "q", rowspan: 2, width: 200 }] },
         {

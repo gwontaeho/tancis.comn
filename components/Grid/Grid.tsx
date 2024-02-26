@@ -57,7 +57,12 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
 
     const _headCells = fun(_head);
     const _bodyCells = fun(_body);
-    const _groupCells = fun(_groupSchema);
+
+    let _groupCells;
+    if (_groupSchema) {
+        _groupCells = fun(_groupSchema);
+    }
+
     const _template = (() => {
         let w = Array(_headCells[0].length);
         for (let i = 0; i < _headCells.length; i++) {
@@ -295,9 +300,9 @@ const Row = memo((props: any) => {
                     ref={rowRefCallback}
                     className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
                 >
-                    {_options.checkbox && <div className="uf-grid-option bg-uf-border" />}
-                    {_options.radio && <div className="uf-grid-option bg-uf-border" />}
-                    {_options.index && <div className="uf-grid-option bg-uf-border" />}
+                    {_options.checkbox && <div className="uf-grid-option bg-uf-card-background" />}
+                    {_options.radio && <div className="uf-grid-option bg-uf-card-background" />}
+                    {_options.index && <div className="uf-grid-option bg-uf-card-background" />}
 
                     {/* <button
                         className="flex items-center justify-center w-[2rem] h-full"
@@ -305,28 +310,31 @@ const Row = memo((props: any) => {
                     >
                         <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
                     </button> */}
-                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                        {_groupCells.map((row: any, rowIndex: any) => {
-                            return row.map((cel: any, colIndex: any) => {
+                    {/* <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        {_groupCells.map((schemaRow: any, rowIndex: any) => {
+                            return schemaRow.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
 
                                 const { binding } = cel;
+                                const aggregate = row.aggregate[binding];
 
                                 const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
                                 return (
                                     <div
                                         key={celKey}
-                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-center text-center font-semibold"
+                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-end"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
-                                    ></div>
+                                    >
+                                        {aggregate}
+                                    </div>
                                 );
                             });
                         })}
-                    </div>
+                    </div> */}
                 </div>
             )}
 
@@ -346,6 +354,8 @@ const Row = memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
+                    {<div className="uf-grid-option bg-uf-card-background" />}
+
                     {/* Checkbox */}
                     {_options?.checkbox && (
                         <div className="uf-grid-option">
