@@ -225,9 +225,8 @@ const Auth = () => {
             {auth.isSignedIn ? (
                 <div className="bg-uf-auth m-4 p-4 rounded space-y-1">
                     <p>tin : {auth?.userInfo?.tin}</p>
-                    <p>userId : {auth?.userInfo?.userId}</p>
-                    <p>userName : {auth?.userInfo?.userName}</p>
-                    <p>userStatus : {auth?.userInfo?.userStatus}</p>
+                    <p>usrId : {auth?.userInfo?.usrId}</p>
+                    <p>usrNm : {auth?.userInfo?.usrNm}</p>
                     <p>signed : {dayjs(auth?.signedAt).format("YYYY-MM-DD HH:mm")}</p>
                 </div>
             ) : (
@@ -264,18 +263,7 @@ const Auth = () => {
                                     placeholder="id"
                                     disabled={!!tin}
                                 />
-                                <input
-                                    className="h-12 border outline-none px-4 w-[400px] aria-[invalid=true]:border-uf-error"
-                                    onChange={(event) => {
-                                        setEr(false);
-                                        setTin(event.target.value);
-                                        setId("");
-                                    }}
-                                    value={tin}
-                                    placeholder="tin"
-                                    disabled={!!id}
-                                />
-                                <span>ID 또는 TIN을 입력해주세요</span>
+
                                 <button className="border h-12 w-[400px]">Sign In</button>
                             </form>
                         </div>
