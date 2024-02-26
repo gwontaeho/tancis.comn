@@ -56,10 +56,9 @@ export const SF_BLTBRD_SRCH: TFormSchema = {
 export const SF_BLTBRD: TFormSchema = {
     id: "form_bltbrd",
     schema: {
-        ttle: { type: "text", label: "L_TTLE" },
-        cn: { type: "text", label: "L_CN" },
+        ttle: { type: "text", label: "L_TTLE", required: true },
+        cn: { type: "text", label: "L_CN", required: true },
         selcNo: { type: "number", label: "L_SELC_NO", edit: false },
-        strtDtm: { type: "datetime", label: "테스트" },
         frstRegstId: { type: "text", label: "L_FRST_REGST_ID", edit: false },
         frstRgsrDtm: { type: "text", label: "L_FRST_RGSR_DTM", edit: false },
     },
