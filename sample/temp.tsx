@@ -62,14 +62,17 @@ const schema1: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         height: 400,
-        pagination: "in",
+        pagination: "out",
         // group: ["q"],
     },
     // group: [
-    //     { cells: [{ binding: "id" }] },
+    //     { cells: [{ binding: "id", aggregate: "SUM" }] },
     //     {
     //         colspan: 2,
-    //         cells: [{ binding: "w" }, { binding: "w" }],
+    //         cells: [
+    //             { binding: "id", aggregate: "MIN" },
+    //             { binding: "id", aggregate: "MAX" },
+    //         ],
     //     },
     //     {
     //         cells: [{ binding: "e" }],
@@ -358,7 +361,7 @@ export const Temp = () => {
                     <Group.Section>
                         <Grid
                             {...grid}
-                            data={data}
+                            data={data2}
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}

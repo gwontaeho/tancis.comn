@@ -325,7 +325,7 @@ const Row = memo((props: any) => {
                                 return (
                                     <div
                                         key={celKey}
-                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-end"
+                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-end font-semibold"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,

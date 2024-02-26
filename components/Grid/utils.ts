@@ -112,6 +112,22 @@ const group = (_grid: any, content: any) => {
                 _grid.current._groupStatus[groupKey] = { open: true };
             }
             const open = _grid.current._groupStatus[groupKey].open;
+            const aggregateFunction = _grid.current._groupSchema.flatMap(({ cells }: any) => cells);
+            // const aggregateKey =
+
+            const aggregate = curr[1].reduce((pp: any, cc: any) => {
+                for (const property in cc) {
+                    const prevValue = isNaN(pp[property]) ? 0 : pp[property];
+                    const value = cc[property];
+                    if (typeof value === "number") {
+                        pp[property] = prevValue + value;
+                    }
+                }
+                return pp;
+            }, {});
+
+            // console.log(aggregateFunction);
+            // console.log(aggregate);
             const row = {
                 __key: uuid(),
                 __type: "group",
@@ -121,16 +137,7 @@ const group = (_grid: any, content: any) => {
                 value: curr[0],
                 binding: by[0],
                 count: curr[1].length,
-                aggregate: curr[1].reduce((pp: any, cc: any) => {
-                    for (const property in cc) {
-                        const prevValue = isNaN(pp[property]) ? 0 : pp[property];
-                        const value = cc[property];
-                        if (typeof value === "number") {
-                            pp[property] = prevValue + value;
-                        }
-                    }
-                    return pp;
-                }, {}),
+                aggregate,
             };
 
             if (open) {
@@ -209,16 +216,18 @@ const getView = (_grid: any) => {
     });
     content = base.filter(({ __type }: any) => __type !== "group");
     view = base.filter(({ __type }: any) => __type !== "deleted");
-    itemCount = view.length;
 
-    if (_grid.current._pagination === "in") {
-        view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
-    }
     if (_grid.current._pagination === "out") {
         count = _grid.current._data.page.totalElements;
+        itemCount = count;
     } else {
         let content = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
         count = content.length;
+        itemCount = view.length;
+    }
+
+    if (_grid.current._pagination === "in") {
+        view = lodash.chunk(view, _grid.current._size)[_grid.current._page] || [];
     }
 
     _grid.current._content = content;

@@ -20,12 +20,10 @@ export type TGridSchema = {
     group?: {
         colspan?: number;
         cells: {
-            width?: string | number;
-            header?: string;
             binding?: string;
-            required?: boolean;
             colspan?: number;
             rowspan?: number;
+            aggregate?: "SUM" | "AVERAGE" | "MIN" | "MAX" | "COUNT";
         }[];
     }[];
     head: {
