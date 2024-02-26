@@ -75,7 +75,7 @@ const modules = {
 };
 
 export const Editor = React.forwardRef<HTMLInputElement, EditorProps>(
-    (props: EditorProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+    (props: EditorProps, ref: React.ForwardedRef<any>) => {
         const {
             /** */
             edit = true,
@@ -86,11 +86,18 @@ export const Editor = React.forwardRef<HTMLInputElement, EditorProps>(
             maxLength,
             placeholder,
             defaultValue,
-            height = 400,
+            height = 300,
             onBlur,
             onFocus,
             onChange,
         } = props;
+
+        const _props = Object.fromEntries(
+            Object.entries({
+                onBlur,
+                onFocus,
+            }).filter(([, value]) => value !== undefined),
+        );
 
         const [_value, _setValue] = React.useState<any>(value || "");
 
@@ -115,8 +122,10 @@ export const Editor = React.forwardRef<HTMLInputElement, EditorProps>(
         return (
             <div className="w-full">
                 {!edit && <div dangerouslySetInnerHTML={{ __html: _value }}></div>}
-                <div hidden={!edit}>
+                <div className={edit === false ? "hidden" : "" + "inline-block"}>
                     <ReactQuill
+                        {..._props}
+                        ref={ref}
                         value={_value}
                         onChange={handleChange}
                         readOnly={readOnly}
@@ -124,7 +133,7 @@ export const Editor = React.forwardRef<HTMLInputElement, EditorProps>(
                         formats={formats}
                         modules={modules}
                         style={{
-                            height: "400px",
+                            height: height + "px",
                         }}
                     />
                 </div>

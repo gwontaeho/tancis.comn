@@ -202,6 +202,17 @@ export const GuideValidation = () => {
                                         <Group.Control {...form.smpl.schema.daterange} />
                                         <Group.Control {...form.smpl.schema.daterange} />
                                     </Group.Row>
+                                    <Group.Row>
+                                        {/* Status !== 상태 ==! */}
+                                        <Group.Label label={"L_STTS"} />
+                                        <Group.Col colSize={10}>
+                                            <Layout gap={0}>
+                                                <FormControl {...form.smpl.schema.text} />
+                                                &nbsp;[
+                                                <FormControl {...form.smpl.schema.date} />]
+                                            </Layout>
+                                        </Group.Col>
+                                    </Group.Row>
                                 </Group.Section>
                             </Group.Body>
                             <Group.Footer>
@@ -209,7 +220,7 @@ export const GuideValidation = () => {
                                     <Layout.Left>
                                         <Button
                                             onClick={() => {
-                                                form.smpl.setValues({ start: "2020-01-01", end: "2020-01-01" });
+                                                //form.smpl.setValues({ start: "2020-01-01", end: "2020-01-01" });
                                                 form.smpl.setEditable(false);
                                                 //handler.saveSmpl();
                                             }}

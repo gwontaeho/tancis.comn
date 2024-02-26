@@ -95,19 +95,6 @@ export const BltbrdRgsr = (props: any) => {
                                         handler.saveBltbrd();
                                     }}
                                 ></Button>
-                                <Button
-                                    role="save"
-                                    onClick={() => {
-                                        form.bltbrd.setValue("cn", "111111");
-                                    }}
-                                ></Button>
-
-                                <Button
-                                    role="save"
-                                    onClick={() => {
-                                        console.log(form.bltbrd.getValues());
-                                    }}
-                                ></Button>
                             </Layout.Right>
                         </Layout>
                     </Group.Body>
