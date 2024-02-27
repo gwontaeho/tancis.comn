@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { comnUtils, comnEnvs } from "@/comn/utils";
@@ -7,26 +7,36 @@ import { Page, Group, Layout, Button, Grid, Editor } from "@/comn/components";
 import { useForm, useFetch, useStore, useToast, useModal, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_BLTBRD, SG_BLTBRD_LIST } from "./services/BltBrdService";
 
-export const BltbrdRgsr = (props: any) => {
-    const pgeUid = "BltbrdRgsr";
+export const BltbrdEdit = (props: any) => {
+    const pgeUid = "BltbrdEdit";
     const { t } = useTranslation();
     const navigate = useNavigate();
     const modal = useModal();
     const toast = useToast();
+    const { id } = useParams();
 
     const form = {
         bltbrd: useForm({
             defaultSchema: SF_BLTBRD,
-            defaultValues: { bltbrdDvnCd: "1" },
+            defaultValues: {},
         }),
     };
 
     const fetch = {
+        getBltbrd: useFetch({
+            api: (data) => APIS.getBltbrd(id),
+            enabled: !!id,
+            onSuccess: (data) => {
+                form.bltbrd.setValues(data.bltbrdInfo.content);
+            },
+            onError: (error) => {},
+            showToast: true,
+        }),
         saveBltbrd: useFetch({
             api: (lblIds) => APIS.saveBltbrd(lblIds),
             onSuccess: () => {
                 modal.openModal({
-                    content: "msg.com.00058",
+                    content: "msg.com.00062",
                     onCancel: () => {
                         navigate(`${URLS.bltbrdLst}`);
                     },
@@ -46,7 +56,7 @@ export const BltbrdRgsr = (props: any) => {
             () => {
                 const data = form.bltbrd.getValues();
                 modal.openModal({
-                    content: "msg.com.00048",
+                    content: "msg.com.00047",
                     onConfirm: () => {
                         fetch.saveBltbrd.fetch(data);
                     },

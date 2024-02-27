@@ -215,7 +215,12 @@ export const FormControl = Object.assign(
         const { t } = useTranslation();
 
         return (
-            <div className={classNames("uf-form-control", props.edit !== false ? WIDTH[size] : null)}>
+            <div
+                className={classNames(
+                    "uf-form-control",
+                    props.edit !== false ? WIDTH[size] : props.type === "editor" ? "w-full" : null,
+                )}
+            >
                 <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
                     {props.control ? (
                         <ControllerWrapper {...rest}>

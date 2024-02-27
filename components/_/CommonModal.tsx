@@ -116,9 +116,13 @@ const Modal = (props: ModalProps) => {
                     )}
                 >
                     <div
-                        className={classNames("handle flex items-center justify-between px-1 py-1", {
-                            "cursor-move": draggable,
-                        })}
+                        className={classNames(
+                            "handle flex items-center justify-between ",
+                            typeof content === "string" ? "px-2 py-2" : "px-1 py-1",
+                            {
+                                "cursor-move": draggable,
+                            },
+                        )}
                     >
                         <div className="text-lg">{title ? t(title) : url ? "" : t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
@@ -141,7 +145,12 @@ const Modal = (props: ModalProps) => {
                         )}
                     </div>
                     {(close !== false || onConfirm !== undefined) && (
-                        <div className="px-4 h-12 flex space-x-2 items-center justify-end">
+                        <div
+                            className={
+                                (typeof content === "string" ? "px-2" : "px-1") +
+                                " h-12 flex space-x-1 items-center justify-end"
+                            }
+                        >
                             {close !== false && <Button onClick={() => handleCancel()} role="close"></Button>}
                             {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
                         </div>

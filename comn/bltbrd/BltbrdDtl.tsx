@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { comnUtils, comnEnvs } from "@/comn/utils";
@@ -7,34 +7,44 @@ import { Page, Group, Layout, Button, Grid, Editor } from "@/comn/components";
 import { useForm, useFetch, useStore, useToast, useModal, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_BLTBRD, SG_BLTBRD_LIST } from "./services/BltBrdService";
 
-export const BltbrdRgsr = (props: any) => {
-    const pgeUid = "BltbrdRgsr";
+export const BltbrdDtl = (props: any) => {
+    const pgeUid = "BltbrdDtl";
     const { t } = useTranslation();
     const navigate = useNavigate();
     const modal = useModal();
     const toast = useToast();
+    const { id } = useParams();
 
     const form = {
         bltbrd: useForm({
             defaultSchema: SF_BLTBRD,
-            defaultValues: { bltbrdDvnCd: "1" },
+            defaultValues: {},
         }),
     };
 
     const fetch = {
-        saveBltbrd: useFetch({
-            api: (lblIds) => APIS.saveBltbrd(lblIds),
+        getBltbrd: useFetch({
+            api: (data) => APIS.getBltbrd(id),
+            enabled: !!id,
+            onSuccess: (data) => {
+                form.bltbrd.setValues(data.bltbrdInfo.content);
+            },
+            onError: (error) => {},
+            showToast: true,
+        }),
+        deleteBltbrd: useFetch({
+            api: (id) => APIS.deleteBltbrd(id),
             onSuccess: () => {
                 modal.openModal({
-                    content: "msg.com.00058",
+                    content: "msg.com.00060",
                     onCancel: () => {
-                        navigate(`${URLS.bltbrdLst}`);
+                        navigate(URLS.bltbrdLst);
                     },
                 });
             },
             onError: () => {
                 modal.openModal({
-                    content: "msg.com.00026",
+                    content: "msg.com.00023",
                 });
             },
             showToast: true,
@@ -42,24 +52,18 @@ export const BltbrdRgsr = (props: any) => {
     };
 
     const handler = {
-        saveBltbrd: form.bltbrd.handleSubmit(
-            () => {
-                const data = form.bltbrd.getValues();
-                modal.openModal({
-                    content: "msg.com.00048",
-                    onConfirm: () => {
-                        fetch.saveBltbrd.fetch(data);
-                    },
-                });
-            },
-            () => {
-                toast.showToast({ type: "warning", content: "msg.com.00014" });
-            },
-        ),
+        deleteBltbrd: () => {
+            modal.openModal({
+                content: "msg.com.00049",
+                onConfirm: () => {
+                    fetch.deleteBltbrd.fetch(id);
+                },
+            });
+        },
     };
 
     useEffect(() => {
-        form.bltbrd.setFocus("ttle");
+        form.bltbrd.setEditable(false);
     }, []);
 
     return (
@@ -97,9 +101,15 @@ export const BltbrdRgsr = (props: any) => {
                             </Layout.Left>
                             <Layout.Right>
                                 <Button
-                                    role="save"
+                                    role="delete"
                                     onClick={() => {
-                                        handler.saveBltbrd();
+                                        handler.deleteBltbrd();
+                                    }}
+                                ></Button>
+                                <Button
+                                    role="edit"
+                                    onClick={() => {
+                                        navigate(`${URLS.bltbrdEdit}/${id}`);
                                     }}
                                 ></Button>
                             </Layout.Right>

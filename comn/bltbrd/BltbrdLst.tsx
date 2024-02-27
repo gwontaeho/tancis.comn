@@ -17,7 +17,7 @@ export const BltbrdLst = (props: any) => {
     const form = {
         bltbrdSrch: useForm({
             defaultSchema: SF_BLTBRD_SRCH,
-            defaultValues: { ...pgeStore?.form } || {},
+            defaultValues: { ...pgeStore?.form, bltbrdDvnCd: "1" } || { bltbrdDvnCd: "1" },
         }),
     };
 
@@ -105,6 +105,9 @@ export const BltbrdLst = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.bltbrdSrch.schema.ttle}></Group.Control>
+                                <Group.Control {...form.bltbrdSrch.schema.bltbrdCtgrCd} all={true}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
                                 <Group.Control {...form.bltbrdSrch.schema.cn}></Group.Control>
                             </Group.Row>
                         </Group.Section>
