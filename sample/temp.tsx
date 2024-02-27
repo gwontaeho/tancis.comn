@@ -63,7 +63,7 @@ const schema1: TGridSchema = {
         exportExcel: true,
         height: 400,
         pagination: "in",
-        group: ["q"],
+        group: ["q", "w"],
     },
     group: [
         { cells: [{ binding: "number", aggregate: "SUM" }] },
@@ -97,7 +97,7 @@ const schema1: TGridSchema = {
     ],
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
-        { colspan: 2, cells: [{ binding: "w", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
+        { colspan: 2, cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
         { cells: [{ binding: "d", min: 5, required: true }] },
     ],
 };
@@ -248,14 +248,17 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 7 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 66 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
     const _test = {
         row: (data: any) => {
-            console.log(data);
-            return data.q === "Tom";
+            return data.q !== "Tom";
+        },
+
+        radio: () => {
+            return false;
         },
         cell: {
             q: (data: any) => {
@@ -275,20 +278,20 @@ export const Temp = () => {
             },
         },
         edit: {
-            q: (data: any) => {
-                /**
-                 * # data
-                 * value
-                 * rowValues
-                 * binding
-                 */
-                return (
-                    <Layout direction="row" gap={1}>
-                        <FormControl type="radio" options={[{ label: "a", value: "a" }]} />
-                        <FormControl type="radio" />
-                    </Layout>
-                );
-            },
+            // q: (data: any) => {
+            //     /**
+            //      * # data
+            //      * value
+            //      * rowValues
+            //      * binding
+            //      */
+            //     return (
+            //         <Layout direction="row" gap={1}>
+            //             <FormControl type="radio" options={[{ label: "a", value: "a" }]} />
+            //             <FormControl type="radio" />
+            //         </Layout>
+            //     );
+            // },
         },
     };
 

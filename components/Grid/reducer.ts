@@ -112,6 +112,7 @@ const reducer = (prev: any, action: any) => {
         case "group": {
             const { _grid } = action.payload;
             next._test = _grid.current._view;
+            next._totalItemCount = _grid.current._totalItemCount;
             return next;
         }
         /* Set edit */
