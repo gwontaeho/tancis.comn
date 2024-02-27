@@ -296,10 +296,8 @@ export const Temp = () => {
     };
 
     const _test2 = {
-        onCellClick: {
-            text: (data: any) => {
-                // console.log(data);
-            },
+        onCellClick: (data: any) => {
+            console.log(data);
         },
         onRowClick: (data: any) => {
             // console.log(data);

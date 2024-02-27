@@ -474,7 +474,7 @@ const Row = memo((props: any) => {
                                             _grid.current._handleClickCel({
                                                 ...celContext,
                                                 key: celKey,
-                                                onCellClick: onCellClick?.[binding],
+                                                onCellClick,
                                             });
                                         }}
                                     >

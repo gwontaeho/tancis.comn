@@ -94,7 +94,6 @@ export const useForm = (props: UseFormProps) => {
     const _getValue = (name: string) => {
         return getValues(name);
     };
-
     const _setValue = (name: string, value: any) => {
         setValue(name, comnUtils.getFormattedValue(value, _schema[name]), { shouldValidate: isSubmitted });
     };
