@@ -369,3 +369,31 @@
     left: 50% !important;
     transform: none !important;
 }
+
+/** --- se-btn button */
+.sun-editor .se-btn {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 12px;
+    line-height: 12px;
+}
+.sun-editor .se-btn-select.se-btn-tool-size {
+    width: 78px !important;
+}
+.sun-editor .se-btn-select.se-btn-tool-font {
+    width: 100px !important;
+}
+.sun-editor .se-btn-select.se-btn-tool-format {
+    width: 82px !important;
+}
+.sun-editor .se-btn {
+    line-height: 12px !important;
+}
+
+pre {
+    font-family: "Pretendard";
+}
+
+.sun-editor-editable {
+    padding: 4px !important;
+}

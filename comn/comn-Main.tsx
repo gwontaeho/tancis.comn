@@ -43,6 +43,8 @@ import { MsgLangRgsr } from "@/comn/comn/msg/MsgLangRgsr";
 
 import { BltbrdLst } from "@/comn/comn/bltbrd/BltbrdLst";
 import { BltbrdRgsr } from "@/comn/comn/bltbrd/BltbrdRgsr";
+import { BltbrdDtl } from "@/comn/comn/bltbrd/BltbrdDtl";
+import { BltbrdEdit } from "@/comn/comn/bltbrd/BltbrdEdit";
 
 export const ComnMain = () => {
     return (
@@ -90,6 +92,8 @@ export const ComnMain = () => {
 
             <Route path="/bltbrd/bltbrdLst" element={<BltbrdLst />} />
             <Route path="/bltbrd/bltbrdRgsr" element={<BltbrdRgsr />} />
+            <Route path="/bltbrd/bltbrdDtl/:id" element={<BltbrdDtl />} />
+            <Route path="/bltbrd/bltbrdEdit/:id" element={<BltbrdEdit />} />
         </Routes>
     );
 };

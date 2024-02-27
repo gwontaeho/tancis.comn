@@ -204,7 +204,12 @@ export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
     const { t } = useTranslation();
 
     return (
-        <div className={classNames("uf-form-control", props.edit !== false ? WIDTH[size] : null)}>
+        <div
+            className={classNames(
+                "uf-form-control",
+                props.edit !== false ? WIDTH[size] : props.type === "editor" ? "w-full" : null,
+            )}
+        >
             <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
                 {props.control ? (
                     <ControllerWrapper {...rest}>
@@ -214,6 +219,14 @@ export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
                     <FormControlMain ref={ref} {...rest} />
                 )}
             </Tooltip>
+
+            {/* message */}
+            {props.edit !== false && message && <div className="uf-message">{message}</div>}
+
+            {/* invalid message */}
+            {props.edit !== false && invalid && (
+                <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
+            )}
 
             {/* Message */}
             {props.edit !== false && message && <div className="uf-message">{t(message)}</div>}

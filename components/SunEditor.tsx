@@ -116,7 +116,7 @@ export const SEditor = React.forwardRef<HTMLInputElement, EditorProps>(
         };
 
         useEffect(() => {
-            window.addEventListener("error", (e) => {
+            const listener = (e: any) => {
                 if (e.message.startsWith("ResizeObserver")) {
                     const resizeObserverErrDiv = document.getElementById("webpack-dev-server-client-overlay-div");
                     const resizeObserverErr = document.getElementById("webpack-dev-server-client-overlay");
@@ -127,22 +127,32 @@ export const SEditor = React.forwardRef<HTMLInputElement, EditorProps>(
                         resizeObserverErrDiv.setAttribute("style", "display: none");
                     }
                 }
-            });
+            };
+
+            window.addEventListener("error", listener);
+
+            return () => {
+                window.removeEventListener("error", listener);
+            };
         }, []);
 
         return (
             <div className="w-full">
-                {!edit && <div dangerouslySetInnerHTML={{ __html: _value }}></div>}
-                <div className={edit === false ? "hidden" : "" + "inline-block w-100 min-h-100 h-auto"}>
+                <div
+                    className={edit === true ? "hidden" : "" + " sun-editor-editable block w-[100%] min-h-100 h-auto"}
+                    dangerouslySetInnerHTML={{ __html: _value }}
+                ></div>
+                <div className={"block w-100 min-h-[300] h-auto"}>
                     <SunEditor
                         {..._props}
                         setContents={_value}
                         onChange={handleChange}
-                        disable={readOnly}
-                        hide={!edit}
+                        readOnly={edit === false || readOnly === true || disabled === true ? true : false}
                         width="100%"
                         height={height + "px"}
                         setOptions={options}
+                        setAllPlugins={true}
+                        hide={!edit}
                     />
                 </div>
             </div>

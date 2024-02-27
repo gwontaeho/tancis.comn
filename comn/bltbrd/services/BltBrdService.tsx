@@ -41,7 +41,19 @@ export const SF_BLTBRD_SRCH: TFormSchema = {
     id: "form_bltbrdSrch",
     schema: {
         ttle: { type: "text", label: "L_TTLE" },
-        cn: { type: "text", label: "L_CN" },
+        cn: { type: "text", label: "L_CN", controlSize: 10 },
+        bltbrdDvnCd: {
+            type: "text",
+        },
+        bltbrdCtgrCd: {
+            type: "select",
+            label: "L_CLSF",
+            options: [
+                { label: "프레임워크 기본", value: "000" },
+                { label: "기능 사용", value: "001" },
+                { label: "샘플 소스", value: "002" },
+            ],
+        },
         frstRgsrDtmRnge: {
             type: "daterange",
             label: "L_RGSR_DT",
@@ -56,8 +68,23 @@ export const SF_BLTBRD_SRCH: TFormSchema = {
 export const SF_BLTBRD: TFormSchema = {
     id: "form_bltbrd",
     schema: {
+        id: { type: "text" },
         ttle: { type: "text", label: "L_TTLE", required: true },
-        cn: { type: "editor", label: "L_CN", required: true, height: 300 },
+        cn: { type: "editor", label: "L_CN", required: true, height: 300, size: 12 },
+        bltbrdDvnCd: {
+            type: "text",
+        },
+        bltbrdCtgrCd: {
+            type: "select",
+            label: "L_CLSF",
+            required: true,
+            viewType: "label",
+            options: [
+                { label: "프레임워크 기본", value: "000" },
+                { label: "기능 사용", value: "001" },
+                { label: "샘플 소스", value: "002" },
+            ],
+        },
         selcNo: { type: "number", label: "L_SELC_NO", edit: false },
         frstRegstId: { type: "text", label: "L_FRST_REGST_ID", edit: false },
         frstRgsrDtm: { type: "text", label: "L_FRST_RGSR_DTM", edit: false },
