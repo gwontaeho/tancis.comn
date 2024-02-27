@@ -191,7 +191,7 @@ const group = (_grid: any, content: any) => {
                     return prev;
                 }, []);
 
-            const aggregate = aggregateFunction.map((_: any) => {
+            const aggregate = aggregateFunction?.map((_: any) => {
                 const d = curr[1];
 
                 let value;

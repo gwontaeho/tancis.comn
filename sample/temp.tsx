@@ -63,7 +63,7 @@ const schema1: TGridSchema = {
         exportExcel: true,
         height: 400,
         pagination: "in",
-        group: ["q"],
+        group: ["q", "w"],
     },
     group: [
         { cells: [{ binding: "number", aggregate: "SUM" }] },
@@ -248,7 +248,7 @@ export const Temp = () => {
         defaultSchema: schema1,
     });
 
-    const data = useMemo(() => getMockData({ totalElements: 9999 }), []);
+    const data = useMemo(() => getMockData({ totalElements: 66 }), []);
 
     const data2 = getMockDataWithPaging({ data, page, size });
 
@@ -256,6 +256,7 @@ export const Temp = () => {
         row: (data: any) => {
             return data.q !== "Tom";
         },
+
         radio: () => {
             return false;
         },
