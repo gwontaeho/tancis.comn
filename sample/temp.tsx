@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import { TGridSchema, useAuth, useForm, useModal, useStore } from "@/comn/hooks";
+import { TGridSchema, useAuth, useForm, useModal, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { utils as xlsxUtils, writeFile, read } from "xlsx";
 import excel from "exceljs";
 import { comnUtils } from "@/comn/utils";
 
-import { Page, Group, FormControl, Grid, Layout, ExcelUpload } from "@/comn/components";
+import { Page, Group, FormControl, Grid, Layout, ExcelUpload, Tree } from "@/comn/components";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import lodash from "lodash";
@@ -257,9 +257,9 @@ export const Temp = () => {
             return data.q !== "Tom";
         },
 
-        radio: () => {
-            return false;
-        },
+        // radio: () => {
+        //     return false;
+        // },
         cell: {
             q: (data: any) => {
                 /**
@@ -309,6 +309,8 @@ export const Temp = () => {
     const handleTest = (e: any) => {
         console.log(e.target.files[0]);
     };
+
+    const { tree, setOpen } = useTree({ defaultSchema: TREE_SCHEMA });
 
     return (
         <Page>
@@ -368,6 +370,8 @@ export const Temp = () => {
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
+                            onRowCheck={(data: any, checked: any) => console.log(data, checked)}
+                            onRowSelect={(data: any) => console.log(data)}
                         />
                     </Group.Section>
                 </Group.Body>
@@ -455,6 +459,146 @@ export const Temp = () => {
                 <div>a</div>
                 <div>a</div>
             </Layout>
+
+            <Group>
+                <Tree
+                    data={treeData}
+                    onClick={(data) => {
+                        console.log(data);
+                    }}
+                />
+                <button onClick={() => setOpen()}>setOpen</button>
+            </Group>
         </Page>
     );
+};
+
+const treeData = [
+    {
+        id: "1",
+        name: "public",
+        children: [
+            {
+                id: "2",
+                name: "assets",
+                children: [
+                    {
+                        id: "3",
+                        name: "image",
+                        children: [
+                            {
+                                id: "4",
+                                name: "aa",
+                            },
+                            {
+                                id: "5",
+                                name: "generic.png",
+                            },
+                            {
+                                id: "6",
+                                name: "shield.svg",
+                            },
+                        ],
+                    },
+                    {
+                        id: "7",
+                        name: "video",
+                        children: [
+                            {
+                                id: "8",
+                                name: "beach.mp4",
+                            },
+                            {
+                                id: "9",
+                                name: "background.map",
+                            },
+                        ],
+                    },
+                    {
+                        id: "10",
+                        name: "js",
+                        children: [
+                            {
+                                id: "11",
+                                name: "theme.js",
+                            },
+                            {
+                                id: "12",
+                                name: "theme.min.js",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "13",
+                name: "dashboard",
+                children: [
+                    {
+                        id: "14",
+                        name: "default.html",
+                    },
+                    {
+                        id: "15",
+                        name: "analytics.html",
+                    },
+                    {
+                        id: "16",
+                        name: "crm.html",
+                    },
+                ],
+            },
+            {
+                id: "17",
+                name: "index.html",
+            },
+        ],
+    },
+    {
+        id: "18",
+        name: "Files",
+        children: [
+            {
+                id: "19",
+                name: "build.zip",
+            },
+            {
+                id: "20",
+                name: "live-1.3.4.zip",
+            },
+            {
+                id: "21",
+                name: "app.exe",
+            },
+            {
+                id: "22",
+                name: "export.csv",
+            },
+            {
+                id: "23",
+                name: "default.pdf",
+            },
+            {
+                id: "24",
+                name: "Yellow_Coldplay.wav",
+            },
+        ],
+    },
+    {
+        id: "25",
+        name: "package.json",
+    },
+    {
+        id: "26",
+        name: "package-lock.json",
+    },
+    {
+        id: "27",
+        name: "README.md",
+    },
+];
+
+const TREE_SCHEMA = {
+    options: { height: 300 },
+    data: treeData,
 };

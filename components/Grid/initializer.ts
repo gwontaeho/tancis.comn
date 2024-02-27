@@ -11,9 +11,15 @@ import { reducer, createInitialState } from "./reducer";
  * @returns
  */
 const useInitialize = (props: any) => {
-    const { _grid, data, render } = props;
+    const { _grid, data, render, onRowCheck, onRowSelect } = props;
     if (_grid.current._render === undefined) {
         _grid.current._render = render;
+    }
+    if (_grid.current._onRowCheck === undefined) {
+        _grid.current._onRowCheck = onRowCheck;
+    }
+    if (_grid.current._onRowSelect === undefined) {
+        _grid.current._onRowSelect = onRowSelect;
     }
 
     const __t = data?.__t?.getTime();
@@ -285,6 +291,11 @@ const useInitialize = (props: any) => {
         /* Handle Select Row (Radio)  */
         _grid.current._handleSelect = (event: any, rowKey: any) => {
             _grid.current._selectedRow = rowKey;
+
+            if (_grid.current._onRowSelect) {
+                _grid.current._onRowSelect(_grid.current._content.find(({ __key }: any) => __key === rowKey));
+            }
+
             dispatch({ type: "handleSelect", payload: { _grid } });
         };
         /* Handle Check Row (Checkbox) */
@@ -292,6 +303,14 @@ const useInitialize = (props: any) => {
             let _checked = [..._grid.current._checked];
             _checked = event.target.checked ? [..._checked, rowKey] : _checked.filter((_: any) => _ !== rowKey);
             _grid.current._checked = _checked;
+
+            if (_grid.current._onRowCheck) {
+                _grid.current._onRowCheck(
+                    _grid.current._content.find(({ __key }: any) => __key === rowKey),
+                    event.target.checked,
+                );
+            }
+
             dispatch({ type: "handleCheck", payload: { _grid } });
         };
         /* Handle Check All Row (Checkbox) */

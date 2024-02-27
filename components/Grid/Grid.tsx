@@ -12,7 +12,15 @@ import { useInitialize } from "./initializer";
 /**
  * # Grid
  */
-export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick?: any; onRowClick?: any }) => {
+export const Grid = (props: {
+    _grid?: any;
+    data?: any;
+    render?: any;
+    onCellClick?: any;
+    onRowClick?: any;
+    onRowCheck?: any;
+    onRowSelect?: any;
+}) => {
     const { _grid, render, onCellClick, onRowClick } = props;
 
     const { t } = useTranslation();
