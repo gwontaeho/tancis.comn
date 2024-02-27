@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 type TTabSchema = any[];
 type TTabDefaultSchema = {
@@ -12,6 +12,7 @@ type UseTabProps = {
 export const useTab = (props: UseTabProps) => {
     const { defaultSchema } = props;
     const { id, schema } = defaultSchema;
+    const _active = useRef(0);
 
     const [_schema, _setSchema] = React.useState<TTabSchema>(() =>
         schema.map((_, i) => {
@@ -25,9 +26,14 @@ export const useTab = (props: UseTabProps) => {
     const setActive = (index: number) => {
         _setSchema((prev) =>
             prev.map((_, i) => {
+                _active.current = index;
                 return { ..._, active: i === index };
             }),
         );
+    };
+
+    const getActive = () => {
+        return _active.current;
     };
     const setDisabled = (index: number, status: boolean) => {
         _setSchema((prev) => {
@@ -60,5 +66,5 @@ export const useTab = (props: UseTabProps) => {
 
     const tab = { value, schema: _schema, onChange: setActive };
 
-    return { tab, value, setActive, setDisabled, setVisible, setLabel };
+    return { tab, value, setActive, setDisabled, setVisible, setLabel, getActive };
 };

@@ -95,6 +95,30 @@ export const BltbrdRgsr = (props: any) => {
                                         handler.saveBltbrd();
                                     }}
                                 ></Button>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        form.bltbrd.setEditable(false);
+                                    }}
+                                ></Button>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        form.bltbrd.setEditable(true);
+                                    }}
+                                ></Button>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        console.log(form.bltbrd.getValues());
+                                    }}
+                                ></Button>
+                                <Button
+                                    role="save"
+                                    onClick={() => {
+                                        form.bltbrd.setSchema("cn", { readOnly: true });
+                                    }}
+                                ></Button>
                             </Layout.Right>
                         </Layout>
                     </Group.Body>

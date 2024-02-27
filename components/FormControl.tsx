@@ -26,7 +26,7 @@ import {
     InputBoolean,
     ControllerWrapper,
 } from "./_";
-import { Editor } from "@/comn/components";
+import { SEditor } from "@/comn/components";
 
 export type FormControlType =
     | "text"
@@ -192,7 +192,7 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
                         case "boolean":
                             return <InputBoolean {...rest} />;
                         case "editor":
-                            return <Editor {...rest} />;
+                            return <SEditor {...rest} />;
                         default:
                             return <InputText {...rest} ref={ref} />;
                     }
