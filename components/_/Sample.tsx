@@ -97,7 +97,7 @@ const Doc = (props: SampleDocProps) => {
     const { name, code, param, result } = props;
     return (
         <div className="space-y-4 bg-card-background p-4">
-            <div className="text-[1.4rem]">{name}</div>
+            {/* <div className="text-[1.4rem]">{name}</div>
             <code className="block text-[1.2rem]">{code}</code>
             {param && (
                 <div>
@@ -110,7 +110,7 @@ const Doc = (props: SampleDocProps) => {
                     <div className="text-[1rem]">Return</div>
                     <Tree data={result} />
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

@@ -138,11 +138,9 @@ export const SampleTree = () => {
                 />
             </Sample.Section>
 
-            <Sample.Section title="1. 사용법" description="">
+            {/* <Sample.Section title="1. 사용법" description="">
                 <Layout direction="row">
-                    <Sample.Section title="Result">
-                        <Tree data={data} />
-                    </Sample.Section>
+                    <Sample.Section title="Result"></Sample.Section>
                     <Sample.Section title="Code">
                         <Sample.Code>{`
 const Sample = () => {
@@ -154,7 +152,7 @@ const Sample = () => {
 `}</Sample.Code>
                     </Sample.Section>
                 </Layout>
-            </Sample.Section>
+            </Sample.Section> */}
         </Sample>
     );
 };
