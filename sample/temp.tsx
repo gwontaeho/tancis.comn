@@ -450,6 +450,11 @@ export const Temp = () => {
                     <button onClick={async () => console.log(await importExcel())}>importExcel</button>
                 </div>
             </div>
+
+            <Layout direction="col" align="between" height={400}>
+                <div>a</div>
+                <div>a</div>
+            </Layout>
         </Page>
     );
 };

@@ -58,6 +58,7 @@ const JUSTIFY_CONTENT = {
     start: "justify-start",
     center: "justify-center",
     end: "justify-end",
+    between: "justify-between",
 };
 
 const ALIGN_ITEMS = {

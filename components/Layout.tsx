@@ -9,6 +9,7 @@ type LayoutProps = {
     size?: keyof typeof WIDTH;
     direction?: keyof typeof DIRECTION;
     align?: keyof typeof JUSTIFY_CONTENT;
+    height?: string | number;
 };
 
 /**
@@ -21,7 +22,7 @@ type LayoutProps = {
  * @returns
  */
 export const Layout = (props: LayoutProps) => {
-    const { children, direction = "row", gap = 1, size, align = "start" } = props;
+    const { children, direction = "row", gap = 1, size, align = "start", height } = props;
 
     return (
         <div
@@ -30,8 +31,9 @@ export const Layout = (props: LayoutProps) => {
                 GAP[gap],
                 size && WIDTH[size],
                 DIRECTION[direction],
-                direction === "row" && JUSTIFY_CONTENT[align],
+                JUSTIFY_CONTENT[align],
             )}
+            style={{ height }}
         >
             {children}
         </div>
