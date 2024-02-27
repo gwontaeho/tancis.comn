@@ -238,7 +238,18 @@ const group = (_grid: any, content: any) => {
 
     return {
         c: getGroupedContent(content, groups[0], 0),
-        v: getGroupedView(content, groups[0], 0, [], ""),
+        v: getGroupedView(
+            content.filter((_: any) => {
+                if (_grid.current._render?.row) {
+                    return _grid.current._render?.row?.(_);
+                }
+                return _;
+            }),
+            groups[0],
+            0,
+            [],
+            "",
+        ),
     };
 };
 

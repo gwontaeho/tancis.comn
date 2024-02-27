@@ -314,13 +314,6 @@ const Row = memo((props: any) => {
                     {_options.checkbox && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.radio && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.index && <div className="uf-grid-option bg-uf-card-background" />}
-
-                    {/* <button
-                        className="flex items-center justify-center w-[2rem] h-full"
-                        onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
-                    >
-                        <Icon icon="down" size="xs" className={classNames({ "rotate-180": row.open })} />
-                    </button> */}
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
                         {_groupCells?.map((schemaRow: any, rowIndex: any) => {
                             return schemaRow.map((cel: any, colIndex: any) => {
