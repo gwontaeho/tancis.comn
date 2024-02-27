@@ -38,6 +38,7 @@ export const SampleUseForm = () => {
         resetSchema,
         setEditable,
         validate,
+        reset,
         clearErrors,
         errors,
         handleSubmit,
@@ -107,6 +108,7 @@ export const SampleUseForm = () => {
                     <Sample.Section>
                         <div className="flex flex-col gap-2">
                             <Sample.Button onClick={() => console.log(getValues())}>getValues</Sample.Button>
+                            <Sample.Button onClick={() => console.log(getValues("text"))}>getValues</Sample.Button>
                             <Sample.Button onClick={() => console.log(getValue("text"))}>getValue</Sample.Button>
                         </div>
                     </Sample.Section>
@@ -148,9 +150,13 @@ const Sample = () => {
                 <Layout>
                     <Sample.Section>
                         <div className="flex flex-col gap-2">
-                            <Sample.Button onClick={() => setValues(newValues)}>setValues</Sample.Button>
+                            <Sample.Button onClick={() => setValues({ text: "a", asd: "wqdwd" })}>
+                                setValues
+                            </Sample.Button>
                             <Sample.Button onClick={() => setValue("text", "Changed")}>setValue</Sample.Button>
+                            <Sample.Button onClick={() => setValue("text", undefined)}>setValue</Sample.Button>
                             <Sample.Button onClick={() => clearValues()}>clearValues</Sample.Button>
+                            <Sample.Button onClick={() => reset({ test: "a" })}>clearValues</Sample.Button>
                         </div>
                     </Sample.Section>
 
