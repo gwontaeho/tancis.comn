@@ -77,20 +77,74 @@ const fun = (schema: any) => {
 };
 
 /**
+ *
+ * @param v
+ * @param r
+ * @returns
+ */
+const validateValue = (v: any, r: any) => {
+    let errors = [];
+
+    if (Array.isArray(r)) {
+        for (let i = 0; i < r?.length; i++) {
+            let invalid;
+            const { value, type, message } = r[i];
+            switch (type) {
+                case "required":
+                    invalid = !v;
+                    break;
+                case "min":
+                    if (typeof v === "number") invalid = v < value;
+                    break;
+                case "max":
+                    if (typeof v === "number") invalid = v > value;
+                    break;
+                case "minLength":
+                    if (typeof v === "string") invalid = v?.length < value;
+                    break;
+                case "maxLength":
+                    if (typeof v === "string") invalid = v?.length > value;
+                    break;
+                case "pattern":
+                    if (value instanceof RegExp) invalid = !value.test(v);
+                    break;
+                case "validate":
+                    if (typeof value === "function") invalid = !value(v);
+                    break;
+                case "resource":
+                    break;
+            }
+            if (invalid) errors.push({ type, message, bindingValue: v });
+        }
+    }
+
+    return { errors, isError: !!errors.length };
+};
+
+/**
  * ### Sort Content
  * @param _grid
  * @param content
  * @returns
  */
-const sort = (_grid: any, content: any) => {
-    const [iteratees, orders] = lodash.sortBy(Object.entries(_grid.current._sort), [([, { seq }]: any) => seq]).reduce(
-        (prev: any, curr: any) => [
-            [...prev[0], curr[0]],
-            [...prev[1], curr[1].val],
-        ],
-        [[], []],
-    );
-    return lodash.orderBy(content, iteratees, orders);
+const sort = (_grid: any) => {
+    const [iteratees, orders] = lodash
+        .sortBy(Object.entries(_grid.current._sort), [
+            ([, { seq }]: any) => {
+                return seq;
+            },
+        ])
+        .reduce(
+            (prev: any, curr: any) => {
+                return [
+                    [...prev[0], curr[0]],
+                    [...prev[1], curr[1].val],
+                ];
+            },
+            [[], []],
+        );
+    _grid.current._content = //
+        lodash.orderBy(_grid.current._content, iteratees, orders);
 };
 
 /**
@@ -101,11 +155,19 @@ const sort = (_grid: any, content: any) => {
  */
 const group = (_grid: any, content: any) => {
     const groups = lodash.sortBy(Object.entries<any>(_grid.current._group), [(o: any) => o[1].seq]);
-    const getGrouped = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
+
+    const getGroupedContent = (data: any, iteratees: any, depth: any): any => {
+        if (!iteratees) return data;
+        depth += 1;
+        return Object.entries(lodash.groupBy(data, iteratees[0])).reduce((prev: any, curr: any) => {
+            return [...prev, ...getGroupedContent(curr[1], groups[depth], depth)];
+        }, []);
+    };
+
+    const getGroupedView = (data: any, by: any, prevDepth: any, prevParent: any, prevGroupKey: any): any => {
         if (!by) return data;
         const depth = prevDepth + 1;
         const parent = [...prevParent, by];
-
         return Object.entries(lodash.groupBy(data, by[0])).reduce((prev: any, curr: any) => {
             const groupKey = prevGroupKey + "__" + curr[0];
             if (_grid.current._groupStatus[groupKey] === undefined) {
@@ -167,58 +229,17 @@ const group = (_grid: any, content: any) => {
             };
 
             if (open) {
-                return [...prev, row, ...getGrouped(curr[1], groups[depth], depth, parent, groupKey)];
+                return [...prev, row, ...getGroupedView(curr[1], groups[depth], depth, parent, groupKey)];
             } else {
                 return [...prev, row];
             }
         }, []);
     };
-    return getGrouped(content, groups[0], 0, [], "");
-};
 
-/**
- *
- * @param v
- * @param r
- * @returns
- */
-const validateValue = (v: any, r: any) => {
-    let errors = [];
-
-    if (Array.isArray(r)) {
-        for (let i = 0; i < r?.length; i++) {
-            let invalid;
-            const { value, type, message } = r[i];
-            switch (type) {
-                case "required":
-                    invalid = !v;
-                    break;
-                case "min":
-                    if (typeof v === "number") invalid = v < value;
-                    break;
-                case "max":
-                    if (typeof v === "number") invalid = v > value;
-                    break;
-                case "minLength":
-                    if (typeof v === "string") invalid = v?.length < value;
-                    break;
-                case "maxLength":
-                    if (typeof v === "string") invalid = v?.length > value;
-                    break;
-                case "pattern":
-                    if (value instanceof RegExp) invalid = !value.test(v);
-                    break;
-                case "validate":
-                    if (typeof value === "function") invalid = !value(v);
-                    break;
-                case "resource":
-                    break;
-            }
-            if (invalid) errors.push({ type, message, bindingValue: v });
-        }
-    }
-
-    return { errors, isError: !!errors.length };
+    return {
+        c: getGroupedContent(content, groups[0], 0),
+        v: getGroupedView(content, groups[0], 0, [], ""),
+    };
 };
 
 /**
@@ -227,28 +248,44 @@ const validateValue = (v: any, r: any) => {
  * @returns
  */
 const getView = (_grid: any) => {
-    let base = sort(_grid, _grid.current._content);
-    let view;
+    sort(_grid);
+
     let content;
+    let view;
     let count;
     let itemCount;
-    if (Object.keys(_grid.current._group).length) base = group(_grid, base);
-    let __index = 0;
-    base = base.map((_: any) => {
+
+    if (Object.keys(_grid.current._group).length) {
+        const { c, v } = group(_grid, _grid.current._content);
+        content = c;
+        view = v;
+    } else {
+        content = _grid.current._content;
+        view = content;
+    }
+
+    let contentIndex = 0;
+    content = content.map((_: any) => {
         let next = _;
-        if (_.__type === "group" || _.__type === "deleted") next.__index = -1;
-        else next.__index = __index++;
+        if (_.__type === "deleted") next.__index = -1;
+        else next.__index = contentIndex++;
         return next;
     });
-    content = base.filter(({ __type }: any) => __type !== "group");
-    view = base.filter(({ __type }: any) => __type !== "deleted");
+    let viewIndex = 0;
+    view = view
+        .map((_: any) => {
+            let next = _;
+            if (_.__type === "group" || _.__type === "deleted") next.__index = -1;
+            else next.__index = viewIndex++;
+            return next;
+        })
+        .filter(({ __type }: any) => __type !== "deleted");
 
     if (_grid.current._pagination === "out") {
         count = _grid.current._data.page.totalElements;
         itemCount = count;
     } else {
-        let content = _grid.current._content.filter(({ __type }: any) => __type !== "deleted");
-        count = content.length;
+        count = _grid.current._content.filter(({ __type }: any) => __type !== "deleted").length;
         itemCount = view.length;
     }
 
@@ -260,8 +297,6 @@ const getView = (_grid: any) => {
     _grid.current._view = view;
     _grid.current._totalCount = count;
     _grid.current._totalItemCount = itemCount;
-
-    return view;
 };
 
 export { getView, validateValue, fun };

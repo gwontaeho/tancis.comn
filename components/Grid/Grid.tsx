@@ -4,7 +4,7 @@ import { utils, writeFile } from "xlsx";
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
 
-import { Button, FormControl, Pagination, Icon } from "@/comn/components";
+import { Button, FormControl, Pagination, Icon, IconButton } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
 import { validateValue, fun } from "./utils";
 import { useInitialize } from "./initializer";
@@ -302,11 +302,13 @@ const Row = memo((props: any) => {
                     className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
                 >
                     {_groupCells && (
-                        <div
-                            className="uf-grid-option bg-uf-card-background"
-                            onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
-                        >
-                            <Icon icon="right" size="xs" className=" rotate-45" />
+                        <div className="uf-grid-option bg-uf-card-background">
+                            <IconButton
+                                icon="right"
+                                size="xs"
+                                className={classNames(row.open && "rotate-45")}
+                                onClick={() => _grid.current._handleGroup(row.groupKey, !row.open)}
+                            />
                         </div>
                     )}
                     {_options.checkbox && <div className="uf-grid-option bg-uf-card-background" />}
@@ -332,16 +334,16 @@ const Row = memo((props: any) => {
 
                                 const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
                                 return (
-                                    <div
+                                    <pre
                                         key={celKey}
-                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center justify-end font-semibold"
+                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center text-right justify-end font-bold text-sm"
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
                                     >
-                                        {ag.value}
-                                    </div>
+                                        {`${ag.aggregate}:\n ${ag.value}`}
+                                    </pre>
                                 );
                             });
                         })}

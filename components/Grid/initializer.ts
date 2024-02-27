@@ -43,7 +43,7 @@ const useInitialize = (props: any) => {
         _grid.current._resetData = () => {
             _grid.current._content = _grid.current._origin;
             _grid.current._totalCount = _grid.current._originTotalCount;
-            _grid.current._view = getView(_grid);
+            getView(_grid);
             dispatch({ type: "resetData", payload: { _grid } });
         };
         /* Handle add row */
