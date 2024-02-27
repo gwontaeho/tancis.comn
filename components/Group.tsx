@@ -1,8 +1,8 @@
-import React, { forwardRef } from "react";
+import React, { ReactNode, forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { FormControl, FormControlProps } from "./FormControl";
-import { COL_SPAN, FLEX } from "../features/foundation";
+import { COL_SPAN, FLEX, GRID_COLS, DIRECTION, GAP, ALIGN_ITEMS, JUSTIFY_CONTENT } from "../features/foundation";
 
 const ALIGNS = {
     left: "text-left",
@@ -56,6 +56,23 @@ type GroupAnyProps = {
     children?: React.ReactNode;
     align?: keyof typeof ALIGNS;
     anySize?: keyof typeof COL_SPAN;
+};
+
+/**
+ *
+ * CELLLLLLLL
+ *
+ */
+type GroupCellProps = {
+    children?: React.ReactNode;
+    size?: keyof typeof COL_SPAN;
+    test?: keyof typeof GRID_COLS;
+    gap?: keyof typeof GAP;
+    root?: boolean;
+    header?: any;
+    height?: string | number;
+    direction?: keyof typeof DIRECTION;
+    align?: keyof typeof JUSTIFY_CONTENT;
 };
 
 type GroupLabelProps = FormControlProps & {
@@ -137,6 +154,40 @@ const GroupSection = (props: GroupSectionProps) => {
 const GroupFooter = (props: GroupFooterProps) => {
     const { children } = props;
     return <div className="uf-group-footer">{children}</div>;
+};
+
+const GroupCell = (props: GroupCellProps) => {
+    const { children, root, size = root ? 12 : 2, header, height, gap = 0, direction = "row", align = "start" } = props;
+
+    const last = (Array.isArray(children) ? children : [children]).some((_) => {
+        return _?.type?.name !== "GroupCell";
+    });
+
+    return (
+        <div
+            className={classNames(
+                "min-h-[2.5rem]",
+                COL_SPAN[size],
+                root && "border-x border-b",
+                header && "bg-uf-card-header",
+                !last && GRID_COLS[size],
+                !last && "bg-uf-border",
+                !last && "grid gap-[1px]",
+                last && "p-1",
+                last && "flex items-center",
+                last && !header && "bg-uf-card-background",
+                last && DIRECTION[direction],
+                last && GAP[gap],
+                last && JUSTIFY_CONTENT[align],
+            )}
+            style={{ height }}
+        >
+            {React.Children.map(children, (child: any) => {
+                if (typeof child === "string") return child;
+                if (child) return React.cloneElement(child, { test: size });
+            })}
+        </div>
+    );
 };
 
 const GroupRow = (props: GroupRowProps) => {
@@ -294,3 +345,5 @@ Group.Field = GroupCol;
 Group.Any = GroupAny;
 Group.Label = GroupLabel;
 Group.Control = GroupControl;
+
+Group.Cell = GroupCell;

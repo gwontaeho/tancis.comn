@@ -190,6 +190,10 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._handleSize?.(next);
     };
 
+    const unCheck = () => {};
+    const unSelectRow = () => {};
+    const unSelectCell = () => {};
+
     /* GET */
     const getData = () => {
         return _grid.current._content;
@@ -234,8 +238,9 @@ export const useGrid = (props: UseGridProps) => {
     const validate = () => {
         return _grid.current._validate();
     };
+
     const scrollToRow = (row: any) => {
-        return _grid.current._scrollToRow(row);
+        // return _grid.current._scrollToRow(row);
     };
 
     /* EXCEL */

@@ -300,7 +300,7 @@ export const Temp = () => {
             console.log(data);
         },
         onRowClick: (data: any) => {
-            // console.log(data);
+            console.log(data);
         },
     };
 
@@ -359,6 +359,27 @@ export const Temp = () => {
                                 set value
                             </button>
                         </Group.Row>
+
+                        <Group.Cell root={true}>
+                            <Group.Cell header={true}>a</Group.Cell>
+                            <Group.Cell size={10}>
+                                <Group.Cell size={2} header={true}></Group.Cell>
+                                <Group.Cell size={8} height={100}></Group.Cell>
+                                <Group.Cell size={2} header={true}></Group.Cell>
+                                <Group.Cell size={8}>2</Group.Cell>
+                                <Group.Cell size={2} header={true}></Group.Cell>
+                                <Group.Cell size={8}>2</Group.Cell>
+                                <Group.Cell size={10}>
+                                    <Group.Cell size={10} direction="col" gap={1}>
+                                        <FormControl />
+                                        <FormControl />
+                                        <FormControl />
+                                    </Group.Cell>
+                                    <Group.Cell size={10}>b</Group.Cell>
+                                    <Group.Cell size={10}>c</Group.Cell>
+                                </Group.Cell>
+                            </Group.Cell>
+                        </Group.Cell>
                     </Group.Section>
 
                     <Group.Section>
