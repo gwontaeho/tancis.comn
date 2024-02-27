@@ -257,9 +257,9 @@ export const Temp = () => {
             return data.q !== "Tom";
         },
 
-        radio: () => {
-            return false;
-        },
+        // radio: () => {
+        //     return false;
+        // },
         cell: {
             q: (data: any) => {
                 /**
@@ -370,6 +370,8 @@ export const Temp = () => {
                             render={_test}
                             onCellClick={_test2.onCellClick}
                             onRowClick={_test2.onRowClick}
+                            onRowCheck={(data: any, checked: any) => console.log(data, checked)}
+                            onRowSelect={(data: any) => console.log(data)}
                         />
                     </Group.Section>
                 </Group.Body>
