@@ -63,21 +63,21 @@ const schema1: TGridSchema = {
         exportExcel: true,
         height: 400,
         pagination: "in",
-        group: ["q", "w"],
+        // group: ["q", "w"],
     },
-    group: [
-        { cells: [{ binding: "number", aggregate: "SUM" }] },
-        {
-            colspan: 2,
-            cells: [
-                { binding: "number", aggregate: "AVERAGE" },
-                { binding: "number", aggregate: "MAX" },
-            ],
-        },
-        {
-            cells: [{ binding: "number", aggregate: "COUNT" }],
-        },
-    ],
+    // group: [
+    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
+    //     {
+    //         colspan: 2,
+    //         cells: [
+    //             { binding: "number", aggregate: "AVERAGE" },
+    //             { binding: "number", aggregate: "MAX" },
+    //         ],
+    //     },
+    //     {
+    //         cells: [{ binding: "number", aggregate: "COUNT" }],
+    //     },
+    // ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {

@@ -121,7 +121,7 @@ export const Grid = (props: { _grid?: any; data?: any; render?: any; onCellClick
             <div className="uf-grid-main">
                 {/* Head */}
                 <div ref={headRef} className="uf-grid-head relative">
-                    {_grid.current._group && <div className="uf-grid-option" />}
+                    {!!Object.keys(_grid.current._group).length && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
@@ -301,7 +301,7 @@ const Row = memo((props: any) => {
                     ref={rowRefCallback}
                     className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
                 >
-                    {_grid.current._group && (
+                    {!!Object.keys(_grid.current._group).length && (
                         <div className="uf-grid-option bg-uf-card-background">
                             <IconButton
                                 icon="right"
@@ -360,7 +360,9 @@ const Row = memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
-                    {_grid.current._group && <div className="uf-grid-option bg-uf-card-background" />}
+                    {!!Object.keys(_grid.current._group).length && (
+                        <div className="uf-grid-option bg-uf-card-background" />
+                    )}
 
                     {/* Checkbox */}
                     {_options?.checkbox && (
