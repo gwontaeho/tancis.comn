@@ -28,11 +28,11 @@ export type ModalProps = {
     backdrop?: boolean;
     draggable?: boolean;
     close?: boolean;
-    size?: keyof typeof MODAL_SIZES;
     title?: string;
     url?: string;
-    layout?: keyof typeof MODAL_LAYOUTS;
     params?: any;
+    size?: keyof typeof MODAL_SIZES;
+    layout?: keyof typeof MODAL_LAYOUTS;
     callback?: (arg?: any) => void;
     onConfirm?: (arg?: any) => void;
     onCancel?: (arg?: any) => void;

@@ -11,15 +11,24 @@ export const useModal = () => {
      * Open Modal
      * @param props
      */
-    const openModal = (props: Omit<ModalProps, "id">) => {
-        setModal((prev) => [...prev, { ...props, id: uuid() }]);
+    const openModal = (props: ModalProps) => {
+        setModal((prev) => [...prev, { ...props, id: props.id || uuid() }]);
     };
 
     /**
      * Close All Modal
      */
-    const closeModal = () => {
-        setModal([]);
+    const closeModal = (id?: string) => {
+        if (id === undefined) {
+            setModal([]);
+            return;
+        }
+
+        setModal((prev) =>
+            prev.filter((_) => {
+                return _.id !== id;
+            }),
+        );
     };
 
     /**
@@ -30,7 +39,6 @@ export const useModal = () => {
         if (window.opener) {
             window.opener.postMessage(data);
         }
-
         if (window.parent) {
             window.parent.postMessage(data);
         }
