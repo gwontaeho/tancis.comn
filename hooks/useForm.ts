@@ -1,7 +1,6 @@
 import React from "react";
 import * as reacthookform from "react-hook-form";
 import { comnUtils } from "@/comn/utils";
-import { GroupControlProps } from "@/comn/components";
 
 export type TFormFieldName = string;
 export type TFormFieldValue = any;
@@ -27,15 +26,14 @@ export const useForm = (props: UseFormProps) => {
         clearErrors,
         formState: { errors, isSubmitted },
     } = reacthookform.useForm<TFormValues>({
-        criteriaMode: "all",
         mode: "onSubmit",
+        criteriaMode: "all",
         reValidateMode: "onChange",
         defaultValues:
-            /** set default values */
             defaultValues &&
             Object.fromEntries(
                 Object.entries(defaultValues).map(([k, v]) => {
-                    return [k, comnUtils.getFormattedValue(v, schema[k]) ?? null];
+                    return [k, comnUtils.getFormattedValue(v, schema[k])];
                 }),
             ),
     });
@@ -79,35 +77,36 @@ export const useForm = (props: UseFormProps) => {
         _setSchema(params?.schema || schema);
     };
 
-    const _getValue = (name: string) => {
-        const v = _getValues([name]);
-        if (v === undefined) return undefined;
-
-        return v[0];
-    };
-    const _getValues = (arg?: any) => {
+    const _getValues = (arg?: string | string[]) => {
+        if (typeof arg === "string") {
+            return getValues(arg);
+        }
+        if (Array.isArray(arg)) {
+            return getValues(arg).reduce((prev: any, curr: any, index: any) => {
+                prev[arg[index]] = comnUtils.getUnformattedValue(curr, _fields[arg[index]]);
+                return prev;
+            }, {});
+        }
         return Object.fromEntries(
-            Object.entries<any>(getValues(arg)).map(([k, v]) => [k, comnUtils.getUnformattedValue(v, _fields[k])]),
+            Object.entries<any>(getValues()).map(([k, v]) => [k, comnUtils.getUnformattedValue(v, _fields[k])]),
         );
     };
-    const _setValue = (name: any, value: any) => {
-        setValue(name, comnUtils.getFormattedValue(value, _schema[name]) ?? null, { shouldValidate: isSubmitted });
+    const _getValue = (name: string) => {
+        return getValues(name);
     };
-    const _setValues = (values: TFormValues, part?: boolean) => {
+    const _setValue = (name: string, value: any) => {
+        setValue(name, comnUtils.getFormattedValue(value, _schema[name]), { shouldValidate: isSubmitted });
+    };
+    const _setValues = (values: TFormValues, _?: boolean) => {
         Object.keys(values).forEach((name) => {
-            //console.log(name, values);
-        });
-
-        Object.keys(_fields).forEach((name) => {
-            if (part === true && values[name] === undefined) return;
             let value = values[name];
-            if (value === undefined) value = null;
             _setValue(name, value);
         });
     };
+
     const _clearValues = () => {
         Object.keys(_getValues()).forEach((name) => {
-            setValue(name, null, { shouldValidate: isSubmitted });
+            setValue(name, undefined, { shouldValidate: isSubmitted });
         });
     };
 

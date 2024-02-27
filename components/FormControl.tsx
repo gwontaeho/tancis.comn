@@ -137,16 +137,6 @@ export type FormControlProps = InputDaterangeProps & {
     height?: number;
 };
 
-const FormControlGroup = (props: FormControlGroupProps) => {
-    return (
-        <div className="flex border rounded divide-x">
-            {React.Children.map(props.children, (child) => {
-                return <div className="[&_*]:border-none">{child}</div>;
-            })}
-        </div>
-    );
-};
-
 const FormControlMain = React.forwardRef((props: any, ref) => {
     const { type, rightButton, leftButton, rightText, getValues, ...rest } = props;
 
@@ -209,37 +199,42 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
     );
 });
 
-export const FormControl = Object.assign(
-    React.forwardRef((props: FormControlProps, ref) => {
-        const { size = "full", message, invalid, ...rest } = props;
-        const { t } = useTranslation();
+export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
+    const { size = "full", message, invalid, ...rest } = props;
+    const { t } = useTranslation();
 
-        return (
-            <div
-                className={classNames(
-                    "uf-form-control",
-                    props.edit !== false ? WIDTH[size] : props.type === "editor" ? "w-full" : null,
+    return (
+        <div
+            className={classNames(
+                "uf-form-control",
+                props.edit !== false ? WIDTH[size] : props.type === "editor" ? "w-full" : null,
+            )}
+        >
+            <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
+                {props.control ? (
+                    <ControllerWrapper {...rest}>
+                        <FormControlMain />
+                    </ControllerWrapper>
+                ) : (
+                    <FormControlMain ref={ref} {...rest} />
                 )}
-            >
-                <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
-                    {props.control ? (
-                        <ControllerWrapper {...rest}>
-                            <FormControlMain />
-                        </ControllerWrapper>
-                    ) : (
-                        <FormControlMain ref={ref} {...rest} />
-                    )}
-                </Tooltip>
+            </Tooltip>
 
-                {/* message */}
-                {props.edit !== false && message && <div className="uf-message">{message}</div>}
+            {/* message */}
+            {props.edit !== false && message && <div className="uf-message">{message}</div>}
 
-                {/* invalid message */}
-                {props.edit !== false && invalid && (
-                    <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
-                )}
-            </div>
-        );
-    }),
-    { Group: FormControlGroup },
-);
+            {/* invalid message */}
+            {props.edit !== false && invalid && (
+                <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
+            )}
+
+            {/* Message */}
+            {props.edit !== false && message && <div className="uf-message">{t(message)}</div>}
+
+            {/* Invalid message */}
+            {props.edit !== false && invalid && (
+                <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
+            )}
+        </div>
+    );
+});
