@@ -95,14 +95,29 @@ export const SG_BLTBRD_LIST: TGridSchema = {
     id: "grid_bltbrdList",
     options: { pagination: "out", index: true },
     head: [
-        { cells: [{ header: "L_TTLE", binding: "ttle", width: "*" }] },
+        { cells: [{ header: "L_CLSF", binding: "ttle", width: 150 }] },
+        { cells: [{ header: "L_TTLE", binding: "bltbrdCtgrCd", width: "2*" }] },
         { cells: [{ header: "L_SELC_NO", binding: "selcNo", width: 100 }] },
         { cells: [{ header: "L_FRST_REGST_ID", binding: "frstRegstId", width: 150 }] },
         { cells: [{ header: "L_FRST_RGSR_DTM", binding: "frstRgsrDtm", width: 250 }] },
     ],
     body: [
+        {
+            cells: [
+                {
+                    binding: "bltbrdCtgrCd",
+                    type: "select",
+                    viewType: "label",
+                    options: [
+                        { label: "프레임워크 기본", value: "000" },
+                        { label: "기능 사용", value: "001" },
+                        { label: "샘플 소스", value: "002" },
+                    ],
+                },
+            ],
+        },
         { cells: [{ binding: "ttle", align: "left" }] },
-        { cells: [{ binding: "selcNo" }] },
+        { cells: [{ binding: "selcNo", type: "number", thousandSeparator: true }] },
         { cells: [{ binding: "frstRegstId" }] },
         { cells: [{ binding: "frstRgsrDtm" }] },
     ],
