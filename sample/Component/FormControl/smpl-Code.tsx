@@ -603,7 +603,7 @@ const Sample = () => {
             },
             field15: {
                 type: "code",
-                area: "cstmOfceCd",
+                area: "cstmCd",
                 label: "Customs Code",
                 
                 popupSize: "md",
