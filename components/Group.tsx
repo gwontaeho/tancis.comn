@@ -177,10 +177,10 @@ const GroupCell = (props: GroupCellProps) => {
     return (
         <div
             className={classNames(
-                "min-h-[2.5rem]",
+                "min-h-[2.5rem] break-all",
                 COL_SPAN[size],
                 root && "border-x border-b first:border-t",
-                header && "bg-uf-card-header font-semibold",
+                header && "bg-uf-card-header font-semibold text-center",
                 !end && GRID_COLS[size],
                 !end && "bg-uf-border",
                 !end && "grid gap-[1px]",

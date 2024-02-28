@@ -314,123 +314,115 @@ export const Temp = () => {
 
     return (
         <Page>
-            <input type="file" onChange={handleTest} />
-            <button onClick={selectFile}>select</button>
-            <button onClick={() => console.log(getFile())}>get</button>
-            <button onClick={() => console.log(importFile(getFile()))}>import</button>
+            <Layout>
+                <Group>
+                    <Group.Header></Group.Header>
+                    <Group.Body>
+                        <Group.Section>
+                            <Group.Cell root>
+                                <Group.Cell header></Group.Cell>
+                                <Group.Cell size={10}>
+                                    <Group.Cell size={2} header required>
+                                        required
+                                    </Group.Cell>
+                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={2} header></Group.Cell>
+                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={2} header></Group.Cell>
+                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={10}></Group.Cell>
+                                </Group.Cell>
+                            </Group.Cell>
+                        </Group.Section>
+                    </Group.Body>
+                    <Group.Footer></Group.Footer>
+                </Group>
 
-            <div>
-                <FormControl type="text" value="asd" edit={false} />
-                <FormControl type="text" value="asd" edit={false} />
-                <FormControl type="text" value="asd" edit={false} />
-            </div>
+                <Group>
+                    <Group.Header></Group.Header>
+                    <Group.Body>
+                        <Group.Section>
+                            <Grid
+                                {...grid}
+                                data={data}
+                                render={_test}
+                                onCellClick={_test2.onCellClick}
+                                onRowClick={_test2.onRowClick}
+                                onRowCheck={(data: any, checked: any) => console.log(data, checked)}
+                                onRowSelect={(data: any) => console.log(data)}
+                            />
+                        </Group.Section>
 
-            <Layout align="center">
-                <div>a</div>
-                <div>a</div>
-                <div>a</div>
+                        <Group.Section>
+                            <Group.Cell root>
+                                <Group.Cell>
+                                    <button onClick={() => setData(data)}>set data</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => resetData()}>reset</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => addRow({ text: "added", q: "asd" })}>add row</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => setSize(30)}>setSize 30</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => setPage(2)}>setPage 2</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => setOption("height", 500)}>set height</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => setOption("height", "auto")}>set height auto</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => deleteRow("radio")}>delete radio</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button
+                                        onClick={() => {
+                                            const cel = getSelectedCell();
+                                            updateRow({ ...cel?.rowValues, q: "123123" });
+                                        }}
+                                    >
+                                        셀 데이터 바꾸기
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(getChecked())}>getChecked</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(validate())}>validate</button>
+                                </Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                                <Group.Cell></Group.Cell>
+                            </Group.Cell>
+                        </Group.Section>
+                    </Group.Body>
+                    <Group.Footer></Group.Footer>
+                </Group>
             </Layout>
 
-            <Group>
-                <Group.Body>
-                    <Group.Section title="asd" description="asd">
-                        {/* <Group.Row>
-                            <Group.Control {...form.schema.text} />
-                            <Group.Control {...form.schema.date} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.schema.select} />
-                            <Group.Control {...form.schema.radio} all={true} />
-                        </Group.Row>
-            
-                        <Group.Row>
-                            <Group.Control {...form.schema.checkbox} />
-                            <Group.Control {...form.schema.code} />
-                        </Group.Row>
-                        <Group.Row>
-                            <button onClick={() => console.table(form.getValues())}>get values</button>
-                            <button onClick={() => form.setEditable(true)}>setEdit true</button>
-                            <button onClick={() => form.setEditable(false)}>setEdit false</button>
-                            <button onClick={() => form.setValues({ text: "asd" })}>set values</button>
-                            <button onClick={() => form.setValue("code", "aud")}>set value</button>
-                            <button onClick={() => form.setValue("asdasdw", "aud")}>set qwdqwdvalue</button>
-                            <button onClick={() => form.setSchema("radio", { options: [{ label: "a", value: "b" }] })}>
-                                set value
-                            </button>
-                        </Group.Row> */}
-
-                        <Group.Cell root>
-                            <Group.Cell header required>
-                                qdwq
-                            </Group.Cell>
-                            <Group.Cell size={10}>
-                                <Group.Cell size={2} header required></Group.Cell>
-                                <Group.Cell size={8} height={100}>
-                                    <FormControl type="textarea" letterCase="upper" />
-                                </Group.Cell>
-                                <Group.Cell size={2} header></Group.Cell>
-                                <Group.Cell size={4} header></Group.Cell>
-                                <Group.Cell size={4}>2</Group.Cell>
-                                <Group.Cell size={2} header></Group.Cell>
-                                <Group.Cell size={8}>2</Group.Cell>
-                                <Group.Cell size={10}>
-                                    <Group.Cell size={4} direction="row" gap={1}></Group.Cell>
-                                    <Group.Cell size={6}>b</Group.Cell>
-                                    <Group.Cell size={10}>b</Group.Cell>
-                                    <Group.Cell size={10}>c</Group.Cell>
-                                </Group.Cell>
-                            </Group.Cell>
-                        </Group.Cell>
-                    </Group.Section>
-
-                    <Group.Section>
-                        <Grid
-                            {...grid}
-                            data={data}
-                            render={_test}
-                            onCellClick={_test2.onCellClick}
-                            onRowClick={_test2.onRowClick}
-                            onRowCheck={(data: any, checked: any) => console.log(data, checked)}
-                            onRowSelect={(data: any) => console.log(data)}
-                        />
-                    </Group.Section>
-                </Group.Body>
-            </Group>
-
             <div className="flex flex-col gap-8">
-                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => scrollToRow(50)}>scroll</button>
-                    <button onClick={() => setData(data)}>set data</button>
-                    <button onClick={() => resetData()}>reset</button>
-                    <button
-                        onClick={() => {
-                            addRow({ text: "added", q: "asd" });
-                            console.log(getData());
-                        }}
-                    >
-                        add row
-                    </button>
-                    <button onClick={() => setSize(30)}>setSize 30</button>
-                    <button onClick={() => setPage(2)}>setPage 2</button>
-                    <button onClick={() => setOption("height", 500)}>set height</button>
-                    <button onClick={() => setOption("height", "auto")}>set height auto</button>
-
-                    <button onClick={() => deleteRow(getSelectedRow())}>delete one row</button>
-                    <button onClick={() => deleteRow(getChecked())}>delete array rows</button>
-                    <button onClick={() => deleteRow("radio")}>delete radio</button>
-                    <button onClick={() => deleteRow("checkbox")}>delete checkbox</button>
-
-                    <button
-                        onClick={() => {
-                            const cel = getSelectedCell();
-                            updateRow({ ...cel?.rowValues, q: "123123" });
-                        }}
-                    >
-                        셀 데이터 바꾸기
-                    </button>
-                    <button onClick={() => console.log(getChecked())}>getChecked</button>
-                    <button onClick={() => console.log(validate())}>validate</button>
-                </div>
+                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2"></div>
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => setOption("edit", true)}>setOption edit true</button>
                     <button onClick={() => setOption("edit", false)}>setOption edit false</button>
