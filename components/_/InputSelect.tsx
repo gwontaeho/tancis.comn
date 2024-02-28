@@ -66,7 +66,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
 
     React.useEffect(() => {
         if ((all === undefined || all === false) && select === false && value === undefined && o.options.length > 0) {
-            _setValue(formatSelect(o.options[0].value));
+            _setValue(o.options[0].value);
             if (onChange) {
                 onChange(o.options[0].value);
             }

@@ -101,15 +101,15 @@ export const BltbrdDtl = (props: any) => {
                             </Layout.Left>
                             <Layout.Right>
                                 <Button
-                                    role="delete"
-                                    onClick={() => {
-                                        handler.deleteBltbrd();
-                                    }}
-                                ></Button>
-                                <Button
                                     role="edit"
                                     onClick={() => {
                                         navigate(`${URLS.bltbrdEdit}/${id}`);
+                                    }}
+                                ></Button>
+                                <Button
+                                    role="delete"
+                                    onClick={() => {
+                                        handler.deleteBltbrd();
                                     }}
                                 ></Button>
                             </Layout.Right>
