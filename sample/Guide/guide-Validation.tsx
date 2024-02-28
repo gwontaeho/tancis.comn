@@ -33,7 +33,8 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
         height: 300,
     },
     head: [
-        { cells: [{ header: "L_MRN", binding: "text", required: true, width: 150 }] },
+        { cells: [{ header: "text", binding: "text", required: true, width: 150 }] },
+        { cells: [{ header: "email", binding: "email", required: true, width: 150 }] },
         { cells: [{ header: "number", binding: "number", required: true, width: 150 }] },
         { cells: [{ header: "date", binding: "date", required: true, width: 150 }] },
         { cells: [{ header: "select", binding: "select", required: true, width: 150 }] },
@@ -43,6 +44,15 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
     ],
     body: [
         { cells: [{ binding: "text", type: "text", required: true, minLength: 3, maxLength: 5 }] },
+        {
+            cells: [
+                {
+                    binding: "email",
+                    type: "text",
+                    pattern: { value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, message: "이메일 형식이 올바르지 않습니다" },
+                },
+            ],
+        },
         { cells: [{ binding: "number", type: "number", required: true, min: 10, max: 20 }] },
         { cells: [{ binding: "date", type: "date", required: true, min: "2024-03-01" }] },
         {
@@ -55,10 +65,24 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
                     validate: (value: any) => {
                         return value === "Y";
                     },
+                    viewType: "both",
+                    editType: "both",
                 },
             ],
         },
-        { cells: [{ binding: "checkbox", type: "checkbox", options: code, required: true }] },
+        {
+            cells: [
+                {
+                    binding: "checkbox",
+                    type: "checkbox",
+                    options: code,
+                    required: true,
+                    viewType: "both",
+                    editType: "both",
+                    align: "center",
+                },
+            ],
+        },
         { cells: [{ binding: "radio", type: "radio", options: code, required: true }] },
         { cells: [{ binding: "code", type: "code", area: "comnCd", comnCd: "CGM0055", required: true }] },
     ],

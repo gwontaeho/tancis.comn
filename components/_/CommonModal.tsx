@@ -145,12 +145,7 @@ const Modal = (props: ModalProps) => {
                         )}
                     </div>
                     {(close !== false || onConfirm !== undefined) && (
-                        <div
-                            className={
-                                (typeof content === "string" ? "px-2" : "px-1") +
-                                " h-12 flex space-x-1 items-center justify-end"
-                            }
-                        >
+                        <div className={"px-2 h-12 flex space-x-1 items-center justify-end"}>
                             {close !== false && <Button onClick={() => handleCancel()} role="close"></Button>}
                             {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
                         </div>

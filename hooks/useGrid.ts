@@ -336,7 +336,7 @@ const getValidationArray = (o: any) => {
                         message = "msg.com.00009";
                         break;
                     case "pattern":
-                        message = "msg.com.000010";
+                        message = "msg.com.00010";
                         break;
                     case "validate":
                         message = "msg.com.00011";
@@ -395,7 +395,7 @@ const getValidationObject = (o: any) => {
                             message = "msg.com.00009";
                             break;
                         case "pattern":
-                            message = "msg.com.000010";
+                            message = "msg.com.00010";
                             break;
                         case "validate":
                             message = "msg.com.00011";

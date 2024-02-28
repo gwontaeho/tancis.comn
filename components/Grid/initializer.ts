@@ -3,6 +3,7 @@ import lodash from "lodash";
 import { read, utils } from "xlsx";
 import { v4 as uuid } from "uuid";
 import { getView } from "./utils";
+import { comnUtils } from "@/comn/utils";
 import { reducer, createInitialState } from "./reducer";
 
 /**
@@ -364,13 +365,19 @@ const useInitialize = (props: any) => {
         // };
 
         _grid.current._validate = () => {
-            console.log(_grid.current);
-
             const _head = _grid.current._head;
+            const _body = _grid.current._body;
             const labels: { [key: string]: any } = {};
+            const bodys: { [key: string]: any } = {};
             _head.map((item: any) => {
                 item.cells?.map((_item: any) => {
                     labels[_item.binding] = _item.header;
+                });
+            });
+
+            _body.map((item: any) => {
+                item.cells?.map((_item: any) => {
+                    bodys[_item.binding] = _item;
                 });
             });
 
@@ -382,8 +389,6 @@ const useInitialize = (props: any) => {
                     for (const binding in _grid.current._rule) {
                         const bindingValue = row[binding];
                         const rules = _grid.current._rule[binding];
-
-                        console.log(rules);
 
                         for (let i = 0; i < rules.length; i++) {
                             let invalid = false;
@@ -413,12 +418,22 @@ const useInitialize = (props: any) => {
                                 case "resource":
                                     break;
                             }
+
+                            if (
+                                (rules[i].type == "min" || rules[i].type == "max") &&
+                                (bodys[binding]?.type === "date" ||
+                                    bodys[binding]?.type === "datetime" ||
+                                    bodys[binding]?.type === "time")
+                            ) {
+                                rules[i].value = comnUtils.getViewValue(value, bodys[binding]);
+                            }
+
                             if (invalid) {
                                 prev.push({
                                     ...rules[i],
                                     binding,
                                     label: labels[binding],
-                                    input: bindingValue,
+                                    input: comnUtils.getViewValue(bindingValue, bodys[binding]),
                                     row: row.__index + 1,
                                 });
                             }

@@ -97,6 +97,7 @@ export const CommonErrors = (props: ErrorProps) => {
                 return t(rowValues.message, { 0: rowValues?.value });
             case "min":
                 return t(rowValues.message, { 0: rowValues?.value });
+
             default:
                 return t(rowValues.message);
         }

@@ -16,6 +16,12 @@ import {
     unformatTime,
     unformatDatetime,
     unformatCode,
+    viewCheckbox,
+    localeDate,
+    localeDatetime,
+    localeTime,
+    viewRadio,
+    viewSelect,
 } from "@/comn/components/_";
 
 /**
@@ -121,6 +127,33 @@ export const comnUtils = {
         }
         return v;
     },
+    /**
+     * @param v Value
+     * @param o Schema
+     * @returns
+     */
+    getViewValue: (v: any, s?: any) => {
+        console.log(v, s);
+        switch (s?.type) {
+            case "text":
+                return v;
+            case "number":
+                return v;
+            case "checkbox":
+                return viewCheckbox(v, { options: s?.options, viewType: s?.viewType });
+            case "select":
+                return viewSelect(v, { options: s?.options, viewType: s?.viewType });
+            case "date":
+                return localeDate(v, comnUtils.getLocale());
+            case "time":
+                return localeTime(v, comnUtils.getLocale());
+            case "datetime":
+                return localeDatetime(v, comnUtils.getLocale());
+            case "radio":
+                return viewRadio(v, s);
+        }
+        return v;
+    },
     /////////////////////////////////////////////////////////////////////
     // Grid
     /////////////////////////////////////////////////////////////////////
@@ -139,8 +172,10 @@ export const comnUtils = {
     /////////////////////////////////////////////////////////////////////
     // Locale
     /////////////////////////////////////////////////////////////////////
-    getLocale: () => {
-        return localStorage.getItem("lang")?.toString() || "en";
+    getLocale: (): "ko" | "en" | "tz" => {
+        if (localStorage.getItem("lang")?.toString() === "ko") return "ko";
+        else if (localStorage.getItem("lang")?.toString() === "tz") return "tz";
+        return "en";
     },
     getLocaleString: () => {
         let locale = localStorage.getItem("lang")?.toString() || "en";

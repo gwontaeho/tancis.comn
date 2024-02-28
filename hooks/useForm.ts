@@ -136,6 +136,7 @@ export const useForm = (props: UseFormProps) => {
                 if (!onValid) return;
                 onValid(_getValues());
             },
+
             (error) => {
                 if (!onInvalid) return;
                 onInvalid(error);
