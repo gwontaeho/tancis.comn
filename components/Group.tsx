@@ -159,7 +159,7 @@ const GroupFooter = (props: GroupFooterProps) => {
 const GroupCell = (props: GroupCellProps) => {
     const { children, root, size = root ? 12 : 2, header, height, gap = 0, direction = "row", align = "start" } = props;
 
-    const last = (Array.isArray(children) ? children : [children]).some((_) => {
+    const end = (Array.isArray(children) ? children : [children]).some((_) => {
         return _?.type?.name !== "GroupCell";
     });
 
@@ -170,15 +170,15 @@ const GroupCell = (props: GroupCellProps) => {
                 COL_SPAN[size],
                 root && "border-x border-b",
                 header && "bg-uf-card-header",
-                !last && GRID_COLS[size],
-                !last && "bg-uf-border",
-                !last && "grid gap-[1px]",
-                last && "p-1",
-                last && "flex items-center",
-                last && !header && "bg-uf-card-background",
-                last && DIRECTION[direction],
-                last && GAP[gap],
-                last && JUSTIFY_CONTENT[align],
+                !end && GRID_COLS[size],
+                !end && "bg-uf-border",
+                !end && "grid gap-[1px]",
+                end && "p-1",
+                end && "flex items-center",
+                end && !header && "bg-uf-card-background",
+                end && DIRECTION[direction],
+                end && GAP[gap],
+                end && JUSTIFY_CONTENT[align],
             )}
             style={{ height }}
         >
