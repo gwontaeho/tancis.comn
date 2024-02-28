@@ -332,7 +332,7 @@ export const Temp = () => {
             <Group>
                 <Group.Body>
                     <Group.Section title="asd" description="asd">
-                        <Group.Row>
+                        {/* <Group.Row>
                             <Group.Control {...form.schema.text} />
                             <Group.Control {...form.schema.date} />
                         </Group.Row>
@@ -340,10 +340,7 @@ export const Temp = () => {
                             <Group.Control {...form.schema.select} />
                             <Group.Control {...form.schema.radio} all={true} />
                         </Group.Row>
-                        {/* <Group.Row>
-                            <Group.Control {...form2.schema.select} />
-                            <Group.Control {...form2.schema.radio} />
-                        </Group.Row> */}
+            
                         <Group.Row>
                             <Group.Control {...form.schema.checkbox} />
                             <Group.Control {...form.schema.code} />
@@ -358,7 +355,7 @@ export const Temp = () => {
                             <button onClick={() => form.setSchema("radio", { options: [{ label: "a", value: "b" }] })}>
                                 set value
                             </button>
-                        </Group.Row>
+                        </Group.Row> */}
 
                         <Group.Cell root>
                             <Group.Cell header required>

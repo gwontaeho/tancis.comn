@@ -179,7 +179,7 @@ const GroupCell = (props: GroupCellProps) => {
             className={classNames(
                 "min-h-[2.5rem]",
                 COL_SPAN[size],
-                root && "border-x border-b",
+                root && "border-x border-b first:border-t",
                 header && "bg-uf-card-header",
                 !end && GRID_COLS[size],
                 !end && "bg-uf-border",
