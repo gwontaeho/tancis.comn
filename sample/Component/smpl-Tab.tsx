@@ -62,8 +62,8 @@ const Sample = () => {
                                     <Layout.Left>
                                         <Button onClick={() => tab.setActive(2)}>active 2</Button>
                                         <Button onClick={() => tab.setLabel(2, "changed")}>change label 2</Button>
-                                        <Button onClick={() => tab.setVisible(2, true)}>visible 2 true</Button>
-                                        <Button onClick={() => tab.setVisible(2, false)}>visible 2 false</Button>
+                                        <Button onClick={() => tab.setVisible(0, true)}>visible 2 true</Button>
+                                        <Button onClick={() => tab.setVisible(0, false)}>visible 2 false</Button>
                                         <Button onClick={() => tab.setDisabled(1, true)}>disable 1 true</Button>
                                         <Button onClick={() => tab.setDisabled(1, false)}>disable 1 false</Button>
                                     </Layout.Left>
