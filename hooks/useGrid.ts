@@ -195,8 +195,24 @@ export const useGrid = (props: UseGridProps) => {
     const unSelectCell = () => {};
 
     /* GET */
-    const getData = () => {
-        return _grid.current._content;
+    const getData = (options?: { excludes: ("deleted" | "updated" | "added" | "origin")[] }) => {
+        let data = _grid.current._content;
+
+        if (options) {
+            console.log("a");
+            if (Array.isArray(options.excludes)) {
+                console.log("b");
+                data = data.filter(({ __type }: any) => {
+                    return !options.excludes.includes(__type);
+                });
+            }
+        }
+
+        /*
+        __type
+        origin | added | deleted | updated
+        */
+        return data;
     };
     const getOrigin = () => {
         return _grid.current._origin;

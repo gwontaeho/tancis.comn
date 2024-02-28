@@ -295,6 +295,8 @@ export const Temp = () => {
         },
     };
 
+    // getData({excludes:["deleted"]})
+
     const _test2 = {
         onCellClick: (data: any) => {
             console.log(data);
@@ -461,6 +463,9 @@ export const Temp = () => {
                 </div>
                 <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
                     <button onClick={() => console.log(getData())}>getData</button>
+                    <button onClick={() => console.log(getData({ excludes: ["deleted", "added"] }))}>
+                        getData not deleted
+                    </button>
                     <button onClick={() => console.log(getOrigin())}>getOrigin</button>
                     <button onClick={() => console.log(getSelectedRow())}>getSelectedRow</button>
                     <button onClick={() => console.log(getSelectedCell())}>getSelectedCel</button>
