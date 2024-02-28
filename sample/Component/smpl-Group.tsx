@@ -133,6 +133,72 @@ const Sample = () => {
                     </Sample.Section>
                 </Layout>
             </Sample.Section>
+
+            <Sample.Section title="3. Cell" description="">
+                <Layout direction="row">
+                    <Sample.Section title="Result" description="">
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    <Group.Cell root>
+                                        <Group.Cell header required></Group.Cell>
+                                        <Group.Cell size={4}></Group.Cell>
+                                        <Group.Cell header required></Group.Cell>
+                                        <Group.Cell size={4}></Group.Cell>
+                                    </Group.Cell>
+                                    <Group.Cell root>
+                                        <Group.Cell size={2} header></Group.Cell>
+                                        <Group.Cell size={10}>
+                                            <Group.Cell size={10}>
+                                                <Group.Cell header></Group.Cell>
+                                                <Group.Cell size={8}>
+                                                    <Group.Cell size={8}></Group.Cell>
+                                                    <Group.Cell size={8}></Group.Cell>
+                                                </Group.Cell>
+                                            </Group.Cell>
+                                            <Group.Cell size={10}></Group.Cell>
+                                        </Group.Cell>
+                                    </Group.Cell>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                    </Sample.Section>
+                    <Sample.Section title="Code">
+                        <Sample.Code>{`
+const Sample = () => {
+    return (
+        <Group>
+            <Group.Body>
+            <Group.Section>
+                <Group.Cell root>
+                    <Group.Cell header required></Group.Cell>
+                    <Group.Cell size={4}></Group.Cell>
+                    <Group.Cell header required></Group.Cell>
+                    <Group.Cell size={4}></Group.Cell>
+                </Group.Cell>
+                <Group.Cell root>
+                    <Group.Cell size={2} header></Group.Cell>
+                    <Group.Cell size={10}>
+                        <Group.Cell size={10}>
+                            <Group.Cell header></Group.Cell>
+                            <Group.Cell size={8}>
+                                <Group.Cell size={8}></Group.Cell>
+                                <Group.Cell size={8}></Group.Cell>
+                            </Group.Cell>
+                        </Group.Cell>
+                        <Group.Cell size={10}></Group.Cell>
+                    </Group.Cell>
+                </Group.Cell>
+            </Group.Section>
+            </Group.Body>
+    </Group>
+    );
+};
+
+`}</Sample.Code>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
         </Sample>
     );
 };
