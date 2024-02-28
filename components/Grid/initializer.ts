@@ -364,6 +364,16 @@ const useInitialize = (props: any) => {
         // };
 
         _grid.current._validate = () => {
+            console.log(_grid.current);
+
+            const _head = _grid.current._head;
+            const labels: { [key: string]: any } = {};
+            _head.map((item: any) => {
+                item.cells?.map((_item: any) => {
+                    labels[_item.binding] = _item.header;
+                });
+            });
+
             const errors = _grid.current._content
                 .filter((_: any) => {
                     return _.__type !== "deleted";
@@ -402,7 +412,13 @@ const useInitialize = (props: any) => {
                                     break;
                             }
                             if (invalid) {
-                                prev.push({ ...rules[i], binding, value: bindingValue, row: row.__index });
+                                prev.push({
+                                    ...rules[i],
+                                    binding,
+                                    label: labels[binding],
+                                    value: bindingValue,
+                                    row: row.__index + 1,
+                                });
                             }
                         }
                     }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Sample } from "@/comn/components/_";
-import { Group, Layout, FormControl, Button, Grid } from "@/comn/components";
-import { useForm, TFormSchema, useResource, useToast, TGridSchema, useGrid } from "@/comn/hooks";
+import { Group, Layout, FormControl, Button, Grid, CommonErrors } from "@/comn/components";
+import { useForm, TFormSchema, useResource, useToast, TGridSchema, useGrid, useModal } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { api } from "@/comn";
@@ -33,7 +33,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
         height: 300,
     },
     head: [
-        { cells: [{ header: "text", binding: "text", required: true, width: 150 }] },
+        { cells: [{ header: "L_MRN", binding: "text", required: true, width: 150 }] },
         { cells: [{ header: "number", binding: "number", required: true, width: 150 }] },
         { cells: [{ header: "date", binding: "date", required: true, width: 150 }] },
         { cells: [{ header: "select", binding: "select", required: true, width: 150 }] },
@@ -43,12 +43,12 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
     ],
     body: [
         { cells: [{ binding: "text", type: "text", required: true }] },
-        { cells: [{ binding: "number", type: "number" }] },
-        { cells: [{ binding: "date", type: "date" }] },
-        { cells: [{ binding: "select", type: "select", options: code }] },
-        { cells: [{ binding: "checkbox", type: "checkbox", options: code }] },
-        { cells: [{ binding: "radio", type: "radio", options: code }] },
-        { cells: [{ binding: "code", type: "code", area: "comnCd", comnCd: "CGM0055" }] },
+        { cells: [{ binding: "number", type: "number", required: true }] },
+        { cells: [{ binding: "date", type: "date", required: true }] },
+        { cells: [{ binding: "select", type: "select", options: code, required: true }] },
+        { cells: [{ binding: "checkbox", type: "checkbox", options: code, required: true }] },
+        { cells: [{ binding: "radio", type: "radio", options: code, required: true }] },
+        { cells: [{ binding: "code", type: "code", area: "comnCd", comnCd: "CGM0055", required: true }] },
     ],
 };
 
@@ -67,6 +67,7 @@ export const GuideValidation = () => {
     };
 
     const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
 
     const SF_SMPL: TFormSchema = {
         id: "smpl",
@@ -104,7 +105,6 @@ export const GuideValidation = () => {
                 type: "checkbox",
                 area: "comnCd",
                 comnCd: "CGM0055",
-                all: true,
                 required: true,
             },
             code: { label: "code", type: "code", area: "comnCd", comnCd: "CGM0055", maxLength: 3, required: true },
@@ -393,7 +393,17 @@ const Sample = () => {
                                     <Layout.Left>
                                         <Button
                                             onClick={() => {
-                                                console.log(grid.sample.validate());
+                                                //grid.sample.exportExcel();
+                                                const result = grid.sample.validate();
+                                                if (result) {
+                                                    console.log(result);
+                                                    modal.openModal({
+                                                        content: <CommonErrors {...result} />,
+                                                        draggable: true,
+                                                        title: "L_ERR",
+                                                        size: "lg",
+                                                    });
+                                                }
                                             }}
                                         >
                                             오류검증
