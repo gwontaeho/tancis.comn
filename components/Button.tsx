@@ -58,6 +58,7 @@ const BUTTON_ROLES = {
     apply: { text: "B_APPD", color: "blue", variant: undefined },
     gridAdd: { text: "B_ADD", color: "blue", variant: "uf-button-outlined" },
     gridDelete: { text: "B_DELETE", color: "error", variant: "uf-button-outlined" },
+    excelDown: { text: "B_EXC_DWNL", color: "info", variant: "uf-button-outlined" },
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {

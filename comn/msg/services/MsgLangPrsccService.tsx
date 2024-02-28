@@ -40,7 +40,7 @@ export const APIS = {
 export const SF_MSG_LANG_SRCH: TFormSchema = {
     id: "form_MsgLangSrch",
     schema: {
-        msgId: { type: "text", label: "L_MSG_ID", letterCase: "upper" },
+        msgId: { type: "text", label: "L_MSG_ID" },
         msgCn: { type: "text", label: "L_MSG_CN" },
     },
 };

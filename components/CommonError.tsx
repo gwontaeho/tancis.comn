@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Page, Group, Grid } from "@/comn/components"; // 화면 구성 컴포넌트
+import { Page, Group, Grid, Layout, Button } from "@/comn/components"; // 화면 구성 컴포넌트
 import { useGrid, TGridSchema } from "@/comn/hooks"; // hook
 
 export const SG_ERROR_LIST: TGridSchema = {
@@ -10,6 +10,7 @@ export const SG_ERROR_LIST: TGridSchema = {
         { cells: [{ header: "L_SHT", binding: "sheet", width: 100 }], show: false },
         { cells: [{ header: "L_KEY", binding: "key", width: 100 }], show: false },
         { cells: [{ header: "L_ITM_NM", binding: "label", width: 150 }] },
+        { cells: [{ header: "L_VAL", binding: "input", width: 150 }] },
         { cells: [{ header: "L_MSG", binding: "message", width: "*" }] },
         { cells: [{ header: "L_TP", binding: "type", width: 100 }], show: false },
         { cells: [{ header: "L_OPT", binding: "option", width: 150 }], show: false },
@@ -26,6 +27,9 @@ export const SG_ERROR_LIST: TGridSchema = {
         },
         {
             cells: [{ binding: "label" }],
+        },
+        {
+            cells: [{ binding: "input" }],
         },
         {
             cells: [{ binding: "message", align: "left" }],
@@ -52,7 +56,7 @@ export type ErrorUnitProps = {
     label?: string;
     message?: string;
     type?: string;
-    value?: any;
+    input?: any;
     binding?: string;
     sheet?: string | number;
     key?: any;
@@ -86,13 +90,13 @@ export const CommonErrors = (props: ErrorProps) => {
     const getErrorMessage = (rowValues: any) => {
         switch (rowValues.type) {
             case "maxLength":
-                return t(rowValues.message, { 0: rowValues.schema?.maxLength?.value });
+                return t(rowValues.message, { 0: rowValues?.value });
             case "minLength":
-                return t(rowValues.message, { 0: rowValues.schema?.minLength?.value });
+                return t(rowValues.message, { 0: rowValues?.value });
             case "max":
-                return t(rowValues.message, { 0: rowValues.schema?.max?.value });
+                return t(rowValues.message, { 0: rowValues?.value });
             case "min":
-                return t(rowValues.message, { 0: rowValues.schema?.min?.value });
+                return t(rowValues.message, { 0: rowValues?.value });
             default:
                 return t(rowValues.message);
         }
@@ -101,6 +105,10 @@ export const CommonErrors = (props: ErrorProps) => {
     const render = {
         errorList: {
             cell: {
+                label: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return t(value);
+                },
                 message: (props: any) => {
                     const { binding, rowValues, value } = props;
                     console.log(rowValues);
@@ -114,6 +122,18 @@ export const CommonErrors = (props: ErrorProps) => {
         <Page id={""} title={t("T_ERROR_LST")}>
             <Group>
                 <Group.Body>
+                    <Layout>
+                        <Layout.Right>
+                            {/*
+                            <Button
+                                role="excelDown"
+                                onClick={() => {
+                                    grid.errorList.exportExcel();
+                                }}
+                            ></Button>
+                            */}
+                        </Layout.Right>
+                    </Layout>
                     <Grid {...grid.errorList.grid} data={errorData} render={render.errorList} />
                 </Group.Body>
             </Group>
