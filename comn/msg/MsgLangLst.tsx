@@ -87,10 +87,8 @@ export const MsgLangLst = (props: any) => {
                 },
             });
         },
-        click_Grid_MsgLangLst: {
-            msgId: (data: any) => {
-                navigate(`${URLS.msgLangDtl}/${data.rowValues.msgId}`);
-            },
+        click_Grid_MsgLangLst: (data: any) => {
+            navigate(`${URLS.msgLangDtl}/${data.rowValues.msgId}`);
         },
     };
 

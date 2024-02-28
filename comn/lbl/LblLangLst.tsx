@@ -89,10 +89,8 @@ export const LblLangLst = (props: any) => {
                 },
             });
         },
-        click_Grid_LblLangLst: {
-            lblId: (data: any) => {
-                navigate(`${URLS.lblLangDtl}/${data.rowValues.lblId}`);
-            },
+        click_Grid_LblLangLst: (data: any) => {
+            navigate(`${URLS.lblLangDtl}/${data.rowValues.lblId}`);
         },
     };
 
