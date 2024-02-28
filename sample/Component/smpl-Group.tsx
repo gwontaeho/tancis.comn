@@ -1,5 +1,5 @@
 import { Sample } from "@/comn/components/_";
-import { Group, Layout } from "@/comn/components";
+import { FormControl, Group, Layout } from "@/comn/components";
 
 export const SampleGroup = () => {
     return (
@@ -134,18 +134,25 @@ const Sample = () => {
                 </Layout>
             </Sample.Section>
 
-            <Sample.Section title="3. Cell" description="">
+            <Sample.Section title="3. Group Cell">
                 <Layout direction="row">
-                    <Sample.Section title="Result" description="">
+                    <Sample.Section title="Result">
                         <Group>
                             <Group.Body>
                                 <Group.Section>
+                                    {/* Row 1 */}
                                     <Group.Cell root>
-                                        <Group.Cell header required></Group.Cell>
-                                        <Group.Cell size={4}></Group.Cell>
+                                        <Group.Cell header required>
+                                            Label
+                                        </Group.Cell>
+                                        <Group.Cell size={4}>
+                                            <FormControl />
+                                        </Group.Cell>
                                         <Group.Cell header required></Group.Cell>
                                         <Group.Cell size={4}></Group.Cell>
                                     </Group.Cell>
+
+                                    {/* Row 2 */}
                                     <Group.Cell root>
                                         <Group.Cell size={2} header></Group.Cell>
                                         <Group.Cell size={10}>
@@ -169,27 +176,34 @@ const Sample = () => {
     return (
         <Group>
             <Group.Body>
-            <Group.Section>
-                <Group.Cell root>
-                    <Group.Cell header required></Group.Cell>
-                    <Group.Cell size={4}></Group.Cell>
-                    <Group.Cell header required></Group.Cell>
-                    <Group.Cell size={4}></Group.Cell>
-                </Group.Cell>
-                <Group.Cell root>
-                    <Group.Cell size={2} header></Group.Cell>
-                    <Group.Cell size={10}>
-                        <Group.Cell size={10}>
-                            <Group.Cell header></Group.Cell>
-                            <Group.Cell size={8}>
-                                <Group.Cell size={8}></Group.Cell>
-                                <Group.Cell size={8}></Group.Cell>
-                            </Group.Cell>
+                <Group.Section>
+                    {/* Row 1 */}
+                    <Group.Cell root>
+                        <Group.Cell header required>
+                            Label
                         </Group.Cell>
-                        <Group.Cell size={10}></Group.Cell>
+                        <Group.Cell size={4}>
+                            <FormControl />
+                        </Group.Cell>
+                        <Group.Cell header required></Group.Cell>
+                        <Group.Cell size={4}></Group.Cell>
                     </Group.Cell>
-                </Group.Cell>
-            </Group.Section>
+
+                    {/* Row 2 */}
+                    <Group.Cell root>
+                        <Group.Cell size={2} header></Group.Cell>
+                        <Group.Cell size={10}>
+                            <Group.Cell size={10}>
+                                <Group.Cell header></Group.Cell>
+                                <Group.Cell size={8}>
+                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={8}></Group.Cell>
+                                </Group.Cell>
+                            </Group.Cell>
+                            <Group.Cell size={10}></Group.Cell>
+                        </Group.Cell>
+                    </Group.Cell>
+                </Group.Section>
             </Group.Body>
     </Group>
     );
