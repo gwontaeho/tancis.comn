@@ -160,6 +160,12 @@ const reducer = (prev: any, action: any) => {
             next._checked = _grid.current._checked;
             return next;
         }
+        /* unCheck */
+        case "unCheck": {
+            const { _grid } = action.payload;
+            next._checked = _grid.current._checked;
+            return next;
+        }
         /* Handle Change Page */
         case "handleChangePage": {
             const { _grid } = action.payload;

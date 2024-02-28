@@ -194,30 +194,6 @@ export const Temp = () => {
         },
     });
 
-    const form2 = useForm({
-        defaultSchema: {
-            id: "test",
-            schema: {
-                text: { label: "text", type: "text" },
-                date: { label: "date", type: "date" },
-                select: { label: "select", type: "select", area: "currCd", viewType: "label" },
-                radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
-
-                checkbox: {
-                    label: "checkbox",
-                    type: "checkbox",
-                    area: "comnCd",
-                    comnCd: "COM_0100",
-                    viewType: "both",
-                },
-                code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
-            },
-        },
-        defaultValues: {
-            radio: "KRW",
-        },
-    });
-
     const {
         grid,
         getData,
@@ -244,6 +220,7 @@ export const Temp = () => {
         validate,
         exportExcel,
         importExcel,
+        unCheck,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -404,7 +381,9 @@ export const Temp = () => {
                                 <Group.Cell>
                                     <button onClick={() => console.log(validate())}>validate</button>
                                 </Group.Cell>
-                                <Group.Cell></Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => unCheck()}>un check all</button>
+                                </Group.Cell>
                                 <Group.Cell></Group.Cell>
                                 <Group.Cell></Group.Cell>
                                 <Group.Cell></Group.Cell>

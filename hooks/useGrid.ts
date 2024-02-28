@@ -190,7 +190,9 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._handleSize?.(next);
     };
 
-    const unCheck = () => {};
+    const unCheck = () => {
+        _grid.current._unCheck();
+    };
     const unSelectRow = () => {};
     const unSelectCell = () => {};
 
@@ -278,6 +280,8 @@ export const useGrid = (props: UseGridProps) => {
         isChecked,
         isSelectedRow,
         isSelectedCell,
+
+        unCheck,
 
         addRow,
         deleteRow,
