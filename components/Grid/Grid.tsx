@@ -111,8 +111,6 @@ export const Grid = (props: {
             .join(" ");
     })();
 
-    console.log(_options.height);
-
     return (
         <div className="flex flex-col w-full">
             {/* Top Buttons */}
