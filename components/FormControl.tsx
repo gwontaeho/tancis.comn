@@ -227,14 +227,6 @@ export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
             {props.edit !== false && invalid && (
                 <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
             )}
-
-            {/* Message */}
-            {props.edit !== false && message && <div className="uf-message">{t(message)}</div>}
-
-            {/* Invalid message */}
-            {props.edit !== false && invalid && (
-                <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
-            )}
         </div>
     );
 });

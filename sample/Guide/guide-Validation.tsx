@@ -228,8 +228,8 @@ export const GuideValidation = () => {
                                         <Button
                                             onClick={() => {
                                                 //form.smpl.setValues({ start: "2020-01-01", end: "2020-01-01" });
-                                                form.smpl.setEditable(false);
-                                                //handler.saveSmpl();
+                                                //form.smpl.setEditable(false);
+                                                handler.saveSmpl();
                                             }}
                                         >
                                             오류검증
