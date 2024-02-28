@@ -383,6 +383,8 @@ const useInitialize = (props: any) => {
                         const bindingValue = row[binding];
                         const rules = _grid.current._rule[binding];
 
+                        console.log(rules);
+
                         for (let i = 0; i < rules.length; i++) {
                             let invalid = false;
                             const { value, type } = rules[i];
@@ -397,10 +399,10 @@ const useInitialize = (props: any) => {
                                     invalid = bindingValue > value;
                                     break;
                                 case "minLength":
-                                    invalid = bindingValue.length < value;
+                                    invalid = bindingValue?.length < value;
                                     break;
                                 case "maxLength":
-                                    invalid = bindingValue.length > value;
+                                    invalid = bindingValue?.length > value;
                                     break;
                                 case "pattern":
                                     invalid = !value.test(bindingValue);
@@ -416,7 +418,7 @@ const useInitialize = (props: any) => {
                                     ...rules[i],
                                     binding,
                                     label: labels[binding],
-                                    value: bindingValue,
+                                    input: bindingValue,
                                     row: row.__index + 1,
                                 });
                             }
@@ -495,10 +497,10 @@ const getValidationArray = (o: any) => {
                         message = "msg.com.00009";
                         break;
                     case "pattern":
-                        message = "msg.com.000010";
+                        message = "msg.com.00010";
                         break;
                     case "validate":
-                        message = "msg.com.000011";
+                        message = "msg.com.00011";
                         break;
                     default:
                         break;

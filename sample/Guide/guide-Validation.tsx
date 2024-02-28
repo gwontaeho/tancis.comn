@@ -42,10 +42,22 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
         { cells: [{ header: "code", binding: "code", required: true, width: "2*" }] },
     ],
     body: [
-        { cells: [{ binding: "text", type: "text", required: true }] },
-        { cells: [{ binding: "number", type: "number", required: true }] },
-        { cells: [{ binding: "date", type: "date", required: true }] },
-        { cells: [{ binding: "select", type: "select", options: code, required: true }] },
+        { cells: [{ binding: "text", type: "text", required: true, minLength: 3, maxLength: 5 }] },
+        { cells: [{ binding: "number", type: "number", required: true, min: 10, max: 20 }] },
+        { cells: [{ binding: "date", type: "date", required: true, min: "2024-03-01" }] },
+        {
+            cells: [
+                {
+                    binding: "select",
+                    type: "select",
+                    options: code,
+                    required: true,
+                    validate: (value: any) => {
+                        return value === "Y";
+                    },
+                },
+            ],
+        },
         { cells: [{ binding: "checkbox", type: "checkbox", options: code, required: true }] },
         { cells: [{ binding: "radio", type: "radio", options: code, required: true }] },
         { cells: [{ binding: "code", type: "code", area: "comnCd", comnCd: "CGM0055", required: true }] },
@@ -400,7 +412,6 @@ const Sample = () => {
                                                     modal.openModal({
                                                         content: <CommonErrors {...result} />,
                                                         draggable: true,
-                                                        title: "L_ERR",
                                                         size: "lg",
                                                     });
                                                 }
