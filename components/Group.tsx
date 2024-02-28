@@ -176,15 +176,15 @@ const GroupCell = (props: GroupCellProps) => {
                 end && "p-1",
                 end && "flex items-center",
                 end && !header && "bg-uf-card-background",
-                end && DIRECTION[direction],
                 end && GAP[gap],
+                end && DIRECTION[direction],
                 end && JUSTIFY_CONTENT[align],
             )}
             style={{ height }}
         >
             {React.Children.map(children, (child: any) => {
                 if (typeof child === "string") return child;
-                if (child) return React.cloneElement(child, { test: size });
+                if (child) return React.cloneElement(child);
             })}
         </div>
     );
