@@ -178,11 +178,9 @@ export const CGME0411003Q = (props: any) => {
             postMessage({ data: seltList });
             close();
         },
-        click_Grid_RpckItmAppItmList: {
-            mrn: (data: any) => {
-                postMessage({ data: [data.rowValues] });
-                close();
-            },
+        click_Grid_RpckItmAppItmList: (data: any) => {
+            postMessage({ data: [data.rowValues] });
+            close();
         },
     };
 

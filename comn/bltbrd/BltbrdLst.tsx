@@ -67,10 +67,8 @@ export const BltbrdLst = (props: any) => {
                 },
             )();
         },
-        click_Grid_BltbrdLst: {
-            lblId: (data: any) => {
-                navigate(`${URLS.bltbrdDtl}/${data.rowValues.lblId}`);
-            },
+        click_Grid_BltbrdLst: (data: any) => {
+            navigate(`${URLS.bltbrdDtl}/${data.rowValues.lblId}`);
         },
     };
 

@@ -222,11 +222,9 @@ export const CGME0411001Q = (props: any) => {
             });
         },
         // Click Grid of Repacking Item Application List !== 재포장 품목 신청서 목록 그리드 클릭 ==!
-        click_GridCell_RpckItmAppList: {
-            wrhsCd: (props: any) => {
-                const { binding, rowValues, value } = props;
-                console.log(props);
-            },
+        click_GridCell_RpckItmAppList: (props: any) => {
+            const { binding, rowValues, value } = props;
+            console.log(props);
         },
         click_GridRow_RpckItmAppList: (data: any) => {
             const { binding, rowValues, value } = props;
