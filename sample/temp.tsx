@@ -360,15 +360,17 @@ export const Temp = () => {
                             </button>
                         </Group.Row>
 
-                        <Group.Cell root={true}>
-                            <Group.Cell header={true}>qdwq</Group.Cell>
+                        <Group.Cell root>
+                            <Group.Cell header required>
+                                qdwq
+                            </Group.Cell>
                             <Group.Cell size={10}>
-                                <Group.Cell size={2} header={true}></Group.Cell>
+                                <Group.Cell size={2} header required></Group.Cell>
                                 <Group.Cell size={8} height={100}></Group.Cell>
-                                <Group.Cell size={2} header={true}></Group.Cell>
-                                <Group.Cell size={4} header={true}></Group.Cell>
+                                <Group.Cell size={2} header></Group.Cell>
+                                <Group.Cell size={4} header></Group.Cell>
                                 <Group.Cell size={4}>2</Group.Cell>
-                                <Group.Cell size={2} header={true}></Group.Cell>
+                                <Group.Cell size={2} header></Group.Cell>
                                 <Group.Cell size={8}>2</Group.Cell>
                                 <Group.Cell size={10}>
                                     <Group.Cell size={4} direction="row" gap={1}></Group.Cell>
