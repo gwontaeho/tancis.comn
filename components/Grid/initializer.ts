@@ -262,7 +262,7 @@ const useInitialize = (props: any) => {
                     break;
                 }
                 default:
-                    _grid.current[target] = value;
+                    _grid.current[`_${target}`] = value;
                     break;
             }
             dispatch({ type: "setOption", payload: { _grid, target } });

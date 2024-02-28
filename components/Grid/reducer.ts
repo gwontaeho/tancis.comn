@@ -133,7 +133,7 @@ const reducer = (prev: any, action: any) => {
         case "setOption": {
             const { _grid, target } = action.payload;
             next._body = _grid.current._body;
-            next._options[target] = _grid.current[target];
+            next._options[target] = _grid.current[`_${target}`];
             return next;
         }
         /* Handle Select Cell  */

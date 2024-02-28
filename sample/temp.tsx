@@ -61,7 +61,7 @@ const schema1: TGridSchema = {
         edit: false,
         importExcel: true,
         exportExcel: true,
-        height: 400,
+        height: 600,
         pagination: "in",
         // group: ["q", "w"],
     },
