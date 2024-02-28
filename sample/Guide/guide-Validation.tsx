@@ -187,41 +187,6 @@ export const GuideValidation = () => {
                             <Group.Body>
                                 <Group.Section>
                                     <Group.Row>
-                                        <Group.Label label="라벨"></Group.Label>
-                                        <Group.Col colSize={10} padding={0}>
-                                            <Layout direction="col" gap={0}>
-                                                <Layout direction="row" gap={0}>
-                                                    <Group.Row>
-                                                        <Group.Control
-                                                            type="text"
-                                                            labelSize={3}
-                                                            controlSize={9}
-                                                            label="라벨 1"
-                                                        />
-                                                    </Group.Row>
-                                                </Layout>
-                                                <Layout direction="row" gap={0}>
-                                                    <Group.Row>
-                                                        <Group.Control type="text" controlSize={10} label="라벨 2" />
-                                                    </Group.Row>
-                                                </Layout>
-                                                <Layout direction="row" gap={0}>
-                                                    <Group.Row>
-                                                        <Group.Control type="text" controlSize={10} label="라벨 3" />
-                                                    </Group.Row>
-                                                </Layout>
-                                                <Layout direction="row" gap={0}>
-                                                    <Group.Row>
-                                                        <Group.Control type="text" controlSize={12} />
-                                                    </Group.Row>
-                                                </Layout>
-                                            </Layout>
-                                        </Group.Col>
-                                    </Group.Row>
-                                </Group.Section>
-
-                                <Group.Section>
-                                    <Group.Row>
                                         <Group.Control {...form.smpl.schema.text} />
                                         <Group.Control {...form.smpl.schema.number} />
                                     </Group.Row>
@@ -230,7 +195,7 @@ export const GuideValidation = () => {
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control {...form.smpl.schema.password} />
-                                        <Group.Control {...form.smpl.schema.select} />
+                                        <Group.Control {...form.smpl.schema.select} select={false} />
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control {...form.smpl.schema.radio} />
