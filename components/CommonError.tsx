@@ -16,7 +16,7 @@ export const SG_ERROR_LIST: TGridSchema = {
     ],
     body: [
         {
-            cells: [{ binding: "row" }],
+            cells: [{ binding: "row", type: "number" }],
         },
         {
             cells: [{ binding: "sheet" }],
@@ -111,7 +111,7 @@ export const CommonErrors = (props: ErrorProps) => {
     };
 
     return (
-        <Page id={""} title={t(message || "")}>
+        <Page id={""} title={t("T_ERROR_LST")}>
             <Group>
                 <Group.Body>
                     <Grid {...grid.errorList.grid} data={errorData} render={render.errorList} />

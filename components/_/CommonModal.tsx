@@ -124,7 +124,7 @@ const Modal = (props: ModalProps) => {
                             },
                         )}
                     >
-                        <div className="text-lg">{title ? t(title) : url ? "" : t("L_ALT")}</div>
+                        <div className="text-lg px-2">{title ? t(title) : url ? "" : t("L_ALT")}</div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 
@@ -141,7 +141,7 @@ const Modal = (props: ModalProps) => {
                         ) : typeof content === "string" ? (
                             <pre>{t(content)}</pre>
                         ) : (
-                            <div className="flex-1">{content}</div>
+                            <div className="flex-1 px-1">{content}</div>
                         )}
                     </div>
                     {(close !== false || onConfirm !== undefined) && (
