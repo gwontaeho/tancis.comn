@@ -199,9 +199,7 @@ export const useGrid = (props: UseGridProps) => {
         let data = _grid.current._content;
 
         if (options) {
-            console.log("a");
             if (Array.isArray(options.excludes)) {
-                console.log("b");
                 data = data.filter(({ __type }: any) => {
                     return !options.excludes.includes(__type);
                 });
