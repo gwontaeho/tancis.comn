@@ -61,7 +61,7 @@ const Section = (props: SampleSectionProps) => {
     return (
         <div id={id} className="bg-uf-card-background p-4 flex flex-col flex-1 rounded gap-4">
             {title && <div className="text-[1.2rem]">{title}</div>}
-            {description && <div className="text-[1rem]">{description}</div>}
+            {description && <pre className="text-[1rem]">{description}</pre>}
             {children}
         </div>
     );

@@ -133,7 +133,7 @@ const reducer = (prev: any, action: any) => {
         case "setOption": {
             const { _grid, target } = action.payload;
             next._body = _grid.current._body;
-            next._options[target] = _grid.current[target];
+            next._options[target] = _grid.current[`_${target}`];
             return next;
         }
         /* Handle Select Cell  */
@@ -158,6 +158,24 @@ const reducer = (prev: any, action: any) => {
         case "handleCheckAll": {
             const { _grid } = action.payload;
             next._checked = _grid.current._checked;
+            return next;
+        }
+        /* unCheck */
+        case "unCheck": {
+            const { _grid } = action.payload;
+            next._checked = _grid.current._checked;
+            return next;
+        }
+        /* unCheck */
+        case "unSelectRow": {
+            const { _grid } = action.payload;
+            next._selectedRow = _grid.current._selectedRow;
+            return next;
+        }
+        /* unCheck */
+        case "unSelectCel": {
+            const { _grid } = action.payload;
+            next._selectedCel = _grid.current._selectedCel;
             return next;
         }
         /* Handle Change Page */

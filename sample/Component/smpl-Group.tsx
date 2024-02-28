@@ -1,5 +1,5 @@
 import { Sample } from "@/comn/components/_";
-import { Group, Layout } from "@/comn/components";
+import { FormControl, Group, Layout } from "@/comn/components";
 
 export const SampleGroup = () => {
     return (
@@ -123,6 +123,86 @@ const Sample = () => {
                         <Group.Col colSize={6}>col with size 6</Group.Col>
                         <Group.Label label="Label" type="text" labelSize={4} />
                     </Group.Row>
+                </Group.Section>
+            </Group.Body>
+    </Group>
+    );
+};
+
+`}</Sample.Code>
+                    </Sample.Section>
+                </Layout>
+            </Sample.Section>
+
+            <Sample.Section title="3. Group Cell">
+                <Layout direction="row">
+                    <Sample.Section title="Result">
+                        <Group>
+                            <Group.Body>
+                                <Group.Section>
+                                    {/* Row 1 */}
+                                    <Group.Cell root>
+                                        <Group.Cell header required>
+                                            Label
+                                        </Group.Cell>
+                                        <Group.Cell size={4}>
+                                            <FormControl />
+                                        </Group.Cell>
+                                        <Group.Cell header required></Group.Cell>
+                                        <Group.Cell size={4}></Group.Cell>
+                                    </Group.Cell>
+
+                                    {/* Row 2 */}
+                                    <Group.Cell root>
+                                        <Group.Cell size={2} header></Group.Cell>
+                                        <Group.Cell size={10}>
+                                            <Group.Cell size={10}>
+                                                <Group.Cell header></Group.Cell>
+                                                <Group.Cell size={8}>
+                                                    <Group.Cell size={8}></Group.Cell>
+                                                    <Group.Cell size={8}></Group.Cell>
+                                                </Group.Cell>
+                                            </Group.Cell>
+                                            <Group.Cell size={10}></Group.Cell>
+                                        </Group.Cell>
+                                    </Group.Cell>
+                                </Group.Section>
+                            </Group.Body>
+                        </Group>
+                    </Sample.Section>
+                    <Sample.Section title="Code">
+                        <Sample.Code>{`
+const Sample = () => {
+    return (
+        <Group>
+            <Group.Body>
+                <Group.Section>
+                    {/* Row 1 */}
+                    <Group.Cell root>
+                        <Group.Cell header required>
+                            Label
+                        </Group.Cell>
+                        <Group.Cell size={4}>
+                            <FormControl />
+                        </Group.Cell>
+                        <Group.Cell header required></Group.Cell>
+                        <Group.Cell size={4}></Group.Cell>
+                    </Group.Cell>
+
+                    {/* Row 2 */}
+                    <Group.Cell root>
+                        <Group.Cell size={2} header></Group.Cell>
+                        <Group.Cell size={10}>
+                            <Group.Cell size={10}>
+                                <Group.Cell header></Group.Cell>
+                                <Group.Cell size={8}>
+                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={8}></Group.Cell>
+                                </Group.Cell>
+                            </Group.Cell>
+                            <Group.Cell size={10}></Group.Cell>
+                        </Group.Cell>
+                    </Group.Cell>
                 </Group.Section>
             </Group.Body>
     </Group>

@@ -263,7 +263,7 @@ const useInitialize = (props: any) => {
                     break;
                 }
                 default:
-                    _grid.current[target] = value;
+                    _grid.current[`_${target}`] = value;
                     break;
             }
             dispatch({ type: "setOption", payload: { _grid, target } });
@@ -325,6 +325,22 @@ const useInitialize = (props: any) => {
             _grid.current._checked = _checked;
             dispatch({ type: "handleCheckAll", payload: { _grid } });
         };
+
+        _grid.current._unCheck = (target?: any) => {
+            if (target === undefined) {
+                _grid.current._checked = [];
+            }
+            dispatch({ type: "unCheck", payload: { _grid } });
+        };
+        _grid.current._unSelectRow = () => {
+            _grid.current._selectedRow = null;
+            dispatch({ type: "unSelectRow", payload: { _grid } });
+        };
+        _grid.current._unSelectCel = () => {
+            _grid.current._selectedCel = null;
+            dispatch({ type: "unSelectCel", payload: { _grid } });
+        };
+
         /* Handle Change Page */
         _grid.current._handlePage = (next: any) => {
             _grid.current._page = next;
