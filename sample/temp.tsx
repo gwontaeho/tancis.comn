@@ -221,6 +221,8 @@ export const Temp = () => {
         exportExcel,
         importExcel,
         unCheck,
+        unSelectRow,
+        unSelectCell,
     } = useGrid({
         defaultSchema: schema1,
     });
@@ -383,6 +385,12 @@ export const Temp = () => {
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => unCheck()}>un check all</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => unSelectRow()}>un select row</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => unSelectCell()}>un select cell</button>
                                 </Group.Cell>
                                 <Group.Cell></Group.Cell>
                                 <Group.Cell></Group.Cell>

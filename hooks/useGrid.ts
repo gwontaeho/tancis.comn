@@ -193,8 +193,12 @@ export const useGrid = (props: UseGridProps) => {
     const unCheck = () => {
         _grid.current._unCheck();
     };
-    const unSelectRow = () => {};
-    const unSelectCell = () => {};
+    const unSelectRow = () => {
+        _grid.current._unSelectRow();
+    };
+    const unSelectCell = () => {
+        _grid.current._unSelectCel();
+    };
 
     /* GET */
     const getData = (options?: { excludes: ("deleted" | "updated" | "added" | "origin")[] }) => {
@@ -282,6 +286,8 @@ export const useGrid = (props: UseGridProps) => {
         isSelectedCell,
 
         unCheck,
+        unSelectRow,
+        unSelectCell,
 
         addRow,
         deleteRow,

@@ -331,6 +331,14 @@ const useInitialize = (props: any) => {
             }
             dispatch({ type: "unCheck", payload: { _grid } });
         };
+        _grid.current._unSelectRow = () => {
+            _grid.current._selectedRow = null;
+            dispatch({ type: "unSelectRow", payload: { _grid } });
+        };
+        _grid.current._unSelectCel = () => {
+            _grid.current._selectedCel = null;
+            dispatch({ type: "unSelectCel", payload: { _grid } });
+        };
 
         /* Handle Change Page */
         _grid.current._handlePage = (next: any) => {
