@@ -73,6 +73,7 @@ type GroupCellProps = {
     height?: string | number;
     direction?: keyof typeof DIRECTION;
     align?: keyof typeof JUSTIFY_CONTENT;
+    required?: boolean;
 };
 
 type GroupLabelProps = FormControlProps & {
@@ -157,7 +158,17 @@ const GroupFooter = (props: GroupFooterProps) => {
 };
 
 const GroupCell = (props: GroupCellProps) => {
-    const { children, root, size = root ? 12 : 2, header, height, gap = 0, direction = "row", align = "start" } = props;
+    const {
+        children,
+        root,
+        size = root ? 12 : 2,
+        header,
+        height,
+        gap = 0,
+        direction = "row",
+        align = "start",
+        required,
+    } = props;
 
     const end = (Array.isArray(children) ? children : [children]).some((_) => {
         return _?.type?.name !== "GroupCell";
@@ -176,16 +187,17 @@ const GroupCell = (props: GroupCellProps) => {
                 end && "p-1",
                 end && "flex items-center",
                 end && !header && "bg-uf-card-background",
-                end && DIRECTION[direction],
                 end && GAP[gap],
+                end && DIRECTION[direction],
                 end && JUSTIFY_CONTENT[align],
             )}
             style={{ height }}
         >
             {React.Children.map(children, (child: any) => {
                 if (typeof child === "string") return child;
-                if (child) return React.cloneElement(child, { test: size });
+                if (child) return React.cloneElement(child);
             })}
+            {required && <span className={classNames("text-uf-error ml-0.5")}>*</span>}
         </div>
     );
 };
