@@ -3,6 +3,7 @@ import React from "react";
 /** */
 export type InputTextareaProps = {
     edit?: boolean;
+    letterCase?: "upper" | "lower";
 
     name?: string;
     value?: any;
@@ -21,6 +22,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
     (props: InputTextareaProps, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
         const {
             edit = true,
+            letterCase,
             /** input props */
             name,
             value,
@@ -47,20 +49,22 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
             }).filter(([, value]) => value !== undefined),
         );
 
-        const [_value, _setValue] = React.useState<any>(formatTextarea(value));
+        const o = { letterCase };
+
+        const [_value, _setValue] = React.useState<any>(formatTextarea(value, o));
 
         React.useEffect(() => {
             if (value === _value) return;
-            _setValue(formatTextarea(value));
+            _setValue(formatTextarea(value, o));
         }, [value]);
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
             if (maxLength !== undefined && e.target.value.length > maxLength) {
                 return;
             }
-            _setValue(e.target.value);
+            _setValue(formatTextarea(e.target.value, o));
             if (onChange) {
-                onChange(e.target.value);
+                onChange(formatTextarea(e.target.value, o));
             }
         };
 
@@ -86,6 +90,14 @@ export const formatTextarea = (v: any, o?: any) => {
     if (!v) return "";
 
     let f = String(v);
+
+    if (o?.letterCase === "upper") {
+        f = f.toUpperCase();
+    }
+
+    if (o?.letterCase === "lower") {
+        f = f.toLowerCase();
+    }
 
     return f;
 };

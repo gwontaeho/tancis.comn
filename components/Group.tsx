@@ -180,7 +180,7 @@ const GroupCell = (props: GroupCellProps) => {
                 "min-h-[2.5rem]",
                 COL_SPAN[size],
                 root && "border-x border-b first:border-t",
-                header && "bg-uf-card-header",
+                header && "bg-uf-card-header font-semibold",
                 !end && GRID_COLS[size],
                 !end && "bg-uf-border",
                 !end && "grid gap-[1px]",

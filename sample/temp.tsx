@@ -363,7 +363,9 @@ export const Temp = () => {
                             </Group.Cell>
                             <Group.Cell size={10}>
                                 <Group.Cell size={2} header required></Group.Cell>
-                                <Group.Cell size={8} height={100}></Group.Cell>
+                                <Group.Cell size={8} height={100}>
+                                    <FormControl type="textarea" letterCase="upper" />
+                                </Group.Cell>
                                 <Group.Cell size={2} header></Group.Cell>
                                 <Group.Cell size={4} header></Group.Cell>
                                 <Group.Cell size={4}>2</Group.Cell>
