@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Sample } from "@/comn/components/_";
 import { Page, Group, Layout, FormControl, Button } from "@/comn/components";
 import Prism from "prismjs";
-import { useForm, TFormSchema, useResource, usePopup } from "@/comn/hooks";
+import { useForm, TFormSchema, useResource, usePopup, useModal } from "@/comn/hooks";
 import "prismjs/themes/prism.css";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 
@@ -207,6 +207,8 @@ const SF_FORM: TFormSchema = {
 };
 
 export const SampleFormControlCode = () => {
+    const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
+
     useResource({
         defaultSchema: [
             { area: "cityCd" },
@@ -467,7 +469,21 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.schema.field29}></Group.Control>
+                                <Group.Control
+                                    type="text"
+                                    label="Company Code Detail"
+                                    value={"140521043"}
+                                    rightButton={{
+                                        icon: "search",
+                                        onClick: () => {
+                                            modal.openModal({
+                                                url: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/coCdDtl`,
+                                                params: { coTin: "140521043" },
+                                                size: "md",
+                                            });
+                                        },
+                                    }}
+                                />
                                 <Group.Label label="업체상세정보 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/CoCdDtl</Group.Any>
@@ -475,9 +491,9 @@ export const SampleFormControlCode = () => {
                             </Group.Row>
                             <Group.Row>
                                 <Group.Control {...form.schema.field30}></Group.Control>
-                                <Group.Label label="업체상세정보 코드"></Group.Label>
+                                <Group.Label label=""></Group.Label>
                                 <Group.Col>
-                                    <Group.Any>/comn/comn/ppup/CoCdDtl</Group.Any>
+                                    <Group.Any></Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>

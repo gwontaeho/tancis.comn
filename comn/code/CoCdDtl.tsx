@@ -1,41 +1,41 @@
+import { Group, Page } from "@/comn/components";
+import { useFetch, useForm, usePopup, useToast } from "@/comn/hooks";
+import { comnEnvs } from "@/comn/utils";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, usePopup, useStore, useToast } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_CO_CD_DTL } from "./services/ComnCdService";
-import { useParams } from "react-router-dom";
+import { APIS, BASE, SCHEMA_CO_CD_DTL } from "./services/ComnCdService";
 
 export const CompanyCodeDetail = (props: any) => {
     const pgeUid = "coCdDtl";
     const { t } = useTranslation();
-    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
+    const { getParams } = usePopup();
+    const { coTin } = getParams();
+
     const toast = useToast();
-    const { close, postMessage } = usePopup();
-    const { coTin } = useParams(); // Key Information of this Component Router !== 라우터에 정의된 키정보 ==!
 
     const form = {
         coCdDtl: useForm({
             defaultSchema: SCHEMA_CO_CD_DTL,
-            defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const fetch = {
         getCoCdDtl: useFetch({
-            api: (data) => APIS.getCoCdDtl(coTin),
+            api: () => APIS.getCoCdDtl(coTin),
             enabled: !!coTin,
             onSuccess: (data) => {
                 form.coCdDtl.setValues({
                     ...data.coDtoInfo.content,
                 });
             },
-            onError: (error) => {},
+            onError: () => toast.showToast({ type: "error", content: "msg.com.00025" }), // Failed to select. !== 조회가 실패하였습니다. ==!
             showToast: true,
         }),
     };
-
-    const handler = {};
+    useEffect(() => {
+        form.coCdDtl.setEditable(false);
+        fetch.getCoCdDtl.fetch();
+    }, []);
 
     return (
         <Page
@@ -52,19 +52,24 @@ export const CompanyCodeDetail = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.coCdDtl.schema.coTim}></Group.Control>
+                                <Group.Control {...form.coCdDtl.schema.coTin}></Group.Control>
+                                <Group.Control {...form.coCdDtl.schema.coTpCdNm}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
                                 <Group.Control {...form.coCdDtl.schema.coNm}></Group.Control>
+                                <Group.Control {...form.coCdDtl.schema.coAddr}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.coCdDtl.schema.rprsTelno}></Group.Control>
+                                <Group.Control {...form.coCdDtl.schema.rRprsFaxNo}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.coCdDtl.schema.rprsEml}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                     </Group.Body>
                 </Group>
             </form>
-
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button role="close" onClick={close}></Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };

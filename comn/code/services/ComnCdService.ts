@@ -296,10 +296,7 @@ export const APIS = {
     },
 
     getCoCdDtl: (data: any) => {
-        return comnUtils.getCode({
-            area: "coCdDtl",
-            keyword: data.coTin,
-        });
+        return api.get(`${process.env.REACT_APP_API_PTLI}/api/v1/ptli/intptl/comnppup/co/${data}`);
     },
 
     getHsCdLst: (data: any, page: number, size: number) => {
