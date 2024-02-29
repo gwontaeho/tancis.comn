@@ -135,7 +135,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
 
         if (next) {
             if (callback) {
-                callback(next);
+                callback({ code: next.value, label: next.label });
             }
             handleValueChange(next.value);
         } else {
