@@ -337,16 +337,6 @@ export const comnUtils = {
     /////////////////////////////////////////////////////////////////////
     // Resource
     /////////////////////////////////////////////////////////////////////
-    /**
-     *
-     * @param area Area
-     * @param comnCd Common Code
-     * @param lang Locale
-     * @returns
-     */
-    getResourceKey: (area: string, comnCd?: string, lang?: string) => {
-        return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
-    },
     getCode: async (args: {
         comnCd?: string;
         keyword?: string;
