@@ -18,7 +18,6 @@ const ALIGNS_FLEX = {
 
 type GroupProps = {
     children?: React.ReactNode;
-    bgColor?: boolean;
     flex?: keyof typeof FLEX;
 };
 
@@ -60,11 +59,6 @@ type GroupAnyProps = {
     anySize?: keyof typeof COL_SPAN;
 };
 
-/**
- *
- * CELLLLLLLL
- *
- */
 type GroupCellProps = {
     children?: React.ReactNode;
     size?: keyof typeof COL_SPAN;
