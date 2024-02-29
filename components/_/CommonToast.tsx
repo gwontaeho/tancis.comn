@@ -48,7 +48,7 @@ const Toast = (props: ToastProps) => {
     );
 };
 
-export const CommonToast = () => {
+const CommonToast = () => {
     const toast = useRecoilValue(toastState);
 
     return createPortal(
@@ -60,3 +60,5 @@ export const CommonToast = () => {
         document.body,
     );
 };
+
+export default CommonToast;
