@@ -647,20 +647,29 @@ export const comnUtils = {
             }) || []
         );
     },
+    // 배열에 추가 ( array , [ item ] )
     addArray: (arr: Array<any>, append: Array<any>) => {
         arr.push(...append);
     },
+    // 배열에 필터링 ( array , { a : 1 } )
+    // a 가 1 인 데이터만 리턴
     filterArray: (arr: Array<any>, find: { [key: string]: any }) => {
         return lodash.filter(arr, find);
     },
+    // 배열에서 검색 ( array , { a : 1 } )
+    // a 가 1 인 데이터의 index 를 리턴 ( 없으면 -1 )
     findArray: (arr: Array<any>, find: { [key: string]: any }) => {
         return lodash.findIndex(arr, find);
     },
+    // 배열에서 삭제 ( array , { a : 1 } )
+    // a 가 1 인 데이터를 찾아서 삭제
     deleteArray: (arr: Array<any>, find: { [key: string]: any }) => {
         lodash.remove(arr, (item) => {
             return lodash.findIndex([item], find) !== -1;
         });
     },
+    // 배열 수정 ( array , { a : 1 } , { a : 1 , b : 2 } )
+    // a 가 1 인 데이터를 { a : 1 , b : 2 }로 수정
     updateArray: (arr: Array<any>, find: { [key: string]: any }, update: any) => {
         let index = lodash.findIndex(arr, find);
         if (index > -1) {
