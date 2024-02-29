@@ -647,6 +647,26 @@ export const comnUtils = {
             }) || []
         );
     },
+    addArray: (arr: Array<any>, append: Array<any>) => {
+        arr.push(...append);
+    },
+    filterArray: (arr: Array<any>, find: { [key: string]: any }) => {
+        return lodash.filter(arr, find);
+    },
+    findArray: (arr: Array<any>, find: { [key: string]: any }) => {
+        return lodash.findIndex(arr, find);
+    },
+    deleteArray: (arr: Array<any>, find: { [key: string]: any }) => {
+        lodash.remove(arr, (item) => {
+            return lodash.findIndex([item], find) !== -1;
+        });
+    },
+    updateArray: (arr: Array<any>, find: { [key: string]: any }, update: any) => {
+        let index = lodash.findIndex(arr, find);
+        if (index > -1) {
+            arr[index] = update;
+        }
+    },
 };
 
 type IdbReturn = { key: string; value: any; created: Date; updated: Date } | undefined;
