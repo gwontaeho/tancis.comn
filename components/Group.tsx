@@ -57,6 +57,7 @@ type GroupAnyProps = {
     children?: React.ReactNode;
     align?: keyof typeof ALIGNS;
     anySize?: keyof typeof COL_SPAN;
+    padding?: number;
 };
 
 type GroupCellProps = {
@@ -256,12 +257,12 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 });
 
 const GroupAny = (props: GroupAnyProps) => {
-    const { children, anySize, align = "center", ...rest } = props;
+    const { children, anySize, padding = 1, align = "center", ...rest } = props;
     return (
         <>
             <div
                 className={classNames(
-                    "p-1",
+                    `p-${padding}`,
                     "flex",
                     "items-center",
                     "space-x-1",
