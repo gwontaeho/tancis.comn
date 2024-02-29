@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 
 import { resourceState } from "@/comn/features/recoil";
 import { utils, idb } from "@/comn/utils";
-import { useTheme } from "@/comn/hooks";
+import { useTheme, getResourceKey } from "@/comn/hooks";
 import lodash from "lodash";
 
 export type TOption = {
@@ -41,7 +41,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
         if (options.length) return;
         if (!area) return;
 
-        const key = utils?.getResourceKey(area, comnCd, theme.lang);
+        const key = getResourceKey(area, comnCd, theme.lang);
         if (!resource[key]) return;
         getOptionsFromIDB(key);
     }, [options, resource]);
@@ -50,7 +50,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
         if (options.length) return;
         if (!area) return;
 
-        const key = utils.getResourceKey(area, comnCd, theme.lang);
+        const key = getResourceKey(area, comnCd, theme.lang);
         if (!resource[key]) return;
         getOptionsFromIDB(key);
     }, [options, comnCd, area]);

@@ -1,43 +1,56 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { resourceState } from "@/comn/features/recoil";
-import { useTheme } from "@/comn/hooks";
+import { resourceState } from "../features/recoil";
 import { utils, idb } from "@/comn/utils";
+import { useTheme } from "@/comn/hooks";
 
 type TResource = {
     area: string;
     comnCd?: string;
 };
-
-type UseOptionsProps = {
+type UseResourceProps = {
     defaultSchema: TResource[];
 };
 
-export const useResource = (props: UseOptionsProps) => {
+/**
+ *
+ * @param area
+ * @param comnCd
+ * @param lang
+ * @returns
+ */
+export const getResourceKey = (area: string, comnCd?: string, lang?: string) => {
+    return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
+};
+
+export const useResource = (props: UseResourceProps) => {
     const { defaultSchema } = props;
 
     const { theme } = useTheme();
     const setRecource = useSetRecoilState(resourceState);
 
-    const [_resource, _setResource] = useState(() => {
-        return defaultSchema.reduce((p: any, c: any) => {
-            return { ...p, [c.area + (c.comnCd ? `:${c.comnCd}` : "")]: { area: c.area, comnCd: c.comnCd } };
+    const [_schema, _setSchema] = useState<Record<string, any>>(() => {
+        return defaultSchema.reduce((prev, { area, comnCd }) => {
+            return { ...prev, [getResourceKey(area, comnCd)]: { area, comnCd } };
         }, {});
     });
 
-    React.useEffect(() => {
+    console.log(_schema);
+
+    useEffect(() => {
         gg();
     }, [theme.lang]);
 
     const gg = async () => {
         try {
             let keys: any = [];
-            const e = Object.entries(_resource).map(([_, v]: any) => utils.getCode({ area: v.area, comnCd: v.comnCd }));
-            const r = await Promise.allSettled(e);
+            const resourceApis = Object.values(_schema).map(({ area, comnCd }) => utils.getCode({ area, comnCd }));
+
+            const r = await Promise.allSettled(resourceApis);
 
             const next = Object.fromEntries(
-                Object.entries(_resource).map(([_, v]: any, i) => {
+                Object.entries(_schema).map(([_, v]: any, i) => {
                     let data = [];
                     let options = [];
                     let reason;
@@ -69,11 +82,10 @@ export const useResource = (props: UseOptionsProps) => {
             }, {});
 
             setRecource((prev: any) => ({ ...prev, ...reduced }));
-            _setResource(next);
         } catch (error) {
             console.log(error);
         }
     };
 
-    return { resource: _resource };
+    return { resource: _schema };
 };
