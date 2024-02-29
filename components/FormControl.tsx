@@ -188,6 +188,7 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
                     }
                 })()}
                 {props.edit !== false && rightText && <span className="uf-right-text">{rightText}</span>}
+                {props.edit === false && rightText && <>&nbsp;{rightText}</>}
             </div>
 
             {props.edit !== false && rightButton && (

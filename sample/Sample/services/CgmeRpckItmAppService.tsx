@@ -121,7 +121,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: "wrhsCd", type: "code", area: "wrhsCd" }],
         },
         {
-            cells: [{ binding: "mrn" }],
+            cells: [{ binding: "mrn", rightText: "KG" }],
         },
         {
             cells: [

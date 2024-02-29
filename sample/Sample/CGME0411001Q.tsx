@@ -257,9 +257,13 @@ export const CGME0411001Q = (props: any) => {
                 dclrNo: (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
-                        <Layout direction="row" gap={1}>
-                            <FormControl edit={false} value={rowValues.msn} />
-                            <Group.Any padding={0}>KG</Group.Any>
+                        <Layout direction="col" gap={1}>
+                            <Link
+                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
+                            >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
+                            <Link
+                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
+                            >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
                         </Layout>
                     );
                 },
