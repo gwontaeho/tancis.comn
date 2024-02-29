@@ -107,12 +107,15 @@ export const Temp = () => {
     const f = useForm({ defaultSchema: FORM_SCHEMA });
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
-    const data = useMemo(() => mock({ totalElements: 66 }), []);
+    const data = useMemo(() => mock({ totalElements: 6 }), []);
     const pagingData = paging({ data, page: g.page, size: g.size });
 
     const render = {
         row: (data: any) => {
-            return data.q !== "Tom";
+            return data.text !== "Tom";
+        },
+        checkbox: (data: any) => {
+            return data.__type === "added";
         },
         cell: {
             q: (data: any) => {

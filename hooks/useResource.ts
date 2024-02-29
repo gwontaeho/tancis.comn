@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { resourceState } from "../features/recoil";
@@ -24,21 +24,62 @@ export const getResourceKey = (area: string, comnCd?: string, lang?: string) => 
     return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
 };
 
-export const useResource = (props: UseResourceProps) => {
-    const { defaultSchema } = props;
+const getResouceFromIDB = async (schema: Record<string, any>, lang: string) => {
+    return new Promise((resolve) => {
+        const request = indexedDB.open("TANCIS");
+        request.onsuccess = async () => {
+            const db = request.result;
+            const ts = db.transaction("RESOURCE", "readonly");
+            const os = ts.objectStore("RESOURCE");
 
+            const promises = Object.keys(schema).map((key) => {
+                return new Promise<any>((resolve) => {
+                    const idbKey = key + `;${lang}`;
+                    const get = os.get(idbKey);
+                    get.onsuccess = () => resolve({ key, idbKey, value: get.result });
+                    get.onerror = () => resolve({ key, idbKey, value: undefined });
+                });
+            });
+
+            const result = (await Promise.allSettled(promises)).map((_) => {
+                if (_.status === "fulfilled") return _.value;
+            });
+
+            resolve(result);
+        };
+        request.onerror = () => {
+            /* !!! */
+        };
+    });
+};
+
+export const useResource = (props: UseResourceProps) => {
+    /*
+        1. 확인
+        2. 갱신
+    */
+    const { defaultSchema } = props;
     const { theme } = useTheme();
     const setRecource = useSetRecoilState(resourceState);
-
     const [_schema, _setSchema] = useState<Record<string, any>>(() => {
         return defaultSchema.reduce((prev, { area, comnCd }) => {
             return { ...prev, [getResourceKey(area, comnCd)]: { area, comnCd } };
         }, {});
     });
 
-    console.log(_schema);
+    // const initialized = useRef(false);
+    // if (initialized.current === false) {
+    //     (async () => {
+    //         const a = await getResouceFromIDB(_schema, theme.lang);
+    //         console.log(a);
+    //     })();
+
+    //     initialized.current = true;
+    // }
 
     useEffect(() => {
+        // console.log("b");
+        // getResouceFromIDB();
         gg();
     }, [theme.lang]);
 

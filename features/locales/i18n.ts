@@ -17,6 +17,7 @@ i18n.use(HttpBackend)
         interpolation: {
             escapeValue: false,
         },
+        maxRetries: 0,
         backend: {
             loadPath: `${process.env.REACT_APP_API_PTLE}/api/v1/ptl/comn/comn/front/lang/{{lng}}`,
             customHeaders: {

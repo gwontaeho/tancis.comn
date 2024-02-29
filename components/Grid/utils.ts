@@ -272,7 +272,12 @@ const getView = (_grid: any) => {
         view = v;
     } else {
         content = _grid.current._content;
-        view = content;
+        view = content.filter((_: any) => {
+            if (_grid.current._render?.row) {
+                return _grid.current._render?.row?.(_);
+            }
+            return _;
+        });
     }
 
     let contentIndex = 0;
