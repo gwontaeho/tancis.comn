@@ -34,10 +34,12 @@ type GroupTitleProps = {
 
 type GroupBodyProps = {
     children?: React.ReactNode;
+    gap?: keyof typeof GAP;
 };
 
-type GroupSectionProps = GroupTitleProps & {
+type GroupSectionProps = {
     children?: React.ReactNode;
+    gap?: keyof typeof GAP;
 };
 
 type GroupFooterProps = {
@@ -142,14 +144,14 @@ const GroupTitle = (props: GroupTitleProps) => {
 };
 
 const GroupBody = (props: GroupBodyProps) => {
-    const { children } = props;
-    return <div className="uf-group-body">{children}</div>;
+    const { children, gap = 0 } = props;
+    return <div className={classNames("uf-group-body", GAP[gap])}>{children}</div>;
 };
 
 const GroupSection = (props: GroupSectionProps) => {
-    const { children } = props;
+    const { children, gap = 0 } = props;
 
-    return <div className="uf-group-section">{children}</div>;
+    return <div className={classNames("uf-group-section", GAP[gap])}>{children}</div>;
 };
 
 const GroupFooter = (props: GroupFooterProps) => {
@@ -185,7 +187,8 @@ const GroupCell = (props: GroupCellProps) => {
                 !end && "bg-uf-border",
                 !end && "grid gap-[1px]",
                 end && "p-1",
-                end && "flex items-center",
+                end && "flex",
+                end && direction === "row" && "items-center",
                 end && !header && "bg-uf-card-background",
                 end && GAP[gap],
                 end && DIRECTION[direction],

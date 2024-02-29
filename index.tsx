@@ -25,7 +25,6 @@ export const Base = () => {
     return (
         <RecoilProvider>
             <Router />
-
             <CommonModal />
             <CommonToast />
         </RecoilProvider>

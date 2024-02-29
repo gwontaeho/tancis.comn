@@ -1,36 +1,29 @@
+import { useEffect } from "react";
 import { useSearchParams, Outlet, useLocation } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { PopupLayout } from "./PopupLayout";
-import { useEffect } from "react";
 
-const ScrollToTop = () => {
-    // Extracts pathname property(key) from an object
+const Layout = () => {
+    const [searchParams] = useSearchParams();
     const { pathname } = useLocation();
 
-    // Automatically scrolls to top whenever pathname changes
+    const ppup = searchParams.get("ppup");
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    return null;
-};
-
-const Layout = () => {
-    const [searchParams] = useSearchParams();
-
-    const ppup = searchParams.get("ppup");
-
+    // Popup
     if (ppup === "Y")
         return (
             <PopupLayout>
-                <ScrollToTop />
                 <Outlet />
             </PopupLayout>
         );
 
+    // Main
     return (
         <MainLayout>
-            <ScrollToTop />
             <Outlet />
         </MainLayout>
     );
