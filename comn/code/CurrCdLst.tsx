@@ -84,7 +84,7 @@ export const CurrencyCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.cntyNm });
+                                postMessage({ code: value, label: rowValues.currNm, data: rowValues });
                                 close();
                             }}
                         >
