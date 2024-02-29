@@ -84,7 +84,7 @@ export const CompanyCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.coNm });
+                                postMessage({ code: value, label: rowValues.coNm, data: rowValues });
                                 close();
                             }}
                         >
