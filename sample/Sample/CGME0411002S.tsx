@@ -333,30 +333,33 @@ export const CGME0411002S = () => {
         form.rpckItmApp.setValue("test", "1111");
     }, []);
 
-    const handle_upload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-
-        const files = e.target.files || [];
-        const f = files[0];
-        const reader = new FileReader();
-        let excelData: any;
-
-        reader.onload = (e: any) => {
-            const data = e.target.result;
-            const readedData = XLSX.read(data, { type: "binary" });
-            const wsname = readedData.SheetNames[0];
-            const ws = readedData.Sheets[wsname];
-
-            /* Convert array to json*/
-            const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-            console.log(dataParse);
-
-            //setFileUploaded(dataParse);
-        };
-        reader.readAsBinaryString(f);
+    const render = {
+        grid_RpckItmApp: {
+            head: {},
+            cell: {},
+            edit: {},
+            checkbox: (row: any) => {
+                // row : 해당 row 의 데이터(rowValues)
+                // return 값이 true 이면 checkbox enabled (선택가능);
+                // return 값이 false 이면 checkbox disabled (선택불가능);
+                return row.mrn === "12345"; // row 데이터에 의한 제어 : row  데이터의 mrn 값이 12345 이면 checkbox enabled(선택가능)
+                return row.__type === "added"; // row type 에 의한 제어 : 행추가로 추가된 row 이면 checkbox enabled(선택가능)
+            },
+            radio: (row: any) => {
+                // row : 해당 row 의 데이터(rowValues)
+                // return 값이 true 이면 radio enabled (선택가능);
+                // return 값이 false 이면 radio disabled (선택불가능);
+                return row.mrn === "12345"; // row 데이터에 의한 제어 : row  데이터의 mrn 값이 12345 이면 radio enabled(선택가능)
+                return row.__type === "added"; // row type 에 의한 제어 : 행추가로 추가된 row 이면 radio enabled(선택가능)
+            },
+            row: (row: any) => {
+                // row : 해당 row 의 데이터(rowValues)
+                // return 값이 true 이면 row 보임
+                // return 값이 false 이면 row 숨김
+                return row.mrn !== "12345";
+            },
+        },
     };
-
-    const mrn = form.rpckItmApp.watch(["mrn"]);
 
     return (
         <Page
@@ -617,7 +620,7 @@ export const CGME0411002S = () => {
                      * @ 데이터 data={fetch.[fetch 명].data?.[api 리턴 vo 명]}
                      * @ 셀클릭이벤트 연결 : onCellClick={handler.[그리드 이벤트 핸들러명]}
                      */}
-                    <Grid {...grid.rpckItmAppItmList.grid} data={rpckItmAppItmList} />
+                    <Grid {...grid.rpckItmAppItmList.grid} data={rpckItmAppItmList} render={render.grid_RpckItmApp} />
                 </Group.Body>
             </Group>
 

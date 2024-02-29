@@ -67,9 +67,6 @@ export const BltbrdLst = (props: any) => {
                 },
             )();
         },
-        click_Grid_BltbrdLst: (data: any) => {
-            navigate(`${URLS.bltbrdDtl}/${data.rowValues.lblId}`);
-        },
     };
 
     const render = {
@@ -77,7 +74,7 @@ export const BltbrdLst = (props: any) => {
             cell: {
                 ttle: (props: any) => {
                     const { binding, rowValues, value } = props;
-                    return <Link to={`${URLS.bltbrdDtl}/${rowValues.id}`}>{`${value}`}</Link>;
+                    return <Link to={`${URLS.bltbrdDtl}/${rowValues.id}`}>{value}</Link>;
                 },
             },
         },
@@ -137,7 +134,6 @@ export const BltbrdLst = (props: any) => {
                         <Grid
                             {...grid.bltbrdLst.grid}
                             data={fetch.getBltbrdLst.data?.bltbrdList}
-                            onCellClick={handler.click_Grid_BltbrdLst}
                             render={render.grid_BltbrdList}
                         />
                     </Group.Section>
