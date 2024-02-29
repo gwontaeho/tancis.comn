@@ -117,7 +117,6 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         }
 
         handleValueChange(next);
-        __setValue(next);
     }, [value, __t]);
 
     /**
@@ -131,12 +130,11 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         }
 
         const next = o.options.find(({ value }) => value === e.target.value.toUpperCase());
-        __setValue(e.target.value);
 
         if (next) {
             handleValueChange(next.value);
         } else {
-            handleValueChange("");
+            handleValueChange(e.target.value);
         }
     }, 500);
 
@@ -175,18 +173,11 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         if (onChange) {
             onChange(v);
         }
-        /*
-        if (keywordInput.current) {
-            keywordInput.current.value = __value;
-        }
-        */
-    };
 
-    React.useEffect(() => {
         if (keywordInput.current) {
-            keywordInput.current.value = __value;
+            keywordInput.current.value = v;
         }
-    }, [__value]);
+    };
 
     const _label = o.options.find(({ value }) => value === _value)?.label;
 
