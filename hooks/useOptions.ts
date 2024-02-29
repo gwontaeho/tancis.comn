@@ -25,6 +25,7 @@ type UseOptionsReturn = {
     __t?: any;
     base: string;
     options: TOption[];
+    data: any[];
     hasOption: boolean;
 };
 
@@ -34,6 +35,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
     const [_options, _setOptions] = React.useState<TOption[]>([]);
+    const [_data, _setData] = React.useState<any[]>([]);
 
     const [__t, __setT] = React.useState<any>();
 
@@ -82,6 +84,9 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
                 });
             }
             _setOptions(t);
+
+            /* 임시 */
+            _setData(resource.value.data);
         } catch (error) {
             console.log(error);
         }
@@ -89,5 +94,5 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
 
     const o = options.length ? options : area ? _options : options;
 
-    return { base: ref.current.base, __t, options: o, hasOption: o.length > 0 };
+    return { base: ref.current.base, __t, options: o, hasOption: o.length > 0, data: _data };
 };

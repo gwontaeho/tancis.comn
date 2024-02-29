@@ -1,7 +1,7 @@
 import { TGridSchema, useForm } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 
-import { Page, Group, Grid, Layout } from "@/comn/components";
+import { Page, Group, Grid, Layout, FormControl } from "@/comn/components";
 import { useMemo } from "react";
 import lodash from "lodash";
 
@@ -154,7 +154,9 @@ export const Temp = () => {
                                     <Group.Cell size={2} header required>
                                         required
                                     </Group.Cell>
-                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={8}>
+                                        <FormControl {...f.schema.code} callback={(data) => console.log(data)} />
+                                    </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}></Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
