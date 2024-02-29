@@ -138,7 +138,7 @@ const Sample = () => {
                 <Layout direction="row">
                     <Sample.Section title="Result">
                         <Group>
-                            <Group.Body>
+                            <Group.Body gap={4}>
                                 <Group.Section>
                                     {/* Row 1 */}
                                     <Group.Cell root>
@@ -166,7 +166,70 @@ const Sample = () => {
                                             <Group.Cell size={10}></Group.Cell>
                                         </Group.Cell>
                                     </Group.Cell>
+
+                                    {/* Row 3 */}
+                                    <Group.Cell root>
+                                        <Group.Cell header></Group.Cell>
+                                        <Group.Cell></Group.Cell>
+                                        <Group.Cell header></Group.Cell>
+                                        <Group.Cell></Group.Cell>
+                                        <Group.Cell header></Group.Cell>
+                                        <Group.Cell></Group.Cell>
+                                    </Group.Cell>
                                 </Group.Section>
+                                <Group.Section>
+                                    <div className="flex  flex-col text-lg tracking-wider gap-2">
+                                        <div>Group.Cell은 Group.Section에 테이블 레이아웃을 만듭니다</div>
+                                        <pre>
+                                            {`Group.Cell 내부에서는 Group.Cell을 제외한 다른 Group하위 태그를 쓸 수 없습니다\n<Group.Label />, <Group.Control /> 등`}
+                                        </pre>
+                                    </div>
+                                </Group.Section>
+
+                                <Layout direction="col">
+                                    <Group.Title title="Property" titleSize={3} />
+                                    <Group.Section>
+                                        <Group.Cell root>
+                                            <Group.Cell header>NAME</Group.Cell>
+                                            <Group.Cell header>DEFAULT</Group.Cell>
+                                            <Group.Cell header size={8}>
+                                                DESCRIPTION
+                                            </Group.Cell>
+
+                                            <Group.Cell header>root</Group.Cell>
+                                            <Group.Cell></Group.Cell>
+                                            <Group.Cell size={8}>레이아웃의 부모 태그, 12 grid</Group.Cell>
+
+                                            <Group.Cell header>size</Group.Cell>
+                                            <Group.Cell>2</Group.Cell>
+                                            <Group.Cell size={8}>1 ~ 12</Group.Cell>
+
+                                            <Group.Cell header>header</Group.Cell>
+                                            <Group.Cell></Group.Cell>
+                                            <Group.Cell size={8}>배경색, 텍스트 bold</Group.Cell>
+
+                                            <Group.Cell header>required</Group.Cell>
+                                            <Group.Cell></Group.Cell>
+                                            <Group.Cell size={8}>* 표시</Group.Cell>
+
+                                            <Group.Cell header>direction</Group.Cell>
+                                            <Group.Cell>"row"</Group.Cell>
+                                            <Group.Cell size={8}>contents direction</Group.Cell>
+
+                                            <Group.Cell header>gap</Group.Cell>
+                                            <Group.Cell>0</Group.Cell>
+                                            <Group.Cell size={8}>contents gap</Group.Cell>
+
+                                            <Group.Cell header>align</Group.Cell>
+                                            <Group.Cell>start</Group.Cell>
+                                            <Group.Cell size={8}>contents align</Group.Cell>
+
+                                            <Group.Cell header>height</Group.Cell>
+                                            <Group.Cell>2.5rem : 40px</Group.Cell>
+                                            <Group.Cell size={8}>cell의 높이</Group.Cell>
+                                        </Group.Cell>
+                                    </Group.Section>
+                                </Layout>
                             </Group.Body>
                         </Group>
                     </Sample.Section>

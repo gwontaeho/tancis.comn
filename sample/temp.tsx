@@ -71,7 +71,7 @@ const GRID_SCHEMA: TGridSchema = {
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
         { colspan: 2, cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
-        { cells: [{ binding: "d", min: 5, required: true }] },
+        { cells: [{ binding: "text", min: 5, required: true }] },
     ],
 };
 
@@ -82,7 +82,6 @@ const FORM_SCHEMA = {
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
         radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
-
         checkbox: {
             label: "checkbox",
             type: "checkbox",

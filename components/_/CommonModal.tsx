@@ -157,7 +157,7 @@ const Modal = (props: ModalProps) => {
     );
 };
 
-export const CommonModal = () => {
+const CommonModal = () => {
     const modal = useRecoilValue(modalState);
 
     useEffect(() => {
@@ -173,3 +173,5 @@ export const CommonModal = () => {
         </Fragment>
     );
 };
+
+export default CommonModal;
