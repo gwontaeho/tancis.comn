@@ -152,6 +152,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
             draggable: true,
             callback: (data: any) => {
                 handleValueChange(data.code);
+                __setValue(data.code);
                 if (callback) callback(data);
                 modal.closeModal();
             },
