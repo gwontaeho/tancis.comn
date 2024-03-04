@@ -1,12 +1,11 @@
-import { Suspense } from "react";
-
 import RecoilProvider from "@/comn/features/recoil";
+import ApiProvider, { api } from "@/comn/features/apis";
 import Router from "@/comn/features/router";
 
 import CommonModal from "./components/_/CommonModal";
 import CommonToast from "./components/_/CommonToast";
 
-export { default as api } from "@/comn/features/apis";
+export { api };
 
 /**
  * # Common Base
@@ -26,9 +25,11 @@ export const Base = () => {
 
     return (
         <RecoilProvider>
-            <Router />
-            <CommonModal />
-            <CommonToast />
+            <ApiProvider>
+                <Router />
+                <CommonModal />
+                <CommonToast />
+            </ApiProvider>
         </RecoilProvider>
     );
 };

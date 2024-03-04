@@ -99,7 +99,7 @@ const Header = () => {
 
     const signOut = () => {
         console.log("Sign Out");
-        Cookies.remove("accessToken");
+        Cookies.remove("authorization");
         setAuth({
             userInfo: {},
             isSignedIn: false,

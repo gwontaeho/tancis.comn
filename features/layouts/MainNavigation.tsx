@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import { useRecoilState } from "recoil";
 import Cookies from "js-cookie";
+import { api } from "@/comn";
 
 import { authState } from "@/comn/features/recoil";
 
@@ -12,7 +13,6 @@ import { Collapse, Icon, Button } from "@/comn/components";
 import { routes } from "@/comn/features/router";
 import { routeState } from "@/comn/features/recoil";
 import { createPortal } from "react-dom";
-import axios from "axios";
 import dayjs from "dayjs";
 
 type NavItemProps = {
@@ -194,14 +194,27 @@ const Auth = () => {
                 return;
             }
 
-            const res = await axios.post(url, { id, tin });
-            const content = res.data.result.content;
-            const { accessToken, refreshToken, userInfo } = content;
+            const res = await api.post(url, { id, tin });
+            const userInfo = res.data.userInfo.content;
+            const { authorization, refreshauthorization } = res.headers;
 
-            if (accessToken)
-                Cookies.set("accessToken", accessToken.startsWith("Bearer ") ? accessToken.substr(7) : accessToken, {
-                    expires: 30,
-                });
+            if (authorization) {
+                Cookies.set(
+                    "authorization",
+                    authorization.startsWith("Bearer ") ? authorization.substr(7) : authorization,
+                    {
+                        expires: 30,
+                    },
+                );
+
+                Cookies.set(
+                    "refreshauthorization",
+                    refreshauthorization.startsWith("Bearer ") ? refreshauthorization.substr(7) : refreshauthorization,
+                    {
+                        expires: 30,
+                    },
+                );
+            }
 
             setAuth({ isSignedIn: true, userInfo, signedAt: new Date() });
             setOpen(false);
