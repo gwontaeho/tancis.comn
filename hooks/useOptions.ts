@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { useRecoilState } from "recoil";
 
 import { resourceState } from "@/comn/features/recoil";
-import { utils, idb } from "@/comn/utils";
+import { utils } from "@/comn/utils";
 import { useTheme, getResourceKey } from "@/comn/hooks";
 import lodash from "lodash";
 
@@ -44,53 +44,36 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
         if (!area) return;
 
         const key = getResourceKey(area, comnCd, theme.lang);
-        if (!resource[key]) return;
-        getOptionsFromIDB(key);
-    }, [options, resource]);
+        const _ = resource[key];
+        if (!_) return;
+        if (ref.current.key === key) return;
 
-    React.useEffect(() => {
-        if (options.length) return;
-        if (!area) return;
+        ref.current.key = key;
 
-        const key = getResourceKey(area, comnCd, theme.lang);
-        if (!resource[key]) return;
-        getOptionsFromIDB(key);
-    }, [options, comnCd, area]);
+        let ro = _.value.map((code: any) => ({
+            label: utils.getCodeLabel(area, code),
+            value: utils.getCodeValue(area, code),
+        }));
 
-    const getOptionsFromIDB = async (key: string) => {
-        try {
-            const resource = await idb.get("TANCIS", "RESOURCE", key);
-            if (!resource) return;
-            if (ref.current.key === resource.key) return;
-
-            ref.current.key = resource.key;
-            __setT(new Date());
-
-            let t = [...resource.value.options];
-
-            if (excludes) {
-                t = t.filter((item: any) => {
-                    return lodash.indexOf(excludes, item.value) === -1;
-                });
-            }
-
-            if (includes) {
-                t = t.concat(includes);
-            }
-
-            if (filter) {
-                t = t.filter((item: any) => {
-                    return filter(item);
-                });
-            }
-            _setOptions(t);
-
-            /* 임시 */
-            _setData(resource.value.data);
-        } catch (error) {
-            console.log(error);
+        if (excludes) {
+            ro = ro.filter((item: any) => {
+                return lodash.indexOf(excludes, item.value) === -1;
+            });
         }
-    };
+
+        if (includes) {
+            ro = ro.concat(includes);
+        }
+
+        if (filter) {
+            ro = ro.filter((item: any) => {
+                return filter(item);
+            });
+        }
+
+        _setOptions(ro);
+        _setData(resource.value);
+    }, [options, resource, area, comnCd, theme.lang]);
 
     const o = options.length ? options : area ? _options : options;
 
