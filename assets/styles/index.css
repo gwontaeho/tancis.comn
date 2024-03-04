@@ -397,27 +397,3 @@ pre {
 .sun-editor-editable {
     padding: 4px !important;
 }
-/*
-.uf-group-row .uf-group-row {
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-left-width: 0px;
-}
-
-.uf-group-row .flex-row:last-child .uf-group-row {
-    border-bottom-width: 0px;
-}
-
-@media screen and (max-width: 640px) {
-    .uf-group-row .uf-group-row {
-        border-top-width: 1px;
-        border-left-width: 0px;
-        border-bottom-width: 0px;
-    }
-
-    .uf-group-row .flex-row:last-child .uf-group-row {
-        border-top-width: 1px;
-        border-bottom-width: 0px;
-    }
-}
-*/
