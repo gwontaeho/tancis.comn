@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { resourceState } from "../features/recoil";
-import { utils, idb } from "@/comn/utils";
+import { utils } from "@/comn/utils";
 import { useTheme } from "@/comn/hooks";
 
 type TResource = {
@@ -184,5 +184,5 @@ export const useResource = (props: UseResourceProps) => {
         })();
     }, [theme.lang]);
 
-    return {};
+    return null;
 };
