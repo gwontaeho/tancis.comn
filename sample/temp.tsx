@@ -125,6 +125,18 @@ export const Temp = () => {
         },
         cell: {
             q: (data: any) => {
+                console.log("a");
+                return (
+                    <Layout>
+                        <div>{data.rowValues.q}-</div>
+                        <div>{data.rowValues.q}-</div>
+                        <div>{data.rowValues.q}</div>
+                    </Layout>
+                );
+            },
+        },
+        edit: {
+            q: (data: any) => {
                 return (
                     <Layout>
                         <div>{data.rowValues.q}-</div>

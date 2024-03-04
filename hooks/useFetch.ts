@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef } from "react";
 import lodash from "lodash";
 import { useToast } from "@/comn/hooks";
 
-const initializerArg = (initialData: any) => {
+const createInitialState = (initialData: any) => {
     return {
         data: initialData,
         isLoading: false,
@@ -22,7 +22,7 @@ const reducer = (state: any, action: any) => {
     }
 };
 
-type TApi = (...variables: any) => any;
+type TApi = (...args: any) => any;
 
 type UseFetchProps = {
     api: TApi | TApi[];
@@ -49,15 +49,14 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     const toast = useToast();
     const _showToast = useRef(showToast);
 
-    const isArray = Array.isArray(api);
-
+    const multi = Array.isArray(api);
     const keyRef = useRef<any>({});
     const statusRef = useRef({ isLoading: false, isSuccess: false, isError: false });
 
     const [{ data, isLoading, isSuccess, isError }, dispatch] = useReducer(
         reducer,
-        isArray ? Array(api.length).fill(undefined) : undefined,
-        initializerArg,
+        multi ? Array(api.length).fill(undefined) : undefined,
+        createInitialState,
     );
 
     useEffect(() => {
@@ -73,16 +72,16 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
     const fetch = async (...variables: any) => {
         if (statusRef.current.isLoading) return;
+
         try {
             statusRef.current.isLoading = true;
             if (notifyStatus) dispatch({ type: "loading" });
 
-            const fn = () => (isArray ? Promise.all(api.map((_) => _(...variables))) : api(...variables));
-            const res = await fn();
+            const response = await (multi ? Promise.all(api.map((_) => _(...variables))) : api(...variables));
             const current = new Date();
 
-            const data = isArray
-                ? res.map((_: any) => {
+            const data = multi
+                ? response.map((_: any) => {
                       if (typeof _ !== "object") return _;
                       const { data } = _;
 
@@ -92,10 +91,10 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
                           }),
                       );
                   })
-                : typeof res !== "object"
-                  ? res
+                : typeof response !== "object"
+                  ? response
                   : Object.fromEntries(
-                        Object.entries(res.data).map(([k, v]: any) => {
+                        Object.entries(response.data).map(([k, v]: any) => {
                             return [k, { ...v, __t: current }];
                         }),
                     );
@@ -115,7 +114,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
             if (notifyStatus) dispatch({ type: "error" });
 
             if (onError) {
-                if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred " });
+                if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred" });
                 onError(error);
             }
 
