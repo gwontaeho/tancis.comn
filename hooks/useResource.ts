@@ -67,22 +67,24 @@ export const useResource = (props: UseResourceProps) => {
         }, {});
     });
 
-    const initialized = useRef(false);
-    if (initialized.current === false) {
-        (async () => {
-            const a = await getResouceFromIDB(_schema, theme.lang);
+    // const initialized = useRef(false);
+    // if (initialized.current === false) {
+    //     (async () => {
+    //         const a = await getResouceFromIDB(_schema, theme.lang);
 
-            const noValue = a.filter(({ value }: any) => value === undefined);
-            // const apis = noValue.map(({schema}:any) => )
+    //         const noValue = a.filter(({ value }: any) => value === undefined);
+    //         const apis = await Promise.allSettled(
+    //             noValue.map(({ schema: { area, comnCd } }: any) => utils.getCode({ area, comnCd })),
+    //         );
+    //         console.log(apis);
+    //         console.log(noValue);
+    //     })();
 
-            console.log(noValue);
-        })();
-
-        initialized.current = true;
-    }
+    //     initialized.current = true;
+    // }
 
     useEffect(() => {
-        console.log("b");
+        // console.log("b");
         // getResouceFromIDB();
         gg();
     }, [theme.lang]);
