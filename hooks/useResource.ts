@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { resourceState } from "../features/recoil";
-import { utils } from "@/comn/utils";
-import { useTheme } from "@/comn/hooks";
+import { useTheme } from "../hooks";
+import { utils } from "../utils";
+
+const RENEWAL_CYCLE = 10000;
 
 type TResource = {
     area: string;
@@ -39,7 +41,6 @@ export const useResource = (props: UseResourceProps) => {
 
     useEffect(() => {
         (async () => {
-            /* Get Resource From IDB */
             const getResouceFromIDB = async () => {
                 return new Promise<any>((resolve1) => {
                     const request = indexedDB.open("TANCIS");
@@ -95,16 +96,17 @@ export const useResource = (props: UseResourceProps) => {
 
             let resources = hasValue
                 .filter(({ value }: any) => {
-                    return current.getTime() - value.updated.getTime() <= 10000;
+                    return current.getTime() - value.updated.getTime() <= RENEWAL_CYCLE;
                 })
                 .map(({ value }: any) => value);
 
             const shouldCreate = resourceFromIDB
                 .filter(({ value }: any) => value === undefined)
                 .map((_: any) => ({ ..._, type: "create" }));
+
             const shouldUpdate = hasValue
                 .filter(({ value }: any) => {
-                    return current.getTime() - value.updated.getTime() > 10000;
+                    return current.getTime() - value.updated.getTime() > RENEWAL_CYCLE;
                 })
                 .map((_: any) => ({ ..._, type: "update" }));
 
