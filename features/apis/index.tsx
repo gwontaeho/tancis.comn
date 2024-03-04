@@ -2,7 +2,9 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSetRecoilState } from "recoil";
+import lodash from "lodash";
 import { authState } from "@/comn/features/recoil";
+import { useToast } from "@/comn/hooks";
 
 const api = axios.create({ baseURL: process.env.REACT_APP_API_PTLI });
 
@@ -59,6 +61,7 @@ api.defaults.paramsSerializer = (paramObj) => {
 */
 const ApiProvider = ({ children }: { children?: React.ReactNode }) => {
     const setAuth = useSetRecoilState(authState);
+    const { showToast } = useToast();
     const _ = useRef(false);
 
     useEffect(() => {
@@ -89,6 +92,12 @@ const ApiProvider = ({ children }: { children?: React.ReactNode }) => {
                             isSignedIn: false,
                             signedAt: null,
                         });
+
+                        /* 임시 */
+                    } else if (error.response?.data?.errorCode?.content === "NO_USER") {
+                        console.log(error.response?.data?.errorCode?.content);
+                    } else {
+                        showToast({ content: "로그인이 필요한 요청입니다", type: "error" });
                     }
                 }
 
