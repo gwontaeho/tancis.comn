@@ -37,7 +37,7 @@ import { CommonErrors } from "@/comn/components";
  * !== 재포장 BL(품목) 신고서 등록 ==!
  */
 export const CGME0411002S = () => {
-    const { resource } = useResource({
+    useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "CAG_0018" },
             { area: "comnCd", comnCd: "CAG_0006" },
@@ -557,39 +557,36 @@ export const CGME0411002S = () => {
                                 {...excel.schema.excel1}
                                 template="excel/template"
                                 onUpload={(file) => {
-                                    excel
-                                        .excelToJson(file, 0)
-                                        .then((data) => {
-                                            const validData = excel.validateForGrid(
-                                                data,
-                                                SG_RPCK_ITM_APP_ITM_LIST.body,
-                                                resource,
-                                                {
-                                                    key1: { binding: "mrn", header: "L_MRN" },
-                                                    key2: { binding: "msn", header: "L_MSN" },
-                                                    key3: { binding: "hsn", header: "L_HSN" },
-                                                },
-                                            );
-
-                                            console.log(validData);
-                                            if (validData.result === "fail") {
-                                                modal.openModal({
-                                                    content: <CommonErrors {...validData.error} />,
-                                                    draggable: true,
-                                                    title: "L_ERR",
-                                                    size: "lg",
-                                                });
-                                                return;
-                                            }
-
-                                            modal.openModal({ content: "msg.com.00016" });
-
-                                            grid.rpckItmAppItmList.setData(data.data);
-                                        })
-                                        .catch((err) => {
-                                            console.log(err);
-                                            modal.openModal({ content: err.error.message });
-                                        });
+                                    // excel
+                                    //     .excelToJson(file, 0)
+                                    //     .then((data) => {
+                                    //         const validData = excel.validateForGrid(
+                                    //             data,
+                                    //             SG_RPCK_ITM_APP_ITM_LIST.body,
+                                    //             resource,
+                                    //             {
+                                    //                 key1: { binding: "mrn", header: "L_MRN" },
+                                    //                 key2: { binding: "msn", header: "L_MSN" },
+                                    //                 key3: { binding: "hsn", header: "L_HSN" },
+                                    //             },
+                                    //         );
+                                    //         console.log(validData);
+                                    //         if (validData.result === "fail") {
+                                    //             modal.openModal({
+                                    //                 content: <CommonErrors {...validData.error} />,
+                                    //                 draggable: true,
+                                    //                 title: "L_ERR",
+                                    //                 size: "lg",
+                                    //             });
+                                    //             return;
+                                    //         }
+                                    //         modal.openModal({ content: "msg.com.00016" });
+                                    //         grid.rpckItmAppItmList.setData(data.data);
+                                    //     })
+                                    //     .catch((err) => {
+                                    //         console.log(err);
+                                    //         modal.openModal({ content: err.error.message });
+                                    //     });
                                 }}
                             />
                         </Layout.Left>

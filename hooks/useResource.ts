@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from "react";
-import { useSetRecoilState, useRecoilState, useRecoilCallback } from "recoil";
+import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 
 import { resourceState } from "../features/recoil";
 import { utils, idb } from "@/comn/utils";
@@ -24,66 +24,85 @@ export const getResourceKey = (area: string, comnCd?: string, lang?: string) => 
     return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
 };
 
-const getResouceFromIDB = async (schema: Record<string, any>, lang: string) => {
-    return new Promise<any>((resolve) => {
-        const request = indexedDB.open("TANCIS");
-
-        request.onupgradeneeded = () => {
-            const db = request.result;
-            db.createObjectStore("RESOURCE", { keyPath: "key" });
-        };
-
-        request.onsuccess = async () => {
-            try {
-                const db = request.result;
-                const ts = db.transaction("RESOURCE", "readonly");
-                const os = ts.objectStore("RESOURCE");
-                const promises = Object.keys(schema).map((key) => {
-                    return new Promise<any>((resolve) => {
-                        const idbKey = key + `;${lang}`;
-                        const get = os.get(idbKey);
-
-                        get.onsuccess = () => resolve({ key, idbKey, schema: schema[key], value: get.result });
-                        get.onerror = () => resolve({ key, idbKey, schema: schema[key], value: undefined });
-                    });
-                });
-
-                resolve(
-                    (await Promise.allSettled(promises)).map((_) => {
-                        if (_.status === "fulfilled") return _.value;
-                    }),
-                );
-            } catch (error) {
-                indexedDB.deleteDatabase("TANCIS");
-            }
-        };
-        request.onerror = () => {
-            /* !!! */
-        };
-    });
-};
-
 export const useResource = (props: UseResourceProps) => {
     /*
         1. 확인
         2. 갱신
     */
     const { defaultSchema } = props;
+    const _schema: Record<string, any> = defaultSchema.reduce((prev, { area, comnCd }) => {
+        return { ...prev, [getResourceKey(area, comnCd)]: { area, comnCd } };
+    }, {});
+
     const { theme } = useTheme();
-    const [a, setRecource] = useRecoilState(resourceState);
-    const [_schema, _setSchema] = useState<Record<string, any>>(() => {
-        return defaultSchema.reduce((prev, { area, comnCd }) => {
-            return { ...prev, [getResourceKey(area, comnCd)]: { area, comnCd } };
-        }, {});
-    });
+    const [, setRecource] = useRecoilState(resourceState);
 
-    // const initialized = useRef(false);
-    // if (initialized.current === false) {
+    // useEffect(() => {
     //     (async () => {
-    //         const resourceFromIDB = await getResouceFromIDB(_schema, theme.lang);
+    //         /* Get Resource From IDB */
+    //         const getResouceFromIDB = async () => {
+    //             return new Promise<any>((resolve) => {
+    //                 const request = indexedDB.open("TANCIS");
 
-    //         const e = resourceFromIDB.filter(({ value }: any) => value !== undefined);
-    //         const n = resourceFromIDB.filter(({ value }: any) => value === undefined);
+    //                 request.onupgradeneeded = () => {
+    //                     const db = request.result;
+    //                     db.createObjectStore("RESOURCE", { keyPath: "key" });
+    //                 };
+
+    //                 request.onsuccess = async () => {
+    //                     try {
+    //                         const db = request.result;
+    //                         const ts = db.transaction("RESOURCE", "readonly");
+    //                         const os = ts.objectStore("RESOURCE");
+    //                         const promises = Object.keys(_schema).map((key) => {
+    //                             return new Promise<any>((resolve) => {
+    //                                 const idbKey = key + `;${theme.lang}`;
+    //                                 const get = os.get(idbKey);
+
+    //                                 get.onsuccess = () => {
+    //                                     const record = {
+    //                                         key,
+    //                                         idbKey,
+    //                                         schema: _schema[key],
+    //                                         value: get.result,
+    //                                     };
+
+    //                                     resolve(record);
+    //                                 };
+    //                                 get.onerror = () => {
+    //                                     /* !!! */
+    //                                 };
+    //                             });
+    //                         });
+
+    //                         resolve(
+    //                             (await Promise.allSettled(promises)).map((_) => {
+    //                                 if (_.status === "fulfilled") return _.value;
+    //                             }),
+    //                         );
+    //                     } catch (error) {}
+    //                 };
+    //                 request.onerror = () => {
+    //                     /* !!! */
+    //                 };
+    //             });
+    //         };
+
+    //         const current = new Date();
+    //         const resourceFromIDB = await getResouceFromIDB();
+
+    //         const hasValue = resourceFromIDB.filter(({ value }: any) => value !== undefined);
+
+    //         const shouldFetch = resourceFromIDB.filter(({ value }: any) => value === undefined);
+    //         const shouldUpdate = hasValue.filter(({ value }: any) => current.getTime() - value.updated.getTime() > 500);
+
+    //         let resources = hasValue
+    //             .filter(({ value }: any) => current.getTime() - value.updated.getTime() <= 500)
+    //             .map(({ value }: any) => value);
+
+    //         console.log(shouldUpdate);
+
+    //         const n = [...shouldFetch, ...shouldUpdate];
 
     //         if (n.length) {
     //             const nr = (
@@ -104,7 +123,7 @@ export const useResource = (props: UseResourceProps) => {
 
     //             if (nr.length) {
     //                 const addResourceToIDB = () => {
-    //                     return new Promise((resolve) => {
+    //                     return new Promise<any>((resolve) => {
     //                         const request = indexedDB.open("TANCIS");
     //                         request.onsuccess = async () => {
     //                             try {
@@ -113,40 +132,41 @@ export const useResource = (props: UseResourceProps) => {
     //                                 const os = ts.objectStore("RESOURCE");
     //                                 const promises = nr.map(({ idbKey, value }) => {
     //                                     return new Promise<any>((resolve) => {
-    //                                         const record = { key: idbKey, value };
+    //                                         const date = new Date();
+    //                                         const record = { key: idbKey, created: date, updated: date, value };
     //                                         const add = os.add(record);
     //                                         add.onsuccess = () => resolve(record);
     //                                     });
     //                                 });
+
     //                                 resolve(
     //                                     (await Promise.allSettled(promises)).map((_) => {
     //                                         if (_.status === "fulfilled") return _.value;
     //                                     }),
     //                                 );
-    //                             } catch (error) {
-    //                                 indexedDB.deleteDatabase("TANCIS");
-    //                             }
+    //                             } catch (error) {}
     //                         };
     //                     });
     //                 };
-    //                 const a = await addResourceToIDB();
-    //                 console.log(a);
+
+    //                 resources = [...resources, ...(await addResourceToIDB())];
     //             }
-
-    //             // console.log(nr);
     //         }
-    //     })();
+    //         console.log(resources);
 
-    //     initialized.current = true;
-    // }
+    //         console.log(
+    //             resources.reduce((prev: any, curr: any) => {
+    //                 return { ...prev, [curr.key]: curr };
+    //             }, {}),
+    //         );
+    //     })();
+    // }, []);
 
     useEffect(() => {
         // console.log("b");
         // getResouceFromIDB();
         gg();
-    }, []);
-
-    console.log();
+    }, [theme.lang]);
 
     const gg = async () => {
         try {
@@ -193,5 +213,5 @@ export const useResource = (props: UseResourceProps) => {
         }
     };
 
-    return { resource: _schema };
+    return {};
 };
