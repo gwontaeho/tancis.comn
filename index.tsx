@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import RecoilProvider from "@/comn/features/recoil";
 import Router from "@/comn/features/router";
 
