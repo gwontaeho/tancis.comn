@@ -65,14 +65,12 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
     }, [value]);
 
     React.useEffect(() => {
-        /*
         if ((all === undefined || all === false) && select === false && value === undefined && o.options.length > 0) {
             _setValue(o.options[0].value);
             if (onChange) {
                 onChange(o.options[0].value);
             }
         }
-        */
     }, [o]);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
