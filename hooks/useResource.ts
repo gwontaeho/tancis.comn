@@ -25,27 +25,27 @@ export const getResourceKey = (area: string, comnCd?: string, lang?: string) => 
 };
 
 const getResouceFromIDB = async (schema: Record<string, any>, lang: string) => {
-    return new Promise((resolve) => {
+    return new Promise<any>((resolve) => {
         const request = indexedDB.open("TANCIS");
         request.onsuccess = async () => {
             const db = request.result;
             const ts = db.transaction("RESOURCE", "readonly");
             const os = ts.objectStore("RESOURCE");
-
             const promises = Object.keys(schema).map((key) => {
                 return new Promise<any>((resolve) => {
                     const idbKey = key + `;${lang}`;
                     const get = os.get(idbKey);
-                    get.onsuccess = () => resolve({ key, idbKey, value: get.result });
-                    get.onerror = () => resolve({ key, idbKey, value: undefined });
+
+                    get.onsuccess = () => resolve({ key, idbKey, schema: schema[key], value: get.result });
+                    get.onerror = () => resolve({ key, idbKey, schema: schema[key], value: undefined });
                 });
             });
 
-            const result = (await Promise.allSettled(promises)).map((_) => {
-                if (_.status === "fulfilled") return _.value;
-            });
-
-            resolve(result);
+            resolve(
+                (await Promise.allSettled(promises)).map((_) => {
+                    if (_.status === "fulfilled") return _.value;
+                }),
+            );
         };
         request.onerror = () => {
             /* !!! */
@@ -71,7 +71,13 @@ export const useResource = (props: UseResourceProps) => {
     // if (initialized.current === false) {
     //     (async () => {
     //         const a = await getResouceFromIDB(_schema, theme.lang);
-    //         console.log(a);
+
+    //         const noValue = a.filter(({ value }: any) => value === undefined);
+    //         const apis = await Promise.allSettled(
+    //             noValue.map(({ schema: { area, comnCd } }: any) => utils.getCode({ area, comnCd })),
+    //         );
+    //         console.log(apis);
+    //         console.log(noValue);
     //     })();
 
     //     initialized.current = true;

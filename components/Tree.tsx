@@ -1,8 +1,9 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import { v4 as uuid } from "uuid";
 import { Collapse, Icon } from "@/comn/components";
 import { WIDTH } from "../features/foundation";
+import lodash from "lodash";
 
 type TreeItemProps = {
     children?: React.ReactNode;
@@ -87,7 +88,7 @@ const TreeItem = (props: TreeItemProps) => {
 export const Tree = (props: TreeProps) => {
     const { _tree, data, onClick, size = "full", height } = props;
 
-    // const [data, setData] = useState(_tree.current._data);
+    const [_data, _setData] = useState(data);
     // if (_tree.current._setData === undefined) {
     //     _tree.current._setData = setData;
     // }
@@ -98,6 +99,11 @@ export const Tree = (props: TreeProps) => {
     // const ref = useCallback((ref: any) => {
     //     if (ref) _tree.current._ref = ref;
     // }, []);
+
+    useEffect(() => {
+        if (lodash.isEqual(_data, data)) return;
+        _setData(data);
+    }, [data]);
 
     const mapper = (data: any, parent: any = []) => {
         return data.map((_: any) => {
@@ -111,13 +117,16 @@ export const Tree = (props: TreeProps) => {
         });
     };
 
+    /* */
+    const _ = useMemo(() => mapper(_data), [_data]);
+
     return (
         <ul
             // ref={ref}
             className={classNames("overflow-auto p-4", WIDTH[size])}
             style={{ height }}
         >
-            {mapper(data)?.map((child: any) => {
+            {_.map((child: any) => {
                 return <TreeItem _key={child.key} onClick={onClick} {...child} data={child} />;
             })}
         </ul>
