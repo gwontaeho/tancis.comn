@@ -1,8 +1,8 @@
 import { TGridSchema, useForm } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 
-import { Page, Group, Grid, Layout, FormControl } from "@/comn/components";
-import { useMemo } from "react";
+import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
+import { useMemo, useState } from "react";
 import lodash from "lodash";
 
 const mock = ({ totalElements = 99 }) => {
@@ -104,11 +104,17 @@ export const Temp = () => {
         ],
     });
 
+    const [, setRender] = useState(0);
+
     const f = useForm({ defaultSchema: FORM_SCHEMA });
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
     const data = useMemo(() => mock({ totalElements: 6 }), []);
     const pagingData = paging({ data, page: g.page, size: g.size });
+
+    const r = () => {
+        setRender((prev) => ++prev);
+    };
 
     const render = {
         row: (data: any) => {
@@ -146,6 +152,7 @@ export const Temp = () => {
 
     return (
         <Page>
+            <Button onClick={r}>render</Button>
             <Layout>
                 <Group>
                     <Group.Header></Group.Header>
@@ -160,6 +167,7 @@ export const Temp = () => {
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.code} callback={(data) => console.log(data)} />
                                     </Group.Cell>
+
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}></Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
@@ -167,6 +175,135 @@ export const Temp = () => {
                                     <Group.Cell size={10}></Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>
+                        </Group.Section>
+
+                        <Group.Section>
+                            <Tree
+                                data={[
+                                    {
+                                        id: "1",
+                                        name: "public",
+                                        children: [
+                                            {
+                                                id: "2",
+                                                name: "assets",
+                                                children: [
+                                                    {
+                                                        id: "3",
+                                                        name: "image",
+                                                        children: [
+                                                            {
+                                                                id: "4",
+                                                                name: "aa",
+                                                            },
+                                                            {
+                                                                id: "5",
+                                                                name: "generic.png",
+                                                            },
+                                                            {
+                                                                id: "6",
+                                                                name: "shield.svg",
+                                                            },
+                                                        ],
+                                                    },
+                                                    {
+                                                        id: "7",
+                                                        name: "video",
+                                                        children: [
+                                                            {
+                                                                id: "8",
+                                                                name: "beach.mp4",
+                                                            },
+                                                            {
+                                                                id: "9",
+                                                                name: "background.map",
+                                                            },
+                                                        ],
+                                                    },
+                                                    {
+                                                        id: "10",
+                                                        name: "js",
+                                                        children: [
+                                                            {
+                                                                id: "11",
+                                                                name: "theme.js",
+                                                            },
+                                                            {
+                                                                id: "12",
+                                                                name: "theme.min.js",
+                                                            },
+                                                        ],
+                                                    },
+                                                ],
+                                            },
+                                            {
+                                                id: "13",
+                                                name: "dashboard",
+                                                children: [
+                                                    {
+                                                        id: "14",
+                                                        name: "default.html",
+                                                    },
+                                                    {
+                                                        id: "15",
+                                                        name: "analytics.html",
+                                                    },
+                                                    {
+                                                        id: "16",
+                                                        name: "crm.html",
+                                                    },
+                                                ],
+                                            },
+                                            {
+                                                id: "17",
+                                                name: "index.html",
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        id: "18",
+                                        name: "Files",
+                                        children: [
+                                            {
+                                                id: "19",
+                                                name: "build.zip",
+                                            },
+                                            {
+                                                id: "20",
+                                                name: "live-1.3.4.zip",
+                                            },
+                                            {
+                                                id: "21",
+                                                name: "app.exe",
+                                            },
+                                            {
+                                                id: "22",
+                                                name: "export.csv",
+                                            },
+                                            {
+                                                id: "23",
+                                                name: "default.pdf",
+                                            },
+                                            {
+                                                id: "24",
+                                                name: "Yellow_Coldplay.wav",
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        id: "25",
+                                        name: "package.json",
+                                    },
+                                    {
+                                        id: "26",
+                                        name: "package-lock.json",
+                                    },
+                                    {
+                                        id: "27",
+                                        name: "README.md",
+                                    },
+                                ]}
+                            />
                         </Group.Section>
                     </Group.Body>
                     <Group.Footer></Group.Footer>
