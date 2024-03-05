@@ -135,6 +135,11 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
             size: "md",
             draggable: true,
             callback: (data: any) => {
+                _setValue(data.code);
+                if (onChange) {
+                    onChange(data.code);
+                }
+
                 if (callback) callback(data);
                 modal.closeModal();
             },

@@ -215,7 +215,9 @@ export const Temp = () => {
                                 <Group.Cell root>
                                     <Group.Cell>
                                         <button onClick={() => console.log(f.getValues())}>get data</button>
-                                        <button onClick={() => console.log(f.setValue("code", "zzz"))}>get data</button>
+                                        <button onClick={() => console.log(f.setValue("select", "AED"))}>
+                                            get data
+                                        </button>
                                     </Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>
