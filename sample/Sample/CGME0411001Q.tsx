@@ -190,11 +190,11 @@ export const CGME0411001Q = (props: any) => {
      */
     const handler = {
         // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
-        getRpckItmAppList: () => {
+        getRpckItmAppList: (page: number = 0) => {
             form.rpckItmAppSrch.handleSubmit(
                 (data) => {
-                    grid.rpckItmAppList.setPage(0);
-                    fetch.getRpckItmAppList.fetch(0);
+                    grid.rpckItmAppList.setPage(page);
+                    fetch.getRpckItmAppList.fetch(page);
                 },
                 (data) => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -337,8 +337,7 @@ export const CGME0411001Q = (props: any) => {
      * !== 화면 초기화 함수 선언  ==!
      */
     useEffect(() => {
-        handler.getRpckItmAppList();
-        console.log(form.rpckItmAppSrch.getValues());
+        handler.getRpckItmAppList(pgeStore?.page);
     }, []);
 
     /*
