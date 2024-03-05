@@ -28,6 +28,25 @@ import {
 } from "./_";
 import { SEditor } from "@/comn/components";
 
+export const FormControlList = [
+    "text",
+    "number",
+    "password",
+    "select",
+    "radio",
+    "checkbox",
+    "textarea",
+    "date",
+    "time",
+    "datetime",
+    "daterange",
+    "timerange",
+    "code",
+    "file",
+    "boolean",
+    "editor",
+];
+
 export type FormControlType =
     | "text"
     | "number"
@@ -45,10 +64,6 @@ export type FormControlType =
     | "file"
     | "boolean"
     | "editor";
-
-type FormControlGroupProps = {
-    children?: React.ReactNode;
-};
 
 type TButton = {
     icon?: IconsType;

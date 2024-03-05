@@ -1,9 +1,10 @@
-import { TGridSchema, useForm } from "@/comn/hooks";
+import { TGridSchema, useFetch, useForm } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import lodash from "lodash";
+import { comnUtils } from "../utils";
 
 const mock = ({ totalElements = 99 }) => {
     return {
@@ -111,6 +112,21 @@ export const Temp = () => {
 
     const data = useMemo(() => mock({ totalElements: 6 }), []);
     const pagingData = paging({ data, page: g.page, size: g.size });
+
+    const fetch = useFetch({
+        api: () => comnUtils.getCode({ area: "currCd" }),
+    });
+
+    const test = async () => {
+        try {
+            const a = await fetch.fetch();
+            console.log(a);
+        } catch (error) {}
+    };
+
+    useEffect(() => {
+        test();
+    }, []);
 
     const r = () => {
         setRender((prev) => ++prev);

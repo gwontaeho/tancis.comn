@@ -36,7 +36,7 @@ type UseFetchProps = {
 
 type UseFetchReturn = {
     data: any;
-    fetch: (...args: any) => void;
+    fetch: (...args: any) => Promise<any>;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
