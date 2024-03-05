@@ -1,6 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
-import React from "react";
+import { forwardRef } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Icon, IconsType } from "./Icon";
@@ -28,6 +28,25 @@ import {
 } from "./_";
 import { SEditor } from "@/comn/components";
 
+export const FormControlList = [
+    "text",
+    "number",
+    "password",
+    "select",
+    "radio",
+    "checkbox",
+    "textarea",
+    "date",
+    "time",
+    "datetime",
+    "daterange",
+    "timerange",
+    "code",
+    "file",
+    "boolean",
+    "editor",
+];
+
 export type FormControlType =
     | "text"
     | "number"
@@ -45,10 +64,6 @@ export type FormControlType =
     | "file"
     | "boolean"
     | "editor";
-
-type FormControlGroupProps = {
-    children?: React.ReactNode;
-};
 
 type TButton = {
     icon?: IconsType;
@@ -137,7 +152,7 @@ export type FormControlProps = InputDaterangeProps & {
     height?: number;
 };
 
-const FormControlMain = React.forwardRef((props: any, ref) => {
+const FormControlMain = forwardRef((props: any, ref) => {
     const { type, rightButton, leftButton, rightText, getValues, ...rest } = props;
 
     return (
@@ -200,7 +215,7 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
     );
 });
 
-export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
+export const FormControl = forwardRef((props: FormControlProps, ref) => {
     const { size = "full", message, invalid, ...rest } = props;
     const { t } = useTranslation();
 

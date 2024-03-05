@@ -36,7 +36,7 @@ type UseFetchProps = {
 
 type UseFetchReturn = {
     data: any;
-    fetch: (...args: any) => void;
+    fetch: (...args: any) => Promise<any> | undefined;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -44,6 +44,10 @@ type UseFetchReturn = {
 };
 
 export const useFetch = (props: UseFetchProps): UseFetchReturn => {
+    /**
+ 
+ */
+
     const { api, key = [], enabled, showToast = false, onSuccess, onError, notifyStatus } = props;
 
     const toast = useToast();
@@ -70,56 +74,88 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         fetch();
     }, [enabled, ...key]);
 
-    const fetch = async (...variables: any) => {
+    const fetch = (...variables: any) => {
         if (statusRef.current.isLoading) return;
 
-        try {
-            statusRef.current.isLoading = true;
-            if (notifyStatus) dispatch({ type: "loading" });
+        statusRef.current.isLoading = true;
+        if (notifyStatus) dispatch({ type: "loading" });
 
-            const response = await (multi ? Promise.all(api.map((_) => _(...variables))) : api(...variables));
-            const current = new Date();
+        const current = new Date();
 
-            const data = multi
-                ? response.map((_: any) => {
-                      if (typeof _ !== "object") return _;
-                      const { data } = _;
+        if (multi) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await Promise.all(api.map((_) => _(...variables)));
+                    const data = response.map((_: any) => {
+                        if (typeof _ !== "object") return _;
+                        const { data } = _;
 
-                      return Object.fromEntries(
-                          Object.entries(data).map(([k, v]: any) => {
-                              return [k, { ...v, __t: current }];
-                          }),
-                      );
-                  })
-                : typeof response !== "object"
-                  ? response
-                  : Object.fromEntries(
-                        Object.entries(response.data).map(([k, v]: any) => {
-                            return [k, { ...v, __t: current }];
-                        }),
-                    );
+                        return Object.fromEntries(
+                            Object.entries(data).map(([k, v]: any) => {
+                                return [k, { ...v, __t: current }];
+                            }),
+                        );
+                    });
 
-            dispatch({ type: "success", payload: data });
+                    dispatch({ type: "success", payload: data });
+                    if (onSuccess) {
+                        if (_showToast.current) toast.showToast({ type: "success", content: "msg.00003" });
+                        onSuccess(data);
+                    }
+                    statusRef.current.isLoading = false;
+                    statusRef.current.isSuccess = true;
 
-            if (onSuccess) {
-                if (_showToast.current) toast.showToast({ type: "success", content: "msg.00003" });
-                onSuccess(data);
-            }
+                    resolve(data);
+                } catch (error) {
+                    if (notifyStatus) dispatch({ type: "error" });
+                    if (onError) {
+                        if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred" });
+                        onError(error);
+                    }
 
-            statusRef.current.isLoading = false;
-            statusRef.current.isSuccess = true;
+                    statusRef.current.isLoading = false;
+                    statusRef.current.isError = true;
 
-            return data;
-        } catch (error) {
-            if (notifyStatus) dispatch({ type: "error" });
+                    resolve(undefined);
+                }
+            });
+        } else {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await api(...variables);
+                    let data;
+                    if (typeof response?.data === "object" && !Array.isArray(response?.data)) {
+                        data = Object.fromEntries(
+                            Object.entries(response.data).map(([k, v]: any) => {
+                                return [k, { ...v, __t: current }];
+                            }),
+                        );
+                    } else {
+                        data = response;
+                    }
 
-            if (onError) {
-                if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred" });
-                onError(error);
-            }
+                    dispatch({ type: "success", payload: data });
+                    if (onSuccess) {
+                        if (_showToast.current) toast.showToast({ type: "success", content: "msg.00003" });
+                        onSuccess(data);
+                    }
+                    statusRef.current.isLoading = false;
+                    statusRef.current.isSuccess = true;
 
-            statusRef.current.isLoading = false;
-            statusRef.current.isError = true;
+                    resolve(data);
+                } catch (error) {
+                    if (notifyStatus) dispatch({ type: "error" });
+                    if (onError) {
+                        if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred" });
+                        onError(error);
+                    }
+
+                    statusRef.current.isLoading = false;
+                    statusRef.current.isError = true;
+
+                    resolve(undefined);
+                }
+            });
         }
     };
 

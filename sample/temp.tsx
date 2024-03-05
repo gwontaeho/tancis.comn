@@ -1,9 +1,10 @@
-import { TGridSchema, useForm } from "@/comn/hooks";
+import { TGridSchema, useFetch, useForm } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import lodash from "lodash";
+import { comnUtils } from "../utils";
 
 const mock = ({ totalElements = 99 }) => {
     return {
@@ -36,21 +37,21 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         height: 600,
         pagination: "in",
-        // group: [""],
+        group: ["text"],
     },
-    // group: [
-    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
-    //     {
-    //         colspan: 2,
-    //         cells: [
-    //             { binding: "number", aggregate: "AVERAGE" },
-    //             { binding: "number", aggregate: "MAX" },
-    //         ],
-    //     },
-    //     {
-    //         cells: [{ binding: "number", aggregate: "COUNT" }],
-    //     },
-    // ],
+    group: [
+        { cells: [{ binding: "number", aggregate: "SUM" }] },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "number", aggregate: "AVERAGE" },
+                { binding: "number", aggregate: "MAX" },
+            ],
+        },
+        {
+            cells: [{ binding: "number", aggregate: "COUNT" }],
+        },
+    ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -112,6 +113,19 @@ export const Temp = () => {
     const data = useMemo(() => mock({ totalElements: 6 }), []);
     const pagingData = paging({ data, page: g.page, size: g.size });
 
+    const fetch = useFetch({
+        api: () => comnUtils.getCode({ area: "currCd" }),
+    });
+
+    const test = async () => {
+        const a = await fetch.fetch("asd");
+        console.log(a);
+    };
+
+    useEffect(() => {
+        test();
+    }, []);
+
     const r = () => {
         setRender((prev) => ++prev);
     };
@@ -125,7 +139,6 @@ export const Temp = () => {
         },
         cell: {
             q: (data: any) => {
-                console.log("a");
                 return (
                     <Layout>
                         <div>{data.rowValues.q}-</div>

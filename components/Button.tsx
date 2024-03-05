@@ -25,7 +25,7 @@ const HEIGHTS = {
     lg: "h-10",
 };
 
-const BUTTON_VARIANTS = {
+export const BUTTON_VARIANTS = {
     contained: { style: "uf-button", color: "" },
     outlined: { style: "uf-button-outlined", color: "" },
     underlined: { style: "uf-button-underlined", color: "" },
@@ -42,7 +42,7 @@ const BUTTON_VARIANTS = {
     "outline-warning": { style: "uf-button-outlined", color: "warning" },
 };
 
-const BUTTON_ROLES = {
+export const BUTTON_ROLES = {
     save: { text: "B_SAVE", color: "primary", variant: undefined },
     list: { text: "B_LST", color: "gray", variant: undefined },
     submit: { text: "B_SBMT", color: "warning", variant: undefined },
