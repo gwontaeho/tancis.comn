@@ -41,64 +41,62 @@ export const useResource = (props: UseResourceProps) => {
 
     useEffect(() => {
         (async () => {
-            const getResouceFromIDB = async () => {
-                return new Promise<any>((resolve1) => {
-                    const request = indexedDB.open("TANCIS");
-
-                    request.onupgradeneeded = () => {
-                        const db = request.result;
-                        db.createObjectStore("RESOURCE", { keyPath: "key" });
-                    };
-
-                    request.onsuccess = async () => {
-                        try {
-                            const db = request.result;
-                            const ts = db.transaction("RESOURCE", "readonly");
-                            const os = ts.objectStore("RESOURCE");
-
-                            const promises = Object.keys(_schema).map((key) => {
-                                return new Promise<any>((resolve2) => {
-                                    const idbKey = key + `;${theme.lang}`;
-                                    const get = os.get(idbKey);
-
-                                    get.onsuccess = () => {
-                                        const record = {
-                                            key,
-                                            idbKey,
-                                            schema: _schema[key],
-                                            value: get.result,
-                                        };
-
-                                        resolve2(record);
-                                    };
-                                    get.onerror = () => {
-                                        /* !!! */
-                                    };
-                                });
-                            });
-
-                            resolve1(
-                                (await Promise.allSettled(promises)).map((_) => {
-                                    if (_.status === "fulfilled") return _.value;
-                                }),
-                            );
-                        } catch (error) {}
-                    };
-                    request.onerror = () => {
-                        /* !!! */
-                    };
-                });
-            };
-
+            let resources: any[] = [];
             const current = new Date();
-            const resourceFromIDB = await getResouceFromIDB();
+
+            const resourceFromIDB = await new Promise<any>((resolve1) => {
+                const request = indexedDB.open("TANCIS");
+                request.onupgradeneeded = () => {
+                    const db = request.result;
+                    db.createObjectStore("RESOURCE", { keyPath: "key" });
+                };
+                request.onsuccess = async () => {
+                    try {
+                        const db = request.result;
+                        const ts = db.transaction("RESOURCE", "readonly");
+                        const os = ts.objectStore("RESOURCE");
+
+                        const promises = Object.keys(_schema).map((key) => {
+                            return new Promise<any>((resolve2) => {
+                                const idbKey = key + `;${theme.lang}`;
+                                const get = os.get(idbKey);
+
+                                get.onsuccess = () => {
+                                    const record = {
+                                        key,
+                                        idbKey,
+                                        schema: _schema[key],
+                                        value: get.result,
+                                    };
+
+                                    resolve2(record);
+                                };
+                                get.onerror = () => {
+                                    /* !!! */
+                                };
+                            });
+                        });
+                        resolve1(
+                            (await Promise.allSettled(promises)).map((_) => {
+                                if (_.status === "fulfilled") return _.value;
+                            }),
+                        );
+                    } catch (error) {}
+                };
+                request.onerror = () => {
+                    /* !!! */
+                };
+            });
+
             const hasValue = resourceFromIDB.filter(({ value }: any) => value !== undefined);
 
-            let resources = hasValue
-                .filter(({ value }: any) => {
-                    return current.getTime() - value.updated.getTime() <= RENEWAL_CYCLE;
-                })
-                .map(({ value }: any) => value);
+            resources.push(
+                ...hasValue
+                    .filter(({ value }: any) => {
+                        return current.getTime() - value.updated.getTime() <= RENEWAL_CYCLE;
+                    })
+                    .map(({ value }: any) => value),
+            );
 
             const shouldCreate = resourceFromIDB
                 .filter(({ value }: any) => value === undefined)
@@ -130,8 +128,8 @@ export const useResource = (props: UseResourceProps) => {
                     .filter(({ value }) => value !== undefined);
 
                 if (settled.length) {
-                    const addResourceToIDB = () => {
-                        return new Promise<any>((resolve) => {
+                    resources.push(
+                        ...(await new Promise<any>((resolve) => {
                             const request = indexedDB.open("TANCIS");
                             request.onsuccess = async () => {
                                 try {
@@ -170,10 +168,8 @@ export const useResource = (props: UseResourceProps) => {
                                     );
                                 } catch (error) {}
                             };
-                        });
-                    };
-
-                    resources = [...resources, ...(await addResourceToIDB())];
+                        })),
+                    );
                 }
             }
 
