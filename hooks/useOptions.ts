@@ -71,6 +71,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
             });
         }
 
+        // __setT(new Date());
         _setOptions(ro);
         _setData(resource.value);
     }, [options, resource, area, comnCd, theme.lang]);
