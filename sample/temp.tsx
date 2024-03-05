@@ -33,26 +33,26 @@ const GRID_SCHEMA: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: false,
+        edit: true,
         importExcel: true,
         exportExcel: true,
         height: 600,
         pagination: "in",
-        group: ["text"],
+        // group: ["text"],
     },
-    group: [
-        { cells: [{ binding: "number", aggregate: "SUM" }] },
-        {
-            colspan: 2,
-            cells: [
-                { binding: "number", aggregate: "AVERAGE" },
-                { binding: "number", aggregate: "MAX" },
-            ],
-        },
-        {
-            cells: [{ binding: "number", aggregate: "COUNT" }],
-        },
-    ],
+    // group: [
+    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
+    //     {
+    //         colspan: 2,
+    //         cells: [
+    //             { binding: "number", aggregate: "AVERAGE" },
+    //             { binding: "number", aggregate: "MAX" },
+    //         ],
+    //     },
+    //     {
+    //         cells: [{ binding: "number", aggregate: "COUNT" }],
+    //     },
+    // ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -73,7 +73,7 @@ const GRID_SCHEMA: TGridSchema = {
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
         { colspan: 2, cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
-        { cells: [{ binding: "text", min: 5, required: true }] },
+        { cells: [{ binding: "text", type: "code", area: "currCd" }] },
     ],
 };
 
@@ -215,7 +215,7 @@ export const Temp = () => {
                                 <Group.Cell root>
                                     <Group.Cell>
                                         <button onClick={() => console.log(f.getValues())}>get data</button>
-                                        <button onClick={() => console.log(f.setValue("code", "AED"))}>get data</button>
+                                        <button onClick={() => console.log(f.setValue("code", "zzz"))}>get data</button>
                                     </Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>

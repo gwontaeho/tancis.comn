@@ -1,6 +1,7 @@
-import React from "react";
+import { useState, useEffect, forwardRef, useRef, useCallback } from "react";
+import type { ChangeEvent } from "react";
 import lodash from "lodash";
-import { usePopup, useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
+import { useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
 
@@ -56,7 +57,7 @@ const POPUP_URLS: Record<string, string> = {
     hsCd: `/comn/comn/ppup/hsCdPpup`,
 };
 
-export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
+export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     const {
         edit = true,
         popupSize = "sm",
@@ -94,105 +95,53 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         }).filter(([, value]) => value !== undefined),
     );
 
-    const { openPopup } = usePopup();
     const modal = useModal();
 
     const o = useOptions({ comnCd, area, options, excludes, includes, filter });
-    const __t = o.__t?.getTime();
+    const [_value, _setValue] = useState<string>(formatCode(value));
 
-    /** 코드 값 */
-    const [_value, _setValue] = React.useState<string>(formatCode(value));
-    const [__value, __setValue] = React.useState<string>(formatCode(value));
-    const keywordInput = React.useRef<HTMLInputElement | null>(null);
-
-    React.useEffect(() => {
-        if (!__t) return;
+    useEffect(() => {
         if (value === _value) return;
-        let next = "";
 
-        if (typeof value === "string") {
-            const option = o.options.find((_) => _.value === value.toUpperCase());
-            next = option?.value || "";
-            console.log(next);
-        }
+        const vv = o.options.find((option: any) => option.value === value.toUpperCase());
+        _setValue(vv || value);
+    }, [value]);
 
-        handleValueChange(next);
-        __setValue(next);
-    }, [value, __t]);
-
-    /**
-     * handle change keyword
-     */
-    const handleChange = lodash.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
-        /** 값 세팅 조건 */
-        if (maxLength !== e.target.value.length) {
-            //handleValueChange("");
-            //return;
-        }
-
-        const next = o.options.find(({ value }) => value === e.target.value.toUpperCase());
-        __setValue(e.target.value);
-
-        if (next) {
-            if (callback) {
-                callback({ code: next.value, label: next.label });
+    const getValueFromOptions = useCallback(
+        lodash.debounce((v: any, o: any) => {
+            if (o.hasOption) {
+                const vv = o.options.find((option: any) => option.value === v.toUpperCase());
+                if (vv && onChange) {
+                    _setValue(vv.value);
+                    onChange(vv.value);
+                }
             }
-            handleValueChange(next.value);
-        } else {
-            handleValueChange("");
-        }
-    }, 500);
+        }, 500),
+        [],
+    );
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        getValueFromOptions(e.target.value, o);
+        _setValue(e.target.value);
+    };
 
     const handleClickSearch = () => {
         if (disabled === true) return;
 
         const params = { ...utils.toValues(popupParams), comnCd };
-
         modal.openModal({
             params,
             url: POPUP_URLS[area || "comnCd"],
             size: "md",
             draggable: true,
             callback: (data: any) => {
-                handleValueChange(data.code);
-                __setValue(data.code);
                 if (callback) callback(data);
                 modal.closeModal();
             },
         });
-
-        /*
-        openPopup({
-            params,
-            url: POPUP_URLS[area || "comnCd"],
-            size: popupSize,
-            callback: (data: any) => {
-                handleValueChange(data.code);
-            },
-        });
-        */
     };
 
-    const handleValueChange = (v?: any) => {
-        _setValue(v);
-
-        if (onChange) {
-            onChange(v);
-        }
-        /*
-        if (keywordInput.current) {
-            keywordInput.current.value = __value;
-        }
-        */
-    };
-
-    React.useEffect(() => {
-        if (keywordInput.current) {
-            keywordInput.current.value = __value;
-        }
-    }, [__value]);
-
-    const _label = o.options.find(({ value }) => value === _value)?.label;
+    const _label = o.options.find((option) => option.value === value)?.label;
 
     return (
         <div className="w-full">
@@ -205,15 +154,8 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
                 <div className="w-full flex">
                     <input
                         {..._props}
-                        ref={(node) => {
-                            if (node) {
-                                keywordInput.current = node;
-                                if (typeof ref === "function") {
-                                    ref(node);
-                                }
-                            }
-                        }}
-                        defaultValue={_value}
+                        ref={ref}
+                        value={_value}
                         onChange={handleChange}
                         className="input rounded-r-none flex-1"
                     />

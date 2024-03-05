@@ -1,6 +1,7 @@
-import React from "react";
-import classNames from "classnames";
+import type { ChangeEvent } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import classNames from "classnames";
 
 import { useOptions, UseOptionsProps } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
@@ -21,7 +22,7 @@ type SelectProps = UseOptionsProps & {
     onChange?: (arg?: any) => void;
 };
 
-export const Select = React.forwardRef((props: SelectProps, ref: any) => {
+export const Select = forwardRef((props: SelectProps, ref: any) => {
     const {
         /** */
         all,
@@ -57,23 +58,24 @@ export const Select = React.forwardRef((props: SelectProps, ref: any) => {
     const { t } = useTranslation();
     const o = useOptions({ comnCd, area, options, excludes, includes, filter });
 
-    const [_value, _setValue] = React.useState<any>(formatSelect(value));
+    const [_value, _setValue] = useState<any>(formatSelect(value));
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (value === _value) return;
         _setValue(formatSelect(value));
     }, [value]);
 
-    React.useEffect(() => {
-        if ((all === undefined || all === false) && select === false && value === undefined && o.options.length > 0) {
-            _setValue(o.options[0].value);
-            if (onChange) {
-                onChange(o.options[0].value);
-            }
-        }
+    useEffect(() => {
+        if (all) return;
+        if (select) return;
+        if (value) return;
+        if (!o.hasOption) return;
+
+        _setValue(o.options[0].value);
+        if (onChange) onChange(o.options[0].value);
     }, [o]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         _setValue(e.target.value);
         if (onChange) onChange(e.target.value);
     };

@@ -1,11 +1,11 @@
-import React from "react";
-import { v4 as uuid } from "uuid";
+import { useRef, useState, useEffect, useId } from "react";
 import { useRecoilState } from "recoil";
+import { v4 as uuid } from "uuid";
+import lodash from "lodash";
 
 import { resourceState } from "@/comn/features/recoil";
 import { utils } from "@/comn/utils";
 import { useTheme, getResourceKey } from "@/comn/hooks";
-import lodash from "lodash";
 
 export type TOption = {
     label: string;
@@ -17,66 +17,52 @@ export type UseOptionsProps = {
     comnCd?: string;
     options?: TOption[];
     excludes?: string[];
-    includes?: { label: string; value: string }[];
+    includes?: TOption[];
     filter?: (arg?: any) => boolean;
 };
 
 type UseOptionsReturn = {
-    __t?: any;
     base: string;
-    options: TOption[];
     data: any[];
+    options: TOption[];
     hasOption: boolean;
 };
 
 export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
     const { comnCd, area, options = [], excludes, includes, filter } = props;
-    const ref = React.useRef<{ base: string; key?: string }>({ base: uuid() });
+
+    const base = useId();
+
     const { theme } = useTheme();
     const [resource] = useRecoilState(resourceState);
-    const [_options, _setOptions] = React.useState<TOption[]>([]);
-    const [_data, _setData] = React.useState<any[]>([]);
 
-    const [__t, __setT] = React.useState<any>();
+    let _options = options;
+    let _data;
 
-    React.useEffect(() => {
-        if (options.length) return;
-        if (!area) return;
-
+    if (!!area) {
         const key = getResourceKey(area, comnCd, theme.lang);
         const _ = resource[key];
-        if (!_) return;
-        if (ref.current.key === key) return;
-
-        ref.current.key = key;
-
-        let ro = _.value.map((code: any) => ({
-            label: utils.getCodeLabel(area, code),
-            value: utils.getCodeValue(area, code),
-        }));
-
-        if (excludes) {
-            ro = ro.filter((item: any) => {
-                return lodash.indexOf(excludes, item.value) === -1;
-            });
+        if (!!_) {
+            _data = _.value;
+            _options = _.value.map((code: any) => ({
+                label: utils.getCodeLabel(area, code),
+                value: utils.getCodeValue(area, code),
+            }));
         }
+    }
+    if (excludes) {
+        _options = _options.filter((item: any) => {
+            return lodash.indexOf(excludes, item.value) === -1;
+        });
+    }
+    if (includes) {
+        _options = _options.concat(includes);
+    }
+    if (filter) {
+        _options = _options.filter((item: any) => {
+            return filter(item);
+        });
+    }
 
-        if (includes) {
-            ro = ro.concat(includes);
-        }
-
-        if (filter) {
-            ro = ro.filter((item: any) => {
-                return filter(item);
-            });
-        }
-
-        // __setT(new Date());
-        _setOptions(ro);
-        _setData(resource.value);
-    }, [options, resource, area, comnCd, theme.lang]);
-
-    const o = options.length ? options : area ? _options : options;
-
-    return { base: ref.current.base, __t, options: o, hasOption: o.length > 0, data: _data };
+    return { base, options: _options, hasOption: _options.length > 0, data: _data };
 };
