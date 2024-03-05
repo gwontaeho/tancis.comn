@@ -36,7 +36,7 @@ type UseFetchProps = {
 
 type UseFetchReturn = {
     data: any;
-    fetch: (...args: any) => Promise<any>;
+    fetch: (...args: any) => Promise<any> | undefined;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -74,7 +74,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         fetch();
     }, [enabled, ...key]);
 
-    const fetch = async (...variables: any) => {
+    const fetch = (...variables: any) => {
         if (statusRef.current.isLoading) return;
 
         statusRef.current.isLoading = true;
