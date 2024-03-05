@@ -207,6 +207,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
                 /\d/,
                 /\d/,
                 /\d/,
+                /\d/,
                 "-",
                 /\d/,
                 /\d/,

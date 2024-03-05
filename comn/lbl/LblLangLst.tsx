@@ -59,9 +59,16 @@ export const LblLangLst = (props: any) => {
     };
 
     const handler = {
+        // 변경전 : 파라메터를 받지 않음
+        // getLblLangList: () => {
+        // 변경후 : page 파라메터(기본값0) 추가
         getLblLangList: (page: number = 0) => {
             form.lblLangSrch.handleSubmit(
                 () => {
+                    // 변경전 getPage , fetch 시 0 을 파라메터로 넘김
+                    grid.lblLangLst.setPage(0);
+                    fetch.getLblLangLst.fetch(0);
+                    // 변경후 getPage , fetch 시 page 를 파라메터로 넘김
                     grid.lblLangLst.setPage(page);
                     fetch.getLblLangLst.fetch(page);
                 },
@@ -103,6 +110,7 @@ export const LblLangLst = (props: any) => {
     };
 
     useEffect(() => {
+        handler.getLblLangList();
         handler.getLblLangList(pgeStore?.page);
     }, []);
 
