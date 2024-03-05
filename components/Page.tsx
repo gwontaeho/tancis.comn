@@ -50,7 +50,7 @@ const PageNavigation = (props: PageNavigationProps) => {
     const [params] = useSearchParams(); /* 화면 폼 제어 */
     const { base = "/", nodes = [], popup = params.get("ppup") === "Y" } = props;
 
-    if (popup === true) {
+    if (popup) {
         return null;
     } else {
         return (

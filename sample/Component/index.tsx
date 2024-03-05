@@ -3,17 +3,23 @@ import { Group, Button, BUTTON_ROLES, BUTTON_VARIANTS, FormControl, FormControlL
 import { Icon } from "@/comn/components";
 import { icons } from "@/comn/assets/icons";
 
+const options = [
+    { label: "a", value: "a" },
+    { label: "b", value: "b" },
+    { label: "c", value: "c" },
+];
+
 export const Components = () => {
     const id = useId();
     return (
         <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-                <div className="flex gap-1">
+                <div className="flex gap-1 flex-wrap">
                     {Object.keys(BUTTON_ROLES).map((role: any) => {
                         return <Button key={id + role} role={role} />;
                     })}
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 flex-wrap">
                     {Object.keys(BUTTON_VARIANTS).map((variant: any) => {
                         return (
                             <Button key={id + variant} variant={variant}>
@@ -25,7 +31,7 @@ export const Components = () => {
             </div>
 
             <div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 flex-wrap">
                     {Object.keys(icons).map((icon: any) => {
                         return <Icon key={id + icon} icon={icon} />;
                     })}
@@ -50,10 +56,10 @@ export const Components = () => {
                                     <FormControl type="select" />
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <FormControl type="radio" />
+                                    <FormControl type="radio" options={options} />
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <FormControl type="checkbox" />
+                                    <FormControl type="checkbox" options={options} />
                                 </Group.Cell>
                                 <Group.Cell>
                                     <FormControl type="textarea" />

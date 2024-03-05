@@ -115,8 +115,6 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
                     statusRef.current.isLoading = false;
                     statusRef.current.isError = true;
-
-                    reject(error);
                 }
             });
         } else {
@@ -153,8 +151,6 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
                     statusRef.current.isLoading = false;
                     statusRef.current.isError = true;
-
-                    reject(error);
                 }
             });
         }
