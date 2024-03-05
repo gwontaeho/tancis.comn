@@ -71,8 +71,8 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
         if (value) return;
         if (!o.hasOption) return;
 
-        _setValue(o.options[0].value);
-        if (onChange) onChange(o.options[0].value);
+        // _setValue(o.options[0].value);
+        // if (onChange) onChange(o.options[0].value);
     }, [o]);
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
