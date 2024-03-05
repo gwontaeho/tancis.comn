@@ -1,40 +1,19 @@
 import { v4 as uuid } from "uuid";
 import { useSetRecoilState } from "recoil";
-
-import { modalState } from "@/comn/features/recoil";
-import { ModalProps } from "@/comn/components/_";
+import { modalState } from "../features/recoil";
+import { ModalProps } from "../components/_";
 
 export const useModal = () => {
     const setModal = useSetRecoilState(modalState);
 
-    /**
-     * Open Modal
-     * @param props
-     */
     const openModal = (props: ModalProps) => {
         setModal((prev) => [...prev, { ...props, id: props.id || uuid() }]);
     };
 
-    /**
-     * Close All Modal
-     */
     const closeModal = (id?: string) => {
-        if (id === undefined) {
-            setModal([]);
-            return;
-        }
-
-        setModal((prev) =>
-            prev.filter((_) => {
-                return _.id !== id;
-            }),
-        );
+        setModal((prev) => (id === undefined ? [] : prev.filter((_) => _.id !== id)));
     };
 
-    /**
-     * Post Message to Parent or Opener
-     * @param data
-     */
     const postMessage = (data: any) => {
         if (window.opener) {
             window.opener.postMessage(data);

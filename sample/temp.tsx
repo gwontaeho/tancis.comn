@@ -36,21 +36,21 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         height: 600,
         pagination: "in",
-        // group: [""],
+        group: ["text"],
     },
-    // group: [
-    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
-    //     {
-    //         colspan: 2,
-    //         cells: [
-    //             { binding: "number", aggregate: "AVERAGE" },
-    //             { binding: "number", aggregate: "MAX" },
-    //         ],
-    //     },
-    //     {
-    //         cells: [{ binding: "number", aggregate: "COUNT" }],
-    //     },
-    // ],
+    group: [
+        { cells: [{ binding: "number", aggregate: "SUM" }] },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "number", aggregate: "AVERAGE" },
+                { binding: "number", aggregate: "MAX" },
+            ],
+        },
+        {
+            cells: [{ binding: "number", aggregate: "COUNT" }],
+        },
+    ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -125,7 +125,6 @@ export const Temp = () => {
         },
         cell: {
             q: (data: any) => {
-                console.log("a");
                 return (
                     <Layout>
                         <div>{data.rowValues.q}-</div>
