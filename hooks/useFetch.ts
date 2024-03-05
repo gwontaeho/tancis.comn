@@ -115,13 +115,14 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
                     statusRef.current.isLoading = false;
                     statusRef.current.isError = true;
+
+                    resolve(undefined);
                 }
             });
         } else {
             return new Promise(async (resolve, reject) => {
                 try {
                     const response = await api(...variables);
-
                     let data;
                     if (typeof response?.data === "object" && !Array.isArray(response?.data)) {
                         data = Object.fromEntries(
@@ -151,6 +152,8 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
                     statusRef.current.isLoading = false;
                     statusRef.current.isError = true;
+
+                    resolve(undefined);
                 }
             });
         }

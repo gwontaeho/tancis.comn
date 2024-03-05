@@ -119,6 +119,7 @@ export const Temp = () => {
 
     const test = async () => {
         const a = await fetch.fetch("asd");
+        console.log(a);
     };
 
     useEffect(() => {
