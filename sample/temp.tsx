@@ -118,18 +118,18 @@ export const Temp = () => {
         // api: () => comnUtils.getCode({ area: "currCd" }),
         api: () => api.get("asdw"),
         onError: (error) => {
-            console.log("as");
-            console.log(error);
+            // console.log("as");
+            // console.log(error);
         },
     });
 
     const test = async () => {
         try {
             const a = await fetch.fetch("asd");
-            console.log(a);
+            // console.log(a);
         } catch (error) {
-            console.log(error);
-            console.log("as");
+            // console.log(error);
+            // console.log("as");
         }
     };
 

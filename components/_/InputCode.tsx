@@ -106,8 +106,8 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
     const keywordInput = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
+        if (!__t) return;
         if (value === _value) return;
-
         let next = "";
 
         if (typeof value === "string") {
