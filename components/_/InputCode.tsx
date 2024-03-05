@@ -103,8 +103,8 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     useEffect(() => {
         if (value === _value) return;
 
-        const vv = o.options.find((option: any) => option.value === value.toUpperCase());
-        _setValue(vv || value);
+        const vv = o.options.find((option: any) => option.value === formatCode(value).toUpperCase());
+        _setValue(formatCode(vv?.value || value));
     }, [value]);
 
     const getValueFromOptions = useCallback(
@@ -121,8 +121,8 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     );
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        getValueFromOptions(e.target.value, o);
-        _setValue(e.target.value);
+        getValueFromOptions(formatCode(e.target.value), o);
+        _setValue(formatCode(e.target.value));
     };
 
     const handleClickSearch = () => {
