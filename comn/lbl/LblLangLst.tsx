@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button, Grid } from "@/comn/components";
@@ -22,6 +22,8 @@ export const LblLangLst = (props: any) => {
         }),
     };
 
+    console.log(pgeStore);
+
     const grid = {
         lblLangLst: useGrid({
             defaultSchema: SG_LBL_LANG_LIST,
@@ -29,8 +31,6 @@ export const LblLangLst = (props: any) => {
             size: pgeStore?.size,
         }),
     };
-
-    console.log(pgeStore);
 
     const fetch = {
         getLblLangLst: useFetch({
@@ -59,11 +59,11 @@ export const LblLangLst = (props: any) => {
     };
 
     const handler = {
-        getLblLangList: () => {
+        getLblLangList: (page: number = 0) => {
             form.lblLangSrch.handleSubmit(
                 () => {
-                    grid.lblLangLst.setPage(0);
-                    fetch.getLblLangLst.fetch(0);
+                    grid.lblLangLst.setPage(page);
+                    fetch.getLblLangLst.fetch(page);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -89,13 +89,21 @@ export const LblLangLst = (props: any) => {
                 },
             });
         },
-        click_Grid_LblLangLst: (data: any) => {
-            navigate(`${URLS.lblLangDtl}/${data.rowValues.lblId}`);
+    };
+
+    const render = {
+        grid_LblLangLst: {
+            cell: {
+                lblId: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return <Link to={`${URLS.lblLangDtl}/${rowValues.lblId}`}>{`${rowValues.lblId}`}</Link>;
+                },
+            },
         },
     };
 
     useEffect(() => {
-        handler.getLblLangList();
+        handler.getLblLangList(pgeStore?.page);
     }, []);
 
     return (
@@ -155,7 +163,7 @@ export const LblLangLst = (props: any) => {
                         <Grid
                             {...grid.lblLangLst.grid}
                             data={fetch.getLblLangLst.data?.lblLangList}
-                            onCellClick={handler.click_Grid_LblLangLst}
+                            render={render.grid_LblLangLst}
                         />
                     </Group.Section>
                 </Group.Body>
