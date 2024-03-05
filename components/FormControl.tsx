@@ -203,7 +203,7 @@ const FormControlMain = forwardRef((props: any, ref) => {
                     }
                 })()}
                 {props.edit !== false && rightText && <span className="uf-right-text">{rightText}</span>}
-                {props.edit === false && rightText && <span className="px-1">{rightText}</span>}
+                {props.edit === false && rightText && <span className="px-1 min-w-max">{rightText}</span>}
             </div>
 
             {props.edit !== false && rightButton && (
