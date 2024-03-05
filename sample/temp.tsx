@@ -5,6 +5,7 @@ import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/com
 import { useEffect, useMemo, useState } from "react";
 import lodash from "lodash";
 import { comnUtils } from "../utils";
+import { api } from "../features/apis";
 
 const mock = ({ totalElements = 99 }) => {
     return {
@@ -114,12 +115,22 @@ export const Temp = () => {
     const pagingData = paging({ data, page: g.page, size: g.size });
 
     const fetch = useFetch({
-        api: () => comnUtils.getCode({ area: "currCd" }),
+        // api: () => comnUtils.getCode({ area: "currCd" }),
+        api: () => api.get("asdw"),
+        onError: (error) => {
+            console.log("as");
+            console.log(error);
+        },
     });
 
     const test = async () => {
-        const a = await fetch.fetch("asd");
-        console.log(a);
+        try {
+            const a = await fetch.fetch("asd");
+            console.log(a);
+        } catch (error) {
+            console.log(error);
+            console.log("as");
+        }
     };
 
     useEffect(() => {
