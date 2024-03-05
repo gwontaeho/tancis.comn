@@ -82,7 +82,7 @@ export const CGME0411002S = () => {
         // Repacking Item Application !== 재포장 품목 신청서 검색 ==!
         rpckItmApp: useForm({
             defaultSchema: SF_RPCK_ITM_APP,
-            defaultValues: { prcsTpCd: "A" },
+            defaultValues: {},
         }),
     };
 
@@ -182,7 +182,6 @@ export const CGME0411002S = () => {
                 form.rpckItmApp.setValues({
                     ...data.rpckItmAppInfo.content,
                     rprtNo: dclrNo?.replaceAll("-", ""),
-                    pckgUtCd: "1A",
                 });
             },
             onError: (error) => {},
@@ -632,6 +631,12 @@ export const CGME0411002S = () => {
                     ></Button>
                 </Layout.Left>
                 <Layout.Right>
+                    <Button
+                        role="save"
+                        onClick={() => {
+                            console.log(form.rpckItmApp.getValues());
+                        }}
+                    ></Button>
                     <Button role="save" onClick={handler.saveRpckItmApp}></Button>
                     <Button role="submit" onClick={handler.submitRpckItmApp}></Button>
                 </Layout.Right>
