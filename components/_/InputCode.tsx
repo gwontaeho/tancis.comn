@@ -106,7 +106,6 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
     const keywordInput = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
-        if (!__t) return;
         if (value === _value) return;
 
         let next = "";
@@ -114,6 +113,7 @@ export const InputCode = React.forwardRef((props: InputCodeProps, ref: any) => {
         if (typeof value === "string") {
             const option = o.options.find((_) => _.value === value.toUpperCase());
             next = option?.value || "";
+            console.log(next);
         }
 
         handleValueChange(next);

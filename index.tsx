@@ -27,7 +27,7 @@ export const Base = () => {
 
     useLayoutEffect(() => {
         /* Dev */
-        indexedDB.deleteDatabase("TANCIS");
+        // indexedDB.deleteDatabase("TANCIS");
     }, []);
 
     return (

@@ -178,6 +178,7 @@ export const CGME0411002S = () => {
             api: (data) => APIS.getRpckItmApp(dclrNo),
             enabled: !!dclrNo,
             onSuccess: (data) => {
+                console.log(data);
                 form.rpckItmApp.setValues({
                     ...data.rpckItmAppInfo.content,
                     rprtNo: dclrNo?.replaceAll("-", ""),
