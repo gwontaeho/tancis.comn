@@ -24,7 +24,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             /** */
             edit = true,
             decimalScale,
-            thousandSeparator,
+            thousandSeparator = true,
             /** input props */
             name,
             value,
