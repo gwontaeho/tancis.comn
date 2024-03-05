@@ -59,20 +59,23 @@ export const LblLangLst = (props: any) => {
     };
 
     const handler = {
+        // 목록조회 메소스 선언시 기존에 파리메터를 받지 않음 -> page 파라메터 선언. 기본값 0 설정
         // 변경전 : 파라메터를 받지 않음
         // getLblLangList: () => {
-        // 변경후 : page 파라메터(기본값0) 추가
+        // 변경후 : page 파라메터( 기본값 0 ) 추가
+        // 메소드 선언시 파라메너 (page: number = 0 ) 추가
         getLblLangList: (page: number = 0) => {
             form.lblLangSrch.handleSubmit(
-                () => {
+                (data) => {
                     // 변경전 getPage , fetch 시 0 을 파라메터로 넘김
-                    grid.lblLangLst.setPage(0);
-                    fetch.getLblLangLst.fetch(0);
+                    // grid.lblLangLst.setPage(0);
+                    // fetch.getLblLangLst.fetch(0);
                     // 변경후 getPage , fetch 시 page 를 파라메터로 넘김
+                    // setPage , fetch 에 0 을 넘기는 부분을 page 로 변경
                     grid.lblLangLst.setPage(page);
                     fetch.getLblLangLst.fetch(page);
                 },
-                () => {
+                (err) => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
@@ -110,7 +113,9 @@ export const LblLangLst = (props: any) => {
     };
 
     useEffect(() => {
-        handler.getLblLangList();
+        // 변경전( 호출시 파라메터 없음 )
+        // handler.getLblLangList();
+        // 메소드 호출시 파라메터 추가 ( pgeStore?.page );
         handler.getLblLangList(pgeStore?.page);
     }, []);
 
