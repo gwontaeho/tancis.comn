@@ -118,10 +118,7 @@ export const Temp = () => {
     });
 
     const test = async () => {
-        try {
-            const a = await fetch.fetch();
-            console.log(a);
-        } catch (error) {}
+        const a = await fetch.fetch("asd");
     };
 
     useEffect(() => {
