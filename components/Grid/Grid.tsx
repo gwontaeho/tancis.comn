@@ -126,7 +126,7 @@ export const Grid = (props: {
             </div>
 
             {/* Grid Main */}
-            <div className="uf-grid-main">
+            <div className="uf-grid-main break-all">
                 {/* Head */}
                 <div ref={headRef} className="uf-grid-head relative">
                     {!!Object.keys(_grid.current._group).length && <div className="uf-grid-option" />}
