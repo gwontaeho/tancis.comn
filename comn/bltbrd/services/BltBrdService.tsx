@@ -37,6 +37,12 @@ export const APIS = {
     },
 };
 
+const options = [
+    { label: "Front-End 개발표준", value: "000" },
+    { label: "변경사항 소스 샘플", value: "001" },
+    { label: "샘플 소스", value: "002" },
+];
+
 export const SF_BLTBRD_SRCH: TFormSchema = {
     id: "form_bltbrdSrch",
     schema: {
@@ -48,11 +54,7 @@ export const SF_BLTBRD_SRCH: TFormSchema = {
         bltbrdCtgrCd: {
             type: "select",
             label: "L_CLSF",
-            options: [
-                { label: "프레임워크 기본", value: "000" },
-                { label: "기능 사용", value: "001" },
-                { label: "샘플 소스", value: "002" },
-            ],
+            options: options,
         },
         frstRgsrDtmRnge: {
             type: "daterange",
@@ -79,11 +81,7 @@ export const SF_BLTBRD: TFormSchema = {
             label: "L_CLSF",
             required: true,
             viewType: "label",
-            options: [
-                { label: "프레임워크 기본", value: "000" },
-                { label: "기능 사용", value: "001" },
-                { label: "샘플 소스", value: "002" },
-            ],
+            options: options,
         },
         selcNo: { type: "number", label: "L_SELC_NO", edit: false },
         frstRegstId: { type: "text", label: "L_FRST_REGST_ID", edit: false },
@@ -108,11 +106,7 @@ export const SG_BLTBRD_LIST: TGridSchema = {
                     binding: "bltbrdCtgrCd",
                     type: "select",
                     viewType: "label",
-                    options: [
-                        { label: "프레임워크 기본", value: "000" },
-                        { label: "기능 사용", value: "001" },
-                        { label: "샘플 소스", value: "002" },
-                    ],
+                    options: options,
                 },
             ],
         },
