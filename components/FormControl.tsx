@@ -1,6 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
-import React from "react";
+import { forwardRef } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Icon, IconsType } from "./Icon";
@@ -152,7 +152,7 @@ export type FormControlProps = InputDaterangeProps & {
     height?: number;
 };
 
-const FormControlMain = React.forwardRef((props: any, ref) => {
+const FormControlMain = forwardRef((props: any, ref) => {
     const { type, rightButton, leftButton, rightText, getValues, ...rest } = props;
 
     return (
@@ -215,7 +215,7 @@ const FormControlMain = React.forwardRef((props: any, ref) => {
     );
 });
 
-export const FormControl = React.forwardRef((props: FormControlProps, ref) => {
+export const FormControl = forwardRef((props: FormControlProps, ref) => {
     const { size = "full", message, invalid, ...rest } = props;
     const { t } = useTranslation();
 
