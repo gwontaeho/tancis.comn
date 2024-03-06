@@ -154,7 +154,7 @@ export const useForm = (props: UseFormProps) => {
             Object.entries(s).map(([k, v]) => {
                 const getRules = (args: any) => {
                     let { min, max, minLength, pattern, validate, required, maxLength } = args;
-                    if (required) required = "msg.00001";
+                    if (required) required = "msg.com.00005";
                     return Object.fromEntries(
                         Object.entries({ min, max, minLength, pattern, validate, required, maxLength }).filter(
                             ([, _]) => _ !== undefined,

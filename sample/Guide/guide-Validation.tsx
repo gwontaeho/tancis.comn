@@ -43,13 +43,27 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
         { cells: [{ header: "code", binding: "code", required: true, width: "2*" }] },
     ],
     body: [
-        { cells: [{ binding: "text", type: "text", required: true, minLength: 3, maxLength: 5 }] },
+        {
+            cells: [
+                {
+                    binding: "text",
+                    type: "text",
+                    required: true,
+                    minLength: 3,
+                    maxLength: 5,
+                    validate: (value: any) => {
+                        if (value === "A01") return true;
+                        return `[${value}]값이 유효하지 않습니다.`;
+                    },
+                },
+            ],
+        },
         {
             cells: [
                 {
                     binding: "email",
                     type: "text",
-                    pattern: { value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, message: "이메일 형식이 올바르지 않습니다" },
+                    pattern: { value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, message: "msg.com.00110" },
                 },
             ],
         },
@@ -122,7 +136,7 @@ export const GuideValidation = () => {
                 label: "email",
                 type: "text",
                 required: true,
-                pattern: { value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, message: "이메일 형식이 올바르지 않습니다" },
+                pattern: { value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, message: "msg.com.00110" },
                 controlSize: 10,
             },
             number: { label: "number", type: "number", required: true },
