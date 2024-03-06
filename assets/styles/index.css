@@ -212,7 +212,7 @@
 
     /* Group */
     .uf-group {
-        @apply flex flex-col rounded bg-uf-card-background shadow w-full;
+        @apply flex-col rounded bg-uf-card-background shadow w-full;
     }
     .uf-group-header {
         @apply p-4 rounded-t bg-uf-card-header;
@@ -224,10 +224,10 @@
         @apply p-4 rounded-b bg-uf-card-header;
     }
     .uf-group-section {
-        @apply w-full flex flex-col;
+        @apply w-full flex-col;
     }
     .uf-group-row {
-        @apply w-full grid grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12;
+        @apply w-full grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12;
     }
     .uf-group-label {
         @apply font-semibold relative flex items-center p-1 break-all bg-uf-card-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;

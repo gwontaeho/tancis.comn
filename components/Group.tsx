@@ -18,6 +18,7 @@ const ALIGNS_FLEX = {
 
 type GroupProps = {
     children?: React.ReactNode;
+    hidden?: boolean;
     flex?: keyof typeof FLEX;
 };
 
@@ -38,6 +39,7 @@ type GroupBodyProps = {
 
 type GroupSectionProps = {
     children?: React.ReactNode;
+    hidden?: boolean;
     gap?: keyof typeof GAP;
 };
 
@@ -46,11 +48,12 @@ type GroupFooterProps = {
 };
 
 type GroupRowProps = {
+    children?: React.ReactNode;
+    hidden?: boolean;
     borderTop?: boolean;
     borderBottom?: boolean;
     borderLeft?: boolean;
     borderRight?: boolean;
-    children?: React.ReactNode;
 };
 
 type GroupAnyProps = {
@@ -62,6 +65,7 @@ type GroupAnyProps = {
 
 type GroupCellProps = {
     children?: React.ReactNode;
+    hidden?: boolean;
     size?: keyof typeof COL_SPAN;
     test?: keyof typeof GRID_COLS;
     gap?: keyof typeof GAP;
@@ -107,16 +111,22 @@ type GroupColProps = GroupLabelProps & {
  * * Header
  * * Title
  * * Body
+ * * Section
  * * Row
  * * Label
  * * Control
  * * Col
+ * * Cell
  * @param props GroupProps
  * @returns
  */
 export const Group = (props: GroupProps) => {
-    const { children, flex } = props;
-    return <div className={classNames("uf-group", flex && FLEX[flex])}>{children}</div>;
+    const { children, hidden, flex } = props;
+    return (
+        <div hidden={hidden} className={classNames("uf-group", flex && FLEX[flex], !hidden && "flex")}>
+            {children}
+        </div>
+    );
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {
@@ -144,9 +154,13 @@ const GroupBody = (props: GroupBodyProps) => {
 };
 
 const GroupSection = (props: GroupSectionProps) => {
-    const { children, gap = 0 } = props;
+    const { children, hidden, gap = 0 } = props;
 
-    return <div className={classNames("uf-group-section", GAP[gap])}>{children}</div>;
+    return (
+        <div hidden={hidden} className={classNames("uf-group-section", GAP[gap], !hidden && "flex")}>
+            {children}
+        </div>
+    );
 };
 
 const GroupFooter = (props: GroupFooterProps) => {
@@ -165,6 +179,7 @@ const GroupCell = (props: GroupCellProps) => {
         direction = "row",
         align = "start",
         required,
+        hidden,
     } = props;
 
     const end = (Array.isArray(children) ? children : [children]).some((_) => {
@@ -173,6 +188,7 @@ const GroupCell = (props: GroupCellProps) => {
 
     return (
         <div
+            hidden={hidden}
             className={classNames(
                 "min-h-[2.5rem] break-all",
                 COL_SPAN[size],
@@ -180,14 +196,14 @@ const GroupCell = (props: GroupCellProps) => {
                 header && "bg-uf-card-header font-semibold text-center",
                 !end && GRID_COLS[size],
                 !end && "bg-uf-border",
-                !end && "grid gap-[1px]",
+                !end && "gap-[1px]",
                 end && "p-1",
-                end && "flex",
                 end && direction === "row" && "items-center",
                 end && !header && "bg-uf-card-background",
                 end && GAP[gap],
                 end && DIRECTION[direction],
                 end && JUSTIFY_CONTENT[align],
+                !hidden && (end ? "flex" : "grid"),
             )}
             style={{ height }}
         >
@@ -201,15 +217,17 @@ const GroupCell = (props: GroupCellProps) => {
 };
 
 const GroupRow = (props: GroupRowProps) => {
-    const { borderLeft = true, borderRight = true, borderTop = true, borderBottom = true, children } = props;
+    const { hidden, borderLeft = true, borderRight = true, borderTop = true, borderBottom = true, children } = props;
     return (
         <div
+            hidden={hidden}
             className={classNames(
                 "uf-group-row",
                 borderLeft === false && "border-l-0",
                 borderRight === false && "border-r-0",
                 borderTop === false && "border-t-0",
                 borderBottom === false && "border-b-0",
+                !hidden && "grid",
             )}
         >
             {children}

@@ -36,23 +36,23 @@ const GRID_SCHEMA: TGridSchema = {
         edit: true,
         importExcel: true,
         exportExcel: true,
-        height: 600,
-        pagination: "in",
-        // group: ["text"],
+        height: 700,
+        // pagination: "in",
+        group: ["text"],
     },
-    // group: [
-    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
-    //     {
-    //         colspan: 2,
-    //         cells: [
-    //             { binding: "number", aggregate: "AVERAGE" },
-    //             { binding: "number", aggregate: "MAX" },
-    //         ],
-    //     },
-    //     {
-    //         cells: [{ binding: "number", aggregate: "COUNT" }],
-    //     },
-    // ],
+    group: [
+        { cells: [{ binding: "number", aggregate: "SUM" }] },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "number", aggregate: "AVERAGE" },
+                { binding: "number", aggregate: "MAX" },
+            ],
+        },
+        {
+            cells: [{ binding: "number", aggregate: "COUNT" }],
+        },
+    ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -111,7 +111,7 @@ export const Temp = () => {
     const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD" } });
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
-    const data = useMemo(() => mock({ totalElements: 6 }), []);
+    const data = useMemo(() => mock({ totalElements: 20 }), []);
     const pagingData = paging({ data, page: g.page, size: g.size });
 
     const fetch = useFetch({
@@ -194,6 +194,12 @@ export const Temp = () => {
                     <Group.Header></Group.Header>
                     <Group.Body>
                         <Group.Section>
+                            <Group.Row>
+                                <Group.Control />
+                                <Group.Control />
+                                <Group.Control />
+                            </Group.Row>
+
                             <Group.Cell root>
                                 <Group.Cell header></Group.Cell>
                                 <Group.Cell size={10}>
