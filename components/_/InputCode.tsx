@@ -164,7 +164,12 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         onChange={handleChange}
                         className="input rounded-r-none flex-1"
                     />
-                    <button className="button border-x-0 rounded-none" type="button" onClick={handleClickSearch}>
+                    <button
+                        className="button border-x-0 rounded-none"
+                        type="button"
+                        onClick={handleClickSearch}
+                        disabled={readOnly === true || disabled === true}
+                    >
                         <Icon icon="search" size="xs" />
                     </button>
                     <input

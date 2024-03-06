@@ -38,9 +38,11 @@ export const APIS = {
 };
 
 const options = [
-    { label: "Front-End 개발표준", value: "000" },
-    { label: "변경사항 소스 샘플", value: "001" },
-    { label: "샘플 소스", value: "002" },
+    { label: "개발표준", value: "000" },
+    { label: "폼(Form)", value: "001" },
+    { label: "그리드(Grid)", value: "002" },
+    { label: "업데이트 공지", value: "003" },
+    { label: "기타", value: "004" },
 ];
 
 export const SF_BLTBRD_SRCH: TFormSchema = {
@@ -113,6 +115,6 @@ export const SG_BLTBRD_LIST: TGridSchema = {
         { cells: [{ binding: "ttle", align: "left" }] },
         { cells: [{ binding: "selcNo", type: "number", thousandSeparator: true }] },
         { cells: [{ binding: "frstRegstId" }] },
-        { cells: [{ binding: "frstRgsrDtm" }] },
+        { cells: [{ binding: "frstRgsrDtm", type: "datetime" }] },
     ],
 };
