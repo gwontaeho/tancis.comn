@@ -509,7 +509,6 @@ const Row = memo((props: any) => {
                                             }) || (
                                                 <FormControl
                                                     {...formControlProps}
-                                                    edit={false}
                                                     value={fv}
                                                     onChange={(v) => {
                                                         _grid.current._handleUpdate({
@@ -531,6 +530,7 @@ const Row = memo((props: any) => {
                                             }) || (
                                                 <FormControl
                                                     {...formControlProps}
+                                                    edit={false}
                                                     value={fv}
                                                     onChange={(v) => {
                                                         _grid.current._handleUpdate({

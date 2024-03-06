@@ -34,7 +34,7 @@ const GRID_SCHEMA: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        edit: false,
         importExcel: true,
         exportExcel: true,
         height: 700,
