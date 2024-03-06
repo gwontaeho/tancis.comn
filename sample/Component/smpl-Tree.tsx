@@ -134,13 +134,18 @@ export const SampleTree = () => {
                     data={[
                         ["Props", "Description"],
                         ["data", ""],
+                        ["onClick", ""],
+                        ["height", ""],
+                        ["size", ""],
                     ]}
                 />
             </Sample.Section>
 
-            {/* <Sample.Section title="1. 사용법" description="">
+            <Sample.Section title="1. 사용법" description="">
                 <Layout direction="row">
-                    <Sample.Section title="Result"></Sample.Section>
+                    <Sample.Section title="Result">
+                        <Tree data={data} onClick={(data) => console.log(data)} />
+                    </Sample.Section>
                     <Sample.Section title="Code">
                         <Sample.Code>{`
 const Sample = () => {
@@ -152,7 +157,7 @@ const Sample = () => {
 `}</Sample.Code>
                     </Sample.Section>
                 </Layout>
-            </Sample.Section> */}
+            </Sample.Section>
         </Sample>
     );
 };
