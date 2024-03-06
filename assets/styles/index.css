@@ -218,7 +218,7 @@
         @apply p-4 rounded-t bg-uf-card-header;
     }
     .uf-group-body {
-        @apply flex flex-col w-full flex-1 p-4 space-y-4;
+        @apply flex-col w-full flex-1 p-4 space-y-4;
     }
     .uf-group-footer {
         @apply p-4 rounded-b bg-uf-card-header;

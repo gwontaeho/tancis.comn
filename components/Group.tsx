@@ -35,6 +35,7 @@ type GroupTitleProps = {
 
 type GroupBodyProps = {
     children?: ReactNode;
+    hidden?: boolean;
     gap?: keyof typeof GAP;
 };
 
@@ -150,8 +151,12 @@ const GroupTitle = (props: GroupTitleProps) => {
 };
 
 const GroupBody = (props: GroupBodyProps) => {
-    const { children, gap = 0 } = props;
-    return <div className={classNames("uf-group-body", GAP[gap])}>{children}</div>;
+    const { children, hidden, gap = 0 } = props;
+    return (
+        <div hidden={hidden} className={classNames("uf-group-body", GAP[gap], !hidden && "flex")}>
+            {children}
+        </div>
+    );
 };
 
 const GroupSection = (props: GroupSectionProps) => {
