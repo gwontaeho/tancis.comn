@@ -475,8 +475,6 @@ const Row = memo((props: any) => {
 
                                 const { backgroundColor } = rowContext;
 
-                                console.log(rowContext);
-
                                 return (
                                     <div
                                         key={celKey}
