@@ -101,6 +101,7 @@ export type FormControlProps = InputDaterangeProps & {
     editType?: string;
 
     /** text */
+    imemode?: "number" | "number+upper" | "number+lower";
     mask?: string | any[];
     exact?: boolean;
     letterCase?: "upper" | "lower";

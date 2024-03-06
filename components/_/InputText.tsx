@@ -3,7 +3,8 @@ import React from "react";
 /** */
 export type InputTextProps = {
     edit?: boolean;
-    mask?: any;
+    mask?: any | "number" | "upper-number" | "lower-number";
+    imemode?: "number" | "number+upper" | "number+lower";
     exact?: boolean;
     letterCase?: "upper" | "lower";
 
@@ -24,6 +25,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         const {
             /** */
             edit = true,
+            imemode,
             mask,
             exact,
             letterCase,
@@ -53,7 +55,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             }).filter(([, value]) => value !== undefined),
         );
 
-        const o = { mask, exact, letterCase };
+        const o = { mask, exact, letterCase, imemode };
 
         const [_value, _setValue] = React.useState<any>(formatText(value, o));
 
@@ -95,12 +97,20 @@ export const formatText = (v: any, o?: any) => {
 
     let f = String(v);
 
-    if (o?.letterCase === "upper") {
+    if (o?.letterCase === "upper" || o.imemode === "number+upper") {
         f = f.toUpperCase();
     }
 
-    if (o?.letterCase === "lower") {
+    if (o?.letterCase === "lower" || o.imemode === "number+lower") {
         f = f.toLowerCase();
+    }
+
+    if (o.imemode === "number") {
+        f = f.replace(/[^0-9]/g, "");
+    } else if (o.imemode === "number+upper") {
+        f = f.replace(/[^A-Z0-9]/g, "");
+    } else if (o.imemode === "number+lower") {
+        f = f.replace(/[^a-z0-9]/g, "");
     }
 
     if (o?.mask) {
