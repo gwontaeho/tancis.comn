@@ -143,7 +143,7 @@ export const Temp = () => {
     };
 
     const render = {
-        row: (data, context) => {
+        row: (data: any, context: any) => {
             if (data.text === "Maru") {
                 context.backgroundColor = "red";
             }
