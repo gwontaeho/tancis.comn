@@ -480,7 +480,7 @@ export const comnUtils = {
                 url = `${process.env.REACT_APP_API_CGMI}/api/v1/cgmi/comn/cd?area=cgmiLstCd&comnCd=${comnCd}`;
                 break;
             case "hsCd":
-                url = `${process.env.REACT_APP_API_CLRI}/api/v1/clri/tm/hs/hs-mgmt?hsCd=${keyword}&hsDesc=${keywordName}`;
+                url = `${process.env.REACT_APP_API_CLRI}/api/v1/clri/tm/hs/hs-mgmt/popUp?hsCd=${keyword}&hsDesc=${keywordName}`;
                 break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
