@@ -475,17 +475,19 @@ const Row = memo((props: any) => {
 
                                 const { backgroundColor } = rowContext;
 
+                                console.log(rowContext);
+
                                 return (
                                     <div
                                         key={celKey}
                                         className={classNames(
-                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-[invalid=true]:border-uf-error aria-[selected=true]:border-uf-info",
+                                            "p-1 min-h-[2.5rem] flex items-center border border-uf-card-background aria-[invalid=true]:border-uf-error aria-[selected=true]:border-uf-info",
 
                                             (align === "start" || align === "left") && "justify-start text-left",
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
 
-                                            backgroundColor && GRID_ROW_BG[backgroundColor],
+                                            backgroundColor ? GRID_ROW_BG[backgroundColor] : "bg-uf-card-background",
                                         )}
                                         {...(abc.isError && { "aria-invalid": true })}
                                         {...(_selectedCel?.__key === celKey && { "aria-selected": true })}
