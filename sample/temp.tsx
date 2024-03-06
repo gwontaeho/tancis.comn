@@ -158,9 +158,9 @@ export const Temp = () => {
 
             return data.text !== "Tom";
         },
-        checkbox: (data: any) => {
-            return data.__type === "added";
-        },
+        // checkbox: (data: any) => {
+        //     return data.__type === "added";
+        // },
         cell: {
             q: (data: any) => {
                 return (
@@ -422,6 +422,9 @@ export const Temp = () => {
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => g.deleteRow("checkbox")}>delete checkbox</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.deleteRow("all")}>delete all</button>
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button

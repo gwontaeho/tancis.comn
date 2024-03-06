@@ -23,6 +23,7 @@ export type UseOptionsProps = {
 
 type UseOptionsReturn = {
     base: string;
+    __t: any;
     data: any[];
     options: TOption[];
     hasOption: boolean;
@@ -38,6 +39,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
 
     let _options = options;
     let _data;
+    let __t;
 
     if (!!area) {
         const key = getResourceKey(area, comnCd, theme.lang);
@@ -48,6 +50,7 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
                 label: utils.getCodeLabel(area, code),
                 value: utils.getCodeValue(area, code),
             }));
+            __t = key;
         }
     }
     if (excludes) {
@@ -64,5 +67,5 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
         });
     }
 
-    return { base, options: _options, hasOption: _options.length > 0, data: _data };
+    return { base, options: _options, hasOption: _options.length > 0, data: _data, __t };
 };

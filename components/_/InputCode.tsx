@@ -4,6 +4,7 @@ import lodash from "lodash";
 import { useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
+import { use } from "i18next";
 
 type InputCodeProps = UseOptionsProps & {
     edit?: boolean;
@@ -102,18 +103,29 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
 
     useEffect(() => {
         if (value === _value) return;
+        if (!value) return;
 
-        const vv = o.options.find((option: any) => option.value === formatCode(value).toUpperCase());
-        _setValue(formatCode(vv?.value || value));
+        _setValue(value);
     }, [value]);
+
+    useEffect(() => {
+        const vv = o.options.find((option: any) => option.value === formatCode(_value).toUpperCase());
+        if (vv?.value) {
+            if (onChange) {
+                onChange(vv.value);
+            }
+        }
+    }, [o.__t]);
 
     const getValueFromOptions = useCallback(
         lodash.debounce((v: any, o: any) => {
             if (o.hasOption) {
                 const vv = o.options.find((option: any) => option.value === v.toUpperCase());
-                if (vv && onChange) {
+                if (vv) {
                     _setValue(vv.value);
-                    onChange(vv.value);
+                    if (onChange) onChange(vv.value);
+                } else {
+                    if (onChange) onChange("");
                 }
             }
         }, 500),
