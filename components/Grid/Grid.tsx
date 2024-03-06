@@ -9,6 +9,18 @@ import { comnUtils } from "@/comn/utils";
 import { validateValue, fun } from "./utils";
 import { useInitialize } from "./initializer";
 
+type TGridRow = Record<string, any>;
+type TGridRowContext = { backgroundColor: "yellow" | "red" | "blue" };
+
+export type TGridRender = {
+    row?: (data: TGridRow, context: TGridRowContext) => boolean;
+    checkbox?: (data: TGridRow) => boolean;
+    radio?: (data: TGridRow) => boolean;
+    cell?: any;
+    edit?: any;
+    head?: any;
+};
+
 /**
  * # Grid
  */
@@ -251,6 +263,7 @@ const Row = memo((props: any) => {
     const rowKey = row?.__key;
     const rowType = row?.__type;
     const rowIndex = row?.__index;
+    const rowContext: TGridRowContext = row?.__context;
 
     const { t } = useTranslation();
     const resizeObserverRef = useRef<any>(null);
@@ -454,15 +467,25 @@ const Row = memo((props: any) => {
                                     },
                                 };
 
+                                const GRID_ROW_BG = {
+                                    blue: "bg-[#bacee0]",
+                                    yellow: "bg-[#ffeb33]",
+                                    red: "bg-[#ed3e49]",
+                                };
+
+                                const { backgroundColor } = rowContext;
+
                                 return (
                                     <div
                                         key={celKey}
                                         className={classNames(
-                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-[invalid=true]:border-uf-error aria-[selected=true]:border-uf-info ",
+                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center border border-uf-card-background aria-[invalid=true]:border-uf-error aria-[selected=true]:border-uf-info",
 
                                             (align === "start" || align === "left") && "justify-start text-left",
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
+
+                                            backgroundColor && GRID_ROW_BG[backgroundColor],
                                         )}
                                         {...(abc.isError && { "aria-invalid": true })}
                                         {...(_selectedCel?.__key === celKey && { "aria-selected": true })}
@@ -478,7 +501,7 @@ const Row = memo((props: any) => {
                                             });
                                         }}
                                     >
-                                        {!isEdit &&
+                                        {isEdit &&
                                             (render?.cell?.[binding]?.({
                                                 value: value,
                                                 rowValues: row,
@@ -499,7 +522,8 @@ const Row = memo((props: any) => {
                                                     }}
                                                 />
                                             ))}
-                                        {isEdit &&
+
+                                        {!isEdit &&
                                             (render?.edit?.[binding]?.({
                                                 value: value,
                                                 rowValues: row,

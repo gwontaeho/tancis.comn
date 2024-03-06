@@ -1,5 +1,6 @@
 import { TGridSchema, useFetch, useForm } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
+import type { TGridRender } from "@/comn/components";
 
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
 import { useEffect, useMemo, useState } from "react";
@@ -38,21 +39,21 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         height: 700,
         // pagination: "in",
-        group: [""],
+        // group: [""],
     },
-    group: [
-        { cells: [{ binding: "number", aggregate: "SUM" }] },
-        {
-            colspan: 2,
-            cells: [
-                { binding: "number", aggregate: "AVERAGE" },
-                { binding: "number", aggregate: "MAX" },
-            ],
-        },
-        {
-            cells: [{ binding: "number", aggregate: "COUNT" }],
-        },
-    ],
+    // group: [
+    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
+    //     {
+    //         colspan: 2,
+    //         cells: [
+    //             { binding: "number", aggregate: "AVERAGE" },
+    //             { binding: "number", aggregate: "MAX" },
+    //         ],
+    //     },
+    //     {
+    //         cells: [{ binding: "number", aggregate: "COUNT" }],
+    //     },
+    // ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -73,7 +74,7 @@ const GRID_SCHEMA: TGridSchema = {
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
         { colspan: 2, cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
-        { cells: [{ binding: "text", type: "code", area: "currCd" }] },
+        { cells: [{ binding: "text", type: "text" }] },
     ],
 };
 
@@ -112,8 +113,8 @@ export const Temp = () => {
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
     const data = useMemo(() => mock({ totalElements: 20 }), []);
-    const pagingData = paging({ data, page: g.page, size: g.size });
 
+    const pagingData = paging({ data, page: g.page, size: g.size });
     const fetch = useFetch({
         // api: () => comnUtils.getCode({ area: "currCd" }),
         api: () => api.get("asdw"),
@@ -141,8 +142,19 @@ export const Temp = () => {
         setRender((prev) => ++prev);
     };
 
-    const render = {
-        row: (data: any) => {
+    const render: TGridRender = {
+        row: (data, context) => {
+            if (data.text === "Maru") {
+                context.backgroundColor = "red";
+            }
+
+            if (data.text === "Sam") {
+                context.backgroundColor = "blue";
+            }
+            if (data.text === "Ken") {
+                context.backgroundColor = "yellow";
+            }
+
             return data.text !== "Tom";
         },
         checkbox: (data: any) => {

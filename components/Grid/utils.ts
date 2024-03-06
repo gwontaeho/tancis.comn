@@ -272,12 +272,21 @@ const getView = (_grid: any) => {
         view = v;
     } else {
         content = _grid.current._content;
-        view = content.filter((_: any) => {
-            if (_grid.current._render?.row) {
-                return _grid.current._render?.row?.(_);
-            }
-            return _;
-        });
+        view = content
+            .map((_: any) => {
+                const __context = {};
+
+                if (_grid.current._render?.row) {
+                    const render = _grid.current._render?.row?.(_, __context);
+
+                    if (render) {
+                    } else {
+                        return undefined;
+                    }
+                }
+                return { ..._, __context };
+            })
+            .filter(Boolean);
     }
 
     let contentIndex = 0;
@@ -287,6 +296,7 @@ const getView = (_grid: any) => {
         else next.__index = contentIndex++;
         return next;
     });
+
     let viewIndex = 0;
     view = view
         .map((_: any) => {
