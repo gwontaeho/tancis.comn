@@ -145,16 +145,16 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            if (data.text === "Maru") {
-                context.backgroundColor = "red";
-            }
+            // if (data.text === "Maru") {
+            //     context.backgroundColor = "red";
+            // }
 
-            if (data.text === "Sam") {
-                context.backgroundColor = "blue";
-            }
-            if (data.text === "Ken") {
-                context.backgroundColor = "yellow";
-            }
+            // if (data.text === "Sam") {
+            //     context.backgroundColor = "blue";
+            // }
+            // if (data.text === "Ken") {
+            //     context.backgroundColor = "yellow";
+            // }
 
             return data.text !== "Tom";
         },
@@ -162,23 +162,21 @@ export const Temp = () => {
         //     return data.__type === "added";
         // },
         cell: {
-            q: (data: any) => {
+            text: (data: any) => {
                 return (
                     <Layout>
-                        <div>{data.rowValues.q}-</div>
-                        <div>{data.rowValues.q}-</div>
-                        <div>{data.rowValues.q}</div>
+                        <div>123</div>
                     </Layout>
                 );
             },
         },
         edit: {
-            q: (data: any) => {
+            text: (data: any) => {
                 return (
                     <Layout>
-                        <div>{data.rowValues.q}-</div>
-                        <div>{data.rowValues.q}-</div>
-                        <div>{data.rowValues.q}</div>
+                        <div>{data.rowValues.text}-</div>
+                        <div>{data.rowValues.text}-</div>
+                        <div>{data.rowValues.text}</div>
                     </Layout>
                 );
             },
