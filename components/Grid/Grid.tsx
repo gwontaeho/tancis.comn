@@ -502,7 +502,7 @@ const Row = memo((props: any) => {
                                         }}
                                     >
                                         {isEdit &&
-                                            (render?.cell?.[binding]?.({
+                                            (render?.edit?.[binding]?.({
                                                 value: value,
                                                 rowValues: row,
                                                 binding: binding,
@@ -523,7 +523,7 @@ const Row = memo((props: any) => {
                                             ))}
 
                                         {!isEdit &&
-                                            (render?.edit?.[binding]?.({
+                                            (render?.cell?.[binding]?.({
                                                 value: value,
                                                 rowValues: row,
                                                 binding: binding,

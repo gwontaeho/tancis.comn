@@ -165,7 +165,7 @@ export const Temp = () => {
             text: (data: any) => {
                 return (
                     <Layout>
-                        <div>123</div>
+                        <div>1www23</div>
                     </Layout>
                 );
             },
