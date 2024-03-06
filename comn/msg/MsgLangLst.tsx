@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button, Grid } from "@/comn/components";
@@ -92,6 +92,17 @@ export const MsgLangLst = (props: any) => {
         },
     };
 
+    const render = {
+        grid_MsgLangLst: {
+            cell: {
+                msgId: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return <Link to={`${URLS.msgLangDtl}/${rowValues.msgId}`}>{`${rowValues.msgId}`}</Link>;
+                },
+            },
+        },
+    };
+
     useEffect(() => {
         handler.getMsgLangList();
     }, []);
@@ -153,7 +164,7 @@ export const MsgLangLst = (props: any) => {
                         <Grid
                             {...grid.msgLangLst.grid}
                             data={fetch.getMsgLangLst.data?.msgLangList}
-                            onCellClick={handler.click_Grid_MsgLangLst}
+                            render={render.grid_MsgLangLst}
                         />
                     </Group.Section>
                 </Group.Body>
