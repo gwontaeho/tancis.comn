@@ -3,7 +3,7 @@ import React from "react";
 /** */
 export type InputTextProps = {
     edit?: boolean;
-    mask?: any | "number" | "upper-number" | "lower-number";
+    mask?: any;
     imemode?: "number" | "number+upper" | "number+lower";
     exact?: boolean;
     letterCase?: "upper" | "lower";
