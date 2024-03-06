@@ -238,13 +238,13 @@
 
     /* Layout */
     .uf-layout {
-        @apply flex w-full;
+        @apply w-full;
     }
     .uf-layout-left {
-        @apply flex flex-wrap;
+        @apply flex-wrap;
     }
     .uf-layout-right {
-        @apply flex flex-1 flex-wrap justify-end;
+        @apply flex-1 flex-wrap justify-end;
     }
     .uf-layout-left > .uf-form-control,
     .uf-layout-right > .uf-form-control {

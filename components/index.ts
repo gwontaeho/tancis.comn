@@ -2,7 +2,9 @@ export * from "./Grid/Grid";
 export * from "./Button";
 export * from "./Collapse";
 export * from "./FormControl";
-export * from "./Group";
+
+export { default as Group } from "./Group";
+
 export * from "./Tab";
 export * from "./Tree";
 export * from "./Pagination";

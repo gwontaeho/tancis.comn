@@ -1,4 +1,4 @@
-import { forwardRef, Children, cloneElement, useInsertionEffect } from "react";
+import { forwardRef, Children, cloneElement, useInsertionEffect, memo } from "react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -122,7 +122,8 @@ type GroupColProps = GroupLabelProps & {
  * @param props GroupProps
  * @returns
  */
-export const Group = (props: GroupProps) => {
+
+const Group = (props: GroupProps) => {
     const { children, hidden, flex } = props;
     return (
         <div hidden={hidden} className={classNames("uf-group", flex && FLEX[flex], !hidden && "flex")}>
@@ -403,3 +404,5 @@ Group.Label = GroupLabel;
 Group.Control = GroupControl;
 
 Group.Cell = GroupCell;
+
+export default Group;

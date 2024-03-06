@@ -192,13 +192,8 @@ export const Temp = () => {
             <Layout>
                 <Group>
                     <Group.Header></Group.Header>
-                    <Group.Body hidden={count % 2 === 0}>
+                    <Group.Body>
                         <Group.Section>
-                            {/* <Group.Row hidden>
-                                <Group.Control />
-                                <Group.Control />
-                                <Group.Control />
-                            </Group.Row> */}
                             <Group.Cell root hidden={count % 2 === 0}></Group.Cell>
                             <Group.Cell root>
                                 <Group.Cell header></Group.Cell>
