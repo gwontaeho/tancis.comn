@@ -34,7 +34,7 @@ const GRID_SCHEMA: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: false,
+        edit: true,
         importExcel: true,
         exportExcel: true,
         height: 700,
@@ -93,6 +93,7 @@ const FORM_SCHEMA = {
             viewType: "both",
         },
         code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
+        textarea: { type: "textarea" },
     },
 };
 
@@ -222,11 +223,14 @@ export const Temp = () => {
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}></Group.Cell>
-                                    <Group.Cell size={10}></Group.Cell>
+                                    <Group.Cell size={10}>
+                                        <FormControl {...f.schema.textarea} />
+                                    </Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>
                             <Group.Cell root>
                                 <Group.Cell>
+                                    <button onClick={() => console.log(f.setEditable(false))}>get data</button>
                                     <button onClick={() => console.log(f.getValues())}>get data</button>
                                     <button onClick={() => console.log(f.setValue("select", "AED"))}>get data</button>
                                 </Group.Cell>
