@@ -142,7 +142,7 @@ export const Temp = () => {
         setRender((prev) => ++prev);
     };
 
-    const render: TGridRender = {
+    const render = {
         row: (data, context) => {
             if (data.text === "Maru") {
                 context.backgroundColor = "red";
