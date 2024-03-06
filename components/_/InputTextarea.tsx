@@ -70,7 +70,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
 
         return (
             <div className="w-full">
-                {!edit && <div title={_value}>{_value}</div>}
+                {!edit && <pre title={_value}>{_value}</pre>}
                 <div hidden={!edit}>
                     <textarea
                         {..._props}
