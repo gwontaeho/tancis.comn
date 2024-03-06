@@ -122,6 +122,8 @@ export const useResource = (props: UseResourceProps) => {
                         const item = { ...shouldFetch[index] };
                         if (_.status === "fulfilled") {
                             item.value = Object.values<any>(_.value.data)?.[0]?.content || [];
+                        } else {
+                            item.value = undefined;
                         }
                         return item;
                     })
