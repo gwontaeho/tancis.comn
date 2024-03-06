@@ -25,10 +25,12 @@ type GroupProps = {
 
 type GroupHeaderProps = {
     children?: ReactNode;
+    hidden?: boolean;
 };
 
 type GroupTitleProps = {
     title?: string;
+    hidden?: boolean;
     description?: string;
     titleSize?: 1 | 2 | 3;
 };
@@ -47,6 +49,7 @@ type GroupSectionProps = {
 
 type GroupFooterProps = {
     children?: ReactNode;
+    hidden?: boolean;
 };
 
 type GroupRowProps = {
@@ -60,6 +63,7 @@ type GroupRowProps = {
 
 type GroupAnyProps = {
     children?: ReactNode;
+    hidden?: boolean;
     align?: keyof typeof ALIGNS;
     anySize?: keyof typeof COL_SPAN;
     padding?: number;
@@ -80,6 +84,7 @@ type GroupCellProps = {
 };
 
 type GroupLabelProps = FormControlProps & {
+    hidden?: boolean;
     label?: ReactNode;
     labelSize?: keyof typeof COL_SPAN;
     required?: boolean | string;
@@ -91,6 +96,7 @@ type GroupLabelProps = FormControlProps & {
 };
 
 export type GroupControlProps = GroupLabelProps & {
+    hidden?: boolean;
     controlSize?: keyof typeof COL_SPAN;
     only?: "control" | "label";
     "data-parent"?: string;
@@ -101,6 +107,7 @@ export type GroupControlProps = GroupLabelProps & {
 };
 
 type GroupColProps = GroupLabelProps & {
+    hidden?: boolean;
     children?: ReactNode;
     colSize?: keyof typeof COL_SPAN;
     combine?: boolean;
@@ -133,18 +140,22 @@ const Group = (props: GroupProps) => {
 };
 
 const GroupHeader = (props: GroupHeaderProps) => {
-    const { children } = props;
+    const { children, hidden } = props;
 
-    return <div className="uf-group-header">{children}</div>;
+    return (
+        <div hidden={hidden} className="uf-group-header">
+            {children}
+        </div>
+    );
 };
 
 const GroupTitle = (props: GroupTitleProps) => {
-    const { title, description, titleSize = 1 } = props;
+    const { title, description, titleSize = 1, hidden } = props;
     const { t } = useTranslation();
     const sizes = { 3: "text-lg", 2: "text-xl", 1: "text-2xl" };
 
     return (
-        <div>
+        <div hidden={hidden}>
             {title && <div className={classNames("font-semibold", sizes[titleSize])}>{t(title)}</div>}
             {description && <p>{t(description)}</p>}
         </div>
@@ -193,8 +204,12 @@ const GroupSection = (props: GroupSectionProps) => {
 };
 
 const GroupFooter = (props: GroupFooterProps) => {
-    const { children } = props;
-    return <div className="uf-group-footer">{children}</div>;
+    const { children, hidden } = props;
+    return (
+        <div hidden={hidden} className="uf-group-footer">
+            {children}
+        </div>
+    );
 };
 
 const GroupCell = (props: GroupCellProps) => {
@@ -267,6 +282,7 @@ const GroupRow = (props: GroupRowProps) => {
 const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
     const { t } = useTranslation();
     const {
+        hidden,
         label,
         labelSize = 2,
         align = "left",
@@ -279,6 +295,7 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 
     return (
         <div
+            hidden={hidden}
             className={classNames(
                 "uf-group-label",
                 COL_SPAN[labelSize],
@@ -287,6 +304,7 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
                 borderRight === false && "border-r-0",
                 borderTop === false && "border-t-0",
                 borderBottom === false && "border-b-0",
+                !hidden && "flex",
             )}
         >
             {props.type ? <FormControl ref={ref} {...rest} /> : typeof label === "string" ? t(label) : label}
@@ -304,15 +322,16 @@ const GroupLabel = forwardRef((props: GroupLabelProps, ref) => {
 });
 
 const GroupAny = (props: GroupAnyProps) => {
-    const { children, anySize, padding = 1, align = "center", ...rest } = props;
+    const { children, hidden, anySize, padding = 1, align = "center", ...rest } = props;
     return (
         <>
             <div
+                hidden={hidden}
                 className={classNames(
                     `p-${padding}`,
-                    "flex",
                     "items-center",
                     "space-x-1",
+                    !hidden && "flex",
                     anySize === undefined ? "min-w-fit" : COL_SPAN[anySize],
                 )}
                 {...rest}
@@ -325,6 +344,7 @@ const GroupAny = (props: GroupAnyProps) => {
 
 const GroupControl = forwardRef((props: GroupControlProps, ref) => {
     const {
+        hidden,
         labelSize,
         label,
         only,
@@ -333,7 +353,6 @@ const GroupControl = forwardRef((props: GroupControlProps, ref) => {
         borderRight = false,
         borderTop = false,
         borderBottom = false,
-
         ...rest
     } = props;
     return (

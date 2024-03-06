@@ -230,7 +230,7 @@
         @apply w-full grid-cols-1 min-h-[2.5rem] border-x border-b first:border-t sm:grid-cols-12;
     }
     .uf-group-label {
-        @apply font-semibold relative flex items-center p-1 break-all bg-uf-card-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
+        @apply font-semibold relative items-center p-1 break-all bg-uf-card-header sm:border-x first:border-l-0 last:border-r-0 first:last:border-r;
     }
     .uf-group-col {
         @apply flex items-center p-1;
