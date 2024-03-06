@@ -106,7 +106,7 @@ export const Temp = () => {
         ],
     });
 
-    const [, setRender] = useState(0);
+    const [count, setRender] = useState(0);
 
     const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD" } });
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
@@ -194,12 +194,12 @@ export const Temp = () => {
                     <Group.Header></Group.Header>
                     <Group.Body>
                         <Group.Section>
-                            <Group.Row>
+                            {/* <Group.Row hidden>
                                 <Group.Control />
                                 <Group.Control />
                                 <Group.Control />
-                            </Group.Row>
-
+                            </Group.Row> */}
+                            <Group.Cell root hidden={count % 2 === 0}></Group.Cell>
                             <Group.Cell root>
                                 <Group.Cell header></Group.Cell>
                                 <Group.Cell size={10}>
@@ -209,7 +209,6 @@ export const Temp = () => {
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.code} callback={(data) => console.log(data)} />
                                     </Group.Cell>
-
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.select} />
@@ -218,13 +217,15 @@ export const Temp = () => {
                                     <Group.Cell size={8}></Group.Cell>
                                     <Group.Cell size={10}></Group.Cell>
                                 </Group.Cell>
-                                <Group.Cell root>
-                                    <Group.Cell>
-                                        <button onClick={() => console.log(f.getValues())}>get data</button>
-                                        <button onClick={() => console.log(f.setValue("select", "AED"))}>
-                                            get data
-                                        </button>
-                                    </Group.Cell>
+                            </Group.Cell>
+                            <Group.Cell root>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.getValues())}>get data</button>
+                                    <button onClick={() => console.log(f.setValue("select", "AED"))}>get data</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.getValues())}>get data</button>
+                                    <button onClick={() => console.log(f.setValue("select", "AED"))}>get data</button>
                                 </Group.Cell>
                             </Group.Cell>
                         </Group.Section>

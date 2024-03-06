@@ -1,4 +1,5 @@
-import React, { ReactNode, forwardRef } from "react";
+import { forwardRef, Children, cloneElement, useInsertionEffect } from "react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { FormControl, FormControlProps } from "./FormControl";
@@ -17,13 +18,13 @@ const ALIGNS_FLEX = {
 };
 
 type GroupProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     hidden?: boolean;
     flex?: keyof typeof FLEX;
 };
 
 type GroupHeaderProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
 };
 
 type GroupTitleProps = {
@@ -33,22 +34,22 @@ type GroupTitleProps = {
 };
 
 type GroupBodyProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     gap?: keyof typeof GAP;
 };
 
 type GroupSectionProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     hidden?: boolean;
     gap?: keyof typeof GAP;
 };
 
 type GroupFooterProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
 };
 
 type GroupRowProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     hidden?: boolean;
     borderTop?: boolean;
     borderBottom?: boolean;
@@ -57,14 +58,14 @@ type GroupRowProps = {
 };
 
 type GroupAnyProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     align?: keyof typeof ALIGNS;
     anySize?: keyof typeof COL_SPAN;
     padding?: number;
 };
 
 type GroupCellProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     hidden?: boolean;
     size?: keyof typeof COL_SPAN;
     test?: keyof typeof GRID_COLS;
@@ -78,7 +79,7 @@ type GroupCellProps = {
 };
 
 type GroupLabelProps = FormControlProps & {
-    label?: React.ReactNode;
+    label?: ReactNode;
     labelSize?: keyof typeof COL_SPAN;
     required?: boolean | string;
     align?: keyof typeof ALIGNS_FLEX;
@@ -99,7 +100,7 @@ export type GroupControlProps = GroupLabelProps & {
 };
 
 type GroupColProps = GroupLabelProps & {
-    children?: React.ReactNode;
+    children?: ReactNode;
     colSize?: keyof typeof COL_SPAN;
     combine?: boolean;
     padding?: number;
@@ -157,9 +158,31 @@ const GroupSection = (props: GroupSectionProps) => {
     const { children, hidden, gap = 0 } = props;
 
     return (
-        <div hidden={hidden} className={classNames("uf-group-section", GAP[gap], !hidden && "flex")}>
+        <section
+            ref={(node) => {
+                if (!node) return;
+                let done;
+                for (const child of Array.from(node.children)) {
+                    if (child.classList.contains("uf-group-cell") || child.classList.contains("uf-group-row")) {
+                        if (!child.hasAttribute("hidden")) {
+                            if (done) {
+                                child.classList.remove("border-t");
+                                return;
+                            }
+
+                            if (!done) {
+                                child.classList.add("border-t");
+                                done = true;
+                            }
+                        }
+                    }
+                }
+            }}
+            hidden={hidden}
+            className={classNames("uf-group-section", GAP[gap], !hidden && "flex")}
+        >
             {children}
-        </div>
+        </section>
     );
 };
 
@@ -190,9 +213,9 @@ const GroupCell = (props: GroupCellProps) => {
         <div
             hidden={hidden}
             className={classNames(
-                "min-h-[2.5rem] break-all",
+                "uf-group-cell min-h-[2.5rem] break-all group",
                 COL_SPAN[size],
-                root && "border-x border-b first:border-t",
+                root && "border-x border-b",
                 header && "bg-uf-card-header font-semibold text-center",
                 !end && GRID_COLS[size],
                 !end && "bg-uf-border",
@@ -207,9 +230,9 @@ const GroupCell = (props: GroupCellProps) => {
             )}
             style={{ height }}
         >
-            {React.Children.map(children, (child: any) => {
+            {Children.map(children, (child: any) => {
                 if (typeof child === "string") return child;
-                if (child) return React.cloneElement(child);
+                if (child) return cloneElement(child);
             })}
             {required && <span className={classNames("text-uf-error ml-0.5")}>*</span>}
         </div>
@@ -341,10 +364,10 @@ const GroupCol = (props: GroupColProps) => {
             {combine ? (
                 <div className={classNames("uf-group-col", COL_SPAN[colSize])}>
                     <div className="flex border rounded divide-x overflow-hidden">
-                        {React.Children.map(children, (child: any) => {
+                        {Children.map(children, (child: any) => {
                             return (
                                 <div className="[&_*]:border-none [&_*]:rounded-none">
-                                    {child && React.cloneElement(child, { "data-parent": "group_col" })}
+                                    {child && cloneElement(child, { "data-parent": "group_col" })}
                                 </div>
                             );
                         })}
@@ -352,9 +375,9 @@ const GroupCol = (props: GroupColProps) => {
                 </div>
             ) : (
                 <div className={classNames("p-" + padding + " flex items-center space-x-1", COL_SPAN[colSize])}>
-                    {React.Children.map(children, (child: any) => {
+                    {Children.map(children, (child: any) => {
                         if (typeof child === "string") return child;
-                        if (child) return React.cloneElement(child, { "data-parent": "group_col" });
+                        if (child) return cloneElement(child, { "data-parent": "group_col" });
                     })}
                 </div>
             )}
