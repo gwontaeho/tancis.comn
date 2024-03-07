@@ -218,6 +218,11 @@ export const useGrid = (props: UseGridProps) => {
         */
         return data;
     };
+    const getViewData = () => {
+        return _grid.current._content.filter((_: any) => {
+            return _.__type !== "deleted";
+        });
+    };
     const getOrigin = () => {
         return _grid.current._origin;
     };
@@ -277,6 +282,7 @@ export const useGrid = (props: UseGridProps) => {
         size: _size,
 
         getData,
+        getViewData,
         getOrigin,
         getChecked,
         getSelectedRow,
