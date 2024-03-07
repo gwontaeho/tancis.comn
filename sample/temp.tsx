@@ -201,7 +201,7 @@ export const Temp = () => {
     return (
         <Page>
             <Button onClick={r}>render</Button>
-            <Layout>
+            <Layout direction="col">
                 <Group>
                     <Group.Header></Group.Header>
                     <Group.Body>
@@ -250,6 +250,7 @@ export const Temp = () => {
 
                         <Group.Section>
                             <Tree
+                                size={4}
                                 data={[
                                     {
                                         id: "1",

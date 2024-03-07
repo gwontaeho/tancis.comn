@@ -70,7 +70,9 @@ const TreeItem = (props: TreeItemProps) => {
                         onChange={handleCheck}
                     />
                 )}
-                <button onClick={handleClick}>{name}</button>
+                <button className="text-left" onClick={handleClick}>
+                    {name}
+                </button>
             </div>
             {Array.isArray(children) && (
                 <Collapse open={_open}>
@@ -123,7 +125,7 @@ export const Tree = (props: TreeProps) => {
     return (
         <ul
             // ref={ref}
-            className={classNames("overflow-auto p-4", WIDTH[size])}
+            className={classNames("overflow-y-auto p-4", WIDTH[size])}
             style={{ height }}
         >
             {_.map((child: any) => {

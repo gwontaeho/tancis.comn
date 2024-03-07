@@ -1,10 +1,9 @@
-import { useRef, useState, useEffect, useId } from "react";
+import { useId } from "react";
 import { useRecoilState } from "recoil";
-import { v4 as uuid } from "uuid";
 import lodash from "lodash";
 
-import { resourceState } from "@/comn/features/recoil";
 import { utils } from "@/comn/utils";
+import { resourceState } from "@/comn/features/recoil";
 import { useTheme, getResourceKey } from "@/comn/hooks";
 
 export type TOption = {
