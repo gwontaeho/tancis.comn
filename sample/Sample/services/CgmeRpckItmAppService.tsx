@@ -169,7 +169,7 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
             rangeButton: 3,
             controlSize: 10,
         },
-        mrn: { type: "text", label: "L_MRN" },
+        mrn: { type: "text", label: "L_MRN", imemode: "number+upper" },
         prcssStatCd: {
             type: "checkbox",
             label: "L_PRCSS_STAT",
@@ -192,9 +192,9 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
             label: "L_RPRT_NO",
             /*
              * 문자 "A"
-             * 영어대문자 [A-Z]
-             * 특정 영어대문자 [A-Z]
-             * 영어소문자 [a-z]
+             * 영어대문자 /[A-Z]/
+             * 특정 영어대문자 /[A-C]/
+             * 영어소문자 /[a-z]/
              * 숫자 /\d/
              * 숫자범위 /[0-5]/
              */

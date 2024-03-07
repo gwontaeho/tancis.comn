@@ -12,9 +12,9 @@ import { v4 as uuid } from "uuid";
 const MODAL_SIZES = {
     xs: "max-w-[30vw]",
     sm: "max-w-[50vw] max-h-[50vh] min-h-[30vh]",
-    md: "max-w-[70vw] max-h-[70vh] min-h-[60vh]",
-    lg: "max-w-[80vw] max-h-[80vh] min-h-[70vh]",
-    xl: "max-w-[90vw] max-h-[90vh] min-h-[80vh]",
+    md: "max-w-[70vw] max-h-[90vh] min-h-[90vh]",
+    lg: "max-w-[80vw] max-h-[90vh] min-h-[90vh]",
+    xl: "max-w-[90vw] max-h-[90vh] min-h-[90vh]",
 };
 
 const MODAL_LAYOUTS = {
