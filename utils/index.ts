@@ -209,6 +209,12 @@ export const comnUtils = {
         if (comnUtils.isUndefined(arg) || comnUtils.isNull(arg)) return replace;
         return arg;
     },
+    encodeURI: (str: string) => {
+        return encodeURIComponent(str);
+    },
+    decodeURI: (str: string) => {
+        return decodeURIComponent(str);
+    },
     /////////////////////////////////////////////////////////////////////
     // Date
     /////////////////////////////////////////////////////////////////////

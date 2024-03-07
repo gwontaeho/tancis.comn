@@ -262,7 +262,9 @@ export const CGME0411001Q = (props: any) => {
                                 to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
                             >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
                             <Link
-                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
+                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${
+                                    rowValues.prcsTpCd
+                                }-${rowValues.dclrSrno}?a=${comnUtils.encodeURI("한글도 해보자/ 한글&&")}`}
                             >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
                         </Layout>
                     );
@@ -417,18 +419,14 @@ export const CGME0411001Q = (props: any) => {
                                 ></Button>
                                 <Button
                                     onClick={() => {
-                                        form.rpckItmAppSrch.setSchema("prcssStatCd", {
-                                            options: [{ label: "1", value: "1" }],
-                                        });
+                                        grid.rpckItmAppList.setOption("edit", false);
                                     }}
                                 >
                                     테스트
                                 </Button>
                                 <Button
                                     onClick={() => {
-                                        form.rpckItmAppSrch.setSchema("prcssStatCd", {
-                                            options: [{ label: "2", value: "2" }],
-                                        });
+                                        grid.rpckItmAppList.setOption("edit", true);
                                     }}
                                 >
                                     테스트
