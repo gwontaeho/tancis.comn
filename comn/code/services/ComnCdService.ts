@@ -63,6 +63,15 @@ export const APIS = {
             keywordName: data.cntyNm,
         });
     },
+    getCntyCdLstThree: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "dgt3CntyCd",
+            page: page,
+            size: size,
+            keyword: data.dgt3CntyCd,
+            keywordName: data.cntyNm,
+        });
+    },
     getCurrCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
             area: "currCd",
@@ -351,6 +360,27 @@ export const SCHEMA_GRID_CNTY_CD: TGridSchema = {
             cells: [
                 {
                     binding: "cntyCd",
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "cntyNm" }],
+        },
+    ],
+};
+
+export const SCHEMA_GRID_CNTY_THREE_CD: TGridSchema = {
+    id: "grid",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_CNTY_CD", binding: "dgt3CntyCd", width: 150 }] },
+        { cells: [{ header: "L_CNTY_NM", binding: "cntyNm", width: "*" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "dgt3CntyCd",
                 },
             ],
         },
@@ -1009,6 +1039,14 @@ export const SCHEMA_FORM_CNTY_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         cntyCd: { type: "text", label: "L_CNTY_CD" },
+        cntyNm: { type: "text", label: "L_CNTY_NM" },
+    },
+};
+
+export const SCHEMA_FORM_CNTY_THREE_CD_SRCH: TFormSchema = {
+    id: "form",
+    schema: {
+        dgt3CntyCd: { type: "text", label: "L_CNTY_CD" },
         cntyNm: { type: "text", label: "L_CNTY_NM" },
     },
 };
