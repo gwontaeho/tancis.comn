@@ -56,7 +56,6 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         );
 
         const o = { mask, exact, letterCase, imemode };
-
         const [_value, _setValue] = React.useState<any>(formatText(value, o));
 
         React.useEffect(() => {

@@ -393,7 +393,7 @@ export const CGME0411001Q = (props: any) => {
                             </Group.Row>
                             <Group.Row>
                                 {/* MRN !== MRN ==!  */}
-                                <Group.Control {...form.rpckItmAppSrch.schema.mrn} imemode="number+lower" />
+                                <Group.Control {...form.rpckItmAppSrch.schema.mrn} />
                             </Group.Row>
                             <Group.Row>
                                 {/* Processing Status !== 처리상태 ==!  */}

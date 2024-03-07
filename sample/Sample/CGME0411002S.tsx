@@ -405,7 +405,14 @@ export const CGME0411002S = () => {
                                     <Layout direction="row" gap={1}>
                                         <FormControl {...form.rpckItmApp.schema.blPckgNo} />
                                         <FormControl {...form.rpckItmApp.schema.pckgUtCd} />
-                                        <Button> 버튼</Button>
+                                        <Button
+                                            onClick={() => {
+                                                form.rpckItmApp.setFocus("rprtNo");
+                                            }}
+                                        >
+                                            {" "}
+                                            버튼
+                                        </Button>
                                     </Layout>
                                     <Layout direction="row" gap={1}>
                                         <FormControl {...form.rpckItmApp.schema.blPckgNo} />
