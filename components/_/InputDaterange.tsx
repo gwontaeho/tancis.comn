@@ -47,6 +47,12 @@ const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
         { label: "-1M", unit: "M", value: -1 },
         { label: "-3M", unit: "M", value: -3 },
     ],
+    [
+        { label: "-3H", unit: "h", value: -3 },
+        { label: "-2H", unit: "h", value: -2 },
+        { label: "-1H", unit: "h", value: -1 },
+        { label: "0", unit: "h", value: 0 },
+    ],
 ];
 
 type DateUnitType = "M" | "w" | "d" | "h" | "y";

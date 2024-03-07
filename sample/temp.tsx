@@ -201,7 +201,7 @@ export const Temp = () => {
     return (
         <Page>
             <Button onClick={r}>render</Button>
-            <Layout direction="col">
+            <Layout>
                 <Group>
                     <Group.Header></Group.Header>
                     <Group.Body>
