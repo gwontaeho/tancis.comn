@@ -4,18 +4,7 @@ import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { Page, Group, Layout, Button, Grid, ExcelUpload, FormControl, Table } from "@/comn/components";
-import {
-    useForm,
-    useToast,
-    useFetch,
-    useModal,
-    useAuth,
-    useStore,
-    useGrid,
-    usePopup,
-    useResource,
-    useExcel,
-} from "@/comn/hooks";
+import { useForm, useToast, useFetch, useModal, useAuth, useStore, useGrid, usePopup, useResource } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP, SG_RPCK_ITM_APP_ITM_LIST } from "./services/CgmeRpckItmAppService";
 import { CommonErrors } from "@/comn/components";
 
@@ -57,7 +46,7 @@ export const CGME0411002S = () => {
     const { dclrNo } = useParams(); // Key Information of this Component Router !== 라우터에 정의된 키정보 ==!
     const [sameAsAbove, setSameAsAbove] = useState(false); // User define State !== 사용자 정의 스테이트 ==!
     const { openPopup } = usePopup();
-    const excel = useExcel({ excel1: { edit: true }, excel2: { edit: true } });
+    // const excel = useExcel({ excel1: { edit: true }, excel2: { edit: true } });
 
     const [searchParams] = useSearchParams();
 
@@ -562,7 +551,7 @@ export const CGME0411002S = () => {
 
                     <Layout direction="row">
                         <Layout.Left>
-                            <ExcelUpload
+                            {/* <ExcelUpload
                                 {...excel.schema.excel1}
                                 template="excel/template"
                                 onUpload={(file) => {
@@ -597,7 +586,7 @@ export const CGME0411002S = () => {
                                     //         modal.openModal({ content: err.error.message });
                                     //     });
                                 }}
-                            />
+                            /> */}
                         </Layout.Left>
                         <Layout.Right>
                             <Button
