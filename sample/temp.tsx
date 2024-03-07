@@ -408,6 +408,12 @@ export const Temp = () => {
                                     <button onClick={() => console.log(g.getDeletedData())}>Get Deleted</button>
                                 </Group.Cell>
                                 <Group.Cell>
+                                    <button onClick={() => console.log(g.getAddedData())}>Get Added</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getUpdatedData())}>Get Updated</button>
+                                </Group.Cell>
+                                <Group.Cell>
                                     <button onClick={() => console.log(g.getData({ excludes: ["deleted"] }))}>
                                         Get (- deleted)
                                     </button>
