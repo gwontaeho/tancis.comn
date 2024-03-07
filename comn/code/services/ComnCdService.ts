@@ -446,6 +446,7 @@ export const SCHEMA_GRID_PORT_AIRPT_CD: TGridSchema = {
         { cells: [{ header: "L_PORT_AIRPT_CD", binding: "regnCd", width: 150 }] },
         { cells: [{ header: "L_REGN_NM", binding: "regnNm", width: "*" }] },
         { cells: [{ header: "L_CNTY_CD", binding: "cntyCd", width: 150 }] },
+        { cells: [{ header: "L_PORT_AIRPT_TP_CD", binding: "portAirptTpCd", width: 150 }] },
     ],
     body: [
         {
@@ -460,6 +461,9 @@ export const SCHEMA_GRID_PORT_AIRPT_CD: TGridSchema = {
         },
         {
             cells: [{ binding: "cntyCd" }],
+        },
+        {
+            cells: [{ binding: "portAirptTpCd" }],
         },
     ],
 };
@@ -1053,7 +1057,6 @@ export const SCHEMA_FORM_PORT_AIRPT_CD_SRCH: TFormSchema = {
         portAirptTpCd: {
             type: "select",
             label: "L_PORT_AIRPT_TP",
-            required: true,
             options: [
                 { label: "L_PORT", value: "PORT" },
                 { label: "L_AIRPT", value: "AIRPT" },

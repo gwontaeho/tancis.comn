@@ -154,7 +154,8 @@ export const PortAirptCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.portAirptCdSrch.schema.cntyCd} controlSize={10}></Group.Control>
+                                <Group.Control {...form.portAirptCdSrch.schema.cntyCd}></Group.Control>
+                                <Group.Control {...form.portAirptCdSrch.schema.portAirptTpCd}></Group.Control>
                             </Group.Row>
                             <Group.Row>
                                 <Group.Control {...form.portAirptCdSrch.schema.regnCd}></Group.Control>
