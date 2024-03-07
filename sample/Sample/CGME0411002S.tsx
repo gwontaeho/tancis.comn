@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
 import { comnEnvs, comnUtils } from "@/comn/utils";
@@ -58,6 +58,8 @@ export const CGME0411002S = () => {
     const [sameAsAbove, setSameAsAbove] = useState(false); // User define State !== 사용자 정의 스테이트 ==!
     const { openPopup } = usePopup();
     const excel = useExcel({ excel1: { edit: true }, excel2: { edit: true } });
+
+    const [searchParams] = useSearchParams();
 
     const [rpckItmAppItmList, setRpckItmAppItmList] = useState(comnUtils.getGridData([]));
 
