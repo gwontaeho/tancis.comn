@@ -39,21 +39,21 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         height: 700,
         // pagination: "in",
-        // group: [""],
+        group: [""],
     },
-    // group: [
-    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
-    //     {
-    //         colspan: 2,
-    //         cells: [
-    //             { binding: "number", aggregate: "AVERAGE" },
-    //             { binding: "number", aggregate: "MAX" },
-    //         ],
-    //     },
-    //     {
-    //         cells: [{ binding: "number", aggregate: "COUNT" }],
-    //     },
-    // ],
+    group: [
+        { cells: [{ binding: "number", aggregate: "SUM" }] },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "number", aggregate: "AVERAGE" },
+                { binding: "number", aggregate: "MAX" },
+            ],
+        },
+        {
+            cells: [{ binding: "number", aggregate: "COUNT" }],
+        },
+    ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -145,18 +145,18 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            // if (data.text === "Maru") {
-            //     context.backgroundColor = "red";
-            // }
+            if (data.text === "Maru") {
+                context.backgroundColor = "red";
+            }
 
-            // if (data.text === "Sam") {
-            //     context.backgroundColor = "blue";
-            // }
-            // if (data.text === "Ken") {
-            //     context.backgroundColor = "yellow";
-            // }
+            if (data.text === "Sam") {
+                context.backgroundColor = "blue";
+            }
+            if (data.text === "Ken") {
+                context.backgroundColor = "yellow";
+            }
 
-            return data.text !== "Tom";
+            return true;
         },
         // checkbox: (data: any) => {
         //     return data.__type === "added";

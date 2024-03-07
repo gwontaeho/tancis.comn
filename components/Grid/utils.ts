@@ -239,12 +239,21 @@ const group = (_grid: any, content: any) => {
     return {
         c: getGroupedContent(content, groups[0], 0),
         v: getGroupedView(
-            content.filter((_: any) => {
-                if (_grid.current._render?.row) {
-                    return _grid.current._render?.row?.(_);
-                }
-                return _;
-            }),
+            content
+                .map((_: any) => {
+                    const __context = {};
+
+                    if (_grid.current._render?.row) {
+                        const render = _grid.current._render?.row?.(_, __context);
+
+                        if (render) {
+                        } else {
+                            return undefined;
+                        }
+                    }
+                    return { ..._, __context };
+                })
+                .filter(Boolean),
             groups[0],
             0,
             [],
