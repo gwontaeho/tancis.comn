@@ -218,6 +218,26 @@ export const useGrid = (props: UseGridProps) => {
         */
         return data;
     };
+    const getViewData = () => {
+        return _grid.current._content.filter((_: any) => {
+            return _.__type !== "deleted";
+        });
+    };
+    const getDeletedData = () => {
+        return _grid.current._content.filter((_: any) => {
+            return _.__type === "deleted";
+        });
+    };
+    const getAddedData = () => {
+        return _grid.current._content.filter((_: any) => {
+            return _.__type === "added";
+        });
+    };
+    const getUpdatedData = () => {
+        return _grid.current._content.filter((_: any) => {
+            return _.__type === "updated";
+        });
+    };
     const getOrigin = () => {
         return _grid.current._origin;
     };
@@ -277,6 +297,10 @@ export const useGrid = (props: UseGridProps) => {
         size: _size,
 
         getData,
+        getViewData,
+        getDeletedData,
+        getAddedData,
+        getUpdatedData,
         getOrigin,
         getChecked,
         getSelectedRow,
