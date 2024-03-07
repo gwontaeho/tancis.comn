@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { comnUtils, comnEnvs } from "@/comn/utils";
-import { Page, Group, Layout, Button, Grid, Editor } from "@/comn/components";
+import { Page, Group, Layout, Button, Grid } from "@/comn/components";
 import { useForm, useFetch, useStore, useToast, useModal, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_BLTBRD, SG_BLTBRD_LIST } from "./services/BltBrdService";
 
