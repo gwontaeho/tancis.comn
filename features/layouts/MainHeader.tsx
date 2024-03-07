@@ -60,19 +60,19 @@ const Logo = () => {
 
     const SRCS = {
         tanesw: {
-            logo: "/imgs/tanesw_logo.png",
-            light: "/imgs/tanesw_title.png",
-            dark: "/imgs/tanesw_title_dark.png",
+            logo: "/imgs/tanesw_logo.webp",
+            light: "/imgs/tanesw_title.webp",
+            dark: "/imgs/tanesw_title_dark.webp",
         },
         tancis: {
-            logo: "/imgs/tancis_logo.png",
-            light: "/imgs/tancis_title.png",
-            dark: "/imgs/tancis_title_dark.png",
+            logo: "/imgs/tancis_logo.webp",
+            light: "/imgs/tancis_title.webp",
+            dark: "/imgs/tancis_title_dark.webp",
         },
         tanoga: {
-            logo: "/imgs/tanoga_logo.png",
-            light: "/imgs/tanoga_title.png",
-            dark: "/imgs/tanoga_title_dark.png",
+            logo: "/imgs/tanoga_logo.webp",
+            light: "/imgs/tanoga_title.webp",
+            dark: "/imgs/tanoga_title_dark.webp",
         },
     };
 

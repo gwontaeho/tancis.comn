@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSetRecoilState } from "recoil";
-import lodash from "lodash";
 import { authState } from "@/comn/features/recoil";
 import { useToast } from "@/comn/hooks";
 

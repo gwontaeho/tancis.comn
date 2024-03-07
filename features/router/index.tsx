@@ -1,13 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Layout from "@/comn/features/layouts";
-import { ComnMain } from "@/comn/comn/comn-Main";
 import { Main } from "@/tra/tancis/Main";
 import { ComnRoutes } from "@/comn/features/router/ComnRoutes";
 import { TancisRoutes } from "@/tra/tancis/Routes";
-
-// TEMP
-import { Temp } from "@/comn/sample/temp";
 
 export const routes: any = [...ComnRoutes, ...TancisRoutes];
 
@@ -19,7 +15,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/comn/comn/temp",
-                element: <Temp />,
+                lazy: async () => {
+                    const { Temp } = await import("@/comn/sample/temp");
+                    return { Component: Temp };
+                },
             },
             {
                 path: "/comn/smpl/*",
@@ -30,7 +29,10 @@ const router = createBrowserRouter([
             },
             {
                 path: "/comn/comn/*",
-                element: <ComnMain />,
+                lazy: async () => {
+                    const { ComnMain } = await import("@/comn/comn/comn-Main");
+                    return { Component: ComnMain };
+                },
             },
             {
                 path: "*",
