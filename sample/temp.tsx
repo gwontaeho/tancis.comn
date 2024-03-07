@@ -37,23 +37,22 @@ const GRID_SCHEMA: TGridSchema = {
         edit: true,
         importExcel: true,
         exportExcel: true,
-        height: 700,
-        // pagination: "in",
-        group: [""],
+        pagination: "in",
+        group: ["text"],
     },
-    group: [
-        { cells: [{ binding: "number", aggregate: "SUM" }] },
-        {
-            colspan: 2,
-            cells: [
-                { binding: "number", aggregate: "AVERAGE" },
-                { binding: "number", aggregate: "MAX" },
-            ],
-        },
-        {
-            cells: [{ binding: "number", aggregate: "COUNT" }],
-        },
-    ],
+    // group: [
+    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
+    //     {
+    //         colspan: 2,
+    //         cells: [
+    //             { binding: "number", aggregate: "AVERAGE" },
+    //             { binding: "number", aggregate: "MAX" },
+    //         ],
+    //     },
+    //     {
+    //         cells: [{ binding: "number", aggregate: "COUNT" }],
+    //     },
+    // ],
     head: [
         { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
         {
@@ -94,6 +93,11 @@ const FORM_SCHEMA = {
         },
         code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
         textarea: { type: "textarea" },
+        timerange: {
+            type: "timerange",
+            start: { name: "start" },
+            end: { name: "end" },
+        },
     },
 };
 
@@ -225,6 +229,9 @@ export const Temp = () => {
                                         <FormControl {...f.schema.textarea} />
                                     </Group.Cell>
                                 </Group.Cell>
+                            </Group.Cell>
+                            <Group.Cell root>
+                                <FormControl {...f.schema.timerange} rangeButton={5} />
                             </Group.Cell>
                             <Group.Cell root>
                                 <Group.Cell>
@@ -449,13 +456,153 @@ export const Temp = () => {
                                 <Group.Cell>
                                     <button onClick={() => g.unSelectCell()}>un select cell</button>
                                 </Group.Cell>
-                                <Group.Cell></Group.Cell>
-                                <Group.Cell></Group.Cell>
-                                <Group.Cell></Group.Cell>
-                                <Group.Cell></Group.Cell>
-                                <Group.Cell></Group.Cell>
-                                <Group.Cell></Group.Cell>
-                                <Group.Cell></Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("edit", true)}>setOption edit true</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("edit", false)}>setOption edit false</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("index", true)}>setOption index true</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("index", false)}>setOption index false</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("checkbox", true)}>
+                                        setOption checkbox true
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("checkbox", false)}>
+                                        setOption checkbox false
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("radio", true)}>setOption radio true</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setOption("radio", false)}>setOption radio false</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setEdit("column", "test", true)}>edit column true</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setEdit("column", "test", false)}>
+                                        edit column false
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setEdit("cell", "w", true)}>edit cell true</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setEdit("cell", "w", false)}>edit cell false</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setEdit("row", g.getSelectedCell()?.rowValues, true)}>
+                                        edit row true
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setEdit("row", g.getSelectedCell()?.rowValues, false)}>
+                                        edit row false
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button
+                                        onClick={() =>
+                                            g.setEdit(
+                                                "rowCell",
+                                                { row: g.getSelectedCell()?.rowValues, cell: "w" },
+                                                true,
+                                            )
+                                        }
+                                    >
+                                        edit rowcell true w
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button
+                                        onClick={() =>
+                                            g.setEdit(
+                                                "rowCell",
+                                                { row: g.getSelectedCell()?.rowValues, cell: "w" },
+                                                false,
+                                            )
+                                        }
+                                    >
+                                        edit rowcell false w
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button
+                                        onClick={() =>
+                                            g.setEdit(
+                                                "rowCell",
+                                                { row: g.getSelectedCell()?.rowValues, cell: "q" },
+                                                true,
+                                            )
+                                        }
+                                    >
+                                        edit rowcell true q
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button
+                                        onClick={() =>
+                                            g.setEdit(
+                                                "rowCell",
+                                                { row: g.getSelectedCell()?.rowValues, cell: "q" },
+                                                false,
+                                            )
+                                        }
+                                    >
+                                        edit rowcell false q
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setShow("column", "test", true)}>show text</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.setShow("column", "test", false)}>hide text</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getData())}>getData</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getData({ excludes: ["deleted", "added"] }))}>
+                                        getData not deleted
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getOrigin())}>getOrigin</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getSelectedRow())}>getSelectedRow</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getSelectedCell())}>getSelectedCel</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.getChecked())}>getChecked</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.isChecked())}>isChecked</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.isSelectedRow())}>isSelectedRow</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.isSelectedCell())}>isSelectedCell</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.exportExcel()}>export</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={async () => console.log(await g.importExcel())}>
+                                        importExcel
+                                    </button>
+                                </Group.Cell>
                                 <Group.Cell></Group.Cell>
                                 <Group.Cell></Group.Cell>
                             </Group.Cell>
@@ -463,72 +610,6 @@ export const Temp = () => {
                     </Group.Body>
                     <Group.Footer></Group.Footer>
                 </Group>
-            </Layout>
-
-            <div className="flex flex-col gap-8">
-                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2"></div>
-                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => g.setOption("edit", true)}>setOption edit true</button>
-                    <button onClick={() => g.setOption("edit", false)}>setOption edit false</button>
-                    <button onClick={() => g.setOption("index", true)}>setOption index true</button>
-                    <button onClick={() => g.setOption("index", false)}>setOption index false</button>
-                    <button onClick={() => g.setOption("checkbox", true)}>setOption checkbox true</button>
-                    <button onClick={() => g.setOption("checkbox", false)}>setOption checkbox false</button>
-                    <button onClick={() => g.setOption("radio", true)}>setOption radio true</button>
-                    <button onClick={() => g.setOption("radio", false)}>setOption radio false</button>
-                    <button onClick={() => g.setEdit("column", "test", true)}>edit column true</button>
-                    <button onClick={() => g.setEdit("column", "test", false)}>edit column false</button>
-                    <button onClick={() => g.setEdit("cell", "w", true)}>edit cell true</button>
-                    <button onClick={() => g.setEdit("cell", "w", false)}>edit cell false</button>
-                    <button onClick={() => g.setEdit("row", g.getSelectedCell()?.rowValues, true)}>
-                        edit row true
-                    </button>
-                    <button onClick={() => g.setEdit("row", g.getSelectedCell()?.rowValues, false)}>
-                        edit row false
-                    </button>
-                    <button
-                        onClick={() => g.setEdit("rowCell", { row: g.getSelectedCell()?.rowValues, cell: "w" }, true)}
-                    >
-                        edit rowcell true w
-                    </button>
-                    <button
-                        onClick={() => g.setEdit("rowCell", { row: g.getSelectedCell()?.rowValues, cell: "w" }, false)}
-                    >
-                        edit rowcell false w
-                    </button>
-                    <button
-                        onClick={() => g.setEdit("rowCell", { row: g.getSelectedCell()?.rowValues, cell: "q" }, true)}
-                    >
-                        edit rowcell true q
-                    </button>
-                    <button
-                        onClick={() => g.setEdit("rowCell", { row: g.getSelectedCell()?.rowValues, cell: "q" }, false)}
-                    >
-                        edit rowcell false q
-                    </button>
-                    <button onClick={() => g.setShow("column", "test", true)}>show text</button>
-                    <button onClick={() => g.setShow("column", "test", false)}>hide text</button>
-                </div>
-                <div className="flex  flex-wrap gap-2 [&_button]:border [&_button]:p-2">
-                    <button onClick={() => console.log(g.getData())}>getData</button>
-                    <button onClick={() => console.log(g.getData({ excludes: ["deleted", "added"] }))}>
-                        getData not deleted
-                    </button>
-                    <button onClick={() => console.log(g.getOrigin())}>getOrigin</button>
-                    <button onClick={() => console.log(g.getSelectedRow())}>getSelectedRow</button>
-                    <button onClick={() => console.log(g.getSelectedCell())}>getSelectedCel</button>
-                    <button onClick={() => console.log(g.getChecked())}>getChecked</button>
-                    <button onClick={() => console.log(g.isChecked())}>isChecked</button>
-                    <button onClick={() => console.log(g.isSelectedRow())}>isSelectedRow</button>
-                    <button onClick={() => console.log(g.isSelectedCell())}>isSelectedCell</button>
-                    <button onClick={() => g.exportExcel()}>export</button>
-                    <button onClick={async () => console.log(await g.importExcel())}>importExcel</button>
-                </div>
-            </div>
-
-            <Layout direction="col" align="between" height={400}>
-                <div>a</div>
-                <div>a</div>
             </Layout>
         </Page>
     );
