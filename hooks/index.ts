@@ -11,3 +11,4 @@ export * from "./useGrid";
 export * from "./useTab";
 export * from "./useResource";
 export * from "./useTree";
+export * from "./useExcel";
