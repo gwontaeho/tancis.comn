@@ -56,50 +56,18 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         );
 
         const o = { mask, exact, letterCase, imemode };
-
         const [_value, _setValue] = React.useState<any>(formatText(value, o));
-        const input = React.useRef<any>(null);
-        const start = React.useRef<any>(null);
-        const end = React.useRef<any>(null);
 
         React.useEffect(() => {
             if (value === _value) return;
             _setValue(formatText(value, o));
         }, [value]);
 
-        React.useEffect(() => {
-            handleSelection();
-        }, [_value]);
-
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            saveSelection(e);
-
             _setValue(formatText(e.target.value, o));
 
             if (onChange) {
                 onChange(formatText(e.target.value, o));
-            }
-
-            console.log(start.current);
-
-            //e.target.setSelectionRange(start.current, start.current);
-        };
-
-        const setSelection = (e: any) => {
-            saveSelection(e);
-            handleSelection();
-        };
-
-        const saveSelection = (e: any) => {
-            input.current = e.target;
-            start.current = e.target.selectionStart;
-            end.current = e.target.selectionEnd;
-            console.log(e.target.selectionStart);
-        };
-
-        const handleSelection = () => {
-            if (input.current) {
-                input.current.setSelectionRange(start.current, end.current);
             }
         };
 
@@ -116,11 +84,6 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                         type="text"
                         autoComplete="off"
                         className="input"
-                        onKeyUp={setSelection}
-                        on={() => {
-                            handleSelection();
-                            console.log("load");
-                        }}
                     />
                 </div>
             </div>
