@@ -47,6 +47,12 @@ const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
         { label: "-1M", unit: "M", value: -1 },
         { label: "-3M", unit: "M", value: -3 },
     ],
+    [
+        { label: "-3H", unit: "h", value: -3 },
+        { label: "-2H", unit: "h", value: -2 },
+        { label: "-1H", unit: "h", value: -1 },
+        { label: "0", unit: "h", value: 0 },
+    ],
 ];
 
 type TimeUnitType = "M" | "w" | "d" | "h" | "y";
@@ -56,7 +62,7 @@ export type InputTimerangeProps = {
     edit?: boolean;
     start?: InputTimeProps;
     end?: InputTimeProps;
-    rangeButton?: 3;
+    rangeButton?: 0 | 1 | 2 | 3 | 4 | 5;
 };
 
 export const InputTimerange = (props: InputTimerangeProps) => {

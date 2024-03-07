@@ -264,8 +264,8 @@ export const useGrid = (props: UseGridProps) => {
     };
 
     /* EXCEL */
-    const importExcel = () => {
-        return _grid.current._importExcel();
+    const importExcel = (arg?: any) => {
+        return _grid.current._importExcel(arg);
     };
     const exportExcel = () => {
         return _grid.current._exportExcel();
