@@ -210,11 +210,6 @@ export const CityCodeList = (props: any) => {
                     />
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button role="close" onClick={close}></Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };

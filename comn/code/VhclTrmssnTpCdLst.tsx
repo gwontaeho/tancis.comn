@@ -177,11 +177,6 @@ export const VehicleTransmissionTypeCodeList = (props: any) => {
                     </Group.Section>
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };

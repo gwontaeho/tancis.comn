@@ -170,11 +170,6 @@ export const PortCodeList = (props: any) => {
                     />
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button onClick={close}>{t("B_CLS")}</Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };

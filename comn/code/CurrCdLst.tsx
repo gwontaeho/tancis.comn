@@ -171,11 +171,6 @@ export const CurrencyCodeList = (props: any) => {
                     </Group.Section>
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button role="close" onClick={close}></Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };

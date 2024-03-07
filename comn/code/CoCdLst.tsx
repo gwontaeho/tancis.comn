@@ -169,11 +169,6 @@ export const CompanyCodeList = (props: any) => {
                     <Grid {...grid.coCdLst.grid} data={fetch.getCoCdLst.data?.coList} render={render.grid_CoCdLst} />
                 </Group.Body>
             </Group>
-            {comnUtils.isPopup() && (
-                <Layout.Right>
-                    <Button role="close" onClick={close}></Button>
-                </Layout.Right>
-            )}
         </Page>
     );
 };
