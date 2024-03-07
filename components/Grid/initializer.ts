@@ -461,7 +461,8 @@ const useInitialize = (props: any) => {
             return { errors };
         };
 
-        _grid.current._importExcel = () => {
+        _grid.current._importExcel = (arg?: any) => {
+            console.log(arg);
             return new Promise((resolve) => {
                 const input = document.createElement("input");
                 input.type = "file";
@@ -471,9 +472,25 @@ const useInitialize = (props: any) => {
                     const buffer = await file.arrayBuffer();
                     const wb = read(buffer);
                     const ws = wb.Sheets[wb.SheetNames[0]];
-                    const raw = utils.sheet_to_json(ws).map(({ __rowNum__, ..._ }: any) => _);
-                    const header = raw.shift() || {};
-                    resolve(raw);
+
+                    if (arg?.bindingColumn) {
+                        const raw = utils.sheet_to_json(ws, { header: "A" }).map(({ __rowNum__, ..._ }: any) => {
+                            let next: any = {};
+                            for (const column in arg.bindingColumn) {
+                                if (_[column]) {
+                                    next[arg.bindingColumn[column]] = _[column];
+                                }
+                            }
+
+                            return next;
+                        });
+
+                        resolve(raw);
+                    } else {
+                        const raw = utils.sheet_to_json(ws).map(({ __rowNum__, ..._ }: any) => _);
+                        const header = raw.shift() || {};
+                        resolve(raw);
+                    }
                 };
                 input.click();
             });

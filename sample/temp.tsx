@@ -1,11 +1,8 @@
+import { useEffect, useMemo, useState } from "react";
 import { TGridSchema, useFetch, useForm } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
-import type { TGridRender } from "@/comn/components";
-
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
-import { useEffect, useMemo, useState } from "react";
 import lodash from "lodash";
-import { comnUtils } from "../utils";
 import { api } from "../features/apis";
 
 const mock = ({ totalElements = 99 }) => {
@@ -38,7 +35,7 @@ const GRID_SCHEMA: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         pagination: "in",
-        group: ["text"],
+        // group: ["text"],
     },
     // group: [
     //     { cells: [{ binding: "number", aggregate: "SUM" }] },
@@ -149,16 +146,16 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            if (data.text === "Maru") {
-                context.backgroundColor = "red";
-            }
+            // if (data.text === "Maru") {
+            //     context.backgroundColor = "red";
+            // }
 
-            if (data.text === "Sam") {
-                context.backgroundColor = "blue";
-            }
-            if (data.text === "Ken") {
-                context.backgroundColor = "yellow";
-            }
+            // if (data.text === "Sam") {
+            //     context.backgroundColor = "blue";
+            // }
+            // if (data.text === "Ken") {
+            //     context.backgroundColor = "yellow";
+            // }
 
             return true;
         },
@@ -568,7 +565,20 @@ export const Temp = () => {
                                     <button onClick={() => g.exportExcel()}>Export</button>
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <button onClick={async () => console.log(await g.importExcel())}>Import</button>
+                                    <button
+                                        onClick={async () =>
+                                            console.log(
+                                                await g.importExcel({
+                                                    bindingColumn: {
+                                                        A: "text",
+                                                        B: "number",
+                                                    },
+                                                }),
+                                            )
+                                        }
+                                    >
+                                        Import
+                                    </button>
                                 </Group.Cell>
                                 <Group.Cell></Group.Cell>
                                 <Group.Cell></Group.Cell>
