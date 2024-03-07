@@ -206,7 +206,6 @@ export const Temp = () => {
                     <Group.Header></Group.Header>
                     <Group.Body>
                         <Group.Section>
-                            <Group.Cell root hidden={count % 2 === 0}></Group.Cell>
                             <Group.Cell root>
                                 <Group.Cell header></Group.Cell>
                                 <Group.Cell size={10}>
@@ -230,15 +229,21 @@ export const Temp = () => {
                             <Group.Cell root>
                                 <FormControl {...f.schema.timerange} rangeButton={5} />
                             </Group.Cell>
+
                             <Group.Cell root>
                                 <Group.Cell>
-                                    <button onClick={() => console.log(f.setEditable(false))}>get data</button>
-                                    <button onClick={() => console.log(f.getValues())}>get data</button>
-                                    <button onClick={() => console.log(f.setValue("select", "AED"))}>get data</button>
+                                    <button onClick={() => console.log(f.getValues())}>Get</button>
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <button onClick={() => console.log(f.getValues())}>get data</button>
-                                    <button onClick={() => console.log(f.setValue("select", "AED"))}>get data</button>
+                                    <button onClick={() => console.log(f.setEditable(true))}>Edit true</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.setEditable(false))}>Edit false</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.setValue("code", "AED"))}>
+                                        Set Code "AED"
+                                    </button>
                                 </Group.Cell>
                             </Group.Cell>
                         </Group.Section>
