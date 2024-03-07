@@ -7,7 +7,7 @@ import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useModal } fr
 import { BASE, APIS, SCHEMA_FORM_AIRPT_CD_SRCH, SCHEMA_GRID_AIRPT_CD } from "./services/ComnCdService";
 
 export const AirptCodeList = () => {
-    const pgeUid = "airptCdLst";
+    const pgeUid = "IATA";
     const { t } = useTranslation();
     const toast = useToast();
     const modal = useModal();
