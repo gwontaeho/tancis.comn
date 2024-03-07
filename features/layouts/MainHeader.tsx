@@ -65,7 +65,7 @@ const Logo = () => {
             dark: "/imgs/tanesw_title_dark.png",
         },
         tancis: {
-            logo: "/imgs/tanesw_logo.png",
+            logo: "/imgs/tancis_logo.png",
             light: "/imgs/tancis_title.png",
             dark: "/imgs/tancis_title_dark.png",
         },
@@ -82,7 +82,7 @@ const Logo = () => {
 
     return (
         <Link to="/" className="flex items-center gap-2">
-            <img id="logo" src={src["logo"]} alt={alt} title={name} width={40} height={40} />
+            <img src={src["logo"]} alt={alt} title={name} width={40} height={40} />
             <img src={src["light"]} alt={alt} title={name} hidden={theme.isDark === "true"} width={120} height={35} />
             <img src={src["dark"]} alt={alt} title={name} hidden={theme.isDark === "false"} width={120} height={35} />
         </Link>
