@@ -198,6 +198,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
              * 숫자 /\d/
              * 숫자범위 /[0-5]/
              */
+
             mask: [
                 /\d/,
                 /\d/,
