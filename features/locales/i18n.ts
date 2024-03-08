@@ -30,7 +30,6 @@ i18n.changeLanguage(localStorage.getItem("lang") || "ko");
 
 export default i18n;
 
-/* local */
 // import en from "../../.module/lang-en.json";
 // import ko from "../../.module/lang-ko.json";
 // import tz from "../../.module/lang-tz.json";
