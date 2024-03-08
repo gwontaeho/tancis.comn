@@ -316,13 +316,36 @@ const useInitialize = (props: any) => {
         };
         /* Handle Check All Row (Checkbox) */
         _grid.current._handleCheckAll = (event: any) => {
-            let _checked = [];
             if (event.target.checked) {
-                _checked = render?.checkbox
-                    ? _grid.current._view.filter((_: any) => render?.checkbox(_)).map(({ __key }: any) => __key)
-                    : _grid.current._view.map(({ __key }: any) => __key);
+                let checkedContent;
+
+                if (_grid.current._render?.checkbox) {
+                    checkedContent = _grid.current._view.filter((_: any) => render?.checkbox(_));
+                } else {
+                    checkedContent = _grid.current._view;
+                }
+
+                if (_grid.current._onRowCheck) {
+                    checkedContent.forEach((_: any) => {
+                        _grid.current._onRowCheck(_, event.target.checked);
+                    });
+                }
+
+                _grid.current._checked = checkedContent.map(({ __key }: any) => __key);
+            } else {
+                let checkedContent = _grid.current._content.filter((_: any) => {
+                    return _grid.current._checked.includes(_.__key);
+                });
+
+                if (_grid.current._onRowCheck) {
+                    checkedContent.forEach((_: any) => {
+                        _grid.current._onRowCheck(_, event.target.checked);
+                    });
+                }
+
+                _grid.current._checked = [];
             }
-            _grid.current._checked = _checked;
+
             dispatch({ type: "handleCheckAll", payload: { _grid } });
         };
 

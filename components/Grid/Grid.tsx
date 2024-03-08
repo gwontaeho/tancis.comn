@@ -35,6 +35,8 @@ export const Grid = (props: {
 }) => {
     const { _grid, render, onCellClick, onRowClick } = props;
 
+    console.log("render");
+
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 

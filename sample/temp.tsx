@@ -192,6 +192,7 @@ export const Temp = () => {
         },
         onRowCheck: (data: any, checked: any) => {
             console.log(data, checked);
+            g.updateRow({ ...data, number: 123 });
         },
         onRowSelect: (data: any) => {
             console.log(data);
