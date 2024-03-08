@@ -4,10 +4,10 @@ import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, usePopup, useStore, useToast, useGrid, useModal } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_CNTY_CD_SRCH, SCHEMA_GRID_CNTY_CD, SCHEMA_GRID_CNTY_THREE_CD, SCHEMA_FORM_CNTY_THREE_CD_SRCH } from "./services/ComnCdService";
+import { BASE, APIS, SCHEMA_GRID_DGT3_CNTY_CD, SCHEMA_FORM_DGT3_CNTY_CD_SRCH } from "./services/ComnCdService";
 
 export const DgtCountryCodeList = (props: any) => {
-    const pgeUid = "cntyCdLst";
+    const pgeUid = "dgt3CntyCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
@@ -17,14 +17,14 @@ export const DgtCountryCodeList = (props: any) => {
 
     const form = {
         cntyCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_CNTY_THREE_CD_SRCH,
+            defaultSchema: SCHEMA_FORM_DGT3_CNTY_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
         cntyCdLst: useGrid({
-            defaultSchema: SCHEMA_GRID_CNTY_THREE_CD,
+            defaultSchema: SCHEMA_GRID_DGT3_CNTY_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
@@ -76,7 +76,7 @@ export const DgtCountryCodeList = (props: any) => {
     const render = {
         grid_CntyCdLst: {
             cell: {
-                cntyCd: (props: any) => {
+                dgt3CntyCd: (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
@@ -106,11 +106,11 @@ export const DgtCountryCodeList = (props: any) => {
     return (
         <Page
             id={pgeUid}
-            title={t("T_CNTY_CD_LST")}
-            description={t("T_CNTY_CD_LST")}
+            title={t("L_DGT3_CNTY_CD_LST")}
+            description={t("L_DGT3_CNTY_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_CNTY_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "L_DGT3_CNTY_CD_LST" }],
             }}
         >
             <form>

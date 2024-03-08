@@ -369,7 +369,7 @@ export const SCHEMA_GRID_CNTY_CD: TGridSchema = {
     ],
 };
 
-export const SCHEMA_GRID_CNTY_THREE_CD: TGridSchema = {
+export const SCHEMA_GRID_DGT3_CNTY_CD: TGridSchema = {
     id: "grid",
     options: { pagination: "out", edit: false, index: true },
     head: [
@@ -1043,7 +1043,7 @@ export const SCHEMA_FORM_CNTY_CD_SRCH: TFormSchema = {
     },
 };
 
-export const SCHEMA_FORM_CNTY_THREE_CD_SRCH: TFormSchema = {
+export const SCHEMA_FORM_DGT3_CNTY_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         dgt3CntyCd: { type: "text", label: "L_CNTY_CD" },

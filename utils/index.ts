@@ -40,6 +40,7 @@ export const comnEnvs = {
         cityCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/cityCdPpup`,
         comnCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/comnCdPpup`,
         cntyCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/cntyCdPpup`,
+        dgt3CntyCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/dgt3CntyCdPpup`,
         currCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/currCdPpup`,
         bnkCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/bnkCdPpup`,
         portCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/portCdPpup`,
@@ -506,6 +507,8 @@ export const comnUtils = {
                 return code.cdVldValNm;
             case "cntyCd":
                 return code.cntyNm;
+            case "dgt3CntyCd":
+                return code.cntyNm;
             case "cityCd":
                 return code.regnNm;
             case "portCd":
@@ -575,6 +578,8 @@ export const comnUtils = {
                 return code.cdVldVal;
             case "cntyCd":
                 return code.cntyCd;
+            case "dgt3CntyCd":
+                return code.dgt3CntyCd;
             case "cityCd":
                 return code.regnCd;
             case "portCd":

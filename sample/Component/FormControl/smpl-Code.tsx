@@ -206,7 +206,7 @@ const SF_FORM: TFormSchema = {
         field32: {
             type: "code",
             area: "dgt3CntyCd",
-            label: "Country Code",
+            label: "Digit3 Country Code",
             popupSize: "md",
         },
     },
@@ -736,6 +736,25 @@ const Sample = () => {
                 maxLength: 9,
                 popupSize: "md",
             },
+            field30: {
+                type: "code",
+                area: "cgmePrcdCd",
+                comnCd: "CGM001",
+                label: "Cargo Code",
+                popupSize: "md",
+            },
+            field31: {
+                type: "code",
+                area: "hsCd",
+                label: "HS Code",
+                popupSize: "md",
+            },
+            field32: {
+                type: "code",
+                area: "dgt3CntyCd",
+                label: "Digit3 Country Code",
+                popupSize: "md",
+            },
         },
     };
     
@@ -802,6 +821,13 @@ const Sample = () => {
                         <Group.Label label="국가 코드"></Group.Label>
                         <Group.Col>
                             <Group.Any>/comn/comn/ppup/cntyCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field32}></Group.Control>
+                        <Group.Label label="국가 코드(3자리)"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/dgt3CntyCdPopup</Group.Any>
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>
