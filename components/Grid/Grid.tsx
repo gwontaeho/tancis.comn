@@ -9,8 +9,10 @@ import { comnUtils } from "@/comn/utils";
 import { validateValue, fun } from "./utils";
 import { useInitialize } from "./initializer";
 
+type TGridCell = Record<string, any>;
 type TGridRow = Record<string, any>;
 type TGridRowContext = { backgroundColor: "yellow" | "red" | "blue" };
+type TGridCellContext = { textColor: "yellow" | "red" | "blue" };
 
 export type TGridRender = {
     row?: (data: TGridRow, context: TGridRowContext) => boolean;
@@ -32,10 +34,9 @@ export const Grid = (props: {
     onRowClick?: any;
     onRowCheck?: any;
     onRowSelect?: any;
+    onPageChange?: any;
 }) => {
-    const { _grid, render, onCellClick, onRowClick } = props;
-
-    console.log("render");
+    const { _grid, render, onCellClick, onRowClick, onPageChange } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
@@ -70,9 +71,13 @@ export const Grid = (props: {
     const itemSize = useCallback((index: any) => {
         return _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0;
     }, []);
-    const handleChangePage = useCallback((next: any) => {
-        _grid.current._handlePage(next);
-    }, []);
+    const handleChangePage = useCallback(
+        (next: any) => {
+            _grid.current._handlePage(next);
+            if (onPageChange) onPageChange(next);
+        },
+        [onPageChange],
+    );
     const handleChangeSize = useCallback((next: any) => {
         _grid.current._handleSize(next);
     }, []);
@@ -265,7 +270,8 @@ const Row = memo((props: any) => {
     const rowKey = row?.__key;
     const rowType = row?.__type;
     const rowIndex = row?.__index;
-    const rowContext: TGridRowContext = row?.__context;
+    const rowContext: TGridRowContext = row?.__context || {};
+    const { backgroundColor } = rowContext;
 
     const { t } = useTranslation();
     const resizeObserverRef = useRef<any>(null);
@@ -454,7 +460,6 @@ const Row = memo((props: any) => {
                                     binding,
                                     value: uv,
                                     rowValues: row,
-                                    formattedValue: fv,
                                 };
 
                                 const formControlProps = {
@@ -469,25 +474,59 @@ const Row = memo((props: any) => {
                                     },
                                 };
 
-                                const GRID_ROW_BG = {
+                                const BG_COLORS = {
                                     blue: "bg-[#bacee0]",
                                     yellow: "bg-[#ffeb33]",
                                     red: "bg-[#ed3e49]",
                                 };
 
-                                const { backgroundColor } = rowContext;
+                                const TEXT_COLORS = {
+                                    blue: "text-[#bacee0]",
+                                    yellow: "text-[#ffeb33]",
+                                    red: "text-[#ed3e49]",
+                                };
+
+                                let editContext: any = {};
+                                let cellContext: any = {};
+                                const CustomEdit = render?.edit?.[binding]?.(celContext, editContext);
+                                const CustomCell = render?.cell?.[binding]?.(celContext, cellContext);
+
+                                const context = (isEdit ? editContext : cellContext) as TGridCellContext;
+                                const textColor = context.textColor;
+
+                                const Control = (
+                                    <FormControl
+                                        {...formControlProps}
+                                        edit={isEdit}
+                                        value={fv}
+                                        onChange={(v) => {
+                                            _grid.current._handleUpdate({
+                                                ...row,
+                                                [binding]: comnUtils.getUnformattedValue(v, formControlProps),
+                                            });
+                                        }}
+                                    />
+                                );
+
+                                const handleClickCell = () => {
+                                    _grid.current._handleClickCel({
+                                        ...celContext,
+                                        key: celKey,
+                                        onCellClick,
+                                    });
+                                };
 
                                 return (
                                     <div
                                         key={celKey}
                                         className={classNames(
                                             "p-1 min-h-[2.5rem] flex items-center border border-uf-card-background aria-[invalid=true]:border-uf-error aria-[selected=true]:border-uf-info",
-
                                             (align === "start" || align === "left") && "justify-start text-left",
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
 
-                                            backgroundColor ? GRID_ROW_BG[backgroundColor] : "bg-uf-card-background",
+                                            backgroundColor ? BG_COLORS[backgroundColor] : "bg-uf-card-background",
+                                            textColor && TEXT_COLORS[textColor],
                                         )}
                                         {...(abc.isError && { "aria-invalid": true })}
                                         {...(_selectedCel?.__key === celKey && { "aria-selected": true })}
@@ -495,56 +534,10 @@ const Row = memo((props: any) => {
                                             gridRow: `${rowIndex + 1} / span ${rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${colspan ?? 1}`,
                                         }}
-                                        onClick={() => {
-                                            _grid.current._handleClickCel({
-                                                ...celContext,
-                                                key: celKey,
-                                                onCellClick,
-                                            });
-                                        }}
+                                        onClick={handleClickCell}
                                     >
-                                        {isEdit &&
-                                            (render?.edit?.[binding]?.({
-                                                value: value,
-                                                rowValues: row,
-                                                binding: binding,
-                                            }) || (
-                                                <FormControl
-                                                    {...formControlProps}
-                                                    value={fv}
-                                                    onChange={(v) => {
-                                                        _grid.current._handleUpdate({
-                                                            ...row,
-                                                            [binding]: comnUtils.getUnformattedValue(
-                                                                v,
-                                                                formControlProps,
-                                                            ),
-                                                        });
-                                                    }}
-                                                />
-                                            ))}
-
-                                        {!isEdit &&
-                                            (render?.cell?.[binding]?.({
-                                                value: value,
-                                                rowValues: row,
-                                                binding: binding,
-                                            }) || (
-                                                <FormControl
-                                                    {...formControlProps}
-                                                    edit={false}
-                                                    value={fv}
-                                                    onChange={(v) => {
-                                                        _grid.current._handleUpdate({
-                                                            ...row,
-                                                            [binding]: comnUtils.getUnformattedValue(
-                                                                v,
-                                                                formControlProps,
-                                                            ),
-                                                        });
-                                                    }}
-                                                />
-                                            ))}
+                                        {isEdit && (CustomEdit || Control)}
+                                        {!isEdit && (CustomCell || Control)}
                                     </div>
                                 );
                             });

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { TGridSchema, useFetch, useForm } from "@/comn/hooks";
+import { TGridSchema, useFetch, useForm, useStore } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
 import lodash from "lodash";
@@ -31,10 +31,10 @@ const GRID_SCHEMA: TGridSchema = {
         checkbox: true,
         add: true,
         delete: true,
-        edit: true,
+        // edit: true,
         importExcel: true,
         exportExcel: true,
-        pagination: "in",
+        pagination: "out",
         // group: ["text"],
     },
     // group: [
@@ -50,26 +50,9 @@ const GRID_SCHEMA: TGridSchema = {
     //         cells: [{ binding: "number", aggregate: "COUNT" }],
     //     },
     // ],
-    head: [
-        { id: "test", cells: [{ binding: "number", rowspan: 2, width: 200 }] },
-        {
-            colspan: 2,
-            cells: [
-                { binding: "w", width: 200, colspan: 2 },
-                { binding: "w", width: 200 },
-                { binding: "w", width: 200 },
-            ],
-        },
-        {
-            cells: [
-                { binding: "e", width: 200 },
-                { binding: "w", width: 200 },
-            ],
-        },
-    ],
+    head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
-        { colspan: 2, cells: [{ binding: "q", required: true, validate: (data: any) => data === "asd", colspan: 2 }] },
         { cells: [{ binding: "text", type: "text" }] },
     ],
 };
@@ -112,6 +95,9 @@ export const Temp = () => {
     const [count, setRender] = useState(0);
 
     const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD" } });
+
+    const st = useStore();
+
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
     const data = useMemo(() => mock({ totalElements: 20 }), []);
@@ -163,25 +149,20 @@ export const Temp = () => {
         //     return data.__type === "added";
         // },
         cell: {
-            text: (data: any) => {
-                return (
-                    <Layout>
-                        <div>1www23</div>
-                    </Layout>
-                );
+            text: (data: any, context: any) => {
+                context.textColor = "red";
+                return false;
             },
         },
-        edit: {
-            text: (data: any) => {
-                return (
-                    <Layout>
-                        <div>{data.rowValues.text}-</div>
-                        <div>{data.rowValues.text}-</div>
-                        <div>{data.rowValues.text}</div>
-                    </Layout>
-                );
-            },
-        },
+        // edit: {
+        //     text: (data: any) => {
+        //         return (
+        //             <Layout>
+        //                 <FormControl value={data.value} onChange={(v) => g.updateRow({ ...data.rowValues, text: v })} />
+        //             </Layout>
+        //         );
+        //     },
+        // },
     };
     const handler = {
         onCellClick: (data: any) => {
@@ -192,12 +173,18 @@ export const Temp = () => {
         },
         onRowCheck: (data: any, checked: any) => {
             console.log(data, checked);
-            g.updateRow({ ...data, number: 123 });
         },
         onRowSelect: (data: any) => {
             console.log(data);
         },
     };
+
+    useEffect(() => {
+        const data = mock({ totalElements: 20 });
+        const pagingData = paging({ data, page: 0, size: 10 });
+
+        g.setData(pagingData);
+    }, []);
 
     return (
         <Page>
@@ -388,12 +375,18 @@ export const Temp = () => {
                         <Group.Section>
                             <Grid
                                 {...g.grid}
-                                data={data}
+                                // data={pagingData}
                                 render={render}
                                 onCellClick={handler.onCellClick}
                                 onRowClick={handler.onRowClick}
                                 onRowCheck={handler.onRowCheck}
                                 onRowSelect={handler.onRowSelect}
+                                onPageChange={(a: any) => {
+                                    console.log(a);
+                                    const data = mock({ totalElements: 20 });
+                                    const pagingData = paging({ data, page: a, size: 10 });
+                                    g.setData(pagingData);
+                                }}
                             />
                         </Group.Section>
 

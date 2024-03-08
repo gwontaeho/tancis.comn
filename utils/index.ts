@@ -133,7 +133,6 @@ export const comnUtils = {
      * @returns
      */
     getViewValue: (v: any, s?: any) => {
-        console.log(v, s);
         switch (s?.type) {
             case "text":
                 return v;
