@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
+
 import { useSearchParams, Outlet, useLocation } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { PopupLayout } from "./PopupLayout";
@@ -17,14 +18,18 @@ const Layout = () => {
     if (ppup === "Y")
         return (
             <PopupLayout>
-                <Outlet />
+                <Suspense fallback={null}>
+                    <Outlet />
+                </Suspense>
             </PopupLayout>
         );
 
     // Main
     return (
         <MainLayout>
-            <Outlet />
+            <Suspense fallback={<div>as</div>}>
+                <Outlet />
+            </Suspense>
         </MainLayout>
     );
 };

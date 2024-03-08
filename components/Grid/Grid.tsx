@@ -364,7 +364,7 @@ const Row = memo((props: any) => {
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
                                     >
-                                        {`${ag.aggregate}:\n ${ag.value}`}
+                                        {ag && `${ag.value}`}
                                     </pre>
                                 );
                             });

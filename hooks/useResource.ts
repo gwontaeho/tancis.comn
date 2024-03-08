@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { resourceState } from "../features/recoil";
@@ -25,6 +25,34 @@ type UseResourceProps = {
 export const getResourceKey = (area: string, comnCd?: string, lang?: string) => {
     return area + (comnCd ? `:${comnCd}` : "") + (lang ? `;${lang}` : "");
 };
+
+// const use = () => {
+//     let status = "pending";
+
+//     const promise = new Promise((resolve) => {
+//         resolve("test");
+//     });
+
+//     const suspender = promise.then(() => {
+//         status = "success";
+//     });
+
+//     return {
+//         read() {
+//             if (status === "pending") {
+//                 throw suspender;
+//             } else {
+//                 return status;
+//             }
+//         },
+//     };
+// };
+
+// export const useResource = (props: UseResourceProps) => {
+//     use().read();
+
+//     return null;
+// };
 
 export const useResource = (props: UseResourceProps) => {
     /*
