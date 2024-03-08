@@ -252,6 +252,10 @@ export const ComnRoutes = [
                                 to: "/comn/comn/ppup/cntyCdPpup",
                             },
                             {
+                                name: "Country Code Popup",
+                                to: "/comn/comn/ppup/cntyCdPpup2",
+                            },
+                            {
                                 name: "City Code Popup",
                                 to: "/comn/comn/ppup/cityCdPpup",
                             },

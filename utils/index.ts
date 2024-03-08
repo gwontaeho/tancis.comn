@@ -395,6 +395,9 @@ export const comnUtils = {
             case "cntyCd":
                 url = `/api/v1/ptli/intptl/comnppup/cnty-cd?cntyCd=${keyword}&cntyNm=${keywordName}`;
                 break;
+            case "dgt3CntyCd":
+                url = `/api/v1/ptli/intptl/comnppup/dgt3-cnty-cd?dgt3CntyCd=${keyword}&cntyNm=${keywordName}`;
+                break;
             case "currCd":
                 url = `/api/v1/ptli/intptl/comnppup/curr-cd?currCd=${keyword}&currNm=${keywordName}`;
                 break;

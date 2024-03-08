@@ -203,6 +203,12 @@ const SF_FORM: TFormSchema = {
             label: "HS Code",
             popupSize: "md",
         },
+        field32: {
+            type: "code",
+            area: "dgt3CntyCd",
+            label: "Country Code",
+            popupSize: "md",
+        },
     },
 };
 
@@ -217,6 +223,7 @@ export const SampleFormControlCode = () => {
             { area: "comnCd", comnCd: "CAG_0006" },
             { area: "comnCd", comnCd: "COM_0015" },
             { area: "cntyCd" },
+            { area: "dgt3CntyCd" },
             { area: "currCd" },
             { area: "bnkCd" },
             { area: "portCd" },
@@ -283,6 +290,13 @@ export const SampleFormControlCode = () => {
                                 <Group.Label label="국가 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/cntyCdPpup</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.field32}></Group.Control>
+                                <Group.Label label="국가 코드(3자리)"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/dgt3CntyCdPopup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>

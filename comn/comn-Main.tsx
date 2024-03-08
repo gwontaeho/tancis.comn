@@ -45,12 +45,14 @@ import { BltbrdLst } from "@/comn/comn/bltbrd/BltbrdLst";
 import { BltbrdRgsr } from "@/comn/comn/bltbrd/BltbrdRgsr";
 import { BltbrdDtl } from "@/comn/comn/bltbrd/BltbrdDtl";
 import { BltbrdEdit } from "@/comn/comn/bltbrd/BltbrdEdit";
+import { DgtCountryCodeList } from "./code/dgt3CntyCdLst";
 
 export const ComnMain = () => {
     return (
         <Routes>
             <Route path="/ppup/comnCdPpup" element={<CommonCodeList />} />
             <Route path="/ppup/cntyCdPpup" element={<CountryCodeList />} />
+            <Route path="/ppup/dgt3CntyCdPpup" element={<DgtCountryCodeList />} />
             <Route path="/ppup/cityCdPpup" element={<CityCodeList />} />
             <Route path="/ppup/currCdPpup" element={<CurrencyCodeList />} />
             <Route path="/ppup/bnkCdPpup" element={<BankCodeList />} />

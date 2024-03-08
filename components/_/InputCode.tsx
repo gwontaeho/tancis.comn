@@ -28,6 +28,7 @@ const POPUP_URLS: Record<string, string> = {
     comnCd: `/comn/comn/ppup/comnCdPpup`,
     cityCd: `/comn/comn/ppup/cityCdPpup`,
     cntyCd: `/comn/comn/ppup/cntyCdPpup`,
+    dgt3CntyCd: `/comn/comn/ppup/dgt3CntyCdPpup`,
     bnkCd: `/comn/comn/ppup/bnkCdPpup`,
     currCd: `/comn/comn/ppup/currCdPpup`,
     portCd: `/comn/comn/ppup/portCdPpup`,
