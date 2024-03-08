@@ -736,6 +736,25 @@ const Sample = () => {
                 maxLength: 9,
                 popupSize: "md",
             },
+            field30: {
+                type: "code",
+                area: "cgmePrcdCd",
+                comnCd: "CGM001",
+                label: "Cargo Code",
+                popupSize: "md",
+            },
+            field31: {
+                type: "code",
+                area: "hsCd",
+                label: "HS Code",
+                popupSize: "md",
+            },
+            field32: {
+                type: "code",
+                area: "dgt3CntyCd",
+                label: "Digit3 Country Code",
+                popupSize: "md",
+            },
         },
     };
     
