@@ -103,9 +103,11 @@ export const Temp = () => {
     const data = useMemo(() => mock({ totalElements: 20 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
+
     const fetch = useFetch({
         // api: () => comnUtils.getCode({ area: "currCd" }),
         api: () => api.get("asdw"),
+
         onError: (error) => {
             // console.log("as");
             // console.log(error);
@@ -148,12 +150,13 @@ export const Temp = () => {
         // checkbox: (data: any) => {
         //     return data.__type === "added";
         // },
+
         cell: {
             text: (data: any, context: any) => {
                 context.textColor = "red";
-                return false;
             },
         },
+
         // edit: {
         //     text: (data: any) => {
         //         return (

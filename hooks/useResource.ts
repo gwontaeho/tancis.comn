@@ -32,6 +32,7 @@ export const useResource = (props: UseResourceProps) => {
         2. 갱신
     */
     const { defaultSchema } = props;
+
     const _schema: Record<string, any> = defaultSchema.reduce((prev, { area, comnCd }) => {
         return { ...prev, [getResourceKey(area, comnCd)]: { area, comnCd } };
     }, {});
@@ -175,12 +176,14 @@ export const useResource = (props: UseResourceProps) => {
                 }
             }
 
-            setRecource((prev: any) => ({
-                ...prev,
-                ...resources.reduce((prev: any, curr: any) => {
-                    return { ...prev, [curr.key]: curr };
-                }, {}),
-            }));
+            setRecource((prev: any) => {
+                return {
+                    ...prev,
+                    ...resources.reduce((prev: any, curr: any) => {
+                        return { ...prev, [curr.key]: curr };
+                    }, {}),
+                };
+            });
         })();
     }, [theme.lang]);
 
