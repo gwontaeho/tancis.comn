@@ -35,21 +35,9 @@ const GRID_SCHEMA: TGridSchema = {
         importExcel: true,
         exportExcel: true,
         pagination: "out",
-        // group: ["text"],
+        group: ["text"],
     },
-    // group: [
-    //     { cells: [{ binding: "number", aggregate: "SUM" }] },
-    //     {
-    //         colspan: 2,
-    //         cells: [
-    //             { binding: "number", aggregate: "AVERAGE" },
-    //             { binding: "number", aggregate: "MAX" },
-    //         ],
-    //     },
-    //     {
-    //         cells: [{ binding: "number", aggregate: "COUNT" }],
-    //     },
-    // ],
+    group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
@@ -87,7 +75,6 @@ export const Temp = () => {
             { area: "comnCd", comnCd: "COM_0100" },
             { area: "currCd" },
             { area: "cityCd" },
-            { area: "portAirptCd" },
             { area: "test" },
         ],
     });
@@ -104,19 +91,19 @@ export const Temp = () => {
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
-    const fetch = useFetch({
-        // api: () => comnUtils.getCode({ area: "currCd" }),
-        api: () => api.get("asdw"),
+    // const fetch = useFetch({
+    //     // api: () => comnUtils.getCode({ area: "currCd" }),
+    //     api: () => api.get("asdw"),
 
-        onError: (error) => {
-            // console.log("as");
-            // console.log(error);
-        },
-    });
+    //     onError: (error) => {
+    //         // console.log("as");
+    //         // console.log(error);
+    //     },
+    // });
 
     const test = async () => {
         try {
-            const a = await fetch.fetch("asd");
+            // const a = await fetch.fetch("asd");
             // console.log(a);
         } catch (error) {
             // console.log(error);
@@ -156,6 +143,8 @@ export const Temp = () => {
                 context.textColor = "red";
             },
         },
+
+        group: {},
 
         // edit: {
         //     text: (data: any) => {
