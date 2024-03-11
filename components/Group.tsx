@@ -226,6 +226,8 @@ const GroupCell = (props: GroupCellProps) => {
         hidden,
     } = props;
 
+    const { t } = useTranslation();
+
     const end = (Array.isArray(children) ? children : [children]).some((_) => {
         return _?.type?.name !== "GroupCell";
     });
@@ -252,7 +254,7 @@ const GroupCell = (props: GroupCellProps) => {
             style={{ height }}
         >
             {Children.map(children, (child: any) => {
-                if (typeof child === "string") return child;
+                if (typeof child === "string") return t(child);
                 if (child) return cloneElement(child);
             })}
             {required && <span className={classNames("text-uf-error ml-0.5")}>*</span>}

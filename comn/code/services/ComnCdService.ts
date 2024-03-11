@@ -1393,7 +1393,7 @@ export const SF_POST_CD_SRCH: TFormSchema = {
             type: "select",
             label: "L_POST_TP_CD",
             area: "postTpCd",
-            // required: true,
+            required: true,
             options: [
                 { label: "L_REGN", value: "Region" },
                 { label: "L_DSTR", value: "District" },
