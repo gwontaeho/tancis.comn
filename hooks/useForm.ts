@@ -231,6 +231,7 @@ export const useForm = (props: UseFormProps) => {
         watch,
         errors,
         isSubmitted,
+        isError: !comnUtils.isEmpty(errors),
         setError,
         setErrors,
         reset,

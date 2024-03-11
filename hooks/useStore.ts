@@ -42,5 +42,7 @@ export const useStore = (props?: UseStoreProps) => {
         });
     };
 
-    return { store: _store, pgeStore: props?.pgeUid && _store[props.pgeUid], getStore, setStore };
+    const pgeStore = props?.pgeUid && _store[props.pgeUid];
+
+    return { store: _store, pgeStore, getStore, setStore };
 };
