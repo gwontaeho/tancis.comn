@@ -575,7 +575,7 @@ export const comnUtils = {
             case "hsCd":
                 return code.hsDesc;
             case "postCd":
-                return code.postNm;
+                return code.wardPostNm + ", " + code.dstrPostNm + ", " + code.regnPostNm;
             default:
                 return code.cdVldValNm;
         }
@@ -648,7 +648,7 @@ export const comnUtils = {
             case "hsCd":
                 return code.hsCd;
             case "postCd":
-                return code.postCd;
+                return code.wardPostCd;
             default:
                 return code.cdVldVal;
         }

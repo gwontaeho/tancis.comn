@@ -111,7 +111,7 @@ export const PostCodeList = (props: any) => {
     const render = {
         grid_PostCdLst: {
             cell: {
-                postCd: (props: any) => {
+                wardPostCd: (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
@@ -119,7 +119,20 @@ export const PostCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.postNm, data: rowValues });
+                                console.log(value);
+                                console.log(rowValues);
+                                console.log(rowValues.regnPostNm);
+
+                                postMessage({
+                                    code: value,
+                                    label:
+                                        rowValues.wardPostNm +
+                                        ", " +
+                                        rowValues.dstrPostNm +
+                                        ", " +
+                                        rowValues.regnPostNm,
+                                    data: rowValues,
+                                });
                                 close();
                             }}
                         >
