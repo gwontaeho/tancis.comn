@@ -57,6 +57,7 @@ const POPUP_URLS: Record<string, string> = {
     vhclUseCd: `/comn/comn/ppup/vhclUseCdPpup`,
     coCdDtl: `/comn/comn/ppup/CoCdDtl`,
     hsCd: `/comn/comn/ppup/hsCdPpup`,
+    postCd: `/comn/comn/ppup/postCdPpup`,
 };
 
 export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
