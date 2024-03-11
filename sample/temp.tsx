@@ -59,7 +59,7 @@ const FORM_SCHEMA = {
             comnCd: "COM_0100",
             viewType: "both",
         },
-        code: { label: "code", type: "code", area: "currCd", maxLength: 3 },
+        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: true },
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
@@ -81,7 +81,7 @@ export const Temp = () => {
 
     const [count, setRender] = useState(0);
 
-    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD" } });
+    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED" } });
 
     const st = useStore();
 

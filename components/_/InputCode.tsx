@@ -1,12 +1,12 @@
-import { useState, useEffect, forwardRef, useRef, useCallback } from "react";
+import { useState, useEffect, forwardRef, useCallback } from "react";
 import type { ChangeEvent } from "react";
 import lodash from "lodash";
 import { useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
-import { use } from "i18next";
 
 type InputCodeProps = UseOptionsProps & {
+    exact?: boolean;
     edit?: boolean;
     popupSize?: "sm" | "md" | "lg";
     popupParams?: any;
@@ -65,6 +65,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
         popupSize = "sm",
         popupParams,
         viewType = "both",
+        exact,
         /** useOptions props */
         area,
         comnCd,
@@ -101,6 +102,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
 
     const o = useOptions({ comnCd, area, options, excludes, includes, filter });
     const [_value, _setValue] = useState<string>(formatCode(value));
+    const [autoCompleteOpen, setAutoCompleteOpen] = useState(false);
 
     useEffect(() => {
         if (value === _value) return;
@@ -126,11 +128,14 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                     _setValue(vv.value);
                     if (onChange) onChange(vv.value);
                 } else {
-                    if (onChange) onChange("");
+                    if (exact && v.length > 1 && v.length === maxLength) {
+                        _setValue("");
+                        if (onChange) onChange("");
+                    }
                 }
             }
         }, 500),
-        [],
+        [exact, maxLength],
     );
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -159,7 +164,27 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
         });
     };
 
+    const handleFocus = () => {
+        if (autoCompleteOpen) return;
+        setAutoCompleteOpen(true);
+    };
+
+    const handleBlur = useCallback(
+        lodash.debounce((v?: any) => {
+            if (v) {
+                _setValue(v);
+                if (onChange) onChange(v);
+            }
+            setAutoCompleteOpen(false);
+        }, 200),
+        [],
+    );
+
     const _label = o.options.find((option) => option.value === value)?.label;
+
+    const autoComplete = o.options.filter((_) => {
+        return _value.length > 1 && _.value.includes(_value.toUpperCase());
+    });
 
     return (
         <div className="w-full">
@@ -169,12 +194,15 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                 </div>
             )}
             <div hidden={!edit}>
-                <div className="w-full flex">
+                <div className="w-full flex relative">
                     <input
                         {..._props}
                         ref={ref}
                         value={_value}
                         onChange={handleChange}
+                        onFocus={handleFocus}
+                        onBlur={() => handleBlur()}
+                        autoComplete="off"
                         className="input rounded-r-none flex-1"
                     />
                     <button
@@ -191,6 +219,20 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         defaultValue={_label}
                         className="input rounded-l-none flex-[2]"
                     />
+
+                    {autoCompleteOpen && !!autoComplete.length && (
+                        <ul className="absolute translate-y-1 rounded top-full w-full bg-uf-card-background border z-[9997]">
+                            {autoComplete.map(({ value, label }, i) => {
+                                return (
+                                    <li
+                                        key={o.base + "." + i}
+                                        className="flex px-1.5 items-center h-[2rem] cursor-pointer hover:bg-uf-lightgray"
+                                        onClick={() => handleBlur(value)}
+                                    >{`[${value}] ${label}`}</li>
+                                );
+                            })}
+                        </ul>
+                    )}
                 </div>
             </div>
         </div>
