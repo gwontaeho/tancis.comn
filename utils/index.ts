@@ -68,6 +68,7 @@ export const comnEnvs = {
         vhclUseCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/vhclUseCdPpup`,
         coCdDtl: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/coCdDtl`,
         hsCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/hsCdPpup`,
+        postCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/postCdPpup`,
     },
 };
 
@@ -360,6 +361,7 @@ export const comnUtils = {
         vhclMnfcCd?: string;
         vhclMdlCd?: string;
         wrhsOprtTpCd?: string;
+        postTpCd?: string;
     }) => {
         const {
             comnCd,
@@ -378,6 +380,7 @@ export const comnUtils = {
             vhclMnfcCd = "",
             vhclMdlCd = "",
             wrhsOprtTpCd = "",
+            postTpCd = "",
         } = args;
 
         let url = "";
@@ -491,6 +494,9 @@ export const comnUtils = {
             case "hsCd":
                 url = `${process.env.REACT_APP_API_CLRI}/api/v1/clri/tm/hs/hs-mgmt/popUp?hsCd=${keyword}&hsDesc=${keywordName}`;
                 break;
+            case "postCd":
+                url = `${process.env.REACT_APP_API_ESWO}/api/v1/eswo/comn/post-cd?postTpCd=${postTpCd}&postCd=${keyword}&postNm=${keywordName}`;
+                break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
@@ -568,6 +574,8 @@ export const comnUtils = {
                 return code.comnCdLbl;
             case "hsCd":
                 return code.hsDesc;
+            case "postCd":
+                return code.postNm;
             default:
                 return code.cdVldValNm;
         }
@@ -639,6 +647,8 @@ export const comnUtils = {
                 return code.comnCdVal;
             case "hsCd":
                 return code.hsCd;
+            case "postCd":
+                return code.postCd;
             default:
                 return code.cdVldVal;
         }

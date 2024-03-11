@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { CommonCodeList } from "@/comn/comn/code/ComnCdLst";
 import { CountryCodeList } from "@/comn/comn/code/CntyCdLst";
+import { DgtCountryCodeList } from "@/comn/comn/code/dgt3CntyCdLst";
 import { CityCodeList } from "@/comn/comn/code/CityCdLst";
 import { CurrencyCodeList } from "@/comn/comn/code/CurrCdLst";
 import { BankCodeList } from "@/comn/comn/code/BnkCdLst";
@@ -30,6 +31,7 @@ import { CompanyDeclareCodeList } from "@/comn/comn/code/CoDclaCdLst";
 import { CustomsCodeList } from "@/comn/comn/code/cstmCdLst";
 import { HsCodeList } from "@/comn/comn/code/hsCdLst";
 import { CompanyCodeDetail } from "@/comn/comn/code/CoCdDtl";
+import { PostCodeList } from "@/comn/comn/code/PostCdLst";
 
 import { LblLangLst } from "@/comn/comn/lbl/LblLangLst";
 import { LblLangEdit } from "@/comn/comn/lbl/LblLangEdit";
@@ -45,7 +47,6 @@ import { BltbrdLst } from "@/comn/comn/bltbrd/BltbrdLst";
 import { BltbrdRgsr } from "@/comn/comn/bltbrd/BltbrdRgsr";
 import { BltbrdDtl } from "@/comn/comn/bltbrd/BltbrdDtl";
 import { BltbrdEdit } from "@/comn/comn/bltbrd/BltbrdEdit";
-import { DgtCountryCodeList } from "./code/dgt3CntyCdLst";
 
 export const ComnMain = () => {
     return (
@@ -81,6 +82,7 @@ export const ComnMain = () => {
             <Route path="/ppup/vhclUseCdPpup" element={<VehicleUseCodeList />} />
             <Route path="/ppup/coCdDtl" element={<CompanyCodeDetail />} />
             <Route path="/ppup/hsCdPpup" element={<HsCodeList />} />
+            <Route path="/ppup/postCdPpup" element={<PostCodeList />} />
 
             <Route path="/lbl/lblLangLst" element={<LblLangLst />} />
             <Route path="/lbl/lblLangRgsr" element={<LblLangRgsr />} />
