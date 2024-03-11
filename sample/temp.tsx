@@ -34,10 +34,10 @@ const GRID_SCHEMA: TGridSchema = {
         // edit: true,
         importExcel: true,
         exportExcel: true,
-        pagination: "out",
-        group: ["text"],
+        pagination: "in",
+        // group: ["text"],
     },
-    group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
+    // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
         { cells: [{ type: "number", binding: "number", required: true }] },
@@ -87,7 +87,9 @@ export const Temp = () => {
 
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
-    const data = useMemo(() => mock({ totalElements: 20 }), []);
+    const data = useMemo(() => mock({ totalElements: 999 }), []);
+
+    console.log(data);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -171,12 +173,12 @@ export const Temp = () => {
         },
     };
 
-    useEffect(() => {
-        const data = mock({ totalElements: 20 });
-        const pagingData = paging({ data, page: 0, size: 10 });
+    // useEffect(() => {
+    //     const data = mock({ totalElements: 20 });
+    //     const pagingData = paging({ data, page: 0, size: 10 });
 
-        g.setData(pagingData);
-    }, []);
+    //     g.setData(pagingData);
+    // }, []);
 
     return (
         <Page>
@@ -367,18 +369,18 @@ export const Temp = () => {
                         <Group.Section>
                             <Grid
                                 {...g.grid}
-                                // data={pagingData}
+                                data={data}
                                 render={render}
                                 onCellClick={handler.onCellClick}
                                 onRowClick={handler.onRowClick}
                                 onRowCheck={handler.onRowCheck}
                                 onRowSelect={handler.onRowSelect}
-                                onPageChange={(a: any) => {
-                                    console.log(a);
-                                    const data = mock({ totalElements: 20 });
-                                    const pagingData = paging({ data, page: a, size: 10 });
-                                    g.setData(pagingData);
-                                }}
+                                // onPageChange={(a: any) => {
+                                //     console.log(a);
+                                //     const data = mock({ totalElements: 20 });
+                                //     const pagingData = paging({ data, page: a, size: 10 });
+                                //     g.setData(pagingData);
+                                // }}
                             />
                         </Group.Section>
 
