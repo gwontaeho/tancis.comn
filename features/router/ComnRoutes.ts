@@ -361,6 +361,10 @@ export const ComnRoutes = [
                                 name: "Vehicle Use Code Popup",
                                 to: "/comn/comn/ppup/vhclUseCdPpup",
                             },
+                            {
+                                name: "Postal Code Popup",
+                                to: "/comn/comn/ppup/postCdPpup",
+                            },
                         ],
                     },
                 ],

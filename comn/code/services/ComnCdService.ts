@@ -317,6 +317,17 @@ export const APIS = {
             keywordName: data.hsDesc,
         });
     },
+
+    getPostCdLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "postCd",
+            page: page,
+            size: size,
+            keyword: data.postCd,
+            keywordName: data.postNm,
+            postTpCd: data.postTpCd,
+        });
+    },
 };
 
 export const SCHEMA_GRID_COMN_CD: TGridSchema = {
@@ -1371,6 +1382,68 @@ export const SG_HS_CD_LST: TGridSchema = {
         },
         {
             cells: [{ binding: "useYn" }],
+        },
+    ],
+};
+
+export const SF_POST_CD_SRCH: TFormSchema = {
+    id: "form_PostCd",
+    schema: {
+        postTpCd: {
+            type: "select",
+            label: "L_POST_TP_CD",
+            area: "postTpCd",
+            // required: true,
+            options: [
+                { label: "L_REGN", value: "Region" },
+                { label: "L_DSTR", value: "District" },
+                { label: "L_WARD", value: "Ward" },
+            ],
+        },
+        postCd: {
+            type: "number",
+            label: "L_POST_CD",
+            area: "postCd",
+            controlSize: 4,
+            thousandSeparator: false,
+        },
+        postNm: {
+            type: "text",
+            label: "L_POST_NM",
+            area: "postNm",
+        },
+    },
+};
+
+export const SG_POST_CD_LST: TGridSchema = {
+    id: "grid_PostCd",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_REGN_POST_CD", binding: "regnPostCd", width: 100 }] },
+        { cells: [{ header: "L_REGN_POST_NM", binding: "regnPostNm", width: "*" }] },
+        { cells: [{ header: "L_DSTR_POST_CD", binding: "dstrPostCd", width: 100 }] },
+        { cells: [{ header: "L_DSTR_POST_NM", binding: "dstrPostNm", width: "*" }] },
+        { cells: [{ header: "L_WARD_POST_CD", binding: "wardPostCd", width: 100 }] },
+        { cells: [{ header: "L_WARD_POST_NM", binding: "wardPostNm", width: "*" }] },
+    ],
+    body: [
+        {
+            cells: [{ binding: "regnPostCd" }],
+        },
+        {
+            cells: [{ binding: "regnPostNm" }],
+        },
+        {
+            cells: [{ binding: "dstrPostCd" }],
+        },
+        {
+            cells: [{ binding: "dstrPostNm" }],
+        },
+        {
+            cells: [{ binding: "wardPostCd" }],
+        },
+        {
+            cells: [{ binding: "wardPostNm" }],
         },
     ],
 };
