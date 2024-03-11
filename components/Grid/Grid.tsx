@@ -35,8 +35,9 @@ export const Grid = (props: {
     onRowCheck?: any;
     onRowSelect?: any;
     onPageChange?: any;
+    onSizeChange?: any;
 }) => {
-    const { _grid, render, onCellClick, onRowClick, onPageChange } = props;
+    const { _grid, render, onCellClick, onRowClick, onPageChange, onSizeChange } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
@@ -78,9 +79,13 @@ export const Grid = (props: {
         },
         [onPageChange],
     );
-    const handleChangeSize = useCallback((next: any) => {
-        _grid.current._handleSize(next);
-    }, []);
+    const handleChangeSize = useCallback(
+        (next: any) => {
+            _grid.current._handleSize(next);
+            if (onSizeChange) onSizeChange(next);
+        },
+        [onSizeChange],
+    );
 
     const _headCells = fun(_head);
     const _bodyCells = fun(_body);

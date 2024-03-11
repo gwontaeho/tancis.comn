@@ -59,7 +59,7 @@ const FORM_SCHEMA = {
             comnCd: "COM_0100",
             viewType: "both",
         },
-        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: true },
+        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: false },
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
