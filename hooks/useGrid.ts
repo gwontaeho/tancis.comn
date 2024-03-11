@@ -291,10 +291,21 @@ export const useGrid = (props: UseGridProps) => {
         return _grid.current._exportExcel();
     };
 
+    const getSize = () => {
+        return _grid.current._size;
+    };
+
+    const getPage = () => {
+        return _grid.current._page;
+    };
+
     return {
         grid: { _grid },
         page: _page,
         size: _size,
+
+        getSize,
+        getPage,
 
         getData,
         getViewData,
