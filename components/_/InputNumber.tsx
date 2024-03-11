@@ -107,11 +107,16 @@ export const formatNumber = (v: any, o?: any) => {
         f = f.replaceAll(/\D/g, "");
     }
 
-    if (o?.decimalScale) {
+    if (o?.decimalScale !== undefined) {
         const x = f.split(".");
         const int = x[0];
         const dec = x[1]?.slice(0, o.decimalScale);
-        f = int + (dec === undefined ? "" : "." + dec);
+
+        if (o.decimalScale === 0) {
+            f = int;
+        } else {
+            f = int + (dec === undefined ? "" : "." + dec);
+        }
     }
 
     if (o?.thousandSeparator) {
