@@ -101,8 +101,9 @@ export const comnUtils = {
                 return formatDatetime(v);
             case "radio":
                 return v;
+            default:
+                return formatText(v, s);
         }
-        return v;
     },
     /**
      *
