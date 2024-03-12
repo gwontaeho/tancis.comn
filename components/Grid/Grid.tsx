@@ -442,7 +442,7 @@ const Row = memo((props: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
 
-                                const { binding, align, rowspan, colspan, edit, ...rest } = cel;
+                                const { binding, align, rowspan, colspan, edit, header, ...rest } = cel;
 
                                 const celKey = rowKey + ".gb." + rowIndex + "." + colIndex;
                                 const value = row[binding];
@@ -454,6 +454,7 @@ const Row = memo((props: any) => {
                                 const rowEdit = _editingRow.find((r: any) => r.key === rowKey && r.cell === undefined);
                                 const cellEdit = _editingRow.find((r: any) => r.key === rowKey && r.cell === binding);
 
+                                const isHeader = !!header;
                                 const isEdit =
                                     cellEdit !== undefined
                                         ? cellEdit.edit
@@ -530,7 +531,12 @@ const Row = memo((props: any) => {
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
 
-                                            backgroundColor ? BG_COLORS[backgroundColor] : "bg-uf-card-background",
+                                            isHeader && "border-uf-card-header font-semibold",
+                                            backgroundColor
+                                                ? BG_COLORS[backgroundColor]
+                                                : isHeader
+                                                  ? "bg-uf-card-header"
+                                                  : "bg-uf-card-background",
                                             textColor && TEXT_COLORS[textColor],
                                         )}
                                         {...(abc.isError && { "aria-invalid": true })}
@@ -541,8 +547,9 @@ const Row = memo((props: any) => {
                                         }}
                                         onClick={handleClickCell}
                                     >
-                                        {isEdit && (CustomEdit || Control)}
-                                        {!isEdit && (CustomCell || Control)}
+                                        {isHeader && t(header)}
+                                        {!isHeader && isEdit && (CustomEdit || Control)}
+                                        {!isHeader && !isEdit && (CustomCell || Control)}
                                     </div>
                                 );
                             });
