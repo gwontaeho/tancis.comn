@@ -1,3 +1,5 @@
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 import React from "react";
 
 /** */
@@ -15,6 +17,13 @@ export type InputTextProps = {
     maxLength?: number;
     placeholder?: string;
     defaultValue?: any;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
@@ -37,6 +46,13 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             maxLength,
             placeholder,
             defaultValue,
+
+            color,
+            editColor,
+            bold,
+            editBold,
+            fontSize,
+
             onBlur,
             onFocus,
             onChange,
@@ -93,7 +109,11 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
         return (
             <div className="w-full">
-                {!edit && <div title={_value}>{_value}</div>}
+                {!edit && (
+                    <div title={_value} className={comnUtils.getViewStyle(color, bold, fontSize)}>
+                        {_value}
+                    </div>
+                )}
                 <div hidden={!edit}>
                     <input
                         {..._props}
@@ -105,7 +125,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                         onSelect={handleSelect}
                         type="text"
                         autoComplete="off"
-                        className="input"
+                        className={"input" + comnUtils.getEditStyle(editColor, editBold)}
                     />
                 </div>
             </div>

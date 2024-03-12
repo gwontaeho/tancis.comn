@@ -23,6 +23,7 @@ import {
     viewRadio,
     viewSelect,
 } from "@/comn/components/_";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "../features/foundation";
 
 /**
  * # Common Environment Variables
@@ -341,6 +342,23 @@ export const comnUtils = {
         if (window.parent) {
             window.parent.postMessage(data);
         }
+    },
+    getViewStyle: (
+        color: keyof typeof COLOR_TEXT | undefined,
+        bold: keyof typeof BOLD_TEXT | undefined,
+        fontSize: keyof typeof SIZE_TEXT | undefined,
+    ) => {
+        let className = "";
+        if (color !== undefined) className += " " + COLOR_TEXT[color];
+        if (bold !== undefined) className += " " + BOLD_TEXT[bold];
+        if (fontSize !== undefined) className += " text-" + fontSize;
+        return className;
+    },
+    getEditStyle: (color: keyof typeof COLOR_TEXT | undefined, bold: keyof typeof BOLD_TEXT | undefined) => {
+        let className = "";
+        if (color !== undefined) className += " " + COLOR_TEXT[color];
+        if (bold !== undefined) className += " " + BOLD_TEXT[bold];
+        return className;
     },
     /////////////////////////////////////////////////////////////////////
     // Resource

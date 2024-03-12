@@ -234,7 +234,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         prcssId: { type: "text", label: "L_PRCSS_ID" },
         cstmOfceCd: { type: "text", label: "L_CSTM_OFCE_CD" },
         mrn: { type: "text", label: "L_MRN" },
-        mblNo: { type: "text", label: "L_MBL_NO", edit: false },
+        mblNo: { type: "text", label: "L_MBL_NO", edit: false, color: "blue", bold: 900, fontSize: "lg" },
         crn: { type: "text", label: "L_CRN", edit: false },
         msn: { type: "text", label: "L_MSN" },
         cagClsfCd: { type: "select", label: "L_CAG_CLSF", area: "comnCd", comnCd: "CGM0055" },
@@ -252,7 +252,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         ntprNm: { type: "text", label: "L_NTPR_NM", rightButton: { icon: "search" } },
         ntprTelno: { type: "text", label: "L_NTPR_TELNO" },
         ntprAddr: { type: "text", label: "L_NTPR_ADDR" },
-        godsDesc: { type: "text", label: "L_GODS_DESC" },
+        godsDesc: { type: "text", label: "L_GODS_DESC", editColor: "error", editBold: 900 },
         blPckgNo: { type: "number", required: true },
         pckgUtCd: { type: "select", required: true, area: "comnCd", comnCd: "CGM0055" },
         blGwght: {

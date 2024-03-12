@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Icon, IconsType } from "./Icon";
 import { TOption } from "../hooks";
 import { Tooltip } from "./Tooltip";
-import { WIDTH } from "../features/foundation";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT, WIDTH } from "../features/foundation";
 import {
     InputText,
     InputNumber,
@@ -151,6 +151,13 @@ export type FormControlProps = InputDaterangeProps & {
 
     /** editor */
     height?: number;
+
+    /** style */
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
 };
 
 const FormControlMain = forwardRef((props: any, ref) => {

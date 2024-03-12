@@ -159,4 +159,5 @@ export {
     ALIGN_ITEMS,
     GRID_COLS,
     BOLD_TEXT,
+    SIZE_TEXT,
 };
