@@ -130,6 +130,22 @@ const COLOR_TEXT = {
     warning: "text-uf-warning",
 };
 
+const BOLD_TEXT = {
+    100: "font-thin",
+    300: "font-light",
+    500: "font-medium",
+    700: "font-bold",
+    900: "font-black",
+};
+
+const SIZE_TEXT = {
+    sm: "0.7rem",
+    base: "0.75rem",
+    lg: "0.9rem",
+    xl: "1rem",
+    "2xl": "1.2rem",
+};
+
 export {
     DIRECTION,
     WIDTH,
@@ -142,4 +158,5 @@ export {
     JUSTIFY_CONTENT,
     ALIGN_ITEMS,
     GRID_COLS,
+    BOLD_TEXT,
 };
