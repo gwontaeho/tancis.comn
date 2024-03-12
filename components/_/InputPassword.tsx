@@ -1,5 +1,7 @@
 import React from "react";
 import { IconButton } from "@/comn/components/IconButton";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 
 /** */
 export type InputPasswordProps = {
@@ -12,6 +14,13 @@ export type InputPasswordProps = {
     maxLength?: number;
     placeholder?: string;
     defaultValue?: any;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
@@ -30,6 +39,13 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
             maxLength,
             placeholder,
             defaultValue,
+
+            color,
+            editColor,
+            bold,
+            editBold,
+            fontSize,
+
             onBlur,
             onFocus,
             onChange,
@@ -78,7 +94,9 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
 
         return (
             <div className="w-full">
-                {!edit && <div>{replacePassword(_value)}</div>}
+                {!edit && (
+                    <div className={comnUtils.getViewStyle(color, bold, fontSize)}>{replacePassword(_value)}</div>
+                )}
                 <div hidden={!edit}>
                     <div className="relative flex items-center">
                         <input
@@ -88,7 +106,7 @@ export const InputPassword = React.forwardRef<HTMLInputElement, InputPasswordPro
                             onChange={handleChange}
                             type={show ? "text" : "password"}
                             autoComplete="off"
-                            className="input"
+                            className={"input" + comnUtils.getEditStyle(editColor, editBold)}
                         />
                         <IconButton
                             onClick={() => setShow((prev) => !prev)}

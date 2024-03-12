@@ -2,6 +2,8 @@ import type { ChangeEvent } from "react";
 import { forwardRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 
 import { useOptions, UseOptionsProps } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
@@ -18,6 +20,13 @@ type SelectProps = UseOptionsProps & {
     value?: any;
     readOnly?: boolean;
     disabled?: boolean;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
 };
@@ -42,6 +51,13 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
         value,
         readOnly,
         disabled,
+
+        color,
+        editColor,
+        bold,
+        editBold,
+        fontSize,
+
         onBlur,
         onChange,
     } = props;
@@ -84,7 +100,10 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
         <div className="w-full">
             {/* view text */}
             {!edit && (
-                <div title={viewSelect(value, { viewType, options: o.options })}>
+                <div
+                    title={viewSelect(value, { viewType, options: o.options })}
+                    className={comnUtils.getViewStyle(color, bold, fontSize)}
+                >
                     {viewSelect(value, { viewType, options: o.options })}
                 </div>
             )}
@@ -95,7 +114,11 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
                         ref={ref}
                         value={_value}
                         onChange={handleChange}
-                        className={classNames("input appearance-none pr-5", readOnly && "pointer-events-none")}
+                        className={classNames(
+                            "input appearance-none pr-5",
+                            readOnly && "pointer-events-none",
+                            comnUtils.getEditStyle(editColor, editBold),
+                        )}
                     >
                         {(all || select) && <option value="">{all ? t("L_AL") : t("L_SELT")}</option>}
                         {o.hasOption &&

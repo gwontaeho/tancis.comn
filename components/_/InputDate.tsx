@@ -1,7 +1,8 @@
 import React from "react";
 import dayjs from "dayjs";
 import ReactDatePicker from "react-datepicker";
-
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 import constants from "@/comn/constants";
 import { useTheme } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
@@ -17,6 +18,13 @@ export type InputDateProps = {
     disabled?: boolean;
     defaultValue?: any;
     placeholder?: string;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
 };
@@ -33,6 +41,13 @@ export const InputDate = React.forwardRef((props: InputDateProps, ref: any) => {
         disabled,
         defaultValue,
         placeholder,
+
+        color,
+        editColor,
+        bold,
+        editBold,
+        fontSize,
+
         onBlur,
         onChange,
     } = props;
@@ -70,7 +85,9 @@ export const InputDate = React.forwardRef((props: InputDateProps, ref: any) => {
 
     return (
         <div className="w-full">
-            {!edit && <div>{localeDate(_value, theme.lang)}</div>}
+            {!edit && (
+                <div className={comnUtils.getViewStyle(color, bold, fontSize)}>{localeDate(_value, theme.lang)}</div>
+            )}
             <div hidden={!edit}>
                 <div className="relative w-full [&>div]:w-full">
                     <Icon icon="calendar" size="xs" className="absolute left-1 top-1/2 -translate-y-1/2 z-10" />
@@ -88,7 +105,7 @@ export const InputDate = React.forwardRef((props: InputDateProps, ref: any) => {
                         selected={_value}
                         onChange={handleChange}
                         autoComplete="off"
-                        className="input pl-5"
+                        className={"input pl-5" + +comnUtils.getEditStyle(editColor, editBold)}
                         portalId="root"
                         popperProps={{ strategy: "fixed" }}
                     />

@@ -1,7 +1,8 @@
 import React, { useRef, useId } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { v4 as uuid } from "uuid";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 
 import { useOptions, UseOptionsProps } from "@/comn/hooks";
 
@@ -16,6 +17,13 @@ type RadioProps = UseOptionsProps & {
     value?: any;
     readOnly?: boolean;
     disabled?: boolean;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
 };
@@ -37,6 +45,13 @@ export const Radio = (props: RadioProps) => {
         value,
         readOnly,
         disabled,
+
+        color,
+        editColor,
+        bold,
+        editBold,
+        fontSize,
+
         onBlur,
         onChange,
     } = props;
@@ -72,7 +87,10 @@ export const Radio = (props: RadioProps) => {
         <div className="w-full">
             {/* view text */}
             {!edit && (
-                <div title={viewRadio(value, { options: o.options, viewType })}>
+                <div
+                    title={viewRadio(value, { options: o.options, viewType })}
+                    className={comnUtils.getViewStyle(color, bold, fontSize)}
+                >
                     {viewRadio(value, { options: o.options, viewType })}
                 </div>
             )}
@@ -89,7 +107,7 @@ export const Radio = (props: RadioProps) => {
                                 checked={_value === ""}
                                 onChange={handleChange}
                             />
-                            <div>{t(`L_AL`)}</div>
+                            <div className={comnUtils.getEditStyle(editColor, editBold)}>{t(`L_AL`)}</div>
                         </label>
                     )}
 
@@ -105,7 +123,12 @@ export const Radio = (props: RadioProps) => {
                                         checked={option.value === _value}
                                         onChange={handleChange}
                                     />
-                                    {option.label && <div> {editRadio(option.value, t(option.label), editType)}</div>}
+                                    {option.label && (
+                                        <div className={comnUtils.getEditStyle(editColor, editBold)}>
+                                            {" "}
+                                            {editRadio(option.value, t(option.label), editType)}
+                                        </div>
+                                    )}
                                 </label>
                             );
                         })}

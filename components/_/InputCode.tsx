@@ -4,6 +4,8 @@ import lodash from "lodash";
 import { useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
 import { utils } from "@/comn/utils";
 import { Icon } from "@/comn/components";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 
 type InputCodeProps = UseOptionsProps & {
     exact?: boolean;
@@ -18,6 +20,13 @@ type InputCodeProps = UseOptionsProps & {
     readOnly?: boolean;
     disabled?: boolean;
     maxLength?: number;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     callback?: (arg?: any) => void;
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
@@ -81,6 +90,13 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
         disabled,
         maxLength,
         placeholder,
+
+        color,
+        editColor,
+        bold,
+        editBold,
+        fontSize,
+
         onBlur,
         onFocus,
         onChange,
@@ -190,8 +206,11 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     return (
         <div className="w-full">
             {!edit && (
-                <div title={viewCode(_value, { options: o.options, viewType })}>
-                    {viewCode(_value, { options: o.options, viewType })}
+                <div
+                    title={viewCode(value, { options: o.options, viewType })}
+                    className={comnUtils.getViewStyle(color, bold, fontSize)}
+                >
+                    {viewCode(value, { options: o.options, viewType })}
                 </div>
             )}
             <div hidden={!edit}>
@@ -204,7 +223,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         onFocus={handleFocus}
                         onBlur={() => handleBlur()}
                         autoComplete="off"
-                        className="input rounded-r-none flex-1"
+                        className={"input rounded-r-none flex-1" + comnUtils.getEditStyle(editColor, editBold)}
                     />
                     <button
                         className="button border-x-0 rounded-none"
@@ -218,7 +237,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         readOnly={true}
                         disabled={disabled}
                         defaultValue={_label}
-                        className="input rounded-l-none flex-[2]"
+                        className={"input rounded-l-none flex-[2]" + comnUtils.getEditStyle(editColor, editBold)}
                     />
 
                     {autoCompleteOpen && !!autoComplete.length && (

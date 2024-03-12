@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import lodash from "lodash";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 import { useOptions, UseOptionsProps } from "@/comn/hooks";
 
 /** */
@@ -17,6 +18,13 @@ type CheckboxProps = UseOptionsProps & {
     value?: any[];
     readOnly?: boolean;
     disabled?: boolean;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
 };
@@ -36,9 +44,17 @@ export const Checkbox = (props: CheckboxProps) => {
         excludes,
         includes,
         filter,
+
+        color,
+        editColor,
+        bold,
+        editBold,
+        fontSize,
+
         /**  */
         value,
         onChange,
+
         /** input props */
         name,
         readOnly,
@@ -113,7 +129,10 @@ export const Checkbox = (props: CheckboxProps) => {
         <div className="w-full">
             {/* view text */}
             {!edit && (
-                <div title={viewCheckbox(value, { viewType, options: o.options })}>
+                <div
+                    title={viewCheckbox(value, { viewType, options: o.options })}
+                    className={comnUtils.getViewStyle(color, bold, fontSize)}
+                >
                     {viewCheckbox(value, { viewType, options: o.options })}
                 </div>
             )}
@@ -129,7 +148,7 @@ export const Checkbox = (props: CheckboxProps) => {
                                     onChange={handleChangeAll}
                                     checked={o.options.every(({ value }) => _value.includes(value)) || false}
                                 />
-                                <div>{t(`L_AL`)}</div>
+                                <div className={comnUtils.getEditStyle(editColor, editBold)}>{t(`L_AL`)}</div>
                             </label>
                         </div>
                     )}
@@ -145,7 +164,10 @@ export const Checkbox = (props: CheckboxProps) => {
                                         checked={_value.some((_) => _ === option.value)}
                                     />
                                     {option.label && (
-                                        <div> {editCheckbox(option.value, t(option.label), editType)}</div>
+                                        <div className={comnUtils.getEditStyle(editColor, editBold)}>
+                                            {" "}
+                                            {editCheckbox(option.value, t(option.label), editType)}
+                                        </div>
                                     )}
                                 </label>
                             );

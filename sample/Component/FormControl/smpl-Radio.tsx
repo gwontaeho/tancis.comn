@@ -34,6 +34,8 @@ export const SampleFormControlRadio = () => {
                 options: code,
                 required: true,
                 editType: "both",
+                editColor: "error",
+                editBold: 500,
             },
             radio2: {
                 label: "radio2",
