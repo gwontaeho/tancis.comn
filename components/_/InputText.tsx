@@ -1,6 +1,6 @@
 import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
 import { comnUtils } from "@/comn/utils";
-import React from "react";
+import React, { useEffect } from "react";
 
 /** */
 export type InputTextProps = {
@@ -106,6 +106,10 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                 _apply.current = false;
             }
         };
+
+        useEffect(() => {
+            _setValue(formatText(value, o));
+        }, [letterCase, imemode]);
 
         return (
             <div className="w-full">
