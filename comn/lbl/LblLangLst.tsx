@@ -40,9 +40,6 @@ export const LblLangLst = (props: any) => {
             enabled: comnUtils.isEmpty(form.lblLangSrch.errors) && form.lblLangSrch.isSubmitted,
             key: [grid.lblLangLst.page, grid.lblLangLst.size],
             onSuccess: () => {
-                console.log(grid.lblLangLst);
-                console.log(new Date());
-
                 setStore(pgeUid, {
                     form: form.lblLangSrch.getValues(),
                     page: grid.lblLangLst.getPage(),

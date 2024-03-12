@@ -142,8 +142,6 @@ export const formatText = (v: any, o?: any) => {
         let real = "";
         let s = 0;
 
-        console.log(t);
-
         for (var i = 0; i < o.mask.length; i++) {
             if (typeof o.mask[i] === "string") {
                 if (t[pos] === undefined) {
@@ -152,12 +150,9 @@ export const formatText = (v: any, o?: any) => {
                 temp += o.mask[i];
                 s++;
             } else {
-                console.log(1);
                 if (!o.mask[i].test(t[pos])) {
-                    console.log(2);
                     break;
                 }
-                console.log(3, t[pos]);
                 if (t[pos] === undefined) break;
                 temp += t[pos];
                 real += t[pos];
