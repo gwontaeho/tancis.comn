@@ -78,6 +78,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
 
     const startRef = React.useRef<any>({});
     const endRef = React.useRef<any>({});
+    const styleProp = { color, editColor, bold, editBold, fontSize };
 
     const _handleClickButton = (unit: DateUnitType, value: number) => {
         if (!startRef.current.handleChangeStart) return;
@@ -98,7 +99,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
         <div className="flex w-full">
             <div className="flex-1 [&_input]:rounded-r-none">
                 <FormControl //
-                    {...start}
+                    {...{ ...styleProp, ...start }}
                     type="date"
                     edit={edit}
                     startRef={startRef}
@@ -113,7 +114,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
                 })}
             >
                 <FormControl //
-                    {...end}
+                    {...{ ...styleProp, ...end }}
                     type="date"
                     edit={edit}
                     endRef={endRef}

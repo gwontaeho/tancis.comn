@@ -86,7 +86,9 @@ export const InputDate = React.forwardRef((props: InputDateProps, ref: any) => {
     return (
         <div className="w-full">
             {!edit && (
-                <div className={comnUtils.getViewStyle(color, bold, fontSize)}>{localeDate(_value, theme.lang)}</div>
+                <div className={"min-w-max" + comnUtils.getViewStyle(color, bold, fontSize)}>
+                    {localeDate(_value, theme.lang)}
+                </div>
             )}
             <div hidden={!edit}>
                 <div className="relative w-full [&>div]:w-full">
@@ -105,7 +107,7 @@ export const InputDate = React.forwardRef((props: InputDateProps, ref: any) => {
                         selected={_value}
                         onChange={handleChange}
                         autoComplete="off"
-                        className={"input pl-5" + +comnUtils.getEditStyle(editColor, editBold)}
+                        className={"input pl-5" + comnUtils.getEditStyle(editColor, editBold)}
                         portalId="root"
                         popperProps={{ strategy: "fixed" }}
                     />

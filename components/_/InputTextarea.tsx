@@ -1,4 +1,6 @@
 import React from "react";
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 
 /** */
 export type InputTextareaProps = {
@@ -13,6 +15,13 @@ export type InputTextareaProps = {
     maxLength?: number;
     placeholder?: string;
     defaultValue?: any;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
+
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
@@ -33,6 +42,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
             disabled,
             maxLength,
             placeholder,
+
+            color,
+            editColor,
+            bold,
+            editBold,
+            fontSize,
+
             rows,
         } = props;
 
@@ -70,7 +86,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
 
         return (
             <div className="w-full">
-                {!edit && <pre title={_value}>{_value}</pre>}
+                {!edit && (
+                    <pre title={_value} className={comnUtils.getViewStyle(color, bold, fontSize)}>
+                        {_value}
+                    </pre>
+                )}
                 <div hidden={!edit}>
                     <textarea
                         {..._props}
@@ -78,7 +98,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputTextareaProps
                         value={_value}
                         title={_value}
                         onChange={handleChange}
-                        className="input overflow-hidden"
+                        className={"input overflow-hidden" + comnUtils.getEditStyle(editColor, editBold)}
                     />
                 </div>
             </div>

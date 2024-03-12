@@ -2,7 +2,8 @@ import React from "react";
 import dayjs from "dayjs";
 import { v4 as uuid } from "uuid";
 import classNames from "classnames";
-
+import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
+import { comnUtils } from "@/comn/utils";
 import { InputTimeProps } from "@/comn/components/_";
 import { FormControl } from "@/comn/components";
 
@@ -63,13 +64,20 @@ export type InputTimerangeProps = {
     start?: InputTimeProps;
     end?: InputTimeProps;
     rangeButton?: 0 | 1 | 2 | 3 | 4 | 5;
+
+    color?: keyof typeof COLOR_TEXT;
+    editColor?: keyof typeof COLOR_TEXT;
+    bold?: keyof typeof BOLD_TEXT;
+    editBold?: keyof typeof BOLD_TEXT;
+    fontSize?: keyof typeof SIZE_TEXT;
 };
 
 export const InputTimerange = (props: InputTimerangeProps) => {
-    const { edit = true, start, end, rangeButton } = props;
+    const { edit = true, start, end, rangeButton, color, editColor, bold, editBold, fontSize } = props;
 
     const startRef = React.useRef<any>({});
     const endRef = React.useRef<any>({});
+    const styleProp = { color, editColor, bold, editBold, fontSize };
 
     const _handleClickButton = (unit: TimeUnitType, value: number) => {
         if (!startRef.current.handleChangeStart) return;
@@ -90,7 +98,7 @@ export const InputTimerange = (props: InputTimerangeProps) => {
         <div className="flex w-full">
             <div className="flex-1 [&_input]:rounded-r-none">
                 <FormControl //
-                    {...start}
+                    {...{ ...styleProp, ...start }}
                     type="time"
                     edit={edit}
                     startRef={startRef}
@@ -105,7 +113,7 @@ export const InputTimerange = (props: InputTimerangeProps) => {
                 })}
             >
                 <FormControl //
-                    {...end}
+                    {...{ ...styleProp, ...end }}
                     type="time"
                     edit={edit}
                     endRef={endRef}
