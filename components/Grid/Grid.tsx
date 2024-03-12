@@ -466,6 +466,7 @@ const Row = memo((props: any) => {
                                     binding,
                                     value: uv,
                                     rowValues: row,
+                                    formattedValue: fv,
                                 };
 
                                 const formControlProps = {
