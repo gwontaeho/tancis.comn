@@ -215,7 +215,7 @@ export const Temp = () => {
 
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
-    const t = useTree();
+    // const t = useTree();
 
     const data = useMemo(() => mock({ totalElements: 999 }), []);
 
@@ -361,7 +361,7 @@ export const Temp = () => {
                         </Group.Section>
 
                         <Group.Section>
-                            <Tree
+                            {/* <Tree
                                 {...t.tree}
                                 size={4}
                                 onClick={(e) => console.log(e)}
@@ -399,13 +399,13 @@ export const Temp = () => {
                                         ]);
                                     }
                                 }}
-                            />
+                            /> */}
 
-                            <Group.Cell root>
+                            {/* <Group.Cell root>
                                 <Group.Cell>
                                     <button onClick={() => t.setData(treeData)}>Set</button>
                                 </Group.Cell>
-                            </Group.Cell>
+                            </Group.Cell> */}
                         </Group.Section>
                     </Group.Body>
                     <Group.Footer></Group.Footer>
