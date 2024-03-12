@@ -118,19 +118,19 @@ export const formatText = (v: any, o?: any) => {
 
     let f = String(v);
 
-    if (o?.letterCase === "upper" || o.imemode === "number+upper") {
+    if (o?.letterCase === "upper" || o?.imemode === "number+upper") {
         f = f.toUpperCase();
     }
 
-    if (o?.letterCase === "lower" || o.imemode === "number+lower") {
+    if (o?.letterCase === "lower" || o?.imemode === "number+lower") {
         f = f.toLowerCase();
     }
 
-    if (o.imemode === "number") {
+    if (o?.imemode === "number") {
         f = f.replace(/[^0-9]/g, "");
-    } else if (o.imemode === "number+upper") {
+    } else if (o?.imemode === "number+upper") {
         f = f.replace(/[^A-Z0-9]/g, "");
-    } else if (o.imemode === "number+lower") {
+    } else if (o?.imemode === "number+lower") {
         f = f.replace(/[^a-z0-9]/g, "");
     }
 
