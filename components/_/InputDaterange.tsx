@@ -98,7 +98,7 @@ export const InputDaterange = (props: InputDaterangeProps) => {
         <div className="flex w-full">
             <div className="flex-1 [&_input]:rounded-r-none">
                 <FormControl //
-                    {...start}
+                    {...color , ...start}
                     type="date"
                     edit={edit}
                     startRef={startRef}

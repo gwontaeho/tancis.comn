@@ -161,7 +161,7 @@ export type FormControlProps = InputDaterangeProps & {
 };
 
 const FormControlMain = forwardRef((props: any, ref) => {
-    const { type, rightButton, leftButton, rightText, getValues, ...rest } = props;
+    const { type = "text", rightButton, leftButton, rightText, getValues, ...rest } = props;
 
     return (
         <div data-lb={!!leftButton || undefined} data-rb={!!rightButton || undefined} className="uf-form-control-main">
