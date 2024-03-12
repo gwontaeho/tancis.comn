@@ -43,6 +43,7 @@ export type TGridSchema = {
         edit?: boolean;
         colspan?: number;
         cells: (FormControlProps & {
+            header?: string;
             /** validation */
             min?: any;
             max?: any;

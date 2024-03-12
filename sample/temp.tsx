@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { TGridSchema, useFetch, useForm, useStore } from "@/comn/hooks";
+import { TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
 import lodash from "lodash";
@@ -24,6 +24,133 @@ const paging = ({ data = {}, page = 0, size = 10 }: { data: any; page: number; s
     return { ...data, content: lodash.chunk(data.content, size)[page], __t: new Date() };
 };
 
+const treeData = [
+    {
+        id: "1",
+        name: "public",
+        children: [
+            {
+                id: "2",
+                name: "assets",
+                children: [
+                    {
+                        id: "3",
+                        name: "image",
+                        children: [
+                            {
+                                id: "4",
+                                name: "aa",
+                            },
+                            {
+                                id: "5",
+                                name: "generic.png",
+                            },
+                            {
+                                id: "6",
+                                name: "shield.svg",
+                            },
+                        ],
+                    },
+                    {
+                        id: "7",
+                        name: "video",
+                        children: [
+                            {
+                                id: "8",
+                                name: "beach.mp4",
+                            },
+                            {
+                                id: "9",
+                                name: "background.map",
+                            },
+                        ],
+                    },
+                    {
+                        id: "10",
+                        name: "js",
+                        children: [
+                            {
+                                id: "11",
+                                name: "theme.js",
+                            },
+                            {
+                                id: "12",
+                                name: "theme.min.js",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "13",
+                name: "dashboard",
+                children: [
+                    {
+                        id: "14",
+                        hasChildren: true,
+                        name: "default.html",
+                    },
+                    {
+                        id: "15",
+                        name: "analytics.html",
+                    },
+                    {
+                        id: "16",
+                        name: "crm.html",
+                    },
+                ],
+            },
+            {
+                id: "17",
+                name: "index.html",
+            },
+        ],
+    },
+    {
+        id: "18",
+        name: "Files",
+        children: [
+            {
+                id: "19",
+                name: "build.zip",
+            },
+            {
+                id: "20",
+                name: "live-1.3.4.zip",
+            },
+            {
+                id: "21",
+                name: "app.exe",
+            },
+            {
+                id: "22",
+                name: "export.csv",
+            },
+            {
+                id: "23",
+                name: "default.pdf",
+            },
+            {
+                id: "24",
+                name: "Yellow_Coldplay.wav",
+            },
+        ],
+    },
+    {
+        id: "25",
+        name: "package.json",
+    },
+    {
+        id: "26",
+        name: "package-lock.json",
+    },
+    {
+        id: "27",
+        name: "README.md",
+        hasChildren: true,
+    },
+];
+
 const GRID_SCHEMA: TGridSchema = {
     options: {
         index: true,
@@ -40,7 +167,7 @@ const GRID_SCHEMA: TGridSchema = {
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
-        { cells: [{ type: "number", binding: "number", required: true }] },
+        { cells: [{ type: "number", binding: "number", required: true, header: "L_LBL_ID" }] },
         { cells: [{ binding: "text", type: "text" }] },
     ],
 };
@@ -49,6 +176,7 @@ const FORM_SCHEMA = {
     id: "test",
     schema: {
         text: { label: "text", type: "text" },
+        number: { label: "number", type: "number", decimalScale: 0 },
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
         radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
@@ -87,9 +215,9 @@ export const Temp = () => {
 
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
-    const data = useMemo(() => mock({ totalElements: 999 }), []);
+    const t = useTree();
 
-    console.log(data);
+    const data = useMemo(() => mock({ totalElements: 999 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -202,7 +330,9 @@ export const Temp = () => {
                                         <FormControl {...f.schema.select} />
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
-                                    <Group.Cell size={8}></Group.Cell>
+                                    <Group.Cell size={8}>
+                                        <FormControl {...f.schema.number} />
+                                    </Group.Cell>
                                     <Group.Cell size={10}>
                                         <FormControl {...f.schema.textarea} />
                                     </Group.Cell>
@@ -232,92 +362,16 @@ export const Temp = () => {
 
                         <Group.Section>
                             <Tree
+                                {...t.tree}
                                 size={4}
-                                data={[
-                                    {
-                                        id: "1",
-                                        name: "public",
-                                        children: [
-                                            {
-                                                id: "2",
-                                                name: "assets",
-                                                children: [
-                                                    {
-                                                        id: "3",
-                                                        name: "image",
-                                                        children: [
-                                                            {
-                                                                id: "4",
-                                                                name: "aa",
-                                                            },
-                                                            {
-                                                                id: "5",
-                                                                name: "generic.png",
-                                                            },
-                                                            {
-                                                                id: "6",
-                                                                name: "shield.svg",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        id: "7",
-                                                        name: "video",
-                                                        children: [
-                                                            {
-                                                                id: "8",
-                                                                name: "beach.mp4",
-                                                            },
-                                                            {
-                                                                id: "9",
-                                                                name: "background.map",
-                                                            },
-                                                        ],
-                                                    },
-                                                    {
-                                                        id: "10",
-                                                        name: "js",
-                                                        children: [
-                                                            {
-                                                                id: "11",
-                                                                name: "theme.js",
-                                                            },
-                                                            {
-                                                                id: "12",
-                                                                name: "theme.min.js",
-                                                            },
-                                                        ],
-                                                    },
-                                                ],
-                                            },
-                                            {
-                                                id: "13",
-                                                name: "dashboard",
-                                                children: [
-                                                    {
-                                                        id: "14",
-                                                        name: "default.html",
-                                                    },
-                                                    {
-                                                        id: "15",
-                                                        name: "analytics.html",
-                                                    },
-                                                    {
-                                                        id: "16",
-                                                        name: "crm.html",
-                                                    },
-                                                ],
-                                            },
-                                            {
-                                                id: "17",
-                                                name: "index.html",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        id: "18",
-                                        name: "Files",
-                                        children: [
+                                onClick={(e) => console.log(e)}
+                                onCheck={(e) => {
+                                    console.log(e);
+                                }}
+                                onOpen={(e) => {
+                                    console.log(e);
+                                    if (e.id === "14") {
+                                        t.setChildren(e, [
                                             {
                                                 id: "19",
                                                 name: "build.zip",
@@ -342,22 +396,16 @@ export const Temp = () => {
                                                 id: "24",
                                                 name: "Yellow_Coldplay.wav",
                                             },
-                                        ],
-                                    },
-                                    {
-                                        id: "25",
-                                        name: "package.json",
-                                    },
-                                    {
-                                        id: "26",
-                                        name: "package-lock.json",
-                                    },
-                                    {
-                                        id: "27",
-                                        name: "README.md",
-                                    },
-                                ]}
+                                        ]);
+                                    }
+                                }}
                             />
+
+                            <Group.Cell root>
+                                <Group.Cell>
+                                    <button onClick={() => t.setData(treeData)}>Set</button>
+                                </Group.Cell>
+                            </Group.Cell>
                         </Group.Section>
                     </Group.Body>
                     <Group.Footer></Group.Footer>
