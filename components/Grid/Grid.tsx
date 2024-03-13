@@ -441,45 +441,87 @@ const Row = memo((props: any) => {
                             return _.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
-
-                                const { binding, align, rowspan, colspan, edit, header, ...rest } = cel;
+                                const { binding, align, rowspan, colspan, edit, header, ...FORM } = cel;
 
                                 const celKey = rowKey + ".gb." + rowIndex + "." + colIndex;
-                                const value = row[binding];
 
-                                const fv = comnUtils.getFormattedValue(value, rest);
-                                const uv = comnUtils.getUnformattedValue(value, rest);
-                                const abc = validateValue(value, _grid.current._rule[binding]);
+                                const BINDING_VAL = row[binding];
+                                const FORMATTED_VAL = comnUtils.getFormattedValue(BINDING_VAL, FORM);
+                                const VALI = validateValue(BINDING_VAL, _grid.current._rule[binding]);
 
-                                const rowEdit = _editingRow.find((r: any) => r.key === rowKey && r.cell === undefined);
-                                const cellEdit = _editingRow.find((r: any) => r.key === rowKey && r.cell === binding);
-
-                                const isHeader = !!header;
-                                const isEdit =
-                                    cellEdit !== undefined
-                                        ? cellEdit.edit
-                                        : rowEdit !== undefined
-                                          ? rowEdit.edit
-                                          : edit;
-
-                                const celContext = {
+                                const CELL_CONTEXT = {
                                     binding,
-                                    value: uv,
                                     rowValues: row,
-                                    formattedValue: fv,
+                                    value: BINDING_VAL,
+                                    formattedValue: FORMATTED_VAL,
                                 };
 
-                                const formControlProps = {
-                                    ...rest,
-                                    rightButton: cel.rightButton && {
-                                        ...cel.rightButton,
-                                        onClick: cel.rightButton.onClick && (() => cel.rightButton.onClick(celContext)),
-                                    },
-                                    leftButton: cel.leftButton && {
-                                        ...cel.leftButton,
-                                        onClick: cel.leftButton.onClick && (() => cel.leftButton.onClick(celContext)),
-                                    },
-                                };
+                                // "HEADER" | "EDIT" | "CELL"
+                                let CELL_STATUS;
+                                if (Boolean(header)) CELL_STATUS = "HEADER";
+                                else {
+                                    const rowCell = _editingRow.find(
+                                        ({ key, cell }: any) => key === rowKey && cell === binding,
+                                    )?.edit;
+                                    const row = _editingRow.find(
+                                        ({ key, cell }: any) => key === rowKey && cell === undefined,
+                                    )?.edit;
+                                    CELL_STATUS = rowCell ?? row ?? edit ? "EDIT" : "CELL";
+                                }
+
+                                /*
+                                FORM START */
+                                if (FORM.rightButton?.onClick) {
+                                    FORM.rightButton.onClick = () => FORM.rightButton.onClick(CELL_CONTEXT);
+                                }
+                                if (FORM.leftButton?.onClick) {
+                                    FORM.leftButton.onClick = () => FORM.leftButton.onClick(CELL_CONTEXT);
+                                }
+
+                                switch (FORM.type) {
+                                    case "daterange":
+                                    case "timerange":
+                                        {
+                                            const START_VAL = row[FORM.start.binding];
+                                            const END_VAL = row[FORM.end.binding];
+                                            FORM.start.type = FORM.type === "daterange" ? "date" : "time";
+                                            FORM.end.type = FORM.type === "daterange" ? "date" : "time";
+                                            FORM.start.value = comnUtils.getFormattedValue(START_VAL, FORM.start);
+                                            FORM.end.value = comnUtils.getFormattedValue(END_VAL, FORM.end);
+
+                                            FORM.start.onChange = (event: any) => {
+                                                _grid.current._handleUpdate({
+                                                    ...row,
+                                                    [FORM.start.binding]: comnUtils.getUnformattedValue(
+                                                        event,
+                                                        FORM.start,
+                                                    ),
+                                                });
+                                            };
+                                            FORM.end.onChange = (event: any) => {
+                                                _grid.current._handleUpdate({
+                                                    ...row,
+                                                    [FORM.end.binding]: comnUtils.getUnformattedValue(event, FORM.end),
+                                                });
+                                            };
+                                        }
+
+                                        break;
+                                    default:
+                                        {
+                                            FORM.value = FORMATTED_VAL;
+                                            FORM.onChange = (event: any) =>
+                                                _grid.current._handleUpdate({
+                                                    ...row,
+                                                    [binding]: comnUtils.getUnformattedValue(event, FORM),
+                                                });
+                                        }
+                                        break;
+                                }
+                                FORM.edit = CELL_STATUS === "EDIT";
+
+                                /* FORM END
+                                 */
 
                                 const BG_COLORS = {
                                     blue: "bg-[#bacee0]",
@@ -495,29 +537,19 @@ const Row = memo((props: any) => {
 
                                 let editContext: any = {};
                                 let cellContext: any = {};
-                                const CustomEdit = render?.edit?.[binding]?.(celContext, editContext);
-                                const CustomCell = render?.cell?.[binding]?.(celContext, cellContext);
+                                const CustomEdit = render?.edit?.[binding]?.(CELL_CONTEXT, editContext);
+                                const CustomCell = render?.cell?.[binding]?.(CELL_CONTEXT, cellContext);
 
-                                const context = (isEdit ? editContext : cellContext) as TGridCellContext;
+                                const context = (
+                                    CELL_STATUS === "EDIT" ? editContext : cellContext
+                                ) as TGridCellContext;
                                 const textColor = context.textColor;
 
-                                const Control = (
-                                    <FormControl
-                                        {...formControlProps}
-                                        edit={isEdit}
-                                        value={fv}
-                                        onChange={(v) => {
-                                            _grid.current._handleUpdate({
-                                                ...row,
-                                                [binding]: comnUtils.getUnformattedValue(v, formControlProps),
-                                            });
-                                        }}
-                                    />
-                                );
+                                const Control = <FormControl {...FORM} />;
 
                                 const handleClickCell = () => {
                                     _grid.current._handleClickCel({
-                                        ...celContext,
+                                        ...CELL_CONTEXT,
                                         key: celKey,
                                         onCellClick,
                                     });
@@ -532,15 +564,15 @@ const Row = memo((props: any) => {
                                             (align === "end" || align === "right") && "justify-end text-right",
                                             (align === "center" || align === undefined) && "justify-center text-center",
 
-                                            isHeader && "border-uf-card-header font-semibold",
+                                            CELL_STATUS === "HEADER" && "border-uf-card-header font-semibold",
                                             backgroundColor
                                                 ? BG_COLORS[backgroundColor]
-                                                : isHeader
+                                                : CELL_STATUS === "HEADER"
                                                   ? "bg-uf-card-header"
                                                   : "bg-uf-card-background",
                                             textColor && TEXT_COLORS[textColor],
                                         )}
-                                        {...(abc.isError && { "aria-invalid": true })}
+                                        {...(VALI.isError && { "aria-invalid": true })}
                                         {...(_selectedCel?.__key === celKey && { "aria-selected": true })}
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${rowspan ?? 1}`,
@@ -548,9 +580,9 @@ const Row = memo((props: any) => {
                                         }}
                                         onClick={handleClickCell}
                                     >
-                                        {isHeader && t(header)}
-                                        {!isHeader && isEdit && (CustomEdit || Control)}
-                                        {!isHeader && !isEdit && (CustomCell || Control)}
+                                        {CELL_STATUS === "HEADER" && t(header)}
+                                        {CELL_STATUS === "EDIT" && (CustomEdit || Control)}
+                                        {CELL_STATUS === "CELL" && (CustomCell || Control)}
                                     </div>
                                 );
                             });

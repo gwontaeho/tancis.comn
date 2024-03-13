@@ -197,6 +197,7 @@ const useInitialize = (props: any) => {
                                 : [..._grid.current._editingRow, { key, edit: value }];
                         }
                     }
+                    console.log(_grid.current._editingRow);
                     break;
                 }
                 case "rowCell": {
@@ -215,6 +216,7 @@ const useInitialize = (props: any) => {
                                 : [..._grid.current._editingRow, { key: rowKey, edit: value, cell }];
                         }
                     }
+                    console.log(_grid.current._editingRow);
                     break;
                 }
             }
