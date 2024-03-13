@@ -168,46 +168,15 @@ const GRID_SCHEMA: TGridSchema = {
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
-        { cells: [{ type: "daterange", start: { name: "a" }, end: { name: "b" } }] },
-        {
-            cells: [
-                {
-                    binding: "test",
-                    type: "text",
-                    mask: [
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        "-",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        "-",
-                        /\d/,
-                        "-",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                    ],
-                },
-            ],
-        },
+        { cells: [{ binding: "daterange", type: "daterange", start: { binding: "date" }, end: { binding: "date" } }] },
+        { cells: [{ binding: "text", type: "text" }] },
     ],
 };
 
 const FORM_SCHEMA = {
     id: "test",
     schema: {
-        text: { label: "text", type: "text" },
+        text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/] },
         number: { label: "number", type: "number", decimalScale: 0 },
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
@@ -249,7 +218,7 @@ export const Temp = () => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 999 }), []);
+    const data = useMemo(() => mock({ totalElements: 8 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -367,7 +336,7 @@ export const Temp = () => {
                                         <FormControl {...f.schema.number} />
                                     </Group.Cell>
                                     <Group.Cell size={10}>
-                                        <FormControl {...f.schema.textarea} />
+                                        <FormControl {...f.schema.text} />
                                     </Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>
@@ -575,10 +544,27 @@ export const Temp = () => {
                                             g.setEdit("rowCell", { row: g.getSelectedRow(), cell: "text" }, false)
                                         }
                                     >
-                                        Edit true (RowCell)
+                                        Edit false (RowCell)
                                     </button>
                                 </Group.Cell>
-
+                                <Group.Cell>
+                                    <button
+                                        onClick={() =>
+                                            g.setEdit("rowCell", { row: g.getSelectedRow(), cell: "number" }, true)
+                                        }
+                                    >
+                                        - number
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button
+                                        onClick={() =>
+                                            g.setEdit("rowCell", { row: g.getSelectedRow(), cell: "number" }, false)
+                                        }
+                                    >
+                                        - number
+                                    </button>
+                                </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => g.setData(data)}>Set</button>
                                 </Group.Cell>
