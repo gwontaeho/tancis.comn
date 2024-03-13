@@ -236,7 +236,7 @@ export const CGME0411001Q = (props: any) => {
     };
 
     //console.log(form.rpckItmAppSrch.getValue("mrn", ""));
-    //form.rpckItmAppSrch.getValue
+    //form.rpckItmAppSrch.getValue()
 
     const render = {
         grid_RpckItmAppList: {

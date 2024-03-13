@@ -85,7 +85,6 @@ export const useForm = (props: UseFormProps) => {
 
     /**
      * ### Form 의 필드 값을 전체(일부) return
-     * @param {string | string[]} arg
      * - return : any
      * - getValues( "필드명" )
      * - getValues( ["필드명","필드명"] )
@@ -108,8 +107,6 @@ export const useForm = (props: UseFormProps) => {
      * ### Form 의 특정 필드 값을 return
      * - name : 필드명
      * - alt? : 해당 필드의 값이 empty 일때 대체해서 return 할 값
-     * @param {string} name
-     * @param {string} alt
      */
     const _getValue = (name: string, alt?: any) => {
         if (alt !== undefined) return comnUtils.isEmpty(getValues(name)) ? alt : getValues(name);
@@ -157,7 +154,6 @@ export const useForm = (props: UseFormProps) => {
                 if (!onValid) return;
                 onValid(_getValues());
             },
-
             (error) => {
                 if (!onInvalid) return;
                 onInvalid(error);
