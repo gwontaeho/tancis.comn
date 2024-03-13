@@ -146,14 +146,17 @@ export const CGME0411001Q = (props: any) => {
             },
             enabled: comnUtils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
             key: [grid.rpckItmAppList.page, grid.rpckItmAppList.size],
-            onSuccess: () => {
+            onSuccess: (data) => {
+                //
                 setStore(pgeUid, {
                     form: form.rpckItmAppSrch.getValues(),
                     page: grid.rpckItmAppList.page,
                     size: grid.rpckItmAppList.size,
                 });
             },
-            onError: () => {},
+            onError: (error) => {
+                //
+            },
             showToast: true,
         }),
         // Delete Repacking Item Application !== 재포장 품목 신청서 삭제 ==!
@@ -231,6 +234,9 @@ export const CGME0411001Q = (props: any) => {
             console.log(props);
         },
     };
+
+    //console.log(form.rpckItmAppSrch.getValue("mrn", ""));
+    //form.rpckItmAppSrch.getValue
 
     const render = {
         grid_RpckItmAppList: {
@@ -354,7 +360,7 @@ export const CGME0411001Q = (props: any) => {
      * @ 단어와 단어 사이 용어와 용어 사이는 "_" 로 구분
      */
 
-    grid.rpckItmAppList.clearData();
+    //rid.rpckItmAppList.clearData();
 
     return (
         <Page

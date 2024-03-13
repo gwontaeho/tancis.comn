@@ -107,10 +107,6 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             }
         };
 
-        useEffect(() => {
-            _setValue(formatText(value, o));
-        }, [letterCase, imemode]);
-
         return (
             <div className="w-full">
                 {!edit && (

@@ -63,7 +63,13 @@ export const useForm = (props: UseFormProps) => {
         }, []),
     );
 
-    /** set schema */
+    /**
+     * ### Form Control 의 구조변경
+     * - name : 필드명 (string)
+     * - value : 변경할 스키마 (object)
+     * - setSchema( "필드명" , { type : "text" , readOnly : true })
+     */
+
     const setSchema = (name: string, value: any) => {
         _setSchema((prev) => ({ ...prev, [name]: { ...prev[name], ...value } }));
     };
@@ -77,6 +83,13 @@ export const useForm = (props: UseFormProps) => {
         _setSchema(params?.schema || schema);
     };
 
+    /**
+     * ### Form 의 필드 값을 전체(일부) return
+     * @param {string | string[]} arg
+     * - return : any
+     * - getValues( "필드명" )
+     * - getValues( ["필드명","필드명"] )
+     */
     const _getValues = (arg?: string | string[]) => {
         if (typeof arg === "string") {
             return getValues(arg);
@@ -91,7 +104,15 @@ export const useForm = (props: UseFormProps) => {
             Object.entries<any>(getValues()).map(([k, v]) => [k, comnUtils.getUnformattedValue(v, _fields[k])]),
         );
     };
-    const _getValue = (name: string) => {
+    /**
+     * ### Form 의 특정 필드 값을 return
+     * - name : 필드명
+     * - alt? : 해당 필드의 값이 empty 일때 대체해서 return 할 값
+     * @param {string} name
+     * @param {string} alt
+     */
+    const _getValue = (name: string, alt?: any) => {
+        if (alt !== undefined) return comnUtils.isEmpty(getValues(name)) ? alt : getValues(name);
         return getValues(name);
     };
     const _setValue = (name: string, value: any) => {
@@ -213,11 +234,16 @@ export const useForm = (props: UseFormProps) => {
         });
     };
 
+    const _setFocus = (name: string) => {
+        setFocus(name);
+    };
+
     return {
         schema: getSchema(_schema),
         handleSubmit: _handleSubmit,
         getValue: _getValue,
         getValues: _getValues,
+        setFocus: _setFocus,
         setValue: _setValue,
         setValues: _setValues,
         clearValues: _clearValues,
@@ -225,7 +251,7 @@ export const useForm = (props: UseFormProps) => {
         setSchemas,
         resetSchema,
         setEditable,
-        setFocus,
+
         validate,
         clearErrors,
         watch,
