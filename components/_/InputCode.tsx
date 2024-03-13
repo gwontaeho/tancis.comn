@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useCallback } from "react";
+import { useState, useEffect, forwardRef, useCallback, useRef } from "react";
 import type { ChangeEvent } from "react";
 import lodash from "lodash";
 import { useOptions, UseOptionsProps, useModal } from "@/comn/hooks";
@@ -186,21 +186,10 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
         setAutoCompleteOpen(true);
     };
 
-    const handleBlur = useCallback(
-        lodash.debounce((v?: any) => {
-            if (v) {
-                _setValue(v);
-                if (onChange) onChange(v);
-            }
-            setAutoCompleteOpen(false);
-        }, 200),
-        [],
-    );
-
     const _label = o.options.find((option) => option.value === value)?.label;
 
     const autoComplete = o.options.filter((_) => {
-        return _value.length > 1 && _.value.includes(_value.toUpperCase());
+        return _value.length > 0 && _.value.includes(_value.toUpperCase());
     });
 
     return (
@@ -221,7 +210,6 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         value={_value}
                         onChange={handleChange}
                         onFocus={handleFocus}
-                        onBlur={() => handleBlur()}
                         autoComplete="off"
                         className={"input rounded-r-none flex-1" + comnUtils.getEditStyle(editColor, editBold)}
                     />
@@ -241,23 +229,99 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                     />
 
                     {autoCompleteOpen && !!autoComplete.length && (
-                        <ul className="absolute translate-y-1 rounded top-full w-full bg-uf-card-background border z-[9997]">
-                            {autoComplete.map(({ value, label }, i) => {
-                                return (
-                                    <li
-                                        key={o.base + "." + i}
-                                        className="flex px-1.5 items-center h-[2rem] cursor-pointer hover:bg-uf-lightgray"
-                                        onClick={() => handleBlur(value)}
-                                    >{`[${value}] ${label}`}</li>
-                                );
-                            })}
-                        </ul>
+                        <AutoComplete
+                            o={o}
+                            autoComplete={autoComplete}
+                            _setValue={_setValue}
+                            onChange={onChange}
+                            setAutoCompleteOpen={setAutoCompleteOpen}
+                        />
                     )}
                 </div>
             </div>
         </div>
     );
 });
+
+const AutoComplete = (props?: any) => {
+    const { autoComplete, _setValue, onChange, setAutoCompleteOpen, o } = props;
+
+    const [curr, setCurr] = useState<any>(null);
+    const currRef = useRef<any>(null);
+
+    useEffect(() => {
+        const handleKeydown = (event: any) => {
+            if (event.keyCode === 27) {
+                setAutoCompleteOpen(false);
+            }
+
+            if (event.keyCode === 38) {
+                // up
+                setCurr((prev: any) => {
+                    const val = prev === null ? 0 : prev - 1;
+                    const next = val < 0 ? prev : val;
+                    currRef.current = next;
+
+                    return next;
+                });
+            }
+
+            if (event.keyCode === 40) {
+                // down
+
+                setCurr((prev: any) => {
+                    const val = prev === null ? 0 : prev + 1;
+                    const next = val > autoComplete.length - 1 ? prev : val;
+                    currRef.current = next;
+
+                    return next;
+                });
+            }
+
+            if (event.keyCode === 13) {
+                // enter
+
+                if (typeof currRef.current !== "number") return;
+
+                const value = autoComplete[currRef.current].value;
+
+                _setValue(value);
+                if (onChange) onChange(value);
+
+                setAutoCompleteOpen(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeydown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeydown);
+        };
+    }, []);
+
+    return (
+        <>
+            <ul className="absolute translate-y-1 rounded top-full w-full bg-uf-card-background border z-[9999]">
+                {autoComplete.map(({ value, label }: any, i: any) => {
+                    return (
+                        <li
+                            key={o.base + "." + i}
+                            aria-selected={curr === i}
+                            className="flex px-1.5 items-center h-[2rem] cursor-pointer hover:bg-uf-lightgray aria-selected:bg-uf-lightgray"
+                            onClick={() => {
+                                _setValue(value);
+                                if (onChange) onChange(value);
+
+                                setAutoCompleteOpen(false);
+                            }}
+                        >{`[${value}] ${label}`}</li>
+                    );
+                })}
+            </ul>
+            <div onClick={() => setAutoCompleteOpen(false)} className="fixed w-full h-full top-0 left-0 z-[9998]" />
+        </>
+    );
+};
 
 export const viewCode = (v: any, o?: any) => {
     if (!o?.options) return;
