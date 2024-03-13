@@ -97,8 +97,8 @@ export const SampleFormControlBasic = () => {
                 label: "Label Y/N",
                 type: "radio",
                 options: [
-                    { label: "Y", value: "Y" },
-                    { label: "N (undefined)", value: "N" },
+                    { label: 'Y (label="값")', value: "Y" },
+                    { label: "N (label=undefined)", value: "N" },
                 ],
                 onChange: (v: any) => {
                     if (v === "N") {
@@ -154,26 +154,160 @@ export const SampleFormControlBasic = () => {
                     form.setSchema("control", { letterCase: v });
                 },
             },
-            option: {
-                label: "Property",
-                required: true,
+            imemode: {
+                label: "Input Method Editor(imemode)",
                 type: "select",
                 options: [
-                    { label: "type", value: "type" },
-                    { label: "size", value: "size" },
-                    { label: "labelSize", value: "labelSize" },
-                    { label: "controlSize", value: "controlSize" },
-                    { label: "maxLength", value: "maxLength" },
-                    { label: "placeholder", value: "placeholder" },
-                    { label: "value", value: "value" },
-                    { label: "letterCase", value: "letterCase" },
-                    { label: "readOnly", value: "readOnly" },
-                    { label: "required", value: "required" },
-                    { label: "message", value: "message" },
-                    { label: "edit", value: "edit" },
+                    { label: "number", value: "number" },
+                    { label: "number+upper", value: "number+upper" },
+                    { label: "number+lower", value: "number+lower" },
                 ],
+                onChange: (v: any) => {
+                    form.setSchema("control", { imemode: v });
+                },
             },
-            onChange: (v: any) => {},
+            required: {
+                label: "Required",
+                type: "radio",
+                options: [
+                    { label: "true", value: "Y" },
+                    { label: "false", value: "N" },
+                ],
+                onChange: (v: any) => {
+                    form.setSchema("control", { required: v === "Y" });
+                },
+            },
+            message: {
+                label: "Message",
+                type: "text",
+                onChange: (v: any) => {
+                    form.setSchema("control", { message: v });
+                },
+            },
+            error: {
+                label: "Error",
+                type: "text",
+                onChange: (v: any) => {
+                    form.setError("control", { message: v });
+                },
+            },
+            readOnly: {
+                label: "Read Only",
+                type: "radio",
+                options: [
+                    { label: "true", value: "Y" },
+                    { label: "false", value: "N" },
+                ],
+                onChange: (v: any) => {
+                    form.setSchema("control", { readOnly: v === "Y" });
+                },
+            },
+            disabled: {
+                label: "Disabled",
+                type: "radio",
+                options: [
+                    { label: "true", value: "Y" },
+                    { label: "false", value: "N" },
+                ],
+                onChange: (v: any) => {
+                    form.setSchema("control", { disabled: v === "Y" });
+                },
+            },
+            edit: {
+                label: "Edit",
+                type: "radio",
+                options: [
+                    { label: "true", value: "Y" },
+                    { label: "false", value: "N" },
+                ],
+                onChange: (v: any) => {
+                    form.setSchema("control", { edit: v === "Y" });
+                },
+            },
+            editColor: {
+                label: "Text Color(edit=true, editColor)",
+                type: "select",
+                options: [
+                    { label: "black", value: "black" },
+                    { label: "white", value: "white" },
+                    { label: "darkgray", value: "darkgray" },
+                    { label: "gray", value: "gray" },
+                    { label: "lightgray", value: "lightgray" },
+                    { label: "blue", value: "blue" },
+                    { label: "success", value: "success" },
+                    { label: "error", value: "error" },
+                    { label: "info", value: "info" },
+                    { label: "warning", value: "warning" },
+                ],
+                onChange: (v: any) => {
+                    form.setSchema("control", { editColor: v });
+                },
+            },
+            color: {
+                label: "Text Color(edit=false, color)",
+                type: "select",
+                options: [
+                    { label: "black", value: "black" },
+                    { label: "white", value: "white" },
+                    { label: "darkgray", value: "darkgray" },
+                    { label: "gray", value: "gray" },
+                    { label: "lightgray", value: "lightgray" },
+                    { label: "blue", value: "blue" },
+                    { label: "success", value: "success" },
+                    { label: "error", value: "error" },
+                    { label: "info", value: "info" },
+                    { label: "warning", value: "warning" },
+                ],
+                onChange: (v: any) => {
+                    console.log(v);
+                    form.setSchema("control", { color: v });
+                },
+            },
+            bold: {
+                label: "Text Bold(edit=false, bold)",
+                type: "select",
+                options: [
+                    { label: "100", value: "100" },
+                    { label: "300", value: "300" },
+                    { label: "500", value: "500" },
+                    { label: "700", value: "700" },
+                    { label: "900", value: "900" },
+                ],
+                onChange: (v: any) => {
+                    console.log(v);
+                    form.setSchema("control", { bold: v });
+                },
+            },
+            editBold: {
+                label: "Text Bold(edit=true, editBold)",
+                type: "select",
+                options: [
+                    { label: "100", value: "100" },
+                    { label: "300", value: "300" },
+                    { label: "500", value: "500" },
+                    { label: "700", value: "700" },
+                    { label: "900", value: "900" },
+                ],
+                onChange: (v: any) => {
+                    console.log(v);
+                    form.setSchema("control", { editBold: v });
+                },
+            },
+            fontSize: {
+                label: "Text Size(edit=false, fontSize)",
+                type: "select",
+                options: [
+                    { label: "sm", value: "sm" },
+                    { label: "base", value: "base" },
+                    { label: "lg", value: "lg" },
+                    { label: "xl", value: "xl" },
+                    { label: "2xl", value: "2xl" },
+                ],
+                onChange: (v: any) => {
+                    console.log(v);
+                    form.setSchema("control", { fontSize: v });
+                },
+            },
         },
     };
 
@@ -238,7 +372,30 @@ export const SampleFormControlBasic = () => {
                                     </Group.Row>
                                     <Group.Row>
                                         <Group.Control {...form.schema.letterCase} />
-                                        <Group.Control {...form.schema.placeholder} />
+                                        <Group.Control {...form.schema.imemode} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.required} />
+                                        <Group.Control {...form.schema.message} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.error} />
+                                        <Group.Control {...form.schema.readOnly} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.edit} />
+                                        <Group.Control {...form.schema.disabled} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.editColor} />
+                                        <Group.Control {...form.schema.color} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.editBold} />
+                                        <Group.Control {...form.schema.bold} />
+                                    </Group.Row>
+                                    <Group.Row>
+                                        <Group.Control {...form.schema.fontSize} />
                                     </Group.Row>
                                 </Group.Section>
                             </Group.Body>
