@@ -124,7 +124,9 @@ const Modal = (props: ModalProps) => {
                             },
                         )}
                     >
-                        <div className="text-lg px-2">{title ? t(title) : url ? "" : t("L_ALT")}</div>
+                        <div className="text-lg px-2">
+                            {url || typeof content !== "string" ? "" : title ? t(title) : t("L_ALT")}
+                        </div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 
@@ -145,7 +147,7 @@ const Modal = (props: ModalProps) => {
                         )}
                     </div>
                     {(close !== false || onConfirm !== undefined) && (
-                        <div className={"px-2 h-12 flex space-x-1 items-center justify-end"}>
+                        <div className={"px-2 py-2 h-12 flex space-x-1 items-center justify-end"}>
                             {close !== false && <Button onClick={() => handleCancel()} role="close"></Button>}
                             {onConfirm && <Button onClick={() => handleConfirm()} role="ok"></Button>}
                         </div>
