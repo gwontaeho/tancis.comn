@@ -4,6 +4,7 @@ import { useGrid, useResource } from "@/comn/hooks";
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
 import lodash from "lodash";
 import { api } from "../features/apis";
+import axios from "axios";
 
 const mock = ({ totalElements = 99 }) => {
     return {
@@ -152,6 +153,14 @@ const treeData = [
     },
 ];
 
+const treeData2 = [
+    {
+        id: "27",
+        name: "README.md",
+        hasChildren: true,
+    },
+];
+
 const GRID_SCHEMA: TGridSchema = {
     options: {
         index: "DESC",
@@ -168,8 +177,8 @@ const GRID_SCHEMA: TGridSchema = {
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
-        { cells: [{ binding: "daterange", type: "daterange", start: { binding: "date" }, end: { binding: "date" } }] },
         { cells: [{ binding: "text", type: "text" }] },
+        { cells: [{ type: "daterange", start: { binding: "date" }, end: { binding: "date" } }] },
     ],
 };
 
@@ -204,7 +213,7 @@ export const Temp = () => {
             { area: "comnCd", comnCd: "COM_0100" },
             { area: "currCd" },
             { area: "cityCd" },
-            { area: "test" },
+            // { area: "test" },
         ],
     });
 
@@ -234,17 +243,15 @@ export const Temp = () => {
 
     const test = async () => {
         try {
-            // const a = await fetch.fetch("asd");
-            // console.log(a);
+            const a = await api.get("http://localhost:9720/clr/api/v1/clri/tm/hs/hs-mgmt/1/1");
+            console.log(a.data.clriHsMgmtDto.content);
         } catch (error) {
             // console.log(error);
             // console.log("as");
         }
     };
 
-    useEffect(() => {
-        test();
-    }, []);
+    useEffect(() => {}, []);
 
     const r = () => {
         setRender((prev) => ++prev);
@@ -313,6 +320,7 @@ export const Temp = () => {
     return (
         <Page>
             <Button onClick={r}>render</Button>
+            <Button onClick={test}>asd</Button>
             <Layout>
                 <Group>
                     <Group.Header></Group.Header>
@@ -368,41 +376,27 @@ export const Temp = () => {
                         <Group.Section>
                             <Tree
                                 {...t.tree}
-                                size={4}
+                                height={300}
+                                size={12}
                                 onClick={(e) => console.log(e)}
                                 onCheck={(e) => {
                                     console.log(e);
                                 }}
-                                data={treeData}
-                                onOpen={(e) => {
-                                    if (e.id === "14") {
-                                        t.setChildren(e, [
-                                            {
-                                                id: "019",
-                                                name: "build.zip",
-                                            },
-                                            {
-                                                id: "020",
-                                                name: "live-1.3.4.zip",
-                                            },
-                                            {
-                                                id: "021",
-                                                name: "app.exe",
-                                            },
-                                            {
-                                                id: "022",
-                                                name: "export.csv",
-                                            },
-                                            {
-                                                id: "023",
-                                                name: "default.pdf",
-                                            },
-                                            {
-                                                id: "024",
-                                                name: "Yellow_Coldplay.wav",
-                                            },
-                                        ]);
-                                    }
+                                data={treeData2}
+                                onOpen={async (e) => {
+                                    console.log(e);
+
+                                    try {
+                                        const a = await api.get(
+                                            "http://localhost:9720/clr/api/v1/clri/tm/hs/hs-mgmt/1/1",
+                                        );
+
+                                        const mapped = a.data.clriHsMgmtDto.content.map((_: any) => {
+                                            return { id: _.hsCd, name: _.hsDesc, hasChildren: true };
+                                        });
+
+                                        t.setChildren(e, mapped);
+                                    } catch (error) {}
                                 }}
                             />
 
