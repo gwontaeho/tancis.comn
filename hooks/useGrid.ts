@@ -168,6 +168,9 @@ export const useGrid = (props: UseGridProps) => {
     const setData = (data: any) => {
         _grid.current._setData(data);
     };
+    const clearData = () => {
+        _grid.current._clearData();
+    };
     const resetData = () => {
         _grid.current._resetData();
     };
@@ -335,6 +338,7 @@ export const useGrid = (props: UseGridProps) => {
         setSize,
         setData,
         resetData,
+        clearData,
         validate,
         scrollToRow,
 

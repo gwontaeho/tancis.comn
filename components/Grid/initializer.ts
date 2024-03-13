@@ -53,6 +53,18 @@ const useInitialize = (props: any) => {
             getView(_grid);
             dispatch({ type: "resetData", payload: { _grid } });
         };
+        /* Clear data */
+        _grid.current._clearData = () => {
+            _grid.current._content = [];
+            _grid.current._origin = [];
+            _grid.current._view = [];
+            _grid.current._totalCount = 0;
+            _grid.current._totalItemCount = 0;
+            _grid.current._page = 0;
+            _grid.current._size = 10;
+
+            dispatch({ type: "clearData" });
+        };
         /* Handle add row */
         _grid.current._handleAdd = (data?: any) => {
             if (_grid.current._pagination === "out") return;

@@ -76,6 +76,15 @@ const reducer = (prev: any, action: any) => {
             next._totalItemCount = _grid.current._totalItemCount;
             return next;
         }
+        /* Clear data */
+        case "clearData": {
+            next._test = [];
+            next._totalCount = 0;
+            next._totalItemCount = 0;
+            next._page = 0;
+            next._size = 10;
+            return next;
+        }
         /* Add row  */
         case "add": {
             const { _grid } = action.payload;
