@@ -354,6 +354,8 @@ export const CGME0411001Q = (props: any) => {
      * @ 단어와 단어 사이 용어와 용어 사이는 "_" 로 구분
      */
 
+    grid.rpckItmAppList.clearData();
+
     return (
         <Page
             id={pgeUid}

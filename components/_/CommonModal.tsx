@@ -124,7 +124,9 @@ const Modal = (props: ModalProps) => {
                             },
                         )}
                     >
-                        <div className="text-lg px-2">{title ? t(title) : url ? "" : t("L_ALT")}</div>
+                        <div className="text-lg px-2">
+                            {url || typeof content !== "string" ? "" : title ? t(title) : t("L_ALT")}
+                        </div>
                         <IconButton icon="close" onClick={() => handleClose()} />
                     </div>
 
