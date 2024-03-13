@@ -73,7 +73,6 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
         const o = { mask, exact, letterCase, imemode };
         const [_value, _setValue] = React.useState<any>(formatText(value, o));
-        const _ref = React.useRef<any>(null);
         const position = React.useRef<Array<number>>([-1, -1]);
         const _apply = React.useRef<boolean>(false);
 
@@ -94,16 +93,18 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         };
 
         const handleDown = (e: any) => {
-            if (e.code === "Backspace") {
-                setPosition(e.target.selectionStart - 1 || 0, e.target.selectionEnd - 1 || 0);
+            if (e.code === "Backspace" && o.mask) {
+                if (e.target.selectionStart <= 0) return;
+                setPosition(e.target.selectionStart - 1, e.target.selectionEnd - 1);
                 _apply.current = true;
+            } else {
+                _apply.current = false;
             }
         };
 
         const handleSelect = (e: any) => {
             if (_apply.current === true) {
                 e.target.setSelectionRange(position.current[0], position.current[1]);
-                _apply.current = false;
             }
         };
 
