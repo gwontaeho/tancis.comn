@@ -1,33 +1,20 @@
 import { useRef } from "react";
 
-type UseTreeProps = {
-    defaultSchema: any;
-};
+type UseTreeProps = any;
 
-export const useTree = (props: UseTreeProps) => {
-    const { defaultSchema } = props;
-    const { options, data } = defaultSchema;
-
+export const useTree = (props?: UseTreeProps) => {
     const _tree = useRef<any>({
-        _defaultSchema: defaultSchema,
-        _height: options.height,
-        _size: options.size,
-        _data: data,
+        _checkbox: true,
+        _checked: [],
     });
 
-    const getChecked = () => {};
-    const setCheck = (id?: string) => {
-        _tree.current._setData((prev: any) => {
-            console.log(prev);
-            return prev;
-        });
-    };
-    const setOpen = (id?: string) => {
-        _tree.current._setData((prev: any) => {
-            console.log(prev);
-            return prev;
-        });
+    const setData = (data: any) => {
+        _tree.current._setData(data);
     };
 
-    return { tree: { _tree }, getChecked, setCheck, setOpen };
+    const setChildren = (parent: any, data: any) => {
+        _tree.current._setChildren(parent, data);
+    };
+
+    return { tree: { _tree }, setData, setChildren };
 };

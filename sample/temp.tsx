@@ -16,6 +16,7 @@ const mock = ({ totalElements = 99 }) => {
                 date: "2022-10-10",
                 time: "11:20:10",
                 datetime: "2022-10-10 10:30:20",
+                test: "1231231231234125436",
             })),
     };
 };
@@ -153,7 +154,7 @@ const treeData = [
 
 const GRID_SCHEMA: TGridSchema = {
     options: {
-        index: true,
+        index: "DESC",
         radio: true,
         checkbox: true,
         add: true,
@@ -167,8 +168,39 @@ const GRID_SCHEMA: TGridSchema = {
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
-        { cells: [{ type: "number", binding: "number", required: true, header: "L_LBL_ID" }] },
-        { cells: [{ binding: "text", type: "text" }] },
+        { cells: [{ type: "daterange", start: { name: "a" }, end: { name: "b" } }] },
+        {
+            cells: [
+                {
+                    binding: "test",
+                    type: "text",
+                    mask: [
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        "-",
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        "-",
+                        /\d/,
+                        "-",
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                    ],
+                },
+            ],
+        },
     ],
 };
 
@@ -209,13 +241,13 @@ export const Temp = () => {
 
     const [count, setRender] = useState(0);
 
-    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED" } });
+    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD" } });
 
     const st = useStore();
 
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
-    // const t = useTree();
+    const t = useTree();
 
     const data = useMemo(() => mock({ totalElements: 999 }), []);
 
@@ -269,9 +301,10 @@ export const Temp = () => {
         // },
 
         cell: {
-            text: (data: any, context: any) => {
-                context.textColor = "red";
-            },
+            // text: (data: any, context: any) => {
+            //     context.textColor = "red";
+            // },
+            test: (data: any) => {},
         },
 
         group: {},
@@ -357,55 +390,58 @@ export const Temp = () => {
                                         Set Code "AED"
                                     </button>
                                 </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.reset())}>Reset</button>
+                                </Group.Cell>
                             </Group.Cell>
                         </Group.Section>
 
                         <Group.Section>
-                            {/* <Tree
+                            <Tree
                                 {...t.tree}
                                 size={4}
                                 onClick={(e) => console.log(e)}
                                 onCheck={(e) => {
                                     console.log(e);
                                 }}
+                                data={treeData}
                                 onOpen={(e) => {
-                                    console.log(e);
                                     if (e.id === "14") {
                                         t.setChildren(e, [
                                             {
-                                                id: "19",
+                                                id: "019",
                                                 name: "build.zip",
                                             },
                                             {
-                                                id: "20",
+                                                id: "020",
                                                 name: "live-1.3.4.zip",
                                             },
                                             {
-                                                id: "21",
+                                                id: "021",
                                                 name: "app.exe",
                                             },
                                             {
-                                                id: "22",
+                                                id: "022",
                                                 name: "export.csv",
                                             },
                                             {
-                                                id: "23",
+                                                id: "023",
                                                 name: "default.pdf",
                                             },
                                             {
-                                                id: "24",
+                                                id: "024",
                                                 name: "Yellow_Coldplay.wav",
                                             },
                                         ]);
                                     }
                                 }}
-                            /> */}
+                            />
 
-                            {/* <Group.Cell root>
+                            <Group.Cell root>
                                 <Group.Cell>
                                     <button onClick={() => t.setData(treeData)}>Set</button>
                                 </Group.Cell>
-                            </Group.Cell> */}
+                            </Group.Cell>
                         </Group.Section>
                     </Group.Body>
                     <Group.Footer></Group.Footer>
@@ -634,7 +670,9 @@ export const Temp = () => {
                                         Import
                                     </button>
                                 </Group.Cell>
-                                <Group.Cell></Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => g.clearData()}>Clear</button>
+                                </Group.Cell>
                                 <Group.Cell></Group.Cell>
                             </Group.Cell>
                         </Group.Section>
