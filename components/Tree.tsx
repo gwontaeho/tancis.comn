@@ -51,7 +51,7 @@ const TreeItem = (props: TreeItemProps) => {
     return (
         <li>
             <div
-                className={classNames("h-7 flex items-center space-x-1.5", {
+                className={classNames("min-h-[1.75rem] flex items-center gap-1.5", {
                     "ml-[1.125rem]": !children && !hasChildren,
                 })}
             >
@@ -81,7 +81,11 @@ const TreeItem = (props: TreeItemProps) => {
 const reducer = (data: any, parent: any = []) => {
     return lodash.cloneDeep(data).reduce((prev: any, curr: any) => {
         const key = curr.__key || uuid();
-        if (parent.length) curr.parent = parent;
+        if (parent.length) {
+            curr.parent = parent;
+            curr.depth = parent.length;
+        } else curr.depth = 0;
+
         if (curr?.children) {
             const childrenWithKey = curr.children.map((_: any) => ({ ..._, __key: uuid() }));
             curr.children = childrenWithKey.map(({ __key }: any) => __key);
@@ -134,7 +138,7 @@ export const Tree = (props: TreeProps) => {
             const childrenWithKey = children.map((_: any) => ({ ..._, __key: uuid() }));
             item.children = childrenWithKey.map(({ __key }: any) => __key);
 
-            const newChildren = reducer(childrenWithKey, [...item.parent, key]);
+            const newChildren = reducer(childrenWithKey, [...(item.parent || []), key]);
             item.allChildren = Object.keys(newChildren);
 
             _tree.current._reduced = Object.assign(_tree.current._reduced, newChildren);
