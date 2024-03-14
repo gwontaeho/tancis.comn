@@ -1,4 +1,4 @@
-import React from "react";
+import { useReducer, useEffect, useLayoutEffect } from "react";
 import lodash from "lodash";
 import { read, utils } from "xlsx";
 import { v4 as uuid } from "uuid";
@@ -24,16 +24,16 @@ const useInitialize = (props: any) => {
     }
 
     const __t = data?.__t?.getTime();
-    const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
+    const [state, dispatch] = useReducer(reducer, { _grid, data }, createInitialState);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!_grid.current._initialized) return;
         if (!Array.isArray(data?.content)) return;
         if (data.content.length === 0 && _grid.current._content?.length === 0) return;
         _grid.current._setData(data);
     }, [__t]);
 
-    React.useEffect(() => {
+    useLayoutEffect(() => {
         /* Set data  */
         _grid.current._setData = (data: any) => {
             if (!Array.isArray(data?.content)) return;
@@ -499,7 +499,6 @@ const useInitialize = (props: any) => {
         };
 
         _grid.current._importExcel = (arg?: any) => {
-            console.log(arg);
             return new Promise((resolve) => {
                 const input = document.createElement("input");
                 input.type = "file";
