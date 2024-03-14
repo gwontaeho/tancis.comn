@@ -51,6 +51,7 @@ import { GuideBasic } from "@/comn/sample/Guide/guide-Basic";
 import { GuidePopup } from "@/comn/sample/Guide/guide-Popup";
 import { GuideValidation } from "@/comn/sample/Guide/guide-Validation";
 import { GuideApi } from "@/comn/sample/Guide/guide-Api";
+import { GuideFunction } from "@/comn/sample/Guide/guide-Function";
 import { GuideRouter } from "@/comn/sample/Guide/guide-Router";
 
 export const SampleMain = () => {
@@ -109,6 +110,7 @@ export const SampleMain = () => {
             <Route path="/guide/Popup" element={<GuidePopup />} />
             <Route path="/guide/Validation" element={<GuideValidation />} />
             <Route path="/guide/Api" element={<GuideApi />} />
+            <Route path="/guide/Function" element={<GuideFunction />} />
             <Route path="/guide/Router" element={<GuideRouter />} />
         </Routes>
     );

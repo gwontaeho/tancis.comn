@@ -27,6 +27,10 @@ export const ComnRoutes = [
                         name: "라우터 구성",
                         to: "/comn/smpl/guide/Router",
                     },
+                    {
+                        name: "공통 유틸",
+                        to: "/comn/smpl/guide/Function",
+                    },
                 ],
             },
             {

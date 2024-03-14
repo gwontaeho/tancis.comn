@@ -145,13 +145,13 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                     _setValue(vv.value);
                     if (onChange) onChange(vv.value);
                 } else {
-                    if (exact && v.length > 1 && v.length === maxLength) {
+                    if (exact !== false && v.length > 1 && v.length === maxLength) {
                         _setValue("");
                         if (onChange) onChange("");
                     }
                 }
             }
-        }, 500),
+        }, 700),
         [exact, maxLength],
     );
 
@@ -189,7 +189,11 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     const _label = o.options.find((option) => option.value === value)?.label;
 
     const autoComplete = o.options.filter((_) => {
-        return _value.length > 0 && _.value.includes(_value.toUpperCase());
+        return (
+            _value.length > 0 &&
+            (_.value?.toUpperCase().includes(_value.toUpperCase()) ||
+                _.label?.toUpperCase().includes(_value.toUpperCase()))
+        );
     });
 
     return (

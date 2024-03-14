@@ -21,6 +21,7 @@ type TableCellProps = {
     colspan?: number;
     rowspan?: number;
     width?: string | number;
+    align?: string;
 };
 
 export const Table = (props: TableProps) => {
@@ -66,9 +67,15 @@ const Th = (props: TableCellProps) => {
 };
 
 const Td = (props: TableCellProps) => {
-    const { children, required, colSpan, colspan, rowspan, rowSpan, width } = props;
+    const { children, required, colSpan, colspan, rowspan, rowSpan, width, align } = props;
+    console.log(align);
     return (
-        <td className="relative" colSpan={colSpan || colspan} rowSpan={rowSpan || rowspan} style={{ width }}>
+        <td
+            className={"relative" + (align ? " text-" + align : "")}
+            colSpan={colSpan || colspan}
+            rowSpan={rowSpan || rowspan}
+            style={{ width }}
+        >
             {children}
             {required && (
                 <span

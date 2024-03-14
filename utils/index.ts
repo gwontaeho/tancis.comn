@@ -86,26 +86,26 @@ export const comnUtils = {
      * @param o Schema
      * @returns
      */
-    getFormattedValue: (v: any, s?: any) => {
-        switch (s?.type) {
+    getFormattedValue: (value: any, schema?: any) => {
+        switch (schema?.type) {
             case "text":
-                return formatText(v, s);
+                return formatText(value, schema);
             case "number":
-                return formatNumber(v, s);
+                return formatNumber(value, schema);
             case "checkbox":
-                return formatCheckbox(v);
+                return formatCheckbox(value);
             case "date":
-                return formatDate(v);
+                return formatDate(value);
             case "time":
-                return formatTime(v);
+                return formatTime(value);
             case "datetime":
-                return formatDatetime(v);
+                return formatDatetime(value);
             case "radio":
-                return v;
+                return value;
             //default:
             //    return formatText(v, s);
         }
-        return v;
+        return value;
     },
     /**
      *
@@ -205,7 +205,7 @@ export const comnUtils = {
     isEmptyObject: (arg: any) => {
         return lodash.isEmpty(arg);
     },
-    isEmpty: (arg: any) => {
+    isEmpty: (arg: any): boolean => {
         if (typeof arg === "number") return false;
         return lodash.isEmpty(arg);
     },
