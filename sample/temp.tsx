@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
 import lodash from "lodash";
 import { api } from "../features/apis";
+import { comnUtils } from "../utils";
 import axios from "axios";
 
 const mock = ({ totalElements = 99 }) => {
@@ -186,7 +187,15 @@ const FORM_SCHEMA = {
     id: "test",
     schema: {
         text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/] },
-        number: { label: "number", type: "number", decimalScale: 0 },
+        number: {
+            label: "number",
+            type: "number",
+            // required: true,
+            validate: (data: any) => {
+                console.log(data);
+                return String(data).length === 4 || "asd";
+            },
+        },
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
         radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
@@ -207,13 +216,43 @@ const FORM_SCHEMA = {
     },
 };
 
+class Holder {
+    isLocked = false;
+    // @ts-ignore
+    promise;
+    // @ts-ignore
+    reject;
+    // @ts-ignore
+    resolve;
+    constructor() {
+        this.hold();
+    }
+    hold() {
+        this.promise = new Promise((resolve, reject) =>
+            Object.assign(this, {
+                reject: () => {
+                    this.isLocked = false;
+                    reject(this.hold());
+                },
+                resolve: () => {
+                    this.isLocked = false;
+                    resolve(this.hold());
+                },
+            }),
+        );
+    }
+    lock() {
+        this.isLocked = true;
+    }
+}
+
 export const Temp = () => {
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
             { area: "currCd" },
             { area: "cityCd" },
-            // { area: "test" },
+            { area: "test" },
         ],
     });
 
@@ -232,12 +271,16 @@ export const Temp = () => {
     const pagingData = paging({ data, page: g.page, size: g.size });
 
     // const fetch = useFetch({
-    //     // api: () => comnUtils.getCode({ area: "currCd" }),
-    //     api: () => api.get("asdw"),
+    //     api: () => comnUtils.getCode({ area: "currCd" }),
+    //     enabled: true,
+    //     onSuccess: (data) => {
+    //         console.log(data);
 
-    //     onError: (error) => {
-    //         // console.log("as");
-    //         // console.log(error);
+    //         // g.setOption("index", false);
+
+    //         // g2.setOption("index", false);
+
+    //         // g3.setOption("index", false);
     //     },
     // });
 
@@ -251,7 +294,12 @@ export const Temp = () => {
         }
     };
 
+    const testRef = useRef();
+
     useEffect(() => {}, []);
+
+    const zjvl = async () => {};
+    const zjvl2 = async () => {};
 
     const r = () => {
         setRender((prev) => ++prev);
@@ -277,9 +325,9 @@ export const Temp = () => {
         // },
 
         cell: {
-            // text: (data: any, context: any) => {
-            //     context.textColor = "red";
-            // },
+            text: (data: any, context: any) => {
+                context.textColor = "red";
+            },
             test: (data: any) => {},
         },
 
@@ -295,6 +343,7 @@ export const Temp = () => {
         //     },
         // },
     };
+
     const handler = {
         onCellClick: (data: any) => {
             console.log(data);
@@ -310,17 +359,13 @@ export const Temp = () => {
         },
     };
 
-    // useEffect(() => {
-    //     const data = mock({ totalElements: 20 });
-    //     const pagingData = paging({ data, page: 0, size: 10 });
-
-    //     g.setData(pagingData);
-    // }, []);
-
     return (
         <Page>
             <Button onClick={r}>render</Button>
             <Button onClick={test}>asd</Button>
+            <Button onClick={zjvl}>zjvl</Button>
+            <Button onClick={zjvl2}>zjvl2</Button>
+            <Button onClick={() => g.setSchema(GRID_SCHEMA)}>setschema</Button>
             <Layout>
                 <Group>
                     <Group.Header></Group.Header>
@@ -333,9 +378,10 @@ export const Temp = () => {
                                         required
                                     </Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.code} callback={(data) => console.log(data)} />
+                                        <FormControl {...f.schema.code} />
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
+
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.select} />
                                     </Group.Cell>
@@ -353,6 +399,14 @@ export const Temp = () => {
                             </Group.Cell>
 
                             <Group.Cell root>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.validate())}>sss</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.setValue("number", 12312313.12312))}>
+                                        sss
+                                    </button>
+                                </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => console.log(f.getValues())}>Get</button>
                                 </Group.Cell>
