@@ -31,6 +31,7 @@ type SampleCodeProps = {
 };
 type SampleTableProps = {
     data?: any[];
+    widths?: any[];
 };
 
 export const Sample = (props: SampleProps) => {
@@ -128,9 +129,16 @@ Sample.Table = (props: SampleTableProps) => {
             before={
                 <colgroup>
                     {props.data?.[0]?.map((_: any, i: number) => {
-                        return (
-                            <col key={uuid()} className={classNames({ "w-[20%]": i !== props.data?.[0].length - 1 })} />
-                        );
+                        if (props.widths?.[i] !== undefined) {
+                            return <col key={uuid()} className={classNames(`w-[${props.widths?.[i]}]`)} />;
+                        } else {
+                            return (
+                                <col
+                                    key={uuid()}
+                                    className={classNames({ "w-[20%]": i !== props.data?.[0].length - 1 })}
+                                />
+                            );
+                        }
                     })}
                 </colgroup>
             }
@@ -139,7 +147,11 @@ Sample.Table = (props: SampleTableProps) => {
                 return (
                     <Table.Tr key={uuid()} header={i === 0}>
                         {row.map((_: any) => {
-                            return <Table.Td key={uuid()}>{_}</Table.Td>;
+                            return (
+                                <Table.Td key={uuid()} align={i === 0 ? "center" : ""}>
+                                    {_}
+                                </Table.Td>
+                            );
                         })}
                     </Table.Tr>
                 );

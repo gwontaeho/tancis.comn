@@ -37,6 +37,7 @@ const SF_FORM: TFormSchema = {
             type: "code",
             area: "currCd",
             label: "Currency Code",
+            maxLength: 3,
             popupSize: "md",
         },
         field5: {
