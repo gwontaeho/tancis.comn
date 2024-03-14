@@ -84,6 +84,8 @@ export const useGrid = (props: UseGridProps) => {
 
         _grid.current = {
             _initialized: false,
+            _queue: [],
+
             _defaultSchema: defaultSchema,
             _key: uuid(),
 
@@ -162,46 +164,52 @@ export const useGrid = (props: UseGridProps) => {
             }),
             _groupSchema: group,
         };
+
+        _grid.current._exec = (fn: any) => {
+            if (_grid.current._initialized === false) {
+                _grid.current._queue.push(fn);
+            } else fn();
+        };
     }
 
     /* SET */
     const setData = (data: any) => {
-        _grid.current._setData(data);
+        _grid.current._exec(_grid.current._setData(data));
     };
     const clearData = () => {
-        _grid.current._clearData();
+        _grid.current._exec(_grid.current._clearData());
     };
     const resetData = () => {
-        _grid.current._resetData();
+        _grid.current._exec(_grid.current._resetData());
     };
     const setOption = (target: "add" | "delete" | "edit" | "index" | "radio" | "checkbox" | "height", value: any) => {
-        _grid.current._setOption(target, value);
+        _grid.current._exec(_grid.current._setOption(target, value));
     };
     const setEdit = (
         type: "column" | "cell" | "row" | "rowCell",
         target: string | TRow | { row: string | TRow; cell: string },
         value: boolean,
     ) => {
-        _grid.current._setEdit(type, target, value);
+        _grid.current._exec(_grid.current._setEdit(type, target, value));
     };
     const setShow = (type: "column", target: string, value: boolean) => {
-        _grid.current._setShow(type, target, value);
+        _grid.current._exec(_grid.current._setShow(type, target, value));
     };
     const setPage = (next: number) => {
-        _grid.current._handlePage?.(next);
+        _grid.current._exec(_grid.current._handlePage?.(next));
     };
     const setSize = (next: number) => {
-        _grid.current._handleSize?.(next);
+        _grid.current._exec(_grid.current._handleSize?.(next));
     };
 
     const unCheck = () => {
-        _grid.current._unCheck();
+        _grid.current._exec(_grid.current._unCheck());
     };
     const unSelectRow = () => {
-        _grid.current._unSelectRow();
+        _grid.current._exec(_grid.current._unSelectRow());
     };
     const unSelectCell = () => {
-        _grid.current._unSelectCel();
+        _grid.current._exec(_grid.current._unSelectCel());
     };
 
     /* GET */
@@ -271,16 +279,16 @@ export const useGrid = (props: UseGridProps) => {
 
     /* CONTROL */
     const addRow = (data?: Record<string, any>) => {
-        _grid.current._handleAdd(data);
+        _grid.current._exec(_grid.current._handleAdd(data));
     };
     const deleteRow = (type: "radio" | "checkbox" | "all" | TRow | TRow[]) => {
-        _grid.current._handleDelete(type);
+        _grid.current._exec(_grid.current._handleDelete(type));
     };
     const updateRow = (row: TRow) => {
-        _grid.current._handleUpdate(row);
+        _grid.current._exec(_grid.current._handleUpdate(row));
     };
     const validate = () => {
-        return _grid.current._validate();
+        return _grid.current._exec(_grid.current._validate());
     };
 
     const scrollToRow = (row: any) => {
@@ -289,10 +297,10 @@ export const useGrid = (props: UseGridProps) => {
 
     /* EXCEL */
     const importExcel = (arg?: any) => {
-        return _grid.current._importExcel(arg);
+        return _grid.current._exec(_grid.current._importExcel(arg));
     };
     const exportExcel = () => {
-        return _grid.current._exportExcel();
+        return _grid.current._exec(_grid.current._exportExcel());
     };
 
     const getSize = () => {
