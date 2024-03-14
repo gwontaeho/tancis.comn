@@ -206,12 +206,24 @@ export const useGrid = (props: UseGridProps) => {
 
         _grid.current = {
             ..._grid.current,
+            _initialized: true,
+            _queue: [],
 
             _defaultSchema: schema,
+            _key: uuid(),
 
-            _page: 0,
-            _size: 10,
+            _page,
+            _size,
+            _setPage,
+            _setSize,
 
+            _data: null,
+            _origin: [],
+            _content: [],
+            _view: [],
+            _originTotalCount: 0,
+            _totalCount: 0,
+            _totalItemCount: 0,
             _sort: {},
             _rect: [],
             _checked: [],
@@ -275,6 +287,12 @@ export const useGrid = (props: UseGridProps) => {
                 return { ..._, id, show, cells };
             }),
             _groupSchema: group,
+        };
+
+        _grid.current._exec = (fn: any) => {
+            if (_grid.current._initialized === false) {
+                _grid.current._queue.push(fn);
+            } else fn();
         };
 
         _grid.current._setSchema();

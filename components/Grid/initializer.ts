@@ -417,7 +417,6 @@ const useInitialize = (props: any) => {
         }, 10);
 
         _grid.current._setSchema = () => {
-            getView(_grid);
             dispatch({ type: "setSchema", payload: { _grid } });
         };
 

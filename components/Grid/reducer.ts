@@ -218,34 +218,7 @@ const reducer = (prev: any, action: any) => {
         case "setSchema": {
             const { _grid } = action.payload;
 
-            return {
-                _cols: _grid.current._head.length,
-                _head: _grid.current._head,
-                _body: _grid.current._body,
-                _groupSchema: _grid.current._groupSchema,
-                _test: _grid.current._view,
-                _totalCount: _grid.current._totalCount,
-                _totalItemCount: _grid.current._totalItemCount,
-                _editingRow: [],
-                _page: _grid.current._page,
-                _size: _grid.current._size,
-                _sort: _grid.current._sort,
-                _checked: _grid.current._checked,
-                _selectedRow: _grid.current._selectedRow,
-                _selectedCel: _grid.current._selectedCel,
-                _options: {
-                    add: _grid.current._add,
-                    edit: _grid.current._edit,
-                    index: _grid.current._index,
-                    radio: _grid.current._radio,
-                    delete: _grid.current._delete,
-                    height: _grid.current._height,
-                    checkbox: _grid.current._checkbox,
-                    exportExcel: _grid.current._exportExcel,
-                    importExcel: _grid.current._importExcel,
-                    pagination: _grid.current._pagination,
-                },
-            };
+            return createInitialState({ _grid });
         }
         default:
             return next;
