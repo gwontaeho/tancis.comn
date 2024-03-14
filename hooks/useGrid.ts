@@ -201,6 +201,84 @@ export const useGrid = (props: UseGridProps) => {
     const setSize = (next: number) => {
         _grid.current._exec(() => _grid.current._handleSize?.(next));
     };
+    const setSchema = (schema: any) => {
+        const { options = {}, head, body, group } = schema;
+
+        _grid.current = {
+            ..._grid.current,
+
+            _defaultSchema: schema,
+
+            _page: 0,
+            _size: 10,
+
+            _sort: {},
+            _rect: [],
+            _checked: [],
+            _groupStatus: {},
+            _selectedRow: null,
+            _selectedCel: null,
+            _editingRow: [],
+
+            _add: options.add,
+            _edit: options.edit,
+            _index: options.index,
+            _radio: options.radio,
+            _delete: options.delete,
+            _checkbox: options.checkbox,
+            _pagination: options.pagination,
+            _exportExcel: options.exportExcel,
+            _importExcel: options.importExcel,
+            _autoHeight: options.height === "auto",
+            _height: options.height === "auto" ? 0 : options.height || 400,
+            _cols: head.length,
+
+            _group: Array.isArray(options.group)
+                ? options.group.reduce((p: any, c: any, seq: any) => {
+                      return { ...p, [c]: { seq } };
+                  }, {})
+                : {},
+            _rule: defaultSchema.body
+                .flatMap(({ cells }: any) => cells)
+                .reduce((prev: any, curr: any) => {
+                    const ary = getValidationArray(curr);
+                    if (ary.length) prev[curr.binding] = ary;
+                    return prev;
+                }, {}),
+            _head: head.map((_: any) => {
+                const show = _.show === true ? true : _.show === false ? false : true;
+                const cells = _.cells.map((__: any) => {
+                    return { ...__, show };
+                });
+                return { ..._, show, cells };
+            }),
+            _body: body.map((_: any, i: any) => {
+                const col = head[i];
+                const id = col?.id;
+                const show = col?.show;
+
+                const cells = _.cells.map((__: any) => {
+                    const edit =
+                        __.edit === true
+                            ? true
+                            : __.edit === false
+                              ? false
+                              : _.edit === true
+                                ? true
+                                : _.edit === false
+                                  ? false
+                                  : options?.edit === true
+                                    ? true
+                                    : false;
+                    return { ...__, id, show, edit };
+                });
+                return { ..._, id, show, cells };
+            }),
+            _groupSchema: group,
+        };
+
+        _grid.current._setSchema();
+    };
 
     const unCheck = () => {
         _grid.current._exec(() => _grid.current._unCheck());
@@ -349,6 +427,7 @@ export const useGrid = (props: UseGridProps) => {
         clearData,
         validate,
         scrollToRow,
+        setSchema,
 
         importExcel,
         exportExcel,

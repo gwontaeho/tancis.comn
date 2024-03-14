@@ -416,6 +416,11 @@ const useInitialize = (props: any) => {
             dispatch({ type: "readjustHeight", payload: { _grid } });
         }, 10);
 
+        _grid.current._setSchema = () => {
+            getView(_grid);
+            dispatch({ type: "setSchema", payload: { _grid } });
+        };
+
         // _grid.current._scrollToRow = (row: any) => {
         //     _grid.current._listRef.scrollToItem(row, "center");
         // };
