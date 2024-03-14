@@ -156,6 +156,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     );
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setAutoCompleteOpen(true);
         getValueFromOptions(formatCode(e.target.value), o);
         _setValue(formatCode(e.target.value));
     };
@@ -246,8 +247,13 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
 const AutoComplete = (props?: any) => {
     const { autoComplete, _setValue, onChange, setAutoCompleteOpen, o } = props;
 
+    const ac = useRef<any>([]);
     const [curr, setCurr] = useState<any>(null);
     const currRef = useRef<any>(null);
+
+    useEffect(() => {
+        ac.current = autoComplete;
+    }, [autoComplete]);
 
     useEffect(() => {
         const handleKeydown = (event: any) => {
@@ -271,7 +277,7 @@ const AutoComplete = (props?: any) => {
 
                 setCurr((prev: any) => {
                     const val = prev === null ? 0 : prev + 1;
-                    const next = val > autoComplete.length - 1 ? prev : val;
+                    const next = val > ac.current.length - 1 ? prev : val;
                     currRef.current = next;
 
                     return next;
@@ -283,7 +289,7 @@ const AutoComplete = (props?: any) => {
 
                 if (typeof currRef.current !== "number") return;
 
-                const value = autoComplete[currRef.current].value;
+                const value = ac.current[currRef.current].value;
 
                 _setValue(value);
                 if (onChange) onChange(value);
