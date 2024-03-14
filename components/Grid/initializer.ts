@@ -1,4 +1,4 @@
-import React from "react";
+import { useReducer, useEffect, useLayoutEffect } from "react";
 import lodash from "lodash";
 import { read, utils } from "xlsx";
 import { v4 as uuid } from "uuid";
@@ -23,17 +23,20 @@ const useInitialize = (props: any) => {
         _grid.current._onRowSelect = onRowSelect;
     }
 
-    const __t = data?.__t?.getTime();
-    const [state, dispatch] = React.useReducer(reducer, { _grid, data }, createInitialState);
+    if (_grid.current._initialized === false) {
+    }
 
-    React.useEffect(() => {
+    const __t = data?.__t?.getTime();
+    const [state, dispatch] = useReducer(reducer, { _grid, data }, createInitialState);
+
+    useEffect(() => {
         if (!_grid.current._initialized) return;
         if (!Array.isArray(data?.content)) return;
         if (data.content.length === 0 && _grid.current._content?.length === 0) return;
         _grid.current._setData(data);
     }, [__t]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         /* Set data  */
         _grid.current._setData = (data: any) => {
             if (!Array.isArray(data?.content)) return;
@@ -413,6 +416,10 @@ const useInitialize = (props: any) => {
             dispatch({ type: "readjustHeight", payload: { _grid } });
         }, 10);
 
+        _grid.current._setSchema = () => {
+            dispatch({ type: "setSchema", payload: { _grid } });
+        };
+
         // _grid.current._scrollToRow = (row: any) => {
         //     _grid.current._listRef.scrollToItem(row, "center");
         // };
@@ -499,7 +506,6 @@ const useInitialize = (props: any) => {
         };
 
         _grid.current._importExcel = (arg?: any) => {
-            console.log(arg);
             return new Promise((resolve) => {
                 const input = document.createElement("input");
                 input.type = "file";
@@ -534,6 +540,9 @@ const useInitialize = (props: any) => {
         };
 
         /* Initialize Grid */
+        if (_grid.current._queue.length) {
+            _grid.current._queue.forEach((fn: any) => fn());
+        }
         _grid.current._initialized = true;
         return () => {};
     }, []);

@@ -214,6 +214,12 @@ const reducer = (prev: any, action: any) => {
             next._options.height = _grid.current._height;
             return next;
         }
+        /* Set Schema */
+        case "setSchema": {
+            const { _grid } = action.payload;
+
+            return createInitialState({ _grid });
+        }
         default:
             return next;
     }
