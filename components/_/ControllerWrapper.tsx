@@ -1,7 +1,17 @@
 import React from "react";
 import { useController, Control } from "react-hook-form";
 
-export type ControllerWrapperProps = {
+export type TRule = {
+    validate?: any;
+    required?: any;
+    min?: any;
+    max?: any;
+    minLength?: any;
+    pattern?: any;
+    maxLength?: any;
+};
+
+export type ControllerWrapperProps = TRule & {
     children: React.ReactElement;
     onChange?: any;
     onBlur?: any;
@@ -12,13 +22,37 @@ export type ControllerWrapperProps = {
 };
 
 export const ControllerWrapper = (props: ControllerWrapperProps) => {
-    const { children, control, name, rules, onChange, onBlur, defaultValue, ...rest } = props;
+    const {
+        children,
+        control,
+        name,
+        rules,
+        onChange,
+        onBlur,
+        defaultValue,
+        // rule
+        validate,
+        required,
+        min,
+        max,
+        minLength,
+        pattern,
+        maxLength,
+        ...rest
+    } = props;
 
     const { field } = useController({
         name: name as string,
         control: control as Control,
         defaultValue,
         rules: {
+            validate,
+            required,
+            min,
+            max,
+            minLength,
+            pattern,
+            maxLength,
             ...rules,
 
             onChange: (event) => {

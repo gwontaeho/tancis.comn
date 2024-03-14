@@ -191,10 +191,10 @@ const FORM_SCHEMA = {
             label: "number",
             type: "number",
             // required: true,
-            validate: (data: any) => {
-                console.log(data);
-                return String(data).length === 4 || "asd";
-            },
+            // validate: (data: any) => {
+            //     console.log(data);
+            //     return String(data).length === 4 || "asd";
+            // },
         },
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
@@ -387,7 +387,13 @@ export const Temp = () => {
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.number} />
+                                        <FormControl
+                                            {...f.schema.number}
+                                            validate={(data: any) => {
+                                                console.log(data);
+                                                return String(data).length === 4 || "asd";
+                                            }}
+                                        />
                                     </Group.Cell>
                                     <Group.Cell size={10}>
                                         <FormControl {...f.schema.text} />

@@ -1,5 +1,5 @@
 import "react-datepicker/dist/react-datepicker.css";
-
+import { TRule } from "./_";
 import { forwardRef } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
@@ -70,95 +70,96 @@ type TButton = {
     onClick?: (arg: any) => void;
 };
 
-export type FormControlProps = InputDaterangeProps & {
-    /** common */
-    type?: FormControlType;
-    edit?: boolean;
-    rightText?: string;
-    leftButton?: TButton;
-    rightButton?: TButton;
+export type FormControlProps = InputDaterangeProps &
+    TRule & {
+        /** common */
+        type?: FormControlType;
+        edit?: boolean;
+        rightText?: string;
+        leftButton?: TButton;
+        rightButton?: TButton;
 
-    /** common input props */
-    name?: string;
-    value?: any;
-    readOnly?: boolean;
-    disabled?: boolean;
-    onBlur?: (arg?: any) => void;
-    onFocus?: (arg?: any) => void;
-    onChange?: (arg?: any) => void;
+        /** common input props */
+        name?: string;
+        value?: any;
+        readOnly?: boolean;
+        disabled?: boolean;
+        onBlur?: (arg?: any) => void;
+        onFocus?: (arg?: any) => void;
+        onChange?: (arg?: any) => void;
 
-    /** UseOptions props */
-    area?: string;
-    comnCd?: string;
-    options?: TOption[];
-    excludes?: string[];
-    includes?: { label: string; value: string }[];
-    filter?: (arg?: any) => boolean;
-    callback?: (arg?: any) => boolean;
+        /** UseOptions props */
+        area?: string;
+        comnCd?: string;
+        options?: TOption[];
+        excludes?: string[];
+        includes?: { label: string; value: string }[];
+        filter?: (arg?: any) => boolean;
+        callback?: (arg?: any) => boolean;
 
-    /** with option */
-    viewType?: string;
-    editType?: string;
+        /** with option */
+        viewType?: string;
+        editType?: string;
 
-    /** text */
-    imemode?: "number" | "number+upper" | "number+lower";
-    mask?: string | any[];
-    exact?: boolean;
-    letterCase?: "upper" | "lower";
-    maxLength?: number;
-    placeholder?: string;
-    defaultValue?: any;
+        /** text */
+        imemode?: "number" | "number+upper" | "number+lower";
+        mask?: string | any[];
+        exact?: boolean;
+        letterCase?: "upper" | "lower";
+        maxLength?: number;
+        placeholder?: string;
+        defaultValue?: any;
 
-    /** number */
-    decimalScale?: number;
-    thousandSeparator?: boolean;
+        /** number */
+        decimalScale?: number;
+        thousandSeparator?: boolean;
 
-    /** checkbox */
-    all?: boolean;
-    checkAll?: boolean;
+        /** checkbox */
+        all?: boolean;
+        checkAll?: boolean;
 
-    /** select */
-    select?: boolean;
+        /** select */
+        select?: boolean;
 
-    /** range */
-    start?: any;
-    end?: any;
+        /** range */
+        start?: any;
+        end?: any;
 
-    /** textarea */
-    rows?: number;
+        /** textarea */
+        rows?: number;
 
-    /** date, time */
-    startRef?: any;
-    endRef?: any;
+        /** date, time */
+        startRef?: any;
+        endRef?: any;
 
-    /** code */
-    popupSize?: "sm" | "md" | "lg";
+        /** code */
+        popupSize?: "sm" | "md" | "lg";
 
-    /** file */
-    multiple?: boolean;
+        /** file */
+        multiple?: boolean;
 
-    /** boolean */
-    inputLabel?: string;
+        /** boolean */
+        inputLabel?: string;
 
-    /** useForm */
-    rules?: any;
-    invalid?: any;
+        /** useForm */
+        rules?: any;
+        invalid?: any;
 
-    /** form control */
-    size?: keyof typeof WIDTH;
-    control?: any;
-    message?: string;
+        /** form control */
+        size?: keyof typeof WIDTH;
+        control?: any;
+        message?: string;
 
-    /** editor */
-    height?: number;
+        /** editor */
+        height?: number;
 
-    /** style */
-    color?: keyof typeof COLOR_TEXT;
-    editColor?: keyof typeof COLOR_TEXT;
-    bold?: keyof typeof BOLD_TEXT;
-    editBold?: keyof typeof BOLD_TEXT;
-    fontSize?: keyof typeof SIZE_TEXT;
-};
+        /** style */
+        color?: keyof typeof COLOR_TEXT;
+        editColor?: keyof typeof COLOR_TEXT;
+        bold?: keyof typeof BOLD_TEXT;
+        editBold?: keyof typeof BOLD_TEXT;
+        fontSize?: keyof typeof SIZE_TEXT;
+    };
 
 const FormControlMain = forwardRef((props: any, ref) => {
     const { type = "text", rightButton, leftButton, rightText, getValues, ...rest } = props;
