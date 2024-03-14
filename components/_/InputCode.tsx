@@ -182,8 +182,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
         });
     };
 
-    const handleFocus = () => {
-        if (autoCompleteOpen) return;
+    const handleClick = () => {
         setAutoCompleteOpen(true);
     };
 
@@ -210,7 +209,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         ref={ref}
                         value={_value}
                         onChange={handleChange}
-                        onFocus={handleFocus}
+                        onClick={handleClick}
                         autoComplete="off"
                         className={"input rounded-r-none flex-1" + comnUtils.getEditStyle(editColor, editBold)}
                     />
