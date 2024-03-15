@@ -31,7 +31,7 @@ import { comnEnvs, comnUtils } from "@/comn/utils";
                     </Sample.Section>
                     <Sample.Section title="1.2 공통변수 사용">
                         <Sample.Table
-                            widths={["20%", "30%", "*"]}
+                            widths={["w-[15%]", "w-[50%]", "w-auto"]}
                             data={[
                                 ["속성", "사용방법", "설명"],
                                 [
@@ -66,21 +66,70 @@ import { comnEnvs, comnUtils } from "@/comn/utils";
                         />
                     </Sample.Section>
                     <Sample.Section title="1.3 공통유틸 사용">
-                        <Sample.Table
-                            widths={["20%", "30%", "40%", "*"]}
-                            data={[
-                                ["구분", "함수명", "사용방법", "설명"],
-                                [
-                                    "Grid",
-                                    "getGridData",
-                                    <Sample.Code>{`grid.setData( comnUtils.getGridData([]) );`}</Sample.Code>,
-                                    <>
-                                        - 일반 Array 데이터를 Grid에 setData 할수 있는 형태로 가공 <br />
-                                        - 일반 Array 데이터를 Grid에 setData 할수 있는 형태로 가공 <br />
-                                    </>,
-                                ],
-                            ]}
-                        />
+                        <Sample.Section title="Grid 관련">
+                            <Sample.Table
+                                widths={["w-[15%]", "w-[20%]", "w-[20%]", "*"]}
+                                data={[
+                                    ["name", "Usage", "Description"],
+                                    [
+                                        "getGridData",
+                                        "content: Record<string, any>",
+                                        <></>,
+                                        <>
+                                            - 데이터 Array 를 Grid에 setData 할수 있는 형태(페이징 정보)로 가공해서
+                                            return
+                                            <br />
+                                        </>,
+                                    ],
+                                ]}
+                            />
+                        </Sample.Section>
+                        <Sample.Section title="Locale 관련">
+                            <Sample.Table
+                                widths={["w-[15%]", "w-[60%]", "*"]}
+                                data={[
+                                    ["함수명", "사용방법", "설명"],
+
+                                    [
+                                        "getLocale",
+                                        <Sample.Code>{`const locale = comnUtils.getLocale(); // ${comnUtils.getLocale()}`}</Sample.Code>,
+                                        <>
+                                            - 현재 국제화정보(locale, 단축)를 return <br />- ko | en | tz
+                                        </>,
+                                    ],
+                                    [
+                                        "getLocaleString",
+                                        <Sample.Code>{`const locale = comnUtils.getLocaleString(); // ${comnUtils.getLocaleString()}`}</Sample.Code>,
+                                        <>
+                                            - 현재 국제화정보(locale)를 return <br />- ko-KR | en-TZ | sw-TZ
+                                        </>,
+                                    ],
+                                ]}
+                            />
+                        </Sample.Section>
+                        <Sample.Section title="Date 관련">
+                            <Sample.Table
+                                widths={["w-[15%]", "w-[60%]", "*"]}
+                                data={[
+                                    ["함수명", "사용방법", "설명"],
+
+                                    [
+                                        "getDate",
+                                        <Sample.Code>{`const locale = comnUtils.getLocale(); // ${comnUtils.getLocale()}`}</Sample.Code>,
+                                        <>
+                                            - 현재 국제화정보(locale, 단축)를 return <br />- ko | en | tz
+                                        </>,
+                                    ],
+                                    [
+                                        "getLocaleString",
+                                        <Sample.Code>{`const locale = comnUtils.getLocaleString(); // ${comnUtils.getLocaleString()}`}</Sample.Code>,
+                                        <>
+                                            - 현재 국제화정보(locale)를 return <br />- ko-KR | en-TZ | sw-TZ
+                                        </>,
+                                    ],
+                                ]}
+                            />
+                        </Sample.Section>
                     </Sample.Section>
                 </Layout>
             </Sample.Section>

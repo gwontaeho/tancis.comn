@@ -130,7 +130,7 @@ Sample.Table = (props: SampleTableProps) => {
                 <colgroup>
                     {props.data?.[0]?.map((_: any, i: number) => {
                         if (props.widths?.[i] !== undefined) {
-                            return <col key={uuid()} className={`w-[${props.widths?.[i]}]`} />;
+                            return <col key={uuid()} className={`${props.widths?.[i]}`} />;
                         } else {
                             return (
                                 <col
