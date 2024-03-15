@@ -43,6 +43,27 @@ export const SG_ERROR_LIST: TGridSchema = {
     ],
 };
 
+export const SG_PRE_VALID_ERROR_LIST: TGridSchema = {
+    id: "errors",
+    options: { pagination: "in", index: true },
+    head: [
+        { cells: [{ header: "T_ID_VAL", binding: "erkyMsg", width: 250 }] },
+        { cells: [{ header: "L_ITM_NM", binding: "valdnItmNm", width: 150 }] },
+        { cells: [{ header: "L_MSG", binding: "errMsgCn", width: "*" }] },
+    ],
+    body: [
+        {
+            cells: [{ binding: "erkyMsg", align: "left" }],
+        },
+        {
+            cells: [{ binding: "valdnItmNm" }],
+        },
+        {
+            cells: [{ binding: "errMsgCn", align: "left" }],
+        },
+    ],
+};
+
 export type ErrorProps = {
     type?: string;
     message?: string;
@@ -64,7 +85,7 @@ export type ErrorUnitProps = {
 };
 
 export const CommonErrors = (props: ErrorProps) => {
-    const { type, message, errors = [], head = {} } = props;
+    const { type = "error", message, errors = [], head = {} } = props;
     //console.log(props);
     const pgeUid = "ERRORS"; // Page Unique identifier !== 화면 고유 식별자 ==!
     const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
@@ -83,7 +104,7 @@ export const CommonErrors = (props: ErrorProps) => {
 
     const grid = {
         errorList: useGrid({
-            defaultSchema: SG_ERROR_LIST,
+            defaultSchema: type === "preValid" ? SG_PRE_VALID_ERROR_LIST : SG_ERROR_LIST,
         }),
     };
 
@@ -106,13 +127,16 @@ export const CommonErrors = (props: ErrorProps) => {
     const render = {
         errorList: {
             cell: {
+                valdnItmNm: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return t(value);
+                },
                 label: (props: any) => {
                     const { binding, rowValues, value } = props;
                     return t(value);
                 },
                 message: (props: any) => {
                     const { binding, rowValues, value } = props;
-                    console.log(rowValues);
                     return getErrorMessage(rowValues);
                 },
             },
@@ -123,18 +147,6 @@ export const CommonErrors = (props: ErrorProps) => {
         <Page id={""} title={t("T_ERROR_LST")}>
             <Group>
                 <Group.Body>
-                    <Layout>
-                        <Layout.Right>
-                            {/*
-                            <Button
-                                role="excelDown"
-                                onClick={() => {
-                                    grid.errorList.exportExcel();
-                                }}
-                            ></Button>
-                            */}
-                        </Layout.Right>
-                    </Layout>
                     <Grid {...grid.errorList.grid} data={errorData} render={render.errorList} />
                 </Group.Body>
             </Group>

@@ -141,16 +141,25 @@ export const CGME0411002S = () => {
         // Save Repacking Item Application !== 재포장 품목 신청서 저장 ==!
         saveRpckItmApp: useFetch({
             api: (data) => APIS.saveRpckItmApp({ ...data, dcltTin: data.dcltTin ? data.dcltTin : auth.get("tin") }),
-            onSuccess: () => {
-                modal.openModal({
-                    content: "msg.00003",
-                    onConfirm: () => {
-                        navigate(URLS.cgme0411001q);
-                    },
-                    onCancel: () => {
-                        navigate(URLS.cgme0411001q);
-                    },
-                });
+            onSuccess: (data) => {
+                // 사전검증 에러 발생
+                if (data?.rpckItmAppSaveInfo?.content?.error === true) {
+                    modal.openModal({
+                        content: <CommonErrors errors={data?.rpckItmAppSaveInfo?.content?.errList} type="preValid" />,
+                        draggable: true,
+                        size: "xl",
+                    });
+                } else {
+                    modal.openModal({
+                        content: "msg.00003",
+                        onConfirm: () => {
+                            navigate(URLS.cgme0411001q);
+                        },
+                        onCancel: () => {
+                            navigate(URLS.cgme0411001q);
+                        },
+                    });
+                }
             },
             onError: (error) => {
                 console.log(error);
