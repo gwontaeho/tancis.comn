@@ -117,7 +117,7 @@ export const useResource = (props: UseResourceProps) => {
 
                             let STATUS;
                             if (!RESOURCE) STATUS = "NONE";
-                            else if (now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE) STATUS = "EXPIRATION";
+                            // else if (now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE) STATUS = "EXPIRATION";
                             else resolve({ [key]: RESOURCE });
 
                             const code = await utils.getCode({ area, comnCd });
