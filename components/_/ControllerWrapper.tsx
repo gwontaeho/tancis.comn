@@ -44,6 +44,8 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
         ...rest
     } = props;
 
+    // msg.00005
+
     const { field } = useController({
         name,
         control,
@@ -53,10 +55,9 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
             max,
             minLength,
             maxLength,
-            required,
+            required: required ? "msg.00005" : undefined,
             pattern,
             validate,
-
             onChange: (event) => {
                 if (!onChange) return;
                 if (!event.target) return;

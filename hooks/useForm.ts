@@ -216,11 +216,11 @@ export const useForm = (props: UseFormProps) => {
 
     const SCHEMA = Object.entries(fields).reduce((prev: any, curr: any) => {
         const next = { ...prev };
-        const type = curr[1].type;
-        if (type === "timerange" || type === "daterange") {
-            next.start = { ...next.start, invalid: errors[next.start.name] };
-            next.end = { ...next.end, invalid: errors[next.end.name] };
-        }
+        // const type = curr[1].type;
+        // if (type === "timerange" || type === "daterange") {
+        //     next.start = { ...next.start, invalid: errors[next.start.name] };
+        //     next.end = { ...next.end, invalid: errors[next.end.name] };
+        // }
         return { ...next, [curr[0]]: { ...curr[1], invalid: errors[curr[0]] } };
     }, {});
 
