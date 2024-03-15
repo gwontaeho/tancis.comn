@@ -214,12 +214,14 @@ export const useForm = (props: UseFormProps) => {
         setFocus(name);
     };
 
-    const SCHEMA = Object.entries(fields).reduce((prev: any, curr: any) => {
+    const SCHEMA = Object.entries(fields).reduce((prev: any, curr: any, index, array) => {
         const next = { ...prev };
+
+        // invalid range에 넣는거 해야함.
         // const type = curr[1].type;
         // if (type === "timerange" || type === "daterange") {
-        //     next.start = { ...next.start, invalid: errors[next.start.name] };
-        //     next.end = { ...next.end, invalid: errors[next.end.name] };
+        //     next.start = { ...fields.start, invalid: errors[fields.start.name] };
+        //     next.end = { ...fields.end, invalid: errors[fields.end.name] };
         // }
         return { ...next, [curr[0]]: { ...curr[1], invalid: errors[curr[0]] } };
     }, {});
