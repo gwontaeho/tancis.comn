@@ -6,6 +6,7 @@ import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유�
 import { Page, Group, Layout, Button, FormControl } from "@/comn/components"; // 화면 구성 컴포넌트
 import { useForm, useFetch, useResource, useGrid, useModal, useStore, useToast, usePopup, TOption } from "@/comn/hooks"; // hook
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/CgmeRpckItmAppService"; // 서비스
+import { TFunction } from "i18next";
 
 /*
  * @ 화면 컴포넌트 주석
@@ -24,6 +25,36 @@ import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./
  * Repacking Item Declaration List
  * !== 재포장 BL(품목) 신고서 목록 ==!
  */
+
+type TGridRenderSchema = {
+    [key: string]: {
+        head?: {
+            [name: string]: (props: { id: string; binding: string; head: string }) => any;
+        };
+        cell?: {
+            [name: string]: (props: {
+                rowValues: any;
+                value: any;
+                binding: string;
+                formattedValue: any;
+                control: any;
+            }) => any;
+        };
+        edit?: {
+            [name: string]: (props: {
+                rowValues: any;
+                value: any;
+                binding: string;
+                formattedValue: any;
+                control: any;
+            }) => any;
+        };
+        checkbox?: (row: any) => any;
+        radio?: (row: any) => any;
+        row?: (row: any, context: any) => any;
+    };
+};
+
 export const CGME0411001Q = (props: any) => {
     /*
      * @ 변수에 대한 주석 (기본 Hook 제외)
@@ -142,6 +173,7 @@ export const CGME0411001Q = (props: any) => {
         // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
         getRpckItmAppList: useFetch({
             api: (page = grid.rpckItmAppList.page) => {
+                console.log(form.rpckItmAppSrch.getValues());
                 return APIS.getRpckItmAppList(form.rpckItmAppSrch.getValues(), page, grid.rpckItmAppList.size);
             },
             enabled: comnUtils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
@@ -238,7 +270,7 @@ export const CGME0411001Q = (props: any) => {
     //console.log(form.rpckItmAppSrch.getValue("mrn", ""));
     //form.rpckItmAppSrch.getValue()
 
-    const render = {
+    const render: TGridRenderSchema = {
         grid_RpckItmAppList: {
             head: {
                 mrn: (props: any) => {
@@ -260,20 +292,8 @@ export const CGME0411001Q = (props: any) => {
                 },
             },
             cell: {
-                dclrNo: (props: any) => {
-                    const { binding, rowValues, value } = props;
-                    return (
-                        <Layout direction="col" gap={1}>
-                            <Link
-                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
-                            >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
-                            <Link
-                                to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${
-                                    rowValues.prcsTpCd
-                                }-${rowValues.dclrSrno}?a=${comnUtils.encodeURI("한글도 해보자/ 한글&&")}`}
-                            >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
-                        </Layout>
-                    );
+                dclrNo: (props) => {
+                    const {} = props;
                 },
             },
             edit: {
@@ -346,6 +366,8 @@ export const CGME0411001Q = (props: any) => {
      */
     useEffect(() => {
         handler.getRpckItmAppList(pgeStore?.page);
+
+        form.rpckItmAppSrch.setValue("strtDt", comnUtils.getDate());
     }, []);
 
     /*
@@ -428,6 +450,7 @@ export const CGME0411001Q = (props: any) => {
                                 <Button
                                     onClick={() => {
                                         grid.rpckItmAppList.setOption("edit", false);
+                                        console.log(form.rpckItmAppSrch.getValue("mrn"));
                                     }}
                                 >
                                     테스트
