@@ -4,6 +4,9 @@ import { useSearchParams, Outlet, useLocation } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { PopupLayout } from "./PopupLayout";
 
+import CommonModal from "../../components/_/CommonModal";
+import CommonToast from "../..//components/_/CommonToast";
+
 // class ErrorBoundary extends React.Component {
 //     // @ts-ignore
 //     constructor(props) {
@@ -52,20 +55,28 @@ const Layout = () => {
     // Popup
     if (ppup === "Y")
         return (
-            <PopupLayout>
-                {/* <Suspense fallback={null}> */}
-                <Outlet />
-                {/* </Suspense> */}
-            </PopupLayout>
+            <>
+                <PopupLayout>
+                    {/* <Suspense fallback={null}> */}
+                    <Outlet />
+                    {/* </Suspense> */}
+                </PopupLayout>
+                <CommonModal />
+                <CommonToast />
+            </>
         );
 
     // Main
     return (
-        <MainLayout>
-            {/* <Suspense fallback={null}> */}
-            <Outlet />
-            {/* </Suspense> */}
-        </MainLayout>
+        <>
+            <MainLayout>
+                {/* <Suspense fallback={null}> */}
+                <Outlet />
+                {/* </Suspense> */}
+            </MainLayout>
+            <CommonModal />
+            <CommonToast />
+        </>
     );
 };
 

@@ -4,9 +4,6 @@ import RecoilProvider from "@/comn/features/recoil";
 import ApiProvider, { api } from "@/comn/features/apis";
 import Router from "@/comn/features/router";
 
-import CommonModal from "./components/_/CommonModal";
-import CommonToast from "./components/_/CommonToast";
-
 export { api };
 
 /**
@@ -34,8 +31,6 @@ export const Base = () => {
         <RecoilProvider>
             <ApiProvider>
                 <Router />
-                <CommonModal />
-                <CommonToast />
             </ApiProvider>
         </RecoilProvider>
     );
