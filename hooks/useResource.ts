@@ -162,7 +162,7 @@ export const useResource = (props: UseResourceProps) => {
             const rejected = resource.filter(({ status }) => status === "rejected");
             setRecource((prev: any) => ({ ...prev, ...fulfilled }));
         })();
-    }, []);
+    }, [theme.lang]);
 
     return null;
 };

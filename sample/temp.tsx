@@ -214,7 +214,8 @@ const FORM_SCHEMA = {
 };
 
 class Holder {
-    isLocked = false;
+    // @ts-ignore
+    isLocked;
     // @ts-ignore
     promise;
     // @ts-ignore
@@ -225,14 +226,13 @@ class Holder {
         this.hold();
     }
     hold() {
+        this.isLocked = false;
         this.promise = new Promise((resolve, reject) =>
             Object.assign(this, {
                 reject: () => {
-                    this.isLocked = false;
                     reject(this.hold());
                 },
                 resolve: () => {
-                    this.isLocked = false;
                     resolve(this.hold());
                 },
             }),
