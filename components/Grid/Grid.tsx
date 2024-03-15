@@ -519,6 +519,7 @@ const Row = memo((props: any) => {
                                         break;
                                 }
                                 FORM.edit = CELL_STATUS === "EDIT";
+                                const Control = <FormControl {...FORM} />;
 
                                 /* FORM END
                                  */
@@ -537,15 +538,19 @@ const Row = memo((props: any) => {
 
                                 let editContext: any = {};
                                 let cellContext: any = {};
-                                const CustomEdit = render?.edit?.[binding]?.(CELL_CONTEXT, editContext);
-                                const CustomCell = render?.cell?.[binding]?.(CELL_CONTEXT, cellContext);
+                                const CustomEdit = render?.edit?.[binding]?.(
+                                    { ...CELL_CONTEXT, control: Control },
+                                    editContext,
+                                );
+                                const CustomCell = render?.cell?.[binding]?.(
+                                    { ...CELL_CONTEXT, control: Control },
+                                    cellContext,
+                                );
 
                                 const context = (
                                     CELL_STATUS === "EDIT" ? editContext : cellContext
                                 ) as TGridCellContext;
                                 const textColor = context.textColor;
-
-                                const Control = <FormControl {...FORM} />;
 
                                 const handleClickCell = () => {
                                     _grid.current._handleClickCel({

@@ -177,10 +177,7 @@ const GRID_SCHEMA: TGridSchema = {
     },
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
-    body: [
-        { cells: [{ binding: "text", type: "text" }] },
-        // { cells: [{ type: "daterange", start: { binding: "date" }, end: { binding: "date" } }] },
-    ],
+    body: [{ cells: [{ binding: "number", type: "number" }] }, { cells: [{ binding: "text", type: "text" }] }],
 };
 
 const FORM_SCHEMA = {
@@ -324,6 +321,8 @@ export const Temp = () => {
         cell: {
             text: (data: any, context: any) => {
                 context.textColor = "red";
+
+                return <>[{data.control}]</>;
             },
             test: (data: any) => {},
         },
