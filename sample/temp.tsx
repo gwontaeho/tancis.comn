@@ -255,7 +255,7 @@ export const Temp = () => {
 
     const [count, setRender] = useState(0);
 
-    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD" } });
+    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", start: new Date() } });
 
     const st = useStore();
 

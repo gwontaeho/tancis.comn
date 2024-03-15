@@ -10,7 +10,7 @@ export type TFormSchema = { id: string; schema: TFormControlSchema };
 type TFormControlSchema = Record<string, any>;
 type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 
-const getFields = (arg: any) => {
+const getFields = (arg: any, control: any) => {
     return Object.entries(lodash.cloneDeep(arg)).reduce((prev: any, curr: any) => {
         const next = { ...prev };
         const { type, start, end } = curr[1];
@@ -23,8 +23,10 @@ const getFields = (arg: any) => {
                 if (type === "timerange") childType = "time";
                 start.type = childType;
                 start._parent = curr[0];
+                start.control = control;
                 end.type = childType;
                 end._parent = curr[0];
+                end.control = control;
                 next[start.name] = start;
                 next[end.name] = end;
             default:
@@ -60,8 +62,8 @@ const reducer = (state: any, { type, payload }: any) => {
             return nextState;
         }
         case "resetSchema": {
-            const { schema, arg } = payload;
-            return getFields(arg || schema);
+            const { schema, arg, control } = payload;
+            return getFields(arg || schema, control);
         }
         case "setEditable": {
             const nextState = { ...state };
@@ -80,7 +82,7 @@ const reducer = (state: any, { type, payload }: any) => {
 };
 
 const initializer = (arg: any) => {
-    return getFields(arg);
+    return getFields(arg.schema, arg.control);
 };
 
 let temp: any;
@@ -114,7 +116,7 @@ export const useForm = (props: UseFormProps) => {
             ),
     });
 
-    const [fields, dispatch] = useReducer(reducer, schema, initializer);
+    const [fields, dispatch] = useReducer(reducer, { schema, control }, initializer);
 
     /**
      * ### Form Control 의 구조변경
@@ -129,7 +131,7 @@ export const useForm = (props: UseFormProps) => {
         dispatch({ type: "setSchemas", payload: { names, value } });
     };
     const resetSchema = (arg?: any) => {
-        dispatch({ type: "resetSchema", payload: { schema, arg } });
+        dispatch({ type: "resetSchema", payload: { schema, arg, control } });
     };
     const setEditable = (arg: any, value?: any) => {
         dispatch({ type: "setEditable", payload: { arg, value } });
@@ -212,7 +214,7 @@ export const useForm = (props: UseFormProps) => {
     };
 
     const SCHEMA = Object.entries(fields).reduce((prev: any, curr: any) => {
-        return { ...prev, [curr[0]]: { ...curr[1], control, invalid: errors[curr[0]] } };
+        return { ...prev, [curr[0]]: { ...curr[1], invalid: errors[curr[0]] } };
     }, {});
 
     return {
