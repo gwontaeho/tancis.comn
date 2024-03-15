@@ -207,7 +207,7 @@ const FORM_SCHEMA = {
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
-            start: { name: "start", readOnly: true },
+            start: { name: "start", required: true },
             end: { name: "end" },
         },
     },

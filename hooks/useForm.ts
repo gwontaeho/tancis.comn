@@ -32,6 +32,7 @@ const getFields = (arg: any, control: any) => {
             default:
                 next[curr[0]] = curr[1];
                 next[curr[0]].name = curr[0];
+                next[curr[0]].control = control;
         }
         return next;
     }, {});
@@ -214,8 +215,16 @@ export const useForm = (props: UseFormProps) => {
     };
 
     const SCHEMA = Object.entries(fields).reduce((prev: any, curr: any) => {
-        return { ...prev, [curr[0]]: { ...curr[1], invalid: errors[curr[0]] } };
+        const next = { ...prev };
+        const type = curr[1].type;
+        if (type === "timerange" || type === "daterange") {
+            next.start = { ...next.start, invalid: errors[next.start.name] };
+            next.end = { ...next.end, invalid: errors[next.end.name] };
+        }
+        return { ...next, [curr[0]]: { ...curr[1], invalid: errors[curr[0]] } };
     }, {});
+
+    console.log(SCHEMA);
 
     return {
         schema: SCHEMA,
