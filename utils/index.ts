@@ -680,6 +680,14 @@ export const comnUtils = {
             }) || []
         );
     },
+
+    getOptions: (content: any, key: string, label: string) => {
+        if (!Array.isArray(content)) return [];
+        return content.map((_: any) => {
+            return { key: _[key], label: _[label] };
+        });
+    },
+
     // 배열에 추가 ( array , [ item ] )
     addArray: (arr: Array<any>, append: Array<any>) => {
         arr.push(...append);

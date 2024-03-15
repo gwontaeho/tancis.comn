@@ -179,7 +179,7 @@ const GRID_SCHEMA: TGridSchema = {
     head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
     body: [
         { cells: [{ binding: "text", type: "text" }] },
-        { cells: [{ type: "daterange", start: { binding: "date" }, end: { binding: "date" } }] },
+        // { cells: [{ type: "daterange", start: { binding: "date" }, end: { binding: "date" } }] },
     ],
 };
 
@@ -191,10 +191,10 @@ const FORM_SCHEMA = {
             label: "number",
             type: "number",
             // required: true,
-            // validate: (data: any) => {
-            //     console.log(data);
-            //     return String(data).length === 4 || "asd";
-            // },
+            validate: (data: any) => {
+                console.log(data);
+                return String(data).length === 4 || "asd";
+            },
         },
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
@@ -210,7 +210,7 @@ const FORM_SCHEMA = {
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
-            start: { name: "start" },
+            start: { name: "start", readOnly: true },
             end: { name: "end" },
         },
     },
@@ -270,19 +270,16 @@ export const Temp = () => {
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
-    // const fetch = useFetch({
-    //     api: () => comnUtils.getCode({ area: "currCd" }),
-    //     enabled: true,
-    //     onSuccess: (data) => {
-    //         console.log(data);
+    const fetch = useFetch({
+        api: () => comnUtils.getCode({ area: "currCd" }),
+        enabled: true,
+        onSuccess: (data) => {
+            console.log(data);
 
-    //         // g.setOption("index", false);
-
-    //         // g2.setOption("index", false);
-
-    //         // g3.setOption("index", false);
-    //     },
-    // });
+            const a = comnUtils.getOptions(data.currCdList.content, "currCd", "currNm");
+            console.log(a);
+        },
+    });
 
     const test = async () => {
         try {
@@ -414,7 +411,13 @@ export const Temp = () => {
                                     </button>
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <button onClick={() => console.log(f.getValues())}>Get</button>
+                                    <button onClick={() => console.log(f.getValues())}>Get all</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.getValues("number"))}>Get </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.getValues(["number", "text"]))}>Get 2</button>
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => console.log(f.setEditable(true))}>Edit true</button>
@@ -425,6 +428,11 @@ export const Temp = () => {
                                 <Group.Cell>
                                     <button onClick={() => console.log(f.setValue("code", "AED"))}>
                                         Set Code "AED"
+                                    </button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(f.setSchema("start", { readOnly: false }))}>
+                                        readOnly
                                     </button>
                                 </Group.Cell>
                                 <Group.Cell>

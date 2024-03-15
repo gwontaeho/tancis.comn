@@ -1,23 +1,25 @@
+//@ts-nocheck
+
 import React from "react";
-import { useController, Control } from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { Control } from "react-hook-form";
 
 export type TRule = {
-    validate?: any;
-    required?: any;
     min?: any;
     max?: any;
     minLength?: any;
-    pattern?: any;
     maxLength?: any;
+    required?: any;
+    pattern?: any;
+    validate?: any;
 };
 
 export type ControllerWrapperProps = TRule & {
     children: React.ReactElement;
-    onChange?: any;
-    onBlur?: any;
     control?: Control;
     name?: string;
-    rules?: any;
+    onBlur?: any;
+    onChange?: any;
     defaultValue?: any;
 };
 
@@ -26,34 +28,34 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
         children,
         control,
         name,
-        rules,
-        onChange,
         onBlur,
+        onChange,
         defaultValue,
+
         // rule
-        validate,
-        required,
         min,
         max,
         minLength,
-        pattern,
         maxLength,
+        required,
+        pattern,
+        validate,
+
         ...rest
     } = props;
 
     const { field } = useController({
-        name: name as string,
-        control: control as Control,
+        name,
+        control,
         defaultValue,
         rules: {
-            validate,
-            required,
             min,
             max,
             minLength,
-            pattern,
             maxLength,
-            ...rules,
+            required,
+            pattern,
+            validate,
 
             onChange: (event) => {
                 if (!onChange) return;
@@ -68,19 +70,8 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
         },
     });
 
-    /**
-     * name
-     * value
-     * onChange
-     * onBlur
-     */
-
     return React.cloneElement(children, {
+        ...field,
         ...rest,
-        name: field.name,
-        value: field.value,
-        onChange: field.onChange,
-        onBlur: field.onBlur,
-        ref: field.ref,
     });
 };
