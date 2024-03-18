@@ -208,7 +208,7 @@ const FORM_SCHEMA = {
         timerange: {
             type: "timerange",
             start: { name: "start", required: true, readOnly: true },
-            end: { name: "end" },
+            end: { name: "end", required: true },
             required: true,
         },
     },
