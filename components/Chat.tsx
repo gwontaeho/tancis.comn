@@ -3,6 +3,7 @@ import classNames from "classnames";
 
 type ChatProps = {
     data?: any[];
+    height?: any;
 };
 
 type TMessage = {
@@ -33,9 +34,9 @@ const Message = (props: TMessage) => {
     );
 };
 
-const Chat = ({ data }: ChatProps) => {
+const Chat = ({ data, height }: ChatProps) => {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" style={{ height }}>
             {data?.map((message: any) => {
                 return <Message {...message} />;
             })}
