@@ -207,8 +207,9 @@ const FORM_SCHEMA = {
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
-            start: { name: "start", required: true },
+            start: { name: "start", required: true, readOnly: true },
             end: { name: "end" },
+            required: true,
         },
     },
 };
@@ -271,10 +272,7 @@ export const Temp = () => {
         api: () => comnUtils.getCode({ area: "currCd" }),
         enabled: true,
         onSuccess: (data) => {
-            console.log(data);
-
             const a = comnUtils.getOptions(data.currCdList.content, "currCd", "currNm");
-            console.log(a);
         },
     });
 

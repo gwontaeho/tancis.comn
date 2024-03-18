@@ -13,11 +13,12 @@ type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 const getFields = (arg: any, control: any) => {
     return Object.entries(lodash.cloneDeep(arg)).reduce((prev: any, curr: any) => {
         const next = { ...prev };
-        const { type, start, end } = curr[1];
+        const { type } = curr[1];
         switch (type) {
             case "daterange":
             // @ts-ignore
-            case "timerange":
+            case "timerange": {
+                const { start, end } = curr[1];
                 let childType;
                 if (type === "daterange") childType = "date";
                 if (type === "timerange") childType = "time";
@@ -29,10 +30,12 @@ const getFields = (arg: any, control: any) => {
                 end.control = control;
                 next[start.name] = start;
                 next[end.name] = end;
-            default:
+            }
+            default: {
                 next[curr[0]] = curr[1];
                 next[curr[0]].name = curr[0];
-                next[curr[0]].control = control;
+                if (type !== "daterange" && type !== "timerange") next[curr[0]].control = control;
+            }
         }
         return next;
     }, {});
@@ -85,8 +88,6 @@ const reducer = (state: any, { type, payload }: any) => {
 const initializer = (arg: any) => {
     return getFields(arg.schema, arg.control);
 };
-
-let temp: any;
 
 export const useForm = (props: UseFormProps) => {
     const { defaultSchema, defaultValues } = props;
