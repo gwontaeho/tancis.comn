@@ -17,7 +17,7 @@ const Message = (props: TMessage) => {
 
     return (
         <div className={classNames("flex flex-col gap-2 w-1/2", position === "right" && "self-end")}>
-            <div className={classNames("px-2 flex gap-2", position === "right" && "self-end")}>
+            <div className={classNames("px-2 flex gap-1", position === "right" && "self-end")}>
                 <div className="font-semibold text-uf-blue">{name}</div>
                 <div className="text-uf-darkgray">[{dayjs(date).format("YYYY-MM-DD HH:mm:ss")}]</div>
             </div>
