@@ -1,7 +1,19 @@
 import { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
-import { Page, Group, Grid, Layout, FormControl, Tree, Button, Chat, Loading } from "@/comn/components";
+import {
+    Page,
+    Group,
+    Grid,
+    Layout,
+    FormControl,
+    Tree,
+    Button,
+    Chat,
+    Loading,
+    Card,
+    Accordion,
+} from "@/comn/components";
 
 import lodash from "lodash";
 import { api } from "../features/apis";
@@ -749,6 +761,35 @@ export const Temp = () => {
             <Chat data={CHAT_DATA} />
 
             {/* <Loading /> */}
+
+            <Layout align="between" gap={4}>
+                <Card icon="megaphone" color="error" size="full">{`Critical Alarms\n1,300`}</Card>
+                <Card icon="megaphone" color="blue" size="full">{`Normal Alarms\n1,300`}</Card>
+                <Card icon="megaphone" color="info" size="full">{`Info Alarms\n1,300`}</Card>
+                <Card icon="megaphone" color="success" size="full">{`Total Alarms\n1,300`}</Card>
+            </Layout>
+
+            <Layout>
+                <Accordion root>
+                    <Accordion>
+                        <Accordion.Summary>title</Accordion.Summary>
+                        <Accordion.Details>
+                            detailsdetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk
+                            dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql
+                            mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql
+                            wmkql mwqd mkql mkql mkql wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkql
+                        </Accordion.Details>
+                    </Accordion>
+                    <Accordion>
+                        <Accordion.Summary>title</Accordion.Summary>
+                        <Accordion.Details>details</Accordion.Details>
+                    </Accordion>
+                    <Accordion>
+                        <Accordion.Summary>title</Accordion.Summary>
+                        <Accordion.Details>details</Accordion.Details>
+                    </Accordion>
+                </Accordion>
+            </Layout>
         </Page>
     );
 };
