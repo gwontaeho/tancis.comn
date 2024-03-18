@@ -86,24 +86,97 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         }, [value]);
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            _setValue(formatText(e.target.value, o));
-            if (onChange) {
-                onChange(formatText(e.target.value, o));
+            const _temp = formatText(e.target.value, o);
+            /*
+            if (_temp !== e.target.value) {
+                let _s = e.target.selectionStart;
+                let _e = e.target.selectionEnd;
+
+                if (value.length > _temp.length) {
+                    //setPosition(i + 1, i + 1);
+                    //_apply.current = true;
+                } else {
+                    for (let i = 0; i < value.length; i++) {
+                        if (value.charAt(i) !== _temp.charAt(i)) {
+                            console.log("change", i, value, _temp);
+                            setPosition(i + 1, i + 1);
+                            _apply.current = true;
+                            break;
+                        }
+                    }
+                }
+                //setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
+                //_apply.current = true;
+            } else {
+                //setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
+                //_apply.current = true;
             }
+            //console.log(e.target.);
+            //console.log(e.target.selectionStart);
+            */
+
+            _setValue(_temp);
+            if (onChange) {
+                onChange(_temp);
+            }
+            //console.log(e.target.selectionStart, e.target.selectionEnd);
+
+            setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
+            _apply.current = true;
+
+            //setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
         };
 
         const handleDown = (e: any) => {
+            //console.log(e.target.selectionStart);
+            /*
             if (e.code === "Backspace" && o.mask) {
                 if (e.target.selectionStart <= 0) return;
                 setPosition(e.target.selectionStart - 1, e.target.selectionEnd - 1);
+                _apply.current = true;
             }
+            */
         };
 
-        const handleSelect2 = (e: any) => {
-            e.target.setSelectionRange(position.current[0], position.current[1]);
+        const handleSelect = (e: any) => {
+            //console.log(1);
+            if (_apply.current === true) {
+                e.target.setSelectionRange(position.current[0], position.current[1]);
+            } else {
+                e.target.setSelectionRange(e.target.selectionStart, e.target.selectionEnd);
+            }
+            _apply.current = false;
+            /*
+            if (_apply.current === true) {
+                e.target.setSelectionRange(position.current[0], position.current[1]);
+            }
+            */
         };
-        const handleSelect3 = (e: any) => {
-            setPosition(e.target.selectionStart, e.target.selectionEnd);
+        const handleSelectCapture = (e: any) => {
+            if (_apply.current !== true) {
+                setPosition(position.current[0], position.current[1]);
+            } else {
+                setPosition(e.target.selectionStart, e.target.selectionEnd);
+            }
+            //e.target.setSelectionRange(e.target.selectionStart, e.target.selectionEnd);
+            /*
+            if (_apply.current === true) {
+                //setPosition(e.target.selectionStart, e.target.selectionEnd);
+                //e.target.setSelectionRange(position.current[0], position.current[1]);
+                _apply.current = false;
+            } else {
+                //console.log(1);
+                setPosition(e.target.selectionStart, e.target.selectionEnd);
+                //e.target.setSelectionRange(e.target.selectionStart, e.target.selectionEnd);
+                //e.target.setSelectionRange(position.current[0], position.current[1]);
+            }
+            */
+            //e.target.setSelectionRange(position.current[0], position.current[1]);
+            /*
+            if (_apply.current === true) {
+                e.target.setSelectionRange(position.current[0], position.current[1]);
+            }
+            */
         };
 
         return (
@@ -121,8 +194,8 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                         title={_value}
                         onChange={handleChange}
                         onKeyDown={handleDown}
-                        onSelect={handleSelect2}
-                        onSelectCapture={handleSelect3}
+                        onSelectCapture={handleSelectCapture}
+                        onSelect={handleSelect}
                         type="text"
                         autoComplete="off"
                         className={"input" + comnUtils.getEditStyle(editColor, editBold)}
@@ -165,13 +238,17 @@ export const formatText = (v: any, o?: any) => {
         for (var i = 0; i < o.mask.length; i++) {
             if (typeof o.mask[i] === "string") {
                 if (t[pos] === undefined) {
-                    break;
+                    //break;
+                    pos++;
+                    continue;
                 }
                 temp += o.mask[i];
                 s++;
             } else {
                 if (!o.mask[i].test(t[pos])) {
-                    break;
+                    //break;
+                    pos++;
+                    continue;
                 }
                 if (t[pos] === undefined) break;
                 temp += t[pos];
