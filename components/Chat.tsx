@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import classNames from "classnames";
+import { useId } from "react";
 
 type ChatProps = {
     data?: any[];
@@ -35,10 +36,12 @@ const Message = (props: TMessage) => {
 };
 
 const Chat = ({ data, height }: ChatProps) => {
+    const id = useId();
     return (
         <div className="flex flex-col gap-4" style={{ height }}>
-            {data?.map((message: any) => {
-                return <Message {...message} />;
+            {data?.map((message: any, index: any) => {
+                console.log(id + index);
+                return <Message key={id + index} {...message} />;
             })}
         </div>
     );
