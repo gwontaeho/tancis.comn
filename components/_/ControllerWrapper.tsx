@@ -55,7 +55,7 @@ export const ControllerWrapper = (props: ControllerWrapperProps) => {
             max,
             minLength,
             maxLength,
-            required: required ? "msg.00005" : undefined,
+            required: required ? "msg.com.00005" : undefined,
             pattern,
             validate,
             onChange: (event) => {
