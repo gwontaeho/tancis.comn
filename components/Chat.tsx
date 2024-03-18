@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import classNames from "classnames";
 
-type TChat = {
+type ChatProps = {
     data?: any[];
 };
 
@@ -33,7 +33,7 @@ const Message = (props: TMessage) => {
     );
 };
 
-const Chat = ({ data }: TChat) => {
+const Chat = ({ data }: ChatProps) => {
     return (
         <div className="flex flex-col gap-4">
             {data?.map((message: any) => {
