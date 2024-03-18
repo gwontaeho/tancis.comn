@@ -40,10 +40,10 @@ export const useOptions = (props: UseOptionsProps): UseOptionsReturn => {
     let _data;
     let __t;
 
-    if (!!area) {
+    if (area) {
         const key = getResourceKey(area, comnCd, theme.lang);
         const _ = resource[key];
-        if (!!_) {
+        if (_) {
             _data = _.value;
             _options = _.value.map((code: any) => ({
                 label: utils.getCodeLabel(area, code),

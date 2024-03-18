@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
-import { Page, Group, Grid, Layout, FormControl, Tree, Button, Chat } from "@/comn/components";
+import { Page, Group, Grid, Layout, FormControl, Tree, Button, Chat, Loading } from "@/comn/components";
 
 import lodash from "lodash";
 import { api } from "../features/apis";
@@ -280,6 +280,10 @@ export const Temp = () => {
         },
     });
 
+    useLayoutEffect(() => {
+        console.log("ule");
+    }, []);
+
     const test = async () => {
         try {
             const a = await api.get("http://localhost:9720/clr/api/v1/clri/tm/hs/hs-mgmt/1/1");
@@ -292,7 +296,9 @@ export const Temp = () => {
 
     const testRef = useRef();
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        console.log("ue");
+    }, []);
 
     const zjvl = async () => {};
     const zjvl2 = async () => {};
@@ -741,6 +747,8 @@ export const Temp = () => {
             </Group>
 
             <Chat data={CHAT_DATA} />
+
+            {/* <Loading /> */}
         </Page>
     );
 };

@@ -9,6 +9,7 @@ import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
 import { routes } from "@/comn/features/router";
 import Cookies from "js-cookie";
+import { Resource } from "./Resource";
 
 type NavItemProps = {
     children?: any[];
@@ -173,6 +174,8 @@ const Header = () => {
                             }
                         />
                     </div>
+
+                    {/* <Resource /> */}
 
                     {/* lang */}
                     <select
