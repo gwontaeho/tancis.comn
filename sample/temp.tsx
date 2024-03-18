@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
-import { Page, Group, Grid, Layout, FormControl, Tree, Button, Chat } from "@/comn/components";
+import { Page, Group, Grid, Layout, FormControl, Tree, Button, Chat, Loading } from "@/comn/components";
 
 import lodash from "lodash";
 import { api } from "../features/apis";
@@ -741,6 +741,8 @@ export const Temp = () => {
             </Group>
 
             <Chat data={CHAT_DATA} />
+
+            {/* <Loading /> */}
         </Page>
     );
 };

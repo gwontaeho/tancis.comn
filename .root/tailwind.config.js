@@ -13,7 +13,7 @@ module.exports = {
             "uf-lightgray": "var(--uf-lightgray)",
             "uf-success": "var(--uf-success)",
             "uf-warning": "var(--uf-warning)",
-            "uf-error": "var(--uf-error)",
+            "uf-error": "rgb(var(--uf-error) / <alpha-value>)",
             "uf-info": "var(--uf-info)",
 
             "uf-layout-header": "var(--uf-layout-header)",
@@ -24,7 +24,7 @@ module.exports = {
 
             "uf-black": "var(--uf-black)",
             "uf-white": "var(--uf-white)",
-            "uf-blue": "var(--uf-blue)",
+            "uf-blue": "rgb(var(--uf-blue) / <alpha-value>)",
             "uf-border": "var(--uf-border)",
             "uf-logo": "var(--uf-logo)",
             "uf-text": "var(--uf-text)",
