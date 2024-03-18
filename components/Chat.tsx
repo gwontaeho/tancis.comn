@@ -40,7 +40,6 @@ const Chat = ({ data, height }: ChatProps) => {
     return (
         <div className="flex flex-col gap-4" style={{ height }}>
             {data?.map((message: any, index: any) => {
-                console.log(id + index);
                 return <Message key={id + index} {...message} />;
             })}
         </div>
