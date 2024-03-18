@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
+import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
 import lodash from "lodash";
@@ -180,7 +180,7 @@ const GRID_SCHEMA: TGridSchema = {
     body: [{ cells: [{ binding: "number", type: "number" }] }, { cells: [{ binding: "text", type: "text" }] }],
 };
 
-const FORM_SCHEMA = {
+const FORM_SCHEMA: TFormSchema = {
     id: "test",
     schema: {
         text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/] },
@@ -188,6 +188,7 @@ const FORM_SCHEMA = {
             label: "number",
             type: "number",
             // required: true,
+
             validate: (data: any) => {
                 console.log(data);
                 return String(data).length === 4 || "asd";
@@ -718,7 +719,9 @@ export const Temp = () => {
                                 <Group.Cell>
                                     <button onClick={() => g.clearData()}>Clear</button>
                                 </Group.Cell>
-                                <Group.Cell></Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => console.log(g.validate())}>validate</button>
+                                </Group.Cell>
                             </Group.Cell>
                         </Group.Section>
                     </Group.Body>

@@ -307,7 +307,6 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         frstRgsrDtm: { type: "datetime", label: "L_FRST_RGSR_DTM" },
         lastMdfrId: { type: "text", label: "L_LAST_MDFR_ID" },
         lastMdfyDtm: { type: "text", label: "L_LAST_MDFY_DTM" },
-        test: { type: "label" },
     },
 };
 

@@ -1,14 +1,25 @@
-import { useReducer, useState, useMemo, useEffect } from "react";
+import { useReducer } from "react";
+import lodash from "lodash";
 import * as reacthookform from "react-hook-form";
 import { comnUtils } from "@/comn/utils";
-import lodash from "lodash";
+import type { GroupControlProps } from "../components/Group";
 
 export type TFormFieldName = string;
 export type TFormFieldValue = any;
 export type TFormValues = Record<TFormFieldName, TFormFieldValue>;
 export type TFormSchema = { id: string; schema: TFormControlSchema };
-type TFormControlSchema = Record<string, any>;
+type TFormControlSchema = Record<string, GroupControlProps>;
 type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
+
+export type TRule = {
+    min?: any;
+    max?: any;
+    minLength?: any;
+    maxLength?: any;
+    required?: any;
+    pattern?: any;
+    validate?: any;
+};
 
 const getFields = (arg: any, control: any) => {
     return Object.entries(lodash.cloneDeep(arg)).reduce((prev: any, curr: any) => {

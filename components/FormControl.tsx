@@ -1,10 +1,10 @@
 import "react-datepicker/dist/react-datepicker.css";
-import { TRule } from "./_";
 import { forwardRef } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Icon, IconsType } from "./Icon";
 import { TOption } from "../hooks";
+import type { TRule } from "../hooks";
 import { Tooltip } from "./Tooltip";
 import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT, WIDTH } from "../features/foundation";
 import {
@@ -142,7 +142,6 @@ export type FormControlProps = InputDaterangeProps &
         inputLabel?: string;
 
         /** useForm */
-        rules?: any;
         invalid?: any;
 
         /** form control */
@@ -163,10 +162,11 @@ export type FormControlProps = InputDaterangeProps &
 
 const FormControlMain = forwardRef((props: any, ref) => {
     const { type = "text", rightButton, leftButton, rightText, getValues, ...rest } = props;
+    const { edit = true } = props;
 
     return (
         <div data-lb={!!leftButton || undefined} data-rb={!!rightButton || undefined} className="uf-form-control-main">
-            {props.edit !== false && leftButton && (
+            {edit && leftButton && (
                 <button type="button" onClick={leftButton.onClick} className="uf-left-button">
                     <Icon icon={leftButton.icon} size="xs" />
                 </button>
@@ -211,11 +211,11 @@ const FormControlMain = forwardRef((props: any, ref) => {
                             return <InputText {...rest} ref={ref} />;
                     }
                 })()}
-                {props.edit !== false && rightText && <span className="uf-right-text">{rightText}</span>}
-                {props.edit === false && rightText && <span className="px-1 min-w-max">{rightText}</span>}
+                {edit && rightText && <span className="uf-right-text">{rightText}</span>}
+                {!edit && rightText && <span className="px-1 min-w-max">{rightText}</span>}
             </div>
 
-            {props.edit !== false && rightButton && (
+            {edit && rightButton && (
                 <button type="button" className="uf-right-button" onClick={rightButton.onClick}>
                     <Icon icon={rightButton.icon} size="xs" />
                 </button>
@@ -226,17 +226,14 @@ const FormControlMain = forwardRef((props: any, ref) => {
 
 export const FormControl = forwardRef((props: FormControlProps, ref) => {
     const { size = "full", message, invalid, ...rest } = props;
+    const { type, edit = true, control } = props;
+
     const { t } = useTranslation();
 
     return (
-        <div
-            className={classNames(
-                "uf-form-control",
-                props.edit !== false ? WIDTH[size] : props.type === "editor" ? "w-full" : null,
-            )}
-        >
+        <div className={classNames("uf-form-control", edit ? WIDTH[size] : type === "editor" ? "w-full" : "w-auto")}>
             <Tooltip enabled={Boolean(invalid)} size="full" content={t(invalid?.message)}>
-                {props.control ? (
+                {control ? (
                     <ControllerWrapper {...rest}>
                         <FormControlMain />
                     </ControllerWrapper>
@@ -246,12 +243,9 @@ export const FormControl = forwardRef((props: FormControlProps, ref) => {
             </Tooltip>
 
             {/* message */}
-            {props.edit !== false && message && <div className="uf-message">{message}</div>}
-
+            {edit && message && <div className="uf-message">{message}</div>}
             {/* invalid message */}
-            {props.edit !== false && invalid && (
-                <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>
-            )}
+            {edit && invalid && <div className="uf-error-message">{t(invalid?.message || "invalid")}</div>}
         </div>
     );
 });

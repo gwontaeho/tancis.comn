@@ -3,16 +3,7 @@
 import React from "react";
 import { useController } from "react-hook-form";
 import type { Control } from "react-hook-form";
-
-export type TRule = {
-    min?: any;
-    max?: any;
-    minLength?: any;
-    maxLength?: any;
-    required?: any;
-    pattern?: any;
-    validate?: any;
-};
+import type { TRule } from "@/comn/hooks";
 
 export type ControllerWrapperProps = TRule & {
     children: React.ReactElement;

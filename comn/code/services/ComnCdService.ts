@@ -1027,7 +1027,7 @@ export const SCHEMA_GRID_VHCL_USE_CD: TGridSchema = {
     ],
 };
 
-export const SCHEMA_FORM_COMN_CD_SRCH = {
+export const SCHEMA_FORM_COMN_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
         comnCd: { type: "text", label: "L_COMN_CD", required: true },
