@@ -293,7 +293,12 @@ export const CGME0411001Q = (props: any) => {
             },
             cell: {
                 dclrNo: (props) => {
-                    const {} = props;
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <Link
+                            to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
+                        >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
+                    );
                 },
             },
             edit: {

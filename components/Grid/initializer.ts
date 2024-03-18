@@ -116,10 +116,11 @@ const useInitialize = (props: any) => {
             if (!data?.__key) return;
             _grid.current._content = _grid.current._content.map((_: any) => {
                 if (_.__key !== data.__key) return _;
-                const { __type, __key, ...rest } = data;
+                const { __type, __context, __key, ...rest } = data;
                 let type = _.__type;
                 if (type === "origin" || type === "updated") {
                     const origin = _grid.current._origin.find((o: any) => o.__key === __key);
+
                     type = Object.keys(rest).some((k) => data[k] !== origin[k]) ? "updated" : "origin";
                 }
                 return { ..._, ...rest, __type: type };

@@ -96,16 +96,14 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             if (e.code === "Backspace" && o.mask) {
                 if (e.target.selectionStart <= 0) return;
                 setPosition(e.target.selectionStart - 1, e.target.selectionEnd - 1);
-                _apply.current = true;
-            } else {
-                _apply.current = false;
             }
         };
 
-        const handleSelect = (e: any) => {
-            if (_apply.current === true) {
-                e.target.setSelectionRange(position.current[0], position.current[1]);
-            }
+        const handleSelect2 = (e: any) => {
+            e.target.setSelectionRange(position.current[0], position.current[1]);
+        };
+        const handleSelect3 = (e: any) => {
+            setPosition(e.target.selectionStart, e.target.selectionEnd);
         };
 
         return (
@@ -123,7 +121,8 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                         title={_value}
                         onChange={handleChange}
                         onKeyDown={handleDown}
-                        onSelect={handleSelect}
+                        onSelect={handleSelect2}
+                        onSelectCapture={handleSelect3}
                         type="text"
                         autoComplete="off"
                         className={"input" + comnUtils.getEditStyle(editColor, editBold)}
