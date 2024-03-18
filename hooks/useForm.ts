@@ -7,8 +7,8 @@ import type { GroupControlProps } from "../components/Group";
 export type TFormFieldName = string;
 export type TFormFieldValue = any;
 export type TFormValues = Record<TFormFieldName, TFormFieldValue>;
-export type TFormSchema = { id: string; schema: TFormControlSchema };
-export type TFormControlSchema = Record<string, GroupControlProps>;
+export type TFormSchema = { id: string; schema: TFormFields };
+export type TFormFields = Record<string, GroupControlProps>;
 type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 
 export type TRule = {
