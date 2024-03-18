@@ -8,7 +8,7 @@ export type TFormFieldName = string;
 export type TFormFieldValue = any;
 export type TFormValues = Record<TFormFieldName, TFormFieldValue>;
 export type TFormSchema = { id: string; schema: TFormControlSchema };
-type TFormControlSchema = Record<string, GroupControlProps>;
+export type TFormControlSchema = Record<string, GroupControlProps>;
 type UseFormProps = { defaultSchema: TFormSchema; defaultValues?: TFormValues };
 
 export type TRule = {

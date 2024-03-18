@@ -64,7 +64,7 @@ export type InputDaterangeProps = {
     edit?: boolean;
     start?: InputDateProps;
     end?: InputDateProps;
-    rangeButton?: 0 | 1 | 2 | 3;
+    rangeButton?: 0 | 1 | 2 | 3 | 4 | 5;
 
     color?: keyof typeof COLOR_TEXT;
     editColor?: keyof typeof COLOR_TEXT;
