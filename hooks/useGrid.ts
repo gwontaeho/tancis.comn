@@ -168,7 +168,7 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._exec = (fn: any) => {
             if (_grid.current._initialized === false) {
                 _grid.current._queue.push(fn);
-            } else fn();
+            } else return fn();
         };
     }
 
@@ -292,7 +292,7 @@ export const useGrid = (props: UseGridProps) => {
         _grid.current._exec = (fn: any) => {
             if (_grid.current._initialized === false) {
                 _grid.current._queue.push(fn);
-            } else fn();
+            } else return fn();
         };
 
         _grid.current._setSchema();
