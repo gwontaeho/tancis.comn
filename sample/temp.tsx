@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
-import { Page, Group, Grid, Layout, FormControl, Tree, Button } from "@/comn/components";
+import { Page, Group, Grid, Layout, FormControl, Tree, Button, Chat } from "@/comn/components";
+
 import lodash from "lodash";
 import { api } from "../features/apis";
 import { comnUtils } from "../utils";
@@ -188,6 +189,8 @@ const FORM_SCHEMA: TFormSchema = {
             label: "number",
             type: "number",
             // required: true,
+            maxLength: 3,
+            popupSize: "sm",
 
             validate: (data: any) => {
                 console.log(data);
@@ -728,6 +731,52 @@ export const Temp = () => {
                     <Group.Footer></Group.Footer>
                 </Group>
             </Layout>
+
+            <Group>
+                <Group.Body>
+                    <Group.Section>
+                        <Chat data={CHAT_DATA} />
+                    </Group.Section>
+                </Group.Body>
+            </Group>
+
+            <Chat data={CHAT_DATA} />
         </Page>
     );
 };
+
+const CHAT_DATA = [
+    {
+        date: new Date(),
+        name: "TRA",
+        position: "right",
+        content:
+            "ASSESSED VALUES ARE MAINTAINED BECAUSE THE ATTACHED COPY OF TT DOES NOT TALLY WITH THE SUM IN INVOICE ATTACHED.",
+    },
+    {
+        date: new Date(),
+        name: "TRA",
+        content:
+            "ASSESSED VALUES ARE MAINTAINED BECAUSE THE ATTACHED COPY OF TT DOES NOT TALLY WITH THE SUM IN INVOICE ATTACHED.",
+    },
+    {
+        date: new Date(),
+        name: "TRA",
+        position: "right",
+        content:
+            "ASSESSED VALUES ARE MAINTAINED BECAUSE THE ATTACHED COPY OF TT DOES NOT TALLY WITH THE SUM IN INVOICE ATTACHED.",
+    },
+    {
+        date: new Date(),
+        name: "TRA",
+        content:
+            "ASSESSED VALUES ARE MAINTAINED BECAUSE THE ATTACHED COPY OF TT DOES NOT TALLY WITH THE SUM IN INVOICE ATTACHED.",
+    },
+    {
+        date: new Date(),
+        name: "TRA",
+        position: "right",
+        content:
+            "ASSESSED VALUES ARE MAINTAINED BECAUSE THE ATTACHED COPY OF TT DOES NOT TALLY WITH THE SUM IN INVOICE ATTACHED.",
+    },
+];

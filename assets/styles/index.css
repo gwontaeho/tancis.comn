@@ -14,9 +14,11 @@
         --uf-darkgray: #484f5a;
         --uf-gray: #6e757c;
         --uf-lightgray: #c0c0c0;
-        --uf-blue: #0479ce;
+        /* --uf-blue: #0479ce; */
+        --uf-blue: 4 121 206;
         --uf-success: #00ad59;
-        --uf-error: #f4645e;
+        /* --uf-error: #f4645e; */
+        --uf-error: 244 100 94;
         --uf-info: #17a2b8;
         --uf-warning: #ffb100;
 
@@ -212,7 +214,7 @@
 
     /* Group */
     .uf-group {
-        @apply flex-col rounded bg-uf-card-background shadow w-full;
+        @apply flex-col rounded bg-uf-card-background shadow w-full [&:not(:aria-hidden)]:flex;
     }
     .uf-group-header {
         @apply p-4 rounded-t bg-uf-card-header;

@@ -133,7 +133,7 @@ type GroupColProps = GroupLabelProps & {
 const Group = (props: GroupProps) => {
     const { children, hidden, flex } = props;
     return (
-        <div hidden={hidden} className={classNames("uf-group", flex && FLEX[flex], !hidden && "flex")}>
+        <div hidden={hidden} aria-hidden={hidden} className={classNames("uf-group", flex && FLEX[flex])}>
             {children}
         </div>
     );
