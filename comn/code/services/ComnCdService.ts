@@ -310,7 +310,7 @@ export const APIS = {
 
     getHsCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
-            area: "hsCd",
+            area: "hsCdPopup",
             page: page,
             size: size,
             keyword: data.hsCd,
