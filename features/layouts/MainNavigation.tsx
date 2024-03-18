@@ -184,7 +184,7 @@ const Auth = () => {
             let url;
             let type;
 
-            if (process.env.REACT_APP_SYSTEM_GROUP === "tanesw") {
+            if (process.env.REACT_APP_SYSTEM_GROUP === "tanesw" || process.env.REACT_APP_SYSTEM_GROUP === "tanoga") {
                 url = "http://localhost:9400/ptl/api/v1/ptl/comn/comn/login";
                 type = "TANESW";
             } else if (process.env.REACT_APP_SYSTEM_GROUP === "tancis") {
