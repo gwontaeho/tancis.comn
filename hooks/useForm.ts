@@ -215,19 +215,20 @@ export const useForm = (props: UseFormProps) => {
         setFocus(name);
     };
 
-    const SCHEMA = Object.entries(fields).reduce((prev: any, curr: any, index, array) => {
+    const SCHEMA = Object.entries(fields).reduce((prev: any, [name, schema]: any) => {
         const next = { ...prev };
+        const { type } = schema;
 
-        // invalid range에 넣는거 해야함.
-        // const type = curr[1].type;
-        // if (type === "timerange" || type === "daterange") {
-        //     next.start = { ...fields.start, invalid: errors[fields.start.name] };
-        //     next.end = { ...fields.end, invalid: errors[fields.end.name] };
-        // }
-        return { ...next, [curr[0]]: { ...curr[1], invalid: errors[curr[0]] } };
+        if (type === "timerange" || type === "daterange") {
+            const { start, end } = schema;
+            start.invalid = errors[start.name];
+            end.invalid = errors[end.name];
+        } else {
+            schema.invalid = errors[name];
+        }
+
+        return { ...next, [name]: schema };
     }, {});
-
-    console.log(SCHEMA);
 
     return {
         schema: SCHEMA,
