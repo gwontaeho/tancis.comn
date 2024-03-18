@@ -64,5 +64,5 @@ export const useTab = (props: UseTabProps) => {
 
     const tab = { value, schema: _schema, onChange: setActive };
 
-    return { tab, value, setActive, setDisabled, setVisible, setLabel, getActive };
+    return { tab, value, setActive, setDisabled, setVisible, setLabel, getActive, setSchema: _setSchema };
 };
