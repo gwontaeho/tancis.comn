@@ -310,7 +310,7 @@ const AutoComplete = (props?: any) => {
 
     return (
         <>
-            <ul className="absolute translate-y-1 rounded top-full w-full bg-uf-card-background border z-[9999]">
+            <ul className="absolute translate-y-1 rounded top-full w-full bg-uf-card-background border z-[9999] max-h-80 overflow-auto">
                 {autoComplete.map(({ value, label }: any, i: any) => {
                     return (
                         <li
