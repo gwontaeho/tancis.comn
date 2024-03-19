@@ -98,7 +98,7 @@ export type FormControlProps = InputDaterangeProps &
         callback?: (arg?: any) => boolean;
 
         /** with option */
-        viewType?: string;
+        viewType?: "label" | "value" | "both";
         editType?: string;
 
         /** text */

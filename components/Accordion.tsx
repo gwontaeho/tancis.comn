@@ -8,6 +8,7 @@ import {
     cloneElement,
     useRef,
     useEffect,
+    useMemo,
 } from "react";
 import type { ReactNode } from "react";
 import classNames from "classnames";
@@ -106,8 +107,17 @@ const Root = (props: AccordionProps) => {
         init.current = true;
     }, []);
 
+    const contextValue = useMemo(
+        () => ({
+            init,
+            open,
+            setOpen,
+        }),
+        [open],
+    );
+
     return (
-        <Context.Provider value={{ init, open, setOpen }}>
+        <Context.Provider value={contextValue}>
             <div className={classNames("border rounded divide-y h-fit", size && WIDTH[size])}>{children}</div>
         </Context.Provider>
     );
