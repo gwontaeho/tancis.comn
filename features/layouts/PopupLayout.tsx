@@ -1,5 +1,9 @@
-import React from "react";
+import { Outlet } from "react-router-dom";
 
-export const PopupLayout = ({ children }: { children?: React.ReactNode }) => {
-    return <div className="p-4">{children}</div>;
+export const PopupLayout = () => {
+    return (
+        <div className="p-4">
+            <Outlet />
+        </div>
+    );
 };

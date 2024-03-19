@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef } from "react";
 import lodash from "lodash";
-import { useToast } from "@/comn/hooks";
+import { useToast } from ".";
 
 const createInitialState = (initialData: any) => {
     return {

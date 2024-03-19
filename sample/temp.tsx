@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useMemo, useState, useRef, useLayoutEffect, memo } from "react";
 import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import {
@@ -301,7 +301,6 @@ export const Temp = () => {
             const a = comnUtils.getOptions(data.currCdList.content, "currCd", "currNm");
         },
     });
-    console.log(fetch);
 
     const test = async () => {
         try {
@@ -858,6 +857,7 @@ export const Temp = () => {
                         <Button>111</Button>
                         <Button>111</Button>
                     </Layout>
+                    <Abc />
                 </Layout>
             </Layout>
         </Page>
@@ -899,3 +899,8 @@ const CHAT_DATA = [
             "ASSESSED VALUES ARE MAINTAINED BECAUSE THE ATTACHED COPY OF TT DOES NOT TALLY WITH THE SUM IN INVOICE ATTACHED.",
     },
 ];
+
+const Abc = memo(() => {
+    console.log("a");
+    return <div></div>;
+});

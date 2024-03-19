@@ -1,15 +1,18 @@
-import React from "react";
+import { Outlet } from "react-router-dom";
+
 import Header from "./MainHeader";
 import Footer from "./MainFooter";
 import Navigation from "./MainNavigation";
 
-export const MainLayout = ({ children }: { children?: React.ReactNode }) => {
+export const MainLayout = () => {
     return (
         <>
             <Header />
             <div className="uf-container">
                 <Navigation />
-                <main className="uf-main">{children}</main>
+                <main className="uf-main">
+                    <Outlet />
+                </main>
                 <Footer />
             </div>
         </>
