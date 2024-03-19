@@ -49,7 +49,7 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
     const toast = useToast();
     const ref = useRef<any>({
-        key: [],
+        key: null,
         isLoading: false,
         isSuccess: false,
         isError: false,

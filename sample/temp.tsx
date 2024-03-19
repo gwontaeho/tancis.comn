@@ -232,7 +232,7 @@ const FORM_SCHEMA: TFormSchema = {
         },
         textarea: { type: "textarea" },
         timerange: {
-            type: "timerange",
+            type: "daterange",
             start: { name: "start", required: true, readOnly: true },
             end: { name: "end", required: true },
             required: true,
@@ -406,7 +406,9 @@ export const Temp = () => {
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.code} />
                                     </Group.Cell>
-                                    <Group.Cell size={2} header></Group.Cell>
+                                    <Group.Cell size={2} header>
+                                        <FormControl {...f.schema.date} />
+                                    </Group.Cell>
 
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.select} />
