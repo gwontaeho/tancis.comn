@@ -13,6 +13,8 @@ import {
     Loading,
     Card,
     Accordion,
+    Table,
+    Text,
 } from "@/comn/components";
 
 import lodash from "lodash";
@@ -772,12 +774,77 @@ export const Temp = () => {
             <Layout>
                 <Accordion root>
                     <Accordion>
-                        <Accordion.Summary>title</Accordion.Summary>
+                        <Accordion.Summary>
+                            <Layout>
+                                <Button variant="primary">Date - Oct 12, 2023</Button>
+                                <Button variant="danger">102</Button>
+                                <Button variant="primary">102</Button>
+                                <Button variant="info">102</Button>
+                            </Layout>
+                        </Accordion.Summary>
                         <Accordion.Details>
-                            detailsdetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk
-                            dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql
-                            mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql
-                            wmkql mwqd mkql mkql mkql wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkql
+                            <Layout direction="col">
+                                <Layout direction="row">
+                                    <Layout direction="col">
+                                        <Button variant="danger">Master Device Critical Alrams( 102 )</Button>
+                                        <Button variant="primary">Master Device Critical Alrams( 102 )</Button>
+                                        <Button variant="info">Master Device Critical Alrams( 102 )</Button>
+                                    </Layout>
+                                    <Layout direction="col">
+                                        <Group.Title
+                                            title="Critical Alarms (Count by Alarm-Type)"
+                                            titleSize={2}
+                                        ></Group.Title>
+                                        <Table>
+                                            <Table.Tr>
+                                                <Table.Td>
+                                                    <Layout align="between" gap={4}>
+                                                        <Group.Any>STAND STILL</Group.Any>
+                                                        <Button variant="danger">102</Button>
+                                                    </Layout>
+                                                </Table.Td>
+                                            </Table.Tr>
+                                            <Table.Tr>
+                                                <Table.Td>
+                                                    <Layout align="between" gap={4}>
+                                                        <Group.Any>STAND STILL</Group.Any>
+                                                        <Button variant="danger">102</Button>
+                                                    </Layout>
+                                                </Table.Td>
+                                            </Table.Tr>
+                                            <Table.Tr>
+                                                <Table.Td>
+                                                    <Layout align="between" gap={4}>
+                                                        <Group.Any>STAND STILL</Group.Any>
+                                                        <Button variant="danger">102</Button>
+                                                    </Layout>
+                                                </Table.Td>
+                                            </Table.Tr>
+                                            <Table.Tr>
+                                                <Table.Td>
+                                                    <Layout align="between" gap={4}>
+                                                        <Group.Any>STAND STILL</Group.Any>
+                                                        <Button variant="danger">102</Button>
+                                                    </Layout>
+                                                </Table.Td>
+                                            </Table.Tr>
+                                            <Table.Tr>
+                                                <Table.Td>
+                                                    <Layout align="between" gap={4}>
+                                                        <Group.Any>STAND STILL</Group.Any>
+                                                        <Button variant="danger">102</Button>
+                                                    </Layout>
+                                                </Table.Td>
+                                            </Table.Tr>
+                                        </Table>
+                                        <Layout>
+                                            <Button>111</Button>
+                                            <Button>111</Button>
+                                            <Button>111</Button>
+                                        </Layout>
+                                    </Layout>
+                                </Layout>
+                            </Layout>
                         </Accordion.Details>
                     </Accordion>
                     <Accordion>
