@@ -182,8 +182,9 @@ export const CGME0411001Q = (props: any) => {
                 //
                 setStore(pgeUid, {
                     form: form.rpckItmAppSrch.getValues(),
-                    page: grid.rpckItmAppList.page,
-                    size: grid.rpckItmAppList.size,
+                    isSubmitted: true,
+                    page: grid.rpckItmAppList.getPage(),
+                    size: grid.rpckItmAppList.getSize(),
                 });
             },
             onError: (error) => {
@@ -370,9 +371,10 @@ export const CGME0411001Q = (props: any) => {
      * !== 화면 초기화 함수 선언  ==!
      */
     useEffect(() => {
-        handler.getRpckItmAppList(pgeStore?.page);
-
-        form.rpckItmAppSrch.setValue("strtDt", comnUtils.getDate());
+        if (pgeStore?.isSubmitted) {
+            //form.rpckItmAppSrch.setValue("strtDt", comnUtils.getDate());
+            handler.getRpckItmAppList(pgeStore?.page);
+        }
     }, []);
 
     /*
