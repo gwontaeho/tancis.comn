@@ -297,7 +297,7 @@ export const SampleFormControlCode = () => {
                                 <Group.Control {...form.schema.field32}></Group.Control>
                                 <Group.Label label="국가 코드(3자리)"></Group.Label>
                                 <Group.Col>
-                                    <Group.Any>/comn/comn/ppup/dgt3CntyCdPopup</Group.Any>
+                                    <Group.Any>/comn/comn/ppup/dgt3CntyCdPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
@@ -828,7 +828,7 @@ const Sample = () => {
                         <Group.Control {...form.schema.field32}></Group.Control>
                         <Group.Label label="국가 코드(3자리)"></Group.Label>
                         <Group.Col>
-                            <Group.Any>/comn/comn/ppup/dgt3CntyCdPopup</Group.Any>
+                            <Group.Any>/comn/comn/ppup/dgt3CntyCdPpup</Group.Any>
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>
