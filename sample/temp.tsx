@@ -281,6 +281,7 @@ export const Temp = () => {
     });
 
     const [count, setRender] = useState(0);
+    const [count2, setRender2] = useState(0);
 
     const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED" } });
 
@@ -319,6 +320,9 @@ export const Temp = () => {
 
     const r = () => {
         setRender((prev) => ++prev);
+    };
+    const r2 = () => {
+        setRender2((prev) => ++prev);
     };
 
     const render = {
@@ -379,6 +383,7 @@ export const Temp = () => {
 
     return (
         <Page>
+            <Button onClick={r2}>render2</Button>
             <Button onClick={r}>render</Button>
             <Button onClick={test}>asd</Button>
             <Button onClick={zjvl}>zjvl</Button>
@@ -857,7 +862,7 @@ export const Temp = () => {
                         <Button>111</Button>
                         <Button>111</Button>
                     </Layout>
-                    <Abc />
+                    <Abc count={count} />
                 </Layout>
             </Layout>
         </Page>
@@ -900,7 +905,7 @@ const CHAT_DATA = [
     },
 ];
 
-const Abc = memo(() => {
+const Abc = memo(({ count }: any) => {
     console.log("a");
     return <div></div>;
 });

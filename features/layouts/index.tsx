@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useSearchParams, ScrollRestoration } from "react-router-dom";
+import PageContextProvider from "../context";
 import { MainLayout } from "./MainLayout";
 import { PopupLayout } from "./PopupLayout";
 
@@ -8,20 +8,16 @@ import CommonToast from "../..//components/_/CommonToast";
 
 const Layout = () => {
     const [searchParams] = useSearchParams();
-    const { pathname } = useLocation();
 
     const ppup = searchParams.get("ppup");
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
-
     return (
-        <>
+        <PageContextProvider>
+            <ScrollRestoration />
             {ppup === "Y" ? <PopupLayout /> : <MainLayout />}
             <CommonModal />
             <CommonToast />
-        </>
+        </PageContextProvider>
     );
 };
 
