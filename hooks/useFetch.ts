@@ -15,31 +15,29 @@ const reducer = (state: any, { type, payload }: any) => {
     switch (type) {
         case "loading":
             return { ...state, isLoading: true };
-        case "success":
-            return { ...state, isLoading: false, isError: false, isSuccess: true, data: payload };
         case "error":
             return { ...state, isLoading: false, isError: true, isSuccess: false };
+        case "success":
+            return { ...state, isLoading: false, isError: false, isSuccess: true, data: payload };
     }
 };
 
 type TApi = (...args: any) => any;
-
 type UseFetchProps = {
     api: TApi | TApi[];
     key?: any[];
     enabled?: boolean;
-    notifyStatus?: boolean;
     showToast?: boolean;
+    notifyStatus?: boolean;
     onSuccess?: (data?: any) => void;
     onError?: (error?: any) => void;
 };
-
 type UseFetchReturn = {
     data: any;
-    fetch: (...args: any) => Promise<any> | undefined;
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean;
+    fetch: (...args: any) => Promise<any> | undefined;
     setShowToast: (showToast: boolean) => void;
 };
 
@@ -70,6 +68,24 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         fetch();
     }, [enabled, ...key]);
 
+    const handleSuccess = (data: any) => {
+        ref.current.isError = false;
+        ref.current.isLoading = false;
+        ref.current.isSuccess = true;
+        dispatch({ type: "success", payload: data });
+        if (onSuccess) onSuccess(data);
+        if (ref.current.toast) toast.showToast({ type: "success", content: "msg.00003" });
+    };
+
+    const handleError = (error: any) => {
+        ref.current.isSuccess = false;
+        ref.current.isLoading = false;
+        ref.current.isError = true;
+        if (notifyStatus) dispatch({ type: "error" });
+        if (onError) onError(error);
+        if (ref.current.toast) toast.showToast({ type: "error", content: "An error occurred" });
+    };
+
     const fetch = (...variables: any) => {
         if (ref.current.isLoading) return;
         ref.current.isLoading = true;
@@ -93,25 +109,10 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
                         );
                     });
 
-                    dispatch({ type: "success", payload: data });
-                    if (onSuccess) {
-                        if (ref.current.toast) toast.showToast({ type: "success", content: "msg.00003" });
-                        onSuccess(data);
-                    }
-                    ref.current.isLoading = false;
-                    ref.current.isSuccess = true;
-
+                    handleSuccess(data);
                     resolve(data);
                 } catch (error) {
-                    if (notifyStatus) dispatch({ type: "error" });
-                    if (onError) {
-                        if (ref.current.toast) toast.showToast({ type: "error", content: "An error occurred" });
-                        onError(error);
-                    }
-
-                    ref.current.isLoading = false;
-                    ref.current.isError = true;
-
+                    handleError(error);
                     resolve(error);
                 }
             });
@@ -130,25 +131,10 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
                         data = response;
                     }
 
-                    dispatch({ type: "success", payload: data });
-                    if (onSuccess) {
-                        if (ref.current.toast) toast.showToast({ type: "success", content: "msg.00003" });
-                        onSuccess(data);
-                    }
-                    ref.current.isLoading = false;
-                    ref.current.isSuccess = true;
-
+                    handleSuccess(data);
                     resolve(data);
                 } catch (error) {
-                    if (notifyStatus) dispatch({ type: "error" });
-                    if (onError) {
-                        if (ref.current.toast) toast.showToast({ type: "error", content: "An error occurred" });
-                        onError(error);
-                    }
-
-                    ref.current.isLoading = false;
-                    ref.current.isError = true;
-
+                    handleError(error);
                     resolve(error);
                 }
             });

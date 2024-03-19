@@ -296,15 +296,12 @@ export const Temp = () => {
 
     const fetch = useFetch({
         api: () => comnUtils.getCode({ area: "currCd" }),
-        enabled: true,
+        // enabled: true,
         onSuccess: (data) => {
             const a = comnUtils.getOptions(data.currCdList.content, "currCd", "currNm");
         },
     });
-
-    useLayoutEffect(() => {
-        console.log("ule");
-    }, []);
+    console.log(fetch);
 
     const test = async () => {
         try {
@@ -317,10 +314,6 @@ export const Temp = () => {
     };
 
     const testRef = useRef();
-
-    useEffect(() => {
-        console.log("ue");
-    }, []);
 
     const zjvl = async () => {};
     const zjvl2 = async () => {};

@@ -27,8 +27,8 @@ const Details = ({ children, id }: any) => {
     const { init, open } = useContext(Context);
 
     const ref = (node: any) => {
-        if (!init.current) return;
         if (node) {
+            if (!init.current) return;
             const { height } = node.getBoundingClientRect();
             const parent = node.parentElement;
             const summary = node.previousSibling;

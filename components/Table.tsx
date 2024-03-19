@@ -68,7 +68,6 @@ const Th = (props: TableCellProps) => {
 
 const Td = (props: TableCellProps) => {
     const { children, required, colSpan, colspan, rowspan, rowSpan, width, align } = props;
-    console.log(align);
     return (
         <td
             className={"relative" + (align ? " text-" + align : "")}
