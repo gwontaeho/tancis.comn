@@ -97,7 +97,7 @@ export const CompanyDeclareCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        if (params.coDclaTpCd) {
+        if (params?.coDclaTpCd) {
             form.coDclaCdSrch.setValue("coDclaTpCd", params.coDclaTpCd);
             form.coDclaCdSrch.setSchema("coDclaTpCd", { readOnly: true });
         }

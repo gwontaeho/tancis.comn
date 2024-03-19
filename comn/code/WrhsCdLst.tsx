@@ -96,7 +96,7 @@ export const WrhsCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        if (params.wrhsOprtTpCd) {
+        if (params?.wrhsOprtTpCd) {
             console.log(params.wrhsOprtTpCd);
             form.wrhsCdSrch.setValue("wrhsOprtTpCd", params.wrhsOprtTpCd);
         }
