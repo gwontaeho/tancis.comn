@@ -149,9 +149,7 @@ const Header = () => {
                     <div className="flex gap-2">
                         {/* list */}
                         <Badge number={3}>
-                            <Link to="/comn/comn/temp">
-                                <IconButton className="text-uf-white" icon="list" />
-                            </Link>
+                            <IconButton className="text-uf-white" icon="list" />
                         </Badge>
 
                         {/* envelope */}

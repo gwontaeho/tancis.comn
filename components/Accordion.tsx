@@ -28,20 +28,18 @@ const Details = ({ children, id }: any) => {
     const ref = (node: any) => {
         if (!init.current) return;
         if (node) {
-            try {
-                const { height } = node.getBoundingClientRect();
-                const parent = node.parentElement;
-                const summary = node.previousSibling;
-                if (open === id) {
-                    parent.style.height = `${summary.getBoundingClientRect().height + height}px`;
-                    setTimeout(() => {
-                        parent.style.height = "auto";
-                    }, 150);
-                } else {
-                    parent.style.height = `${parent.getBoundingClientRect().height}px`;
-                    parent.style.height = `${summary.getBoundingClientRect().height}px`;
-                }
-            } catch (error) {}
+            const { height } = node.getBoundingClientRect();
+            const parent = node.parentElement;
+            const summary = node.previousSibling;
+            if (open === id) {
+                parent.style.height = `${summary.getBoundingClientRect().height + height}px`;
+                setTimeout(() => {
+                    parent.style.height = "auto";
+                }, 150);
+            } else {
+                parent.style.height = `${parent.getBoundingClientRect().height}px`;
+                parent.style.height = `${summary.getBoundingClientRect().height}px`;
+            }
         }
     };
 
@@ -59,10 +57,8 @@ const Summary = ({ children, id }: any) => {
 
     const ref = useCallback((node: any) => {
         if (node) {
-            try {
-                const { height } = node.getBoundingClientRect();
-                node.parentElement.style.height = `${height}px`;
-            } catch (error) {}
+            const { height } = node.getBoundingClientRect();
+            node.parentElement.style.height = `${height}px`;
         }
     }, []);
 
