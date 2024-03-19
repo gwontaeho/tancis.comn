@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { Button } from "./Button";
-import { JUSTIFY_CONTENT, DIRECTION, GAP, WIDTH } from "../features/foundation";
+import { JUSTIFY_CONTENT, DIRECTION, GAP, WIDTH, ALIGN_ITEMS } from "../features/foundation";
 
 type LayoutProps = {
     children?: React.ReactNode;
@@ -10,6 +10,7 @@ type LayoutProps = {
     size?: keyof typeof WIDTH;
     direction?: keyof typeof DIRECTION;
     align?: keyof typeof JUSTIFY_CONTENT;
+    valign?: keyof typeof ALIGN_ITEMS;
     height?: string | number;
 };
 
@@ -23,7 +24,7 @@ type LayoutProps = {
  * @returns
  */
 export const Layout = (props: LayoutProps) => {
-    const { children, direction = "row", gap = 1, size, align = "start", height, hidden } = props;
+    const { children, direction = "row", gap = 1, size, align = "start", valign = "start", height, hidden } = props;
 
     return (
         <div
@@ -34,6 +35,7 @@ export const Layout = (props: LayoutProps) => {
                 size && WIDTH[size],
                 DIRECTION[direction],
                 JUSTIFY_CONTENT[align],
+                ALIGN_ITEMS[valign],
                 !hidden && "flex",
             )}
             style={{ height }}
