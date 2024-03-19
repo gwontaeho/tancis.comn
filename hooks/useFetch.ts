@@ -63,10 +63,13 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     useEffect(() => {
         if (!enabled) return;
         if (lodash.isEqual(ref.current.key, key)) return;
-
         ref.current.key = key;
         fetch();
     }, [enabled, ...key]);
+
+    const setShowToast = (arg: boolean) => {
+        ref.current.toast = arg;
+    };
 
     const handleSuccess = (data: any) => {
         ref.current.isError = false;
@@ -89,60 +92,44 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
     const fetch = (...variables: any) => {
         if (ref.current.isLoading) return;
         ref.current.isLoading = true;
-
         if (notifyStatus) dispatch({ type: "loading" });
 
-        const current = new Date();
+        return new Promise(async (resolve, reject) => {
+            const current = new Date();
 
-        if (multi) {
-            return new Promise(async (resolve, reject) => {
-                try {
+            try {
+                let data;
+                if (multi) {
                     const response = await Promise.all(api.map((_) => _(...variables)));
-                    const data = response.map((_: any) => {
+                    response.map((_: any) => {
                         if (typeof _ !== "object") return _;
                         const { data } = _;
-
                         return Object.fromEntries(
-                            Object.entries(data).map(([k, v]: any) => {
-                                return [k, { ...v, __t: current }];
+                            Object.entries(data).map(([key, value]: any) => {
+                                return [key, { ...value, __t: current }];
                             }),
                         );
                     });
-
-                    handleSuccess(data);
-                    resolve(data);
-                } catch (error) {
-                    handleError(error);
-                    resolve(error);
-                }
-            });
-        } else {
-            return new Promise(async (resolve, reject) => {
-                try {
+                } else {
                     const response = await api(...variables);
-                    let data;
                     if (typeof response?.data === "object" && !Array.isArray(response?.data)) {
                         data = Object.fromEntries(
-                            Object.entries(response.data).map(([k, v]: any) => {
-                                return [k, { ...v, __t: current }];
+                            Object.entries(response.data).map(([key, value]: any) => {
+                                return [key, { ...value, __t: current }];
                             }),
                         );
                     } else {
                         data = response;
                     }
-
-                    handleSuccess(data);
-                    resolve(data);
-                } catch (error) {
-                    handleError(error);
-                    resolve(error);
                 }
-            });
-        }
-    };
 
-    const setShowToast = (arg: boolean) => {
-        ref.current.toast = arg;
+                handleSuccess(data);
+                resolve(data);
+            } catch (error) {
+                handleError(error);
+                resolve(error);
+            }
+        });
     };
 
     return { data, fetch, isLoading, isSuccess, isError, setShowToast };
