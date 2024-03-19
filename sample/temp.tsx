@@ -219,7 +219,7 @@ const FORM_SCHEMA: TFormSchema = {
             comnCd: "COM_0100",
             viewType: "both",
         },
-        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: false },
+        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: false, edit: false },
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
@@ -769,27 +769,61 @@ export const Temp = () => {
                 <Card icon="megaphone" color="success" size="full">{`Total Alarms\n1,300`}</Card>
             </Layout>
 
-            <Layout>
-                <Accordion root>
-                    <Accordion>
-                        <Accordion.Summary>title</Accordion.Summary>
-                        <Accordion.Details>
-                            detailsdetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk
-                            dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql
-                            mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql
-                            wmkql mwqd mkql mkql mkql wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkql
-                        </Accordion.Details>
-                    </Accordion>
-                    <Accordion>
-                        <Accordion.Summary>title</Accordion.Summary>
-                        <Accordion.Details>details</Accordion.Details>
-                    </Accordion>
-                    <Accordion>
-                        <Accordion.Summary>title</Accordion.Summary>
-                        <Accordion.Details>details</Accordion.Details>
-                    </Accordion>
-                </Accordion>
-            </Layout>
+            <Group>
+                <Group.Body>
+                    <Group.Section>
+                        <Layout direction="row" gap={4}>
+                            <Accordion root>
+                                <Accordion>
+                                    <Accordion.Summary>
+                                        detailsdetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails
+                                        wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql
+                                        wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql
+                                    </Accordion.Summary>
+                                    <Accordion.Details>
+                                        detailsdetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails
+                                        wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql
+                                        wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql
+                                        mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkql wdmwqkldwqmk
+                                        dmwqdmkql wmkql mwqd mkql mkql mkql
+                                    </Accordion.Details>
+                                </Accordion>
+                                <Accordion>
+                                    <Accordion.Summary>title</Accordion.Summary>
+                                    <Accordion.Details>details</Accordion.Details>
+                                </Accordion>
+                                <Accordion>
+                                    <Accordion.Summary>title</Accordion.Summary>
+                                    <Accordion.Details>details</Accordion.Details>
+                                </Accordion>
+                            </Accordion>
+
+                            <Accordion root>
+                                <Accordion>
+                                    <Accordion.Summary>
+                                        <Button>asd</Button>
+                                    </Accordion.Summary>
+                                    <Accordion.Details>
+                                        detailsdetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails
+                                        wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql
+                                        wmkql mwqd mkql mkql mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql
+                                        mkqldetails wdmwqkldwqmk dmwqdmkql wmkql mwqd mkql mkql mkql wdmwqkldwqmk
+                                        dmwqdmkql wmkql mwqd mkql mkql mkql
+                                    </Accordion.Details>
+                                </Accordion>
+                                <Accordion>
+                                    <Accordion.Summary>title</Accordion.Summary>
+                                    <Accordion.Details>details</Accordion.Details>
+                                </Accordion>
+                                <Accordion>
+                                    <Accordion.Summary>title</Accordion.Summary>
+                                    <Accordion.Details>details</Accordion.Details>
+                                </Accordion>
+                            </Accordion>
+                        </Layout>
+                    </Group.Section>
+                </Group.Body>
+            </Group>
         </Page>
     );
 };
