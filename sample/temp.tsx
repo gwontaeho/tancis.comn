@@ -221,7 +221,7 @@ const FORM_SCHEMA: TFormSchema = {
             comnCd: "COM_0100",
             viewType: "both",
         },
-        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: false },
+        code: { label: "code", type: "code", area: "currCd", maxLength: 3, exact: false, edit: false },
         textarea: { type: "textarea" },
         timerange: {
             type: "timerange",
@@ -630,6 +630,7 @@ export const Temp = () => {
                                         Edit false (RowCell)
                                     </button>
                                 </Group.Cell>
+
                                 <Group.Cell>
                                     <button
                                         onClick={() =>
