@@ -171,6 +171,17 @@ export const APIS = {
         });
     },
 
+    getCstmOfcrCdList: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "cstmOfcrCd",
+            page: page,
+            size: size,
+            usrDmnId: data.usrDmnId,
+            keyword: data.usrNm,
+            keywordName: data.cstmOfceCd,
+        });
+    },
+
     getVhclBodyCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
             area: "vhclBodyCd",
@@ -754,6 +765,31 @@ export const SCHEMA_GRID_CSTM_CD: TGridSchema = {
     ],
 };
 
+export const SCHEMA_GRID_CSTM_OFCR_CD: TGridSchema = {
+    id: "grid",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_USR_DMN_ID", binding: "usrDmnId", width: 200 }] },
+        { cells: [{ header: "L_USR_NM", binding: "usrNm", width: "*" }] },
+        { cells: [{ header: "L_CSTM_OFCE_CD", binding: "cstmOfceCd", width: 200 }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "usrDmnId",
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "usrNm" }],
+        },
+        {
+            cells: [{ binding: "cstmOfceCd" }],
+        },
+    ],
+};
+
 export const SCHEMA_GRID_VHCL_BODY_CD: TGridSchema = {
     id: "grid",
     options: { pagination: "out", edit: false, index: true },
@@ -1220,6 +1256,15 @@ export const SCHEMA_FORM_CSTM_CD_SRCH: TFormSchema = {
                 { label: "L_SA", value: "SA" },
             ],
         },
+    },
+
+};
+export const SCHEMA_FORM_CSTM_OFCR_CD_SRCH: TFormSchema = {
+    id: "form",
+    schema: {
+        usrDmnId: { type: "text", label: "L_USR_DMN_ID" },
+        usrNm: { type: "text", label: "L_USR_NM" },
+        cstmOfceCd: { type: "text", label: "L_CSTM_OFCE_CD" },
     },
 };
 

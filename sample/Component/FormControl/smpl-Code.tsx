@@ -210,6 +210,12 @@ const SF_FORM: TFormSchema = {
             label: "Digit3 Country Code",
             popupSize: "md",
         },
+        field33: {
+            type: "code",
+            area: "cstmOfcrCd",
+            label: "Customs Officers Code",
+            popupSize: "md",
+        },
     },
 };
 
@@ -237,6 +243,7 @@ export const SampleFormControlCode = () => {
             { area: "coDclaCd" },
             { area: "orgDeptCd" },
             { area: "cstmCd" },
+            { area: "cstmOfcrCd" },
             { area: "vhclBodyCd" },
             { area: "vhclCtgrCd" },
             { area: "vhclClrCd" },
@@ -297,7 +304,7 @@ export const SampleFormControlCode = () => {
                                 <Group.Control {...form.schema.field32}></Group.Control>
                                 <Group.Label label="국가 코드(3자리)"></Group.Label>
                                 <Group.Col>
-                                    <Group.Any>/comn/comn/ppup/dgt3CntyCdPopup</Group.Any>
+                                    <Group.Any>/comn/comn/ppup/dgt3CntyCdPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
@@ -390,6 +397,13 @@ export const SampleFormControlCode = () => {
                                 <Group.Label label="세관 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/cstmCdPpup</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.field33}></Group.Control>
+                                <Group.Label label="세관 직원 코드"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/cstmOfcrCdPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
@@ -780,6 +794,7 @@ const Sample = () => {
                 { area: "coDclaCd" },
                 { area: "orgDeptCd" },
                 { area: "cstmCd" },
+                { area: "cstmOfcrCd" },
                 { area: "vhclBodyCd" },
                 { area: "vhclCtgrCd" },
                 { area: "vhclClrCd" },
@@ -828,7 +843,7 @@ const Sample = () => {
                         <Group.Control {...form.schema.field32}></Group.Control>
                         <Group.Label label="국가 코드(3자리)"></Group.Label>
                         <Group.Col>
-                            <Group.Any>/comn/comn/ppup/dgt3CntyCdPopup</Group.Any>
+                            <Group.Any>/comn/comn/ppup/dgt3CntyCdPpup</Group.Any>
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>
@@ -913,6 +928,13 @@ const Sample = () => {
                         <Group.Label label="세관 코드"></Group.Label>
                         <Group.Col>
                             <Group.Any>/comn/comn/ppup/cstmCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field33}></Group.Control>
+                        <Group.Label label="세관 직원 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/cstmOfcrCdPpup</Group.Any>
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>
