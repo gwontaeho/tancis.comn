@@ -29,6 +29,7 @@ import { VehiclePropellerTypeCodeList } from "@/comn/comn/code/VhclPrplTpCdLst";
 import { VehicleTransmissionTypeCodeList } from "@/comn/comn/code/VhclTrmssnTpCdLst";
 import { CompanyDeclareCodeList } from "@/comn/comn/code/CoDclaCdLst";
 import { CustomsCodeList } from "@/comn/comn/code/cstmCdLst";
+import { CustomsOfficerCodeList } from "@/comn/comn/code/CstmOfcrCdLst";
 import { HsCodeList } from "@/comn/comn/code/hsCdLst";
 import { CompanyCodeDetail } from "@/comn/comn/code/CoCdDtl";
 import { PostCodeList } from "@/comn/comn/code/PostCdLst";
@@ -67,6 +68,7 @@ export const ComnMain = () => {
             <Route path="/ppup/coDclaCdPpup" element={<CompanyDeclareCodeList />} />
             <Route path="/ppup/orgDeptCdPpup" element={<OrganizationDepartmentCodeList />} />
             <Route path="/ppup/cstmCdPpup" element={<CustomsCodeList />} />
+            <Route path="/ppup/cstmOfcrCdPpup" element={<CustomsOfficerCodeList />} />
             <Route path="/ppup/vhclBodyCdPpup" element={<VehicleBodyCodeList />} />
             <Route path="/ppup/vhclCtgrCdPpup" element={<VehicleCategoryCodeList />} />
             <Route path="/ppup/vhclClrCdPpup" element={<VehicleColorCodeList />} />

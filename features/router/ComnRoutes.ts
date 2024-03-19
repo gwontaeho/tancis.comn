@@ -295,7 +295,10 @@ export const ComnRoutes = [
                                 name: "Organization Code Popup",
                                 to: "/comn/comn/ppup/orgCdPpup",
                             },
-
+                            {
+                                name: "Bonded Warehouse Code Popup",
+                                to: "/comn/comn/ppup/wrhsCdPpup",
+                            },
                             {
                                 name: "Company Detail Code Popup",
                                 to: "/comn/comn/ppup/coDtlCdPpup",
@@ -312,7 +315,10 @@ export const ComnRoutes = [
                                 name: "Customs Code Popup",
                                 to: "/comn/comn/ppup/cstmCdPpup",
                             },
-
+                            {
+                                name: "Customs Officers Code Popup",
+                                to: "/comn/comn/ppup/cstmOfcrCdPpup",
+                            },
                             {
                                 name: "Vehicle Body Code Popup",
                                 to: "/comn/comn/ppup/vhclBodyCdPpup",
