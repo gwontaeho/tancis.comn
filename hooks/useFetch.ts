@@ -11,12 +11,12 @@ const createInitialState = (initialData: any) => {
     };
 };
 
-const reducer = (state: any, action: any) => {
-    switch (action.type) {
+const reducer = (state: any, { type, payload }: any) => {
+    switch (type) {
         case "loading":
             return { ...state, isLoading: true };
         case "success":
-            return { ...state, isLoading: false, isError: false, isSuccess: true, data: action.payload };
+            return { ...state, isLoading: false, isError: false, isSuccess: true, data: payload };
         case "error":
             return { ...state, isLoading: false, isError: true, isSuccess: false };
     }
@@ -44,18 +44,17 @@ type UseFetchReturn = {
 };
 
 export const useFetch = (props: UseFetchProps): UseFetchReturn => {
-    /**
- 
- */
-
     const { api, key = [], enabled, showToast = false, onSuccess, onError, notifyStatus } = props;
+    const multi = Array.isArray(api);
 
     const toast = useToast();
-    const _showToast = useRef(showToast);
-
-    const multi = Array.isArray(api);
-    const keyRef = useRef<any>({});
-    const statusRef = useRef({ isLoading: false, isSuccess: false, isError: false });
+    const ref = useRef<any>({
+        key: [],
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        toast: showToast,
+    });
 
     const [{ data, isLoading, isSuccess, isError }, dispatch] = useReducer(
         reducer,
@@ -65,19 +64,16 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
     useEffect(() => {
         if (!enabled) return;
+        if (lodash.isEqual(ref.current.key, key)) return;
 
-        if (lodash.isEqual(keyRef.current.key, key)) return;
-
-        keyRef.current.key = key;
-        keyRef.current.t = new Date().getTime();
-
+        ref.current.key = key;
         fetch();
     }, [enabled, ...key]);
 
     const fetch = (...variables: any) => {
-        if (statusRef.current.isLoading) return;
+        if (ref.current.isLoading) return;
+        ref.current.isLoading = true;
 
-        statusRef.current.isLoading = true;
         if (notifyStatus) dispatch({ type: "loading" });
 
         const current = new Date();
@@ -99,22 +95,22 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
                     dispatch({ type: "success", payload: data });
                     if (onSuccess) {
-                        if (_showToast.current) toast.showToast({ type: "success", content: "msg.00003" });
+                        if (ref.current.toast) toast.showToast({ type: "success", content: "msg.00003" });
                         onSuccess(data);
                     }
-                    statusRef.current.isLoading = false;
-                    statusRef.current.isSuccess = true;
+                    ref.current.isLoading = false;
+                    ref.current.isSuccess = true;
 
                     resolve(data);
                 } catch (error) {
                     if (notifyStatus) dispatch({ type: "error" });
                     if (onError) {
-                        if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred" });
+                        if (ref.current.toast) toast.showToast({ type: "error", content: "An error occurred" });
                         onError(error);
                     }
 
-                    statusRef.current.isLoading = false;
-                    statusRef.current.isError = true;
+                    ref.current.isLoading = false;
+                    ref.current.isError = true;
 
                     resolve(error);
                 }
@@ -136,22 +132,22 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
 
                     dispatch({ type: "success", payload: data });
                     if (onSuccess) {
-                        if (_showToast.current) toast.showToast({ type: "success", content: "msg.00003" });
+                        if (ref.current.toast) toast.showToast({ type: "success", content: "msg.00003" });
                         onSuccess(data);
                     }
-                    statusRef.current.isLoading = false;
-                    statusRef.current.isSuccess = true;
+                    ref.current.isLoading = false;
+                    ref.current.isSuccess = true;
 
                     resolve(data);
                 } catch (error) {
                     if (notifyStatus) dispatch({ type: "error" });
                     if (onError) {
-                        if (_showToast.current) toast.showToast({ type: "error", content: "An error occurred" });
+                        if (ref.current.toast) toast.showToast({ type: "error", content: "An error occurred" });
                         onError(error);
                     }
 
-                    statusRef.current.isLoading = false;
-                    statusRef.current.isError = true;
+                    ref.current.isLoading = false;
+                    ref.current.isError = true;
 
                     resolve(error);
                 }
@@ -159,8 +155,8 @@ export const useFetch = (props: UseFetchProps): UseFetchReturn => {
         }
     };
 
-    const setShowToast = (showToast: boolean) => {
-        _showToast.current = showToast;
+    const setShowToast = (arg: boolean) => {
+        ref.current.toast = arg;
     };
 
     return { data, fetch, isLoading, isSuccess, isError, setShowToast };

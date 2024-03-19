@@ -3,13 +3,13 @@ import { useState } from "react";
 const Resource = () => {
     const [open, setOpen] = useState(false);
 
-    const toggleOpen = () => {
+    const handleToggle = () => {
         setOpen((prev) => !prev);
     };
 
     return (
         <div>
-            <button className="text-white" onClick={toggleOpen}>
+            <button className="text-white" onClick={handleToggle}>
                 CODE
             </button>
             <div

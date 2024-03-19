@@ -9,8 +9,8 @@
 
 @layer base {
     :root {
-        --uf-black: #333a45;
-        --uf-white: #ffffffe6;
+        --uf-black: #000000;
+        --uf-white: #ffffff;
         --uf-darkgray: #484f5a;
         --uf-gray: #6e757c;
         --uf-lightgray: #c0c0c0;
@@ -22,7 +22,7 @@
         --uf-info: #17a2b8;
         --uf-warning: #ffb100;
 
-        --uf-text: #333a45;
+        --uf-text: #000000;
         --uf-border: #d8e0ea;
         --uf-logo: #ffffffe6;
         --uf-navigation: #ffffffe6;
@@ -80,7 +80,7 @@
     }
 
     :root[class~="dark"] {
-        --uf-text: #ffffffe6;
+        --uf-text: #ffffff;
         --uf-border: #3a4453;
         --uf-background: #1d293a;
         --uf-logo: #223043;
