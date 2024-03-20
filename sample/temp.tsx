@@ -187,8 +187,8 @@ const GRID_SCHEMA: TGridSchema = {
         // edit: true,
         importExcel: true,
         exportExcel: true,
-        // pagination: "in",
-        pagination: "out",
+        pagination: "in",
+        // pagination: "out",
         // group: ["text"],
     },
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
@@ -315,7 +315,7 @@ export const Temp = () => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 88 }), []);
+    const data = useMemo(() => mock({ totalElements: 9875 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -536,8 +536,8 @@ export const Temp = () => {
                         <Group.Section>
                             <Grid
                                 {...g.grid}
-                                // data={data}
-                                data={pagingData}
+                                data={data}
+                                // data={pagingData}
                                 render={render}
                                 onCellClick={handler.onCellClick}
                                 onRowClick={handler.onRowClick}

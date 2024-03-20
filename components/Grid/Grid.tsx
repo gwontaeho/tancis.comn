@@ -634,6 +634,8 @@ const Row = memo((props: any) => {
 //     return <Button onClick={() => _grid.current._exportExcel()}>Export</Button>;
 // };
 
+const SHEET_COLUMNS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 const Table = (props: any) => {
     const { _grid, _headCells, _bodyCells, render } = props;
     const [exporting, setExporting] = useState(false);
@@ -651,61 +653,53 @@ const Table = (props: any) => {
         const ws = utils.table_to_sheet(ref);
         ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
 
-        // ws["A1"] = {};
-        // ws["A1"].s = { border: {} };
-        // ws["A1"].s.border.top = { color: "000000", style: "thin" };
-        // ws["A1"].s.border.left = { color: "000000", style: "thin" };
-        // ws["A1"].s.border.right = { color: "000000", style: "thin" };
+        const splited = ws["!ref"]?.split(":");
+        if (splited) {
+            const obj = SHEET_COLUMNS.split("").reduce((prev, curr, index) => {
+                return { ...prev, [curr]: index };
+            }, {});
 
-        // ws["A2"] = {};
-        // ws["A2"].s = { border: {} };
+            const [start, end] = splited;
+            const startCol = start.slice(0, 1) as keyof typeof obj;
+            const endCol = end.slice(0, 1) as keyof typeof obj;
 
-        // ws["A2"].s.border.bottom = { color: "000000", style: "thin" };
-        // ws["A2"].s.border.left = { color: "000000", style: "thin" };
-        // ws["A2"].s.border.right = { color: "000000", style: "thin" };
+            const startRow = start.slice(1);
+            const endRow = end.slice(1);
 
-        // ws["B2"] = {};
-        // ws["B2"].t = "z";
+            const gap = obj[startCol];
+            const colLength = obj[endCol] - obj[startCol] + 1;
+            const rowLength = Number(endRow) - Number(startRow) + 1;
 
-        // ws["B2"].s = { alignment: {}, border: {} };
-        // ws["B2"].s.border.top = { color: "000000", style: "thin" };
-        // ws["B2"].s.border.bottom = { color: "000000", style: "thin" };
-        // ws["B2"].s.border.left = { color: "000000", style: "thin" };
-        // ws["B2"].s.border.right = { color: "000000", style: "thin" };
-        // ws["B3"] = {};
-        // ws["B3"].t = "z";
-
-        // ws["B3"].s = { alignment: {}, border: {} };
-        // ws["B3"].s.border.top = { color: "000000", style: "thin" };
-        // ws["B3"].s.border.bottom = { color: "000000", style: "thin" };
-        // ws["B3"].s.border.left = { color: "000000", style: "thin" };
-        // ws["B3"].s.border.right = { color: "000000", style: "thin" };
-
-        // ws["D4"] = {};
-
-        // ws["D4"].s = { alignment: {}, border: {} };
-        // ws["D4"].s.border.bottom = { color: "000000", style: "thin" };
-
-        for (const cell in ws) {
-            if (ws[cell]?.t) {
-                ws[cell].s = { alignment: {}, border: {} };
-                ws[cell].s.border.top = { color: "000000", style: "thin" };
-                ws[cell].s.border.bottom = { color: "000000", style: "thin" };
-                ws[cell].s.border.left = { color: "000000", style: "thin" };
-                ws[cell].s.border.right = { color: "000000", style: "thin" };
-
-                if (ws[cell].t === "s") {
-                    ws[cell].s.alignment.vertical = "top";
-                }
-
-                if (ws[cell].v?.startsWith?.("th::")) {
-                    ws[cell].v = ws[cell].v.slice(4);
-                    ws[cell].s.font = { bold: true };
-                    ws[cell].s.fill = { fgColor: { rgb: "EBEFFA" } };
-                    ws[cell].s.alignment.vertical = "center";
-                    ws[cell].s.alignment.horizontal = "center";
+            const cellKeys = [];
+            for (let i = 0; i < colLength; i++) {
+                for (let j = 0; j < rowLength; j++) {
+                    cellKeys.push(SHEET_COLUMNS[i + gap] + (j + 1));
                 }
             }
+
+            cellKeys.forEach((key) => {
+                if (!ws[key]) ws[key] = { v: "" };
+                ws[key].s = { border: {} };
+                ws[key].s.border.top = { color: "000000", style: "thin" };
+                ws[key].s.border.left = { color: "000000", style: "thin" };
+                ws[key].s.border.top = { color: "000000", style: "thin" };
+                ws[key].s.border.right = { color: "000000", style: "thin" };
+                ws[key].s.border.bottom = { color: "000000", style: "thin" };
+
+                if (ws[key].t === "s") {
+                    ws[key].s.alignment = {};
+                    ws[key].s.alignment.vertical = "top";
+                }
+
+                if (ws[key].v?.startsWith?.("th::")) {
+                    ws[key].s.alignment = {};
+                    ws[key].v = ws[key].v.slice(4);
+                    ws[key].s.font = { bold: true };
+                    ws[key].s.fill = { fgColor: { rgb: "EBEFFA" } };
+                    ws[key].s.alignment.vertical = "center";
+                    ws[key].s.alignment.horizontal = "center";
+                }
+            });
         }
 
         const wb = utils.book_new();
