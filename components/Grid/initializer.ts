@@ -12,18 +12,16 @@ import { reducer, createInitialState } from "./reducer";
  * @returns
  */
 const useInitialize = (props: any) => {
-    const { _grid, data, render, onRowCheck, onRowSelect } = props;
-    if (_grid.current._render === undefined) {
-        _grid.current._render = render;
-    }
-    if (_grid.current._onRowCheck === undefined) {
-        _grid.current._onRowCheck = onRowCheck;
-    }
-    if (_grid.current._onRowSelect === undefined) {
-        _grid.current._onRowSelect = onRowSelect;
-    }
+    const { _grid, data, render, onRowClick, onCellClick, onRowCheck, onRowSelect, onPageChange, onSizeChange } = props;
 
     if (_grid.current._initialized === false) {
+        _grid.current._render = render;
+        _grid.current._onRowCheck = onRowCheck;
+        _grid.current._onRowSelect = onRowSelect;
+        _grid.current._onRowClick = onRowClick;
+        _grid.current._onCellClick = onCellClick;
+        _grid.current._onPageChange = onPageChange;
+        _grid.current._onSizeChange = onSizeChange;
     }
 
     const __t = data?.__t?.getTime();

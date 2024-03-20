@@ -315,7 +315,7 @@ export const Temp = () => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 9875 }), []);
+    const data = useMemo(() => mock({ totalElements: 64 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
