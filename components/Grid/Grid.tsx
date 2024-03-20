@@ -599,38 +599,38 @@ const Row = memo((props: any) => {
     );
 }, areEqual);
 
-const ImportButton = (props: any) => {
-    const { _grid } = props;
+// const ImportButton = (props: any) => {
+//     const { _grid } = props;
 
-    const [file, setFile] = useState<any>();
+//     const [file, setFile] = useState<any>();
 
-    // const handleClickSelect = async () => {
-    //     const excel = await _grid.current._selectExcel();
-    //     _grid.current._excel = excel;
-    //     setFile(excel);
-    // };
-    const handleClickImport = async () => {
-        console.log(await _grid.current._importExcel());
-    };
+//     // const handleClickSelect = async () => {
+//     //     const excel = await _grid.current._selectExcel();
+//     //     _grid.current._excel = excel;
+//     //     setFile(excel);
+//     // };
+//     const handleClickImport = async () => {
+//         console.log(await _grid.current._importExcel());
+//     };
 
-    return (
-        <div className="flex">
-            {/* <button className="bg-uf-blue px-3 rounded-l text-uf-white" onClick={handleClickSelect}>
-                <Icon icon="search" size="xs" />
-            </button> */}
-            <span className="px-1.5 items-center flex font-mono border-y min-w-[4rem]">{file?.name}</span>
-            <button className="bg-uf-blue px-3 rounded-r text-uf-white" onClick={handleClickImport}>
-                Import
-            </button>
-        </div>
-    );
-};
+//     return (
+//         <div className="flex">
+//             {/* <button className="bg-uf-blue px-3 rounded-l text-uf-white" onClick={handleClickSelect}>
+//                 <Icon icon="search" size="xs" />
+//             </button> */}
+//             <span className="px-1.5 items-center flex font-mono border-y min-w-[4rem]">{file?.name}</span>
+//             <button className="bg-uf-blue px-3 rounded-r text-uf-white" onClick={handleClickImport}>
+//                 Import
+//             </button>
+//         </div>
+//     );
+// };
 
-const ExportButton = (props: any) => {
-    const { _grid } = props;
+// const ExportButton = (props: any) => {
+//     const { _grid } = props;
 
-    return <Button onClick={() => _grid.current._exportExcel()}>Export</Button>;
-};
+//     return <Button onClick={() => _grid.current._exportExcel()}>Export</Button>;
+// };
 
 const Table = (props: any) => {
     const { _grid, _headCells, _bodyCells, render } = props;
@@ -681,22 +681,70 @@ const Table = (props: any) => {
             </thead>
             <tbody>
                 {_grid.current._content.map((row: any, rowIndex: any) => {
-                    return _bodyCells.map((cols: any) => {
+                    return _bodyCells.map((cols: any, colIndex: any) => {
                         return (
-                            <tr key={_grid.current._key + ".tbr." + rowIndex}>
+                            <tr key={_grid.current._key + ".tbr." + rowIndex + "." + colIndex}>
                                 {cols.map((cel: any, celIndex: any) => {
                                     if (!cel) return null;
+
+                                    const { binding, align, rowspan, colspan, edit, header, ...FORM } = cel;
+
+                                    const BINDING_VAL = row[binding];
+                                    const FORMATTED_VAL = comnUtils.getFormattedValue(BINDING_VAL, FORM);
+
+                                    const CELL_CONTEXT = {
+                                        binding,
+                                        rowValues: row,
+                                        value: BINDING_VAL,
+                                        formattedValue: FORMATTED_VAL,
+                                    };
+
+                                    const BG_COLORS = {
+                                        blue: "bg-[#bacee0]",
+                                        yellow: "bg-[#ffeb33]",
+                                        red: "bg-[#ed3e49]",
+                                    };
+
+                                    const TEXT_COLORS = {
+                                        blue: "text-[#bacee0]",
+                                        yellow: "text-[#ffeb33]",
+                                        red: "text-[#ed3e49]",
+                                    };
+
+                                    switch (FORM.type) {
+                                        case "daterange":
+                                        case "timerange":
+                                            {
+                                                const START_VAL = row[FORM.start.binding];
+                                                const END_VAL = row[FORM.end.binding];
+                                                FORM.start.type = FORM.type === "daterange" ? "date" : "time";
+                                                FORM.end.type = FORM.type === "daterange" ? "date" : "time";
+                                                FORM.start.value = comnUtils.getFormattedValue(START_VAL, FORM.start);
+                                                FORM.end.value = comnUtils.getFormattedValue(END_VAL, FORM.end);
+                                            }
+                                            break;
+                                        default:
+                                            {
+                                                FORM.value = FORMATTED_VAL;
+                                            }
+                                            break;
+                                    }
+                                    FORM.edit = false;
+                                    const Control = <FormControl {...FORM} />;
+
+                                    let cellContext: any = {};
+                                    const CustomCell = render?.cell?.[binding]?.(
+                                        { ...CELL_CONTEXT, control: Control },
+                                        cellContext,
+                                    );
+
                                     return (
                                         <td
                                             key={_grid.current._key + ".td." + rowIndex + "." + celIndex}
                                             rowSpan={cel.rowspan}
                                             colSpan={cel.colspan}
                                         >
-                                            {render?.cell?.[cel.binding]?.({
-                                                value: row[cel.binding],
-                                                rowValues: row,
-                                                binding: cel.binding,
-                                            }) || row[cel.binding]}
+                                            {CustomCell || Control}
                                         </td>
                                     );
                                 })}

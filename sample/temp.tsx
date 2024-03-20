@@ -191,8 +191,31 @@ const GRID_SCHEMA: TGridSchema = {
         // group: ["text"],
     },
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
-    head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
-    body: [{ cells: [{ binding: "number", type: "number" }] }, { cells: [{ binding: "text", type: "text" }] }],
+    head: [
+        { id: "test", cells: [{ rowspan: 2, binding: "number", width: 200 }] },
+        {
+            cells: [{ rowspan: 2, binding: "text", width: 200 }],
+        },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "text", width: 200, colspan: 2 },
+                { binding: "text", width: 200 },
+                { binding: "text", width: 200 },
+            ],
+        },
+    ],
+    body: [
+        {
+            colspan: 2,
+            cells: [
+                { colspan: 2, binding: "number", type: "number" },
+                { binding: "number", type: "number" },
+                { binding: "number", type: "number" },
+            ],
+        },
+        { colspan: 2, cells: [{ colspan: 2, rowspan: 2, binding: "text", type: "text" }] },
+    ],
 };
 
 const FORM_SCHEMA: TFormSchema = {
@@ -291,7 +314,7 @@ export const Temp = () => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 8 }), []);
+    const data = useMemo(() => mock({ totalElements: 987 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
