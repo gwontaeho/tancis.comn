@@ -1,6 +1,8 @@
 import { useCallback, useEffect, memo, useRef, useState } from "react";
 import classNames from "classnames";
-import { utils, writeFile } from "xlsx";
+// import { utils, writeFile } from "xlsx";
+import { utils, writeFile } from "xlsx-js-style";
+
 import { useTranslation } from "react-i18next";
 import { VariableSizeList as List, areEqual } from "react-window";
 
@@ -648,8 +650,21 @@ const Table = (props: any) => {
         if (!ref) return;
         const ws = utils.table_to_sheet(ref);
         ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
+        for (const cell in ws) {
+            if (ws[cell]?.t) {
+                if (ws[cell].v?.startsWith?.("th::")) {
+                    ws[cell].v = ws[cell].v.slice(4);
+                    ws[cell].s = { alignment: {} };
+                    ws[cell].s.font = { bold: true };
+                    ws[cell].s.fill = { fgColor: { rgb: "EBEFFA" } };
+                    ws[cell].s.alignment.vertical = "center";
+                    ws[cell].s.alignment.horizontal = "center";
+                }
+            }
+        }
+
         const wb = utils.book_new();
-        utils.book_append_sheet(wb, ws, "est");
+        utils.book_append_sheet(wb, ws, "Sheet");
         writeFile(wb, "SheetJSTable.xlsx");
         _grid.current._exporting = false;
         setExporting(false);
@@ -671,7 +686,7 @@ const Table = (props: any) => {
                                         rowSpan={cel.rowspan}
                                         colSpan={cel.colspan}
                                     >
-                                        {cel.binding}
+                                        th::{cel.binding}
                                     </th>
                                 );
                             })}
@@ -680,78 +695,85 @@ const Table = (props: any) => {
                 })}
             </thead>
             <tbody>
-                {_grid.current._content.map((row: any, rowIndex: any) => {
-                    return _bodyCells.map((cols: any, colIndex: any) => {
-                        return (
-                            <tr key={_grid.current._key + ".tbr." + rowIndex + "." + colIndex}>
-                                {cols.map((cel: any, celIndex: any) => {
-                                    if (!cel) return null;
+                {_grid.current._content
+                    .filter((_: any) => {
+                        return _.__type !== "deleted";
+                    })
+                    .map((row: any, rowIndex: any) => {
+                        return _bodyCells.map((cols: any, colIndex: any) => {
+                            return (
+                                <tr key={_grid.current._key + ".tbr." + rowIndex + "." + colIndex}>
+                                    {cols.map((cel: any, celIndex: any) => {
+                                        if (!cel) return null;
 
-                                    const { binding, align, rowspan, colspan, edit, header, ...FORM } = cel;
+                                        const { binding, align, rowspan, colspan, edit, header, ...FORM } = cel;
 
-                                    const BINDING_VAL = row[binding];
-                                    const FORMATTED_VAL = comnUtils.getFormattedValue(BINDING_VAL, FORM);
+                                        const BINDING_VAL = row[binding];
+                                        const FORMATTED_VAL = comnUtils.getFormattedValue(BINDING_VAL, FORM);
 
-                                    const CELL_CONTEXT = {
-                                        binding,
-                                        rowValues: row,
-                                        value: BINDING_VAL,
-                                        formattedValue: FORMATTED_VAL,
-                                    };
+                                        const CELL_CONTEXT = {
+                                            binding,
+                                            rowValues: row,
+                                            value: BINDING_VAL,
+                                            formattedValue: FORMATTED_VAL,
+                                        };
 
-                                    const BG_COLORS = {
-                                        blue: "bg-[#bacee0]",
-                                        yellow: "bg-[#ffeb33]",
-                                        red: "bg-[#ed3e49]",
-                                    };
+                                        const BG_COLORS = {
+                                            blue: "bg-[#bacee0]",
+                                            yellow: "bg-[#ffeb33]",
+                                            red: "bg-[#ed3e49]",
+                                        };
 
-                                    const TEXT_COLORS = {
-                                        blue: "text-[#bacee0]",
-                                        yellow: "text-[#ffeb33]",
-                                        red: "text-[#ed3e49]",
-                                    };
+                                        const TEXT_COLORS = {
+                                            blue: "text-[#bacee0]",
+                                            yellow: "text-[#ffeb33]",
+                                            red: "text-[#ed3e49]",
+                                        };
 
-                                    switch (FORM.type) {
-                                        case "daterange":
-                                        case "timerange":
-                                            {
-                                                const START_VAL = row[FORM.start.binding];
-                                                const END_VAL = row[FORM.end.binding];
-                                                FORM.start.type = FORM.type === "daterange" ? "date" : "time";
-                                                FORM.end.type = FORM.type === "daterange" ? "date" : "time";
-                                                FORM.start.value = comnUtils.getFormattedValue(START_VAL, FORM.start);
-                                                FORM.end.value = comnUtils.getFormattedValue(END_VAL, FORM.end);
-                                            }
-                                            break;
-                                        default:
-                                            {
-                                                FORM.value = FORMATTED_VAL;
-                                            }
-                                            break;
-                                    }
-                                    FORM.edit = false;
-                                    const Control = <FormControl {...FORM} />;
+                                        switch (FORM.type) {
+                                            case "daterange":
+                                            case "timerange":
+                                                {
+                                                    const START_VAL = row[FORM.start.binding];
+                                                    const END_VAL = row[FORM.end.binding];
+                                                    FORM.start.type = FORM.type === "daterange" ? "date" : "time";
+                                                    FORM.end.type = FORM.type === "daterange" ? "date" : "time";
+                                                    FORM.start.value = comnUtils.getFormattedValue(
+                                                        START_VAL,
+                                                        FORM.start,
+                                                    );
+                                                    FORM.end.value = comnUtils.getFormattedValue(END_VAL, FORM.end);
+                                                }
+                                                break;
+                                            default:
+                                                {
+                                                    FORM.value = FORMATTED_VAL;
+                                                }
+                                                break;
+                                        }
+                                        FORM.edit = false;
+                                        const Control = <FormControl {...FORM} />;
 
-                                    let cellContext: any = {};
-                                    const CustomCell = render?.cell?.[binding]?.(
-                                        { ...CELL_CONTEXT, control: Control },
-                                        cellContext,
-                                    );
+                                        let cellContext: any = {};
+                                        const CustomCell = render?.cell?.[binding]?.(
+                                            { ...CELL_CONTEXT, control: Control },
+                                            cellContext,
+                                        );
 
-                                    return (
-                                        <td
-                                            key={_grid.current._key + ".td." + rowIndex + "." + celIndex}
-                                            rowSpan={cel.rowspan}
-                                            colSpan={cel.colspan}
-                                        >
-                                            {CustomCell || Control}
-                                        </td>
-                                    );
-                                })}
-                            </tr>
-                        );
-                    });
-                })}
+                                        return (
+                                            <td
+                                                key={_grid.current._key + ".td." + rowIndex + "." + celIndex}
+                                                rowSpan={cel.rowspan}
+                                                colSpan={cel.colspan}
+                                            >
+                                                {CustomCell || Control}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            );
+                        });
+                    })}
             </tbody>
         </table>
     );
