@@ -24,7 +24,7 @@ type LayoutProps = {
  * @returns
  */
 export const Layout = (props: LayoutProps) => {
-    const { children, direction = "row", gap = 1, size, align = "start", valign = "start", height, hidden } = props;
+    const { children, direction = "row", gap = 1, size, align = "start", valign, height, hidden } = props;
 
     return (
         <div
@@ -35,7 +35,7 @@ export const Layout = (props: LayoutProps) => {
                 size && WIDTH[size],
                 DIRECTION[direction],
                 JUSTIFY_CONTENT[align],
-                ALIGN_ITEMS[valign],
+                valign && ALIGN_ITEMS[valign],
                 !hidden && "flex",
             )}
             style={{ height }}
