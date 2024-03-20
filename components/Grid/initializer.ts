@@ -13,6 +13,10 @@ import { reducer, createInitialState } from "./reducer";
  */
 const useInitialize = (props: any) => {
     const { _grid, data, render, onRowCheck, onRowSelect } = props;
+    if (_grid.current._initialized === false) {
+        // console.log("aa");
+    }
+
     if (_grid.current._render === undefined) {
         _grid.current._render = render;
     }

@@ -25,10 +25,7 @@ export type TGridRender = {
     head?: any;
 };
 
-/**
- * # Grid
- */
-export const Grid = (props: {
+type GridProps = {
     _grid?: any;
     data?: any;
     render?: any;
@@ -38,7 +35,12 @@ export const Grid = (props: {
     onRowSelect?: any;
     onPageChange?: any;
     onSizeChange?: any;
-}) => {
+};
+
+/**
+ * # Grid
+ */
+export const Grid = (props: GridProps) => {
     const { _grid, render, onCellClick, onRowClick, onPageChange, onSizeChange } = props;
 
     const { t } = useTranslation();

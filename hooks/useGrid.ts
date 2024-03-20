@@ -229,7 +229,7 @@ export const useGrid = (props: UseGridProps): UseGridReturn => {
             page: 0,
             size: 10,
             setSchema: (schema) => {
-                _grid.current = getRef(schema, _paging, _sizing);
+                _grid.current = { ..._grid.current, ...getRef(schema, _paging, _sizing) };
                 _grid.current._initialized = true;
                 _grid.current._setSchema();
             },
