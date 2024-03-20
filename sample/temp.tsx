@@ -187,7 +187,8 @@ const GRID_SCHEMA: TGridSchema = {
         // edit: true,
         importExcel: true,
         exportExcel: true,
-        pagination: "in",
+        // pagination: "in",
+        pagination: "out",
         // group: ["text"],
     },
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
@@ -314,7 +315,7 @@ export const Temp = () => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 8 }), []);
+    const data = useMemo(() => mock({ totalElements: 88 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -336,7 +337,7 @@ export const Temp = () => {
         }
     };
 
-    const testRef = useRef();
+    const testRef = useRef<any>(null);
 
     const zjvl = async () => {};
     const zjvl2 = async () => {};
@@ -411,7 +412,7 @@ export const Temp = () => {
             <Button onClick={test}>asd</Button>
             <Button onClick={zjvl}>zjvl</Button>
             <Button onClick={zjvl2}>zjvl2</Button>
-            <Button onClick={() => g.setSchema(GRID_SCHEMA)}>setschema</Button>
+            {/* <Button onClick={() => g.setSchema(GRID_SCHEMA)}>setschema</Button> */}
             <Layout>
                 <Group>
                     <Group.Header></Group.Header>
@@ -535,7 +536,8 @@ export const Temp = () => {
                         <Group.Section>
                             <Grid
                                 {...g.grid}
-                                data={data}
+                                // data={data}
+                                data={pagingData}
                                 render={render}
                                 onCellClick={handler.onCellClick}
                                 onRowClick={handler.onRowClick}
