@@ -94,7 +94,6 @@ const SF_FORM: TFormSchema = {
             label: "Company Declare Code",
             popupSize: "md",
         },
-
         field14: {
             type: "code",
             area: "orgDeptCd",
@@ -216,6 +215,12 @@ const SF_FORM: TFormSchema = {
             label: "Customs Officers Code",
             popupSize: "md",
         },
+        field34: {
+            type: "code",
+            area: "carrCd",
+            label: "Carrier Code",
+            popupSize: "md",
+        },
     },
 };
 
@@ -240,6 +245,7 @@ export const SampleFormControlCode = () => {
             { area: "prcssStatCd" },
             { area: "orgCd" },
             { area: "wrhsCd" },
+            { area: "carrCd" },
             { area: "coDclaCd" },
             { area: "orgDeptCd" },
             { area: "cstmCd" },
@@ -374,6 +380,13 @@ export const SampleFormControlCode = () => {
                                 <Group.Label label="보세창고 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/wrhsCdPpup</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.field34}></Group.Control>
+                                <Group.Label label="운송사 코드"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/carrCdPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
@@ -644,7 +657,6 @@ const Sample = () => {
                 
                 popupSize: "md",
             },
-    
             field14: {
                 type: "code",
                 area: "orgDeptCd",
@@ -776,6 +788,13 @@ const Sample = () => {
                 label: "Digit3 Country Code",
                 popupSize: "md",
             },
+            field34: {
+                type: "code",
+                area: "carrCd",
+                label: "Carrier Code",
+                
+                popupSize: "md",
+            },
         },
     };
     
@@ -797,6 +816,7 @@ const Sample = () => {
                 { area: "prcssStatCd" },
                 { area: "orgCd" },
                 { area: "wrhsCd" },
+                { area: "carrCd" },
                 { area: "coDclaCd" },
                 { area: "orgDeptCd" },
                 { area: "cstmCd" },
@@ -913,6 +933,13 @@ const Sample = () => {
                         <Group.Label label="보세창고 코드"></Group.Label>
                         <Group.Col>
                             <Group.Any>/comn/comn/ppup/wrhsCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field34}></Group.Control>
+                        <Group.Label label="운송사 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/carrCdPpup</Group.Any>
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>

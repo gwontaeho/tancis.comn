@@ -13,6 +13,7 @@ import { CompanyCodeList } from "@/comn/comn/code/CoCdLst";
 import { ProcessingStatusCodeList } from "@/comn/comn/code/PrcssStatCdLst";
 import { OrganizationCodeList } from "@/comn/comn/code/OrgCdLst";
 import { WrhsCodeList } from "@/comn/comn/code/WrhsCdLst";
+import { CarrCodeList } from "@/comn/comn/code/CarrCdLst";
 import { VehicleUseCodeList } from "@/comn/comn/code/VhclUseCdLst";
 import { OrganizationDepartmentCodeList } from "@/comn/comn/code/OrgDeptCdLst";
 import { VehicleBodyCodeList } from "@/comn/comn/code/VhclBodyCdLst";
@@ -65,6 +66,7 @@ export const ComnMain = () => {
             <Route path="/ppup/prcssStatPpup" element={<ProcessingStatusCodeList />} />
             <Route path="/ppup/orgCdPpup" element={<OrganizationCodeList />} />
             <Route path="/ppup/wrhsCdPpup" element={<WrhsCodeList />} />
+            <Route path="/ppup/carrCdPpup" element={<CarrCodeList />} />
             <Route path="/ppup/coDclaCdPpup" element={<CompanyDeclareCodeList />} />
             <Route path="/ppup/orgDeptCdPpup" element={<OrganizationDepartmentCodeList />} />
             <Route path="/ppup/cstmCdPpup" element={<CustomsCodeList />} />

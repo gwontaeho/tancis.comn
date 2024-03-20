@@ -51,6 +51,7 @@ export const comnEnvs = {
         prcssStat: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/prcssStatPpup`,
         orgCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/orgCdPpup`,
         wrhsCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/wrhsCdPpup`,
+        carrCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/carrCdPpup`,
         coDclaCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/coDclaCdPpup`,
         orgDeptCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/orgDeptCdPpup`,
         cstmCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/cstmCdPpup`,
@@ -450,6 +451,9 @@ export const comnUtils = {
             case "wrhsCd":
                 url = `/api/v1/ptli/intptl/comnppup/wrhs?coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}&cstmOfceCd=${cstmOfceCd}`;
                 break;
+            case "carrCd":
+                url = `/api/v1/ptli/intptl/comnppup/carr?coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}&cstmOfceCd=${cstmOfceCd}`;
+                break;
             case "test":
                 url = `/api/v1/ptli/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
                 break;
@@ -566,6 +570,8 @@ export const comnUtils = {
                 return code.orgNm;
             case "wrhsCd":
                 return code.wrhsNm;
+            case "carrCd":
+                return code.carrNm;
             case "coDclaCd":
                 return code.coNm;
             case "orgDeptCd":
@@ -641,6 +647,8 @@ export const comnUtils = {
             case "orgCd":
                 return code.orgCd;
             case "wrhsCd":
+                return code.coDclaCd;
+            case "carrCd":
                 return code.coDclaCd;
             case "coDclaCd":
                 return code.coDclaCd;
