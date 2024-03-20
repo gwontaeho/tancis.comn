@@ -44,14 +44,6 @@ export type TGridSchema = {
         colspan?: number;
         cells: (FormControlProps & {
             header?: string;
-            /** validation */
-            min?: any;
-            max?: any;
-            minLength?: any;
-            maxLength?: any;
-            required?: any;
-            pattern?: any;
-            validate?: any;
             /** */
             binding?: string;
             colspan?: number;
@@ -63,7 +55,7 @@ export type TGridSchema = {
 
 type TRow = Record<string, any> & {
     __key: string;
-    __type: "origin" | "updated" | "deleted";
+    __type: "origin" | "updated" | "deleted" | "added";
 };
 
 type UseGridProps = {
@@ -78,99 +70,94 @@ export const useGrid = (props: UseGridProps) => {
     const [_page, _setPage] = React.useState(page);
     const [_size, _setSize] = React.useState(size);
 
-    const _grid = React.useRef<any>(null);
-    if (_grid.current === null) {
-        const { options = {}, head, body, group } = defaultSchema;
+    const { options = {}, head, body, group } = defaultSchema;
+    const _grid = React.useRef<any>({
+        _initialized: false,
+        _queue: [],
 
-        _grid.current = {
-            _initialized: false,
-            _queue: [],
+        _defaultSchema: defaultSchema,
+        _key: uuid(),
 
-            _defaultSchema: defaultSchema,
-            _key: uuid(),
+        _page,
+        _size,
+        _setPage,
+        _setSize,
 
-            _page,
-            _size,
-            _setPage,
-            _setSize,
+        _data: null,
+        _origin: [],
+        _content: [],
+        _view: [],
+        _originTotalCount: 0,
+        _totalCount: 0,
+        _sort: {},
+        _rect: [],
+        _checked: [],
+        _groupStatus: {},
+        _selectedRow: null,
+        _selectedCel: null,
+        _editingRow: [],
 
-            _data: null,
-            _origin: [],
-            _content: [],
-            _view: [],
-            _originTotalCount: 0,
-            _totalCount: 0,
-            _sort: {},
-            _rect: [],
-            _checked: [],
-            _groupStatus: {},
-            _selectedRow: null,
-            _selectedCel: null,
-            _editingRow: [],
+        _add: options.add,
+        _edit: options.edit,
+        _index: options.index,
+        _radio: options.radio,
+        _delete: options.delete,
+        _checkbox: options.checkbox,
+        _pagination: options.pagination,
+        _exportExcel: options.exportExcel,
+        _importExcel: options.importExcel,
+        _autoHeight: options.height === "auto",
+        _height: options.height === "auto" ? 0 : options.height || 400,
+        _cols: head.length,
 
-            _add: options.add,
-            _edit: options.edit,
-            _index: options.index,
-            _radio: options.radio,
-            _delete: options.delete,
-            _checkbox: options.checkbox,
-            _pagination: options.pagination,
-            _exportExcel: options.exportExcel,
-            _importExcel: options.importExcel,
-            _autoHeight: options.height === "auto",
-            _height: options.height === "auto" ? 0 : options.height || 400,
-            _cols: head.length,
+        _group: Array.isArray(options.group)
+            ? options.group.reduce((p: any, c: any, seq: any) => {
+                  return { ...p, [c]: { seq } };
+              }, {})
+            : {},
+        _rule: defaultSchema.body
+            .flatMap(({ cells }: any) => cells)
+            .reduce((prev: any, curr: any) => {
+                const ary = getValidationArray(curr);
+                if (ary.length) prev[curr.binding] = ary;
+                return prev;
+            }, {}),
+        _head: head.map((_: any) => {
+            const show = _.show === true ? true : _.show === false ? false : true;
+            const cells = _.cells.map((__: any) => {
+                return { ...__, show };
+            });
+            return { ..._, show, cells };
+        }),
+        _body: body.map((_: any, i: any) => {
+            const col = head[i];
+            const id = col?.id;
+            const show = col?.show;
 
-            _group: Array.isArray(options.group)
-                ? options.group.reduce((p: any, c: any, seq: any) => {
-                      return { ...p, [c]: { seq } };
-                  }, {})
-                : {},
-            _rule: defaultSchema.body
-                .flatMap(({ cells }: any) => cells)
-                .reduce((prev: any, curr: any) => {
-                    const ary = getValidationArray(curr);
-                    if (ary.length) prev[curr.binding] = ary;
-                    return prev;
-                }, {}),
-            _head: head.map((_: any) => {
-                const show = _.show === true ? true : _.show === false ? false : true;
-                const cells = _.cells.map((__: any) => {
-                    return { ...__, show };
-                });
-                return { ..._, show, cells };
-            }),
-            _body: body.map((_: any, i: any) => {
-                const col = head[i];
-                const id = col?.id;
-                const show = col?.show;
-
-                const cells = _.cells.map((__: any) => {
-                    const edit =
-                        __.edit === true
+            const cells = _.cells.map((__: any) => {
+                const edit =
+                    __.edit === true
+                        ? true
+                        : __.edit === false
+                          ? false
+                          : _.edit === true
                             ? true
-                            : __.edit === false
+                            : _.edit === false
                               ? false
-                              : _.edit === true
+                              : options?.edit === true
                                 ? true
-                                : _.edit === false
-                                  ? false
-                                  : options?.edit === true
-                                    ? true
-                                    : false;
-                    return { ...__, id, show, edit };
-                });
-                return { ..._, id, show, cells };
-            }),
-            _groupSchema: group,
-        };
-
-        _grid.current._exec = (fn: any) => {
+                                : false;
+                return { ...__, id, show, edit };
+            });
+            return { ..._, id, show, cells };
+        }),
+        _groupSchema: group,
+        _exec: (fn: any) => {
             if (_grid.current._initialized === false) {
                 _grid.current._queue.push(fn);
             } else return fn();
-        };
-    }
+        },
+    });
 
     /* SET */
     const setData = (data: any) => {

@@ -191,8 +191,31 @@ const GRID_SCHEMA: TGridSchema = {
         // group: ["text"],
     },
     // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
-    head: [{ id: "test", cells: [{ binding: "number", width: 200 }] }, { cells: [{ binding: "text", width: 200 }] }],
-    body: [{ cells: [{ binding: "number", type: "number" }] }, { cells: [{ binding: "text", type: "text" }] }],
+    head: [
+        { id: "test", cells: [{ rowspan: 2, binding: "number", width: 200 }] },
+        {
+            cells: [{ rowspan: 2, binding: "text", width: 200 }],
+        },
+        {
+            colspan: 2,
+            cells: [
+                { binding: "text", width: 200, colspan: 2 },
+                { binding: "text", width: 200 },
+                { binding: "text", width: 200 },
+            ],
+        },
+    ],
+    body: [
+        {
+            colspan: 2,
+            cells: [
+                { colspan: 2, binding: "number", type: "number" },
+                { binding: "number", type: "number" },
+                { binding: "number", type: "number" },
+            ],
+        },
+        { colspan: 2, cells: [{ colspan: 2, rowspan: 2, binding: "text", type: "text" }] },
+    ],
 };
 
 const FORM_SCHEMA: TFormSchema = {
@@ -281,6 +304,7 @@ export const Temp = () => {
     });
 
     const [count, setRender] = useState(0);
+    const [count2, setRender2] = useState(0);
 
     const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED" } });
 
@@ -290,7 +314,7 @@ export const Temp = () => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 8 }), []);
+    const data = useMemo(() => mock({ totalElements: 987 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -319,6 +343,9 @@ export const Temp = () => {
 
     const r = () => {
         setRender((prev) => ++prev);
+    };
+    const r2 = () => {
+        setRender2((prev) => ++prev);
     };
 
     const render = {
@@ -379,6 +406,7 @@ export const Temp = () => {
 
     return (
         <Page>
+            <Button onClick={r2}>render2</Button>
             <Button onClick={r}>render</Button>
             <Button onClick={test}>asd</Button>
             <Button onClick={zjvl}>zjvl</Button>
@@ -857,7 +885,7 @@ export const Temp = () => {
                         <Button>111</Button>
                         <Button>111</Button>
                     </Layout>
-                    <Abc />
+                    <Abc count={count} />
                 </Layout>
             </Layout>
         </Page>
@@ -900,7 +928,7 @@ const CHAT_DATA = [
     },
 ];
 
-const Abc = memo(() => {
+const Abc = memo(({ count }: any) => {
     console.log("a");
     return <div></div>;
 });
