@@ -366,7 +366,10 @@ export const SampleFormControlCode = () => {
                             <Group.Row>
                                 <Group.Control
                                     {...form.schema.field12}
-                                    popupParams={{ coDclaTpCd: ["WT", "WI", "TO"] }}
+                                    popupParams={{
+                                        wrhsOprtTpCd: ["WT", "WI", "TO"],
+                                        cstmOfceCd: ["TZDL"],
+                                    }}
                                 ></Group.Control>
                                 <Group.Label label="보세창고 코드"></Group.Label>
                                 <Group.Col>

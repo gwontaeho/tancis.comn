@@ -100,6 +100,10 @@ export const WrhsCodeList = (props: any) => {
             console.log(params.wrhsOprtTpCd);
             form.wrhsCdSrch.setValue("wrhsOprtTpCd", params.wrhsOprtTpCd);
         }
+        if (params?.cstmOfceCd) {
+            console.log(params.cstmOfceCd);
+            form.wrhsCdSrch.setValue("cstmOfceCd", params.cstmOfceCd);
+        }
         handler.click_Btn_Srch();
         /* * */
         if (params?.multiple === true) {
