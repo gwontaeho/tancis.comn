@@ -74,7 +74,16 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         const o = { mask, exact, letterCase, imemode };
         const [_value, _setValue] = React.useState<any>(formatText(value, o));
         const position = React.useRef<Array<number>>([-1, -1]);
-        const _apply = React.useRef<boolean>(false);
+        const _change = React.useRef<boolean>(false);
+        const _key = React.useRef<boolean>(false);
+        const _capture = React.useRef<Array<any>>([]);
+
+        const setCapture = (evt: any) => {
+            if (_capture.current.length >= 3) {
+                _capture.current.shift();
+            }
+            _capture.current[_capture.current.length] = evt;
+        };
 
         const setPosition = (start: number, end: number) => {
             position.current = [start, end];
@@ -87,96 +96,35 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const _temp = formatText(e.target.value, o);
-            /*
-            if (_temp !== e.target.value) {
-                let _s = e.target.selectionStart;
-                let _e = e.target.selectionEnd;
-
-                if (value.length > _temp.length) {
-                    //setPosition(i + 1, i + 1);
-                    //_apply.current = true;
-                } else {
-                    for (let i = 0; i < value.length; i++) {
-                        if (value.charAt(i) !== _temp.charAt(i)) {
-                            console.log("change", i, value, _temp);
-                            setPosition(i + 1, i + 1);
-                            _apply.current = true;
-                            break;
-                        }
-                    }
-                }
-                //setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
-                //_apply.current = true;
-            } else {
-                //setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
-                //_apply.current = true;
-            }
-            //console.log(e.target.);
-            //console.log(e.target.selectionStart);
-            */
 
             _setValue(_temp);
             if (onChange) {
                 onChange(_temp);
             }
-            //console.log(e.target.selectionStart, e.target.selectionEnd);
 
-            setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
-            _apply.current = true;
-
-            //setPosition(e.target.selectionStart || 0, e.target.selectionEnd || 0);
+            setCapture({ e: "change", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
 
         const handleDown = (e: any) => {
-            //console.log(e.target.selectionStart);
-            /*
-            if (e.code === "Backspace" && o.mask) {
-                if (e.target.selectionStart <= 0) return;
-                setPosition(e.target.selectionStart - 1, e.target.selectionEnd - 1);
-                _apply.current = true;
+            if ((e.code === "Backspace" || e.code === "Delete") && o.mask) {
+                _key.current = true;
             }
-            */
+
+            setCapture({ e: "down", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
 
         const handleSelect = (e: any) => {
-            //console.log(1);
-            if (_apply.current === true) {
-                e.target.setSelectionRange(position.current[0], position.current[1]);
-            } else {
-                e.target.setSelectionRange(e.target.selectionStart, e.target.selectionEnd);
+            //console.log(_capture.current?.[0].e, _capture.current?.[0].start, _capture.current?.[0].end);
+            //console.log(_capture.current?.[1]?.e, _capture.current?.[1]?.start, _capture.current?.[1]?.end);
+            if (_capture.current?.[1]?.e === "select") {
+            } else if (_capture.current?.[1]?.e === "change" && _key.current === true) {
+                e.target.setSelectionRange(_capture.current[1].start, _capture.current[1].end);
             }
-            _apply.current = false;
-            /*
-            if (_apply.current === true) {
-                e.target.setSelectionRange(position.current[0], position.current[1]);
-            }
-            */
+            _key.current = false;
+            setCapture({ e: "select", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
         const handleSelectCapture = (e: any) => {
-            if (_apply.current !== true) {
-                setPosition(position.current[0], position.current[1]);
-            } else {
-                setPosition(e.target.selectionStart, e.target.selectionEnd);
-            }
-            //e.target.setSelectionRange(e.target.selectionStart, e.target.selectionEnd);
-            /*
-            if (_apply.current === true) {
-                //setPosition(e.target.selectionStart, e.target.selectionEnd);
-                //e.target.setSelectionRange(position.current[0], position.current[1]);
-                _apply.current = false;
-            } else {
-                //console.log(1);
-                setPosition(e.target.selectionStart, e.target.selectionEnd);
-                //e.target.setSelectionRange(e.target.selectionStart, e.target.selectionEnd);
-                //e.target.setSelectionRange(position.current[0], position.current[1]);
-            }
-            */
-            //e.target.setSelectionRange(position.current[0], position.current[1]);
-            /*
-            if (_apply.current === true) {
-                e.target.setSelectionRange(position.current[0], position.current[1]);
-            }
-            */
+            setCapture({ e: "selectCapture", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
 
         return (
