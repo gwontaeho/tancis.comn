@@ -650,11 +650,56 @@ const Table = (props: any) => {
         if (!ref) return;
         const ws = utils.table_to_sheet(ref);
         ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
+
+        // ws["A1"] = {};
+        // ws["A1"].s = { border: {} };
+        // ws["A1"].s.border.top = { color: "000000", style: "thin" };
+        // ws["A1"].s.border.left = { color: "000000", style: "thin" };
+        // ws["A1"].s.border.right = { color: "000000", style: "thin" };
+
+        // ws["A2"] = {};
+        // ws["A2"].s = { border: {} };
+
+        // ws["A2"].s.border.bottom = { color: "000000", style: "thin" };
+        // ws["A2"].s.border.left = { color: "000000", style: "thin" };
+        // ws["A2"].s.border.right = { color: "000000", style: "thin" };
+
+        // ws["B2"] = {};
+        // ws["B2"].t = "z";
+
+        // ws["B2"].s = { alignment: {}, border: {} };
+        // ws["B2"].s.border.top = { color: "000000", style: "thin" };
+        // ws["B2"].s.border.bottom = { color: "000000", style: "thin" };
+        // ws["B2"].s.border.left = { color: "000000", style: "thin" };
+        // ws["B2"].s.border.right = { color: "000000", style: "thin" };
+        // ws["B3"] = {};
+        // ws["B3"].t = "z";
+
+        // ws["B3"].s = { alignment: {}, border: {} };
+        // ws["B3"].s.border.top = { color: "000000", style: "thin" };
+        // ws["B3"].s.border.bottom = { color: "000000", style: "thin" };
+        // ws["B3"].s.border.left = { color: "000000", style: "thin" };
+        // ws["B3"].s.border.right = { color: "000000", style: "thin" };
+
+        // ws["D4"] = {};
+
+        // ws["D4"].s = { alignment: {}, border: {} };
+        // ws["D4"].s.border.bottom = { color: "000000", style: "thin" };
+
         for (const cell in ws) {
             if (ws[cell]?.t) {
+                ws[cell].s = { alignment: {}, border: {} };
+                ws[cell].s.border.top = { color: "000000", style: "thin" };
+                ws[cell].s.border.bottom = { color: "000000", style: "thin" };
+                ws[cell].s.border.left = { color: "000000", style: "thin" };
+                ws[cell].s.border.right = { color: "000000", style: "thin" };
+
+                if (ws[cell].t === "s") {
+                    ws[cell].s.alignment.vertical = "top";
+                }
+
                 if (ws[cell].v?.startsWith?.("th::")) {
                     ws[cell].v = ws[cell].v.slice(4);
-                    ws[cell].s = { alignment: {} };
                     ws[cell].s.font = { bold: true };
                     ws[cell].s.fill = { fgColor: { rgb: "EBEFFA" } };
                     ws[cell].s.alignment.vertical = "center";
