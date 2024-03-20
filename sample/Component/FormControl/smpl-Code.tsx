@@ -101,7 +101,6 @@ const SF_FORM: TFormSchema = {
             label: "Company Declare Code",
             popupSize: "md",
         },
-
         field14: {
             type: "code",
             area: "orgDeptCd",
@@ -223,6 +222,12 @@ const SF_FORM: TFormSchema = {
             label: "Customs Officers Code",
             popupSize: "md",
         },
+        field34: {
+            type: "code",
+            area: "carrCd",
+            label: "Carrier Code",
+            popupSize: "md",
+        },
     },
 };
 
@@ -247,6 +252,7 @@ export const SampleFormControlCode = () => {
             { area: "prcssStatCd" },
             { area: "orgCd" },
             { area: "wrhsCd" },
+            { area: "carrCd" },
             { area: "coDclaCd" },
             { area: "orgDeptCd" },
             { area: "cstmCd" },
@@ -380,7 +386,10 @@ export const SampleFormControlCode = () => {
                             <Group.Row>
                                 <Group.Control
                                     {...form.schema.field12}
-                                    popupParams={{ coDclaTpCd: ["WT", "WI", "TO"] }}
+                                    popupParams={{
+                                        wrhsOprtTpCd: ["WT", "WI", "TO"],
+                                        cstmOfceCd: ["TZDL"],
+                                    }}
                                 ></Group.Control>
                                 <Group.Label label="보세창고 코드"></Group.Label>
                                 <Group.Col>
@@ -388,10 +397,20 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
+                                <Group.Control {...form.schema.field34}></Group.Control>
+                                <Group.Label label="운송사 코드"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/carrCdPpup</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
                                 <Group.Control
                                     {...form.schema.field13}
                                     callback={(data) => {
                                         console.log(data);
+                                    }}
+                                    popupParams={{
+                                        coDclaTpCd: ["AL","BK"],
                                     }}
                                 ></Group.Control>
                                 <Group.Label label="업체신고 코드"></Group.Label>
@@ -652,7 +671,6 @@ const Sample = () => {
                 
                 popupSize: "md",
             },
-    
             field14: {
                 type: "code",
                 area: "orgDeptCd",
@@ -784,6 +802,13 @@ const Sample = () => {
                 label: "Digit3 Country Code",
                 popupSize: "md",
             },
+            field34: {
+                type: "code",
+                area: "carrCd",
+                label: "Carrier Code",
+                
+                popupSize: "md",
+            },
         },
     };
     
@@ -805,6 +830,7 @@ const Sample = () => {
                 { area: "prcssStatCd" },
                 { area: "orgCd" },
                 { area: "wrhsCd" },
+                { area: "carrCd" },
                 { area: "coDclaCd" },
                 { area: "orgDeptCd" },
                 { area: "cstmCd" },
@@ -924,7 +950,22 @@ const Sample = () => {
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control {...form.schema.field13}></Group.Control>
+                        <Group.Control {...form.schema.field34}></Group.Control>
+                        <Group.Label label="운송사 코드"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/carrCdPpup</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control
+                            {...form.schema.field13}
+                            callback={(data) => {
+                                console.log(data);
+                            }}
+                            popupParams={{
+                                coDclaTpCd: ["AL","BK"],
+                            }}
+                        ></Group.Control>
                         <Group.Label label="업체신고 코드"></Group.Label>
                         <Group.Col>
                             <Group.Any>/comn/comn/ppup/coDclaCdPpup</Group.Any>

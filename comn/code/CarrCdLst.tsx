@@ -6,8 +6,8 @@ import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, usePopup, useStore, useToast, useGrid, useModal } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_WRHS_CD_SRCH, SCHEMA_GRID_WRHS_CD } from "./services/ComnCdService";
 
-export const WrhsCodeList = (props: any) => {
-    const pgeUid = "wrhsCdLst";
+export const CarrCodeList = (props: any) => {
+    const pgeUid = "carrCdLst";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();

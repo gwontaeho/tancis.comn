@@ -17,6 +17,7 @@ export const APIS = {
             keyword: data.coDclaCd,
             keywordName: data.wrhsNm,
             wrhsOprtTpCd: data.wrhsOprtTpCd,
+            cstmOfceCd: data.cstmOfceCd,
         });
     },
 
@@ -1207,6 +1208,8 @@ export const SCHEMA_FORM_WRHS_CD_SRCH: TFormSchema = {
     schema: {
         coDclaCd: { type: "text", label: "L_WRHS_CD" },
         wrhsNm: { type: "text", label: "L_WRHS_NM" },
+        wrhsOprtTpCd: { type: "text" },
+        cstmOfceCd: { type: "text" },
     },
 };
 
@@ -1219,13 +1222,8 @@ export const SCHEMA_FORM_CO_DCLA_CD_SRCH: TFormSchema = {
             all: true,
             type: "checkbox",
             label: "L_CO_DCLA_TP_CD",
-            options: [
-                { label: "L_AE", value: "AE" },
-                { label: "L_AIR", value: "AL" },
-                { label: "L_CT", value: "CT" },
-                { label: "L_FF", value: "FF" },
-                { label: "L_WE", value: "WE" },
-            ],
+            area: "comnCd",
+            comnCd: "COM0011"
         },
     },
 };
@@ -1257,7 +1255,6 @@ export const SCHEMA_FORM_CSTM_CD_SRCH: TFormSchema = {
             ],
         },
     },
-
 };
 export const SCHEMA_FORM_CSTM_OFCR_CD_SRCH: TFormSchema = {
     id: "form",

@@ -300,6 +300,10 @@ export const ComnRoutes = [
                                 to: "/comn/comn/ppup/wrhsCdPpup",
                             },
                             {
+                                name: "Carrier Code Popup",
+                                to: "/comn/comn/ppup/carrCdPpup",
+                            },
+                            {
                                 name: "Company Detail Code Popup",
                                 to: "/comn/comn/ppup/coDtlCdPpup",
                             },
