@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useAuth, useModal } from "@/comn/hooks";
+import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useAuth, useModal, useResource } from "@/comn/hooks";
 import { BASE, APIS, SCHEMA_FORM_CO_DCLA_CD_SRCH, SCHEMA_GRID_CO_DCLA_CD } from "./services/ComnCdService";
 
 export const CompanyDeclareCodeList = (props: any) => {
@@ -14,6 +14,12 @@ export const CompanyDeclareCodeList = (props: any) => {
     const modal = useModal();
     const { close, postMessage, getParams } = usePopup();
     const params = getParams(); /* * */
+
+    useResource({
+        defaultSchema: [
+            { area: "comnCd", comnCd: "COM0011" },
+        ],
+    });
 
     const form = {
         coDclaCdSrch: useForm({
@@ -124,10 +130,10 @@ export const CompanyDeclareCodeList = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.coDclaCdSrch.schema.coTin}></Group.Control>
-                                <Group.Control {...form.coDclaCdSrch.schema.coDclaTpCd}></Group.Control>
+                                <Group.Control {...form.coDclaCdSrch.schema.coNm}></Group.Control>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control {...form.coDclaCdSrch.schema.coNm} controlSize={10}></Group.Control>
+                                <Group.Control {...form.coDclaCdSrch.schema.coDclaTpCd} controlSize={10}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">

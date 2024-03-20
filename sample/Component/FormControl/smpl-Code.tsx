@@ -382,6 +382,9 @@ export const SampleFormControlCode = () => {
                                     callback={(data) => {
                                         console.log(data);
                                     }}
+                                    popupParams={{
+                                        coDclaTpCd: ["AL","BK"],
+                                    }}
                                 ></Group.Control>
                                 <Group.Label label="업체신고 코드"></Group.Label>
                                 <Group.Col>
@@ -913,7 +916,15 @@ const Sample = () => {
                         </Group.Col>
                     </Group.Row>
                     <Group.Row>
-                        <Group.Control {...form.schema.field13}></Group.Control>
+                        <Group.Control
+                            {...form.schema.field13}
+                            callback={(data) => {
+                                console.log(data);
+                            }}
+                            popupParams={{
+                                coDclaTpCd: ["AL","BK"],
+                            }}
+                        ></Group.Control>
                         <Group.Label label="업체신고 코드"></Group.Label>
                         <Group.Col>
                             <Group.Any>/comn/comn/ppup/coDclaCdPpup</Group.Any>

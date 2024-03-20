@@ -1222,13 +1222,8 @@ export const SCHEMA_FORM_CO_DCLA_CD_SRCH: TFormSchema = {
             all: true,
             type: "checkbox",
             label: "L_CO_DCLA_TP_CD",
-            options: [
-                { label: "L_AE", value: "AE" },
-                { label: "L_AIR", value: "AL" },
-                { label: "L_CT", value: "CT" },
-                { label: "L_FF", value: "FF" },
-                { label: "L_WE", value: "WE" },
-            ],
+            area: "comnCd",
+            comnCd: "COM0011"
         },
     },
 };
