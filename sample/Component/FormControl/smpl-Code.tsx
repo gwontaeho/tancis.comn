@@ -19,6 +19,13 @@ const SF_FORM: TFormSchema = {
             area: "cityCd",
             label: "Region Code",
             popupSize: "md",
+            exact: false,
+        },
+        field100: {
+            type: "code",
+            area: "cityCd",
+            label: "Region Code",
+            popupSize: "md",
         },
         field2: {
             type: "code",
@@ -281,6 +288,13 @@ export const SampleFormControlCode = () => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.schema.field1}></Group.Control>
+                                <Group.Label label="지역 코드"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/cityCdPpup</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.field100}></Group.Control>
                                 <Group.Label label="지역 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/cityCdPpup</Group.Any>

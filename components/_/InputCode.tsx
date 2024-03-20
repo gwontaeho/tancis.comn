@@ -111,7 +111,6 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
             disabled,
             maxLength,
             placeholder,
-            onBlur,
             onFocus,
         }).filter(([, value]) => value !== undefined),
     );
@@ -121,6 +120,8 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
     const o = useOptions({ comnCd, area, options, excludes, includes, filter });
     const [_value, _setValue] = useState<string>(formatCode(value));
     const [autoCompleteOpen, setAutoCompleteOpen] = useState(false);
+    const __autoCompleteCount = useRef<number>(0);
+    const __target = useRef<any>(null);
 
     useEffect(() => {
         if (value === _value) return;
@@ -146,9 +147,16 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                     _setValue(vv.value);
                     if (onChange) onChange(vv.value);
                 } else {
-                    if (exact !== false && v.length > 1 && v.length === maxLength) {
+                    if (exact !== false && __autoCompleteCount.current <= 0) {
                         _setValue("");
                         if (onChange) onChange("");
+                    } else if (exact !== false && __target.current !== null) {
+                        _setValue("");
+                        if (onChange) onChange("");
+                        __target.current = null;
+                    } else {
+                        _setValue(v);
+                        if (onChange) onChange(v);
                     }
                 }
             }
@@ -187,6 +195,18 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
         setAutoCompleteOpen(true);
     };
 
+    const handleBlur = (e: any) => {
+        __target.current = e.relatedTarget;
+        if (__target.current !== null) {
+            setAutoCompleteOpen(false);
+            getValueFromOptions(formatCode(e.target.value), o);
+        }
+
+        if (onBlur) {
+            onBlur(e);
+        }
+    };
+
     const _label = o.options.find((option) => option.value === value)?.label;
 
     const autoComplete = o.options.filter((_) => {
@@ -196,6 +216,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                 _.label?.toUpperCase().includes(_value.toUpperCase()))
         );
     });
+    __autoCompleteCount.current = autoComplete.length;
 
     return (
         <div className="w-full">
@@ -215,6 +236,7 @@ export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {
                         value={_value}
                         onChange={handleChange}
                         onClick={handleClick}
+                        onBlur={handleBlur}
                         autoComplete="off"
                         className={"input rounded-r-none flex-1" + comnUtils.getEditStyle(editColor, editBold)}
                     />

@@ -12,6 +12,7 @@ const sch1: TGridSchema = {
         checkbox: true,
         pagination: "in",
         height: 300,
+        group: ["text"],
     },
     head: [
         {

@@ -68,6 +68,7 @@ export const SampleFormControlBasic = () => {
             label: {
                 label: "Label(label)",
                 type: "text",
+
                 onChange: (v: any) => {
                     form.setSchema("control", { label: v });
                 },
