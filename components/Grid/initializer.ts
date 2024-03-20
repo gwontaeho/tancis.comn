@@ -201,7 +201,6 @@ const useInitialize = (props: any) => {
                                 : [..._grid.current._editingRow, { key, edit: value }];
                         }
                     }
-                    console.log(_grid.current._editingRow);
                     break;
                 }
                 case "rowCell": {
@@ -220,7 +219,6 @@ const useInitialize = (props: any) => {
                                 : [..._grid.current._editingRow, { key: rowKey, edit: value, cell }];
                         }
                     }
-                    console.log(_grid.current._editingRow);
                     break;
                 }
             }
@@ -421,10 +419,6 @@ const useInitialize = (props: any) => {
             dispatch({ type: "setSchema", payload: { _grid } });
         };
 
-        // _grid.current._scrollToRow = (row: any) => {
-        //     _grid.current._listRef.scrollToItem(row, "center");
-        // };
-
         _grid.current._validate = () => {
             const _head = _grid.current._head;
             const _body = _grid.current._body;
@@ -552,63 +546,3 @@ const useInitialize = (props: any) => {
 };
 
 export { useInitialize };
-
-const getValidationArray = (o: any) => {
-    return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"]
-        .map((type) => {
-            if (!o[type]) return;
-
-            let value;
-            let message;
-
-            if (typeof o[type] === "object") {
-                if (o[type].hasOwnProperty("value")) {
-                    value = o[type].value;
-                } else value = o[type];
-
-                if (o[type].hasOwnProperty("message")) {
-                    message = o[type].message;
-                }
-            } else {
-                value = o[type];
-            }
-
-            if (!message) {
-                switch (type) {
-                    case "required":
-                        if (o[type] === "string") message = o[type];
-                        else message = "msg.com.00005";
-                        break;
-                    case "min":
-                        message = "msg.com.00006";
-                        break;
-                    case "max":
-                        message = "msg.com.00007";
-                        break;
-                    case "minLength":
-                        message = "msg.com.00008";
-                        break;
-                    case "maxLength":
-                        message = "msg.com.00009";
-                        break;
-                    case "pattern":
-                        message = "msg.com.00010";
-                        break;
-                    case "validate":
-                        message = "msg.com.00011";
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            if (type === "area") {
-                value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
-                message = "msg.com.00017";
-                type = "resource";
-            }
-
-            return { type, value, message };
-        })
-        .filter(Boolean);
-};
