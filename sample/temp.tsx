@@ -931,6 +931,5 @@ const CHAT_DATA = [
 ];
 
 const Abc = memo(({ count }: any) => {
-    console.log("a");
     return <div></div>;
 });

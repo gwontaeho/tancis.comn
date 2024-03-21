@@ -37,59 +37,23 @@ type GridProps = {
     onSizeChange?: any;
 };
 
+// const Initializer = (props: GridProps) => {
+
+//     return <Grid />;
+// };
+
 /**
  * # Grid
  */
-export const Grid = (props: GridProps) => {
-    const { _grid, render, onCellClick, onRowClick, onPageChange, onSizeChange } = props;
+export const Grid = memo((props: GridProps) => {
+    // console.log("grid render");
+    const { _grid, render } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 
     const _state = { ...state, _test: state._test.length ? state._test : [{ __type: "empty" }] };
     const { _head, _body, _options, _checked, _page, _size, _totalItemCount, _sort, _test, _groupSchema } = _state;
-
-    const headRef = useCallback((ref: any) => {
-        if (!ref) return;
-        _grid.current._headRef = ref;
-    }, []);
-    const listRef = useCallback((ref: any) => {
-        if (!ref) return;
-        _grid.current._listRef = ref;
-    }, []);
-    const listInnerRef = useCallback((ref: any) => {
-        if (!ref) return;
-        _grid.current._listInner = ref;
-    }, []);
-    const listOuterRef = useCallback((ref: any) => {
-        if (!ref) return;
-        _grid.current._listOuter = ref;
-        ref.onscroll = (event: any) => {
-            _grid.current._headRef.scrollTo({ left: event.currentTarget.scrollLeft });
-        };
-    }, []);
-
-    const onItemsRendered = useCallback(() => {
-        if (!_grid.current._autoHeight) return;
-        _grid.current._readjustHeight?.();
-    }, []);
-    const itemSize = useCallback((index: any) => {
-        return _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0;
-    }, []);
-    const handleChangePage = useCallback(
-        (next: any) => {
-            _grid.current._handlePage(next);
-            if (onPageChange) onPageChange(next);
-        },
-        [onPageChange],
-    );
-    const handleChangeSize = useCallback(
-        (next: any) => {
-            _grid.current._handleSize(next);
-            if (onSizeChange) onSizeChange(next);
-        },
-        [onSizeChange],
-    );
 
     const _headCells = fun(_head);
     const _bodyCells = fun(_body);
@@ -156,7 +120,14 @@ export const Grid = (props: GridProps) => {
             {/* Grid Main */}
             <div className="uf-grid-main break-all">
                 {/* Head */}
-                <div ref={headRef} className="uf-grid-head relative">
+                <div
+                    ref={(ref) => {
+                        if (!ref) return;
+                        if (_grid.current._headRef) return;
+                        _grid.current._headRef = ref;
+                    }}
+                    className="uf-grid-head relative"
+                >
                     {!!Object.keys(_grid.current._group).length && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
@@ -230,11 +201,30 @@ export const Grid = (props: GridProps) => {
 
                 {/* Body */}
                 <List
-                    ref={listRef}
-                    innerRef={listInnerRef}
-                    outerRef={listOuterRef}
-                    onItemsRendered={onItemsRendered}
-                    itemSize={itemSize}
+                    ref={(ref) => {
+                        if (!ref) return;
+                        if (_grid.current._listRef) return;
+                        _grid.current._listRef = ref;
+                    }}
+                    innerRef={(ref) => {
+                        if (!ref) return;
+                        if (_grid.current._listInner) return;
+                        _grid.current._listInner = ref;
+                    }}
+                    outerRef={(ref) => {
+                        if (!ref) return;
+                        if (_grid.current._listOuter) return;
+                        _grid.current._listOuter = ref;
+                    }}
+                    onItemsRendered={() => {
+                        if (!_grid.current._autoHeight) return;
+                        _grid.current._readjustHeight?.();
+                    }}
+                    itemSize={(index) => {
+                        return (
+                            _grid.current._rect[index]?.["height"] + 1 || _grid.current._rect[0]?.["height"] + 1 || 0
+                        );
+                    }}
                     itemCount={_test.length}
                     height={_options.height}
                     width="100%"
@@ -245,8 +235,6 @@ export const Grid = (props: GridProps) => {
                         _groupCells,
                         _template,
                         render,
-                        onCellClick,
-                        onRowClick,
                     }}
                 >
                     {Row}
@@ -258,8 +246,14 @@ export const Grid = (props: GridProps) => {
                 <Pagination
                     page={_page}
                     size={_size}
-                    onChangePage={handleChangePage}
-                    onChangeSize={handleChangeSize}
+                    onChangePage={(next) => {
+                        _grid.current._handlePage(next);
+                        if (_grid.current._onPageChange) _grid.current._onPageChange(next);
+                    }}
+                    onChangeSize={(next) => {
+                        _grid.current._handleSize(next);
+                        if (_grid.current.onSizeChange) _grid.current.onSizeChange(next);
+                    }}
                     totalCount={_totalItemCount}
                 />
             )}
@@ -267,12 +261,12 @@ export const Grid = (props: GridProps) => {
             <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} render={render} />
         </div>
     );
-};
+});
 
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, _state, render, onCellClick, onRowClick, _bodyCells, _template, _groupCells } = data;
+    const { _grid, _state, render, _bodyCells, _template, _groupCells } = data;
     const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow, _page, _size } = _state;
 
     const row = _test[index];
@@ -387,7 +381,7 @@ const Row = memo((props: any) => {
                 <div
                     ref={rowRefCallback}
                     onClick={() => {
-                        if (onRowClick) onRowClick(row);
+                        if (_grid.current._onRowClick) _grid.current._onRowClick(row);
                     }}
                     className={classNames(
                         "flex w-full min-w-full gap-[1px] border-l bg-uf-border",
@@ -560,7 +554,6 @@ const Row = memo((props: any) => {
                                     _grid.current._handleClickCel({
                                         ...CELL_CONTEXT,
                                         key: celKey,
-                                        onCellClick,
                                     });
                                 };
 
