@@ -105,7 +105,7 @@ export const CityCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -121,7 +121,7 @@ export const CityCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.regnNm });
+                                modal.postMessage({ code: value, label: rowValues.regnNm });
                                 close();
                             }}
                         >

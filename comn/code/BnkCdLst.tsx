@@ -68,7 +68,7 @@ export const BankCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -84,7 +84,7 @@ export const BankCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.cdVldValNm });
+                                modal.postMessage({ code: value, label: rowValues.cdVldValNm });
                                 close();
                             }}
                         >

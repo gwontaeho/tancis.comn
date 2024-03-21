@@ -74,7 +74,7 @@ export const CompanyDeclareCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -90,7 +90,7 @@ export const CompanyDeclareCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: rowValues.coDclaCd, label: rowValues.coNm, data: rowValues });
+                                modal.postMessage({ code: rowValues.coDclaCd, label: rowValues.coNm, data: rowValues });
                                 close();
                             }}
                         >

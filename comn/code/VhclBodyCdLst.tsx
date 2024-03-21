@@ -67,7 +67,7 @@ export const VehicleBodyCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -82,7 +82,7 @@ export const VehicleBodyCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.vhclBodyTpNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclBodyTpNm });
                                 close();
                             }}
                         >
