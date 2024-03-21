@@ -196,6 +196,9 @@ const Component = memo((props: any) => {
                         if (!ref) return;
                         if (_grid.current._listOuter) return;
                         _grid.current._listOuter = ref;
+                        ref.onscroll = (event: any) => {
+                            _grid.current._headRef.scrollTo({ left: event.currentTarget.scrollLeft });
+                        };
                     }}
                     onItemsRendered={() => {
                         if (!_grid.current._autoHeight) return;
