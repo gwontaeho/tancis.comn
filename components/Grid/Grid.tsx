@@ -243,21 +243,23 @@ const Component = memo((props: any) => {
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, _state } = data;
     const {
-        _test,
-        _options,
-        _checked,
-        _selectedRow,
-        _selectedCel,
-        _totalCount,
-        _editingRow,
-        _page,
-        _size,
-        _body,
-        _group,
-        _template,
-    } = _state;
+        _grid,
+        _state: {
+            _test,
+            _options,
+            _checked,
+            _selectedRow,
+            _selectedCel,
+            _totalCount,
+            _editingRow,
+            _page,
+            _size,
+            _body,
+            _group,
+            _template,
+        },
+    } = data;
 
     const row = _test[index];
     const rowKey = row?.__key;

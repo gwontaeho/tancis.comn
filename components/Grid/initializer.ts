@@ -490,24 +490,21 @@ const useInitialize = (props: any) => {
                     const wb = read(buffer);
                     const ws = wb.Sheets[wb.SheetNames[0]];
 
-                    if (arg?.bindingColumn) {
-                        const raw = utils.sheet_to_json(ws, { header: "A" }).map(({ __rowNum__, ..._ }: any) => {
-                            let next: any = {};
-                            for (const column in arg.bindingColumn) {
-                                if (_[column]) {
-                                    next[arg.bindingColumn[column]] = _[column];
-                                }
-                            }
-
-                            return next;
-                        });
-
-                        resolve(raw);
-                    } else {
-                        const raw = utils.sheet_to_json(ws).map(({ __rowNum__, ..._ }: any) => _);
-                        const header = raw.shift() || {};
-                        resolve(raw);
+                    const bindingColumn: any = {};
+                    for (const cell of _grid.current._body.flatMap(({ cells }: any) => cells)) {
+                        if (cell.excel && cell.binding) {
+                            bindingColumn[cell.binding] = cell.excel;
+                        }
                     }
+                    const raw = utils.sheet_to_json(ws, { header: "A" }).map(({ __rowNum__, ..._ }: any) => {
+                        const next = { ...bindingColumn };
+                        for (const col in next) {
+                            next[col] = _[next[col]];
+                        }
+                        return next;
+                    });
+
+                    resolve(raw);
                 };
                 input.click();
             });

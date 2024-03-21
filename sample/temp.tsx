@@ -209,13 +209,9 @@ const GRID_SCHEMA: TGridSchema = {
     body: [
         {
             colspan: 2,
-            cells: [
-                { colspan: 2, binding: "number", type: "number" },
-                { binding: "number", type: "number" },
-                { binding: "number", type: "number" },
-            ],
+            cells: [{ colspan: 2, binding: "number", type: "number", excel: "A" }],
         },
-        { colspan: 2, cells: [{ colspan: 2, rowspan: 2, binding: "text", type: "text" }] },
+        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "B" }] },
     ],
 };
 
@@ -757,20 +753,7 @@ export const Temp = () => {
                                     <button onClick={() => g.exportExcel()}>Export</button>
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <button
-                                        onClick={async () =>
-                                            console.log(
-                                                await g.importExcel({
-                                                    bindingColumn: {
-                                                        A: "text",
-                                                        B: "number",
-                                                    },
-                                                }),
-                                            )
-                                        }
-                                    >
-                                        Import
-                                    </button>
+                                    <button onClick={async () => console.log(await g.importExcel())}>Import</button>
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => g.clearData()}>Clear</button>
