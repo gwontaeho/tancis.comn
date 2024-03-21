@@ -1,6 +1,46 @@
 import { v4 as uuid } from "uuid";
 import lodash from "lodash";
 
+const makeTemplate = (_head: any) => {
+    let w = Array(_head[0].length);
+    for (let i = 0; i < _head.length; i++) {
+        for (let j = 0; j < _head[i].length; j++) {
+            if (w[j] === undefined) w[j] = 100;
+            if (_head[i]?.[j]?.width !== undefined && _head[i]?.[j]?.colspan !== undefined) {
+                for (let k = j; k <= j + _head[i]?.[j]?.colspan; k++) {
+                    if (k < _head[0].length) {
+                        w[k] = _head[i]?.[j]?.width / _head[i]?.[j]?.colspan;
+                    }
+                }
+            }
+            if (_head[i]?.[j]?.width !== undefined && _head[i]?.[j]?.colspan === undefined) {
+                w[j] = _head[i]?.[j].width;
+            }
+            if (_head[i]?.[j]?.show === false) {
+                w[j] = null;
+            }
+        }
+    }
+    return w
+        .filter((_: any) => _)
+        .map((_: any) => {
+            if (typeof _ === "number") {
+                return `${_}px`;
+            }
+            if (typeof _ === "string") {
+                if (_.endsWith("*")) {
+                    let t: any = _.slice(0, -1) || 1;
+                    return `minmax( ${t * 100}px , ${t}fr)`;
+                }
+
+                if (_.endsWith("%")) {
+                    return _;
+                }
+            }
+        })
+        .join(" ");
+};
+
 const fun = (schema: any) => {
     let t = [];
 
@@ -237,8 +277,8 @@ const group = (_grid: any, content: any) => {
     };
 
     return {
-        c: getGroupedContent(content, groups[0], 0),
-        v: getGroupedView(
+        groupedContent: getGroupedContent(content, groups[0], 0),
+        groupedView: getGroupedView(
             content
                 .map((_: any) => {
                     const __context = {};
@@ -276,9 +316,9 @@ const getView = (_grid: any) => {
     let itemCount;
 
     if (Object.keys(_grid.current._group).length) {
-        const { c, v } = group(_grid, _grid.current._content);
-        content = c;
-        view = v;
+        const { groupedContent, groupedView } = group(_grid, _grid.current._content);
+        content = groupedContent;
+        view = groupedView;
     } else {
         content = _grid.current._content;
         view = content
@@ -334,4 +374,153 @@ const getView = (_grid: any) => {
     _grid.current._totalItemCount = itemCount;
 };
 
-export { getView, validateValue, fun };
+const getRef = (schema: any, paging: any, sizing: any) => {
+    const { options = {}, head, body, group } = schema;
+    const [_page, _setPage] = paging;
+    const [_size, _setSize] = sizing;
+
+    return {
+        _initialized: false,
+        _queue: [],
+
+        _defaultSchema: schema,
+        _key: uuid(),
+
+        _page,
+        _size,
+        _setPage,
+        _setSize,
+
+        _data: null,
+        _origin: [],
+        _content: [],
+        _view: [],
+        _totalCount: 0,
+        _originTotalCount: 0,
+        _sort: {},
+        _rect: [],
+        _checked: [],
+        _groupStatus: {},
+        _selectedRow: null,
+        _selectedCel: null,
+        _editingRow: [],
+
+        _add: options.add,
+        _edit: options.edit,
+        _index: options.index,
+        _radio: options.radio,
+        _delete: options.delete,
+        _checkbox: options.checkbox,
+        _pagination: options.pagination,
+        _exportExcel: options.exportExcel,
+        _importExcel: options.importExcel,
+        _autoHeight: options.height === "auto",
+        _height: options.height === "auto" ? 0 : options.height || 400,
+        _cols: head.length,
+
+        _group: Array.isArray(options.group)
+            ? options.group.reduce((p: any, c: any, seq: any) => {
+                  return { ...p, [c]: { seq } };
+              }, {})
+            : {},
+        _rule: body
+            .flatMap(({ cells }: any) => cells)
+            .reduce((prev: any, curr: any) => {
+                const ary = getValidationArray(curr);
+                if (ary.length) prev[curr.binding] = ary;
+                return prev;
+            }, {}),
+        _head: head.map((_: any) => {
+            const show = _.show === true ? true : _.show === false ? false : true;
+            const cells = _.cells.map((__: any) => {
+                return { ...__, show };
+            });
+            return { ..._, show, cells };
+        }),
+        _body: body.map((_: any, i: any) => {
+            const col = head[i];
+            const id = col?.id;
+            const show = col?.show;
+
+            const cells = _.cells.map((__: any) => {
+                const edit =
+                    __.edit === true
+                        ? true
+                        : __.edit === false
+                          ? false
+                          : _.edit === true
+                            ? true
+                            : _.edit === false
+                              ? false
+                              : options?.edit === true
+                                ? true
+                                : false;
+                return { ...__, id, show, edit };
+            });
+            return { ..._, id, show, cells };
+        }),
+        _groupSchema: group,
+    };
+};
+
+const getValidationArray = (o: any) => {
+    return ["required", "min", "max", "minLength", "maxLength", "pattern", "validate", "area"]
+        .map((type) => {
+            if (!o[type]) return;
+
+            let value;
+            let message;
+
+            if (typeof o[type] === "object") {
+                if (o[type].hasOwnProperty("value")) {
+                    value = o[type].value;
+                } else value = o[type];
+
+                if (o[type].hasOwnProperty("message")) {
+                    message = o[type].message;
+                }
+            } else {
+                value = o[type];
+            }
+
+            if (!message) {
+                switch (type) {
+                    case "required":
+                        if (o[type] === "string") message = o[type];
+                        else message = "msg.com.00005";
+                        break;
+                    case "min":
+                        message = "msg.com.00006";
+                        break;
+                    case "max":
+                        message = "msg.com.00007";
+                        break;
+                    case "minLength":
+                        message = "msg.com.00008";
+                        break;
+                    case "maxLength":
+                        message = "msg.com.00009";
+                        break;
+                    case "pattern":
+                        message = "msg.com.00010";
+                        break;
+                    case "validate":
+                        message = "msg.com.00011";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (type === "area") {
+                value = o[type] + (o.comnCd ? ":" + o.comnCd : "");
+                message = "msg.com.00017";
+                type = "resource";
+            }
+
+            return { type, value, message };
+        })
+        .filter(Boolean);
+};
+
+export { getView, validateValue, fun, makeTemplate, getValidationArray, getRef };

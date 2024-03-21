@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useLayoutEffect } from "react";
+import { useReducer, useEffect } from "react";
 import lodash from "lodash";
 import { read, utils } from "xlsx";
 import { v4 as uuid } from "uuid";
@@ -12,29 +12,10 @@ import { reducer, createInitialState } from "./reducer";
  * @returns
  */
 const useInitialize = (props: any) => {
-    const { _grid, data, render, onRowClick, onCellClick, onRowCheck, onRowSelect, onPageChange, onSizeChange } = props;
+    const { _grid } = props;
+    const [state, dispatch] = useReducer(reducer, { _grid }, createInitialState);
 
     if (_grid.current._initialized === false) {
-        _grid.current._render = render;
-        _grid.current._onRowCheck = onRowCheck;
-        _grid.current._onRowSelect = onRowSelect;
-        _grid.current._onRowClick = onRowClick;
-        _grid.current._onCellClick = onCellClick;
-        _grid.current._onPageChange = onPageChange;
-        _grid.current._onSizeChange = onSizeChange;
-    }
-
-    const __t = data?.__t?.getTime();
-    const [state, dispatch] = useReducer(reducer, { _grid, data }, createInitialState);
-
-    useEffect(() => {
-        if (!_grid.current._initialized) return;
-        if (!Array.isArray(data?.content)) return;
-        if (data.content.length === 0 && _grid.current._content?.length === 0) return;
-        _grid.current._setData(data);
-    }, [__t]);
-
-    useEffect(() => {
         /* Set data  */
         _grid.current._setData = (data: any) => {
             if (!Array.isArray(data?.content)) return;
@@ -284,9 +265,9 @@ const useInitialize = (props: any) => {
         };
         /* Handle Click Cell */
         _grid.current._handleClickCel = (payload: any) => {
-            const { key, binding, value, formattedValue, rowValues, onCellClick } = payload;
-            if (onCellClick)
-                onCellClick({
+            const { key, binding, value, formattedValue, rowValues } = payload;
+            if (_grid.current._onCellClick)
+                _grid.current._onCellClick({
                     binding,
                     value,
                     formattedValue,
@@ -334,7 +315,7 @@ const useInitialize = (props: any) => {
                 let checkedContent;
 
                 if (_grid.current._render?.checkbox) {
-                    checkedContent = _grid.current._view.filter((_: any) => render?.checkbox(_));
+                    checkedContent = _grid.current._view.filter((_: any) => _grid.current._render?.checkbox(_));
                 } else {
                     checkedContent = _grid.current._view;
                 }
@@ -509,24 +490,21 @@ const useInitialize = (props: any) => {
                     const wb = read(buffer);
                     const ws = wb.Sheets[wb.SheetNames[0]];
 
-                    if (arg?.bindingColumn) {
-                        const raw = utils.sheet_to_json(ws, { header: "A" }).map(({ __rowNum__, ..._ }: any) => {
-                            let next: any = {};
-                            for (const column in arg.bindingColumn) {
-                                if (_[column]) {
-                                    next[arg.bindingColumn[column]] = _[column];
-                                }
-                            }
-
-                            return next;
-                        });
-
-                        resolve(raw);
-                    } else {
-                        const raw = utils.sheet_to_json(ws).map(({ __rowNum__, ..._ }: any) => _);
-                        const header = raw.shift() || {};
-                        resolve(raw);
+                    const bindingColumn: any = {};
+                    for (const cell of _grid.current._body.flatMap(({ cells }: any) => cells)) {
+                        if (cell.excel && cell.binding) {
+                            bindingColumn[cell.binding] = cell.excel;
+                        }
                     }
+                    const raw = utils.sheet_to_json(ws, { header: "A" }).map(({ __rowNum__, ..._ }: any) => {
+                        const next = { ...bindingColumn };
+                        for (const col in next) {
+                            next[col] = _[next[col]];
+                        }
+                        return next;
+                    });
+
+                    resolve(raw);
                 };
                 input.click();
             });
@@ -537,8 +515,7 @@ const useInitialize = (props: any) => {
             _grid.current._queue.forEach((fn: any) => fn());
         }
         _grid.current._initialized = true;
-        return () => {};
-    }, []);
+    }
 
     return { state, dispatch };
 };

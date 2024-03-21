@@ -1,26 +1,21 @@
 import { v4 as uuid } from "uuid";
-import { getView } from "./utils";
+import { getView, fun, makeTemplate } from "./utils";
 
 /**
  * ## State Initializer
  * @param param0
  * @returns
  */
-const createInitialState = ({ _grid, data }: any) => {
-    if (Array.isArray(data?.content)) {
-        _grid.current._data = data;
-        const origin = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-        _grid.current._origin = origin;
-        _grid.current._content = origin;
-        getView(_grid);
-        _grid.current._originTotalCount = _grid.current._totalCount;
-    }
+const createInitialState = ({ _grid }: any) => {
+    const _head = fun(_grid.current._head);
+    const _template = makeTemplate(_head);
 
     return {
         _cols: _grid.current._head.length,
-        _head: _grid.current._head,
-        _body: _grid.current._body,
-        _groupSchema: _grid.current._groupSchema,
+        _head,
+        _template,
+        _body: fun(_grid.current._body),
+        _group: _grid.current._groupSchema && fun(_grid.current._groupSchema),
         _test: _grid.current._view,
         _totalCount: _grid.current._totalCount,
         _totalItemCount: _grid.current._totalItemCount,
@@ -127,21 +122,21 @@ const reducer = (prev: any, action: any) => {
         /* Set edit */
         case "setEdit": {
             const { _grid } = action.payload;
-            next._body = _grid.current._body;
+            next._body = fun(_grid.current._body);
             next._editingRow = _grid.current._editingRow;
             return next;
         }
         /* Set show */
         case "setShow": {
             const { _grid } = action.payload;
-            next._head = _grid.current._head;
-            next._body = _grid.current._body;
+            next._head = fun(_grid.current._head);
+            next._body = fun(_grid.current._body);
             return next;
         }
         /* Set Option */
         case "setOption": {
             const { _grid, target } = action.payload;
-            next._body = _grid.current._body;
+            next._body = fun(_grid.current._body);
             next._options[target] = _grid.current[`_${target}`];
             return next;
         }

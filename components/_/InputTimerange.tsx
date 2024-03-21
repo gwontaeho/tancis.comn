@@ -43,10 +43,10 @@ const RANGE_BUTTON_OPTIONS: RangeButtonOptionType[][] = [
         { label: "+3H", unit: "h", value: 3 },
     ],
     [
-        { label: "1D", unit: "d", value: 1 },
-        { label: "-1W", unit: "w", value: -1 },
-        { label: "-1M", unit: "M", value: -1 },
         { label: "-3M", unit: "M", value: -3 },
+        { label: "-1M", unit: "M", value: -1 },
+        { label: "-1W", unit: "w", value: -1 },
+        { label: "1D", unit: "d", value: 1 },
     ],
     [
         { label: "-3H", unit: "h", value: -3 },

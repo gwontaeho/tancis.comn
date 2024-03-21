@@ -15,6 +15,7 @@ import {
     Accordion,
     Table,
     Text,
+    Pdf,
 } from "@/comn/components";
 
 import lodash from "lodash";
@@ -209,13 +210,9 @@ const GRID_SCHEMA: TGridSchema = {
     body: [
         {
             colspan: 2,
-            cells: [
-                { colspan: 2, binding: "number", type: "number" },
-                { binding: "number", type: "number" },
-                { binding: "number", type: "number" },
-            ],
+            cells: [{ colspan: 2, binding: "number", type: "number", excel: "A" }],
         },
-        { colspan: 2, cells: [{ colspan: 2, rowspan: 2, binding: "text", type: "text" }] },
+        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "B" }] },
     ],
 };
 
@@ -351,22 +348,22 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            // if (data.text === "Maru") {
-            //     context.backgroundColor = "red";
-            // }
+            if (data.text === "Maru") {
+                context.backgroundColor = "red";
+            }
 
-            // if (data.text === "Sam") {
-            //     context.backgroundColor = "blue";
-            // }
-            // if (data.text === "Ken") {
-            //     context.backgroundColor = "yellow";
-            // }
+            if (data.text === "Sam") {
+                context.backgroundColor = "blue";
+            }
+            if (data.text === "Ken") {
+                context.backgroundColor = "yellow";
+            }
 
             return true;
         },
-        // checkbox: (data: any) => {
-        //     return data.__type === "added";
-        // },
+        checkbox: (data: any) => {
+            return data.__type === "added";
+        },
 
         cell: {
             text: (data: any, context: any) => {
@@ -757,20 +754,7 @@ export const Temp = () => {
                                     <button onClick={() => g.exportExcel()}>Export</button>
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <button
-                                        onClick={async () =>
-                                            console.log(
-                                                await g.importExcel({
-                                                    bindingColumn: {
-                                                        A: "text",
-                                                        B: "number",
-                                                    },
-                                                }),
-                                            )
-                                        }
-                                    >
-                                        Import
-                                    </button>
+                                    <button onClick={async () => console.log(await g.importExcel())}>Import</button>
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => g.clearData()}>Clear</button>
@@ -890,6 +874,8 @@ export const Temp = () => {
                     <Abc count={count} />
                 </Layout>
             </Layout>
+
+            <Pdf />
         </Page>
     );
 };
@@ -931,6 +917,5 @@ const CHAT_DATA = [
 ];
 
 const Abc = memo(({ count }: any) => {
-    console.log("a");
     return <div></div>;
 });

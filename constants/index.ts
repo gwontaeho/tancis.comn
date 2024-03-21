@@ -41,6 +41,12 @@ export const DATETIME_FORMAT_DAYJS = {
     tz: "DD/MM/YYYY HH:mm",
 };
 
+export const DATETIMESECOND_FORMAT_DAYJS = {
+    ko: "YYYY-MM-DD HH:mm:ss",
+    en: "DD/MM/YYYY HH:mm:ss",
+    tz: "DD/MM/YYYY HH:mm:ss",
+};
+
 export default {
     DATE_LOCALE,
     DATE_FORMAT,
@@ -52,4 +58,5 @@ export default {
     TIME_FORMAT_DAYJS,
     DATETIME_FORMAT_INPUT,
     DATETIME_FORMAT_DAYJS,
+    DATETIMESECOND_FORMAT_DAYJS,
 };
