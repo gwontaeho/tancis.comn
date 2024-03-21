@@ -452,7 +452,7 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/wrhs?coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}&cstmOfceCd=${cstmOfceCd}`;
                 break;
             case "carrCd":
-                url = `/api/v1/ptli/intptl/comnppup/carr?coDclaCd=${keyword}&wrhsNm=${keywordName}&wrhsOprtTpCd=${wrhsOprtTpCd}&cstmOfceCd=${cstmOfceCd}`;
+                url = `/api/v1/ptli/intptl/comnppup/carr?coDclaCd=${keyword}&carrNm=${keywordName}`;
                 break;
             case "test":
                 url = `/api/v1/ptli/intptl/comnppup/dorg?orgTpCd=01&orgCd=${keyword}&orgNm=${keywordName}`;
