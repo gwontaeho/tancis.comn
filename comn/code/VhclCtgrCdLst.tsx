@@ -68,7 +68,7 @@ export const VehicleCategoryCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -83,7 +83,7 @@ export const VehicleCategoryCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.vhclCtgrNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclCtgrNm });
                                 close();
                             }}
                         >

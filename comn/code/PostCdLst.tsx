@@ -103,7 +103,7 @@ export const PostCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -123,7 +123,7 @@ export const PostCodeList = (props: any) => {
                                 console.log(rowValues);
                                 console.log(rowValues.regnPostNm);
 
-                                postMessage({
+                                modal.postMessage({
                                     code: value,
                                     label:
                                         rowValues.wardPostNm +
