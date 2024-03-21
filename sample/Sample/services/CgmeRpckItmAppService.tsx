@@ -178,6 +178,7 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
             comnCd: "CGM0055",
             all: true,
             viewType: "both",
+            defaultValue: ["NA", "AP", "AR", "ER"],
         },
         text: { type: "text" },
         check: { type: "checkbox", options: [{ label: "Y", value: "Y" }] },

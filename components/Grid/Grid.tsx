@@ -9,6 +9,7 @@ import { Button, FormControl, Pagination, Icon, IconButton } from "@/comn/compon
 import { comnUtils } from "@/comn/utils";
 import { validateValue, fun, getView } from "./utils";
 import { useInitialize } from "./initializer";
+import { t } from "i18next";
 
 type TGridCell = Record<string, any>;
 type TGridRow = Record<string, any>;
@@ -637,17 +638,27 @@ const SHEET_COLUMNS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const Table = (props: any) => {
     const { _grid, _head, _body } = props;
     const [exporting, setExporting] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
-        _grid.current._exportExcel = () => {
+        _grid.current._exportExcel = (arg: any) => {
+            const { excelName = "Export", sheetName = "Sheet" } = arg;
             if (_grid.current._exporting) return;
             _grid.current._exporting = true;
+            _grid.current._exportExcelName = excelName;
+            _grid.current._exportSheetName = sheetName;
             setExporting(true);
         };
     }, []);
 
     const tableRef = useCallback((ref: any) => {
         if (!ref) return;
+
+        const list = ref.querySelectorAll("[hidden]");
+        for (let i = 0; i < list.length; i++) {
+            list[i].innerHTML = "";
+        }
+
         const ws = utils.table_to_sheet(ref);
         ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
 
@@ -701,8 +712,8 @@ const Table = (props: any) => {
         }
 
         const wb = utils.book_new();
-        utils.book_append_sheet(wb, ws, "Sheet");
-        writeFile(wb, "SheetJSTable.xlsx");
+        utils.book_append_sheet(wb, ws, _grid.current._exportSheetName);
+        writeFile(wb, _grid.current._exportExcelName + ".xlsx");
         _grid.current._exporting = false;
         setExporting(false);
     }, []);
@@ -723,7 +734,7 @@ const Table = (props: any) => {
                                         rowSpan={cel.rowspan}
                                         colSpan={cel.colspan}
                                     >
-                                        th::{cel.binding}
+                                        th::{t(cel.header)}
                                     </th>
                                 );
                             })}

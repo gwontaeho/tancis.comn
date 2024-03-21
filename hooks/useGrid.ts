@@ -115,7 +115,7 @@ type UseGridReturn = {
     setPage: (next: number) => void;
     setSize: (next: number) => void;
     importExcel: (arg?: any) => any;
-    exportExcel: () => any;
+    exportExcel: (arg?: any) => any;
 };
 
 export const useGrid = (props: UseGridProps): UseGridReturn => {
@@ -255,8 +255,8 @@ export const useGrid = (props: UseGridProps): UseGridReturn => {
             importExcel: (arg) => {
                 return _exec(() => _grid.current._importExcel(arg));
             },
-            exportExcel: () => {
-                return _exec(() => _grid.current._exportExcel());
+            exportExcel: (arg) => {
+                return _exec(() => _grid.current._exportExcel(arg));
             },
         };
     }, []);

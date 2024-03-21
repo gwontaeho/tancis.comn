@@ -456,8 +456,12 @@ export const CGME0411001Q = (props: any) => {
                                 ></Button>
                                 <Button
                                     onClick={() => {
-                                        grid.rpckItmAppList.setOption("edit", false);
-                                        console.log(form.rpckItmAppSrch.getValue("mrn"));
+                                        //grid.rpckItmAppList.setOption("edit", false);
+                                        //console.log(form.rpckItmAppSrch.getValue("mrn"));
+                                        grid.rpckItmAppList.exportExcel({
+                                            excelName: "재포장 BL(품목) 신고서 목록",
+                                            sheetName: "데이터",
+                                        });
                                     }}
                                 >
                                     테스트
