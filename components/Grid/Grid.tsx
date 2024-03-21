@@ -3,10 +3,11 @@ import { VariableSizeList, areEqual } from "react-window";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { utils, writeFile } from "xlsx-js-style";
+import { v4 as uuid } from "uuid";
 
 import { Button, FormControl, Pagination, Icon, IconButton } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
-import { validateValue, fun } from "./utils";
+import { validateValue, fun, getView } from "./utils";
 import { useInitialize } from "./initializer";
 
 type TGridCell = Record<string, any>;
@@ -45,13 +46,36 @@ export const Grid = (props: GridProps) => {
     _grid.current._onPageChange = onPageChange;
     _grid.current._onSizeChange = onSizeChange;
 
-    return <Component _grid={_grid} data={data} />;
+    if (!_grid.current._initialized) {
+        if (Array.isArray(data?.content)) {
+            _grid.current._data = data;
+            const origin = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
+            _grid.current._origin = origin;
+            _grid.current._content = origin;
+            getView(_grid);
+            _grid.current._originTotalCount = _grid.current._totalCount;
+        }
+    }
+
+    const init = useRef(false);
+    const __t = data?.__t?.getTime();
+    useEffect(() => {
+        if (!init.current) {
+            init.current = true;
+            return;
+        }
+        if (!Array.isArray(data?.content)) return;
+        if (data.content.length === 0 && _grid.current._content?.length === 0) return;
+        _grid.current._setData(data);
+    }, [__t]);
+
+    return <Component _grid={_grid} />;
 };
 
 /**
  * # Grid
  */
-const Component = memo((props: GridProps) => {
+const Component = memo((props: any) => {
     const { _grid } = props;
 
     const { t } = useTranslation();

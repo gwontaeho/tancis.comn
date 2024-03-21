@@ -277,8 +277,8 @@ const group = (_grid: any, content: any) => {
     };
 
     return {
-        c: getGroupedContent(content, groups[0], 0),
-        v: getGroupedView(
+        groupedContent: getGroupedContent(content, groups[0], 0),
+        groupedView: getGroupedView(
             content
                 .map((_: any) => {
                     const __context = {};
@@ -316,9 +316,9 @@ const getView = (_grid: any) => {
     let itemCount;
 
     if (Object.keys(_grid.current._group).length) {
-        const { c, v } = group(_grid, _grid.current._content);
-        content = c;
-        view = v;
+        const { groupedContent, groupedView } = group(_grid, _grid.current._content);
+        content = groupedContent;
+        view = groupedView;
     } else {
         content = _grid.current._content;
         view = content

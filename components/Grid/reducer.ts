@@ -6,16 +6,7 @@ import { getView, fun, makeTemplate } from "./utils";
  * @param param0
  * @returns
  */
-const createInitialState = ({ _grid, data }: any) => {
-    if (Array.isArray(data?.content)) {
-        _grid.current._data = data;
-        const origin = data.content.map((_: any) => ({ ..._, __key: uuid(), __type: "origin" }));
-        _grid.current._origin = origin;
-        _grid.current._content = origin;
-        getView(_grid);
-        _grid.current._originTotalCount = _grid.current._totalCount;
-    }
-
+const createInitialState = ({ _grid }: any) => {
     const _head = fun(_grid.current._head);
     const _template = makeTemplate(_head);
 

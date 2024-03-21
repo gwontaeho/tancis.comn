@@ -12,8 +12,8 @@ import { reducer, createInitialState } from "./reducer";
  * @returns
  */
 const useInitialize = (props: any) => {
-    const { _grid, data } = props;
-    const [state, dispatch] = useReducer(reducer, { _grid, data }, createInitialState);
+    const { _grid } = props;
+    const [state, dispatch] = useReducer(reducer, { _grid }, createInitialState);
 
     if (_grid.current._initialized === false) {
         /* Set data  */
@@ -519,15 +519,6 @@ const useInitialize = (props: any) => {
         }
         _grid.current._initialized = true;
     }
-
-    const __t = data?.__t?.getTime();
-
-    useEffect(() => {
-        if (!_grid.current._initialized) return;
-        if (!Array.isArray(data?.content)) return;
-        if (data.content.length === 0 && _grid.current._content?.length === 0) return;
-        _grid.current._setData(data);
-    }, [__t]);
 
     return { state, dispatch };
 };
