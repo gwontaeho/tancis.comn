@@ -26,3 +26,4 @@ export * from "./Chat";
 export * from "./Loading";
 export * from "./Card";
 export * from "./Accordion";
+export * from "./Pdf";

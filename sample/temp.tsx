@@ -15,6 +15,7 @@ import {
     Accordion,
     Table,
     Text,
+    Pdf,
 } from "@/comn/components";
 
 import lodash from "lodash";
@@ -873,6 +874,8 @@ export const Temp = () => {
                     <Abc count={count} />
                 </Layout>
             </Layout>
+
+            <Pdf />
         </Page>
     );
 };
