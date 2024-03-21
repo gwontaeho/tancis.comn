@@ -4,7 +4,7 @@ import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, usePopup, useStore, useToast, useGrid, useModal } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_WRHS_CD_SRCH, SCHEMA_GRID_WRHS_CD } from "./services/ComnCdService";
+import { BASE, APIS, SCHEMA_FORM_CARR_CD_SRCH, SCHEMA_GRID_CARR_CD } from "./services/ComnCdService";
 
 export const CarrCodeList = (props: any) => {
     const pgeUid = "carrCdLst";
@@ -16,32 +16,32 @@ export const CarrCodeList = (props: any) => {
     const params = getParams(); /* * */
 
     const form = {
-        wrhsCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_WRHS_CD_SRCH,
+        carrCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_CARR_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        wrhsCdLst: useGrid({
-            defaultSchema: SCHEMA_GRID_WRHS_CD,
+        carrCdLst: useGrid({
+            defaultSchema: SCHEMA_GRID_CARR_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getWrhsCdLst: useFetch({
-            api: (page = grid.wrhsCdLst.page) => {
-                return APIS.getWrhsCdLst(form.wrhsCdSrch.getValues(), page, grid.wrhsCdLst.size);
+        getCarrCdLst: useFetch({
+            api: (page = grid.carrCdLst.page) => {
+                return APIS.getCarrCdLst(form.carrCdSrch.getValues(), page, grid.carrCdLst.size);
             },
-            enabled: comnUtils.isEmpty(form.wrhsCdSrch.errors) && form.wrhsCdSrch.isSubmitted,
-            key: [grid.wrhsCdLst.page, grid.wrhsCdLst.size],
+            enabled: comnUtils.isEmpty(form.carrCdSrch.errors) && form.carrCdSrch.isSubmitted,
+            key: [grid.carrCdLst.page, grid.carrCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.wrhsCdSrch.getValues(),
-                    page: grid.wrhsCdLst.page,
-                    size: grid.wrhsCdLst.size,
+                    form: form.carrCdSrch.getValues(),
+                    page: grid.carrCdLst.page,
+                    size: grid.carrCdLst.size,
                 });
             },
         }),
@@ -49,10 +49,10 @@ export const CarrCodeList = (props: any) => {
 
     const handler = {
         click_Btn_Srch: () => {
-            form.wrhsCdSrch.handleSubmit(
+            form.carrCdSrch.handleSubmit(
                 () => {
-                    grid.wrhsCdLst.setPage(0);
-                    fetch.getWrhsCdLst.fetch(0);
+                    grid.carrCdLst.setPage(0);
+                    fetch.getCarrCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -62,7 +62,7 @@ export const CarrCodeList = (props: any) => {
 
         /* * */
         click_Btn_Apply: () => {
-            const list: any[] = grid.wrhsCdLst.getChecked() || [];
+            const list: any[] = grid.carrCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
                 modal.openModal({ content: "msg.com.00086" });
                 return;
@@ -74,7 +74,7 @@ export const CarrCodeList = (props: any) => {
     };
 
     const render = {
-        grid_WrhsCdLst: {
+        grid_CarrCdLst: {
             cell: {
                 coDclaCd: (props: any) => {
                     const { binding, rowValues, value } = props;
@@ -83,7 +83,7 @@ export const CarrCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                modal.postMessage({ code: value, label: rowValues.wrhsNm, data: rowValues });
+                                modal.postMessage({ code: value, label: rowValues.carrNm, data: rowValues });
                                 close();
                             }}
                         >
@@ -96,29 +96,24 @@ export const CarrCodeList = (props: any) => {
     };
 
     useEffect(() => {
-        if (params?.wrhsOprtTpCd) {
-            console.log(params.wrhsOprtTpCd);
-            form.wrhsCdSrch.setValue("wrhsOprtTpCd", params.wrhsOprtTpCd);
-        }
         if (params?.cstmOfceCd) {
-            console.log(params.cstmOfceCd);
-            form.wrhsCdSrch.setValue("cstmOfceCd", params.cstmOfceCd);
+            form.carrCdSrch.setValue("cstmOfceCd", params.cstmOfceCd);
         }
         handler.click_Btn_Srch();
         /* * */
         if (params?.multiple === true) {
-            grid.wrhsCdLst.setOption("checkbox", true);
+            grid.carrCdLst.setOption("checkbox", true);
         }
     }, []);
 
     return (
         <Page
             id={pgeUid}
-            title={t("T_WRHS_CD_LST")}
-            description={t("T_WRHS_CD_LST")}
+            title={t("T_CARR_CD_LST")}
+            description={t("T_CARR_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_WRHS_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "T_CARR_CD_LST" }],
             }}
         >
             <form>
@@ -126,15 +121,15 @@ export const CarrCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.wrhsCdSrch.schema.coDclaCd}></Group.Control>
-                                <Group.Control {...form.wrhsCdSrch.schema.wrhsNm}></Group.Control>
+                                <Group.Control {...form.carrCdSrch.schema.coDclaCd}></Group.Control>
+                                <Group.Control {...form.carrCdSrch.schema.carrNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
                             <Layout.Left>
                                 <Button
                                     onClick={() => {
-                                        form.wrhsCdSrch.reset();
+                                        form.carrCdSrch.reset();
                                     }}
                                 >
                                     {t("B_RESET")}
@@ -170,9 +165,9 @@ export const CarrCodeList = (props: any) => {
                         </Layout>
                     )}
                     <Grid
-                        {...grid.wrhsCdLst.grid}
-                        data={fetch.getWrhsCdLst.data?.wrhsList}
-                        render={render.grid_WrhsCdLst}
+                        {...grid.carrCdLst.grid}
+                        data={fetch.getCarrCdLst.data?.carrList}
+                        render={render.grid_CarrCdLst}
                     />
                 </Group.Body>
             </Group>

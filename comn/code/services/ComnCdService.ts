@@ -21,6 +21,16 @@ export const APIS = {
         });
     },
 
+    getCarrCdLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "carrCd",
+            page: page,
+            size: size,
+            keyword: data.coDclaCd,
+            keywordName: data.carrNm,
+        });
+    },
+
     getComnCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
             comnCd: data.comnCd,
@@ -667,6 +677,27 @@ export const SCHEMA_GRID_WRHS_CD: TGridSchema = {
     ],
 };
 
+export const SCHEMA_GRID_CARR_CD: TGridSchema = {
+    id: "grid",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_CARR_CD", binding: "coDclaCd", width: 150 }] },
+        { cells: [{ header: "L_CARR_NM", binding: "carrNm", width: "*" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "coDclaCd",
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "carrNm" }],
+        },
+    ],
+};
+
 export const SCHEMA_GRID_CO_DCLA_CD: TGridSchema = {
     id: "grid",
     options: { pagination: "out" },
@@ -1210,6 +1241,14 @@ export const SCHEMA_FORM_WRHS_CD_SRCH: TFormSchema = {
         wrhsNm: { type: "text", label: "L_WRHS_NM" },
         wrhsOprtTpCd: { type: "text" },
         cstmOfceCd: { type: "text" },
+    },
+};
+
+export const SCHEMA_FORM_CARR_CD_SRCH: TFormSchema = {
+    id: "form",
+    schema: {
+        coDclaCd: { type: "text", label: "L_CARR_CD" },
+        carrNm: { type: "text", label: "L_CARR_NM" },
     },
 };
 
