@@ -1,10 +1,8 @@
 import { useCallback, useEffect, memo, useRef, useState } from "react";
+import { VariableSizeList, areEqual } from "react-window";
 import classNames from "classnames";
-// import { utils, writeFile } from "xlsx";
-import { utils, writeFile } from "xlsx-js-style";
-
 import { useTranslation } from "react-i18next";
-import { VariableSizeList as List, areEqual } from "react-window";
+import { utils, writeFile } from "xlsx-js-style";
 
 import { Button, FormControl, Pagination, Icon, IconButton } from "@/comn/components";
 import { comnUtils } from "@/comn/utils";
@@ -47,69 +45,20 @@ export const Grid = (props: GridProps) => {
     _grid.current._onPageChange = onPageChange;
     _grid.current._onSizeChange = onSizeChange;
 
-    return <GridComponent _grid={_grid} data={data} />;
+    return <Component _grid={_grid} data={data} />;
 };
 
 /**
  * # Grid
  */
-const GridComponent = memo((props: GridProps) => {
-    // console.log("grid render");
+const Component = memo((props: GridProps) => {
     const { _grid } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
 
     const _state = { ...state, _test: state._test.length ? state._test : [{ __type: "empty" }] };
-    const { _head, _body, _options, _checked, _page, _size, _totalItemCount, _sort, _test, _groupSchema } = _state;
-
-    const _headCells = fun(_head);
-    const _bodyCells = fun(_body);
-
-    let _groupCells;
-    if (_groupSchema) {
-        _groupCells = fun(_groupSchema);
-    }
-
-    const _template = (() => {
-        let w = Array(_headCells[0].length);
-        for (let i = 0; i < _headCells.length; i++) {
-            for (let j = 0; j < _headCells[i].length; j++) {
-                if (w[j] === undefined) w[j] = 100;
-                if (_headCells[i]?.[j]?.width !== undefined && _headCells[i]?.[j]?.colspan !== undefined) {
-                    for (let k = j; k <= j + _headCells[i]?.[j]?.colspan; k++) {
-                        if (k < _headCells[0].length) {
-                            w[k] = _headCells[i]?.[j]?.width / _headCells[i]?.[j]?.colspan;
-                        }
-                    }
-                }
-                if (_headCells[i]?.[j]?.width !== undefined && _headCells[i]?.[j]?.colspan === undefined) {
-                    w[j] = _headCells[i]?.[j].width;
-                }
-                if (_headCells[i]?.[j]?.show === false) {
-                    w[j] = null;
-                }
-            }
-        }
-        return w
-            .filter((_: any) => _)
-            .map((_: any) => {
-                if (typeof _ === "number") {
-                    return `${_}px`;
-                }
-                if (typeof _ === "string") {
-                    if (_.endsWith("*")) {
-                        let t: any = _.slice(0, -1) || 1;
-                        return `minmax( ${t * 100}px , ${t}fr)`;
-                    }
-
-                    if (_.endsWith("%")) {
-                        return _;
-                    }
-                }
-            })
-            .join(" ");
-    })();
+    const { _head, _body, _template, _options, _checked, _page, _size, _totalItemCount, _sort, _test } = _state;
 
     return (
         <div className="flex flex-col w-full">
@@ -157,7 +106,7 @@ const GridComponent = memo((props: GridProps) => {
                     {_options.index && <div className="uf-grid-option" />}
 
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                        {_headCells.map((row: any, rowIndex: any) => {
+                        {_head.map((row: any, rowIndex: any) => {
                             return row.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
@@ -208,7 +157,7 @@ const GridComponent = memo((props: GridProps) => {
                 </div>
 
                 {/* Body */}
-                <List
+                <VariableSizeList
                     ref={(ref) => {
                         if (!ref) return;
                         if (_grid.current._listRef) return;
@@ -239,13 +188,10 @@ const GridComponent = memo((props: GridProps) => {
                     itemData={{
                         _grid,
                         _state,
-                        _bodyCells,
-                        _groupCells,
-                        _template,
                     }}
                 >
                     {Row}
-                </List>
+                </VariableSizeList>
             </div>
 
             {/* Pagination */}
@@ -265,7 +211,7 @@ const GridComponent = memo((props: GridProps) => {
                 />
             )}
 
-            <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} />
+            <Table _grid={_grid} _head={_head} _body={_body} />
         </div>
     );
 });
@@ -273,8 +219,21 @@ const GridComponent = memo((props: GridProps) => {
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, _state, _bodyCells, _template, _groupCells } = data;
-    const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow, _page, _size } = _state;
+    const { _grid, _state } = data;
+    const {
+        _test,
+        _options,
+        _checked,
+        _selectedRow,
+        _selectedCel,
+        _totalCount,
+        _editingRow,
+        _page,
+        _size,
+        _body,
+        _group,
+        _template,
+    } = _state;
 
     const row = _test[index];
     const rowKey = row?.__key;
@@ -354,7 +313,7 @@ const Row = memo((props: any) => {
                     {_options.radio && <div className="uf-grid-option bg-uf-card-background" />}
                     {_options.index && <div className="uf-grid-option bg-uf-card-background" />}
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                        {_groupCells?.map((schemaRow: any, rowIndex: any) => {
+                        {_group?.map((schemaRow: any, rowIndex: any) => {
                             return schemaRow.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
@@ -450,7 +409,7 @@ const Row = memo((props: any) => {
 
                     {/* Body */}
                     <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
-                        {_bodyCells.map((_: any, rowIndex: any) => {
+                        {_body.map((_: any, rowIndex: any) => {
                             return _.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
@@ -647,7 +606,7 @@ const Row = memo((props: any) => {
 const SHEET_COLUMNS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const Table = (props: any) => {
-    const { _grid, _headCells, _bodyCells } = props;
+    const { _grid, _head, _body } = props;
     const [exporting, setExporting] = useState(false);
 
     useEffect(() => {
@@ -724,7 +683,7 @@ const Table = (props: any) => {
     return (
         <table ref={tableRef} className="hidden">
             <thead className="[&_th]:border">
-                {_headCells.map((cols: any, rowIndex: any) => {
+                {_head.map((cols: any, rowIndex: any) => {
                     return (
                         <tr key={_grid.current._key + ".thr." + rowIndex}>
                             {cols.map((cel: any, celIndex: any) => {
@@ -749,7 +708,7 @@ const Table = (props: any) => {
                         return _.__type !== "deleted";
                     })
                     .map((row: any, rowIndex: any) => {
-                        return _bodyCells.map((cols: any, colIndex: any) => {
+                        return _body.map((cols: any, colIndex: any) => {
                             return (
                                 <tr key={_grid.current._key + ".tbr." + rowIndex + "." + colIndex}>
                                     {cols.map((cel: any, celIndex: any) => {

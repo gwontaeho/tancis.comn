@@ -1,6 +1,46 @@
 import { v4 as uuid } from "uuid";
 import lodash from "lodash";
 
+const makeTemplate = (_head: any) => {
+    let w = Array(_head[0].length);
+    for (let i = 0; i < _head.length; i++) {
+        for (let j = 0; j < _head[i].length; j++) {
+            if (w[j] === undefined) w[j] = 100;
+            if (_head[i]?.[j]?.width !== undefined && _head[i]?.[j]?.colspan !== undefined) {
+                for (let k = j; k <= j + _head[i]?.[j]?.colspan; k++) {
+                    if (k < _head[0].length) {
+                        w[k] = _head[i]?.[j]?.width / _head[i]?.[j]?.colspan;
+                    }
+                }
+            }
+            if (_head[i]?.[j]?.width !== undefined && _head[i]?.[j]?.colspan === undefined) {
+                w[j] = _head[i]?.[j].width;
+            }
+            if (_head[i]?.[j]?.show === false) {
+                w[j] = null;
+            }
+        }
+    }
+    return w
+        .filter((_: any) => _)
+        .map((_: any) => {
+            if (typeof _ === "number") {
+                return `${_}px`;
+            }
+            if (typeof _ === "string") {
+                if (_.endsWith("*")) {
+                    let t: any = _.slice(0, -1) || 1;
+                    return `minmax( ${t * 100}px , ${t}fr)`;
+                }
+
+                if (_.endsWith("%")) {
+                    return _;
+                }
+            }
+        })
+        .join(" ");
+};
+
 const fun = (schema: any) => {
     let t = [];
 
@@ -334,4 +374,4 @@ const getView = (_grid: any) => {
     _grid.current._totalItemCount = itemCount;
 };
 
-export { getView, validateValue, fun };
+export { getView, validateValue, fun, makeTemplate };

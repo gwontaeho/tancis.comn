@@ -351,22 +351,22 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            // if (data.text === "Maru") {
-            //     context.backgroundColor = "red";
-            // }
+            if (data.text === "Maru") {
+                context.backgroundColor = "red";
+            }
 
-            // if (data.text === "Sam") {
-            //     context.backgroundColor = "blue";
-            // }
-            // if (data.text === "Ken") {
-            //     context.backgroundColor = "yellow";
-            // }
+            if (data.text === "Sam") {
+                context.backgroundColor = "blue";
+            }
+            if (data.text === "Ken") {
+                context.backgroundColor = "yellow";
+            }
 
             return true;
         },
-        // checkbox: (data: any) => {
-        //     return data.__type === "added";
-        // },
+        checkbox: (data: any) => {
+            return data.__type === "added";
+        },
 
         cell: {
             text: (data: any, context: any) => {
