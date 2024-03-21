@@ -15,6 +15,7 @@ export type InputDateimeProps = {
     readOnly?: boolean;
     disabled?: boolean;
     defaultValue?: any;
+    second?: boolean;
 
     color?: keyof typeof COLOR_TEXT;
     editColor?: keyof typeof COLOR_TEXT;
@@ -35,6 +36,7 @@ export const InputDatetime = React.forwardRef((props: InputDateimeProps, ref: an
         readOnly,
         disabled,
         defaultValue,
+        second = false,
 
         color,
         editColor,
@@ -76,7 +78,7 @@ export const InputDatetime = React.forwardRef((props: InputDateimeProps, ref: an
         <div className="w-full">
             {!edit && (
                 <div className={"min-w-max" + comnUtils.getViewStyle(color, bold, fontSize)}>
-                    {localeDatetime(value, theme.lang)}
+                    {second === true ? localeDatetimeSecond(value, theme.lang) : localeDatetime(value, theme.lang)}
                 </div>
             )}
             <div hidden={!edit}>
@@ -112,6 +114,13 @@ export const localeDatetime = (v: any, l: "ko" | "en" | "tz") => {
     if (!dayjs(v).isValid()) return "";
 
     return dayjs(v).format(constants.DATETIME_FORMAT_DAYJS[l]);
+};
+
+export const localeDatetimeSecond = (v: any, l: "ko" | "en" | "tz") => {
+    if (!v) return "";
+    if (!dayjs(v).isValid()) return "";
+
+    return dayjs(v).format(constants.DATETIMESECOND_FORMAT_DAYJS[l]);
 };
 
 export const formatDatetime = (v: any) => {
