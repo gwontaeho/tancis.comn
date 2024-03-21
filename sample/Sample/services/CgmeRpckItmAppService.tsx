@@ -148,7 +148,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "CGM0055", viewType: "both" }],
         },
         {
-            cells: [{ binding: "frstRgsrDtm", type: "datetime" }],
+            cells: [{ binding: "frstRgsrDtm", type: "datetime", second: true }],
         },
     ],
 };
