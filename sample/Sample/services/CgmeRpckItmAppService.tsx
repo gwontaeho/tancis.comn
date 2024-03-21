@@ -108,6 +108,7 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
         { cells: [{ header: "L_PCKG_NO", binding: "blPckgNo", width: 200 }] },
         { cells: [{ header: "L_GWGHT", binding: "blGwght", width: 200 }] },
         { cells: [{ header: "L_PRCSS_STAT", binding: "prcssStatCd", width: 200 }] },
+        { cells: [{ header: "날짜", binding: "frstRgsrDtm", width: 200 }] },
     ],
     body: [
         {
@@ -144,7 +145,10 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: "blGwght", align: "right", type: "number", thousandSeparator: true }],
         },
         {
-            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "CGM0055", viewType: "label" }],
+            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "CGM0055", viewType: "both" }],
+        },
+        {
+            cells: [{ binding: "frstRgsrDtm", type: "datetime" }],
         },
     ],
 };

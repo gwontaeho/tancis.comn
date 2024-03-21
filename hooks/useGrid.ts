@@ -256,7 +256,7 @@ export const useGrid = (props: UseGridProps): UseGridReturn => {
                 return _exec(() => _grid.current._importExcel(arg));
             },
             exportExcel: (arg) => {
-                return _exec(() => _grid.current._exportExcel(arg));
+                return _exec(() => _grid.current._exportExcel(arg ? arg : {}));
             },
         };
     }, []);

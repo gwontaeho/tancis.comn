@@ -10,6 +10,7 @@ import { comnUtils } from "@/comn/utils";
 import { validateValue, fun, getView } from "./utils";
 import { useInitialize } from "./initializer";
 import { t } from "i18next";
+import dayjs from "dayjs";
 
 type TGridCell = Record<string, any>;
 type TGridRow = Record<string, any>;
@@ -641,8 +642,8 @@ const Table = (props: any) => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        _grid.current._exportExcel = (arg: any) => {
-            const { excelName = "Export", sheetName = "Sheet" } = arg;
+        _grid.current._exportExcel = (arg?: any) => {
+            const { excelName = "Export(" + dayjs().format("YYYY-MM-DD HH:mm:ss") + ")", sheetName = "Sheet" } = arg;
             if (_grid.current._exporting) return;
             _grid.current._exporting = true;
             _grid.current._exportExcelName = excelName;
@@ -659,7 +660,7 @@ const Table = (props: any) => {
             list[i].innerHTML = "";
         }
 
-        const ws = utils.table_to_sheet(ref);
+        const ws = utils.table_to_sheet(ref, { raw: true });
         ws["!cols"] = new Array(_grid.current._cols).fill({ width: 20 });
 
         const splited = ws["!ref"]?.split(":");
