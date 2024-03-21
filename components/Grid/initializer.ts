@@ -12,18 +12,10 @@ import { reducer, createInitialState } from "./reducer";
  * @returns
  */
 const useInitialize = (props: any) => {
-    const { _grid, data, render, onRowClick, onCellClick, onRowCheck, onRowSelect, onPageChange, onSizeChange } = props;
+    const { _grid, data } = props;
     const [state, dispatch] = useReducer(reducer, { _grid, data }, createInitialState);
 
     if (_grid.current._initialized === false) {
-        _grid.current._render = render;
-        _grid.current._onRowCheck = onRowCheck;
-        _grid.current._onRowSelect = onRowSelect;
-        _grid.current._onRowClick = onRowClick;
-        _grid.current._onCellClick = onCellClick;
-        _grid.current._onPageChange = onPageChange;
-        _grid.current._onSizeChange = onSizeChange;
-
         /* Set data  */
         _grid.current._setData = (data: any) => {
             if (!Array.isArray(data?.content)) return;
@@ -323,7 +315,7 @@ const useInitialize = (props: any) => {
                 let checkedContent;
 
                 if (_grid.current._render?.checkbox) {
-                    checkedContent = _grid.current._view.filter((_: any) => render?.checkbox(_));
+                    checkedContent = _grid.current._view.filter((_: any) => _grid.current._render?.checkbox(_));
                 } else {
                     checkedContent = _grid.current._view;
                 }

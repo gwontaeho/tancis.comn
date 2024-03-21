@@ -37,17 +37,25 @@ type GridProps = {
     onSizeChange?: any;
 };
 
-// const Initializer = (props: GridProps) => {
+export const Grid = (props: GridProps) => {
+    const { _grid, data, render, onRowCheck, onRowSelect, onRowClick, onCellClick, onPageChange, onSizeChange } = props;
+    _grid.current._render = render;
+    _grid.current._onRowCheck = onRowCheck;
+    _grid.current._onRowSelect = onRowSelect;
+    _grid.current._onRowClick = onRowClick;
+    _grid.current._onCellClick = onCellClick;
+    _grid.current._onPageChange = onPageChange;
+    _grid.current._onSizeChange = onSizeChange;
 
-//     return <Grid />;
-// };
+    return <GridComponent _grid={_grid} data={data} />;
+};
 
 /**
  * # Grid
  */
-export const Grid = memo((props: GridProps) => {
+const GridComponent = memo((props: GridProps) => {
     // console.log("grid render");
-    const { _grid, render } = props;
+    const { _grid } = props;
 
     const { t } = useTranslation();
     const { state } = useInitialize(props);
@@ -133,9 +141,9 @@ export const Grid = memo((props: GridProps) => {
                         <div className="uf-grid-option">
                             <input
                                 type="checkbox"
-                                checked={(render?.checkbox
+                                checked={(_grid.current._render?.checkbox
                                     ? _test.filter((_: any) => {
-                                          return render.checkbox(_);
+                                          return _grid.current._render.checkbox(_);
                                       })
                                     : _test
                                 ).every(({ __key }: any) => {
@@ -163,7 +171,7 @@ export const Grid = memo((props: GridProps) => {
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
                                     >
-                                        {render?.head?.[cel.binding]?.({
+                                        {_grid.current._render?.head?.[cel.binding]?.({
                                             id: cel.id,
                                             binding: cel.binding,
                                             header: t(cel.header),
@@ -234,7 +242,6 @@ export const Grid = memo((props: GridProps) => {
                         _bodyCells,
                         _groupCells,
                         _template,
-                        render,
                     }}
                 >
                     {Row}
@@ -258,7 +265,7 @@ export const Grid = memo((props: GridProps) => {
                 />
             )}
 
-            <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} render={render} />
+            <Table _grid={_grid} _headCells={_headCells} _bodyCells={_bodyCells} />
         </div>
     );
 });
@@ -266,7 +273,7 @@ export const Grid = memo((props: GridProps) => {
 /** row */
 const Row = memo((props: any) => {
     const { data, index, style } = props;
-    const { _grid, _state, render, _bodyCells, _template, _groupCells } = data;
+    const { _grid, _state, _bodyCells, _template, _groupCells } = data;
     const { _test, _options, _checked, _selectedRow, _selectedCel, _totalCount, _editingRow, _page, _size } = _state;
 
     const row = _test[index];
@@ -401,7 +408,11 @@ const Row = memo((props: any) => {
                         <div className="uf-grid-option">
                             <input
                                 type="checkbox"
-                                disabled={render?.checkbox ? !render?.checkbox?.(row) || undefined : undefined}
+                                disabled={
+                                    _grid.current._render?.checkbox
+                                        ? !_grid.current._render?.checkbox?.(row) || undefined
+                                        : undefined
+                                }
                                 checked={_checked.some((_: any) => _ === rowKey)}
                                 onChange={(event) => _grid.current._handleCheck(event, rowKey)}
                             />
@@ -413,7 +424,11 @@ const Row = memo((props: any) => {
                         <div className="uf-grid-option">
                             <input
                                 type="radio"
-                                disabled={render?.radio ? !render?.radio?.(row) || undefined : undefined}
+                                disabled={
+                                    _grid.current._render?.radio
+                                        ? !_grid.current._render?.radio?.(row) || undefined
+                                        : undefined
+                                }
                                 checked={_selectedRow === rowKey}
                                 onChange={(event) => _grid.current._handleSelect(event, rowKey)}
                             />
@@ -536,11 +551,11 @@ const Row = memo((props: any) => {
 
                                 let editContext: any = {};
                                 let cellContext: any = {};
-                                const CustomEdit = render?.edit?.[binding]?.(
+                                const CustomEdit = _grid.current._render?.edit?.[binding]?.(
                                     { ...CELL_CONTEXT, control: Control },
                                     editContext,
                                 );
-                                const CustomCell = render?.cell?.[binding]?.(
+                                const CustomCell = _grid.current._render?.cell?.[binding]?.(
                                     { ...CELL_CONTEXT, control: Control },
                                     cellContext,
                                 );
@@ -632,7 +647,7 @@ const Row = memo((props: any) => {
 const SHEET_COLUMNS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const Table = (props: any) => {
-    const { _grid, _headCells, _bodyCells, render } = props;
+    const { _grid, _headCells, _bodyCells } = props;
     const [exporting, setExporting] = useState(false);
 
     useEffect(() => {
@@ -789,7 +804,7 @@ const Table = (props: any) => {
                                         const Control = <FormControl {...FORM} />;
 
                                         let cellContext: any = {};
-                                        const CustomCell = render?.cell?.[binding]?.(
+                                        const CustomCell = _grid.current._render?.cell?.[binding]?.(
                                             { ...CELL_CONTEXT, control: Control },
                                             cellContext,
                                         );
