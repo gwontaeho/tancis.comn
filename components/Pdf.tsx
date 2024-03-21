@@ -9,7 +9,7 @@ export const Pdf = () => {
         pageRendering: false,
         canvas: null,
         ctx: null,
-        scale: 0.8,
+        scale: 1.5,
         pageNum: 1,
         numPages: 1,
     });
