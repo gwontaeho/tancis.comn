@@ -97,6 +97,11 @@ export const OrganizationCodeList = (props: any) => {
     };
 
     useEffect(() => {
+        if (params?.orgCd) {
+            console.log(params.orgCd);
+            form.orgCdSrch.setValue("orgCd", params.orgCd);
+        }
+
         handler.click_Btn_Srch();
         /* * */
         if (params?.multiple === true) {

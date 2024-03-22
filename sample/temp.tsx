@@ -210,9 +210,9 @@ const GRID_SCHEMA: TGridSchema = {
     body: [
         {
             colspan: 2,
-            cells: [{ colspan: 2, binding: "number", type: "number", excel: "A" }],
+            cells: [{ colspan: 2, binding: "number", type: "number", excel: "B" }],
         },
-        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "B" }] },
+        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A" }] },
     ],
 };
 
@@ -365,6 +365,10 @@ export const Temp = () => {
             return data.__type === "added";
         },
 
+        radio: (data: any) => {
+            return data.text !== "N";
+        },
+
         cell: {
             text: (data: any, context: any) => {
                 context.textColor = "red";
@@ -422,7 +426,7 @@ export const Temp = () => {
                                         required
                                     </Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.code} />
+                                        <FormControl {...f.schema.date} />
                                     </Group.Cell>
                                     <Group.Cell size={2} header>
                                         <FormControl {...f.schema.date} />
@@ -433,13 +437,7 @@ export const Temp = () => {
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl
-                                            {...f.schema.number}
-                                            validate={(data: any) => {
-                                                console.log(data);
-                                                return String(data).length === 4 || "asd";
-                                            }}
-                                        />
+                                        <FormControl {...f.schema.code} />
                                     </Group.Cell>
                                     <Group.Cell size={10}>
                                         <FormControl {...f.schema.text} />
@@ -486,6 +484,9 @@ export const Temp = () => {
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => console.log(f.reset())}>Reset</button>
+                                </Group.Cell>
+                                <Group.Cell>
+                                    <button onClick={() => f.setSchema("date", { type: "text" })}>set schema</button>
                                 </Group.Cell>
                             </Group.Cell>
                         </Group.Section>
@@ -754,7 +755,18 @@ export const Temp = () => {
                                     <button onClick={() => g.exportExcel()}>Export</button>
                                 </Group.Cell>
                                 <Group.Cell>
-                                    <button onClick={async () => console.log(await g.importExcel())}>Import</button>
+                                    <button
+                                        onClick={async () =>
+                                            console.log(
+                                                await g.importExcel({
+                                                    C: "afaf",
+                                                    D: "asd",
+                                                }),
+                                            )
+                                        }
+                                    >
+                                        Import
+                                    </button>
                                 </Group.Cell>
                                 <Group.Cell>
                                     <button onClick={() => g.clearData()}>Clear</button>

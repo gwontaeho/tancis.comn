@@ -100,6 +100,30 @@ const initializer = (arg: any) => {
     return getFields(arg.schema, arg.control);
 };
 
+type UseFormReturn = {
+    schema: any;
+    handleSubmit: any;
+    getValue: any;
+    getValues: any;
+    setFocus: any;
+    setValue: any;
+    setValues: any;
+    clearValues: any;
+    setSchema: any;
+    setSchemas: any;
+    resetSchema: any;
+    setEditable: any;
+    validate: any;
+    clearErrors: any;
+    watch: any;
+    errors: any;
+    isSubmitted: any;
+    isErrorany: any;
+    setError: any;
+    setErrors: any;
+    reset: any;
+};
+
 export const useForm = (props: UseFormProps) => {
     const { defaultSchema, defaultValues } = props;
     const { id, schema } = defaultSchema;
