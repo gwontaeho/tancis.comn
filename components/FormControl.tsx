@@ -135,6 +135,7 @@ export type FormControlProps = InputDaterangeProps &
 
         /** code */
         popupSize?: "sm" | "md" | "lg";
+        popupParams?: any;
 
         /** file */
         multiple?: boolean;

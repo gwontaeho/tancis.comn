@@ -365,6 +365,11 @@ export const Temp = () => {
             return data.__type === "added";
         },
 
+        radio: (data: any) => {
+            console.log(data);
+            return data.text !== "N";
+        },
+
         cell: {
             text: (data: any, context: any) => {
                 context.textColor = "red";
