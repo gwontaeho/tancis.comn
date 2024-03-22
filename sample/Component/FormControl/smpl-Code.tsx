@@ -88,12 +88,19 @@ const SF_FORM: TFormSchema = {
             area: "orgCd",
             label: "Organization Code",
             popupSize: "md",
+            popupParams: {
+                orgCd: ["OGAM0010"],
+            },
         },
         field12: {
             type: "code",
             area: "wrhsCd",
             label: "WareHouse Code",
             popupSize: "md",
+            popupParams: {
+                wrhsOprtTpCd: ["WT", "WI", "TO"],
+                cstmOfceCd: ["TZDL"],
+            },
         },
         field13: {
             type: "code",
@@ -384,13 +391,7 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control
-                                    {...form.schema.field12}
-                                    popupParams={{
-                                        wrhsOprtTpCd: ["WT", "WI", "TO"],
-                                        cstmOfceCd: ["TZDL"],
-                                    }}
-                                ></Group.Control>
+                                <Group.Control {...form.schema.field12}></Group.Control>
                                 <Group.Label label="보세창고 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/wrhsCdPpup</Group.Any>
@@ -410,7 +411,7 @@ export const SampleFormControlCode = () => {
                                         console.log(data);
                                     }}
                                     popupParams={{
-                                        coDclaTpCd: ["AL","BK"],
+                                        coDclaTpCd: ["AL", "BK"],
                                     }}
                                 ></Group.Control>
                                 <Group.Label label="업체신고 코드"></Group.Label>
