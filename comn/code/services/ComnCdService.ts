@@ -117,7 +117,7 @@ export const APIS = {
             area: "airptCd",
             page: page,
             size: size,
-            keyword: data.portAirptCd,
+            keyword: data.regnCd,
             keywordName: data.regnNm,
             cntyCd: data.cntyCd,
         });
@@ -1262,7 +1262,7 @@ export const SCHEMA_FORM_CO_DCLA_CD_SRCH: TFormSchema = {
             type: "checkbox",
             label: "L_CO_DCLA_TP_CD",
             area: "comnCd",
-            comnCd: "COM0011"
+            comnCd: "COM0011",
         },
     },
 };
