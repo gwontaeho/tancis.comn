@@ -379,6 +379,10 @@ export const ComnRoutes = [
                                 name: "Postal Code Popup",
                                 to: "/comn/comn/ppup/postCdPpup",
                             },
+                            {
+                                name: "TIN Number Popup",
+                                to: "/comn/comn/ppup/tinNoPpup",
+                            },
                         ],
                     },
                 ],
