@@ -68,7 +68,7 @@ export const OrganizationCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -84,7 +84,7 @@ export const OrganizationCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: value, label: rowValues.orgNm });
+                                modal.postMessage({ code: value, label: rowValues.orgNm });
                                 close();
                             }}
                         >
@@ -97,6 +97,11 @@ export const OrganizationCodeList = (props: any) => {
     };
 
     useEffect(() => {
+        if (params?.orgCd) {
+            console.log(params.orgCd);
+            form.orgCdSrch.setValue("orgCd", params.orgCd);
+        }
+
         handler.click_Btn_Srch();
         /* * */
         if (params?.multiple === true) {

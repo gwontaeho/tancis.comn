@@ -68,7 +68,7 @@ export const VehicleInsuranceTypeCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -83,7 +83,7 @@ export const VehicleInsuranceTypeCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.vhclInsrTpNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclInsrTpNm });
                                 close();
                             }}
                         >

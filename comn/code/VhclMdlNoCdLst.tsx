@@ -68,7 +68,7 @@ export const VehicleModelNumberCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -83,7 +83,7 @@ export const VehicleModelNumberCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.vhclMdlNoNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclMdlNoNm });
                                 close();
                             }}
                         >

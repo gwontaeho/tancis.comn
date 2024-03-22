@@ -69,7 +69,7 @@ export const CommonCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -85,7 +85,7 @@ export const CommonCodeList = (props: any) => {
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
 
-                                postMessage({ code: rowValues.cdVldVal, label: rowValues.cdVldValNm });
+                                modal.postMessage({ code: rowValues.cdVldVal, label: rowValues.cdVldValNm });
                                 close();
                             }}
                         >

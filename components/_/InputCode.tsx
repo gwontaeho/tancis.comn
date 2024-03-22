@@ -69,6 +69,7 @@ const POPUP_URLS: Record<string, string> = {
     coCdDtl: `/comn/comn/ppup/CoCdDtl`,
     hsCd: `/comn/comn/ppup/hsCdPpup`,
     postCd: `/comn/comn/ppup/postCdPpup`,
+    tinNo: `/comn/comn/ppup/tinNoPpup`,
 };
 
 export const InputCode = forwardRef((props: InputCodeProps, ref: any) => {

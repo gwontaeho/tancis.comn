@@ -68,7 +68,7 @@ export const VehicleModelCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -83,7 +83,7 @@ export const VehicleModelCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.vhclMdlNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclMdlNm });
                                 close();
                             }}
                         >

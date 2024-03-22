@@ -77,7 +77,7 @@ export const VehicleTransmissionTypeCodeList = (props: any) => {
                 return;
             }
 
-            postMessage({ data: list });
+            modal.postMessage({ data: list });
             close();
         },
     };
@@ -92,7 +92,7 @@ export const VehicleTransmissionTypeCodeList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                postMessage({ code: value, label: rowValues.vhclTrmssnTpNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclTrmssnTpNm });
                                 close();
                             }}
                         >

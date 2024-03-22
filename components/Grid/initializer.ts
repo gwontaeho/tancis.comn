@@ -496,6 +496,14 @@ const useInitialize = (props: any) => {
                             bindingColumn[cell.binding] = cell.excel;
                         }
                     }
+
+                    if (arg) {
+                        for (const col in arg) {
+                            bindingColumn[arg[col]] = col;
+                        }
+                    }
+
+                    console.log(bindingColumn);
                     const raw = utils.sheet_to_json(ws, { header: "A" }).map(({ __rowNum__, ..._ }: any) => {
                         const next = { ...bindingColumn };
                         for (const col in next) {

@@ -3,11 +3,10 @@ import { useTranslation } from "react-i18next";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 import { Grid } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useGrid, usePopup, useStore, useToast, useModal } from "@/comn/hooks";
-import { BASE, APIS, SCHEMA_FORM_PRCSS_STAT_CD_SRCH, SCHEMA_GRID_PRCSS_STAT_CD } from "./services/ComnCdService";
-
-export const ProcessingStatusCodeList = (props: any) => {
-    const pgeUid = "prcssStatCdLst";
+import { useForm, useFetch, usePopup, useStore, useToast, useAuth, useGrid, useModal } from "@/comn/hooks";
+import { BASE, APIS, SCHEMA_FORM_VHCL_USE_CD_SRCH, SCHEMA_GRID_VHCL_USE_CD } from "./services/ComnCdService";
+export const TinNumberList = (props: any) => {
+    const pgeUid = "tinNoList";
     const { t } = useTranslation();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
@@ -16,32 +15,32 @@ export const ProcessingStatusCodeList = (props: any) => {
     const params = getParams(); /* * */
 
     const form = {
-        prcssStatCdSrch: useForm({
-            defaultSchema: SCHEMA_FORM_PRCSS_STAT_CD_SRCH,
+        vhclUseCdSrch: useForm({
+            defaultSchema: SCHEMA_FORM_VHCL_USE_CD_SRCH,
             defaultValues: { ...pgeStore?.form } || {},
         }),
     };
 
     const grid = {
-        prcssStatCdLst: useGrid({
-            defaultSchema: SCHEMA_GRID_PRCSS_STAT_CD,
+        vhclUseCdLst: useGrid({
+            defaultSchema: SCHEMA_GRID_VHCL_USE_CD,
             page: pgeStore?.page,
             size: pgeStore?.size,
         }),
     };
 
     const fetch = {
-        getPrcssStatCdLst: useFetch({
-            api: (page = grid.prcssStatCdLst.page) => {
-                return APIS.getPrcssStatCdLst(form.prcssStatCdSrch.getValues(), page, grid.prcssStatCdLst.size);
+        getVhclUseCdLst: useFetch({
+            api: (page = grid.vhclUseCdLst.page) => {
+                return APIS.getVhclUseCdLst(form.vhclUseCdSrch.getValues(), page, grid.vhclUseCdLst.size);
             },
-            enabled: comnUtils.isEmpty(form.prcssStatCdSrch.errors) && form.prcssStatCdSrch.isSubmitted,
-            key: [grid.prcssStatCdLst.page, grid.prcssStatCdLst.size],
+            enabled: comnUtils.isEmpty(form.vhclUseCdSrch.errors) && form.vhclUseCdSrch.isSubmitted,
+            key: [grid.vhclUseCdLst.page, grid.vhclUseCdLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.prcssStatCdSrch.getValues(),
-                    page: grid.prcssStatCdLst.page,
-                    size: grid.prcssStatCdLst.size,
+                    form: form.vhclUseCdSrch.getValues(),
+                    page: grid.vhclUseCdLst.page,
+                    size: grid.vhclUseCdLst.size,
                 });
             },
         }),
@@ -49,10 +48,10 @@ export const ProcessingStatusCodeList = (props: any) => {
 
     const handler = {
         click_Btn_Srch: () => {
-            form.prcssStatCdSrch.handleSubmit(
+            form.vhclUseCdSrch.handleSubmit(
                 () => {
-                    grid.prcssStatCdLst.setPage(0);
-                    fetch.getPrcssStatCdLst.fetch(0);
+                    grid.vhclUseCdLst.setPage(0);
+                    fetch.getVhclUseCdLst.fetch(0);
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
@@ -62,7 +61,7 @@ export const ProcessingStatusCodeList = (props: any) => {
 
         /* * */
         click_Btn_Apply: () => {
-            const list: any[] = grid.prcssStatCdLst.getChecked() || [];
+            const list: any[] = grid.vhclUseCdLst.getChecked() || [];
             if (comnUtils.isEmpty(list)) {
                 modal.openModal({ content: "msg.com.00086" });
                 return;
@@ -74,17 +73,16 @@ export const ProcessingStatusCodeList = (props: any) => {
     };
 
     const render = {
-        grid_PrcssStatCdLst: {
+        grid_VhclUseCdLst: {
             cell: {
-                item: (props: any) => {
+                vhclUseCd: (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-
-                                modal.postMessage({ code: value, label: rowValues.itemNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclUseNm });
                                 close();
                             }}
                         >
@@ -100,18 +98,18 @@ export const ProcessingStatusCodeList = (props: any) => {
         handler.click_Btn_Srch();
         /* * */
         if (params?.multiple === true) {
-            grid.prcssStatCdLst.setOption("checkbox", true);
+            grid.vhclUseCdLst.setOption("checkbox", true);
         }
     }, []);
 
     return (
         <Page
             id={pgeUid}
-            title={t("T_PRCSS_STAT_CD_LST")}
-            description={t("T_PRCSS_STAT_CD_LST")}
+            title={t("T_VHCL_USE_CD_LST")}
+            description={t("T_VHCL_USE_CD_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_PRCSS_STAT_CD_LST" }],
+                nodes: [...BASE.nodes, { label: "T_VHCL_USE_CD_LST" }],
             }}
         >
             <form>
@@ -119,28 +117,26 @@ export const ProcessingStatusCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.prcssStatCdSrch.schema.item}></Group.Control>
-                                <Group.Control {...form.prcssStatCdSrch.schema.itemNm}></Group.Control>
+                                <Group.Control {...form.vhclUseCdSrch.schema.vhclUseCd}></Group.Control>
+                                <Group.Control {...form.vhclUseCdSrch.schema.vhclUseNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
                             <Layout.Left>
                                 <Button
+                                    role="reset"
                                     onClick={() => {
-                                        form.prcssStatCdSrch.reset();
+                                        form.vhclUseCdSrch.reset();
                                     }}
-                                >
-                                    {t("B_RESET")}
-                                </Button>
+                                ></Button>
                             </Layout.Left>
                             <Layout.Right>
                                 <Button
+                                    role="search"
                                     onClick={() => {
                                         handler.click_Btn_Srch();
                                     }}
-                                >
-                                    {t("B_SRCH")}
-                                </Button>
+                                ></Button>
                             </Layout.Right>
                         </Layout>
                     </Group.Body>
@@ -149,24 +145,26 @@ export const ProcessingStatusCodeList = (props: any) => {
 
             <Group>
                 <Group.Body>
-                    {/* * */}
-                    {params?.multiple === true && (
-                        <Layout>
-                            <Layout.Right>
-                                <Button
-                                    role="apply"
-                                    onClick={() => {
-                                        handler.click_Btn_Apply();
-                                    }}
-                                ></Button>
-                            </Layout.Right>
-                        </Layout>
-                    )}
-                    <Grid
-                        {...grid.prcssStatCdLst.grid}
-                        data={fetch.getPrcssStatCdLst.data?.prcssStatCdList}
-                        render={render.grid_PrcssStatCdLst}
-                    />
+                    <Group.Section>
+                        {/* * */}
+                        {params?.multiple === true && (
+                            <Layout>
+                                <Layout.Right>
+                                    <Button
+                                        role="apply"
+                                        onClick={() => {
+                                            handler.click_Btn_Apply();
+                                        }}
+                                    ></Button>
+                                </Layout.Right>
+                            </Layout>
+                        )}
+                        <Grid
+                            {...grid.vhclUseCdLst.grid}
+                            data={fetch.getVhclUseCdLst.data?.vhclUseList}
+                            render={render.grid_VhclUseCdLst}
+                        />
+                    </Group.Section>
                 </Group.Body>
             </Group>
         </Page>

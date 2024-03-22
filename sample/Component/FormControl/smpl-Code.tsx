@@ -88,12 +88,19 @@ const SF_FORM: TFormSchema = {
             area: "orgCd",
             label: "Organization Code",
             popupSize: "md",
+            popupParams: {
+                orgCd: ["OGAM0010"],
+            },
         },
         field12: {
             type: "code",
             area: "wrhsCd",
             label: "WareHouse Code",
             popupSize: "md",
+            popupParams: {
+                wrhsOprtTpCd: ["WT", "WI", "TO"],
+                cstmOfceCd: ["TZDL"],
+            },
         },
         field13: {
             type: "code",
@@ -228,6 +235,12 @@ const SF_FORM: TFormSchema = {
             label: "Carrier Code",
             popupSize: "md",
         },
+        field35: {
+            type: "code",
+            area: "tinNo",
+            label: "TIN Number",
+            popupSize: "md",
+        },
     },
 };
 
@@ -273,6 +286,7 @@ export const SampleFormControlCode = () => {
             { area: "coCdDtl" },
             { area: "hsCd" },
             { area: "cgmePrcdCd", comnCd: "CGM0100" },
+            { area: "tinNo" },
         ],
     });
 
@@ -384,13 +398,7 @@ export const SampleFormControlCode = () => {
                                 </Group.Col>
                             </Group.Row>
                             <Group.Row>
-                                <Group.Control
-                                    {...form.schema.field12}
-                                    popupParams={{
-                                        wrhsOprtTpCd: ["WT", "WI", "TO"],
-                                        cstmOfceCd: ["TZDL"],
-                                    }}
-                                ></Group.Control>
+                                <Group.Control {...form.schema.field12}></Group.Control>
                                 <Group.Label label="보세창고 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/wrhsCdPpup</Group.Any>
@@ -410,7 +418,7 @@ export const SampleFormControlCode = () => {
                                         console.log(data);
                                     }}
                                     popupParams={{
-                                        coDclaTpCd: ["AL","BK"],
+                                        coDclaTpCd: ["AL", "BK"],
                                     }}
                                 ></Group.Control>
                                 <Group.Label label="업체신고 코드"></Group.Label>
@@ -568,6 +576,13 @@ export const SampleFormControlCode = () => {
                                 <Group.Label label="HS 코드"></Group.Label>
                                 <Group.Col>
                                     <Group.Any>/comn/comn/ppup/hsCdPpup</Group.Any>
+                                </Group.Col>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.field35}></Group.Control>
+                                <Group.Label label="TIN 번호"></Group.Label>
+                                <Group.Col>
+                                    <Group.Any>/comn/comn/ppup/tinNoPpup</Group.Any>
                                 </Group.Col>
                             </Group.Row>
                         </Group.Section>
@@ -806,7 +821,12 @@ const Sample = () => {
                 type: "code",
                 area: "carrCd",
                 label: "Carrier Code",
-                
+                popupSize: "md",
+            },
+            field35: {
+                type: "code",
+                area: "tinNo",
+                label: "Tin Number",
                 popupSize: "md",
             },
         },
@@ -849,6 +869,7 @@ const Sample = () => {
                 { area: "vhclTrmssnTpCd" },
                 { area: "vhclUseCd" },
                 { area: "coCdDtl" },
+                { area: "tinNo" },
             ],
         });
     
@@ -1088,6 +1109,13 @@ const Sample = () => {
                         <Group.Label label="업체상세정보 코드"></Group.Label>
                         <Group.Col>
                             <Group.Any>/comn/comn/ppup/CoCdDtl</Group.Any>
+                        </Group.Col>
+                    </Group.Row>
+                    <Group.Row>
+                        <Group.Control {...form.schema.field35}></Group.Control>
+                        <Group.Label label="TIN 번호"></Group.Label>
+                        <Group.Col>
+                            <Group.Any>/comn/comn/ppup/tinNoPpup</Group.Any>
                         </Group.Col>
                     </Group.Row>
                 </Group.Section>
