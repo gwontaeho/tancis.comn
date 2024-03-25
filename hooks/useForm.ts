@@ -256,9 +256,12 @@ export const useForm = (props: UseFormProps) => {
 
         if (type === "timerange" || type === "daterange") {
             const { start, end } = schema;
+            start.control = control;
             start.invalid = errors[start.name];
+            end.control = control;
             end.invalid = errors[end.name];
         } else {
+            schema.control = control;
             schema.invalid = errors[name];
         }
 
