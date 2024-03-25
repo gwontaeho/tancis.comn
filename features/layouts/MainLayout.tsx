@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import Header from "./MainHeader";
 import Footer from "./MainFooter";
@@ -9,7 +9,7 @@ import { menuState } from "../recoil";
 import { api } from "../apis";
 
 export const MainLayout = () => {
-    const [menu, setMenu] = useRecoilState(menuState);
+    const setMenu = useSetRecoilState(menuState);
 
     useEffect(() => {
         getMenu();
