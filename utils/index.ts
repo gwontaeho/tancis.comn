@@ -391,7 +391,7 @@ export const comnUtils = {
         const {
             comnCd,
             area,
-            size = 9999,
+            size = 999999,
             page = 0,
             keyword = "",
             keywordName = "",
@@ -531,7 +531,7 @@ export const comnUtils = {
                 url = `${process.env.REACT_APP_API_CLRI}/api/v1/clri/tm/hs/hs-mgmt?popUp=Y&hsCd=${keyword}&hsDesc=${keywordName}`;
                 break;
             case "postCd":
-                url = `${process.env.REACT_APP_API_ESWO}/api/v1/eswo/comn/post-cd?postTpCd=${postTpCd}&postCd=${keyword}&postNm=${keywordName}`;
+                url = `${process.env.REACT_APP_API_ESWO}/api/v1/eswo/comn/ppup/post-cd?postTpCd=${postTpCd}&postCd=${keyword}&postNm=${keywordName}`;
                 break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
