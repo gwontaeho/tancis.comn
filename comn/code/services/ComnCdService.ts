@@ -9,6 +9,16 @@ export const BASE = {
 };
 
 export const APIS = {
+    getTinNoLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "tinNo",
+            page: page,
+            size: size,
+            keyword: data.tinNo,
+            keywordName: data.coNm,
+        });
+    },
+
     getWrhsCdLst: (data: any, page: number, size: number) => {
         return comnUtils.getCode({
             area: "wrhsCd",
@@ -1095,6 +1105,35 @@ export const SCHEMA_GRID_VHCL_USE_CD: TGridSchema = {
     ],
 };
 
+export const SCHEMA_GRID_TIN_NO: TGridSchema = {
+    id: "grid",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_TIN_NO", binding: "tinNo", width: 100 }] },
+        { cells: [{ header: "L_CO_NM", binding: "coNm", width: "*" }] },
+        { cells: [{ header: "L_CO_ADDR", binding: "coAddr", width: "*" }] },
+        { cells: [{ header: "L_RPRS_TELNO", binding: "rprsTelno", width: 150 }] },
+        { cells: [{ header: "L_RPRS_FAX_NO", binding: "rprsFaxNo", width: 150 }] },
+    ],
+    body: [
+        {
+            cells: [{binding: "tinNo",},],
+        },
+        {
+            cells: [{ binding: "coNm" }],
+        },
+        {
+            cells: [{ binding: "coAddr" }],
+        },
+        {
+            cells: [{ binding: "rprsTelno" }],
+        },
+        {
+            cells: [{ binding: "rprsFaxNo" }],
+        },
+    ],
+};
+
 export const SCHEMA_FORM_COMN_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
@@ -1405,6 +1444,13 @@ export const SCHEMA_FORM_VHCL_USE_CD_SRCH: TFormSchema = {
     schema: {
         vhclUseCd: { type: "text", label: "L_VHCL_USE_CD" },
         vhclUseNm: { type: "text", label: "L_VHCL_USE_NM" },
+    },
+};
+export const SCHEMA_FORM_TIN_NO_SRCH: TFormSchema = {
+    id: "form",
+    schema: {
+        tinNo: { type: "text", label: "L_TIN_NO" },
+        coNm: { type: "text", label: "L_CO_NM" },
     },
 };
 

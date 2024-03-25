@@ -506,8 +506,8 @@ export const comnUtils = {
             case "vhclTrmssnTpCd":
                 url = `/api/v1/ptli/intptl/comnppup/vhcl/trmssn-tp?vhclTrmssnTpCd=${keyword}&vhclTrmssnTpNm=${keywordName}`;
                 break;
-            case "vhclUseCd":
-                url = `/api/v1/ptli/intptl/comnppup/tinNO?`;
+            case "tinNo":
+                url = `/api/v1/ptli/intptl/comnppup/tin-no?tinNo=${keyword}&coNm=${keywordName}`;
                 break;
             case "coCdDtl":
                 url = `/api/v1/ptli/intptl/comnppup/co/${keyword}`;
@@ -532,9 +532,6 @@ export const comnUtils = {
                 break;
             case "postCd":
                 url = `${process.env.REACT_APP_API_ESWO}/api/v1/eswo/comn/post-cd?postTpCd=${postTpCd}&postCd=${keyword}&postNm=${keywordName}`;
-                break;
-            case "tinNo":
-                url = `/api/v1/ptli/intptl/comnppup/vhcl/use?vhclUseCd=${keyword}&vhclUseNm=${keywordName}`;
                 break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
