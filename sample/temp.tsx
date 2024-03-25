@@ -294,7 +294,8 @@ class Holder {
     }
 }
 
-export const Temp = () => {
+export const Temp = (props: any) => {
+    console.log(props);
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
