@@ -234,7 +234,7 @@ const FORM_SCHEMA: TFormSchema = {
         },
         date: { label: "date", type: "date" },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
-        radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
+        radio: { label: "radio", type: "radio", area: "currCd", viewType: "value", readOnly: true },
         checkbox: {
             label: "checkbox",
             type: "checkbox",
@@ -304,7 +304,7 @@ export const Temp = () => {
     const [count, setRender] = useState(0);
     const [count2, setRender2] = useState(0);
 
-    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED" } });
+    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED", radio: "MYR" } });
 
     const st = useStore();
 
@@ -433,14 +433,19 @@ export const Temp = () => {
                                     </Group.Cell>
 
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.select} />
+                                        <FormControl {...f.schema.radio} />
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.code} />
+                                        <FormControl
+                                            {...f.schema.code}
+                                            callback={({ data }) => {
+                                                console.log(data);
+                                            }}
+                                        />
                                     </Group.Cell>
                                     <Group.Cell size={10}>
-                                        <FormControl {...f.schema.text} />
+                                        <FormControl {...f.schema.number} />
                                     </Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>
@@ -888,6 +893,8 @@ export const Temp = () => {
             </Layout>
 
             <Pdf />
+
+            <Component count={count} />
         </Page>
     );
 };
@@ -931,3 +938,10 @@ const CHAT_DATA = [
 const Abc = memo(({ count }: any) => {
     return <div></div>;
 });
+
+const Component = (props: any) => {
+    const { count } = props;
+
+    // console.log(props);
+    return <div>{count}</div>;
+};

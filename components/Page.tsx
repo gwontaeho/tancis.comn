@@ -23,6 +23,7 @@ type PageProps = {
 
 export const Page = (props: PageProps) => {
     const { children, id, title, description, navigation, popup } = props;
+
     return (
         <div className="uf-page">
             {(!!title || !!description || !!navigation) && (

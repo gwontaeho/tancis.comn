@@ -87,6 +87,7 @@ export type FormControlProps = InputDaterangeProps &
         onBlur?: (arg?: any) => void;
         onFocus?: (arg?: any) => void;
         onChange?: (arg?: any) => void;
+        onEnter?: (arg?: any) => void;
 
         /** UseOptions props */
         area?: string;

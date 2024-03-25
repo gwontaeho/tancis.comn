@@ -27,6 +27,7 @@ export type InputTextProps = {
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
+    onEnter?: (arg?: any) => void;
 };
 
 export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
@@ -56,6 +57,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             onBlur,
             onFocus,
             onChange,
+            onEnter,
         } = props;
 
         const _props = Object.fromEntries(
@@ -108,6 +110,13 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         const handleDown = (e: any) => {
             if ((e.code === "Backspace" || e.code === "Delete") && o.mask) {
                 _key.current = true;
+            }
+
+            if (e.keyCode === 13) {
+                /* on enter */
+                if (onEnter) {
+                    onEnter();
+                }
             }
 
             setCapture({ e: "down", start: e.target.selectionStart, end: e.target.selectionEnd });

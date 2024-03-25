@@ -25,6 +25,7 @@ export type InputNumberProps = {
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
+    onEnter?: (arg?: any) => void;
 };
 
 export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
@@ -52,6 +53,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             onBlur,
             onFocus,
             onChange,
+            onEnter,
         } = props;
 
         const _props = Object.fromEntries(
@@ -86,6 +88,14 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             onChange(unformatNumber(e.target.value, o));
         };
 
+        const handleKeyDown = (e: any) => {
+            if (e.keyCode === 13) {
+                if (onEnter) {
+                    onEnter();
+                }
+            }
+        };
+
         return (
             <div className="w-full">
                 {!edit && (
@@ -100,6 +110,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
                         value={_value}
                         title={_value}
                         onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                         type="text"
                         inputMode="numeric"
                         autoComplete="off"
