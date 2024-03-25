@@ -147,11 +147,11 @@ const Menu = () => {
     );
 };
 
-const map = (obj: any, arg: any, _parent: any = {}) => {
+const map = (obj: any, arg: any, _parents: any = {}) => {
     arg.forEach((_: any) => {
-        obj[_["menuId"]] = { ..._, _parent };
+        obj[_["menuId"]] = { ..._, _parents };
         if (_.children) {
-            const parent = { ..._parent, [_["menuLvl"]]: _["menuId"] };
+            const parent = { ..._parents, [_["menuLvl"]]: _["menuId"] };
             map(obj, _.children, parent);
         }
     });
@@ -185,10 +185,12 @@ const DevSideMenu = () => {
     if (nonSigned && menuIdQuery) {
         flatted = flat(nonSigned);
         current = flatted[menuIdQuery];
-        parents = current["_parent"];
+        parents = current["_parents"];
         system = flatted[parents["1"]];
         list = system?.children;
     }
+
+    console.log(current);
 
     return (
         <nav className="p-2">
