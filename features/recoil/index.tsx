@@ -45,7 +45,7 @@ export const resourceState = atom<any>({
 export const menuState = atom<any>({
     key: "menuState",
     default: {
-        mode: "dev2",
+        mode: "dev1",
         signed: null,
         nonSigned: null,
     },
