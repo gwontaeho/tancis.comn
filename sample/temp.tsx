@@ -190,9 +190,11 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         pagination: "in",
         // pagination: "out",
-        // group: ["text"],
+        group: [""],
     },
-    // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
+
+    group: [{ cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] }],
+
     head: [
         { id: "test", cells: [{ rowspan: 2, binding: "number", width: 200 }] },
         {
@@ -207,6 +209,7 @@ const GRID_SCHEMA: TGridSchema = {
             ],
         },
     ],
+
     body: [
         {
             colspan: 2,
@@ -232,7 +235,7 @@ const FORM_SCHEMA: TFormSchema = {
                 return String(data).length === 4 || "asd";
             },
         },
-        date: { label: "date", type: "date" },
+        date: { label: "date", type: "date", required: true },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
         radio: { label: "radio", type: "radio", area: "currCd", viewType: "value", readOnly: true },
         checkbox: {
@@ -348,16 +351,16 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            if (data.text === "Maru") {
-                context.backgroundColor = "red";
-            }
+            // if (data.text === "Maru") {
+            //     context.backgroundColor = "red";
+            // }
 
-            if (data.text === "Sam") {
-                context.backgroundColor = "blue";
-            }
-            if (data.text === "Ken") {
-                context.backgroundColor = "yellow";
-            }
+            // if (data.text === "Sam") {
+            //     context.backgroundColor = "blue";
+            // }
+            // if (data.text === "Ken") {
+            //     context.backgroundColor = "yellow";
+            // }
 
             return true;
         },
@@ -428,6 +431,7 @@ export const Temp = () => {
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.date} />
                                     </Group.Cell>
+
                                     <Group.Cell size={2} header>
                                         <FormControl {...f.schema.date} />
                                     </Group.Cell>
@@ -482,11 +486,11 @@ export const Temp = () => {
                                         Set Code "AED"
                                     </button>
                                 </Group.Cell>
+
                                 <Group.Cell>
-                                    <button onClick={() => console.log(f.setSchema("start", { readOnly: false }))}>
-                                        readOnly
-                                    </button>
+                                    <button onClick={() => f.setSchema("date", { required: false })}>readOnly</button>
                                 </Group.Cell>
+
                                 <Group.Cell>
                                     <button onClick={() => console.log(f.reset())}>Reset</button>
                                 </Group.Cell>

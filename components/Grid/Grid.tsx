@@ -350,11 +350,13 @@ const Row = memo((props: any) => {
                                 if (cel.show === false) return null;
 
                                 const { binding, aggregate } = cel;
+
                                 const ag = row.aggregate.find((_: any) => {
                                     return _.binding === binding && _.aggregate === aggregate;
                                 });
 
                                 const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
+
                                 return (
                                     <pre
                                         key={celKey}

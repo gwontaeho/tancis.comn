@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { usePageContext } from "../features/context";
 import { resourceState } from "../features/recoil";
 import { useTheme } from "../hooks";
 import { utils } from "../utils";
@@ -102,7 +101,6 @@ const putResourceToIDB = (record: any) => {
 export const useResource = (props: UseResourceProps) => {
     const { theme } = useTheme();
     const setRecource = useSetRecoilState(resourceState);
-    const context = usePageContext();
 
     const { defaultSchema } = props;
 

@@ -81,6 +81,8 @@ export const Radio = (props: RadioProps) => {
         }
     };
 
+    console.log(o.options);
+
     return (
         <div className="w-full">
             {/* view text */}
