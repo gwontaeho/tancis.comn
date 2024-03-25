@@ -206,7 +206,7 @@ const DevSideMenu = () => {
 };
 
 const SideMenuItem = (props: any) => {
-    const { menuNm, children, menuId, hierarchy } = props;
+    const { menuNm, children, menuId, menuUrl, hierarchy } = props;
     const id = useId();
 
     const navigate = useNavigate();
@@ -214,23 +214,19 @@ const SideMenuItem = (props: any) => {
     const menuIdQuery = URLSearchParams.get("menuId");
 
     const [open, setOpen] = useState(Boolean(hierarchy && Object.values(hierarchy).includes(menuId)));
-
     const toggle = () => {
         if (children) return setOpen((prev: any) => !prev);
-        navigate(`/?menuId=${menuId}`);
+        // navigate(`/?menuId=${menuId}`);
+        navigate(`${menuUrl}`);
     };
 
     return (
         <li>
             <button
-                className={classNames(
-                    "p-1 flex text-[14px] w-full items-center justify-between text-left",
-                    // _depth === 2 && "font-medium",
-                    // _depth !== 2 && "text-[13px]",
-                )}
+                className={classNames("p-1 flex text-[14px] w-full items-center justify-between text-left")}
                 onClick={toggle}
             >
-                <p className={classNames({ "text-uf-blue underline": menuIdQuery === menuId })}>{menuNm}</p>
+                <p className={classNames(menuIdQuery === menuId && "text-uf-blue underline")}>{menuNm}</p>
                 {children && (
                     <Icon icon="down" size="xs" className={classNames("transition", { "rotate-180": open })} />
                 )}
