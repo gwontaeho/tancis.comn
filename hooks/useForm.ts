@@ -261,6 +261,7 @@ export const useForm = (props: UseFormProps) => {
             end.control = control;
             end.invalid = errors[end.name];
         } else {
+            schema.name = name;
             schema.control = control;
             schema.invalid = errors[name];
         }
