@@ -190,7 +190,7 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         pagination: "in",
         // pagination: "out",
-        group: [""],
+        group: true,
     },
 
     group: [{ cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] }],

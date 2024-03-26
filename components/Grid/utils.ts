@@ -315,7 +315,7 @@ const getView = (_grid: any) => {
     let count;
     let itemCount;
 
-    if (Object.keys(_grid.current._group).length) {
+    if (_grid.current._group) {
         const { groupedContent, groupedView } = group(_grid, _grid.current._content);
         content = groupedContent;
         view = groupedView;
@@ -418,11 +418,13 @@ const getRef = (schema: any, paging: any, sizing: any) => {
         _height: options.height === "auto" ? 0 : options.height || 400,
         _cols: head.length,
 
-        _group: Array.isArray(options.group)
-            ? options.group.reduce((p: any, c: any, seq: any) => {
-                  return { ...p, [c]: { seq } };
-              }, {})
-            : {},
+        _group:
+            Array.isArray(options.group) || options.group === true
+                ? (options.group === true ? [""] : options.group).reduce((p: any, c: any, seq: any) => {
+                      return { ...p, [c]: { seq } };
+                  }, {})
+                : {},
+
         _rule: body
             .flatMap(({ cells }: any) => cells)
             .reduce((prev: any, curr: any) => {

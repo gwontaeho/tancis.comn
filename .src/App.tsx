@@ -1,5 +1,5 @@
 import { hot } from "react-hot-loader";
-import { Base } from "@/comn";
+import Base from "./comn";
 
 function App() {
     return <Base />;
