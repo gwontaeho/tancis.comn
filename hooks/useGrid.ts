@@ -19,7 +19,9 @@ type TGridGroupCell = {
     binding?: string;
     colspan?: number;
     rowspan?: number;
+    text?: string;
     aggregate?: "SUM" | "AVERAGE" | "MIN" | "MAX" | "COUNT";
+    align?: "start" | "end" | "left" | "right" | "center";
 };
 type TGridGroupColumn = {
     colspan?: number;
@@ -58,6 +60,7 @@ export type TGridSchema = {
     id?: string;
     options?: TGridOptions;
     group?: TGridGroupColumn[];
+    groupFoot?: TGridGroupColumn[];
     head: TGridHeadColumn[];
     body: TGridBodyColumn[];
 };

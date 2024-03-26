@@ -214,6 +214,8 @@ const group = (_grid: any, content: any) => {
                 _grid.current._groupStatus[groupKey] = { open: true };
             }
             const open = _grid.current._groupStatus[groupKey].open;
+
+            /* Group Aggregate */
             const aggregateFunction = _grid.current._groupSchema
                 ?.flatMap(({ cells }: any) => cells)
                 .reduce((prev: any, curr: any) => {
@@ -232,7 +234,9 @@ const group = (_grid: any, content: any) => {
                 }, []);
 
             const aggregate = aggregateFunction?.map((_: any) => {
-                const d = curr[1];
+                const d = curr[1].filter(({ __type }: any) => {
+                    return __type !== "deleted";
+                });
 
                 let value;
                 switch (_.aggregate) {
@@ -252,26 +256,101 @@ const group = (_grid: any, content: any) => {
                         value = d.length;
                         break;
                 }
-
                 return { ..._, value };
             });
 
-            const row = {
-                __key: uuid(),
-                __type: "group",
-                open,
-                depth,
-                groupKey,
-                value: curr[0],
-                binding: by[0],
-                count: curr[1].length,
-                aggregate,
-            };
+            /* Group Foot Aggregate */
+            const foot_aggregateFunction = _grid.current._groupFootSchema
+                ?.flatMap(({ cells }: any) => cells)
+                .reduce((prev: any, curr: any) => {
+                    if (curr.binding && curr.aggregate) {
+                        if (
+                            !prev.find(
+                                ({ binding, aggregate }: any) =>
+                                    binding === curr.binding && aggregate === curr.aggregate,
+                            )
+                        ) {
+                            prev.push(curr);
+                        }
+                    }
+
+                    return prev;
+                }, []);
+            const foot_aggregate = foot_aggregateFunction?.map((_: any) => {
+                const d = curr[1].filter(({ __type }: any) => {
+                    return __type !== "deleted";
+                });
+                let value;
+                switch (_.aggregate) {
+                    case "SUM":
+                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0);
+                        break;
+                    case "AVERAGE":
+                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0) / d.length;
+                        break;
+                    case "MIN":
+                        value = Math.min(...d.map((__: any) => __[_.binding]));
+                        break;
+                    case "MAX":
+                        value = Math.max(...d.map((__: any) => __[_.binding]));
+                        break;
+                    case "COUNT":
+                        value = d.length;
+                        break;
+                }
+                return { ..._, value };
+            });
+            const GROUP_ROW = [];
+            if (_grid.current._groupSchema) {
+                const count = curr[1].filter(({ __type }: any) => {
+                    return __type !== "deleted";
+                }).length;
+                const row = {
+                    __key: uuid(),
+                    __type: "group",
+                    open,
+                    depth,
+                    groupKey,
+                    value: curr[0],
+                    binding: by[0],
+                    count,
+                    aggregate,
+                };
+                if (count) {
+                    GROUP_ROW.push(row);
+                }
+            }
+
+            const GROUP_FOOT_ROW = [];
+            if (_grid.current._groupFootSchema) {
+                const count = curr[1].filter(({ __type }: any) => {
+                    return __type !== "deleted";
+                }).length;
+
+                const row = {
+                    __key: uuid(),
+                    __type: "groupFoot",
+                    depth,
+                    groupKey,
+                    value: curr[0],
+                    binding: by[0],
+                    count,
+                    aggregate: foot_aggregate,
+                };
+                if (count) {
+                    GROUP_FOOT_ROW.push(row);
+                }
+            }
 
             if (open) {
-                return [...prev, row, ...getGroupedView(curr[1], groups[depth], depth, parent, groupKey)];
+                return [
+                    ...prev,
+                    ...GROUP_ROW,
+                    ...getGroupedView(curr[1], groups[depth], depth, parent, groupKey),
+                    ...GROUP_FOOT_ROW,
+                ];
             } else {
-                return [...prev, row];
+                return [...prev, ...GROUP_ROW, ...GROUP_FOOT_ROW];
             }
         }, []);
     };
@@ -350,7 +429,7 @@ const getView = (_grid: any) => {
     view = view
         .map((_: any) => {
             let next = _;
-            if (_.__type === "group" || _.__type === "deleted") next.__index = -1;
+            if (_.__type === "group" || _.__type === "groupFoot" || _.__type === "deleted") next.__index = -1;
             else next.__index = viewIndex++;
             return next;
         })
@@ -375,7 +454,7 @@ const getView = (_grid: any) => {
 };
 
 const getRef = (schema: any, paging: any, sizing: any) => {
-    const { options = {}, head, body, group } = schema;
+    const { options = {}, head, body, group, groupFoot } = schema;
     const [_page, _setPage] = paging;
     const [_size, _setSize] = sizing;
 
@@ -462,6 +541,7 @@ const getRef = (schema: any, paging: any, sizing: any) => {
             return { ..._, id, show, cells };
         }),
         _groupSchema: group,
+        _groupFootSchema: groupFoot,
     };
 };
 

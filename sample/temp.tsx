@@ -190,10 +190,14 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         pagination: "in",
         // pagination: "out",
-        group: true,
+        group: ["text"],
     },
 
-    group: [{ cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] }],
+    // group: [{ cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] }],
+    groupFoot: [
+        { cells: [{ colspan: 2, text: "숫자 총합", align: "center" }] },
+        { cells: [{ colspan: 2, binding: "number", aggregate: "SUM", align: "right" }] },
+    ],
 
     head: [
         { id: "test", cells: [{ rowspan: 2, binding: "number", width: 200 }] },
@@ -209,7 +213,6 @@ const GRID_SCHEMA: TGridSchema = {
             ],
         },
     ],
-
     body: [
         {
             colspan: 2,
@@ -364,9 +367,9 @@ export const Temp = (props: any) => {
 
             return true;
         },
-        checkbox: (data: any) => {
-            return data.__type === "added";
-        },
+        // checkbox: (data: any) => {
+        //     return data.__type === "added";
+        // },
 
         radio: (data: any) => {
             return data.text !== "N";

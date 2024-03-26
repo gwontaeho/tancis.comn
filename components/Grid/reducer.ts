@@ -16,6 +16,7 @@ const createInitialState = ({ _grid }: any) => {
         _template,
         _body: fun(_grid.current._body),
         _group: _grid.current._groupSchema && fun(_grid.current._groupSchema),
+        _groupFoot: _grid.current._groupFootSchema && fun(_grid.current._groupFootSchema),
         _test: _grid.current._view,
         _totalCount: _grid.current._totalCount,
         _totalItemCount: _grid.current._totalItemCount,

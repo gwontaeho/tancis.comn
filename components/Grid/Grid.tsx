@@ -111,7 +111,7 @@ const Component = memo((props: any) => {
                     }}
                     className="uf-grid-head relative"
                 >
-                    {!!Object.keys(_grid.current._group).length && <div className="uf-grid-option" />}
+                    {Boolean(_grid.current._groupSchema) && <div className="uf-grid-option" />}
                     {_options.checkbox && (
                         <div className="uf-grid-option">
                             <input
@@ -262,6 +262,7 @@ const Row = memo((props: any) => {
             _size,
             _body,
             _group,
+            _groupFoot,
             _template,
         },
     } = data;
@@ -375,8 +376,55 @@ const Row = memo((props: any) => {
                 </div>
             )}
 
+            {/* GroupFoot */}
+            {rowType === "groupFoot" && (
+                <div
+                    ref={rowRefCallback}
+                    className="flex w-full min-w-full gap-[1px] border-l bg-uf-border border-l-uf-card-background h-[2.5rem]"
+                >
+                    {Boolean(_grid.current._groupSchema) && <div className="uf-grid-option bg-uf-card-background" />}
+                    {_options.checkbox && <div className="uf-grid-option bg-uf-card-background" />}
+                    {_options.radio && <div className="uf-grid-option bg-uf-card-background" />}
+                    {_options.index && <div className="uf-grid-option bg-uf-card-background" />}
+                    <div className="grid w-full gap-[1px]" style={{ gridTemplateColumns: _template }}>
+                        {_groupFoot?.map((schemaRow: any, rowIndex: any) => {
+                            return schemaRow.map((cel: any, colIndex: any) => {
+                                if (!cel) return null;
+                                if (cel.show === false) return null;
+
+                                const { binding, aggregate, text, align } = cel;
+
+                                const ag = row.aggregate?.find((_: any) => {
+                                    return _.binding === binding && _.aggregate === aggregate;
+                                });
+
+                                const celKey = rowKey + ".gg." + rowIndex + "." + colIndex;
+
+                                return (
+                                    <div
+                                        key={celKey}
+                                        className={classNames(
+                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center font-bold text-sm",
+                                            (align === "start" || align === "left") && "justify-start text-left",
+                                            (align === "end" || align === "right") && "justify-end text-right",
+                                            (align === "center" || align === undefined) && "justify-center text-center",
+                                        )}
+                                        style={{
+                                            gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
+                                            gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
+                                        }}
+                                    >
+                                        {text ? t(text) : ag && `${ag.value}`}
+                                    </div>
+                                );
+                            });
+                        })}
+                    </div>
+                </div>
+            )}
+
             {/* Row */}
-            {rowType !== "group" && rowType !== "empty" && (
+            {rowType !== "group" && rowType !== "groupFoot" && rowType !== "empty" && (
                 <div
                     ref={rowRefCallback}
                     onClick={() => {
@@ -391,9 +439,7 @@ const Row = memo((props: any) => {
                               : "border-l-uf-card-background",
                     )}
                 >
-                    {!!Object.keys(_grid.current._group).length && (
-                        <div className="uf-grid-option bg-uf-card-background" />
-                    )}
+                    {Boolean(_grid.current._groupSchema) && <div className="uf-grid-option bg-uf-card-background" />}
 
                     {/* Checkbox */}
                     {_options?.checkbox && (
