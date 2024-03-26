@@ -82,7 +82,7 @@ export const TinNumberList = (props: any) => {
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                modal.postMessage({ code: value, label: rowValues.coNm });
+                                modal.postMessage({ code: value, label: rowValues.coNm, rowData: rowValues });
                                 close();
                             }}
                         >
