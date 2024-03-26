@@ -8,6 +8,7 @@ import Draggable from "react-draggable";
 import { IconButton, Button } from "@/comn/components";
 import { modalState } from "@/comn/features/recoil";
 import { v4 as uuid } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const MODAL_SIZES = {
     xs: "max-w-[30vw]",
@@ -25,6 +26,7 @@ const MODAL_LAYOUTS = {
 export type ModalProps = {
     id?: string;
     content?: React.ReactNode;
+    type?: "deleted";
     backdrop?: boolean;
     draggable?: boolean;
     close?: boolean;
@@ -43,6 +45,7 @@ const Modal = (props: ModalProps) => {
         id = uuid(),
         url,
         title,
+        type,
         content,
         draggable = false,
         backdrop = true,
@@ -58,6 +61,7 @@ const Modal = (props: ModalProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();
     const setModal = useSetRecoilState(modalState);
+    const navigate = useNavigate();
 
     const paramsQuery = params ? "params=" + encodeURIComponent(JSON.stringify(params)) : "";
 
@@ -75,6 +79,7 @@ const Modal = (props: ModalProps) => {
 
     const handleClose = () => {
         setModal((prev) => prev.filter((v) => id !== v.id));
+        navigate(-1);
     };
 
     const handleCancel = () => {
@@ -131,7 +136,9 @@ const Modal = (props: ModalProps) => {
                     </div>
 
                     <div className={typeof content === "string" ? "p-3" : "p-1" + " flex-1 overflow-auto h-full flex"}>
-                        {url ? (
+                        {type === "deleted" ? (
+                            <pre>{t("msg.com.00117")}</pre>
+                        ) : url ? (
                             <div className="flex-1">
                                 <iframe
                                     src={url + MODAL_LAYOUTS[layout] + "&" + paramsQuery}
@@ -146,6 +153,7 @@ const Modal = (props: ModalProps) => {
                             <div className="flex-1 px-1">{content}</div>
                         )}
                     </div>
+
                     {(close !== false || onConfirm !== undefined) && (
                         <div className={"px-2 py-2 h-12 flex space-x-1 items-center justify-end"}>
                             {close !== false && <Button onClick={() => handleCancel()} role="close"></Button>}

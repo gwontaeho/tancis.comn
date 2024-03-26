@@ -27,6 +27,11 @@ export const BltbrdDtl = (props: any) => {
             api: (data) => APIS.getBltbrd(id),
             enabled: !!id,
             onSuccess: (data) => {
+                if (!data.bltbrdInfo.content) {
+                    modal.openModal({ type: "deleted" });
+                    return;
+                }
+
                 form.bltbrd.setValues(data.bltbrdInfo.content);
             },
             onError: (error) => {},
