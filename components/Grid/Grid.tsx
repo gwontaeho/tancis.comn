@@ -446,7 +446,7 @@ const Row = memo((props: any) => {
                             return _.map((cel: any, colIndex: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
-                                const { binding, align, rowspan, colspan, edit, header, ...FORM } = cel;
+                                const { binding, align, rowspan, colspan, edit, mode, header, ...FORM } = cel;
 
                                 const celKey = rowKey + ".gb." + rowIndex + "." + colIndex;
 
@@ -471,7 +471,14 @@ const Row = memo((props: any) => {
                                     const row = _editingRow.find(
                                         ({ key, cell }: any) => key === rowKey && cell === undefined,
                                     )?.edit;
-                                    CELL_STATUS = rowCell ?? row ?? edit ? "EDIT" : "CELL";
+                                    CELL_STATUS =
+                                        mode === "edit"
+                                            ? "EDIT"
+                                            : mode === "view"
+                                              ? "CELL"
+                                              : rowCell ?? row ?? edit
+                                                ? "EDIT"
+                                                : "CELL";
                                 }
 
                                 /*

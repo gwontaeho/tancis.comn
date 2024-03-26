@@ -215,14 +215,14 @@ const GRID_SCHEMA: TGridSchema = {
             colspan: 2,
             cells: [{ colspan: 2, binding: "number", type: "number", excel: "B" }],
         },
-        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A" }] },
+        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A", mode: "view" }] },
     ],
 };
 
 const FORM_SCHEMA: TFormSchema = {
     id: "test",
     schema: {
-        text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/] },
+        text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/], mode: "edit" },
         number: {
             label: "number",
             type: "number",
@@ -307,7 +307,6 @@ export const Temp = (props: any) => {
 
     const [count, setRender] = useState(0);
     const [count2, setRender2] = useState(0);
-
     const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED", radio: "MYR" } });
 
     const st = useStore();

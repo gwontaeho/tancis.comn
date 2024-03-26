@@ -75,6 +75,7 @@ export type FormControlProps = InputDaterangeProps &
         /** common */
         type?: FormControlType;
         edit?: boolean;
+        mode?: "edit" | "view" | null;
         rightText?: string;
         leftButton?: TButton;
         rightButton?: TButton;

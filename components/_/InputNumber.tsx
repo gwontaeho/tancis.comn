@@ -5,6 +5,7 @@ import { comnUtils } from "@/comn/utils";
 /** */
 export type InputNumberProps = {
     edit?: boolean;
+    mode?: "edit" | "view" | null;
     decimalScale?: number;
     thousandSeparator?: boolean;
 
@@ -33,6 +34,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
         const {
             /** */
             edit = true,
+            mode,
             decimalScale,
             thousandSeparator = true,
             /** input props */
@@ -96,14 +98,16 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             }
         };
 
+        const EDIT_STATUS = mode === "edit" ? true : mode === "view" ? false : edit;
+
         return (
             <div className="w-full">
-                {!edit && (
+                {!EDIT_STATUS && (
                     <div title={_value} className={comnUtils.getViewStyle(color, bold, fontSize)}>
                         {_value}
                     </div>
                 )}
-                <div hidden={!edit}>
+                <div hidden={!EDIT_STATUS}>
                     <input
                         {..._props}
                         ref={ref}
