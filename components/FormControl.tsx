@@ -75,6 +75,7 @@ export type FormControlProps = InputDaterangeProps &
         /** common */
         type?: FormControlType;
         edit?: boolean;
+        mode?: "edit" | "view" | null;
         rightText?: string;
         leftButton?: TButton;
         rightButton?: TButton;
@@ -87,6 +88,7 @@ export type FormControlProps = InputDaterangeProps &
         onBlur?: (arg?: any) => void;
         onFocus?: (arg?: any) => void;
         onChange?: (arg?: any) => void;
+        onEnter?: (arg?: any) => void;
 
         /** UseOptions props */
         area?: string;

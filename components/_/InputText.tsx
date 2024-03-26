@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 /** */
 export type InputTextProps = {
     edit?: boolean;
+    mode?: "edit" | "view" | null;
     mask?: any;
     imemode?: "number" | "number+upper" | "number+lower";
     exact?: boolean;
@@ -27,6 +28,7 @@ export type InputTextProps = {
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
+    onEnter?: (arg?: any) => void;
 };
 
 export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
@@ -34,6 +36,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
         const {
             /** */
             edit = true,
+            mode,
             imemode,
             mask,
             exact,
@@ -56,6 +59,7 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             onBlur,
             onFocus,
             onChange,
+            onEnter,
         } = props;
 
         const _props = Object.fromEntries(
@@ -110,6 +114,13 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                 _key.current = true;
             }
 
+            if (e.keyCode === 13) {
+                /* on enter */
+                if (onEnter) {
+                    onEnter();
+                }
+            }
+
             setCapture({ e: "down", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
 
@@ -127,14 +138,16 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             setCapture({ e: "selectCapture", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
 
+        const EDIT_STATUS = mode === "edit" ? true : mode === "view" ? false : edit;
+
         return (
             <div className="w-full">
-                {!edit && (
+                {!EDIT_STATUS && (
                     <div title={_value} className={comnUtils.getViewStyle(color, bold, fontSize)}>
                         {_value}
                     </div>
                 )}
-                <div hidden={!edit}>
+                <div hidden={!EDIT_STATUS}>
                     <input
                         {..._props}
                         ref={ref}

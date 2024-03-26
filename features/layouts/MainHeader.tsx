@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import { authState, routeState } from "@/comn/features/recoil";
+import { authState, menuState, routeState } from "@/comn/features/recoil";
 import { useTheme, useToast } from "@/comn/hooks";
 import { Icon, IconButton, Badge } from "@/comn/components";
 import i18n from "@/comn/features/locales/i18n";
@@ -114,6 +114,12 @@ const Header = () => {
 
     const [open, setOpen] = useState(false);
 
+    const setMenu = useSetRecoilState(menuState);
+
+    const toggle = () => {
+        setMenu((prev: any) => ({ ...prev, mode: prev.mode === "dev1" ? "dev2" : "dev1" }));
+    };
+
     const signOut = () => {
         console.log("Sign Out");
         Cookies.remove("authorization");
@@ -137,13 +143,7 @@ const Header = () => {
 
             {/*  */}
             <div className="uf-header-main">
-                <nav className="uf-header-navigation">
-                    <ul className="flex gap-8">
-                        {routes.map((child: any) => {
-                            return <NavItem key={uuid()} {...child} />;
-                        })}
-                    </ul>
-                </nav>
+                <TopMenu />
 
                 <div className="uf-header-control">
                     <div className="flex gap-2">
@@ -156,7 +156,7 @@ const Header = () => {
 
                         {/* envelope */}
                         <Badge number={8}>
-                            <IconButton className="text-uf-white" icon="envelope" />
+                            <IconButton className="text-uf-white" icon="envelope" onClick={toggle} />
                         </Badge>
 
                         {/* noti */}
@@ -201,30 +201,78 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-
-            {/* {open && (
-                <nav className="h-[calc(100vh-5rem)]">
-                    <ul className="text-xl">
-                        <li className="px-4 py-2 flex justify-between items-center">
-                            <span>화면설계</span>
-                            <Icon icon="down" />
-                        </li>
-                        <li className="px-4 py-2 flex justify-between items-center">
-                            <span>화면설계</span>
-                            <Icon icon="down" />
-                        </li>
-                        <li className="px-4 py-2 flex justify-between items-center">
-                            <span>화면설계</span>
-                            <Icon icon="down" />
-                        </li>
-                        <li className="px-4 py-2 flex justify-between items-center">
-                            <span>화면설계</span>
-                            <Icon icon="down" />
-                        </li>
-                    </ul>
-                </nav>
-            )} */}
         </header>
+    );
+};
+
+/* temp */
+const TopMenu = () => {
+    const id = useId();
+    const menu = useRecoilValue(menuState);
+    const { nonSigned, mode } = menu;
+
+    // console.log(routes);
+    // console.log(nonSigned);
+    // console.log(id);
+
+    return mode === "dev1" ? (
+        <nav className="uf-header-navigation">
+            <ul className="flex gap-8">
+                {routes.map((child: any) => {
+                    return <NavItem key={uuid()} {...child} />;
+                })}
+            </ul>
+        </nav>
+    ) : (
+        <nav className="uf-header-navigation">
+            <ul className="flex gap-8">
+                {nonSigned &&
+                    Array.isArray(nonSigned.children) &&
+                    Boolean(nonSigned.children.length) &&
+                    nonSigned.children.map((child: any) => {
+                        return <TopMenuItem key={`${id}${child.menuId}`} {...child} />;
+                    })}
+            </ul>
+        </nav>
+    );
+};
+
+/* temp */
+const TopMenuItem = (props: any) => {
+    const id = useId();
+    const { menuId, menuNm, menuUrl, children } = props;
+    const systemBase = menuId;
+
+    return (
+        <li className="group flex relative items-center">
+            <Link to={`/?menuId=${menuId}`}>
+                <button className="flex text-uf-white items-center space-x-1">
+                    <p>{menuNm}</p>
+                    <Icon icon="down" size="xs" className="transition group-hover:rotate-180" />
+                </button>
+            </Link>
+            <div className="pt-2 w-max absolute hidden top-full left-0 group-hover:block">
+                <ul className="rounded border shadow bg-uf-auth p-4 grid grid-cols-2 gap-1 [&>li:hover]:underline">
+                    <li className="col-span-2">
+                        <Link to={menuUrl} className="block p-2 font-semibold">
+                            {menuNm}
+                        </Link>
+                    </li>
+                    {Array.isArray(children) &&
+                        Boolean(children.length) &&
+                        children.map((child: any) => {
+                            const { menuId, menuNm, menuUrl } = child;
+                            return (
+                                <li key={`${id}${menuId}`}>
+                                    <Link to={`/?menuId=${menuId}`} className="block w-40 py-2 px-4 break-all">
+                                        {menuNm}
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                </ul>
+            </div>
+        </li>
     );
 };
 

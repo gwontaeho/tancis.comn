@@ -60,8 +60,6 @@ export const Radio = (props: RadioProps) => {
     const _props = Object.fromEntries(
         Object.entries({
             /** */
-            readOnly,
-            disabled,
             onBlur,
         }).filter(([, value]) => value !== undefined),
     );
@@ -121,11 +119,12 @@ export const Radio = (props: RadioProps) => {
                                         type="radio"
                                         value={option.value}
                                         checked={option.value === _value}
+                                        readOnly={readOnly && option.value === _value}
+                                        disabled={disabled || (readOnly && option.value !== _value)}
                                         onChange={handleChange}
                                     />
                                     {option.label && (
                                         <div className={comnUtils.getEditStyle(editColor, editBold)}>
-                                            {" "}
                                             {editRadio(option.value, t(option.label), editType)}
                                         </div>
                                     )}

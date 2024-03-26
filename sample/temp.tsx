@@ -190,9 +190,11 @@ const GRID_SCHEMA: TGridSchema = {
         exportExcel: true,
         pagination: "in",
         // pagination: "out",
-        // group: ["text"],
+        group: [""],
     },
-    // group: [{ cells: [{}] }, { cells: [{ binding: "number", aggregate: "MAX" }] }],
+
+    group: [{ cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] }],
+
     head: [
         { id: "test", cells: [{ rowspan: 2, binding: "number", width: 200 }] },
         {
@@ -207,19 +209,20 @@ const GRID_SCHEMA: TGridSchema = {
             ],
         },
     ],
+
     body: [
         {
             colspan: 2,
             cells: [{ colspan: 2, binding: "number", type: "number", excel: "B" }],
         },
-        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A" }] },
+        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A", mode: "view" }] },
     ],
 };
 
 const FORM_SCHEMA: TFormSchema = {
     id: "test",
     schema: {
-        text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/] },
+        text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/], mode: "edit" },
         number: {
             label: "number",
             type: "number",
@@ -232,9 +235,9 @@ const FORM_SCHEMA: TFormSchema = {
                 return String(data).length === 4 || "asd";
             },
         },
-        date: { label: "date", type: "date" },
+        date: { label: "date", type: "date", required: true },
         select: { label: "select", type: "select", area: "currCd", viewType: "label" },
-        radio: { label: "radio", type: "radio", area: "currCd", viewType: "value" },
+        radio: { label: "radio", type: "radio", area: "currCd", viewType: "value", readOnly: true },
         checkbox: {
             label: "checkbox",
             type: "checkbox",
@@ -291,7 +294,8 @@ class Holder {
     }
 }
 
-export const Temp = () => {
+export const Temp = (props: any) => {
+    console.log(props);
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -303,8 +307,7 @@ export const Temp = () => {
 
     const [count, setRender] = useState(0);
     const [count2, setRender2] = useState(0);
-
-    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED" } });
+    const f = useForm({ defaultSchema: FORM_SCHEMA, defaultValues: { select: "CAD", code: "AED", radio: "MYR" } });
 
     const st = useStore();
 
@@ -348,16 +351,16 @@ export const Temp = () => {
 
     const render = {
         row: (data: any, context: any) => {
-            if (data.text === "Maru") {
-                context.backgroundColor = "red";
-            }
+            // if (data.text === "Maru") {
+            //     context.backgroundColor = "red";
+            // }
 
-            if (data.text === "Sam") {
-                context.backgroundColor = "blue";
-            }
-            if (data.text === "Ken") {
-                context.backgroundColor = "yellow";
-            }
+            // if (data.text === "Sam") {
+            //     context.backgroundColor = "blue";
+            // }
+            // if (data.text === "Ken") {
+            //     context.backgroundColor = "yellow";
+            // }
 
             return true;
         },
@@ -428,19 +431,25 @@ export const Temp = () => {
                                     <Group.Cell size={8}>
                                         <FormControl {...f.schema.date} />
                                     </Group.Cell>
+
                                     <Group.Cell size={2} header>
                                         <FormControl {...f.schema.date} />
                                     </Group.Cell>
 
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.select} />
+                                        <FormControl {...f.schema.radio} />
                                     </Group.Cell>
                                     <Group.Cell size={2} header></Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.code} />
+                                        <FormControl
+                                            {...f.schema.code}
+                                            callback={({ data }) => {
+                                                console.log(data);
+                                            }}
+                                        />
                                     </Group.Cell>
                                     <Group.Cell size={10}>
-                                        <FormControl {...f.schema.text} />
+                                        <FormControl {...f.schema.number} />
                                     </Group.Cell>
                                 </Group.Cell>
                             </Group.Cell>
@@ -477,11 +486,11 @@ export const Temp = () => {
                                         Set Code "AED"
                                     </button>
                                 </Group.Cell>
+
                                 <Group.Cell>
-                                    <button onClick={() => console.log(f.setSchema("start", { readOnly: false }))}>
-                                        readOnly
-                                    </button>
+                                    <button onClick={() => f.setSchema("date", { required: false })}>readOnly</button>
                                 </Group.Cell>
+
                                 <Group.Cell>
                                     <button onClick={() => console.log(f.reset())}>Reset</button>
                                 </Group.Cell>
@@ -888,6 +897,8 @@ export const Temp = () => {
             </Layout>
 
             <Pdf />
+
+            <Component count={count} />
         </Page>
     );
 };
@@ -931,3 +942,10 @@ const CHAT_DATA = [
 const Abc = memo(({ count }: any) => {
     return <div></div>;
 });
+
+const Component = (props: any) => {
+    const { count } = props;
+
+    // console.log(props);
+    return <div>{count}</div>;
+};

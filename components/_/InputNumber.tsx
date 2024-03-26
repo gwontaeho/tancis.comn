@@ -5,6 +5,7 @@ import { comnUtils } from "@/comn/utils";
 /** */
 export type InputNumberProps = {
     edit?: boolean;
+    mode?: "edit" | "view" | null;
     decimalScale?: number;
     thousandSeparator?: boolean;
 
@@ -25,6 +26,7 @@ export type InputNumberProps = {
     onBlur?: (arg?: any) => void;
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
+    onEnter?: (arg?: any) => void;
 };
 
 export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
@@ -32,6 +34,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
         const {
             /** */
             edit = true,
+            mode,
             decimalScale,
             thousandSeparator = true,
             /** input props */
@@ -52,6 +55,7 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             onBlur,
             onFocus,
             onChange,
+            onEnter,
         } = props;
 
         const _props = Object.fromEntries(
@@ -86,20 +90,31 @@ export const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>(
             onChange(unformatNumber(e.target.value, o));
         };
 
+        const handleKeyDown = (e: any) => {
+            if (e.keyCode === 13) {
+                if (onEnter) {
+                    onEnter();
+                }
+            }
+        };
+
+        const EDIT_STATUS = mode === "edit" ? true : mode === "view" ? false : edit;
+
         return (
             <div className="w-full">
-                {!edit && (
+                {!EDIT_STATUS && (
                     <div title={_value} className={comnUtils.getViewStyle(color, bold, fontSize)}>
                         {_value}
                     </div>
                 )}
-                <div hidden={!edit}>
+                <div hidden={!EDIT_STATUS}>
                     <input
                         {..._props}
                         ref={ref}
                         value={_value}
                         title={_value}
                         onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                         type="text"
                         inputMode="numeric"
                         autoComplete="off"

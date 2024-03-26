@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useId, useState } from "react";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import classNames from "classnames";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Cookies from "js-cookie";
 import { api } from "@/comn";
+import { Link } from "react-router-dom";
 
-import { authState } from "@/comn/features/recoil";
+import { authState, menuState } from "@/comn/features/recoil";
 
 import { useModal, useAuth, useToast } from "@/comn/hooks";
 import { Collapse, Icon, Button } from "@/comn/components";
@@ -143,6 +144,103 @@ const Menu = () => {
                 </ul>
             )}
         </nav>
+    );
+};
+
+const map = (obj: any, arg: any, _parents: any = {}) => {
+    arg.forEach((_: any) => {
+        obj[_["menuId"]] = { ..._, _parents };
+        if (_.children) {
+            const parent = { ..._parents, [_["menuLvl"]]: _["menuId"] };
+            map(obj, _.children, parent);
+        }
+    });
+};
+
+const flat = (arg: any) => {
+    const obj: any = {};
+    obj[arg["menuId"]] = arg;
+    if (arg.children) {
+        map(obj, arg.children);
+    }
+    return obj;
+};
+
+const SideMenu = () => {
+    const menu = useRecoilValue(menuState);
+    const { mode, nonSigned } = menu;
+
+    return mode === "dev1" ? <Menu /> : <DevSideMenu />;
+};
+
+const DevSideMenu = () => {
+    const menu = useRecoilValue(menuState);
+    const { mode, nonSigned } = menu;
+    const id = useId();
+
+    const [URLSearchParams] = useSearchParams();
+    const menuIdQuery = URLSearchParams.get("menuId");
+
+    let flatted: any, current: any, parents: any, system: any, list: any;
+    if (nonSigned && menuIdQuery) {
+        flatted = flat(nonSigned);
+        current = flatted[menuIdQuery];
+        parents = current["_parents"];
+        system = flatted[parents["1"]];
+        list = system?.children;
+    }
+
+    console.log(current);
+
+    return (
+        <nav className="p-2">
+            <ul className="p-2 flex flex-col gap-2">
+                {list &&
+                    Array.isArray(list) &&
+                    Boolean(list.length) &&
+                    list.map((child: any) => {
+                        const { menuId } = child;
+                        return <SideMenuItem key={id + menuId} hierarchy={parents} {...child} />;
+                    })}
+            </ul>
+        </nav>
+    );
+};
+
+const SideMenuItem = (props: any) => {
+    const { menuNm, children, menuId, menuUrl, hierarchy } = props;
+    const id = useId();
+
+    const navigate = useNavigate();
+    const [URLSearchParams] = useSearchParams();
+    const menuIdQuery = URLSearchParams.get("menuId");
+
+    const [open, setOpen] = useState(Boolean(hierarchy && Object.values(hierarchy).includes(menuId)));
+    const toggle = () => {
+        if (children) return setOpen((prev: any) => !prev);
+        // navigate(`/?menuId=${menuId}`);
+        navigate(`${menuUrl}`);
+    };
+
+    return (
+        <li>
+            <button
+                className={classNames("p-1 flex text-[14px] w-full items-center justify-between text-left")}
+                onClick={toggle}
+            >
+                <p className={classNames(menuIdQuery === menuId && "text-uf-blue underline")}>{menuNm}</p>
+                {children && (
+                    <Icon icon="down" size="xs" className={classNames("transition", { "rotate-180": open })} />
+                )}
+            </button>
+            {open && Array.isArray(children) && Boolean(children.length) && (
+                <ul className="pl-4 text-uf-gray dark:text-uf-lightgray">
+                    {children.map((child) => {
+                        return <SideMenuItem key={id + child.menuId} hierarchy={hierarchy} {...child} />;
+                    })}
+                </ul>
+            )}
+        </li>
     );
 };
 
@@ -292,7 +390,7 @@ const Navigation = () => {
         <div className="uf-navigation">
             <div className="uf-navigation-container">
                 <Auth />
-                <Menu />
+                <SideMenu />
             </div>
         </div>
     );

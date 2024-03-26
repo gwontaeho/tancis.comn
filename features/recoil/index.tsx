@@ -42,6 +42,15 @@ export const resourceState = atom<any>({
     default: {},
 });
 
+export const menuState = atom<any>({
+    key: "menuState",
+    default: {
+        mode: "dev1",
+        signed: null,
+        nonSigned: null,
+    },
+});
+
 export const modalState = atom<ModalProps[]>({
     key: "modalState",
     default: [],

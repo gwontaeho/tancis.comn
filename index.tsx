@@ -1,25 +1,12 @@
 import { useLayoutEffect } from "react";
 
-import RecoilProvider from "@/comn/features/recoil";
-import ApiProvider, { api } from "@/comn/features/apis";
-import Router from "@/comn/features/router";
+import RecoilProvider from "./features/recoil";
+import ApiProvider, { api } from "./features/apis";
+import Router from "./features/router";
 
 export { api };
 
-/**
- * # Common Base
- *
- *
- * ### Router Paths
- *
- * * Sample : "/comn/smpl/*"
- * * Common : "/comn/comn/*"
- * * System : "/*"
- *
- *
- *
- */
-export const Base = () => {
+const Base = () => {
     console.log("\n  %cCommon Base\n", "font-size:14px");
 
     useLayoutEffect(() => {
@@ -35,3 +22,5 @@ export const Base = () => {
         </RecoilProvider>
     );
 };
+
+export default Base;
