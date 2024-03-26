@@ -248,8 +248,8 @@ export const APIS = {
             area: "vhclMkerCd",
             page: page,
             size: size,
-            keyword: data.vhclMnfcCd,
-            keywordName: data.vhclMnfcNm,
+            keyword: data.vhclMkerCd,
+            keywordName: data.vhclMkerNm,
         });
     },
 
@@ -280,7 +280,7 @@ export const APIS = {
             size: size,
             keyword: data.vhclMdlCd,
             keywordName: data.vhclMdlNm,
-            vhclMnfcCd: data.vhclMnfcCd,
+            vhclMkerCd: data.vhclMkerCd,
         });
     },
 
@@ -291,7 +291,7 @@ export const APIS = {
             size: size,
             keyword: data.vhclMdlNoCd,
             keywordName: data.vhclMdlNoNm,
-            vhclMnfcCd: data.vhclMnfcCd,
+            vhclMkerCd: data.vhclMkerCd,
             vhclMdlCd: data.vhclMdlCd,
         });
     },
@@ -962,19 +962,19 @@ export const SCHEMA_GRID_VHCL_MKER_CD: TGridSchema = {
     id: "grid",
     options: { pagination: "out", edit: false, index: true },
     head: [
-        { cells: [{ header: "L_VHCL_MNFC_CD", binding: "vhclMnfcCd", width: 150 }] },
-        { cells: [{ header: "L_VHCL_MNFC_NM", binding: "vhclMnfcNm", width: "*" }] },
+        { cells: [{ header: "L_VHCL_MNFC_CD", binding: "vhclMkerCd", width: 150 }] },
+        { cells: [{ header: "L_VHCL_MNFC_NM", binding: "vhclMkerNm", width: "*" }] },
     ],
     body: [
         {
             cells: [
                 {
-                    binding: "vhclMnfcCd",
+                    binding: "vhclMkerCd",
                 },
             ],
         },
         {
-            cells: [{ binding: "vhclMnfcNm" }],
+            cells: [{ binding: "vhclMkerNm" }],
         },
     ],
 };
@@ -1117,7 +1117,7 @@ export const SCHEMA_GRID_TIN_NO: TGridSchema = {
     ],
     body: [
         {
-            cells: [{binding: "tinNo",},],
+            cells: [{ binding: "tinNo" }],
         },
         {
             cells: [{ binding: "coNm" }],
@@ -1394,8 +1394,8 @@ export const SCHEMA_FORM_VHCL_INSR_TP_CD_SRCH: TFormSchema = {
 export const SCHEMA_FORM_VHCL_MKER_CD_SRCH: TFormSchema = {
     id: "form",
     schema: {
-        vhclMnfcCd: { type: "text", label: "L_VHCL_MNFC_CD" },
-        vhclMnfcNm: { type: "text", label: "L_VHCL_MNFC_NM" },
+        vhclMkerCd: { type: "text", label: "L_VHCL_MNFC_CD" },
+        vhclMkerNm: { type: "text", label: "L_VHCL_MNFC_NM" },
     },
 };
 

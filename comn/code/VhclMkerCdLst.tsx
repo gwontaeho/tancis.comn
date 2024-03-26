@@ -76,14 +76,14 @@ export const VehicleManufactureCodeList = (props: any) => {
     const render = {
         grid_VhclMkerCdLst: {
             cell: {
-                vhclMnfcCd: (props: any) => {
+                vhclMkerCd: (props: any) => {
                     const { binding, rowValues, value } = props;
                     return (
                         <a
                             href="#!"
                             onClick={() => {
                                 if (!comnUtils.isPopup()) return;
-                                modal.postMessage({ code: value, label: rowValues.vhclMnfcNm });
+                                modal.postMessage({ code: value, label: rowValues.vhclMkerNm });
                                 close();
                             }}
                         >
@@ -118,8 +118,8 @@ export const VehicleManufactureCodeList = (props: any) => {
                     <Group.Body>
                         <Group.Section>
                             <Group.Row>
-                                <Group.Control {...form.vhclMkerCdSrch.schema.vhclMnfcCd}></Group.Control>
-                                <Group.Control {...form.vhclMkerCdSrch.schema.vhclMnfcNm}></Group.Control>
+                                <Group.Control {...form.vhclMkerCdSrch.schema.vhclMkerCd}></Group.Control>
+                                <Group.Control {...form.vhclMkerCdSrch.schema.vhclMkerNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">

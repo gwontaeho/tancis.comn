@@ -381,7 +381,7 @@ export const comnUtils = {
         coTin?: string;
         orgNm?: string;
         cstmTpCd?: string;
-        vhclMnfcCd?: string;
+        vhclMkerCd?: string;
         vhclMdlCd?: string;
         wrhsOprtTpCd?: string;
         postTpCd?: string;
@@ -402,7 +402,7 @@ export const comnUtils = {
             coTin = "",
             orgNm = "",
             cstmTpCd = "",
-            vhclMnfcCd = "",
+            vhclMkerCd = "",
             vhclMdlCd = "",
             wrhsOprtTpCd = "",
             postTpCd = "",
@@ -483,7 +483,7 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/vhcl/fl?vhclFlTpCd=${keyword}&vhclFlNm=${keywordName}`;
                 break;
             case "vhclMkerCd":
-                url = `/api/v1/ptli/intptl/comnppup/vhcl/mker?vhclMnfcCd=${keyword}&vhclMnfcNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/mker?vhclMkerCd=${keyword}&vhclMkerNm=${keywordName}`;
                 break;
             case "vhclImpCntyCd":
                 url = `/api/v1/ptli/intptl/comnppup/vhcl/imp-cnty?vhclCntyCd=${keyword}&vhclCntyNm=${keywordName}`;
@@ -492,10 +492,10 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/vhcl/insr-tp?vhclInsrTpCd=${keyword}&vhclInsrTpNm=${keywordName}`;
                 break;
             case "vhclMdlCd":
-                url = `/api/v1/ptli/intptl/comnppup/vhcl/mdl?vhclMnfcCd=${vhclMnfcCd}&vhclMdlCd=${keyword}&vhclMdlNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/mdl?vhclMkerCd=${vhclMkerCd}&vhclMdlCd=${keyword}&vhclMdlNm=${keywordName}`;
                 break;
             case "vhclMdlNoCd":
-                url = `/api/v1/ptli/intptl/comnppup/vhcl/mdl-no?vhclMnfcCd=${vhclMnfcCd}&vhclMdlCd=${vhclMdlCd}&vhclMdlNoCd=${keyword}&vhclMdlNoNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/vhcl/mdl-no?vhclMkerCd=${vhclMkerCd}&vhclMdlCd=${vhclMdlCd}&vhclMdlNoCd=${keyword}&vhclMdlNoNm=${keywordName}`;
                 break;
             case "vhclHlpnCtgrCd":
                 url = `/api/v1/ptli/intptl/comnppup/vhcl/hlpn-ctgr?vhclHlpnCtgrCd=${keyword}&vhclHlpnCtgrNm=${keywordName}`;
@@ -590,7 +590,7 @@ export const comnUtils = {
             case "vhclFlCd":
                 return code.vhclFlNm;
             case "vhclMkerCd":
-                return code.vhclMnfcNm;
+                return code.vhclMkerNm;
             case "vhclImpCntyCd":
                 return code.vhclCntyNm;
             case "vhclInsrTpCd":
@@ -670,7 +670,7 @@ export const comnUtils = {
             case "vhclFlCd":
                 return code.vhclFlTpCd;
             case "vhclMkerCd":
-                return code.vhclMnfcCd;
+                return code.vhclMkerCd;
             case "vhclImpCntyCd":
                 return code.vhclCntyCd;
             case "vhclInsrTpCd":
