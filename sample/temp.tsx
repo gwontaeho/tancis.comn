@@ -188,18 +188,17 @@ const GRID_SCHEMA: TGridSchema = {
         // edit: true,
         importExcel: true,
         exportExcel: true,
-        pagination: "in",
+        // pagination: "in",
+        height: "auto",
         // pagination: "out",
         group: ["text"],
     },
 
-    // group: [
-    //     { cells: [{ colspan: 2, text: "숫자 총합", align: "center" }] },
-    //     { cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] },
-    // ],
+    group: [{ cells: [{ colspan: 4, text: "그리드 그룹" }] }],
+
     groupFoot: [
         { cells: [{ colspan: 2, text: "숫자 총합", align: "center" }] },
-        { cells: [{ colspan: 2, binding: "number", aggregate: "SUM", align: "right" }] },
+        { cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] },
     ],
 
     head: [
@@ -217,11 +216,11 @@ const GRID_SCHEMA: TGridSchema = {
         },
     ],
     body: [
+        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A", mode: "view" }] },
         {
             colspan: 2,
             cells: [{ colspan: 2, binding: "number", type: "number", excel: "B" }],
         },
-        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A", mode: "view" }] },
     ],
 };
 
@@ -321,7 +320,7 @@ export const Temp = (props: any) => {
 
     const t = useTree();
 
-    const data = useMemo(() => mock({ totalElements: 64 }), []);
+    const data = useMemo(() => mock({ totalElements: 7 }), []);
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
@@ -435,7 +434,7 @@ export const Temp = (props: any) => {
                                         required
                                     </Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.date} />
+                                        <FormControl {...f.schema.select} />
                                     </Group.Cell>
 
                                     <Group.Cell size={2} header>

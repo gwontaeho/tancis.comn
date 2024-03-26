@@ -11,6 +11,10 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
+        loader: async (a) => {
+            await console.log(a);
+            return "asd";
+        },
         children: [
             {
                 path: "/comn/comn/temp",

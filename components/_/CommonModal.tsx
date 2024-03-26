@@ -79,7 +79,10 @@ const Modal = (props: ModalProps) => {
 
     const handleClose = () => {
         setModal((prev) => prev.filter((v) => id !== v.id));
-        navigate(-1);
+
+        if (type === "deleted") {
+            navigate(-1);
+        }
     };
 
     const handleCancel = () => {
