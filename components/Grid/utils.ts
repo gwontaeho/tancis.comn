@@ -241,10 +241,11 @@ const group = (_grid: any, content: any) => {
                 let value;
                 switch (_.aggregate) {
                     case "SUM":
-                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0);
+                        value = d.reduce((prev: any, curr: any) => Number(prev) + Number(curr[_.binding]), 0);
                         break;
                     case "AVERAGE":
-                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0) / d.length;
+                        value =
+                            d.reduce((prev: any, curr: any) => Number(prev) + Number(curr[_.binding]), 0) / d.length;
                         break;
                     case "MIN":
                         value = Math.min(...d.map((__: any) => __[_.binding]));
@@ -283,10 +284,11 @@ const group = (_grid: any, content: any) => {
                 let value;
                 switch (_.aggregate) {
                     case "SUM":
-                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0);
+                        value = d.reduce((prev: any, curr: any) => Number(prev) + Number(curr[_.binding]), 0);
                         break;
                     case "AVERAGE":
-                        value = d.reduce((prev: any, curr: any) => prev + curr[_.binding], 0) / d.length;
+                        value =
+                            d.reduce((prev: any, curr: any) => Number(prev) + Number(curr[_.binding]), 0) / d.length;
                         break;
                     case "MIN":
                         value = Math.min(...d.map((__: any) => __[_.binding]));

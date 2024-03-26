@@ -180,9 +180,9 @@ const treeData2 = [
 
 const GRID_SCHEMA: TGridSchema = {
     options: {
-        index: "DESC",
-        radio: true,
-        checkbox: true,
+        // index: "DESC",
+        // radio: true,
+        // checkbox: true,
         add: true,
         delete: true,
         // edit: true,
@@ -193,7 +193,10 @@ const GRID_SCHEMA: TGridSchema = {
         group: ["text"],
     },
 
-    // group: [{ cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] }],
+    // group: [
+    //     { cells: [{ colspan: 2, text: "숫자 총합", align: "center" }] },
+    //     { cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] },
+    // ],
     groupFoot: [
         { cells: [{ colspan: 2, text: "숫자 총합", align: "center" }] },
         { cells: [{ colspan: 2, binding: "number", aggregate: "SUM", align: "right" }] },

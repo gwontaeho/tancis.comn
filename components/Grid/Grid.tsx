@@ -350,7 +350,7 @@ const Row = memo((props: any) => {
                                 if (!cel) return null;
                                 if (cel.show === false) return null;
 
-                                const { binding, aggregate } = cel;
+                                const { binding, aggregate, align, text } = cel;
 
                                 const ag = row.aggregate.find((_: any) => {
                                     return _.binding === binding && _.aggregate === aggregate;
@@ -361,13 +361,18 @@ const Row = memo((props: any) => {
                                 return (
                                     <pre
                                         key={celKey}
-                                        className="p-1 bg-uf-card-background min-h-[2.5rem] flex items-center text-right justify-end font-bold text-sm"
+                                        className={classNames(
+                                            "p-1 bg-uf-card-background min-h-[2.5rem] flex items-center font-bold text-sm",
+                                            (align === "start" || align === "left") && "justify-start text-left",
+                                            (align === "end" || align === "right") && "justify-end text-right",
+                                            (align === "center" || align === undefined) && "justify-center text-center",
+                                        )}
                                         style={{
                                             gridRow: `${rowIndex + 1} / span ${cel.rowspan ?? 1}`,
                                             gridColumn: `${colIndex + 1} / span ${cel.colspan ?? 1}`,
                                         }}
                                     >
-                                        {ag && `${ag.value}`}
+                                        {text ? t(text) : ag && `${ag.value}`}
                                     </pre>
                                 );
                             });
