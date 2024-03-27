@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef, useLayoutEffect, memo } from "react";
-import { TFormSchema, TGridSchema, useFetch, useForm, usePage, useStore, useTree } from "@/comn/hooks";
+import { TFormSchema, TGridSchema, useFetch, useForm, useModal, usePage, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import {
     Page,
@@ -316,6 +316,8 @@ export const Temp = () => {
 
     const st = useStore();
 
+    const modal = useModal();
+
     const g = useGrid({ defaultSchema: GRID_SCHEMA });
 
     const t = useTree();
@@ -416,6 +418,7 @@ export const Temp = () => {
 
     return (
         <Page>
+            <button onClick={() => modal.openModal({ url: "http://localhost:3000" })}>asdad</button>
             <Button onClick={r2}>render2</Button>
             <Button onClick={r}>render</Button>
             <Button onClick={test}>asd</Button>

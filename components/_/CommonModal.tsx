@@ -18,11 +18,6 @@ const MODAL_SIZES = {
     xl: "max-w-[90vw] max-h-[90vh] min-h-[90vh]",
 };
 
-const MODAL_LAYOUTS = {
-    popup: "?ppup=Y",
-    main: "",
-};
-
 export type ModalProps = {
     id?: string;
     content?: React.ReactNode;
@@ -34,7 +29,7 @@ export type ModalProps = {
     url?: string;
     params?: any;
     size?: keyof typeof MODAL_SIZES;
-    layout?: keyof typeof MODAL_LAYOUTS;
+    layout?: "popup" | "main";
     callback?: (arg?: any) => void;
     onConfirm?: (arg?: any) => void;
     onCancel?: (arg?: any) => void;
@@ -62,8 +57,6 @@ const Modal = (props: ModalProps) => {
     const { t } = useTranslation();
     const setModal = useSetRecoilState(modalState);
     const navigate = useNavigate();
-
-    const paramsQuery = params ? "params=" + encodeURIComponent(JSON.stringify(params)) : "";
 
     useEffect(() => {
         if (url) {
@@ -100,6 +93,29 @@ const Modal = (props: ModalProps) => {
         if (!callback) return;
         callback(event.data);
     };
+
+    const paramsQuery = params ? "&params=" + encodeURIComponent(JSON.stringify(params)) : "";
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
+    let IFRAME_URL;
+    if (url) {
+        const isPopup = layout === "popup";
+        const hasOriginQuery = url.split("/").pop()?.includes("?");
+        const hasExtraQuery = Boolean(params) || isPopup;
+
+        const QUERY_SIGN = hasExtraQuery ? "?" : "";
+        const PARAMS_QUERY = params ? "&params=" + encodeURIComponent(JSON.stringify(params)) : "";
+        const LAYOUT_QUERY = isPopup ? "&ppup=Y" : "";
+
+        IFRAME_URL = (hasOriginQuery ? url : url + QUERY_SIGN) + PARAMS_QUERY + LAYOUT_QUERY;
+    }
 
     return createPortal(
         <Fragment key={id}>
@@ -143,12 +159,7 @@ const Modal = (props: ModalProps) => {
                             <pre>{t("msg.com.00117")}</pre>
                         ) : url ? (
                             <div className="flex-1">
-                                <iframe
-                                    src={url + MODAL_LAYOUTS[layout] + "&" + paramsQuery}
-                                    name={id}
-                                    className="w-full min-h-full"
-                                    title={"modal" + id}
-                                />
+                                <iframe src={IFRAME_URL} name={id} className="w-full min-h-full" title={"modal" + id} />
                             </div>
                         ) : typeof content === "string" ? (
                             <pre>{t(content)}</pre>
