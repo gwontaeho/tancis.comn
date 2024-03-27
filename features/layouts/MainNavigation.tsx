@@ -208,7 +208,7 @@ const DevSideMenu = () => {
 };
 
 const SideMenuItem = (props: any) => {
-    const { menuNm, children, menuId, menuUrl, hierarchy } = props;
+    const { menuNm, children, menuId, menuUrlAddr, hierarchy } = props;
     const id = useId();
 
     const navigate = useNavigate();
@@ -219,7 +219,7 @@ const SideMenuItem = (props: any) => {
     const toggle = () => {
         if (children) return setOpen((prev: any) => !prev);
         // navigate(`/?menuId=${menuId}`);
-        navigate(`${menuUrl}`);
+        navigate(`${menuUrlAddr}`);
     };
 
     return (

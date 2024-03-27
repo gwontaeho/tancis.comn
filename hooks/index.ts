@@ -1,3 +1,4 @@
+export * from "./usePage";
 export * from "./useTheme";
 export * from "./useFetch";
 export * from "./useForm";

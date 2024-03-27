@@ -11,10 +11,6 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        loader: async (a) => {
-            await console.log(a);
-            return "asd";
-        },
         children: [
             {
                 path: "/comn/comn/temp",
@@ -45,6 +41,8 @@ const router = createBrowserRouter([
     },
 ]);
 
-const Router = () => <RouterProvider router={router} />;
+const Router = () => {
+    return <RouterProvider router={router} />;
+};
 
 export default Router;

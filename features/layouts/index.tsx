@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { useSearchParams, ScrollRestoration } from "react-router-dom";
 import PageContextProvider from "../context";
 import { MainLayout } from "./MainLayout";
@@ -14,7 +16,10 @@ const Layout = () => {
     return (
         <PageContextProvider>
             <ScrollRestoration />
-            {ppup === "Y" ? <PopupLayout /> : <MainLayout />}
+            <Suspense fallback={<div>asd</div>}>
+                {/*  */}
+                {ppup === "Y" ? <PopupLayout /> : <MainLayout />}
+            </Suspense>
             <CommonModal />
             <CommonToast />
         </PageContextProvider>

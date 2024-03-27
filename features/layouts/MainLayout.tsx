@@ -10,7 +10,7 @@ export const MainLayout = () => {
             <div className="uf-container">
                 <Navigation />
                 <main className="uf-main">
-                    <Outlet context={{ test: "asd" }} />
+                    <Outlet />
                 </main>
                 <Footer />
             </div>

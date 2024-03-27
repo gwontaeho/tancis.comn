@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef, useLayoutEffect, memo } from "react";
-import { TFormSchema, TGridSchema, useFetch, useForm, useStore, useTree } from "@/comn/hooks";
+import { TFormSchema, TGridSchema, useFetch, useForm, usePage, useStore, useTree } from "@/comn/hooks";
 import { useGrid, useResource } from "@/comn/hooks";
 import {
     Page,
@@ -299,8 +299,8 @@ class Holder {
     }
 }
 
-export const Temp = (props: any) => {
-    console.log(props);
+export const Temp = () => {
+    usePage();
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
