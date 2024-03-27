@@ -7,6 +7,7 @@ import { comnUtils } from "@/comn/utils";
 
 import { useOptions, UseOptionsProps } from "@/comn/hooks";
 import { Icon } from "@/comn/components";
+import { Link } from "react-router-dom";
 
 /** */
 type SelectProps = UseOptionsProps & {
@@ -29,6 +30,10 @@ type SelectProps = UseOptionsProps & {
 
     onBlur?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
+    onClick?: (arg?: any) => void;
+
+    as?: "link";
+    to?: string;
 };
 
 export const Select = forwardRef((props: SelectProps, ref: any) => {
@@ -60,6 +65,10 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
 
         onBlur,
         onChange,
+        onClick,
+
+        as,
+        to,
     } = props;
 
     const _props = Object.fromEntries(
@@ -91,6 +100,12 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
         // if (onChange) onChange(o.options[0].value);
     }, []);
 
+    const handleClick = () => {
+        if (onClick) {
+            onClick(_value);
+        }
+    };
+
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         _setValue(e.target.value);
         if (onChange) onChange(e.target.value);
@@ -99,14 +114,35 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
     return (
         <div className="w-full">
             {/* view text */}
-            {!edit && (
-                <div
-                    title={viewSelect(value, { viewType, options: o.options })}
-                    className={comnUtils.getViewStyle(color, bold, fontSize)}
-                >
-                    {viewSelect(value, { viewType, options: o.options })}
-                </div>
-            )}
+            {!edit &&
+                (as === "link" ? (
+                    to ? (
+                        <Link
+                            to={to}
+                            title={viewSelect(value, { viewType, options: o.options })}
+                            onClick={handleClick}
+                            className="text-uf-blue underline"
+                        >
+                            {viewSelect(value, { viewType, options: o.options })}
+                        </Link>
+                    ) : (
+                        <div
+                            title={viewSelect(value, { viewType, options: o.options })}
+                            onClick={handleClick}
+                            className="text-uf-blue underline cursor-pointer"
+                        >
+                            {viewSelect(value, { viewType, options: o.options })}
+                        </div>
+                    )
+                ) : (
+                    <div
+                        title={viewSelect(value, { viewType, options: o.options })}
+                        className={comnUtils.getViewStyle(color, bold, fontSize)}
+                        onClick={handleClick}
+                    >
+                        {viewSelect(value, { viewType, options: o.options })}
+                    </div>
+                ))}
             <div hidden={!edit}>
                 <div className="relative flex w-full items-center">
                     <select
@@ -114,6 +150,7 @@ export const Select = forwardRef((props: SelectProps, ref: any) => {
                         ref={ref}
                         value={_value}
                         onChange={handleChange}
+                        onClick={handleClick}
                         className={classNames(
                             "input appearance-none pr-5",
                             readOnly && "pointer-events-none",

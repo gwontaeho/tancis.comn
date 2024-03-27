@@ -1,6 +1,7 @@
 import { BOLD_TEXT, COLOR_TEXT, SIZE_TEXT } from "@/comn/features/foundation";
 import { comnUtils } from "@/comn/utils";
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 /** */
 export type InputTextProps = {
@@ -29,6 +30,10 @@ export type InputTextProps = {
     onFocus?: (arg?: any) => void;
     onChange?: (arg?: any) => void;
     onEnter?: (arg?: any) => void;
+    onClick?: (arg?: any) => void;
+
+    as?: "link";
+    to?: string;
 };
 
 export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
@@ -60,6 +65,10 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             onFocus,
             onChange,
             onEnter,
+            onClick,
+
+            as,
+            to,
         } = props;
 
         const _props = Object.fromEntries(
@@ -109,6 +118,12 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
             setCapture({ e: "change", start: e.target.selectionStart, end: e.target.selectionEnd });
         };
 
+        const handleClick = () => {
+            if (onClick) {
+                onClick(_value);
+            }
+        };
+
         const handleDown = (e: any) => {
             if ((e.code === "Backspace" || e.code === "Delete") && o.mask) {
                 _key.current = true;
@@ -142,17 +157,34 @@ export const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
         return (
             <div className="w-full">
-                {!EDIT_STATUS && (
-                    <div title={_value} className={comnUtils.getViewStyle(color, bold, fontSize)}>
-                        {_value}
-                    </div>
-                )}
+                {!EDIT_STATUS &&
+                    (as === "link" ? (
+                        to ? (
+                            <Link to={to} title={_value} onClick={handleClick} className="text-uf-blue underline">
+                                {_value}
+                            </Link>
+                        ) : (
+                            <div title={_value} onClick={handleClick} className="text-uf-blue underline cursor-pointer">
+                                {_value}
+                            </div>
+                        )
+                    ) : (
+                        <div
+                            title={_value}
+                            className={comnUtils.getViewStyle(color, bold, fontSize)}
+                            onClick={handleClick}
+                        >
+                            {_value}
+                        </div>
+                    ))}
+
                 <div hidden={!EDIT_STATUS}>
                     <input
                         {..._props}
                         ref={ref}
                         value={_value}
                         title={_value}
+                        onClick={handleClick}
                         onChange={handleChange}
                         onKeyDown={handleDown}
                         onSelectCapture={handleSelectCapture}
