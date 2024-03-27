@@ -4,13 +4,13 @@ import { usePageContext } from "../context";
 import { useModal } from "@/comn/hooks";
 
 const Fallback = () => {
-    console.log("fallback");
+    // console.log("fallback");
 
     const { ref } = usePageContext();
     const { openModal } = useModal();
 
     useEffect(() => {
-        console.log("new fallback");
+        // console.log("new fallback");
 
         (async () => {
             try {
@@ -20,7 +20,7 @@ const Fallback = () => {
         })();
 
         return () => {
-            console.log("delete");
+            // console.log("delete");
             delete ref.current.cache;
             delete ref.current.holder;
         };
