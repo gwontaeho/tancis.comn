@@ -270,38 +270,9 @@ const FORM_SCHEMA: TFormSchema = {
     },
 };
 
-class Holder {
-    // @ts-ignore
-    isLocked;
-    // @ts-ignore
-    promise;
-    // @ts-ignore
-    reject;
-    // @ts-ignore
-    resolve;
-    constructor() {
-        this.hold();
-    }
-    hold() {
-        this.isLocked = false;
-        this.promise = new Promise((resolve, reject) =>
-            Object.assign(this, {
-                reject: () => {
-                    reject(this.hold());
-                },
-                resolve: () => {
-                    resolve(this.hold());
-                },
-            }),
-        );
-    }
-    lock() {
-        this.isLocked = true;
-    }
-}
-
 export const Temp = () => {
-    usePage();
+    const a = usePage();
+    console.log(a);
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -440,8 +411,9 @@ export const Temp = () => {
                                     <Group.Cell size={8}>
                                         <FormControl
                                             {...f.schema.text}
-                                            onClick={() => console.log("a")}
+                                            onClick={(a) => console.log(a)}
                                             as="link"
+                                            to="/"
                                             onChange={(a) => console.log(a)}
                                         />
                                     </Group.Cell>

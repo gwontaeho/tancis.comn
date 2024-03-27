@@ -1,4 +1,5 @@
 import { useSearchParams, ScrollRestoration } from "react-router-dom";
+import PageContextProvider from "../context";
 import { MainLayout } from "./MainLayout";
 import { PopupLayout } from "./PopupLayout";
 
@@ -10,13 +11,13 @@ const Layout = () => {
     const isPopup = searchParams.get("ppup") === "Y";
 
     return (
-        <>
+        <PageContextProvider>
             <ScrollRestoration />
             {/*  */}
             {isPopup ? <PopupLayout /> : <MainLayout />}
             <CommonModal />
             <CommonToast />
-        </>
+        </PageContextProvider>
     );
 };
 
