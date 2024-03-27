@@ -5,28 +5,20 @@ import { usePageContext } from "../features/context";
 import { api } from "../features/apis";
 
 class Holder {
-    isLocked;
     promise;
-    reject;
     resolve;
     constructor() {
         this.hold();
     }
     hold() {
-        this.isLocked = false;
         this.promise = new Promise((resolve, reject) =>
             Object.assign(this, {
                 resolve: () => {
                     resolve(this.hold());
-                },
-                reject: () => {
-                    reject(this.hold());
+                    throw new Promise((resolve) => {});
                 },
             }),
         );
-    }
-    lock() {
-        this.isLocked = true;
     }
 }
 
@@ -47,8 +39,8 @@ const getPage = async () => {
     // efmi0202001s
 
     return await new Promise((resolve) => {
-        // setTimeout(() => resolve(400), 5000);
-        setTimeout(() => resolve({ test: "asd" }), 5000);
+        setTimeout(() => resolve(400), 5000);
+        // setTimeout(() => resolve({ test: "asd" }), 5000);
     });
 };
 
@@ -66,7 +58,6 @@ export const usePage = () => {
     if (promise.status === "fulfilled") {
         if (promise.value === 400) {
             ref.current.holder.resolve();
-            throw new Promise((resolve) => {});
         }
         return promise.value;
     } else if (promise.status === "rejected") {
