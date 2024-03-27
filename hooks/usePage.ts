@@ -21,8 +21,8 @@ async function getAlbums() {
     // efmi0202001s
 
     await new Promise((resolve, reject) => {
-        resolve();
-        // setTimeout(resolve, 1000);
+        // reject();
+        setTimeout(resolve, 1000);
     });
 
     return [
@@ -36,12 +36,11 @@ async function getAlbums() {
 
 export const usePage = () => {
     const promise = fetchData();
-    console.log(promise);
 
     if (promise.status === "fulfilled") {
         return promise.value;
     } else if (promise.status === "rejected") {
-        throw promise.reason;
+        throw "asd";
     } else if (promise.status === "pending") {
         throw promise;
     } else {
