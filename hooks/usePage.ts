@@ -6,12 +6,12 @@ const cache = new Map();
 
 export function fetchData() {
     if (!cache.has("promise")) {
-        cache.set("promise", getAlbums());
+        cache.set("promise", get());
     }
     return cache.get("promise");
 }
 
-async function getAlbums() {
+async function get() {
     // return await api.get("localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s");
     // return await api.get("localhost:9400/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_cgme0111&scrnId=efme0201001q");
 
@@ -21,17 +21,11 @@ async function getAlbums() {
     // efmi0202001s
 
     await new Promise((resolve, reject) => {
-        // reject();
+        // resolve();
         setTimeout(resolve, 1000);
     });
 
-    return [
-        {
-            id: 13,
-            title: "Let It Be",
-            year: 1970,
-        },
-    ];
+    return null;
 }
 
 export const usePage = () => {
@@ -40,7 +34,7 @@ export const usePage = () => {
     if (promise.status === "fulfilled") {
         return promise.value;
     } else if (promise.status === "rejected") {
-        throw "asd";
+        throw promise.reason;
     } else if (promise.status === "pending") {
         throw promise;
     } else {

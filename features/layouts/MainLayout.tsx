@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
 import Header from "./MainHeader";
 import Footer from "./MainFooter";
 import Navigation from "./MainNavigation";
+import Suspenser from "./Suspenser";
 
 export const MainLayout = () => {
     return (
@@ -10,7 +10,7 @@ export const MainLayout = () => {
             <div className="uf-container">
                 <Navigation />
                 <main className="uf-main">
-                    <Outlet />
+                    <Suspenser />
                 </main>
                 <Footer />
             </div>

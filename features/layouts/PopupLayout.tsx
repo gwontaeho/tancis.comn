@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom";
+import Suspenser from "./Suspenser";
 
 export const PopupLayout = () => {
     return (
         <div className="p-4">
-            <Outlet />
+            <Suspenser />
         </div>
     );
 };
