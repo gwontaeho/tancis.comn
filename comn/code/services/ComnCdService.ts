@@ -137,7 +137,7 @@ export const APIS = {
             area: "coCd",
             page: page,
             size: size,
-            keyword: data.tin,
+            keyword: data.coTin,
             keywordName: data.coNm,
             coTpCd: data.coTpCd,
         });
@@ -588,7 +588,7 @@ export const SCHEMA_GRID_CO_CD: TGridSchema = {
     options: { pagination: "out", edit: false, index: true },
     head: [
         { cells: [{ header: "L_TIN", binding: "coTin", width: 150 }] },
-        { cells: [{ header: "L_CO_NM", binding: "coNm", width: 150 }] },
+        { cells: [{ header: "L_CO_NM", binding: "coNm", width: 350 }] },
         { cells: [{ header: "L_CO_ADDR", binding: "coAddr", width: "*" }] },
         { cells: [{ header: "L_CO_STAT", binding: "coStatCdNm", width: 100 }] },
     ],
