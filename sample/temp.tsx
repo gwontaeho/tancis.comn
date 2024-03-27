@@ -22,6 +22,7 @@ import lodash from "lodash";
 import { api } from "../features/apis";
 import { comnUtils } from "../utils";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const mock = ({ totalElements = 99 }) => {
     return {
@@ -227,7 +228,7 @@ const GRID_SCHEMA: TGridSchema = {
 const FORM_SCHEMA: TFormSchema = {
     id: "test",
     schema: {
-        text: { label: "text", type: "text", mask: [/[a-z]/, /[a-z]/], mode: "edit" },
+        text: { label: "text", type: "text", as: "link" },
         number: {
             label: "number",
             type: "number",
@@ -437,7 +438,12 @@ export const Temp = () => {
                                         required
                                     </Group.Cell>
                                     <Group.Cell size={8}>
-                                        <FormControl {...f.schema.select} />
+                                        <FormControl
+                                            {...f.schema.text}
+                                            onClick={() => console.log("a")}
+                                            as="link"
+                                            onChange={(a) => console.log(a)}
+                                        />
                                     </Group.Cell>
 
                                     <Group.Cell size={2} header>

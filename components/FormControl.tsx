@@ -85,10 +85,14 @@ export type FormControlProps = InputDaterangeProps &
         value?: any;
         readOnly?: boolean;
         disabled?: boolean;
+        onClick?: (arg?: any) => void;
         onBlur?: (arg?: any) => void;
         onFocus?: (arg?: any) => void;
         onChange?: (arg?: any) => void;
         onEnter?: (arg?: any) => void;
+
+        as?: "link";
+        to?: string;
 
         /** UseOptions props */
         area?: string;
