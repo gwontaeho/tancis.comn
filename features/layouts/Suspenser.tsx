@@ -18,12 +18,6 @@ const Fallback = () => {
                 callback();
             } catch (error) {}
         })();
-
-        return () => {
-            // console.log("delete");
-            delete ref.current.cache;
-            delete ref.current.holder;
-        };
     }, []);
 
     const callback = () => {
