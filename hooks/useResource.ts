@@ -172,9 +172,9 @@ export const useResource = (props: UseResourceProps) => {
                 }, {});
 
             /* for dev */
-            console.log(
-                `fulfilled : ${Object.keys(fulfilled).join(", ")}\nrejected  : ${Object.keys(rejected).join(", ")}`,
-            );
+            // console.log(
+            //     `fulfilled : ${Object.keys(fulfilled).join(", ")}\nrejected  : ${Object.keys(rejected).join(", ")}`,
+            // );
 
             setRecource((prev: any) => ({ ...prev, ...fulfilled }));
         })();
