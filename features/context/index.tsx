@@ -23,7 +23,7 @@ const PageContextProvider = ({ children }: any) => {
     const getMenu = async () => {
         try {
             const { data } = await api.get(`http://localhost:9700/ptl/api/v1/ptl/comn/comn/menu`);
-            console.log(data);
+            // console.log(data);
             setMenu((prev: any) => ({ ...prev, nonSigned: data.menuDta }));
         } catch (error) {
             console.log(error);

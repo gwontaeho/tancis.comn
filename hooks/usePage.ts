@@ -30,25 +30,34 @@ const fetchData = (cache) => {
 };
 
 const getPage = async () => {
-    // return await api.get("localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s");
-    // return await api.get("localhost:9400/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_cgme0111&scrnId=efme0201001q");
+    // return await api.get("http://localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s");
+    // return await api.get("http://localhost:9400/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_cgme0111&scrnId=efme0201001q");
 
     // localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s
 
     // menu_cgmi2121
     // efmi0202001s
 
-    return await new Promise((resolve) => {
-        setTimeout(() => resolve(400), 5000);
-        // setTimeout(() => resolve({ test: "asd" }), 5000);
+    return await new Promise(async (resolve) => {
+        return resolve();
+        try {
+            const { data } = await api.get(
+                "http://localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s",
+            );
+            resolve();
+            console.log(data.menuDtl);
+        } catch (error) {
+            console.log(error);
+            resolve(400);
+        }
     });
 };
 
-export const usePage = () => {
+export const usePage = (props: any) => {
     const { ref } = usePageContext();
 
     if (!ref.current.cache) {
-        console.log("a/");
+        // console.log("a/");
         ref.current.cache = new Map();
         ref.current.holder = new Holder();
     }

@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { Suspense, useLayoutEffect } from "react";
 
 import RecoilProvider from "./features/recoil";
 import ApiProvider, { api } from "./features/apis";
@@ -15,11 +15,13 @@ const Base = () => {
     }, []);
 
     return (
-        <RecoilProvider>
-            <ApiProvider>
-                <Router />
-            </ApiProvider>
-        </RecoilProvider>
+        <Suspense fallback={<div>...load meta</div>}>
+            <RecoilProvider>
+                <ApiProvider>
+                    <Router />
+                </ApiProvider>
+            </RecoilProvider>
+        </Suspense>
     );
 };
 

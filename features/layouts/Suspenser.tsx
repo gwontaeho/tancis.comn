@@ -1,7 +1,7 @@
 import { Suspense, useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { usePageContext } from "../context";
-import { useModal } from "@/comn/hooks";
+import { useModal } from "../../hooks";
 
 const Fallback = () => {
     // console.log("fallback");

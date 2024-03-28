@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -10,6 +10,7 @@ import i18n from "@/comn/features/locales/i18n";
 import { routes } from "@/comn/features/router";
 import Cookies from "js-cookie";
 import { Resource } from "./Resource";
+import axios from "axios";
 
 type NavItemProps = {
     children?: any[];
@@ -192,6 +193,9 @@ const Header = () => {
                         <option value="en">{t("L_EN")}</option>
                         <option value="tz">{t("L_SW")}</option>
                     </select>
+
+                    {/* load meta */}
+                    <LoadMetaButton />
                 </div>
 
                 {/* signout */}
@@ -202,6 +206,96 @@ const Header = () => {
                 </div>
             </div>
         </header>
+    );
+};
+
+/**
+ * 임시 !~
+ * @returns
+ */
+const LoadMetaButton = () => {
+    const { theme } = useTheme();
+    const [pending, setPending] = useState(false);
+
+    useEffect(() => {
+        get("ko");
+        get("en");
+        get("tz");
+    }, []);
+
+    const get = (lang: any) => {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open("DEV");
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                db.createObjectStore("META");
+            };
+            request.onsuccess = async () => {
+                const db = request.result;
+                const ts = db.transaction("META", "readonly");
+                const os = ts.objectStore("META");
+                const get = os.get(lang);
+                get.onsuccess = () => {
+                    if (get.result) {
+                        i18n.addResourceBundle(lang, "translation", get.result, undefined, true);
+                        if ((localStorage.getItem("lang") || "ko") === lang) {
+                            i18n.changeLanguage(lang);
+                        }
+                    }
+                    //@ts-ignore
+                    resolve();
+                };
+            };
+        });
+    };
+
+    const put = (record: any, lang: any) => {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open("DEV");
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                db.createObjectStore("META");
+            };
+            request.onsuccess = async () => {
+                const db = request.result;
+                const ts = db.transaction("META", "readwrite");
+                const os = ts.objectStore("META");
+                const put = os.put(record, lang);
+                put.onsuccess = () => {
+                    // @ts-ignore
+                    resolve();
+                };
+            };
+        });
+    };
+
+    const handleClick = async () => {
+        setPending(true);
+        try {
+            const { data } = await axios.get(
+                `${process.env.REACT_APP_API_PTLE}/api/v1/ptl/comn/comn/front/lang/${theme.lang}`,
+            );
+            put(data, theme.lang);
+            i18n.addResourceBundle(theme.lang, "translation", data, undefined, true);
+            i18n.changeLanguage(theme.lang);
+            console.log(`${theme.lang} loaded`);
+        } catch (error) {
+            console.log(error);
+        }
+        setPending(false);
+    };
+
+    return (
+        <button disabled={pending} className="text-uf-white w-20" onClick={handleClick}>
+            {pending ? (
+                <div className="flex gap-1 items-center justify-center">
+                    load {theme.lang}...
+                    <Icon icon="loading" className="animate-spin" size="xs" />
+                </div>
+            ) : (
+                `load ${theme.lang}`
+            )}
+        </button>
     );
 };
 

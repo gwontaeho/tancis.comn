@@ -271,8 +271,8 @@ const FORM_SCHEMA: TFormSchema = {
 };
 
 export const Temp = () => {
-    const a = usePage();
-    console.log(a);
+    const test1234 = usePage("ptli1001002s");
+
     useResource({
         defaultSchema: [
             { area: "comnCd", comnCd: "COM_0100" },
@@ -306,11 +306,26 @@ export const Temp = () => {
         },
     });
 
+    useEffect(() => {
+        // test();
+    }, []);
+
     const test = async () => {
         try {
-            const a = await api.get("http://localhost:9720/clr/api/v1/clri/tm/hs/hs-mgmt/1/1");
-            console.log(a.data.clriHsMgmtDto.content);
+            const a = await api.get(
+                "http://localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s",
+            );
+
+            // const b = await api.get(
+            //     "http://localhost:9400/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_cgme0111&scrnId=efme0201001q",
+            // );
+
+            console.log(a);
+            // console.log(b);
+            // const a = await api.get("http://localhost:9720/clr/api/v1/clri/tm/hs/hs-mgmt/1/1");
+            // console.log(a.data.clriHsMgmtDto.content);
         } catch (error) {
+            console.log(error);
             // console.log(error);
             // console.log("as");
         }
