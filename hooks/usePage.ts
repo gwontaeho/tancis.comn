@@ -39,7 +39,7 @@ const getPage = async () => {
     // efmi0202001s
 
     return await new Promise(async (resolve) => {
-        return resolve();
+        // return resolve();
         try {
             const { data } = await api.get(
                 "http://localhost:9700/ptl/api/v1/ptl/comn/comn/menu/dtl?menuId=menu_ptli0041&scrnId=ptli1001002s",

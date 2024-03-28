@@ -7,6 +7,7 @@ type TGridOptions = {
     edit?: boolean;
     delete?: boolean;
     group?: boolean | string[];
+    sort?: boolean;
     radio?: boolean;
     checkbox?: boolean;
     index?: boolean | "DESC" | "ASC";

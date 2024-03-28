@@ -154,26 +154,30 @@ const Component = memo((props: any) => {
                                             cel.binding}
 
                                         {cel.required && <span className="text-uf-error">*</span>}
-                                        <button
-                                            className="relative ml-0.5"
-                                            onClick={() => {
-                                                _grid.current._handleSort(cel.binding);
-                                            }}
-                                        >
-                                            <Icon
-                                                icon={
-                                                    _sort[cel.binding]?.val === "asc"
-                                                        ? "barsUp"
-                                                        : _sort[cel.binding]?.val === "desc"
-                                                          ? "barsDown"
-                                                          : "bars"
-                                                }
-                                                size="xs"
-                                            />
-                                            <span className="absolute text-[10px] bottom-0 right-0 translate-x-full">
-                                                {_sort[cel.binding]?.seq}
-                                            </span>
-                                        </button>
+
+                                        {_grid.current._sortable && (
+                                            <button
+                                                className="relative ml-0.5"
+                                                onClick={() => {
+                                                    _grid.current._handleSort(cel.binding);
+                                                }}
+                                            >
+                                                <Icon
+                                                    icon={
+                                                        _sort[cel.binding]?.val === "asc"
+                                                            ? "barsUp"
+                                                            : _sort[cel.binding]?.val === "desc"
+                                                              ? "barsDown"
+                                                              : "bars"
+                                                    }
+                                                    size="xs"
+                                                />
+
+                                                <span className="absolute text-[10px] bottom-0 right-0 translate-x-full">
+                                                    {_sort[cel.binding]?.seq}
+                                                </span>
+                                            </button>
+                                        )}
                                     </div>
                                 );
                             });

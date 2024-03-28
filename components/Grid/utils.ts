@@ -486,6 +486,7 @@ const getRef = (schema: any, paging: any, sizing: any) => {
         _selectedCel: null,
         _editingRow: [],
 
+        _sortable: options.sort,
         _add: options.add,
         _edit: options.edit,
         _index: options.index,

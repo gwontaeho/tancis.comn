@@ -192,35 +192,22 @@ const GRID_SCHEMA: TGridSchema = {
         // pagination: "in",
         height: "auto",
         // pagination: "out",
+        // sort: true,
+
         group: ["text"],
     },
 
-    group: [{ cells: [{ colspan: 4, text: "그리드 그룹" }] }],
-
+    group: [{ cells: [{ colspan: 2, text: "그리드 그룹" }] }],
     groupFoot: [
-        { cells: [{ colspan: 2, text: "숫자 총합", align: "center" }] },
-        { cells: [{ colspan: 2, binding: "number", aggregate: "SUM" }] },
+        { cells: [{ text: "숫자 총합", align: "center" }] },
+        { cells: [{ binding: "number", aggregate: "SUM" }] },
     ],
 
-    head: [
-        { id: "test", cells: [{ rowspan: 2, binding: "number", width: 200 }] },
-        {
-            cells: [{ rowspan: 2, binding: "text", width: 200 }],
-        },
-        {
-            colspan: 2,
-            cells: [
-                { binding: "text", width: 200, colspan: 2 },
-                { binding: "text", width: 200 },
-                { binding: "text", width: 200 },
-            ],
-        },
-    ],
+    head: [{ id: "test", cells: [{ binding: "number", width: 400 }] }, { cells: [{ binding: "text", width: 400 }] }],
     body: [
-        { colspan: 2, cells: [{ colspan: 2, binding: "text", excel: "A", mode: "view" }] },
+        { cells: [{ binding: "text", excel: "A", mode: "view" }] },
         {
-            colspan: 2,
-            cells: [{ colspan: 2, binding: "number", type: "number", excel: "B" }],
+            cells: [{ binding: "number", type: "number", excel: "B" }],
         },
     ],
 };
