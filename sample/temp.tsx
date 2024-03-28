@@ -258,7 +258,7 @@ const FORM_SCHEMA: TFormSchema = {
 };
 
 export const Temp = () => {
-    const test1234 = usePage("ptli1001002s");
+    // const test1234 = usePage("ptli1001002s");
 
     useResource({
         defaultSchema: [
