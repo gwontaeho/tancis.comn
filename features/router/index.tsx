@@ -5,6 +5,9 @@ import { Main } from "@/tra/tancis/Main";
 
 import { ComnRoutes } from "@/comn/features/router/ComnRoutes";
 import { TancisRoutes } from "@/tra/tancis/Routes";
+import { Temp } from "@/comn/sample/temp";
+import SampleMain from "@/comn/sample/smpl-Main";
+import { ComnMain } from "@/comn/comn/comn-Main";
 export const routes: any = [...ComnRoutes, ...TancisRoutes];
 
 const router = createBrowserRouter([
@@ -14,24 +17,27 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/comn/comn/temp",
-                lazy: async () => {
-                    const { Temp } = await import("@/comn/sample/temp");
-                    return { Component: Temp };
-                },
+                element: <Temp />,
+                // lazy: async () => {
+                //     const { Temp } = await import("@/comn/sample/temp");
+                //     return { Component: Temp };
+                // },
             },
             {
                 path: "/comn/smpl/*",
-                lazy: async () => {
-                    const { SampleMain } = await import("@/comn/sample/smpl-Main");
-                    return { Component: SampleMain };
-                },
+                element: <SampleMain />,
+                // lazy: async () => {
+                //     const { SampleMain } = await import("@/comn/sample/smpl-Main");
+                //     return { Component: SampleMain };
+                // },
             },
             {
                 path: "/comn/comn/*",
-                lazy: async () => {
-                    const { ComnMain } = await import("@/comn/comn/comn-Main");
-                    return { Component: ComnMain };
-                },
+                element: <ComnMain />,
+                // lazy: async () => {
+                //     const { ComnMain } = await import("@/comn/comn/comn-Main");
+                //     return { Component: ComnMain };
+                // },
             },
             {
                 path: "*",

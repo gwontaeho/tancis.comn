@@ -38,7 +38,7 @@ const NavItem = (props: NavItemProps) => {
     const location = useLocation();
 
     const [open, setOpen] = useState(
-        Array.isArray(children) && location.pathname.startsWith(depth_1.base + depth_2.base + __base),
+        Array.isArray(children) && location.pathname.startsWith(depth_1?.base + depth_2?.base + __base),
     );
 
     const handleClick = () => {
@@ -47,7 +47,7 @@ const NavItem = (props: NavItemProps) => {
         navigate(to);
     };
 
-    const current = !Array.isArray(children) && location.pathname === depth_1.base + depth_2.base + __base + to;
+    const current = !Array.isArray(children) && location.pathname === depth_1?.base + depth_2?.base + __base + to;
 
     return (
         <li>
@@ -70,7 +70,7 @@ const NavItem = (props: NavItemProps) => {
                         {children.map((child) => {
                             return (
                                 <NavItem
-                                    key={depth_1.base + depth_2.base + __base + to + (child.base || child.to)}
+                                    key={depth_1?.base + depth_2?.base + __base + to + (child?.base || child.to)}
                                     depth={_depth}
                                     depth_1={depth_1}
                                     depth_2={depth_2}
