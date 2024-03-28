@@ -7,7 +7,7 @@ import Router from "./features/router";
 export { api };
 
 const Base = () => {
-    console.log("\n  %cCommon Base\n", "font-size:14px");
+    console.log("\ncommon base\n\n");
 
     useLayoutEffect(() => {
         /* Dev */
