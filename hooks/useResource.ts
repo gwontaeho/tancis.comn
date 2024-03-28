@@ -5,7 +5,7 @@ import { resourceState } from "../features/recoil";
 import { useTheme } from "../hooks";
 import { utils } from "../utils";
 
-const RENEWAL_CYCLE = 10000;
+const RENEWAL_CYCLE = 3600000;
 
 type TResource = {
     area: string;
@@ -116,9 +116,15 @@ export const useResource = (props: UseResourceProps) => {
                             let RESOURCE: any = await getResourceFromIDB(key);
 
                             let STATUS;
-                            if (!RESOURCE) STATUS = "NONE";
-                            else if (now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE) STATUS = "EXPIRATION";
-                            else resolve({ [key]: RESOURCE });
+                            if (!RESOURCE) {
+                                STATUS = "NONE";
+                            } else if (now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE) {
+                                console.log(now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE);
+                                STATUS = "EXPIRATION";
+                            } else {
+                                resolve({ [key]: RESOURCE });
+                                return;
+                            }
 
                             const code = await utils.getCode({ area, comnCd });
                             const value = Object.values<any>(code.data)?.[0]?.content || [];

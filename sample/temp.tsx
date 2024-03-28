@@ -298,13 +298,13 @@ export const Temp = () => {
 
     const pagingData = paging({ data, page: g.page, size: g.size });
 
-    const fetch = useFetch({
-        api: () => comnUtils.getCode({ area: "currCd" }),
-        // enabled: true,
-        onSuccess: (data) => {
-            const a = comnUtils.getOptions(data.currCdList.content, "currCd", "currNm");
-        },
-    });
+    // const fetch = useFetch({
+    //     api: () => comnUtils.getCode({ area: "currCd" }),
+    //     // enabled: true,
+    //     onSuccess: (data) => {
+    //         const a = comnUtils.getOptions(data.currCdList.content, "currCd", "currNm");
+    //     },
+    // });
 
     useEffect(() => {
         // test();
