@@ -76,6 +76,7 @@ export const comnEnvs = {
         tb: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/tbPpup`,
         col: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/colPpup`,
         lbl: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/lblPpup`,
+        comnCdMstr: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/comnCdMstrPpup`,
     },
 };
 
@@ -547,6 +548,9 @@ export const comnUtils = {
             case "lbl":
                 url = `/api/v1/ptli/intptl/comnppup/lbl?lblId=${keyword}&lblNm=${keywordName}`;
                 break;
+            case "comnCdMstr":
+                url = `/api/v1/ptli/intptl/comnppup/comn-cd-mstr?comnCd=${keyword}&comnCdNm=${keywordName}`;
+                break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
@@ -639,6 +643,8 @@ export const comnUtils = {
                 return code.colNm;
             case "lbl":
                 return code.lblNm;
+            case "comnCdMstr":
+                return code.comnCdNm;
             default:
                 return code.cdVldValNm;
         }
@@ -725,6 +731,8 @@ export const comnUtils = {
                 return code.colId;
             case "lbl":
                 return code.lblId;
+            case "comnCdMstr":
+                return code.comnCd;
             default:
                 return code.cdVldVal;
         }
