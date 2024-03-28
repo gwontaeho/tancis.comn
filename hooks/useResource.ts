@@ -119,7 +119,6 @@ export const useResource = (props: UseResourceProps) => {
                             if (!RESOURCE) {
                                 STATUS = "NONE";
                             } else if (now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE) {
-                                console.log(now.getTime() - RESOURCE.updated.getTime() > RENEWAL_CYCLE);
                                 STATUS = "EXPIRATION";
                             } else {
                                 resolve({ [key]: RESOURCE });
@@ -165,7 +164,18 @@ export const useResource = (props: UseResourceProps) => {
                 .reduce((prev, curr) => {
                     return { ...prev, ...curr };
                 }, {});
-            const rejected = resource.filter(({ status }) => status === "rejected");
+            const rejected = resource
+                .filter(({ status }) => status === "rejected")
+                .map(({ reason }: any) => reason)
+                .reduce((prev, curr) => {
+                    return { ...prev, ...curr };
+                }, {});
+
+            /* for dev */
+            console.log(
+                `fulfilled : ${Object.keys(fulfilled).join(", ")}\nrejected  : ${Object.keys(rejected).join(", ")}`,
+            );
+
             setRecource((prev: any) => ({ ...prev, ...fulfilled }));
         })();
     }, [theme.lang]);

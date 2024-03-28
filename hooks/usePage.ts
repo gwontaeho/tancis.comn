@@ -57,13 +57,13 @@ export const usePage = (props: any) => {
     const { ref } = usePageContext();
 
     if (!ref.current.cache) {
-        console.log("a/");
+        // console.log("a/");
         ref.current.cache = new Map();
         ref.current.holder = new Holder();
     }
 
     const promise = fetchData(ref.current.cache);
-    console.log(promise);
+    // console.log(promise);
 
     useEffect(() => {
         return () => {

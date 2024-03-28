@@ -9,7 +9,6 @@ import { Button, FormControl, Pagination, Icon, IconButton } from "@/comn/compon
 import { comnUtils } from "@/comn/utils";
 import { validateValue, fun, getView } from "./utils";
 import { useInitialize } from "./initializer";
-import { t } from "i18next";
 import dayjs from "dayjs";
 
 type TGridCell = Record<string, any>;
