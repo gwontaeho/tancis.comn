@@ -390,6 +390,7 @@ export const comnUtils = {
         postTpCd?: string;
         usrDmnId?: string;
         cstmOfceCd?: string;
+        tbId?: string;
     }) => {
         const {
             comnCd,
@@ -411,6 +412,7 @@ export const comnUtils = {
             postTpCd = "",
             usrDmnId = "",
             cstmOfceCd = "",
+            tbId = "",
         } = args;
 
         let url = "";
@@ -540,7 +542,7 @@ export const comnUtils = {
                 url = `/api/v1/ptli/intptl/comnppup/tb?tbId=${keyword}&tbNm=${keywordName}`;
                 break;
             case "col":
-                url = `/api/v1/ptli/intptl/comnppup/col?colId=${keyword}&colNm=${keywordName}`;
+                url = `/api/v1/ptli/intptl/comnppup/col?tbId=${tbId}&colId=${keyword}&colNm=${keywordName}`;
                 break;
             case "lbl":
                 url = `/api/v1/ptli/intptl/comnppup/lbl?lblId=${keyword}&lblNm=${keywordName}`;

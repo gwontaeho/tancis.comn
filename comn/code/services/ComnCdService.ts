@@ -378,6 +378,7 @@ export const APIS = {
             size: size,
             keyword: data.colId,
             keywordName: data.colNm,
+            tbId: data.tbId,
         });
     },
 
@@ -1631,9 +1632,8 @@ export const SG_TB_LIST: TGridSchema = {
 export const SF_COL_SRCH: TFormSchema = {
     id: "form_colSrch",
     schema: {
-        tbId: { type: "text", label: "L_TB_ID" },
-        tbNm: { type: "text", label: "L_TB_NM" },
-        colId: { type: "text", label: "L_COL_ID" },
+        tbId: { type: "text", label: "L_TB_ID", readOnly: true },
+        colId: { type: "text", label: "L_COL_ID", letterCase: "upper" },
         colNm: { type: "text", label: "L_COL_NM" },
     },
 };
