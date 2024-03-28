@@ -27,7 +27,7 @@ type NavItemProps = {
     depth?: number;
 };
 
-const NavItem = (props: NavItemProps) => {
+const NavItemm = (props: NavItemProps) => {
     const { children, depth = 1, depth_1, depth_2, _base = "", base = "", to = "", name } = props;
 
     const _depth = depth + 1;
@@ -69,7 +69,7 @@ const NavItem = (props: NavItemProps) => {
                     <ul className="pl-4 text-uf-gray dark:text-uf-lightgray">
                         {children.map((child) => {
                             return (
-                                <NavItem
+                                <NavItemm
                                     key={depth_1?.base + depth_2?.base + __base + to + (child?.base || child.to)}
                                     depth={_depth}
                                     depth_1={depth_1}
@@ -133,7 +133,7 @@ const Menu = () => {
                 <ul className="p-2 flex flex-col gap-2">
                     {depth_2?.children?.map((child: any) => {
                         return (
-                            <NavItem
+                            <NavItemm
                                 key={depth_1.name + "." + child.name}
                                 depth_1={depth_1}
                                 depth_2={depth_2}
@@ -169,7 +169,7 @@ const flat = (arg: any) => {
 const SideMenu = () => {
     const menu = useRecoilValue(menuState);
     const { mode, nonSigned } = menu;
-
+    return <Menu />;
     return mode === "dev1" ? <Menu /> : <DevSideMenu />;
 };
 

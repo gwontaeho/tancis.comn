@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useState, memo, useMemo } from "react";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -108,6 +108,7 @@ const Logo = () => {
 };
 
 const Header = () => {
+    const id = useId();
     const { theme, setTheme } = useTheme();
     const { t } = useTranslation();
     const setAuth = useSetRecoilState(authState);
@@ -132,6 +133,10 @@ const Header = () => {
         showToast({ content: "Sign Out" });
     };
 
+    const TEMPROUTES = useMemo(() => routes, []);
+
+    console.log(TEMPROUTES);
+
     return (
         <header className="uf-header">
             {/*  */}
@@ -144,7 +149,14 @@ const Header = () => {
 
             {/*  */}
             <div className="uf-header-main">
-                <TopMenu />
+                {/* <TopMenu /> */}
+                <nav className="uf-header-navigation">
+                    <ul className="flex gap-8">
+                        {TEMPROUTES.map((child: any, i: any) => {
+                            return <NavItem key={`${id} qwwqme ${i}`} {...child} />;
+                        })}
+                    </ul>
+                </nav>
 
                 <div className="uf-header-control">
                     <div className="flex gap-2">
@@ -300,16 +312,16 @@ const LoadMetaButton = () => {
 };
 
 /* temp */
-const TopMenu = () => {
-    const id = useId();
-    const menu = useRecoilValue(menuState);
-    const { nonSigned, mode } = menu;
+const TopMenu = memo(() => {
+    // const id = useId();
+    // const menu = useRecoilValue(menuState);
+    // const { nonSigned, mode } = menu;
 
     // console.log(routes);
     // console.log(nonSigned);
     // console.log(id);
 
-    return mode === "dev1" ? (
+    return (
         <nav className="uf-header-navigation">
             <ul className="flex gap-8">
                 {routes.map((child: any) => {
@@ -317,19 +329,29 @@ const TopMenu = () => {
                 })}
             </ul>
         </nav>
-    ) : (
-        <nav className="uf-header-navigation">
-            <ul className="flex gap-8">
-                {nonSigned &&
-                    Array.isArray(nonSigned.children) &&
-                    Boolean(nonSigned.children.length) &&
-                    nonSigned.children.map((child: any) => {
-                        return <TopMenuItem key={`${id}${child.menuId}`} {...child} />;
-                    })}
-            </ul>
-        </nav>
     );
-};
+
+    // return mode === "dev1" ? (
+    //     <nav className="uf-header-navigation">
+    //         <ul className="flex gap-8">
+    //             {routes.map((child: any) => {
+    //                 return <NavItem key={uuid()} {...child} />;
+    //             })}
+    //         </ul>
+    //     </nav>
+    // ) : (
+    //     <nav className="uf-header-navigation">
+    //         <ul className="flex gap-8">
+    //             {nonSigned &&
+    //                 Array.isArray(nonSigned.children) &&
+    //                 Boolean(nonSigned.children.length) &&
+    //                 nonSigned.children.map((child: any) => {
+    //                     return <TopMenuItem key={`${id}${child.menuId}`} {...child} />;
+    //                 })}
+    //         </ul>
+    //     </nav>
+    // );
+});
 
 /* temp */
 const TopMenuItem = (props: any) => {

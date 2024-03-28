@@ -23,22 +23,22 @@ const router = createBrowserRouter([
                 //     return { Component: Temp };
                 // },
             },
-            {
-                path: "/comn/smpl/*",
-                element: <SampleMain />,
-                // lazy: async () => {
-                //     const { SampleMain } = await import("@/comn/sample/smpl-Main");
-                //     return { Component: SampleMain };
-                // },
-            },
-            {
-                path: "/comn/comn/*",
-                element: <ComnMain />,
-                // lazy: async () => {
-                //     const { ComnMain } = await import("@/comn/comn/comn-Main");
-                //     return { Component: ComnMain };
-                // },
-            },
+            // {
+            //     path: "/comn/smpl/*",
+            //     element: <SampleMain />,
+            //     // lazy: async () => {
+            //     //     const { SampleMain } = await import("@/comn/sample/smpl-Main");
+            //     //     return { Component: SampleMain };
+            //     // },
+            // },
+            // {
+            //     path: "/comn/comn/*",
+            //     element: <ComnMain />,
+            //     // lazy: async () => {
+            //     //     const { ComnMain } = await import("@/comn/comn/comn-Main");
+            //     //     return { Component: ComnMain };
+            //     // },
+            // },
             {
                 path: "*",
                 element: <Main />,
