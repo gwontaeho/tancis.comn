@@ -73,6 +73,9 @@ export const comnEnvs = {
         hsCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/hsCdPpup`,
         postCd: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/postCdPpup`,
         tinNo: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/tinNoPpup`,
+        tb: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/tbPpup`,
+        col: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/colPpup`,
+        lbl: `${process.env.REACT_APP_BASE_COMN}/comn/ppup/lblPpup`,
     },
 };
 
@@ -533,6 +536,15 @@ export const comnUtils = {
             case "postCd":
                 url = `${process.env.REACT_APP_API_ESWO}/api/v1/eswo/comn/ppup/post-cd?postTpCd=${postTpCd}&postCd=${keyword}&postNm=${keywordName}`;
                 break;
+            case "tb":
+                url = `/api/v1/ptli/intptl/comnppup/tb?tbId=${keyword}&tbNm=${keywordName}`;
+                break;
+            case "col":
+                url = `/api/v1/ptli/intptl/comnppup/col?colId=${keyword}&colNm=${keywordName}`;
+                break;
+            case "lbl":
+                url = `/api/v1/ptli/intptl/comnppup/lbl?lblId=${keyword}&lblNm=${keywordName}`;
+                break;
             default:
                 url = `/api/v1/ptli/intptl/comnppup/comn-cd?comnCd=${comnCd}&cdVldVal=${keyword}&cdVldValNm=${keywordName}&langCd=${langCd}`;
                 break;
@@ -619,6 +631,12 @@ export const comnUtils = {
                 return code.wardPostNm + ", " + code.dstrPostNm + ", " + code.regnPostNm;
             case "tinNo":
                 return code.coNm;
+            case "tb":
+                return code.tbNm;
+            case "col":
+                return code.colNm;
+            case "lbl":
+                return code.lblNm;
             default:
                 return code.cdVldValNm;
         }
@@ -699,6 +717,12 @@ export const comnUtils = {
                 return code.wardPostCd;
             case "tinNo":
                 return code.tinNo;
+            case "tb":
+                return code.tbId;
+            case "col":
+                return code.colId;
+            case "lbl":
+                return code.lblId;
             default:
                 return code.cdVldVal;
         }

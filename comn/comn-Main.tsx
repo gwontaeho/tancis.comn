@@ -35,6 +35,9 @@ import { HsCodeList } from "@/comn/comn/code/hsCdLst";
 import { CompanyCodeDetail } from "@/comn/comn/code/CoCdDtl";
 import { PostCodeList } from "@/comn/comn/code/PostCdLst";
 import { TinNumberList } from "@/comn/comn/code/TinNoLst";
+import { TbList } from "@/comn/comn/code/TbLst";
+import { ColList } from "@/comn/comn/code/ColLst";
+import { LblList } from "@/comn/comn/code/LblLst";
 
 import { LblLangLst } from "@/comn/comn/lbl/LblLangLst";
 import { LblLangEdit } from "@/comn/comn/lbl/LblLangEdit";
@@ -89,6 +92,9 @@ export const ComnMain = () => {
             <Route path="/ppup/hsCdPpup" element={<HsCodeList />} />
             <Route path="/ppup/postCdPpup" element={<PostCodeList />} />
             <Route path="/ppup/tinNoPpup" element={<TinNumberList />} />
+            <Route path="/ppup/tbPpup" element={<TbList />} />
+            <Route path="/ppup/colPpup" element={<ColList />} />
+            <Route path="/ppup/lblPpup" element={<LblList />} />
 
             <Route path="/lbl/lblLangLst" element={<LblLangLst />} />
             <Route path="/lbl/lblLangRgsr" element={<LblLangRgsr />} />

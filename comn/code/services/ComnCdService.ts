@@ -360,6 +360,36 @@ export const APIS = {
             postTpCd: data.postTpCd,
         });
     },
+
+    getTbLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "tb",
+            page: page,
+            size: size,
+            keyword: data.tbId,
+            keywordName: data.tbNm,
+        });
+    },
+
+    getColLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "col",
+            page: page,
+            size: size,
+            keyword: data.colId,
+            keywordName: data.colNm,
+        });
+    },
+
+    getLblLst: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "lbl",
+            page: page,
+            size: size,
+            keyword: data.lblId,
+            keywordName: data.lblNm,
+        });
+    },
 };
 
 export const SCHEMA_GRID_COMN_CD: TGridSchema = {
@@ -1572,5 +1602,74 @@ export const SG_POST_CD_LST: TGridSchema = {
         {
             cells: [{ binding: "wardPostNm" }],
         },
+    ],
+};
+
+export const SF_TB_SRCH: TFormSchema = {
+    id: "form_tbSrch",
+    schema: {
+        tbId: { type: "text", label: "L_TB_ID", letterCase: "upper" },
+        tbNm: { type: "text", label: "L_TB_NM" },
+    },
+};
+
+export const SG_TB_LIST: TGridSchema = {
+    id: "grid_tbList",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        // { cells: [{ header: "L_BSOP_CLSF_CD", binding: "bsopClsfCd", width: "*" }] },
+        { cells: [{ header: "L_TB_ID", binding: "tbId", width: "*" }] },
+        { cells: [{ header: "L_TB_NM", binding: "tbNm", width: "*" }] },
+    ],
+    body: [
+        // { cells: [{ binding: "bsopClsfCd", edit: false }] },
+        { cells: [{ binding: "tbId", edit: false }] },
+        { cells: [{ binding: "tbNm", edit: false, align: "left" }] },
+    ],
+};
+
+export const SF_COL_SRCH: TFormSchema = {
+    id: "form_colSrch",
+    schema: {
+        tbId: { type: "text", label: "L_TB_ID" },
+        tbNm: { type: "text", label: "L_TB_NM" },
+        colId: { type: "text", label: "L_COL_ID" },
+        colNm: { type: "text", label: "L_COL_NM" },
+    },
+};
+
+export const SG_COL_LIST: TGridSchema = {
+    id: "grid_colList",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_TB_ID", binding: "tbId", width: "*" }] },
+        { cells: [{ header: "L_COL_ID", binding: "colId", width: "*" }] },
+        { cells: [{ header: "L_COL_NM", binding: "colNm", width: "*" }] },
+    ],
+    body: [
+        { cells: [{ binding: "tbId", edit: false, align: "left" }] },
+        { cells: [{ binding: "colId", edit: false, align: "left" }] },
+        { cells: [{ binding: "colNm", edit: false, align: "left" }] },
+    ],
+};
+
+export const SF_LBL_SRCH: TFormSchema = {
+    id: "form_colSrch",
+    schema: {
+        lblId: { type: "text", label: "L_LBL_ID" },
+        lblNm: { type: "text", label: "L_LBL_NM" },
+    },
+};
+
+export const SG_LBL_LIST: TGridSchema = {
+    id: "grid_colList",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_LBL_ID", binding: "lblId", width: "*" }] },
+        { cells: [{ header: "L_LBL_NM", binding: "lblNm", width: "*" }] },
+    ],
+    body: [
+        { cells: [{ binding: "lblId", edit: false }] },
+        { cells: [{ binding: "lblNm", edit: false, align: "left" }] },
     ],
 };
