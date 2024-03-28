@@ -38,6 +38,7 @@ import { TinNumberList } from "@/comn/comn/code/TinNoLst";
 import { TbList } from "@/comn/comn/code/TbLst";
 import { ColList } from "@/comn/comn/code/ColLst";
 import { LblList } from "@/comn/comn/code/LblLst";
+import { ComnCdMstrList } from "@/comn/comn/code/ComnCdMstrLst";
 
 import { LblLangLst } from "@/comn/comn/lbl/LblLangLst";
 import { LblLangEdit } from "@/comn/comn/lbl/LblLangEdit";
@@ -95,6 +96,7 @@ export const ComnMain = () => {
             <Route path="/ppup/tbPpup" element={<TbList />} />
             <Route path="/ppup/colPpup" element={<ColList />} />
             <Route path="/ppup/lblPpup" element={<LblList />} />
+            <Route path="/ppup/comnCdMstrPpup" element={<ComnCdMstrList />} />
 
             <Route path="/lbl/lblLangLst" element={<LblLangLst />} />
             <Route path="/lbl/lblLangRgsr" element={<LblLangRgsr />} />

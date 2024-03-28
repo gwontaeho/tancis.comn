@@ -391,6 +391,16 @@ export const APIS = {
             keywordName: data.lblNm,
         });
     },
+
+    getComnCdMstrList: (data: any, page: number, size: number) => {
+        return comnUtils.getCode({
+            area: "comnCdMstr",
+            page: page,
+            size: size,
+            keyword: data.comnCd,
+            keywordName: data.comnCdNm,
+        });
+    },
 };
 
 export const SCHEMA_GRID_COMN_CD: TGridSchema = {
@@ -1671,5 +1681,28 @@ export const SG_LBL_LIST: TGridSchema = {
     body: [
         { cells: [{ binding: "lblId", edit: false }] },
         { cells: [{ binding: "lblNm", edit: false, align: "left" }] },
+    ],
+};
+
+export const SF_COMN_CD_MSTR_SRCH: TFormSchema = {
+    id: "form_comnCdMstrSrch",
+    schema: {
+        comnCd: { type: "text", label: "L_COMN_CD", letterCase: "upper" },
+        comnCdNm: { type: "text", label: "L_COMN_CD_NM" },
+    },
+};
+
+export const SG_COMN_CD_MSTR_LIST: TGridSchema = {
+    id: "grid_comnCdMstrList",
+    options: { pagination: "out", edit: false, index: true },
+    head: [
+        { cells: [{ header: "L_BSOP_CLSF_CD", binding: "bsopClsfCd", width: "*" }] },
+        { cells: [{ header: "L_COMN_CD", binding: "comnCd", width: "*" }] },
+        { cells: [{ header: "L_COMN_CD_NM", binding: "comnCdNm", width: "*" }] },
+    ],
+    body: [
+        { cells: [{ binding: "bsopClsfCd", edit: false }] },
+        { cells: [{ binding: "comnCd", edit: false }] },
+        { cells: [{ binding: "comnCdNm", edit: false, align: "left" }] },
     ],
 };
