@@ -15,13 +15,13 @@ const Base = () => {
     }, []);
 
     return (
-        <Suspense fallback={<div>...load meta</div>}>
-            <RecoilProvider>
-                <ApiProvider>
-                    <Router />
-                </ApiProvider>
-            </RecoilProvider>
-        </Suspense>
+        // <Suspense fallback={<div>...load meta</div>}>
+        <RecoilProvider>
+            <ApiProvider>
+                <Router />
+            </ApiProvider>
+        </RecoilProvider>
+        // </Suspense>
     );
 };
 

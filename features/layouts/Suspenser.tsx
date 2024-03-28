@@ -29,9 +29,9 @@ const Fallback = () => {
 
 const Suspenser = () => {
     return (
-        <Suspense fallback={<Fallback />}>
-            <Outlet />
-        </Suspense>
+        // <Suspense fallback={<Fallback />}>
+        <Outlet />
+        // </Suspense>
     );
 };
 
