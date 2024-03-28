@@ -134,7 +134,10 @@ export const ColList = (props: any) => {
     };
 
     useEffect(() => {
-        handler.click_Btn_Srch();
+        if (params?.tbId) {
+            form.colSrch.setValue("tbId", params.tbId);
+            handler.click_Btn_Srch();
+        }
         /* * */
         if (params?.multiple === true) {
             grid.colLst.setOption("checkbox", true);
@@ -144,11 +147,11 @@ export const ColList = (props: any) => {
     return (
         <Page
             id={pgeUid}
-            title={t("T_TB_LST")}
-            description={t("T_TB_LST")}
+            title={t("T_COL_LST")}
+            description={t("T_COL_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { label: "T_TB_LST" }],
+                nodes: [...BASE.nodes, { label: "T_COL_LST" }],
             }}
         >
             <form>
@@ -157,7 +160,10 @@ export const ColList = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.colSrch.schema.tbId}></Group.Control>
-                                <Group.Control {...form.colSrch.schema.tbNm} select={true}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.colSrch.schema.colId}></Group.Control>
+                                <Group.Control {...form.colSrch.schema.colNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">

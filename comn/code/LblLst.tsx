@@ -157,7 +157,7 @@ export const LblList = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.lblSrch.schema.lblId}></Group.Control>
-                                <Group.Control {...form.lblSrch.schema.lblNm} select={true}></Group.Control>
+                                <Group.Control {...form.lblSrch.schema.lblNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">

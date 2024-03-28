@@ -157,7 +157,7 @@ export const TbList = (props: any) => {
                         <Group.Section>
                             <Group.Row>
                                 <Group.Control {...form.tbSrch.schema.tbId}></Group.Control>
-                                <Group.Control {...form.tbSrch.schema.tbNm} select={true}></Group.Control>
+                                <Group.Control {...form.tbSrch.schema.tbNm}></Group.Control>
                             </Group.Row>
                         </Group.Section>
                         <Layout direction="row">
