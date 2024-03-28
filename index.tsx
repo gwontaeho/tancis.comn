@@ -7,7 +7,7 @@ import Router from "./features/router";
 export { api };
 
 const Base = () => {
-    console.log("\ncommon base\n\n");
+    // console.log("\ncommon base\n\n");
 
     useLayoutEffect(() => {
         /* Dev */
